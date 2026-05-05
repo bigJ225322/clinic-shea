@@ -3006,26 +3006,21 @@ function InjectionEditor({ index, total, injection, tooth, onChange, onRemove })
           marginBottom: "10px" }}>
         <Checkbox checked={injection.techIAN}
           onChange={(v) => set("techIAN", v)}
-          label="IAN + long buccal block"
-          hint="Mandibular block on selected side" />
+          label="IAN + long buccal block" />
         <Checkbox checked={injection.techBuccalInfil}
           onChange={(v) => set("techBuccalInfil", v)}
           label={firstTooth
             ? `Buccal infiltration #${firstTooth}`
-            : "Buccal infiltration #(tooth number)"}
-          hint="Local infiltration at the tooth" />
+            : "Buccal infiltration #(tooth number)"} />
         <Checkbox checked={injection.techMaxInfil}
           onChange={(v) => set("techMaxInfil", v)}
-          label="Maxillary buccal infiltration"
-          hint="Quadrant-level maxillary infiltration" />
+          label="Maxillary buccal infiltration" />
         <Checkbox checked={injection.techGreaterPalatine}
           onChange={(v) => set("techGreaterPalatine", v)}
-          label="Greater palatine block"
-          hint="Posterior palatal anesthesia" />
+          label="Greater palatine block" />
         <Checkbox checked={injection.techNasopalatine}
           onChange={(v) => set("techNasopalatine", v)}
-          label="Nasopalatine block"
-          hint="Anterior palatal anesthesia" />
+          label="Nasopalatine block" />
       </div>
     </div>
   );
