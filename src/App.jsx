@@ -3994,12 +3994,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
           </div>
         ) : (
           <div className="empty-state">
-            <div>
-              <div className="serif" style={{ fontSize: "22px", fontWeight: 300,
-                  marginBottom: "10px", fontStyle: "italic" }}>
-                No procedure selected
-              </div>
-            </div>
+            <div />
           </div>
         )}
       </section>
@@ -5259,14 +5254,7 @@ function PrepList({ chunks, rows, onRowsChange, onJumpTo, onGenerateNote }) {
 
         {totalItems === 0 ? (
           <div className="empty-state">
-            <div>
-              <div className="serif" style={{
-                fontSize: "22px", fontWeight: 300, fontStyle: "italic",
-                marginBottom: "10px",
-              }}>
-                No procedures added
-              </div>
-            </div>
+            <div />
           </div>
         ) : (
           <>
