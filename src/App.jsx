@@ -10,10 +10,10 @@ const TEMPLATES = {
  "374": " S\n - y/o female patient presents to Urgent Care in Vivaldi clinic with CC: “”\n - medical history:\n - medications:\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n HPI:\n -\n - location:\n - inception:\n - triggers:\n - spontaneous pain:\n - lingering pain:\n - pain wakes pt up at night:\n - quality:\n - frequency:\n - duration:\n - intensity:\n - other symptoms:\n - treatment/evaluation thus far:\n - relief:\n - last pain medication taken & effectiveness:\n - anything else?:\n\n O\n\n EOE:\n Pt appears generally healthy in the dental chair. No visible asymmetries. EOE WNL with normal skin texture and color, normal facial movements,\n no visible/palpable masses, no lymphadenopathy, normal facial muscle movement & palpation, and normal TMJ movement and palpation\n bilaterally.\n\n IOE:\n - (heavily restored / carious dentition), (complete dentition / partially edentulous), (heavy calculus & active periodontal disease)\n -\n - Lips, gingiva, buccal mucosa, tongue, floor of mouth, oropharynx are all WNL without signs of pathology, asymmetry, or swelling\n\n Radiographs:\n - BW & PA taken\n - Radiographs reveal\n - Radiograph otherwise unremarkable & free of pathology\n\n Endo testing:\n - #: percussion +++, palpation +++, probing X mm, mobility 1, cold test 0.5/20 s\n - #: percussion -, palpation -, probing X mm, mobility 0, cold test 2/2 s\n - #: percussion -, palpation -, probing X mm, mobility 0, cold test 2/2 s\n\n Consultations:\n - Dr. [Name] -- restorative consult:\n - Dr. [Name] -- perio consult:\n - Dr. [Name] -- OS consult:\n\n A\n Endo diagnoses:\n - Pulpal diagnosis #:\n - Periapical diagnosis #:\n\n P\n Thoroughly discussed treatment options, costs, & timelines with pt. Specifically discussed tx options: (1) no treatment, (2) RTC + potential\n post/CBU/crown lengthening + crown, (3) extraction + replacement options (implant/bridge/RPD). Discussed advantages & disadvantages of\n treatments. Pt’s questions were answered & pt understood treatment options. Pt opts for .\n\n NV:",
  "448": " S\n - y/o female patient presents to Urgent Care in Vivaldi clinic with CC: “”\n - medical history:\n - medications:\n - allergies:\n - blood pressure:\n - blood glucose:\n\n HPI:\n\n O\n - IOE reveals\n - Panoramic radiograph taken & reveals . Radiograph otherwise unremarkable & free of pathology.\n\n A\n - [mild/moderate/severe] pericoronitis\n\n P\n Pt referred to PGOS for extraction #1, #16, #17, #32. Consult appointment scheduled for .\n\n NV:",
  "573": " S\n\n - y/o female patient presents to Vivaldi clinic for Perio COE with CC: “”\n - medical history:\n - medications:\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: last time at dentist: ; brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n O\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Radiographic findings:\n - generalized horizontal bone loss\n - generalized moderate interproximal calculus\n - adverse crown to root ratio:\n - evidence of furcation:\n - widened PDL:\n\n A\n\n Periodontal diagnosis:\n - AAP:\n - ADA:\n\n Prognosis:\n - fair:\n - questionable:\n - hopeless:\n\n P\n\n - Took diagnostic impressions, facebow, & bite registration.\n - treatment plan: SRP 4 quads, then 4-6 week re-eval\n\n - NV: restorative COE",
- "703": " S\n\n - y/o female patient presents to Vivaldi clinic for Restorative COE with CC: “”\n - medical history:\n - medications:\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: last time at dentist: ; brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n O\n\n Completed extraoral exam & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n\n Updated odontogram with radiographic & clinical hard tissue findings:\n -\n\n - occlusal assessment:\n - endo testing:\n\n A\n - TMJ conditions:\n - soft tissue conditions:\n - hard tissue conditions:\n - caries risk: high risk (see caries risk form)\n - pulpal diagnosis:\n - occlusal conditions:\n - esthetic considerations:\n\n P\n - Took diagnostic impressions, facebow, & bite registration.\n - Took intraoral photos.\n\n - NV: treatment plan",
+ "703": " S\n\n - y/o female patient presents to Vivaldi clinic for Restorative COE with CC: “”\n - medical history:\n - medications:\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: last time at dentist: ; brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n O\n\n Completed extraoral exam & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n\n Updated odontogram with radiographic & clinical hard tissue findings:\n -\n\n - occlusal assessment:\n - endo testing:\n\n A\n - TMJ conditions: WNL\n - soft tissue conditions: WNL\n - hard tissue conditions: WNL\n - caries risk:\n - pulpal diagnosis: WNL\n - occlusal conditions: WNL\n - esthetic considerations: WNL\n\n P\n - Took diagnostic impressions, facebow, & bite registration.\n - Took intraoral photos.\n\n - NV: treatment plan",
  "807": "   y/o female patient presents to Vivaldi clinic for treatment plan presentation.\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n All treatment options, costs, & timelines were thoroughly reviewed with the patient. Discussed advantages & disadvantages of treatments. Pt’s\n questions were answered & pt understood treatment options. Pt opts for optimal treatment plan. Verbal and written consent obtained.\n\n Specific treatments discussed:\n — Pt understands crown on #18 needs to be removed & caries needs to be evaluated/excavated before tooth can be deemed restorable. Pt\n understands that if tooth is nonrestorable, extraction & implant or adding tooth to RPD are tx options.\n — Pt understands caries on #8 approximates pulp, and that pulp may be exposed during excavation. Pt understands tooth may need RCT + crown.\n —\n\n NV:",
  "871": "  y/o female patient presents to Chicago clinic for #4 STI consultation.\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Patient was evaluated for UG STI placement #4. Patient is provisionally accepted for UG STI placement pending CBCT results.\n\n NV:",
- "1091": " - y/o female patient presents to Vivaldi clinic for POE\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n POE:\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n - caries risk: high (see completed caries risk form)\n\n Took 4 bitewings; updated odontogram with radiographic & clinical hard tissue findings:\n -\n - endo testing:\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed supragingival & subgingival plaque & calculus using Cavitron (with an assistant using HVE) & hand instruments. Flossed. Polished with\n prophy paste. Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation.\n\n Treatment planned for the following treatments:\n -\n Thoroughly reviewed all treatment options, costs, & timelines with pt. Discussed advantages & disadvantages of treatments. Answered pt’s\n questions. Pt understood treatment options. Obtained verbal and written consent for tx plan.\n\n - NV:",
+ "1091": " - y/o female patient presents to Vivaldi clinic for POE\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n POE:\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n - caries risk:\n\n Took 4 bitewings; updated odontogram with radiographic & clinical hard tissue findings:\n -\n - endo testing:\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed supragingival & subgingival plaque & calculus using Cavitron (with an assistant using HVE) & hand instruments. Flossed. Polished with\n prophy paste. Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation.\n\n Treatment planned for the following treatments:\n -\n Thoroughly reviewed all treatment options, costs, & timelines with pt. Discussed advantages & disadvantages of treatments. Answered pt’s\n questions. Pt understood treatment options. Obtained verbal and written consent for tx plan.\n\n - NV:",
  "1196": " - y/o female patient presents to Vivaldi clinic for prophy\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed plaque & calculus using Cavitron (with assistant using HVE) & hand instruments. Flossed. Polished with prophy paste.\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation. Emphasized that patient needs to .\n\n - NV:",
  "1272": " - y/o female patient presents to Vivaldi clinic for SRP of UR.\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n SRP UR:\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltrations of UR quadrant & greater palatine block on R.\n\n Completed SRP using Cavitron (with an assistant using HVE) & hand instruments to remove supragingival and subgingival plaque & calculus.\n Flossed.\n\n Gave pt post-op instructions re: numbness, sore gums, tooth sensitivity, bleeding, ibuprofen/acetaminophen regimen.\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation. Emphasized that patient needs to .\n\n - NV:",
  "1346": " - y/o female patient presents to Vivaldi clinic for perio re-evaluation after SRP 4 quads completed 1/1/2000\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Perio re-eval:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - O’Leary plaque index:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n\n Patient’s periodontal health has improved — . Upon evaluation, patient will be placed on perio maintenance interval of 4 months.\n\n - NV:",
@@ -122,7 +122,7 @@ const CHUNKS = [
 "id": "c013.0",
 "section": "EXAMS",
 "title": "SCREENING — for a patient to schedule a screening appointment",
-"body": "for a patient to schedule a screening appointment\n     ●​ screening to become a comprehensive patient is by appointment only\n     ●​ to schedule a screening, the potential patient should call: (312) 996-1265\n              ○​ the screening phone line is open Monday through Friday at 9:30 AM and remains open until all appointments are\n                   filled, usually ending at 1:30 pm\n     ●​ screening appointments are offered during both morning and afternoon sessions\nscreening family members / planning a screening with a specific patient\n    1.​ send pt to registration (1st floor) → pt should tell front desk that they have a student in [clinic] who will be screening them\n    2.​ after they have been registered (they have an Axium number), registration will send them to the 2nd floor to fill out a\n        screening sheet with Mickey\n    3.​ after they have filled out the screening sheet, you will call them in & screen them\nscreening: equipment\n    ●​ from locker: loupes and/or eye protection\n    ●​ in clinic: disposable plastic mirror\nscreening: steps\n    1.​ seat patient\n             ○​ get the patient from the waiting room & seat them in the assistant chair next to you\n    2.​ go through screening sheet\n             ○​ write chief complaint, in the pt’s own words, on the screening sheet\n             ○​ review the patient’s medical history that they’ve written on the screening sheet (do not enter anything in Axium)\n    3.​ explain school policies\n             ○​ explain how the appointments work!!!\n                     ■​ appointments will generally last 3 hours\n                     ■​ the patient will require 4 initial appointments (radiographs, perio COE, restorative COE, treatment plan)\n                          before any treatment will be started — warn them that these appointments will last 3 hours each (they\n                          may be shorter, but sometimes they do take the whole time)\n             ○​ comprehensive & sequenced treatment is required\n                     ■​ we cannot just do the 1 crown the patient wants, we have to treat the whole mouth in proper tx. order\n             ○​ all payment is required at the beginning of treatment\n                     ■​ the school does not accept payment plans\n                     ■​ the patient will not need to pay for the entire treatment plan at the first appointment; they pay as they go\n                          for the treatment they will be having that day\n             ○​ the patient needs to keep their scheduled appointments\n                     ■​ less than 24 hours notice to cancel/reschedule an appointment counts as a failed appointment\n                     ■​ if the patient fails their first appointment, they will be dismissed\n                     ■​ if the patient fails 3 appointments, they will be dismissed\n                     ■​ if a patient cannot keep an appointment, they need to notify at least 24 hours before\n             ○​ a patient cannot bring their children under 14 with them to their appointment\n             ○​ it may take 6-8 weeks for the patient to be assigned to a student (exception: if you’re accepting the patient for\n                 yourself right now, they’re assigned usually within 2 weeks)\n    4.​ perform oral exam\n             ○​ move the patient to the dental chair & take a super fast look in their mouth (use a plastic mirror in the unit)\n             ○​ on the screening sheet, circle what types of care the patient will require\n    5.​ approve patient\n             ○​ D0147 (screening N/C)\n             ○​ before planning the 4 codes below, check Dexis to see if pt already has FMX or pan; then ask patient if they’ve had\n                 FMX or pan recently & are able to acquire it (you won’t need to plan these codes then)\n             ○​ plan (P) 4 codes:\n                     ■​ D0150 (COE)\n                     ■​ D0330 (Panoramic film)\n                     ■​ D0210 (Intraoral - complete series)\n                     ■​ D9423NC (Code for unplanned appointment)\n             ○​ write your note now before your instructor comes over\n    6.​ present the patient to instructor\n             ○​ make sure the instructor signs the screening sheet\n\n              ○​ have the instructor swipe your codes/note\n    7.​ if pt is not approved\n              ○​ if the patient is not approved, provide the appropriate referrals (providers outside UIC, GPR list, UIC PG programs)\n                        ■​ you can get a sheet of paper that has the referral list from your clinic manager / in your clinic\n              ○​ if patient is being referred to a UIC PG clinic, complete a referral through Axium\n    8.​ take patient to radiology\n              ○​ take the patient to radiology to have them take a panoramic x-ray same day (they can schedule it for later if they\n                   don’t want to take it today)\n                        ■​ take off your gown before you go down to radiology\n                        ■​ you will need the patient’s Axium number, so bring the screening sheet\n                        ■​ the patient may also get the FMX taken that day if radiology has an opening (usually they are booked); the\n                            patient may choose to come back & schedule the FMX for another day (they aren’t required to get the\n                            FMX same day)\n              ○​ once the patient is done checking in with radiology, you can leave & return to your clinic, and the patient can leave\n                   after they’ve taken their x-rays (or after scheduling, if they don’t want to take x-rays same day)\n    9.​ return screening sheet to Mickey\n              ○​ if you want the patient assigned to you, write “Please assign patient to [name]” on bottom of the screening sheet\nscreening: note template\n  y/o female presents to UIC COD for screening appointment. Pt’s CC: “ .” Reviewed medical history. Performed oral inspection. Explained college\n policies, including attendance, transportation, & financial policy. Patient is provisionally accepted to UG clinic.\n\n Planned COE, FMX, pan.\n\n NV: COE"
+"body": "for a patient to schedule a screening appointment\n     ●​ screening to become a comprehensive patient is by appointment only\n     ●​ to schedule a screening, the potential patient should call: (312) 996-1265\n              ○​ the screening phone line is open Monday through Friday at 9:30 AM and remains open until all appointments are\n                   filled, usually ending at 1:30 pm\n     ●​ screening appointments are offered during both morning and afternoon sessions\nscreening family members / planning a screening with a specific patient\n    1.​ send pt to registration (1st floor) → pt should tell front desk that they have a student in [clinic] who will be screening them\n    2.​ after they have been registered (they have an Axium number), registration will send them to the 2nd floor to fill out a\n        screening sheet with Mickey\n    3.​ after they have filled out the screening sheet, you will call them in & screen them\nscreening: equipment\n    ●​ from locker: loupes and/or eye protection\n    ●​ in clinic: disposable plastic mirror\nscreening: steps\n    1.​ seat patient\n             ○​ get the patient from the waiting room & seat them in the assistant chair next to you\n    2.​ go through screening sheet\n             ○​ write chief complaint, in the pt’s own words, on the screening sheet\n             ○​ review the patient’s medical history that they’ve written on the screening sheet (do not enter anything in Axium)\n    3.​ explain school policies\n             ○​ explain how the appointments work!!!\n                     ■​ appointments will generally last 3 hours\n                     ■​ the patient will require 4 initial appointments (radiographs, perio COE, restorative COE, treatment plan)\n                          before any treatment will be started — warn them that these appointments will last 3 hours each (they\n                          may be shorter, but sometimes they do take the whole time)\n             ○​ comprehensive & sequenced treatment is required\n                     ■​ we cannot just do the 1 crown the patient wants, we have to treat the whole mouth in proper tx. order\n             ○​ all payment is required at the beginning of treatment\n                     ■​ the school does not accept payment plans\n                     ■​ the patient will not need to pay for the entire treatment plan at the first appointment; they pay as they go\n                          for the treatment they will be having that day\n             ○​ the patient needs to keep their scheduled appointments\n                     ■​ less than 24 hours notice to cancel/reschedule an appointment counts as a failed appointment\n                     ■​ if the patient fails their first appointment, they will be dismissed\n                     ■​ if the patient fails 3 appointments, they will be dismissed\n                     ■​ if a patient cannot keep an appointment, they need to notify at least 24 hours before\n             ○​ a patient cannot bring their children under 14 with them to their appointment\n             ○​ it may take 6-8 weeks for the patient to be assigned to a student (exception: if you’re accepting the patient for\n                 yourself right now, they’re assigned usually within 2 weeks)\n    4.​ perform oral exam\n             ○​ move the patient to the dental chair & take a super fast look in their mouth (use a plastic mirror in the unit)\n             ○​ on the screening sheet, circle what types of care the patient will require\n    5.​ approve patient\n             ○​ D0147 (screening N/C)\n             ○​ before planning the 3 codes below, check Dexis to see if pt already has FMX or pan; then ask patient if they’ve had\n                 FMX or pan recently & are able to acquire it (you won’t need to plan these codes then)\n             ○​ plan (P) 3 codes:\n                     ■​ D0150 (COE)\n                     ■​ D0330 (Panoramic film)\n                     ■​ D0210 (Intraoral - complete series)\n             ○​ write your note now before your instructor comes over\n    6.​ present the patient to instructor\n             ○​ make sure the instructor signs the screening sheet\n\n              ○​ have the instructor swipe your codes/note\n    7.​ if pt is not approved\n              ○​ if the patient is not approved, provide the appropriate referrals (providers outside UIC, GPR list, UIC PG programs)\n                        ■​ you can get a sheet of paper that has the referral list from your clinic manager / in your clinic\n              ○​ if patient is being referred to a UIC PG clinic, complete a referral through Axium\n    8.​ take patient to radiology\n              ○​ take the patient to radiology to have them take a panoramic x-ray same day (they can schedule it for later if they\n                   don’t want to take it today)\n                        ■​ take off your gown before you go down to radiology\n                        ■​ you will need the patient’s Axium number, so bring the screening sheet\n                        ■​ the patient may also get the FMX taken that day if radiology has an opening (usually they are booked); the\n                            patient may choose to come back & schedule the FMX for another day (they aren’t required to get the\n                            FMX same day)\n              ○​ once the patient is done checking in with radiology, you can leave & return to your clinic, and the patient can leave\n                   after they’ve taken their x-rays (or after scheduling, if they don’t want to take x-rays same day)\n    9.​ return screening sheet to Mickey\n              ○​ if you want the patient assigned to you, write “Please assign patient to [name]” on bottom of the screening sheet\nscreening: note template\n  y/o female presents to UIC COD for screening appointment. Pt’s CC: “ .” Reviewed medical history. Performed oral inspection. Explained college\n policies, including attendance, transportation, & financial policy. Patient is provisionally accepted to UG clinic.\n\n Planned COE, FMX, pan.\n\n NV: COE"
 },
 {
 "id": "c014.0",
@@ -2069,13 +2069,13 @@ const CATEGORIES = [
   { id: "exams", label: "Exams", groups: [
     { id: "exam-procs", label: "Procedures", procedures: [
       { id: "273",  label: "Screening" },
+      { id: "1091", label: "POE (Periodic Oral Exam)" },
       { id: "374",  label: "Urgent Care" },
       { id: "448",  label: "Urgent Care — Wisdom Tooth" },
       { id: "573",  label: "Perio COE" },
       { id: "703",  label: "Restorative COE" },
       { id: "807",  label: "Treatment Plan Presentation" },
       { id: "871",  label: "Implant Consult" },
-      { id: "1091", label: "POE (Periodic Oral Exam)" },
     ]},
   ]},
   { id: "perio", label: "Perio", groups: [
@@ -2319,9 +2319,11 @@ function renderTemplate(raw, f) {
   // -------- 1. Strip the COVID-19 paragraph entirely. --------
   // The block runs from " COVID-19:" through the second screening line,
   // followed by a blank line. The pattern is consistent across all templates.
+  // Replace with two newlines so the surrounding paragraphs stay separated by
+  // a blank line. Step 11 collapses any 3+ runs back down to 2.
   t = t.replace(
     /\n\s*COVID-19:\s*\n[\s\S]*?approved for treatment today\.\s*\n/,
-    "\n"
+    "\n\n"
   );
 
   // -------- 2. Strip optional vitals lines unless filled in. --------
@@ -2433,21 +2435,49 @@ function renderTemplate(raw, f) {
 
   // -------- 7b. Exam findings (COE / POE structured fields). --------
   // For each entry in f.examFindings whose value is non-empty, find the
-  // corresponding "- <label>:" line in the template and append the value.
+  // corresponding "- <label>:" line in the template and overwrite whatever
+  // value sits after the colon. The regex is permissive ([^\n]* not [ \t]*)
+  // so it works on both empty stubs and pre-filled lines (e.g. the EOE/TMJ/
+  // IOE lines that ship with WNL defaults — students editing those in the
+  // Disclosure should see their value replace the default).
   // Multi-line values get newlines inserted with proper indentation so the
   // template structure is preserved.
+  // Two label keys are special:
+  //   - "caries risk": writes "{value} (see caries risk form)" to match the
+  //     existing convention students used to see hardcoded.
+  //   - "odontogram":  doesn't map to a "- label:" stub; it replaces the bullet
+  //     under the "Updated odontogram with radiographic & clinical hard tissue
+  //     findings:" heading with the user's bulleted list.
   if (f.examFindings && typeof f.examFindings === "object") {
     for (const [label, value] of Object.entries(f.examFindings)) {
       const v = (value || "").trim();
       if (!v) continue;
+
+      // Special-case: odontogram findings — write to the heading, not a stub.
+      if (label === "odontogram") {
+        // Ensure the user's content starts with a dash so the first line is
+        // a proper bullet. Subsequent lines inherit dashes from auto-dash.
+        const odon = v.startsWith("-") ? v : `- ${v}`;
+        t = t.replace(
+          /(Updated odontogram with radiographic & clinical hard tissue findings:)\n[ \t]*-[ \t]*(?=\n|$)/,
+          (_m, heading) => `${heading}\n${odon}`
+        );
+        continue;
+      }
+
+      // Special-case: caries risk — append the standard reference suffix.
+      const display = label === "caries risk"
+        ? `${v} (see caries risk form)`
+        : v;
+
       // Build a regex that matches the stub line (case-insensitive on label).
       const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       const re = new RegExp(
-        `^([ \\t]*-[ \\t]*${escaped}:)[ \\t]*$`,
+        `^([ \\t]*-[ \\t]*${escaped}:)[^\\n]*$`,
         "im"
       );
       // For multi-line values, format as: stub: line 1\n  line 2\n  line 3
-      const lines = v.split("\n");
+      const lines = display.split("\n");
       const replacement = lines.length === 1
         ? `$1 ${lines[0]}`
         : `$1 ${lines[0]}\n   ${lines.slice(1).join("\n   ")}`;
@@ -3093,7 +3123,7 @@ function CodesPanel({ procedure, chunks }) {
         marginTop: "12px", marginBottom: 0, fontStyle: "italic",
         lineHeight: 1.45,
       }}>
-        Codes from <em className="serif" style={{ fontStyle: "italic" }}>(Swade)</em> manual.
+        Note templates and Codes from <em className="serif" style={{ fontStyle: "italic" }}>(Swade)</em> manual.
       </p>
     </div>
   );
@@ -3203,22 +3233,46 @@ function ProseBlock({ text, highlight }) {
 // "select" (dropdown with options). Each field gets a labeled input that
 // writes to fields.examFindings[label]. Renderer fills "- <label>:" stubs.
 const EXAM_FINDINGS_CONFIG = {
-  // Restorative COE — clinical findings tend to be short prose; some are
-  // genuinely multi-line so those get textareas.
+  // Restorative COE — most O-section findings (EOE/TMJ/IOE/oral cancer) and
+  // A-section conclusions (TMJ conditions, soft tissue, pulpal dx, etc.) are
+  // WNL the vast majority of the time. They sit inside a collapsed Disclosure
+  // so the form stays compact; opening it reveals the defaults and lets the
+  // student override per finding. The odontogram field is the one piece that
+  // needs to be readily expandable, so it lives outside the Disclosure as a
+  // dedicated big box that auto-dashes new bullets on Enter.
   "703": [
+    {
+      title: "EOE/IOE findings",
+      disclosure: true,
+      summary: "WNL by default · click to override",
+      fields: [
+        { label: "EOE", type: "textarea",
+          placeholder: "WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy" },
+        { label: "TMJ", type: "textarea",
+          placeholder: "WNL - no deviation, no crepitus, no locking" },
+        { label: "IOE", type: "textarea",
+          placeholder: "WNL - no soft tissue pathology" },
+        { label: "oral cancer screening", type: "textarea",
+          placeholder: "WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx" },
+        { label: "TMJ conditions", type: "input", placeholder: "WNL" },
+        { label: "soft tissue conditions", type: "input", placeholder: "WNL" },
+        { label: "caries risk", type: "select",
+          options: ["", "Low", "Moderate", "High"] },
+        { label: "pulpal diagnosis", type: "input", placeholder: "WNL" },
+        { label: "occlusal conditions", type: "input", placeholder: "WNL" },
+        { label: "esthetic considerations", type: "input", placeholder: "WNL" },
+      ],
+    },
     {
       title: "Findings",
       fields: [
-        { label: "TMJ conditions", type: "textarea",
-          placeholder: "WNL; pt denies pain or clicking" },
-        { label: "soft tissue conditions", type: "textarea",
-          placeholder: "WNL" },
-        { label: "hard tissue conditions", type: "textarea",
-          placeholder: "see odontogram" },
-        { label: "occlusal conditions", type: "input",
+        { label: "occlusal assessment", type: "input",
           placeholder: "Class I; no wear facets" },
         { label: "endo testing", type: "input",
           placeholder: "all teeth WNL on cold and percussion" },
+        { label: "odontogram", type: "odontogram",
+          displayLabel: "Updated odontogram with clinical and radiographic findings",
+          placeholder: "List each finding on its own line. Press Enter to add another." },
       ],
     },
   ],
@@ -3253,13 +3307,34 @@ const EXAM_FINDINGS_CONFIG = {
       ],
     },
   ],
-  // POE
+  // POE — same Disclosure pattern as Restorative COE, but POE doesn't have
+  // the A-section diagnostic fields, so the Disclosure is shorter.
   "1091": [
+    {
+      title: "EOE/IOE findings",
+      disclosure: true,
+      summary: "WNL by default · click to override",
+      fields: [
+        { label: "EOE", type: "textarea",
+          placeholder: "WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy" },
+        { label: "TMJ", type: "textarea",
+          placeholder: "WNL - no deviation, no crepitus, no locking" },
+        { label: "IOE", type: "textarea",
+          placeholder: "WNL - no soft tissue pathology" },
+        { label: "oral cancer screening", type: "textarea",
+          placeholder: "WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx" },
+        { label: "caries risk", type: "select",
+          options: ["", "Low", "Moderate", "High"] },
+      ],
+    },
     {
       title: "Findings",
       fields: [
         { label: "endo testing", type: "input",
           placeholder: "all teeth WNL on cold and percussion" },
+        { label: "odontogram", type: "odontogram",
+          displayLabel: "Updated odontogram with clinical and radiographic findings",
+          placeholder: "List each finding on its own line. Press Enter to add another." },
       ],
     },
     {
@@ -3277,6 +3352,56 @@ const EXAM_FINDINGS_CONFIG = {
 };
 
 const titleCaseLabel = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+// Odontogram findings field — a textarea that auto-inserts "- " on Enter so
+// each finding becomes its own bulleted line, and auto-resizes vertically
+// as content grows. Students can also drag the resize handle if they want
+// even more room. The value is plain text (with literal "- " prefixes) so
+// it can be pasted into renderTemplate without any transformation.
+function OdontogramField({ value, onChange, placeholder }) {
+  const ref = useRef(null);
+
+  // Re-measure the textarea on every value change so its visible height
+  // matches its content. Floor at ~3 lines so the empty field still feels
+  // like a place to write a list, not a single-line input.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = Math.max(el.scrollHeight, 80) + "px";
+  }, [value]);
+
+  const handleKeyDown = (e) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    const el = e.target;
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const insert = "\n- ";
+    const next = value.slice(0, start) + insert + value.slice(end);
+    onChange(next);
+    // Restore caret position after React commits the new value.
+    requestAnimationFrame(() => {
+      if (ref.current) {
+        ref.current.selectionStart = ref.current.selectionEnd =
+          start + insert.length;
+      }
+    });
+  };
+
+  return (
+    <textarea ref={ref} value={value}
+      placeholder={placeholder}
+      onChange={(e) => onChange(e.target.value)}
+      onKeyDown={handleKeyDown}
+      style={{
+        ...inputStyle,
+        resize: "vertical", minHeight: "80px",
+        fontFamily: "'Geist', sans-serif", fontSize: "13px",
+        lineHeight: 1.5,
+      }} />
+  );
+}
 
 function ExamFindings({ procedureId, findings, setFindings }) {
   const config = EXAM_FINDINGS_CONFIG[procedureId];
@@ -3299,59 +3424,84 @@ function ExamFindings({ procedureId, findings, setFindings }) {
     setFindings(next);
   };
 
+  const renderField = (field) => {
+    const isProgn = field.isPrognosis;
+    const value = isProgn
+      ? (findings.prognosis || "")
+      : (findings[field.label] || "");
+    const onChange = isProgn
+      ? (e) => updatePrognosis(e.target.value)
+      : (e) => update(field.label, e.target.value);
+    const display = isProgn
+      ? "Prognosis"
+      : (field.displayLabel || titleCaseLabel(field.label));
+
+    return (
+      <div key={field.label} style={{ marginBottom: "9px" }}>
+        <label style={{
+          ...labelStyle,
+          fontSize: "10px",
+          textTransform: "none",
+          letterSpacing: "0.04em",
+          color: "var(--ink-soft)",
+          fontStyle: "italic",
+        }}>
+          {display}
+        </label>
+        {field.type === "textarea" ? (
+          <textarea value={value} onChange={onChange}
+            placeholder={field.placeholder} rows={1}
+            style={{
+              ...inputStyle,
+              resize: "vertical", minHeight: "32px",
+              fontFamily: "'Geist', sans-serif", fontSize: "13px",
+            }} />
+        ) : field.type === "select" ? (
+          <select value={value} onChange={onChange}
+            style={{ ...inputStyle, fontSize: "13px" }}>
+            {field.options.map(opt => (
+              <option key={opt} value={opt}>
+                {opt || "— Select —"}
+              </option>
+            ))}
+          </select>
+        ) : field.type === "odontogram" ? (
+          <OdontogramField value={value}
+            onChange={(v) => update(field.label, v)}
+            placeholder={field.placeholder} />
+        ) : (
+          <input type="text" value={value} onChange={onChange}
+            placeholder={field.placeholder}
+            style={{ ...inputStyle, fontSize: "13px" }} />
+        )}
+      </div>
+    );
+  };
+
   return (
     <>
-      {config.map((section, i) => (
-        <div key={i} style={{ marginTop: i === 0 ? "4px" : "16px" }}>
-          <SubsectionLabel>{section.title}</SubsectionLabel>
-          {section.fields.map(field => {
-            const isProgn = field.isPrognosis;
-            const value = isProgn
-              ? (findings.prognosis || "")
-              : (findings[field.label] || "");
-            const onChange = isProgn
-              ? (e) => updatePrognosis(e.target.value)
-              : (e) => update(field.label, e.target.value);
-
-            return (
-              <div key={field.label} style={{ marginBottom: "9px" }}>
-                <label style={{
-                  ...labelStyle,
-                  fontSize: "10px",
-                  textTransform: "none",
-                  letterSpacing: "0.04em",
-                  color: "var(--ink-soft)",
-                  fontStyle: "italic",
-                }}>
-                  {isProgn ? "Prognosis" : titleCaseLabel(field.label)}
-                </label>
-                {field.type === "textarea" ? (
-                  <textarea value={value} onChange={onChange}
-                    placeholder={field.placeholder} rows={1}
-                    style={{
-                      ...inputStyle,
-                      resize: "vertical", minHeight: "32px",
-                      fontFamily: "'Geist', sans-serif", fontSize: "13px",
-                    }} />
-                ) : field.type === "select" ? (
-                  <select value={value} onChange={onChange}
-                    style={{ ...inputStyle, fontSize: "13px" }}>
-                    {field.options.map(opt => (
-                      <option key={opt} value={opt}>
-                        {opt || "— Select —"}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <input type="text" value={value} onChange={onChange}
-                    placeholder={field.placeholder}
-                    style={{ ...inputStyle, fontSize: "13px" }} />
-                )}
-              </div>
-            );
-          })}
-        </div>
-      ))}
+      {config.map((section, i) => {
+        const fields = section.fields.map(renderField);
+        if (section.disclosure) {
+          return (
+            <div key={i} style={{ marginTop: i === 0 ? "4px" : "16px" }}>
+              <Disclosure
+                title={section.title}
+                summary={section.summary}
+                defaultOpen={false}
+              >
+                {fields}
+              </Disclosure>
+            </div>
+          );
+        }
+        return (
+          <div key={i} style={{ marginTop: i === 0 ? "4px" : "16px" }}>
+            <SubsectionLabel>{section.title}</SubsectionLabel>
+            {fields}
+          </div>
+        );
+      })}
     </>
   );
 }
@@ -3435,6 +3585,14 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     () => /temperature:/i.test(rawTemplate), [rawTemplate]);
   const needsNV = useMemo(
     () => /NV:/.test(rawTemplate), [rawTemplate]);
+  // The text following "NV:" in the template, if any. Mirrored into the form's
+  // placeholder so students can see what the default would be without typing.
+  // If they leave the field empty, renderTemplate keeps the template's default
+  // verbatim; if they type something, it overrides.
+  const nvDefault = useMemo(() => {
+    const m = rawTemplate.match(/(?:^|\n)[ \t]*-?[ \t]*NV:[ \t]*([^\n]*)/);
+    return m ? m[1].trim() : "";
+  }, [rawTemplate]);
   const needsNitrous = useMemo(
     () => /Titrated to[^.]*nitrous/i.test(rawTemplate), [rawTemplate]);
 
@@ -3527,7 +3685,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
         {procedureId && (
           <div style={{ ...cardStyle, marginTop: "24px" }}>
           <SectionHeader n="ii">Patient</SectionHeader>
-          {(procedureId === "703" || procedureId === "573" || procedureId === "1091") && (
+          {(procedureId === "1091" || procedureId === "1425") && (
             <div style={{
               marginBottom: "16px",
               padding: "10px 14px",
@@ -3787,7 +3945,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               <Hairline />
               <Field label="Next Visit (NV)">
                 <TextInput value={fields.nv} onChange={v=>setField("nv",v)}
-                  placeholder="e.g. #19 crown prep" />
+                  placeholder={nvDefault || "e.g. #19 crown prep"} />
               </Field>
             </>
           )}
@@ -4352,6 +4510,7 @@ function Browse({
         background: "var(--paper)", border: "1px solid var(--rule)",
         borderRadius: "3px", padding: "32px 36px",
         maxHeight: "78vh", overflowY: "auto",
+        textAlign: "left",
       }}>
         {currentProcedure ? (
           <>
@@ -4731,24 +4890,6 @@ const MEE_CATEGORIES = [
   },
 ];
 
-// Helper: pick the most specific matching category for a code (excluding
-// "All"). Used so each row can be tagged with one canonical category.
-function categoryFor(code) {
-  for (let i = 1; i < RVU_CATEGORIES.length; i++) {
-    if (RVU_CATEGORIES[i].match(code)) return RVU_CATEGORIES[i];
-  }
-  return null;
-}
-
-// For a given MEE category, return its codes sorted by RVU value (highest
-// first). Used to surface "the most efficient procedures to close this gap"
-// in the progress view.
-function meeCodesFor(category, rvuData) {
-  return rvuData
-    .filter(r => category.codeMatcher(r.code))
-    .sort((a, b) => (b.rvu || 0) - (a.rvu || 0));
-}
-
 const PROGRESS_STORAGE_KEY = "meeProgress";
 
 /* ============================================================================
@@ -4771,522 +4912,9 @@ const PROGRESS_STORAGE_KEY = "meeProgress";
  * ==========================================================================*/
 
 // Status of a count vs category thresholds.
-function meeStatus(count, category) {
-  if (category.d3 == null) return "neutral";
-  if (count >= category.d4) return "atD4";
-  if (count >= category.d3) return "betweenD3D4";
-  return "belowD3";
-}
-
-const MEE_STATUS_STYLE = {
-  belowD3:     { bg: "rgba(122, 30, 30, 0.10)",  bar: "var(--accent)", label: "Below D3" },
-  betweenD3D4: { bg: "rgba(154, 123, 63, 0.10)", bar: "var(--gold)",   label: "Past D3" },
-  atD4:        { bg: "transparent",              bar: "var(--teal)",   label: "At D4" },
-  neutral:     { bg: "transparent",              bar: "var(--ink-faint)", label: "—" },
-};
-
-// One "action item" row in the verdict view. Compact, dense, no expand —
-// everything actionable is on screen.
-function ActionRow({ category, count }) {
-  const status = meeStatus(count, category);
-  const style = MEE_STATUS_STYLE[status];
-  const gapD3 = Math.max(0, category.d3 - count);
-  const gapD4 = Math.max(0, category.d4 - count);
-  // Progress bar fills from 0 to D4. D3 is marked with a tick.
-  const pctOfD4 = Math.min(100, (count / category.d4) * 100);
-  const d3Pct = (category.d3 / category.d4) * 100;
-  const codes = useMemo(() =>
-    RVU_DATA.filter(r => category.codeMatcher(r.code))
-      .sort((a, b) => (b.rvu || 0) - (a.rvu || 0))
-      .slice(0, 4),
-    [category]);
-
-  return (
-    <div style={{
-      padding: "16px 18px 14px",
-      background: style.bg,
-      borderBottom: "1px solid var(--rule-soft)",
-      transition: "background 200ms ease",
-    }}>
-      <div style={{
-        display: "flex", justifyContent: "space-between",
-        alignItems: "baseline", marginBottom: "8px",
-        gap: "12px", flexWrap: "wrap",
-      }}>
-        <div style={{
-          fontSize: "14px", fontWeight: 500,
-          color: "var(--ink)",
-          fontFamily: "'Geist', sans-serif",
-        }}>
-          {category.dashKey}
-        </div>
-        <div style={{
-          display: "flex", alignItems: "baseline", gap: "12px",
-          fontFamily: "'Geist', sans-serif",
-          fontVariantNumeric: "tabular-nums",
-        }}>
-          <span className="mono" style={{
-            fontSize: "16px", fontWeight: 500, color: "var(--ink)",
-          }}>{count}</span>
-          <span style={{ fontSize: "11px", color: "var(--ink-faint)" }}>
-            of {category.d3} (D3) · {category.d4} (D4)
-          </span>
-          {gapD3 > 0 ? (
-            <span style={{
-              fontSize: "11px", color: "var(--accent)", fontWeight: 500,
-              letterSpacing: "0.02em",
-            }}>
-              {gapD3} short of D3
-            </span>
-          ) : gapD4 > 0 ? (
-            <span style={{
-              fontSize: "11px", color: "var(--gold)", fontWeight: 500,
-            }}>
-              {gapD4} short of D4
-            </span>
-          ) : null}
-        </div>
-      </div>
-
-      {/* Progress bar — fills 0 to D4. D3 marked with a dashed tick. */}
-      <div style={{
-        position: "relative", height: "6px",
-        background: "var(--rule-soft)",
-        borderRadius: "3px", marginBottom: "10px",
-        overflow: "visible",
-      }}>
-        <div style={{
-          position: "absolute", inset: 0,
-          width: `${pctOfD4}%`, background: style.bar,
-          borderRadius: "3px",
-          transition: "width 300ms ease",
-        }} />
-        {/* D3 tick mark */}
-        <div style={{
-          position: "absolute", top: "-2px", bottom: "-2px",
-          left: `${d3Pct}%`, width: "1px",
-          background: "var(--ink-soft)",
-        }} />
-        <div style={{
-          position: "absolute", top: "-14px",
-          left: `${d3Pct}%`, transform: "translateX(-50%)",
-          fontSize: "9px", color: "var(--ink-faint)",
-          letterSpacing: "0.06em",
-          fontFamily: "'Geist', sans-serif",
-        }}>D3</div>
-      </div>
-
-      {/* Top high-RVU codes that count for this category. Read-only — students
-          can see at a glance what procedures will close the gap. */}
-      {codes.length > 0 && (
-        <div style={{
-          fontSize: "11px", color: "var(--ink-soft)",
-          lineHeight: 1.55,
-        }}>
-          <span style={{ color: "var(--ink-faint)" }}>top codes: </span>
-          {codes.map((c, i) => (
-            <span key={c.code}>
-              {i > 0 && <span style={{ color: "var(--ink-faint)" }}>, </span>}
-              <span className="mono" style={{ color: "var(--accent)", fontWeight: 500 }}>
-                {c.code}
-              </span>
-              <span style={{ color: "var(--ink-faint)" }}> ({c.rvu})</span>
-            </span>
-          ))}
-          {category.notes && (
-            <div style={{
-              marginTop: "5px", fontSize: "10px",
-              color: "var(--ink-faint)", fontStyle: "italic",
-            }}>{category.notes}</div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-// Update-numbers form. Inline +/- buttons for quick increments.
-function UpdateForm({ counts, setCount, totalRVU, setTotal }) {
-  const adjust = (id, delta) => {
-    const cur = parseFloat(counts[id]) || 0;
-    setCount(id, String(Math.max(0, cur + delta)));
-  };
-  return (
-    <div style={{
-      ...cardStyle, padding: "20px 22px",
-    }}>
-      <div style={{
-        fontSize: "11px", color: "var(--ink-soft)",
-        marginBottom: "14px", lineHeight: 1.55, fontStyle: "italic",
-      }}>
-        Type in your numbers from the UG Dashboard, or use −/+ to bump after
-        each clinic session. Thresholds: D3 / D4.
-      </div>
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-        gap: "12px 18px",
-      }}>
-        {MEE_CATEGORIES.map(cat => (
-          <div key={cat.id}>
-            <label style={{
-              fontSize: "10px", letterSpacing: "0.04em",
-              color: "var(--ink-soft)",
-              display: "flex", justifyContent: "space-between",
-              marginBottom: "3px",
-            }}>
-              <span>{cat.dashKey}</span>
-              {cat.d3 != null && (
-                <span style={{ color: "var(--ink-faint)",
-                    fontFamily: "'Geist', sans-serif",
-                    fontVariantNumeric: "tabular-nums" }}>
-                  {cat.d3} / {cat.d4}
-                </span>
-              )}
-            </label>
-            <div style={{ display: "flex", gap: "4px" }}>
-              <button type="button" onClick={() => adjust(cat.id, -1)}
-                style={incButtonStyle}>−</button>
-              <input type="number" min="0"
-                value={counts[cat.id] ?? ""}
-                onChange={e => setCount(cat.id, e.target.value)}
-                style={{
-                  ...inputStyle, fontSize: "13px",
-                  padding: "6px 10px",
-                  textAlign: "center",
-                  fontVariantNumeric: "tabular-nums",
-                  flex: 1,
-                }} />
-              <button type="button" onClick={() => adjust(cat.id, +1)}
-                style={incButtonStyle}>+</button>
-            </div>
-          </div>
-        ))}
-        <div>
-          <label style={{
-            fontSize: "10px", letterSpacing: "0.04em",
-            color: "var(--ink-soft)",
-            display: "flex", justifyContent: "space-between",
-            marginBottom: "3px",
-          }}>
-            <span>Total RVUs</span>
-            <span style={{ color: "var(--ink-faint)", fontStyle: "italic" }}>
-              optional
-            </span>
-          </label>
-          <input type="number" min="0" value={totalRVU}
-            onChange={e => setTotal(e.target.value)}
-            style={{
-              ...inputStyle, fontSize: "13px",
-              padding: "6px 10px",
-              fontVariantNumeric: "tabular-nums",
-            }} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-const incButtonStyle = {
-  width: "28px", padding: "6px 0", fontSize: "14px",
-  fontFamily: "'Geist', sans-serif", fontWeight: 400,
-  background: "var(--paper-soft)",
-  border: "1px solid var(--rule)",
-  color: "var(--ink-soft)",
-  borderRadius: "2px", cursor: "pointer",
-  flexShrink: 0,
-};
-
 function MEEProgress() {
-  const [counts, setCounts] = useState(() => {
-    if (typeof window === "undefined") return {};
-    try {
-      const raw = window.localStorage?.getItem(PROGRESS_STORAGE_KEY);
-      return raw ? JSON.parse(raw) : {};
-    } catch { return {}; }
-  });
-  const [totalRVU, setTotalRVU] = useState(() => {
-    if (typeof window === "undefined") return "";
-    try {
-      const raw = window.localStorage?.getItem(PROGRESS_STORAGE_KEY + ":total");
-      return raw || "";
-    } catch { return ""; }
-  });
-
-  // Track whether the user STARTED this session with no data. If so, we
-  // keep the form visible during data entry until they explicitly click
-  // "Done" — otherwise the form would unmount as soon as they type their
-  // first value (because `hasData` flips to true), interrupting input.
-  // This ref captures initial state at mount; it doesn't update.
-  const startedEmpty = useRef(false);
-  const initialized = useRef(false);
-  if (!initialized.current) {
-    const had = Object.values(counts).some(v => v !== "" && v != null) || totalRVU !== "";
-    startedEmpty.current = !had;
-    initialized.current = true;
-  }
-  const [stillEntering, setStillEntering] = useState(startedEmpty.current);
-
-  const setCount = (id, value) => {
-    const next = { ...counts, [id]: value };
-    setCounts(next);
-    try {
-      window.localStorage?.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(next));
-    } catch {}
-  };
-  const updateTotal = (v) => {
-    setTotalRVU(v);
-    try {
-      window.localStorage?.setItem(PROGRESS_STORAGE_KEY + ":total", v);
-    } catch {}
-  };
-
-  const hasData = useMemo(() =>
-    Object.values(counts).some(v => v !== "" && v != null) || totalRVU !== "",
-    [counts, totalRVU]
-  );
-
-  // Group categories by status, with proper gap calculations.
-  const groups = useMemo(() => {
-    const below = [], between = [], complete = [], untracked = [];
-    for (const cat of MEE_CATEGORIES) {
-      if (cat.d3 == null) {
-        untracked.push({ category: cat, count: parseFloat(counts[cat.id]) || 0 });
-        continue;
-      }
-      const c = parseFloat(counts[cat.id]);
-      const count = Number.isFinite(c) ? c : 0;
-      const status = meeStatus(count, cat);
-      const entry = { category: cat, count };
-      if (status === "belowD3") below.push(entry);
-      else if (status === "betweenD3D4") between.push(entry);
-      else if (status === "atD4") complete.push(entry);
-    }
-    // Sort below-D3 by gap-to-D3 descending (biggest gap first).
-    below.sort((a, b) =>
-      (b.category.d3 - b.count) - (a.category.d3 - a.count));
-    // Sort between by gap-to-D4 descending.
-    between.sort((a, b) =>
-      (b.category.d4 - b.count) - (a.category.d4 - a.count));
-    return { below, between, complete, untracked };
-  }, [counts]);
-
-  // Total RVUs short of D4 across all categories — the headline number.
-  const totalGapD4 = useMemo(() => {
-    let sum = 0;
-    for (const cat of MEE_CATEGORIES) {
-      if (cat.d4 == null) continue;
-      const c = parseFloat(counts[cat.id]);
-      if (!Number.isFinite(c)) continue;
-      sum += Math.max(0, cat.d4 - c);
-    }
-    return sum;
-  }, [counts]);
-
-  // Verdict text: depends on whether they have data and how the gaps look.
-  const verdict = useMemo(() => {
-    if (!hasData) return null;
-    const below = groups.below.length;
-    const between = groups.between.length;
-    if (below === 0 && between === 0) {
-      return { tone: "win", text: "All categories at D4. You've cleared every requirement." };
-    }
-    if (below === 0) {
-      return { tone: "between",
-        text: `Past D3 in everything. ${totalGapD4} units short of D4 across ${between} categories.` };
-    }
-    return { tone: "below",
-      text: `Below D3 in ${below} ${below === 1 ? "category" : "categories"}. ${totalGapD4} units to clear D4.` };
-  }, [groups, totalGapD4, hasData]);
-
-  // First-time empty state OR mid-entry: show the form with explainer.
-  // The form stays visible until the user clicks "Done" — otherwise typing
-  // the first value would flip hasData and unmount the form mid-input.
-  if (stillEntering) {
-    return (
-      <div style={{ marginBottom: "32px" }}>
-        <div style={{
-          fontSize: "10px", letterSpacing: "0.22em",
-          textTransform: "uppercase", color: "var(--accent)",
-          fontWeight: 500, marginBottom: "8px",
-        }}>
-          My progress
-        </div>
-        <p style={{
-          fontSize: "13px", color: "var(--ink-soft)",
-          lineHeight: 1.6, marginTop: 0, marginBottom: "16px",
-        }}>
-          Enter your numbers from the UG Dashboard&apos;s &ldquo;Prerequisite for
-          Clinical Competency (MEEs)&rdquo; row. The page will show your gaps
-          to D3 and D4 across all 13 categories, and the codes that count
-          toward closing each one.
-        </p>
-        <UpdateForm
-          counts={counts} setCount={setCount}
-          totalRVU={totalRVU} setTotal={updateTotal} />
-        {hasData && (
-          <button onClick={() => setStillEntering(false)}
-            style={{
-              marginTop: "16px",
-              background: "var(--accent)", color: "var(--paper)",
-              border: "none", borderRadius: "2px",
-              padding: "10px 22px",
-              fontSize: "11px", letterSpacing: "0.08em",
-              textTransform: "uppercase", fontWeight: 500,
-              fontFamily: "'Geist', sans-serif", cursor: "pointer",
-            }}>
-            Done — show my progress
-          </button>
-        )}
-      </div>
-    );
-  }
-
-  return (
-    <div style={{ marginBottom: "32px" }}>
-      {/* VERDICT */}
-      <div style={{
-        marginBottom: "20px",
-        padding: "20px 24px",
-        background: verdict.tone === "win" ? "rgba(44, 95, 93, 0.08)"
-                  : verdict.tone === "between" ? "rgba(154, 123, 63, 0.08)"
-                  : "rgba(122, 30, 30, 0.08)",
-        borderLeft: `3px solid ${
-          verdict.tone === "win" ? "var(--teal)"
-          : verdict.tone === "between" ? "var(--gold)"
-          : "var(--accent)"}`,
-        borderRadius: "2px",
-      }}>
-        <div style={{
-          fontSize: "10px", letterSpacing: "0.22em",
-          textTransform: "uppercase", color: "var(--accent)",
-          fontWeight: 500, marginBottom: "4px",
-        }}>
-          My progress
-        </div>
-        <div className="serif" style={{
-          fontSize: "20px", fontStyle: "italic", fontWeight: 400,
-          lineHeight: 1.4, color: "var(--ink)",
-        }}>
-          {verdict.text}
-        </div>
-        {totalRVU && (
-          <div style={{
-            marginTop: "8px", fontSize: "11px", color: "var(--ink-soft)",
-            fontVariantNumeric: "tabular-nums",
-          }}>
-            Total RVUs: <strong style={{ color: "var(--ink)" }}>{totalRVU}</strong>
-            {" "}<span style={{ color: "var(--ink-faint)" }}>· class avg ~714</span>
-          </div>
-        )}
-      </div>
-
-      {/* BELOW D3 */}
-      {groups.below.length > 0 && (
-        <div style={{ marginBottom: "20px" }}>
-          <div style={{
-            fontSize: "10px", letterSpacing: "0.22em",
-            textTransform: "uppercase", color: "var(--accent)",
-            fontWeight: 500, marginBottom: "10px",
-          }}>
-            Priority — below D3
-          </div>
-          <div style={{ ...cardStyle, padding: 0, overflow: "hidden" }}>
-            {groups.below.map(({ category, count }) => (
-              <ActionRow key={category.id}
-                category={category} count={count} />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* BETWEEN D3 & D4 */}
-      {groups.between.length > 0 && (
-        <div style={{ marginBottom: "20px" }}>
-          <div style={{
-            fontSize: "10px", letterSpacing: "0.22em",
-            textTransform: "uppercase", color: "var(--gold)",
-            fontWeight: 500, marginBottom: "10px",
-          }}>
-            Past D3 — working toward D4
-          </div>
-          <div style={{ ...cardStyle, padding: 0, overflow: "hidden" }}>
-            {groups.between.map(({ category, count }) => (
-              <ActionRow key={category.id}
-                category={category} count={count} />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* COMPLETED — collapsed to one line */}
-      {groups.complete.length > 0 && (
-        <div style={{
-          marginBottom: "20px",
-          padding: "12px 18px",
-          background: "var(--paper-soft)",
-          border: "1px solid var(--rule-soft)",
-          borderLeft: "3px solid var(--teal)",
-          borderRadius: "2px",
-          fontSize: "12px",
-          color: "var(--ink-soft)",
-          lineHeight: 1.55,
-        }}>
-          <span style={{
-            fontWeight: 500, color: "var(--teal)",
-            letterSpacing: "0.04em",
-          }}>At D4:</span>{" "}
-          {groups.complete.map((g, i) => (
-            <span key={g.category.id}>
-              {i > 0 && ", "}
-              <span style={{ color: "var(--ink)" }}>{g.category.dashKey}</span>
-              <span style={{ color: "var(--ink-faint)",
-                  fontVariantNumeric: "tabular-nums" }}> ({g.count})</span>
-            </span>
-          ))}
-        </div>
-      )}
-
-      {/* GA / untracked categories */}
-      {groups.untracked.length > 0 && groups.untracked.some(g => g.count > 0) && (
-        <div style={{
-          marginBottom: "20px",
-          fontSize: "11px",
-          color: "var(--ink-faint)",
-          fontStyle: "italic",
-          lineHeight: 1.5,
-        }}>
-          {groups.untracked.filter(g => g.count > 0).map((g, i) => (
-            <span key={g.category.id}>
-              {i > 0 && " · "}
-              {g.category.dashKey}: <span className="mono"
-                style={{ color: "var(--ink-soft)",
-                  fontVariantNumeric: "tabular-nums" }}>{g.count}</span>
-              <span style={{ marginLeft: "4px" }}>
-                (no published threshold)
-              </span>
-            </span>
-          ))}
-        </div>
-      )}
-
-      {/* UPDATE button — re-opens the form for editing */}
-      <button onClick={() => setStillEntering(true)}
-        style={{
-          background: "transparent",
-          color: "var(--accent)",
-          border: "1px solid var(--accent)",
-          borderRadius: "2px",
-          padding: "8px 16px",
-          fontSize: "11px", letterSpacing: "0.08em",
-          textTransform: "uppercase", fontWeight: 500,
-          fontFamily: "'Geist', sans-serif",
-          cursor: "pointer",
-        }}>
-        Update my numbers
-      </button>
-    </div>
-  );
+  // Removed entirely — the code lookup table is self-explanatory.
+  return null;
 }
 
 function RVUs() {
@@ -5294,12 +4922,20 @@ function RVUs() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [sortBy, setSortBy] = useState("relevance");
   const [sortDir, setSortDir] = useState("asc");
+  // Hide codes that aren't referenced in the Swade manual. The full table is
+  // exhaustive (every CDT code) and most students only ever use the subset
+  // Swade documented; this toggle cuts noise without losing the option to
+  // browse everything.
+  const [swadeOnly, setSwadeOnly] = useState(false);
 
-  // Apply category filter + search filter, then sort.
+  // Apply category filter + Swade filter + search filter, then sort.
   const rows = useMemo(() => {
     const q = search.trim().toLowerCase();
     const cat = RVU_CATEGORIES.find(c => c.id === activeCategory);
     let filtered = RVU_DATA.filter(r => cat ? cat.match(r.code) : true);
+    if (swadeOnly) {
+      filtered = filtered.filter(r => SWADE_CODES.has(r.code));
+    }
     if (q) {
       filtered = filtered.filter(r =>
         r.code.toLowerCase().includes(q) ||
@@ -5323,7 +4959,7 @@ function RVUs() {
       return sortDir === "asc" ? cmp : -cmp;
     });
     return sorted;
-  }, [search, sortBy, sortDir, activeCategory]);
+  }, [search, sortBy, sortDir, activeCategory, swadeOnly]);
 
   // Stats summary for the current filter.
   const stats = useMemo(() => {
@@ -5365,31 +5001,31 @@ function RVUs() {
       {/* Primary: progress tracker */}
       <MEEProgress />
 
-      {/* Secondary: full code lookup table */}
-      <div style={{
-        borderTop: "1px solid var(--rule)",
-        paddingTop: "32px", marginTop: "8px",
-      }}>
-        <div style={{
-          fontSize: "10px", letterSpacing: "0.22em",
-          textTransform: "uppercase", color: "var(--accent)",
-          fontWeight: 500, marginBottom: "4px",
-        }}>
-          Code lookup
-        </div>
-        <div style={{ fontSize: "13px", color: "var(--ink-soft)",
-            marginBottom: "16px", lineHeight: 1.5 }}>
-          Search every CDT code in the UIC RVU sheet.
-        </div>
-
+      {/* Code lookup table */}
+      <div>
         {/* Search input */}
-        <div style={{ marginBottom: "16px" }}>
+        <div style={{ marginBottom: "12px" }}>
           <label style={labelStyle}>Search code or description</label>
           <input type="text" value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="e.g. crown, D2740, prophy"
             style={headerInput} />
         </div>
+
+        {/* Swade-only toggle — hides the long tail of CDT codes the manual
+            doesn't mention so the table reads like the codes everyone uses. */}
+        <label style={{
+          display: "inline-flex", alignItems: "center", gap: "8px",
+          fontSize: "11px", color: "var(--ink-soft)",
+          marginBottom: "16px", cursor: "pointer",
+          fontFamily: "'Geist', sans-serif",
+          userSelect: "none",
+        }}>
+          <input type="checkbox" checked={swadeOnly}
+            onChange={e => setSwadeOnly(e.target.checked)}
+            style={{ accentColor: "var(--accent)", cursor: "pointer" }} />
+          Hide codes not in <em className="serif" style={{ fontStyle: "italic" }}>(Swade)</em> manual
+        </label>
 
         {/* Category filter pills */}
         <div style={{
@@ -5425,43 +5061,11 @@ function RVUs() {
           })}
         </div>
 
-        {/* Stats strip */}
-        <div style={{
-          display: "flex", flexWrap: "wrap", gap: "20px",
-          fontSize: "11px", color: "var(--ink-soft)",
-          marginBottom: "14px", lineHeight: 1.5,
-        }}>
-          <div>
-            <span style={{ color: "var(--ink-faint)" }}>showing </span>
-            <strong style={{ color: "var(--ink)",
-                fontVariantNumeric: "tabular-nums" }}>{stats.count}</strong>
-            <span style={{ color: "var(--ink-faint)" }}> codes</span>
-          </div>
-          {stats.valued > 0 && (
-            <>
-              <div>
-                <span style={{ color: "var(--ink-faint)" }}>avg </span>
-                <strong style={{ color: "var(--ink)",
-                    fontVariantNumeric: "tabular-nums" }}>
-                  {stats.avg.toFixed(1)}
-                </strong>
-                <span style={{ color: "var(--ink-faint)" }}> RVU</span>
-              </div>
-              <div>
-                <span style={{ color: "var(--ink-faint)" }}>max </span>
-                <strong style={{ color: "var(--ink)",
-                    fontVariantNumeric: "tabular-nums" }}>{stats.max}</strong>
-                <span style={{ color: "var(--ink-faint)" }}> RVU</span>
-              </div>
-            </>
-          )}
-        </div>
-
         {/* Table */}
         <div style={{ ...cardStyle, padding: 0, overflow: "hidden" }}>
           <div style={{
             display: "grid",
-            gridTemplateColumns: "120px 1fr 80px",
+            gridTemplateColumns: "1fr 80px",
             fontSize: "10px", letterSpacing: "0.18em",
             textTransform: "uppercase", fontWeight: 500,
             color: "var(--ink-soft)",
@@ -5470,9 +5074,6 @@ function RVUs() {
           }}>
             <button onClick={() => toggleSort("code")} className="rvu-th">
               Code {sortIndicator("code")}
-            </button>
-            <button onClick={() => toggleSort("desc")} className="rvu-th">
-              Description {sortIndicator("desc")}
             </button>
             <button onClick={() => toggleSort("rvu")} className="rvu-th"
               style={{ textAlign: "right" }}>
@@ -5494,16 +5095,16 @@ function RVUs() {
               return (
                 <div key={r.code} style={{
                   display: "grid",
-                  gridTemplateColumns: "120px 1fr 80px",
+                  gridTemplateColumns: "1fr 80px",
                   fontSize: "13px", lineHeight: 1.45,
                   padding: "10px 18px",
                   borderBottom: "1px solid var(--rule-soft)",
-                  alignItems: "baseline",
+                  alignItems: "center",
                 }}>
                   <div className="mono" style={{
                     color: "var(--accent)", fontWeight: 500,
                     fontVariantNumeric: "tabular-nums",
-                    display: "flex", alignItems: "baseline", gap: "8px",
+                    display: "flex", alignItems: "center", gap: "8px",
                   }}>
                     {isRelevant && (
                       <span title="Used in the Swade guide" style={{
@@ -5514,7 +5115,6 @@ function RVUs() {
                     )}
                     {r.code}
                   </div>
-                  <div style={{ color: "var(--ink)" }}>{r.desc}</div>
                   <div style={{
                     textAlign: "right", color: "var(--ink-soft)",
                     fontVariantNumeric: "tabular-nums",
@@ -5535,7 +5135,7 @@ function RVUs() {
             background: "var(--accent)", display: "inline-block",
             marginRight: "6px", verticalAlign: "middle",
           }} />
-          marks codes referenced in the (Swade) manual.
+          marks codes referenced in the <em className="serif" style={{ fontStyle: "italic" }}>(Swade)</em> manual.
         </p>
       </div>
     </div>
@@ -5850,9 +5450,10 @@ function PrepList({ chunks, rows, onRowsChange, onJumpTo, onGenerateNote }) {
  * ==========================================================================*/
 
 const PE_SEMESTERS = [
+  { id: "D3-summer", label: "D3 Summer", short: "Summer" },
   { id: "D3-fall",   label: "D3 Fall",   short: "Fall"   },
   { id: "D3-spring", label: "D3 Spring", short: "Spring" },
-  { id: "D3-summer", label: "D3 Summer", short: "Summer" },
+  { id: "D4-summer", label: "D4 Summer", short: "Summer" },
   { id: "D4-fall",   label: "D4 Fall",   short: "Fall"   },
   { id: "D4-spring", label: "D4 Spring", short: "Spring" },
 ];
@@ -5938,7 +5539,7 @@ const PES = [
   },
   {
     id: "PER02", code: "PER02", part: "perio",
-    name: "Periodontal Prevention & Risk Factor Exam",
+    name: "Periodontal Prevention & Risk Factor (OHI) Exam",
     deadline: { semester: "D3-summer", text: "Summer D3 (DMD) / Fall AS3 (DMD-AS)" },
     prereq: "3 OHI procedures including O'Leary Plaque Index",
     prereqCheck: null,
@@ -6848,84 +6449,25 @@ function currentSemester() {
   return "summer";                          // May-Jul
 }
 
-// Compare a PE's deadline semester vs today's semester. Returns "past",
-// "current", or "future". For students whose own year (D3 vs D4) we don't
-// know, we bucket all D3 deadlines and D4 deadlines together by season.
-// The timeline shows each PE in its own column, so this mostly affects
-// color coding.
+// Compare a PE's deadline semester vs today's semester. Returns "past" or
+// "future". We don't try to mark anything as "current" — students range D3 to
+// D4 and the app doesn't ask which year they are, so any "current" highlight
+// would be misleading half the time. Past flagging stays calendar-relative
+// (a deadline whose season is already behind us is past, regardless of year).
 function semesterStatus(pe, current) {
   // The semester id encodes "D3-spring", "D4-fall" etc. We extract season.
   const season = pe.deadline.semester.split("-")[1];
-  if (season === current) return "current";
-  // Order: fall → spring → summer (academic year)
-  const order = { fall: 0, spring: 1, summer: 2 };
+  // Order: summer → fall → spring (UIC academic year)
+  const order = { summer: 0, fall: 1, spring: 2 };
   const peOrder = order[season] ?? 0;
   const curOrder = order[current] ?? 0;
   return peOrder < curOrder ? "past" : "future";
 }
 
-// Eligibility badge for a PE. Reads MEE counts from localStorage (same key
-// the RVU tab uses) so the data is always in sync.
-function useMEECounts() {
-  const [counts, setCounts] = useState(() => {
-    if (typeof window === "undefined") return {};
-    try {
-      const raw = window.localStorage?.getItem("meeProgress");
-      return raw ? JSON.parse(raw) : {};
-    } catch { return {}; }
-  });
-  // Re-read on focus so changes from the RVU tab show up when the user
-  // switches back to PEs.
-  useEffect(() => {
-    const handler = () => {
-      try {
-        const raw = window.localStorage?.getItem("meeProgress");
-        setCounts(raw ? JSON.parse(raw) : {});
-      } catch {}
-    };
-    window.addEventListener("focus", handler);
-    window.addEventListener("storage", handler);
-    return () => {
-      window.removeEventListener("focus", handler);
-      window.removeEventListener("storage", handler);
-    };
-  }, []);
-  return counts;
-}
-
-function EligibilityBadge({ pe, counts }) {
-  if (!pe.prereqCheck) {
-    // No automatic check — show prereq as plain text
-    return (
-      <span style={{
-        fontSize: "10px", color: "var(--ink-faint)",
-        fontStyle: "italic", letterSpacing: "0.02em",
-      }}>
-        Prereq: see below
-      </span>
-    );
-  }
-  const result = pe.prereqCheck(counts);
-  if (result.eligible) {
-    return (
-      <span style={{
-        fontSize: "10px", color: "var(--teal)",
-        letterSpacing: "0.06em", textTransform: "uppercase",
-        fontWeight: 500,
-      }}>
-        ✓ Eligible
-      </span>
-    );
-  }
-  return (
-    <span style={{
-      fontSize: "10px", color: "var(--accent)",
-      letterSpacing: "0.02em", fontWeight: 500,
-    }}>
-      Need {result.gap.n} more {result.gap.label}
-    </span>
-  );
-}
+// (EligibilityBadge / useMEECounts removed: contracted PE cards show only the
+// deadline now. Most students don't enter precise per-category MEE counts, so
+// any "Need N more X" or "✓ Eligible" rendering was misleading. The PE's
+// prereq text remains visible in the expanded view as plain prose.)
 
 // Timeline — horizontal strip. Each semester is a column; PEs are chips
 // inside their column. Tapping a chip scrolls to that PE's card below.
@@ -6947,58 +6489,43 @@ function PETimeline({ pes, scrollToPE }) {
       }}>
         {PE_SEMESTERS.map(sem => {
           const semPes = pes.filter(p => p.deadline.semester === sem.id);
-          const seasonId = sem.id.split("-")[1];
-          const isCurrentSeason = seasonId === current;
           return (
             <div key={sem.id} style={{
-              border: `1px solid ${isCurrentSeason ? "var(--gold)" : "var(--rule)"}`,
+              border: "1px solid var(--rule)",
               borderRadius: "3px",
               padding: "10px 8px",
               minHeight: "120px",
-              background: isCurrentSeason ? "rgba(154, 123, 63, 0.04)" : "var(--paper-soft)",
+              background: "var(--paper-soft)",
             }}>
               <div style={{
                 fontSize: "10px", letterSpacing: "0.06em",
                 textTransform: "uppercase",
-                color: isCurrentSeason ? "var(--gold)" : "var(--ink-soft)",
+                color: "var(--ink-soft)",
                 fontWeight: 500, textAlign: "center",
                 marginBottom: "8px",
                 fontFamily: "'Geist', sans-serif",
               }}>
                 {sem.label}
-                {isCurrentSeason && (
-                  <span style={{ display: "block", fontSize: "8px",
-                      letterSpacing: "0.1em", marginTop: "1px",
-                      fontStyle: "italic", textTransform: "lowercase" }}>
-                    current
-                  </span>
-                )}
               </div>
               <div style={{
                 display: "flex", flexDirection: "column", gap: "4px",
               }}>
                 {semPes.map(pe => {
                   const status = semesterStatus(pe, current);
+                  const isPast = status === "past";
                   return (
                     <button key={pe.id}
                       onClick={() => scrollToPE(pe.id)}
                       style={{
                         width: "100%",
-                        background: status === "past" ? "rgba(122, 30, 30, 0.08)"
-                                   : status === "current" ? "rgba(154, 123, 63, 0.12)"
-                                   : "var(--paper)",
-                        border: `1px solid ${
-                          status === "past" ? "var(--accent)"
-                          : status === "current" ? "var(--gold)"
-                          : "var(--rule)"}`,
+                        background: isPast ? "rgba(122, 30, 30, 0.08)" : "var(--paper)",
+                        border: `1px solid ${isPast ? "var(--accent)" : "var(--rule)"}`,
                         borderRadius: "2px",
                         padding: "5px 7px",
                         fontSize: "10px",
                         fontFamily: "'Geist', sans-serif",
                         fontWeight: 500,
-                        color: status === "past" ? "var(--accent)"
-                              : status === "current" ? "var(--gold)"
-                              : "var(--ink)",
+                        color: isPast ? "var(--accent)" : "var(--ink)",
                         cursor: "pointer",
                         textAlign: "left",
                         transition: "transform 100ms ease",
@@ -7101,9 +6628,9 @@ function RubricGrid({ criteria }) {
   );
 }
 
-// Single PE card — collapsed shows code/name/deadline/eligibility; expanded
-// reveals all the structured detail.
-function PECard({ pe, expanded, onToggle, counts, peRef }) {
+// Single PE card — collapsed shows code/name/deadline; expanded reveals all
+// the structured detail (prereq, case selection, protocol, rubric, etc.).
+function PECard({ pe, expanded, onToggle, peRef }) {
   return (
     <div ref={peRef} style={{
       ...cardStyle, padding: 0, overflow: "hidden",
@@ -7115,7 +6642,7 @@ function PECard({ pe, expanded, onToggle, counts, peRef }) {
         background: "transparent", border: "none",
         cursor: "pointer", padding: "16px 18px",
         display: "grid",
-        gridTemplateColumns: "minmax(80px, 100px) 1fr auto auto 24px",
+        gridTemplateColumns: "minmax(80px, 100px) 1fr auto 24px",
         gap: "16px", alignItems: "center",
         fontFamily: "'Geist', sans-serif",
       }}>
@@ -7137,7 +6664,6 @@ function PECard({ pe, expanded, onToggle, counts, peRef }) {
         }}>
           {pe.deadline.text}
         </span>
-        <EligibilityBadge pe={pe} counts={counts} />
         <span style={{
           color: "var(--ink-faint)", fontSize: "13px",
           transform: expanded ? "rotate(90deg)" : "none",
@@ -7194,7 +6720,6 @@ function PECard({ pe, expanded, onToggle, counts, peRef }) {
 
 function PEs() {
   const [expanded, setExpanded] = useState(null);
-  const counts = useMEECounts();
   const peRefs = useRef({});
 
   const scrollToPE = (peId) => {
@@ -7229,7 +6754,6 @@ function PEs() {
                 pe={pe}
                 expanded={expanded === pe.id}
                 onToggle={() => setExpanded(e => e === pe.id ? null : pe.id)}
-                counts={counts}
                 peRef={el => { peRefs.current[pe.id] = el; }}
               />
             ))}
