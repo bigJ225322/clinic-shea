@@ -4296,7 +4296,7 @@ function PrivacyBanner() {
       fontStyle: "italic",
     }}>
       Notes and patient fields stay local to your browser — nothing is sent
-      or stored anywhere else. Clicking above codes copies them. Don't forget your name.
+      or stored anywhere else. Click codes above to copy to clipboard. Don't forget your name.
     </p>
   );
 }
