@@ -2975,7 +2975,7 @@ function InjectionEditor({ index, total, injection, tooth, onChange, onRemove })
           <option key={opt} value={opt}>{opt}</option>)}
       </Select>
       <div style={twoCol}>
-        <Field label="Carpules">
+        <Field>
           <Select value={injection.carpules}
             onChange={(v) => set("carpules", v)}>
             <option value="1/4">¼ carpule</option>
@@ -2985,13 +2985,13 @@ function InjectionEditor({ index, total, injection, tooth, onChange, onRemove })
             <option value="3">3 carpules</option>
           </Select>
         </Field>
-        <Field label="Needle">
+        <Field>
           <RadioToggle value={injection.needle}
             onChange={(v) => set("needle", v)}
             options={["30G 25mm", "27G 35mm"]} />
         </Field>
       </div>
-      <Field label="Side">
+      <Field>
         <RadioToggle value={injection.side}
           onChange={(v) => set("side", v)}
           options={["right", "left"]} />
@@ -3889,7 +3889,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   fields.vitrebond && "Vitrebond",
                   fields.consepsis && "Consepsis",
                   fields.gluma && "Gluma",
-                ].filter(Boolean).join(", ") || "none selected"}>
+                ].filter(Boolean).join(", ")}>
                 <p style={{ fontSize: "11px", color: "var(--ink-faint)",
                     margin: "0 0 10px", lineHeight: 1.45, fontStyle: "italic" }}>
                   Check any liners or sealers you used. Each adds the corresponding
@@ -4285,7 +4285,7 @@ function PrivacyBanner() {
       fontStyle: "italic",
     }}>
       Notes and patient fields stay local to your browser — nothing is sent
-      or stored anywhere else.
+      or stored anywhere else. Don't forget your name.
     </p>
   );
 }
