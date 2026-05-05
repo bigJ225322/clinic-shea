@@ -2601,7 +2601,13 @@ function renderTemplate(raw, f) {
                   (_m, pre, nv) => `${pre}${nv} ${f.nv.trim()}`);
   }
 
-  // -------- 11. Tidy: collapse 3+ consecutive newlines down to 2. --------
+  // -------- 11. Names (signature line). --------
+  if (f.names.trim()) {
+    t = t.replace(/(^|\n)([ \t]*-?[ \t]*NV:.*)$/m,
+                  (_m, pre, nv) => `${_m}\n ${f.names.trim()}`);
+  }
+
+  // -------- 12. Tidy: collapse 3+ consecutive newlines down to 2. --------
   t = t.replace(/\n{3,}/g, "\n\n");
 
   return t;
@@ -3917,6 +3923,11 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               </Field>
             </>
           )}
+          <Hairline />
+          <Field label="Name(s)">
+            <TextInput value={fields.names} onChange={v=>setField("names",v)}
+              placeholder="e.g. Jane Doe" />
+          </Field>
           <button className="ghost" onClick={handleReset} style={{ width: "100%", marginTop: "10px" }}>
             Clear patient fields
           </button>
