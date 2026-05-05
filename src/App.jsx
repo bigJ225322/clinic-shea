@@ -2950,41 +2950,30 @@ function InjectionEditor({ index, total, injection, tooth, onChange, onRemove })
       border: "1px solid var(--rule)", borderRadius: "2px",
       padding: "14px 16px 6px", marginBottom: "10px",
       background: "var(--paper)",
+      position: "relative",
     }}>
-      <div style={{
-        display: "flex", justifyContent: "space-between",
-        alignItems: "center", marginBottom: "10px",
-      }}>
-        <div className="serif" style={{
-          fontSize: "11px", letterSpacing: "0.18em",
-          textTransform: "uppercase", color: "var(--ink-soft)",
-          fontWeight: 500,
-        }}>
-          {total === 1 ? "Anesthetic" : `Anesthetic ${index + 1}`}
-        </div>
-        {total > 1 && (
-          <button type="button" onClick={onRemove}
-            aria-label={`Remove anesthetic ${index + 1}`}
-            style={{
-              background: "none", border: "none",
-              color: "var(--ink-faint)", fontSize: "16px",
-              cursor: "pointer", padding: "0 4px", lineHeight: 1,
-              transition: "color 100ms ease",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = "var(--accent)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = "var(--ink-faint)"; }}>
-            ×
-          </button>
-        )}
-      </div>
+      {total > 1 && (
+        <button type="button" onClick={onRemove}
+          aria-label={`Remove anesthetic ${index + 1}`}
+          style={{
+            position: "absolute", top: "10px", right: "10px",
+            background: "none", border: "none",
+            color: "var(--ink-faint)", fontSize: "16px",
+            cursor: "pointer", padding: "0 4px", lineHeight: 1,
+            transition: "color 100ms ease",
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = "var(--accent)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = "var(--ink-faint)"; }}>
+          ×
+        </button>
+      )}
 
-      <Field label="Drug">
-        <Select value={injection.drug}
-          onChange={(v) => set("drug", v)}>
-          {ANESTHETIC_OPTIONS.map(opt =>
-            <option key={opt} value={opt}>{opt}</option>)}
-        </Select>
-      </Field>
+      <Select value={injection.drug}
+        onChange={(v) => set("drug", v)}
+        style={{ marginBottom: "12px" }}>
+        {ANESTHETIC_OPTIONS.map(opt =>
+          <option key={opt} value={opt}>{opt}</option>)}
+      </Select>
       <div style={twoCol}>
         <Field label="Carpules">
           <Select value={injection.carpules}
@@ -3048,7 +3037,6 @@ function SectionHeader({ children, n }) {
       fontSize: "12px", letterSpacing: "0.22em", textTransform: "uppercase",
       color: "var(--accent)", fontWeight: 500, marginBottom: "18px",
     }}>
-      {n && <span style={{ opacity: 0.55, marginRight: "6px" }}>§ {n}.</span>}
       {children}
     </div>
   );
@@ -3963,26 +3951,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
         // form's height, defeating sticky. align-self: start keeps it at the
         // top of its grid track so position: sticky has somewhere to stick.
       }}>
-        <div style={{
-          display: "flex", justifyContent: "space-between", alignItems: "center",
-          marginBottom: "16px", gap: "12px", flexWrap: "wrap",
-        }}>
-          <div>
-            <SectionHeader n="iii">Chart Note</SectionHeader>
-            <div style={{ marginTop: "-10px", fontSize: "13px", color: "var(--ink-soft)" }}>
-              {currentProcedure ? currentProcedure.label : "Select a procedure to populate the note."}
-            </div>
-          </div>
-          <div style={{ display: "flex", gap: "10px" }}>
-            {userEdited && (
-              <button className="ghost" onClick={handleRestoreTemplate}>Restore from template</button>
-            )}
-            <button className="primary" disabled={!note} onClick={handleCopy}
-              style={{ opacity: note ? 1 : 0.4, cursor: note ? "pointer" : "not-allowed" }}>
-              {copied ? "Copied ✓" : "Copy to clipboard"}
-            </button>
-          </div>
-        </div>
         {procedureId ? (
           <div className="fade-in" key={procedureId}>
             <textarea ref={textareaRef} className="note-area" value={note} spellCheck={false}
@@ -3990,14 +3958,35 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
             {userEdited && (
               <p style={{ marginTop: "10px", fontSize: "12px",
                   color: "var(--accent)", lineHeight: 1.55,
-                  transition: "color 200ms ease",
+                  transition: "color 200ms ease", marginBottom: "12px",
                 }}>
                 Your edits are preserved. Form changes won&apos;t update the note —
                 use <em className="serif" style={{ color: "var(--accent)" }}>Restore from template</em>{" "}
-                above to discard your edits and regenerate.
+                to discard your edits and regenerate.
               </p>
             )}
-            <CodesPanel procedure={findProcedure(procedureId)} chunks={CHUNKS} />
+            {userEdited && (
+              <button className="ghost" onClick={handleRestoreTemplate}
+                style={{ fontSize: "12px", padding: "8px 0", marginBottom: "12px" }}>
+                Restore from template
+              </button>
+            )}
+            <div style={{
+              display: "flex", gap: "12px", alignItems: "flex-start",
+            }}>
+              <div style={{ flex: 1 }}>
+                <CodesPanel procedure={findProcedure(procedureId)} chunks={CHUNKS} />
+              </div>
+              <button className="primary" disabled={!note} onClick={handleCopy}
+                style={{
+                  opacity: note ? 1 : 0.4, cursor: note ? "pointer" : "not-allowed",
+                  width: "48px", height: "48px", padding: "0",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  flexShrink: 0, fontSize: "11px", fontWeight: 500,
+                }}>
+                {copied ? "✓" : "COPY"}
+              </button>
+            </div>
             <PrivacyBanner />
             <ClockPanel />
           </div>
