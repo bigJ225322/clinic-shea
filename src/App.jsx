@@ -4974,10 +4974,14 @@ function RVUs() {
   const categoryCounts = useMemo(() => {
     const counts = {};
     for (const cat of RVU_CATEGORIES) {
-      counts[cat.id] = RVU_DATA.filter(r => cat.match(r.code)).length;
+      let filtered = RVU_DATA.filter(r => cat.match(r.code));
+      if (swadeOnly) {
+        filtered = filtered.filter(r => SWADE_CODES.has(r.code));
+      }
+      counts[cat.id] = filtered.length;
     }
     return counts;
-  }, []);
+  }, [swadeOnly]);
 
   const toggleSort = (col) => {
     if (sortBy === col) {
@@ -5062,10 +5066,11 @@ function RVUs() {
         </div>
 
         {/* Table */}
-        <div style={{ ...cardStyle, padding: 0, overflow: "hidden" }}>
+        <div style={{ ...cardStyle, padding: 0, overflow: "hidden", maxWidth: "360px" }}>
           <div style={{
             display: "grid",
-            gridTemplateColumns: "1fr 80px",
+            gridTemplateColumns: "auto 50px",
+            gap: "16px",
             fontSize: "10px", letterSpacing: "0.18em",
             textTransform: "uppercase", fontWeight: 500,
             color: "var(--ink-soft)",
@@ -5095,7 +5100,8 @@ function RVUs() {
               return (
                 <div key={r.code} style={{
                   display: "grid",
-                  gridTemplateColumns: "1fr 80px",
+                  gridTemplateColumns: "auto 50px",
+                  gap: "16px",
                   fontSize: "13px", lineHeight: 1.45,
                   padding: "10px 18px",
                   borderBottom: "1px solid var(--rule-soft)",
@@ -5104,7 +5110,7 @@ function RVUs() {
                   <div className="mono" style={{
                     color: "var(--accent)", fontWeight: 500,
                     fontVariantNumeric: "tabular-nums",
-                    display: "flex", alignItems: "center", gap: "8px",
+                    display: "flex", alignItems: "center", gap: "6px",
                   }}>
                     {isRelevant && (
                       <span title="Used in the Swade guide" style={{
