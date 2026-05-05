@@ -3994,7 +3994,12 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
           </div>
         ) : (
           <div className="empty-state">
-            <div />
+            <div>
+              <div className="serif" style={{ fontSize: "22px", fontWeight: 300,
+                  marginBottom: "10px", fontStyle: "italic" }}>
+                Note
+              </div>
+            </div>
           </div>
         )}
       </section>
@@ -5252,11 +5257,7 @@ function PrepList({ chunks, rows, onRowsChange, onJumpTo, onGenerateNote }) {
       {/* ───── Right: merged equipment list ───── */}
       <section>
 
-        {totalItems === 0 ? (
-          <div className="empty-state">
-            <div />
-          </div>
-        ) : (
+        {totalItems === 0 ? null : (
           <>
             {Object.entries(groupMeta).map(([key, meta]) => {
               const items = merged[key];
