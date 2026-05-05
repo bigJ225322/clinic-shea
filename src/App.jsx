@@ -5201,13 +5201,6 @@ function PrepList({ chunks, rows, onRowsChange, onJumpTo, onGenerateNote }) {
       {/* ───── Left: today's schedule ───── */}
       <section>
         <div style={cardStyle}>
-          <SectionHeader n="i">Today's Schedule</SectionHeader>
-          <p style={{ fontSize: "12px", color: "var(--ink-soft)",
-              margin: "-8px 0 18px", lineHeight: 1.5 }}>
-            Add each procedure you have today. The right side compiles a single
-            checklist so you can grab everything in one trip.
-          </p>
-
           {rows.map((r, i) => {
             const cat = FLAT_CATEGORIES.find(c => c.id === r.categoryId);
             return (
@@ -5215,23 +5208,23 @@ function PrepList({ chunks, rows, onRowsChange, onJumpTo, onGenerateNote }) {
                 paddingBottom: "14px", marginBottom: "14px",
                 borderBottom: i < rows.length - 1 ? "1px dashed var(--rule-soft)" : "none",
               }}>
-                <div style={{
-                  display: "flex", justifyContent: "space-between",
-                  alignItems: "center", marginBottom: "8px",
-                }}>
-                  <div className="serif" style={{
-                    fontSize: "11px", letterSpacing: "0.18em",
-                    textTransform: "uppercase", color: "var(--ink-soft)",
-                    fontWeight: 500,
-                  }}>Patient {i + 1}</div>
-                  {rows.length > 1 && (
+                {rows.length > 1 && (
+                  <div style={{
+                    display: "flex", justifyContent: "space-between",
+                    alignItems: "center", marginBottom: "8px",
+                  }}>
+                    <div className="serif" style={{
+                      fontSize: "11px", letterSpacing: "0.18em",
+                      textTransform: "uppercase", color: "var(--ink-soft)",
+                      fontWeight: 500,
+                    }}>Patient {i + 1}</div>
                     <button onClick={() => removeRow(r.id)} style={{
                       background: "none", border: "none",
                       color: "var(--ink-faint)", fontSize: "16px",
                       cursor: "pointer", padding: "0 4px", lineHeight: 1,
                     }}>×</button>
-                  )}
-                </div>
+                  </div>
+                )}
                 <Field label="Category">
                   <Select value={r.categoryId}
                     onChange={(v) => updateRow(r.id, { categoryId: v, procedureId: "" })}>
@@ -5262,40 +5255,13 @@ function PrepList({ chunks, rows, onRowsChange, onJumpTo, onGenerateNote }) {
 
           <button className="ghost" onClick={addRow}
             style={{ width: "100%", marginTop: "4px" }}>
-            + Add another patient
+            + add procedure
           </button>
         </div>
       </section>
 
       {/* ───── Right: merged equipment list ───── */}
       <section>
-        <div style={{
-          display: "flex", justifyContent: "space-between",
-          alignItems: "flex-end", marginBottom: "20px", gap: "16px", flexWrap: "wrap",
-        }}>
-          <div>
-            <SectionHeader n="ii">Prep Checklist</SectionHeader>
-            <div style={{ marginTop: "-12px", fontSize: "13px", color: "var(--ink-soft)" }}>
-              {totalItems === 0
-                ? "Pick a procedure to start the list."
-                : `${checkedCount} of ${totalItems} packed`}
-            </div>
-          </div>
-          {totalItems > 0 && (
-            <div style={{
-              height: "4px", flex: "0 1 200px", minWidth: "120px",
-              background: "var(--rule-soft)", borderRadius: "2px",
-              overflow: "hidden",
-            }}>
-              <div style={{
-                height: "100%",
-                width: totalItems ? `${(checkedCount / totalItems) * 100}%` : "0%",
-                background: "var(--accent)",
-                transition: "width 220ms ease",
-              }} />
-            </div>
-          )}
-        </div>
 
         {totalItems === 0 ? (
           <div className="empty-state">
@@ -5304,34 +5270,12 @@ function PrepList({ chunks, rows, onRowsChange, onJumpTo, onGenerateNote }) {
                 fontSize: "22px", fontWeight: 300, fontStyle: "italic",
                 marginBottom: "10px",
               }}>
-                Empty schedule
+                Empty
               </div>
             </div>
           </div>
         ) : (
           <>
-            {/* Procedure summary chips */}
-            <div style={{
-              display: "flex", flexWrap: "wrap", gap: "6px",
-              marginBottom: "24px",
-            }}>
-              {perProc.map(p => (
-                <button key={p.rowId}
-                  onClick={() => p.chunkId && onJumpTo(p.chunkId)}
-                  style={{
-                    fontSize: "11px", padding: "5px 12px",
-                    background: "var(--paper-soft)",
-                    border: "1px solid var(--rule)",
-                    color: "var(--ink-soft)", borderRadius: "999px",
-                    cursor: p.chunkId ? "pointer" : "default",
-                    fontFamily: "'Geist', sans-serif",
-                    letterSpacing: "0.04em",
-                  }}>
-                  {p.label}{!p.chunkId && " (no equipment list found)"}
-                </button>
-              ))}
-            </div>
-
             {Object.entries(groupMeta).map(([key, meta]) => {
               const items = merged[key];
               if (!items || items.length === 0) return null;
