@@ -3999,9 +3999,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   marginBottom: "10px", fontStyle: "italic" }}>
                 No procedure selected
               </div>
-              <div style={{ fontSize: "13px", opacity: 0.7, maxWidth: "360px", lineHeight: 1.6 }}>
-                Pick a category, then a procedure, and the matching note template will appear here.
-              </div>
             </div>
           </div>
         )}
@@ -5267,7 +5264,7 @@ function PrepList({ chunks, rows, onRowsChange, onJumpTo, onGenerateNote }) {
                 fontSize: "22px", fontWeight: 300, fontStyle: "italic",
                 marginBottom: "10px",
               }}>
-                Empty
+                No procedures added
               </div>
             </div>
           </div>
