@@ -4394,7 +4394,7 @@ function Browse({
       {/* Left: navigation */}
       <section>
         <div style={cardStyle}>
-          <SectionHeader n="i">Navigate</SectionHeader>
+          <label style={labelStyle}>Navigate</label>
           <Field label="Section">
             <Select value={categoryId} onChange={handleCategoryChange} prominent>
               {CATEGORIES.map(c => (
@@ -4424,7 +4424,7 @@ function Browse({
 
         {/* Search card */}
         <div style={{ ...cardStyle, marginTop: "20px" }}>
-          <SectionHeader n="ii">Or search</SectionHeader>
+          <label style={labelStyle}>Or search</label>
           <input type="text" placeholder="e.g. cold test, Vitrebond, RCT"
             value={search} onChange={(e) => setSearch(e.target.value)}
             style={{ ...inputStyle, fontSize: "13px",
