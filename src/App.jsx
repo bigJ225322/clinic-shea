@@ -2757,6 +2757,7 @@ function ToothInput({ value, onChange, placeholder }) {
           caretColor: "var(--ink)",
           background: "transparent",
           position: "relative",
+          textAlign: "center",
           borderColor: focused ? "var(--accent)" : "var(--rule)",
           boxShadow: focused ? "0 0 0 3px rgba(122, 26, 26, 0.08)" : "none",
         }} />
