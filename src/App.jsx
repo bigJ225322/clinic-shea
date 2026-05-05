@@ -3985,6 +3985,12 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                         color: "var(--accent)", fontWeight: 500,
                         fontVariantNumeric: "tabular-nums",
                         flexShrink: 0, minWidth: "60px",
+                        cursor: "pointer", transition: "opacity 140ms ease",
+                      }}
+                      onMouseEnter={(e) => e.target.style.opacity = "0.7"}
+                      onMouseLeave={(e) => e.target.style.opacity = "1"}
+                      onClick={() => {
+                        navigator.clipboard.writeText(code);
                       }}>{code}</span>
                       <span style={{ color: "var(--ink-soft)" }}>
                         {desc || <em style={{ color: "var(--ink-faint)" }}>(no description in source)</em>}
@@ -4290,7 +4296,7 @@ function PrivacyBanner() {
       fontStyle: "italic",
     }}>
       Notes and patient fields stay local to your browser — nothing is sent
-      or stored anywhere else. Don't forget your name.
+      or stored anywhere else. Clicking above codes copies them. Don't forget your name.
     </p>
   );
 }
