@@ -3956,10 +3956,34 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               </button>
             )}
             <div style={{
-              display: "flex", gap: "12px", alignItems: "flex-start",
+              ...cardStyle,
+              marginBottom: "20px",
+              padding: "16px 22px 18px",
+              display: "flex", gap: "16px", alignItems: "center", justifyContent: "space-between",
             }}>
-              <div style={{ flex: 1 }}>
-                <CodesPanel procedure={findProcedure(procedureId)} chunks={CHUNKS} />
+              <div style={{ display: "flex", flexDirection: "column", gap: "5px", flex: 1 }}>
+                {(() => {
+                  const proc = findProcedure(procedureId);
+                  if (!proc) return null;
+                  const stepsChunk = findChunkForProcedure(proc, CHUNKS, "steps");
+                  if (!stepsChunk) return null;
+                  const codes = extractCodes(stepsChunk.body);
+                  return codes.map(({ code, desc }) => (
+                    <div key={code} style={{
+                      display: "flex", alignItems: "baseline", gap: "10px",
+                      fontSize: "12px", lineHeight: 1.45,
+                    }}>
+                      <span className="mono" style={{
+                        color: "var(--accent)", fontWeight: 500,
+                        fontVariantNumeric: "tabular-nums",
+                        flexShrink: 0, minWidth: "60px",
+                      }}>{code}</span>
+                      <span style={{ color: "var(--ink-soft)" }}>
+                        {desc || <em style={{ color: "var(--ink-faint)" }}>(no description in source)</em>}
+                      </span>
+                    </div>
+                  ));
+                })()}
               </div>
               <button className="primary" disabled={!note} onClick={handleCopy}
                 style={{
@@ -3972,7 +3996,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               </button>
             </div>
             <PrivacyBanner />
-            <ClockPanel />
           </div>
         ) : (
           <div className="empty-state">
@@ -4394,7 +4417,6 @@ function Browse({
       {/* Left: navigation */}
       <section>
         <div style={cardStyle}>
-          <label style={labelStyle}>Navigate</label>
           <Field label="Section">
             <Select value={categoryId} onChange={handleCategoryChange} prominent>
               {CATEGORIES.map(c => (
@@ -4424,7 +4446,7 @@ function Browse({
 
         {/* Search card */}
         <div style={{ ...cardStyle, marginTop: "20px" }}>
-          <label style={labelStyle}>Or search</label>
+          <label style={labelStyle}>Search</label>
           <input type="text" placeholder="e.g. cold test, Vitrebond, RCT"
             value={search} onChange={(e) => setSearch(e.target.value)}
             style={{ ...inputStyle, fontSize: "13px",
@@ -4537,13 +4559,6 @@ function Browse({
                 Add to Prep List  →
               </button>
             </div>
-            <p style={{
-              marginTop: "12px", fontSize: "11px",
-              color: "var(--ink-faint)", lineHeight: 1.5,
-            }}>
-              These buttons remember your selection across tabs — your
-              picked procedure stays selected wherever you go.
-            </p>
           </>
         ) : (
           <div style={{
