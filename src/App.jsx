@@ -5066,7 +5066,7 @@ function RVUs() {
         </div>
 
         {/* Table */}
-        <div style={{ ...cardStyle, padding: 0, overflow: "hidden", maxWidth: "360px" }}>
+        <div style={{ ...cardStyle, padding: 0, overflow: "hidden", maxWidth: "360px", margin: "0 auto" }}>
           <div style={{
             display: "grid",
             gridTemplateColumns: "auto 50px",
