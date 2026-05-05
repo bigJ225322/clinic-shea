@@ -3107,13 +3107,6 @@ function CodesPanel({ procedure, chunks }) {
           </div>
         ))}
       </div>
-      <p style={{
-        fontSize: "10px", color: "var(--ink-faint)",
-        marginTop: "12px", marginBottom: 0, fontStyle: "italic",
-        lineHeight: 1.45,
-      }}>
-        Note templates and Codes from <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual.
-      </p>
     </div>
   );
 }
@@ -3655,7 +3648,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     }}>
       <section>
         <div style={cardStyle}>
-          <SectionHeader n="i">Procedure</SectionHeader>
           <Field label="Category">
             <Select value={categoryId} onChange={handleCategoryChange} prominent>
               <option value="">— Select a category —</option>
@@ -3673,7 +3665,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
 
         {procedureId && (
           <div style={{ ...cardStyle, marginTop: "24px" }}>
-          <SectionHeader n="ii">Patient</SectionHeader>
           {(procedureId === "1091" || procedureId === "1425") && (
             <div style={{
               marginBottom: "16px",
@@ -3754,22 +3745,24 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
           {(needsTooth || needsShade) && (
             <>
               <Hairline />
-              {needsTooth && (
-                <Field label="Tooth & Surfaces">
-                  <ToothInput value={fields.tooth}
-                    onChange={v=>setField("tooth",v)}
-                    placeholder="#19-MO     or     #19-MO, #24-L" />
-                </Field>
-              )}
-              {needsShade && (
-                <Field label="Shade">
-                  <TextInput value={fields.shade} onChange={v=>setField("shade",v)} placeholder="e.g. A2" />
-                </Field>
-              )}
+              <div style={twoCol}>
+                {needsTooth && (
+                  <Field label="Tooth & Surfaces">
+                    <ToothInput value={fields.tooth}
+                      onChange={v=>setField("tooth",v)}
+                      placeholder="#19-MO     or     #19-MO, #24-L" />
+                  </Field>
+                )}
+                {needsShade && (
+                  <Field label="Shade">
+                    <TextInput value={fields.shade} onChange={v=>setField("shade",v)} placeholder="e.g. A2" />
+                  </Field>
+                )}
+              </div>
             </>
           )}
           {(needsMedHistory || needsMedications || needsAllergies ||
-            needsBP || needsBG || needsTemp) && (
+            needsBP || needsBG) && (
             <>
               <Hairline />
               {needsMedHistory && (
@@ -3777,35 +3770,26 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   <TextInput value={fields.medHistory} onChange={v=>setField("medHistory",v)} placeholder="RMH; no changes" />
                 </Field>
               )}
-              {(needsMedications || needsAllergies) && (
-                <div style={twoCol}>
-                  {needsMedications && (
-                    <Field label="Medications">
-                      <TextInput value={fields.medications} onChange={v=>setField("medications",v)} placeholder="none / list meds" />
-                    </Field>
-                  )}
+              {needsMedications && (
+                <Field label="Medications">
+                  <TextInput value={fields.medications} onChange={v=>setField("medications",v)} placeholder="none / list meds" />
+                </Field>
+              )}
+              {(needsAllergies || needsBP || needsBG) && (
+                <div style={threeCol}>
                   {needsAllergies && (
                     <Field label="Allergies">
                       <TextInput value={fields.allergies} onChange={v=>setField("allergies",v)} placeholder="NKDA" />
                     </Field>
                   )}
-                </div>
-              )}
-              {(needsBP || needsBG || needsTemp) && (
-                <div style={threeCol}>
                   {needsBP && (
-                    <Field label="Blood Pressure">
+                    <Field label="BP">
                       <TextInput value={fields.bp} onChange={v=>setField("bp",v)} placeholder="120/80" />
                     </Field>
                   )}
                   {needsBG && (
                     <Field label="Blood Glucose">
                       <TextInput value={fields.bg} onChange={v=>setField("bg",v)} placeholder="(blank to omit)" />
-                    </Field>
-                  )}
-                  {needsTemp && (
-                    <Field label="Temp (°F)">
-                      <TextInput value={fields.temp} onChange={v=>setField("temp",v)} placeholder="(blank to omit)" />
                     </Field>
                   )}
                 </div>
@@ -3980,9 +3964,9 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               <button className="primary" disabled={!note} onClick={handleCopy}
                 style={{
                   opacity: note ? 1 : 0.4, cursor: note ? "pointer" : "not-allowed",
-                  width: "48px", height: "48px", padding: "0",
+                  width: "56px", height: "56px", padding: "0",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  flexShrink: 0, fontSize: "11px", fontWeight: 500,
+                  flexShrink: 0, fontSize: "12px", fontWeight: 500,
                 }}>
                 {copied ? "✓" : "COPY"}
               </button>
