@@ -3994,15 +3994,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
           </div>
         ) : (
           <div className="empty-state">
-            <div>
-              <div className="serif" style={{ fontSize: "22px", fontWeight: 300,
-                  marginBottom: "10px", fontStyle: "italic" }}>
-                No procedure selected
-              </div>
-              <div style={{ fontSize: "13px", opacity: 0.7, maxWidth: "360px", lineHeight: 1.6 }}>
-                Pick a category, then a procedure, and the matching note template will appear here.
-              </div>
-            </div>
+            <div />
           </div>
         )}
       </section>
@@ -5061,10 +5053,12 @@ function RVUs() {
             padding: "12px 18px", borderBottom: "1px solid var(--rule)",
             background: "var(--paper-soft)",
           }}>
-            <button onClick={() => toggleSort("desc")} className="rvu-th">
+            <button onClick={() => toggleSort("desc")} className="rvu-th"
+              style={{ textAlign: "left" }}>
               Description {sortIndicator("desc")}
             </button>
-            <button onClick={() => toggleSort("code")} className="rvu-th">
+            <button onClick={() => toggleSort("code")} className="rvu-th"
+              style={{ textAlign: "center" }}>
               Code {sortIndicator("code")}
             </button>
             <button onClick={() => toggleSort("rvu")} className="rvu-th"
@@ -5094,13 +5088,13 @@ function RVUs() {
                   borderBottom: "1px solid var(--rule-soft)",
                   alignItems: "center",
                 }}>
-                  <div style={{ color: "var(--ink)" }}>
+                  <div style={{ color: "var(--ink)", textAlign: "left" }}>
                     {r.desc}
                   </div>
                   <div className="mono" style={{
                     color: "var(--accent)", fontWeight: 500,
                     fontVariantNumeric: "tabular-nums",
-                    display: "flex", alignItems: "center", gap: "4px",
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: "4px",
                   }}>
                     {isRelevant && (
                       <span title="Used in the Swade guide" style={{
@@ -5260,14 +5254,7 @@ function PrepList({ chunks, rows, onRowsChange, onJumpTo, onGenerateNote }) {
 
         {totalItems === 0 ? (
           <div className="empty-state">
-            <div>
-              <div className="serif" style={{
-                fontSize: "22px", fontWeight: 300, fontStyle: "italic",
-                marginBottom: "10px",
-              }}>
-                Empty
-              </div>
-            </div>
+            <div />
           </div>
         ) : (
           <>
