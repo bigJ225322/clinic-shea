@@ -5088,7 +5088,7 @@ function RVUs() {
                   borderBottom: "1px solid var(--rule-soft)",
                   alignItems: "center",
                 }}>
-                  <div style={{ color: "var(--ink)" }}>
+                  <div style={{ color: "var(--ink)", textAlign: "left" }}>
                     {r.desc}
                   </div>
                   <div className="mono" style={{
