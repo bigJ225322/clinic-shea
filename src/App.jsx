@@ -5066,17 +5066,20 @@ function RVUs() {
         </div>
 
         {/* Table */}
-        <div style={{ ...cardStyle, padding: 0, overflow: "hidden", maxWidth: "360px", margin: "0 auto" }}>
+        <div style={{ ...cardStyle, padding: 0, overflow: "hidden", maxWidth: "600px", margin: "0 auto" }}>
           <div style={{
             display: "grid",
-            gridTemplateColumns: "auto 50px",
-            gap: "16px",
+            gridTemplateColumns: "1fr auto 50px",
+            gap: "12px",
             fontSize: "10px", letterSpacing: "0.18em",
             textTransform: "uppercase", fontWeight: 500,
             color: "var(--ink-soft)",
             padding: "12px 18px", borderBottom: "1px solid var(--rule)",
             background: "var(--paper-soft)",
           }}>
+            <button onClick={() => toggleSort("desc")} className="rvu-th">
+              Description {sortIndicator("desc")}
+            </button>
             <button onClick={() => toggleSort("code")} className="rvu-th">
               Code {sortIndicator("code")}
             </button>
@@ -5100,17 +5103,20 @@ function RVUs() {
               return (
                 <div key={r.code} style={{
                   display: "grid",
-                  gridTemplateColumns: "auto 50px",
-                  gap: "16px",
+                  gridTemplateColumns: "1fr auto 50px",
+                  gap: "12px",
                   fontSize: "13px", lineHeight: 1.45,
                   padding: "10px 18px",
                   borderBottom: "1px solid var(--rule-soft)",
                   alignItems: "center",
                 }}>
+                  <div style={{ color: "var(--ink)" }}>
+                    {r.desc}
+                  </div>
                   <div className="mono" style={{
                     color: "var(--accent)", fontWeight: 500,
                     fontVariantNumeric: "tabular-nums",
-                    display: "flex", alignItems: "center", gap: "6px",
+                    display: "flex", alignItems: "center", gap: "4px",
                   }}>
                     {isRelevant && (
                       <span title="Used in the Swade guide" style={{
@@ -5141,7 +5147,7 @@ function RVUs() {
             background: "var(--accent)", display: "inline-block",
             marginRight: "6px", verticalAlign: "middle",
           }} />
-          marks codes referenced in the <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual.
+          codes referenced in <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual
         </p>
       </div>
     </div>
