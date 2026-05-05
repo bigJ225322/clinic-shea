@@ -2275,6 +2275,8 @@ const DEFAULT_FIELDS = {
   examFindings: {},
   // NV / next visit
   nv: "",
+  // Names (signature line)
+  names: "",
 };
 
 // Anesthetic options from the manual (Local Anesthesia section).
