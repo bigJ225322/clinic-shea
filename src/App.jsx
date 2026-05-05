@@ -5061,10 +5061,12 @@ function RVUs() {
             padding: "12px 18px", borderBottom: "1px solid var(--rule)",
             background: "var(--paper-soft)",
           }}>
-            <button onClick={() => toggleSort("desc")} className="rvu-th">
+            <button onClick={() => toggleSort("desc")} className="rvu-th"
+              style={{ textAlign: "left" }}>
               Description {sortIndicator("desc")}
             </button>
-            <button onClick={() => toggleSort("code")} className="rvu-th">
+            <button onClick={() => toggleSort("code")} className="rvu-th"
+              style={{ textAlign: "center" }}>
               Code {sortIndicator("code")}
             </button>
             <button onClick={() => toggleSort("rvu")} className="rvu-th"
@@ -5100,7 +5102,7 @@ function RVUs() {
                   <div className="mono" style={{
                     color: "var(--accent)", fontWeight: 500,
                     fontVariantNumeric: "tabular-nums",
-                    display: "flex", alignItems: "center", gap: "4px",
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: "4px",
                   }}>
                     {isRelevant && (
                       <span title="Used in the Swade guide" style={{
