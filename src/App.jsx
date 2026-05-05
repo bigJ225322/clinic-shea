@@ -6713,9 +6713,9 @@ function PEs() {
 
 
 const TABS = [
-  { id: "note",        label: "Note Builder",  hint: "Generate chart notes" },
+  { id: "note",        label: "Note",          hint: "Generate chart notes" },
   { id: "browse",      label: "Steps",         hint: "Read the guide" },
-  { id: "walkthrough", label: "Prep List",     hint: "Today's equipment" },
+  { id: "walkthrough", label: "Items",         hint: "Today's equipment" },
   { id: "rvus",        label: "RVUs",          hint: "Progress & code lookup" },
   { id: "pes",         label: "PEs",           hint: "Performance exam reference" },
 ];
