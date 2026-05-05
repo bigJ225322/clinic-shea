@@ -2975,7 +2975,7 @@ function InjectionEditor({ index, total, injection, tooth, onChange, onRemove })
           <option key={opt} value={opt}>{opt}</option>)}
       </Select>
       <div style={twoCol}>
-        <Field label="Carpules">
+        <Field>
           <Select value={injection.carpules}
             onChange={(v) => set("carpules", v)}>
             <option value="1/4">¼ carpule</option>
@@ -2985,13 +2985,13 @@ function InjectionEditor({ index, total, injection, tooth, onChange, onRemove })
             <option value="3">3 carpules</option>
           </Select>
         </Field>
-        <Field label="Needle">
+        <Field>
           <RadioToggle value={injection.needle}
             onChange={(v) => set("needle", v)}
             options={["30G 25mm", "27G 35mm"]} />
         </Field>
       </div>
-      <Field label="Side">
+      <Field>
         <RadioToggle value={injection.side}
           onChange={(v) => set("side", v)}
           options={["right", "left"]} />
@@ -3889,7 +3889,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   fields.vitrebond && "Vitrebond",
                   fields.consepsis && "Consepsis",
                   fields.gluma && "Gluma",
-                ].filter(Boolean).join(", ") || "none selected"}>
+                ].filter(Boolean).join(", ")}>
                 <p style={{ fontSize: "11px", color: "var(--ink-faint)",
                     margin: "0 0 10px", lineHeight: 1.45, fontStyle: "italic" }}>
                   Check any liners or sealers you used. Each adds the corresponding
@@ -3956,10 +3956,34 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               </button>
             )}
             <div style={{
-              display: "flex", gap: "12px", alignItems: "flex-start",
+              ...cardStyle,
+              marginBottom: "20px",
+              padding: "16px 22px 18px",
+              display: "flex", gap: "16px", alignItems: "center", justifyContent: "space-between",
             }}>
-              <div style={{ flex: 1 }}>
-                <CodesPanel procedure={findProcedure(procedureId)} chunks={CHUNKS} />
+              <div style={{ display: "flex", flexDirection: "column", gap: "5px", flex: 1 }}>
+                {(() => {
+                  const proc = findProcedure(procedureId);
+                  if (!proc) return null;
+                  const stepsChunk = findChunkForProcedure(proc, CHUNKS, "steps");
+                  if (!stepsChunk) return null;
+                  const codes = extractCodes(stepsChunk.body);
+                  return codes.map(({ code, desc }) => (
+                    <div key={code} style={{
+                      display: "flex", alignItems: "baseline", gap: "10px",
+                      fontSize: "12px", lineHeight: 1.45,
+                    }}>
+                      <span className="mono" style={{
+                        color: "var(--accent)", fontWeight: 500,
+                        fontVariantNumeric: "tabular-nums",
+                        flexShrink: 0, minWidth: "60px",
+                      }}>{code}</span>
+                      <span style={{ color: "var(--ink-soft)" }}>
+                        {desc || <em style={{ color: "var(--ink-faint)" }}>(no description in source)</em>}
+                      </span>
+                    </div>
+                  ));
+                })()}
               </div>
               <button className="primary" disabled={!note} onClick={handleCopy}
                 style={{
@@ -3972,7 +3996,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               </button>
             </div>
             <PrivacyBanner />
-            <ClockPanel />
           </div>
         ) : (
           <div className="empty-state">
@@ -4262,7 +4285,7 @@ function PrivacyBanner() {
       fontStyle: "italic",
     }}>
       Notes and patient fields stay local to your browser — nothing is sent
-      or stored anywhere else.
+      or stored anywhere else. Don't forget your name.
     </p>
   );
 }
@@ -4394,7 +4417,6 @@ function Browse({
       {/* Left: navigation */}
       <section>
         <div style={cardStyle}>
-          <SectionHeader n="i">Navigate</SectionHeader>
           <Field label="Section">
             <Select value={categoryId} onChange={handleCategoryChange} prominent>
               {CATEGORIES.map(c => (
@@ -4424,7 +4446,7 @@ function Browse({
 
         {/* Search card */}
         <div style={{ ...cardStyle, marginTop: "20px" }}>
-          <SectionHeader n="ii">Or search</SectionHeader>
+          <label style={labelStyle}>Search</label>
           <input type="text" placeholder="e.g. cold test, Vitrebond, RCT"
             value={search} onChange={(e) => setSearch(e.target.value)}
             style={{ ...inputStyle, fontSize: "13px",
@@ -4537,13 +4559,6 @@ function Browse({
                 Add to Prep List  →
               </button>
             </div>
-            <p style={{
-              marginTop: "12px", fontSize: "11px",
-              color: "var(--ink-faint)", lineHeight: 1.5,
-            }}>
-              These buttons remember your selection across tabs — your
-              picked procedure stays selected wherever you go.
-            </p>
           </>
         ) : (
           <div style={{
