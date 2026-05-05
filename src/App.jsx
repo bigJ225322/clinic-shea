@@ -3123,7 +3123,7 @@ function CodesPanel({ procedure, chunks }) {
         marginTop: "12px", marginBottom: 0, fontStyle: "italic",
         lineHeight: 1.45,
       }}>
-        Note templates and Codes from <em className="serif" style={{ fontStyle: "italic" }}>(Swade)</em> manual.
+        Note templates and Codes from <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual.
       </p>
     </div>
   );
@@ -4530,7 +4530,7 @@ function Browse({
               marginBottom: "22px", lineHeight: 1.5,
             }}>
               {stepsChunk ? (
-                <>Steps from <em className="serif" style={{ fontStyle: "italic" }}>(Swade)</em> manual.</>
+                <>Steps from <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual.</>
               ) : "No steps were recorded for this procedure."}
             </div>
             <div className="hairline" style={{ margin: "0 0 22px" }} />
@@ -5028,7 +5028,7 @@ function RVUs() {
           <input type="checkbox" checked={swadeOnly}
             onChange={e => setSwadeOnly(e.target.checked)}
             style={{ accentColor: "var(--accent)", cursor: "pointer" }} />
-          Hide codes not in <em className="serif" style={{ fontStyle: "italic" }}>(Swade)</em> manual
+          Hide codes not in <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual
         </label>
 
         {/* Category filter pills */}
@@ -5141,7 +5141,7 @@ function RVUs() {
             background: "var(--accent)", display: "inline-block",
             marginRight: "6px", verticalAlign: "middle",
           }} />
-          marks codes referenced in the <em className="serif" style={{ fontStyle: "italic" }}>(Swade)</em> manual.
+          marks codes referenced in the <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual.
         </p>
       </div>
     </div>
