@@ -5113,13 +5113,6 @@ function Browse({
       }}>
         {currentProcedure ? (
           <>
-            <div style={{ fontSize: "10px", letterSpacing: "0.22em",
-                textTransform: "uppercase", color: "var(--accent)",
-                fontWeight: 500, marginBottom: "8px" }}>
-              {currentProcedure.categoryLabel}
-              {currentProcedure.groupLabel !== currentProcedure.label &&
-                ` · ${currentProcedure.groupLabel}`}
-            </div>
             <h2 className="serif" style={{
               fontSize: "30px", margin: "0 0 8px", fontWeight: 400,
               letterSpacing: "-0.01em", lineHeight: 1.15,
