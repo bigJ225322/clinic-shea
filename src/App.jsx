@@ -6,6 +6,7 @@ import { useState, useMemo, useEffect, useRef } from "react";
  *   CHUNKS:    [{ id, section, title, line, body }]  (213 entries)
  * ==========================================================================*/
 const TEMPLATES = {
+ "loe": " - y/o female patient presents to Vivaldi clinic for a problem-focused limited oral exam. Chief complaint: “.”\n - medical history: RMH; no changes\n - medications:\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n EOE: WNL — no lymphadenopathy, no swelling, no asymmetry.\n\n IOE:\n - \n - Lips, gingiva, buccal mucosa, tongue, floor of mouth, oropharynx are all WNL without signs of pathology.\n\n Radiographs:\n - \n\n Assessment:\n - \n\n Plan:\n - \n\n - NV:",
  "273": "  y/o female presents to UIC COD for screening appointment. Pt’s CC: “ .” Reviewed medical history. Performed oral inspection. Explained college\n policies, including attendance, transportation, & financial policy. Patient is provisionally accepted to UG clinic.\n\n Planned COE, FMX, pan.\n\n NV: COE",
  "374": " S\n - y/o female patient presents to Urgent Care in Vivaldi clinic with CC: “”\n - medical history:\n - medications:\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n HPI:\n -\n - location:\n - inception:\n - triggers:\n - spontaneous pain:\n - lingering pain:\n - pain wakes pt up at night:\n - quality:\n - frequency:\n - duration:\n - intensity:\n - other symptoms:\n - treatment/evaluation thus far:\n - relief:\n - last pain medication taken & effectiveness:\n - anything else?:\n\n O\n\n EOE:\n Pt appears generally healthy in the dental chair. No visible asymmetries. EOE WNL with normal skin texture and color, normal facial movements,\n no visible/palpable masses, no lymphadenopathy, normal facial muscle movement & palpation, and normal TMJ movement and palpation\n bilaterally.\n\n IOE:\n - (heavily restored / carious dentition), (complete dentition / partially edentulous), (heavy calculus & active periodontal disease)\n -\n - Lips, gingiva, buccal mucosa, tongue, floor of mouth, oropharynx are all WNL without signs of pathology, asymmetry, or swelling\n\n Radiographs:\n - BW & PA taken\n - Radiographs reveal\n - Radiograph otherwise unremarkable & free of pathology\n\n Endo testing:\n - #: percussion +++, palpation +++, probing X mm, mobility 1, cold test 0.5/20 s\n - #: percussion -, palpation -, probing X mm, mobility 0, cold test 2/2 s\n - #: percussion -, palpation -, probing X mm, mobility 0, cold test 2/2 s\n\n Consultations:\n - Dr. [Name] -- restorative consult:\n - Dr. [Name] -- perio consult:\n - Dr. [Name] -- OS consult:\n\n A\n Endo diagnoses:\n - Pulpal diagnosis #:\n - Periapical diagnosis #:\n\n P\n Thoroughly discussed treatment options, costs, & timelines with pt. Specifically discussed tx options: (1) no treatment, (2) RTC + potential\n post/CBU/crown lengthening + crown, (3) extraction + replacement options (implant/bridge/RPD). Discussed advantages & disadvantages of\n treatments. Pt’s questions were answered & pt understood treatment options. Pt opts for .\n\n NV:",
  "448": " S\n - y/o female patient presents to Urgent Care in Vivaldi clinic with CC: “”\n - medical history:\n - medications:\n - allergies:\n - blood pressure:\n - blood glucose:\n\n HPI:\n\n O\n - IOE reveals\n - Panoramic radiograph taken & reveals . Radiograph otherwise unremarkable & free of pathology.\n\n A\n - [mild/moderate/severe] pericoronitis\n\n P\n Pt referred to PGOS for extraction #1, #16, #17, #32. Consult appointment scheduled for .\n\n NV:",
@@ -30,8 +31,8 @@ const TEMPLATES = {
  "2353": " - y/o female patient presents to Vivaldi clinic to take records for occlusal guard.\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Took alginate impressions & facebow for occlusal guard fabrication.\n\n NV: occlusal guard delivery",
  "2428": " - y/o female patient presents to Vivaldi clinic for occlusal guard delivery\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Occlusal guard delivery:\n\n Tried in occlusal guard, evaluated with articulating paper, & adjusted with lab burs to achieve: (1) bilateral centric contact in occlusion, (2)\n posterior disclusion & minimal incisal guidance in protrusion, (3) canine guidance in lateral movements.\n\n Instructed pt how to insert & remove occlusal guard; pt was able to do so unaided. Instructed pt how to use & maintain occlusal guard. Printed\n post-op instructions given to pt.\n\n NV:",
  "2742": " - y/o female patient presents to Vivaldi clinic for #19 core buildup (for PFM crown)\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltration #4.\n\n #19 core buildup:\n Placed Isodry (size M). Removed existing failing MOD amalgam restoration. Excavated decay using high & slow speed burs. Prepared cavity\n preparation to ideal form. Placed Garrison system with matrix band & wedge, burnished. Scrubbed with Consepsis 10s to disinfect, rinsed 5s,\n gently dried. Applied 0.5 mm Vitrebond in deepest area of prep, light cured 20s. Etched with 35% phosphoric acid for 15s, rinsed 5s, gently dried\n leaving dentin moist. Applied Gluma 45s to desensitize, air dried, rinsed 5s, gently dried leaving dentin moist. Applied Scotchbond Universal 20s,\n air dried 5s, cured 10s. Applied shade A2 Renamel nanofill composite in increments, each cured 20s, with 40s final cure. Restoration finished using\n finishing diamond burs & Shofu. Interproximal contact evaluated with floss & adjusted to ideal. Occlusion evaluated with articulating paper &\n adjusted to ideal. Patient is satisfied. Gave post-op instructions re: numbness, sensitivity, sore injection site, uneven bite.\n\n Selected shade A2 for #19 PFM crown. Pt used hand mirror & confirmed shade verbally.\n\n - NV: #19 PFM crown prep",
- "2821": " - y/o female patient presents to Vivaldi clinic for #19 PFM crown prep\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltration #4.\n\n #19 PFM crown prep + provisional:\n Completed crown prep to ideal form. Placed #0 gingival retraction cord soaked in Hemodent. Fabricated provisional using Integrity shade A2.\n Adjusted to ideal shape with satisfactory marginal adaptation. Cemented with UltraTemp. Removed cord. Removed excess cement & flossed.\n Occlusal & excursive contacts evaluated with articulating paper & adjusted to ideal. Interproximal contacts evaluated with floss & are\n satisfactory.\n\n Selected shade A2 for #19 PFM crown. Pt used hand mirror & confirmed shade verbally.\n\n Gave post-op instructions re: numbness, sensitivity, sore injection site, uneven bite, provisional precautions.\n\n NV:",
- "3002": " Placed #0 gingival retraction cord soaked in Hemodent. Fabricated provisional using Integrity shade A2. Adjusted to ideal shape with satisfactory\n marginal adaptation. Cemented with UltraTemp. Removed cords. Removed excess cement & flossed. Evaluated interproximal contacts with floss,\n adjusted to ideal. Evaluated occlusion with articulating paper, adjusted to ideal.",
+ "2821": " - y/o female patient presents to Vivaldi clinic for #19 PFM crown prep\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltration #4.\n\n #19 PFM crown prep + new provisional:\n Completed crown prep to ideal form. Placed #0 gingival retraction cord soaked in Hemodent. Fabricated new provisional using Integrity shade A2.\n Adjusted to ideal shape with satisfactory marginal adaptation. Cemented with UltraTemp. Removed cord. Removed excess cement & flossed.\n Occlusal & excursive contacts evaluated with articulating paper & adjusted to ideal. Interproximal contacts evaluated with floss & are\n satisfactory.\n\n Selected shade A2 for #19 PFM crown. Pt used hand mirror & confirmed shade verbally.\n\n Gave post-op instructions re: numbness, sensitivity, sore injection site, uneven bite, provisional precautions.\n\n NV:",
+ "3002": " - y/o female patient presents to Vivaldi clinic for new provisional crown\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n#19 new provisional crown:\nPlaced #0 gingival retraction cord soaked in Hemodent. Fabricated provisional using Integrity shade A2. Adjusted to ideal shape with satisfactory\n marginal adaptation. Cemented with UltraTemp. Removed cords. Removed excess cement & flossed. Evaluated interproximal contacts with floss,\n adjusted to ideal. Evaluated occlusion with articulating paper, adjusted to ideal.\n\n - NV:",
  "3076": " - y/o female patient presents to Vivaldi clinic for #19 PFM crown final impression\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltration #19.\n\n #19 PFM crown final impression:\n Removed provisional. Removed temporary cement. Refined preparation to ideal. Placed gingival retraction cords #00 & #0 soaked with Hemodent.\n Achieved good isolation & took final impression using heavy body PVS & light body PVS. Removed cords. Final impression & lab script sent to lab.\n\n Re-cemented provisional with UltraTemp. Removed excess cement & flossed. Evaluated interproximal contacts with floss, adjusted to ideal.\n Evaluated occlusion with articulating paper, adjusted to ideal.\n\n Selected shade A2 for #19 PFM crown. Pt used hand mirror & confirmed shade verbally.\n\n - NV: #19 PFM delivery",
  "3204": " - y/o female patient presents to Vivaldi clinic for #19 PFM cementation\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n #19 PFM cementation:\n\n Removed provisional crown. Removed temporary cement with a scaler. Cleaned tooth with pumice & prophy angle.\n\n Tried on & evaluated crown:\n - Marginal adaptation satisfactory; verified visually, tactilely, & radiographically (BW taken).\n - Interproximal contacts are satisfactory as evaluated with floss.\n - Occlusal contacts & excursive contacts are satisfactory as evaluated with articulating paper.\n - Patient approved shade & shape.\n\n Isolated with dry-angles & cotton rolls. Cemented crown with RelyX following proper manufacturer’s instructions. Removed excess cement.\n Verified marginal adaptation & interproximal contacts. Evaluated & adjusted occlusal contacts & excursive contacts to ideal. Polished ceramic. Pt\n is satisfied with bite & esthetics. Gave verbal post-op instructions re: 24 hr set, uneven bite.\n\n NV:",
  "3268": " Isolated with Isodry to protect airway. Original #19-PFM crown is shade A2. Sectioned crown buccally & occlusally using crown-removing burs. Used\n crown removers to remove crown. Took BW radiograph.",
@@ -2076,6 +2077,7 @@ const CATEGORIES = [
       { id: "703",  label: "Restorative COE" },
       { id: "807",  label: "Treatment Plan Presentation" },
       { id: "871",  label: "Implant Consult" },
+      { id: "loe",  label: "LOE" },
     ]},
   ]},
   { id: "perio", label: "Perio", groups: [
@@ -2277,6 +2279,16 @@ const DEFAULT_FIELDS = {
   nv: "",
   // Names (signature line)
   names: "",
+  // Crown / provisional procedure options.
+  // crownIsNew: "New?" checkbox — inserts "new" before "provisional" in note.
+  //   Defaults to true (new provisional is the standard).
+  // cordPlaced: "Placed cord?" checkbox — when true, shows cord size selector.
+  // cordSize: the selected cord size (replaces #0 in template).
+  // crownType: PFM or all-ceramic dropdown (replaces "PFM" in template).
+  crownIsNew: true,
+  cordPlaced: false,
+  cordSize: "0",
+  crownType: "PFM",
 };
 
 // Anesthetic options from the manual (Local Anesthesia section).
@@ -2415,6 +2427,29 @@ function renderTemplate(raw, f) {
   // -------- 6. Shade. --------
   if (f.shade.trim() && f.shade.trim().toUpperCase() !== "A2") {
     t = t.replace(/\bA2\b/g, f.shade.trim().toUpperCase());
+  }
+
+  // -------- 6b. Crown type (core buildup, crown prep). --------
+  // When the user selects All-Ceramic, replace every "PFM" occurrence.
+  if (f.crownType && f.crownType !== "PFM") {
+    t = t.replace(/\bPFM\b/g, f.crownType);
+  }
+
+  // -------- 6c. "New?" provisional toggle (crown prep, provisional crown). --------
+  // Templates have "new provisional" by default. When the checkbox is
+  // unchecked, strip "new " before any "provisional" occurrence.
+  if (f.crownIsNew === false) {
+    t = t.replace(/\bnew provisional\b/g, "provisional");
+  }
+
+  // -------- 6d. Cord size (crown prep, provisional crown). --------
+  // When the "Placed cord?" checkbox is checked and a size other than "0"
+  // is selected, replace "#0" in the standard cord sentence.
+  if (f.cordPlaced && f.cordSize) {
+    t = t.replace(
+      /Placed #0 gingival retraction cord soaked in Hemodent/g,
+      `Placed #${f.cordSize} gingival retraction cord soaked in Hemodent`
+    );
   }
 
   // -------- 7. Medical history / meds / allergies / BP. --------
@@ -4185,15 +4220,69 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               <Hairline />
               <div style={twoCol}>
                 {needsTooth && (
-                  <Field label="Tooth & Surfaces">
+                  <Field label={["2742","2821","3002"].includes(procedureId) ? "Tooth" : "Tooth & Surfaces"}>
                     <ToothInput value={fields.tooth}
                       onChange={v=>setField("tooth",v)}
-                      placeholder="#19-MO     or     #19-MO, #24-L" />
+                      placeholder={["2742","2821","3002"].includes(procedureId) ? "e.g. #19" : "#19-MO     or     #19-MO, #24-L"} />
                   </Field>
                 )}
                 {needsShade && (
                   <Field label="Shade">
                     <TextInput value={fields.shade} onChange={v=>setField("shade",v)} placeholder="e.g. A2" />
+                  </Field>
+                )}
+              </div>
+            </>
+          )}
+          {/* Crown-specific controls: New?, Placed cord?, Crown Type */}
+          {["2742","2821","3002"].includes(procedureId) && (
+            <>
+              <Hairline />
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {["2821","3002"].includes(procedureId) && (
+                  <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+                    <label style={{
+                      display: "flex", alignItems: "center", gap: "8px",
+                      fontSize: "13px", color: "var(--ink)", cursor: "pointer",
+                    }}>
+                      <input type="checkbox"
+                        checked={fields.crownIsNew !== false}
+                        onChange={e => setField("crownIsNew", e.target.checked)}
+                        style={{ width: "15px", height: "15px",
+                          accentColor: "var(--accent)", cursor: "pointer" }} />
+                      <span>New?</span>
+                    </label>
+                    <label style={{
+                      display: "flex", alignItems: "center", gap: "8px",
+                      fontSize: "13px", color: "var(--ink)", cursor: "pointer",
+                    }}>
+                      <input type="checkbox"
+                        checked={fields.cordPlaced === true}
+                        onChange={e => setField("cordPlaced", e.target.checked)}
+                        style={{ width: "15px", height: "15px",
+                          accentColor: "var(--accent)", cursor: "pointer" }} />
+                      <span>Placed cord?</span>
+                    </label>
+                    {fields.cordPlaced && (
+                      <div style={{ minWidth: "160px" }}>
+                        <Select value={fields.cordSize || "0"} onChange={v => setField("cordSize", v)}>
+                          <option value="000">000 — Ultra Fine</option>
+                          <option value="00">00 — Extra Fine</option>
+                          <option value="0">0 — Fine</option>
+                          <option value="1">1 — Medium</option>
+                          <option value="2">2 — Thick</option>
+                          <option value="3">3 — Extra Thick</option>
+                        </Select>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {["2742","2821"].includes(procedureId) && (
+                  <Field label="Crown Type">
+                    <Select value={fields.crownType || "PFM"} onChange={v => setField("crownType", v)}>
+                      <option value="PFM">PFM</option>
+                      <option value="all-ceramic">All-Ceramic</option>
+                    </Select>
                   </Field>
                 )}
               </div>
