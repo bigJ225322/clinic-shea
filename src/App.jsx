@@ -2294,6 +2294,11 @@ const DEFAULT_FIELDS = {
   // accepted: "Accepted?" checkbox — when false, strips the provisional acceptance
   //   sentence from the note. Applies to screening (273) and implant consult (871).
   accepted: true,
+  // perioImproved: perio re-eval improvement status. "improved" or "not improved".
+  //   Substitutes into "Patient's periodontal health has [status] — [detail]."
+  perioImproved: "improved",
+  // perioImprovementDetail: free-text explanation for the improvement note.
+  perioImprovementDetail: "",
 };
 
 // Anesthetic options from the manual (Local Anesthesia section).
@@ -2489,6 +2494,19 @@ function renderTemplate(raw, f) {
     t = t.replace(/\s*Patient is provisionally accepted for[^.]+\.\s*/g, " ");
     t = t.replace(/\s*Patient is provisionally accepted to[^.]+\.\s*/g, " ");
     t = t.replace(/\n{3,}/g, "\n\n");
+  }
+
+  // -------- 6g. Perio re-eval improvement status + detail. --------
+  // Applies to template 1346 (Perio Re-Evaluation). Replaces
+  // "has improved — ." with "has [status] — [detail]."
+  // Runs whenever either field is present in f (including defaults).
+  if (f.perioImproved !== undefined || f.perioImprovementDetail !== undefined) {
+    const status = (f.perioImproved || "improved");
+    const detail = (f.perioImprovementDetail || "").trim();
+    t = t.replace(
+      /has improved — \./,
+      `has ${status} — ${detail ? detail + "." : "."}`
+    );
   }
 
   // -------- 7. Medical history / meds / allergies / BP. --------
@@ -3430,8 +3448,8 @@ const EXAM_FINDINGS_CONFIG = {
     {
       title: "Diagnosis",
       fields: [
-        { label: "AAP", type: "input", placeholder: "Stage / Grade" },
-        { label: "ADA", type: "input", placeholder: "Type" },
+        { type: "perio-aap-dropdowns" },
+        { type: "perio-ada-dropdown" },
         { label: "prognosis", type: "select",
           options: ["", "fair", "questionable", "hopeless"],
           // Special: this writes to all three of fair/questionable/hopeless
@@ -3775,12 +3793,77 @@ function TeethSelectorPanel({ value, onChange, placeholder }) {
   );
 }
 
+// Small inline reference popup for the circled "?" buttons next to each
+// AAP/ADA dropdown. Manages its own open/close state independently.
+function HelpPopup({ children }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <span style={{ position: "relative", display: "inline-block", verticalAlign: "middle" }}>
+      <button
+        type="button"
+        onClick={() => setOpen(v => !v)}
+        style={{
+          display: "inline-flex", alignItems: "center", justifyContent: "center",
+          width: "15px", height: "15px",
+          borderRadius: "50%",
+          border: "1px solid var(--ink-faint)",
+          background: "transparent",
+          color: "var(--ink-soft)",
+          fontSize: "9px",
+          fontFamily: "serif",
+          cursor: "pointer",
+          padding: 0,
+          lineHeight: 1,
+          flexShrink: 0,
+        }}
+      >?</button>
+      {open && (
+        <div style={{
+          position: "absolute",
+          top: "calc(100% + 5px)",
+          left: 0,
+          zIndex: 200,
+          width: "240px",
+          background: "var(--paper)",
+          border: "1px solid var(--rule)",
+          borderRadius: "4px",
+          padding: "10px 12px 10px",
+          boxShadow: "0 4px 18px rgba(0,0,0,0.18)",
+          fontSize: "11px",
+          lineHeight: 1.55,
+          color: "var(--ink)",
+          fontFamily: "'Geist', sans-serif",
+        }}>
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            style={{
+              float: "right",
+              background: "none", border: "none",
+              color: "var(--ink-soft)", cursor: "pointer",
+              fontSize: "13px", padding: "0 0 6px 10px",
+              lineHeight: 1,
+            }}
+          >✕</button>
+          {children}
+        </div>
+      )}
+    </span>
+  );
+}
+
 function ExamFindings({ procedureId, findings, setFindings }) {
   const config = EXAM_FINDINGS_CONFIG[procedureId];
   if (!config) return null;
 
   const update = (label, value) => {
     setFindings({ ...findings, [label]: value });
+  };
+
+  // Batch-update multiple keys at once — avoids stale-closure overwrite
+  // when two or more keys need to change together (e.g. AAP stage + grade + combined).
+  const batchUpdate = (updates) => {
+    setFindings({ ...findings, ...updates });
   };
 
   // Prognosis is an exclusive choice — selecting "fair" should set
@@ -3885,6 +3968,116 @@ function ExamFindings({ procedureId, findings, setFindings }) {
               </select>
             </div>
           </div>
+        </div>
+      );
+    }
+
+    if (field.type === "perio-aap-dropdowns") {
+      const stage = findings["AAP stage"] || "";
+      const grade = findings["AAP grade"] || "";
+      const selStyle = { ...inputStyle, fontSize: "13px", width: "56px", padding: "6px 8px" };
+      const updateAAP = (newStage, newGrade) => {
+        const combined = [
+          newStage && `Stage ${newStage}`,
+          newGrade && `Grade ${newGrade}`,
+        ].filter(Boolean).join(", ");
+        batchUpdate({ "AAP stage": newStage, "AAP grade": newGrade, "AAP": combined });
+      };
+      return (
+        <div key="perio-aap-dropdowns" style={{ marginBottom: "9px" }}>
+          <label style={{
+            ...labelStyle, fontSize: "10px", textTransform: "none",
+            letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic",
+          }}>AAP</label>
+          <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
+            {/* Stage */}
+            <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+              <span style={{ fontSize: "11px", color: "var(--ink-soft)",
+                  fontFamily: "'Geist', sans-serif" }}>Stage</span>
+              <select value={stage}
+                onChange={e => updateAAP(e.target.value, grade)}
+                style={selStyle}>
+                <option value="">—</option>
+                {["I","II","III","IV"].map(o => <option key={o} value={o}>{o}</option>)}
+              </select>
+              <HelpPopup>
+                <div style={{ fontWeight: 600, marginBottom: "7px" }}>Staging criteria</div>
+                {[
+                  ["I",   "CAL 1–2mm, PD ≤4mm, no tooth loss due to perio"],
+                  ["II",  "CAL 3–4mm, PD ≤5mm, no tooth loss due to perio"],
+                  ["III", "CAL ≥5mm, PD ≥6mm, ≤4 teeth lost"],
+                  ["IV",  "Stage III + masticatory dysfunction (≤20 teeth, bite collapse…)"],
+                ].map(([s, d]) => (
+                  <div key={s} style={{ marginBottom: "5px" }}>
+                    <strong>Stage {s}</strong> — {d}
+                  </div>
+                ))}
+              </HelpPopup>
+            </div>
+            {/* Grade */}
+            <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+              <span style={{ fontSize: "11px", color: "var(--ink-soft)",
+                  fontFamily: "'Geist', sans-serif" }}>Grade</span>
+              <select value={grade}
+                onChange={e => updateAAP(stage, e.target.value)}
+                style={selStyle}>
+                <option value="">—</option>
+                {["A","B","C"].map(o => <option key={o} value={o}>{o}</option>)}
+              </select>
+              <HelpPopup>
+                <div style={{ fontWeight: 600, marginBottom: "7px" }}>Grading criteria</div>
+                {[
+                  ["A", "No progression in 5 yrs, non-smoker, normoglycemic"],
+                  ["B", "Evidence of progression, <10 cigs/day, HbA1c <7%"],
+                  ["C", "Rapid progression, ≥10 cigs/day, HbA1c ≥7%"],
+                ].map(([g, d]) => (
+                  <div key={g} style={{ marginBottom: "5px" }}>
+                    <strong>Grade {g}</strong> — {d}
+                  </div>
+                ))}
+              </HelpPopup>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (field.type === "perio-ada-dropdown") {
+      const caseType = findings["ADA case type"] || "";
+      const selStyle = { ...inputStyle, fontSize: "13px" };
+      const updateADA = (newType) => {
+        const combined = newType ? `Case Type ${newType}` : "";
+        batchUpdate({ "ADA case type": newType, "ADA": combined });
+      };
+      return (
+        <div key="perio-ada-dropdown" style={{ marginBottom: "9px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "6px",
+              marginBottom: "5px" }}>
+            <label style={{
+              ...labelStyle, fontSize: "10px", textTransform: "none",
+              letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic",
+              marginBottom: 0,
+            }}>ADA</label>
+            <HelpPopup>
+              <div style={{ fontWeight: 600, marginBottom: "7px" }}>ADA Case Type</div>
+              {[
+                ["I",   "Gingivitis (no bone loss, reversible)"],
+                ["II",  "Early periodontitis (≤25% bone loss)"],
+                ["III", "Moderate periodontitis (25–50% bone loss)"],
+                ["IV",  "Advanced periodontitis (>50% bone loss)"],
+              ].map(([t, d]) => (
+                <div key={t} style={{ marginBottom: "5px" }}>
+                  <strong>Type {t}</strong> — {d}
+                </div>
+              ))}
+            </HelpPopup>
+          </div>
+          <select value={caseType}
+            onChange={e => updateADA(e.target.value)}
+            style={selStyle}>
+            <option value="">— Case Type —</option>
+            {["I","II","III","IV"].map(o => <option key={o} value={o}>{o}</option>)}
+          </select>
         </div>
       );
     }
@@ -4404,6 +4597,26 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                 procedureId={procedureId}
                 findings={fields.examFindings || {}}
                 setFindings={(f) => setField("examFindings", f)} />
+            </>
+          )}
+
+          {procedureId === "1346" && (
+            <>
+              <Hairline />
+              <SubsectionLabel>Assessment</SubsectionLabel>
+              <Field label="Periodontal health">
+                <Select value={fields.perioImproved || "improved"}
+                  onChange={v => setField("perioImproved", v)}>
+                  <option value="improved">improved</option>
+                  <option value="not improved">has not improved</option>
+                </Select>
+              </Field>
+              <Field label="Explanation (optional)">
+                <TextInput
+                  value={fields.perioImprovementDetail || ""}
+                  onChange={v => setField("perioImprovementDetail", v)}
+                  placeholder="e.g. patient demonstrates improved OHI" />
+              </Field>
             </>
           )}
 
