@@ -3439,7 +3439,8 @@ const EXAM_FINDINGS_CONFIG = {
         { label: "probing depths", type: "probing-depths" },
         { label: "bleeding on probing", type: "teeth-selector" },
         { label: "recession", type: "teeth-selector" },
-        { label: "furcation", type: "teeth-selector" },
+        { label: "furcation", type: "teeth-selector",
+          teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
         { label: "mobility", type: "teeth-selector" },
         { label: "mucogingival defects", type: "input", wNLDefault: true },
         { type: "gingiva-dropdowns" },
@@ -3508,7 +3509,8 @@ const EXAM_FINDINGS_CONFIG = {
         { label: "probing depths", type: "probing-depths" },
         { label: "bleeding on probing", type: "teeth-selector" },
         { label: "recession", type: "teeth-selector" },
-        { label: "furcation", type: "teeth-selector" },
+        { label: "furcation", type: "teeth-selector",
+          teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
         { label: "mobility", type: "teeth-selector" },
         { label: "mucogingival defects", type: "input", wNLDefault: true },
         { type: "gingiva-dropdowns" },
@@ -3551,7 +3553,8 @@ const EXAM_FINDINGS_CONFIG = {
         { label: "probing depths", type: "probing-depths" },
         { label: "bleeding on probing", type: "teeth-selector" },
         { label: "recession", type: "teeth-selector" },
-        { label: "furcation", type: "teeth-selector" },
+        { label: "furcation", type: "teeth-selector",
+          teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
         { label: "mobility", type: "teeth-selector" },
         { label: "O'Leary plaque index", type: "input", placeholder: "%",
           hint: "Perio Chart → Clipboard → O’Leary" },
@@ -3575,7 +3578,8 @@ const EXAM_FINDINGS_CONFIG = {
         { label: "probing depths", type: "probing-depths" },
         { label: "bleeding on probing", type: "teeth-selector" },
         { label: "recession", type: "teeth-selector" },
-        { label: "furcation", type: "teeth-selector" },
+        { label: "furcation", type: "teeth-selector",
+          teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
         { label: "mobility", type: "teeth-selector" },
         { label: "mucogingival defects", type: "input", wNLDefault: true },
         { type: "gingiva-dropdowns" },
@@ -3696,7 +3700,9 @@ function OdontogramField({ value, onChange, placeholder }) {
 
 // Mini odontogram teeth selector — opens as a dropdown-like panel.
 // Value is "" | "generalized" | "#3, #14, #20" etc.
-function TeethSelectorPanel({ value, onChange, placeholder }) {
+// `teeth`: optional array of tooth numbers to show (e.g. [1,2,3,14,15,16,...]).
+//   Positions not in the array render as invisible placeholders, preserving arch layout.
+function TeethSelectorPanel({ value, onChange, placeholder, teeth }) {
   const [open, setOpen] = useState(false);
   const panelRef = useRef(null);
 
@@ -3729,6 +3735,7 @@ function TeethSelectorPanel({ value, onChange, placeholder }) {
 
   const upperTeeth = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
   const lowerTeeth = [32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17];
+  const allowedTeeth = teeth ? new Set(teeth) : null;
 
   const displayValue = value || "";
   const [focused, setFocused] = useState(false);
@@ -3764,7 +3771,9 @@ function TeethSelectorPanel({ value, onChange, placeholder }) {
           </button>
           {/* Upper arch */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "2px", marginBottom: "2px" }}>
-            {upperTeeth.map(n => (
+            {upperTeeth.map(n => allowedTeeth && !allowedTeeth.has(n) ? (
+              <div key={n} style={{ visibility: "hidden" }} />
+            ) : (
               <button key={n} onClick={() => toggleTooth(n)} style={{
                 background: selectedTeeth.has(n) ? "var(--accent)" : "transparent",
                 color: selectedTeeth.has(n) ? "var(--paper)" : "var(--ink-soft)",
@@ -3778,7 +3787,9 @@ function TeethSelectorPanel({ value, onChange, placeholder }) {
           <div style={{ height: "1px", background: "var(--rule)", margin: "2px 0" }} />
           {/* Lower arch */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "2px", marginTop: "2px" }}>
-            {lowerTeeth.map(n => (
+            {lowerTeeth.map(n => allowedTeeth && !allowedTeeth.has(n) ? (
+              <div key={n} style={{ visibility: "hidden" }} />
+            ) : (
               <button key={n} onClick={() => toggleTooth(n)} style={{
                 background: selectedTeeth.has(n) ? "var(--accent)" : "transparent",
                 color: selectedTeeth.has(n) ? "var(--paper)" : "var(--ink-soft)",
@@ -4153,7 +4164,8 @@ function ExamFindings({ procedureId, findings, setFindings }) {
         ) : field.type === "teeth-selector" ? (
           <TeethSelectorPanel value={value}
             onChange={(v) => update(field.label, v)}
-            placeholder={field.placeholder} />
+            placeholder={field.placeholder}
+            teeth={field.teeth} />
         ) : field.type === "probing-depths" ? (
           <ProbingDepthsField value={value}
             onChange={(v) => update(field.label, v)} />
