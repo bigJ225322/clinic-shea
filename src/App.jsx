@@ -3437,7 +3437,7 @@ const EXAM_FINDINGS_CONFIG = {
       title: "Perio chart",
       fields: [
         { label: "probing depths", type: "probing-depths" },
-        { label: "bleeding on probing", type: "teeth-selector" },
+        { label: "bleeding on probing", type: "teeth-selector", showG: true },
         { label: "recession", type: "teeth-selector" },
         { label: "furcation", type: "teeth-selector",
           teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
@@ -3507,7 +3507,7 @@ const EXAM_FINDINGS_CONFIG = {
       title: "Perio chart",
       fields: [
         { label: "probing depths", type: "probing-depths" },
-        { label: "bleeding on probing", type: "teeth-selector" },
+        { label: "bleeding on probing", type: "teeth-selector", showG: true },
         { label: "recession", type: "teeth-selector" },
         { label: "furcation", type: "teeth-selector",
           teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
@@ -3532,7 +3532,7 @@ const EXAM_FINDINGS_CONFIG = {
       title: "Perio chart",
       fields: [
         { label: "probing depths", type: "probing-depths" },
-        { label: "bleeding on probing", type: "teeth-selector" },
+        { label: "bleeding on probing", type: "teeth-selector", showG: true },
       ],
     },
     {
@@ -3551,7 +3551,7 @@ const EXAM_FINDINGS_CONFIG = {
       title: "Perio chart",
       fields: [
         { label: "probing depths", type: "probing-depths" },
-        { label: "bleeding on probing", type: "teeth-selector" },
+        { label: "bleeding on probing", type: "teeth-selector", showG: true },
         { label: "recession", type: "teeth-selector" },
         { label: "furcation", type: "teeth-selector",
           teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
@@ -3576,7 +3576,7 @@ const EXAM_FINDINGS_CONFIG = {
       title: "Perio chart",
       fields: [
         { label: "probing depths", type: "probing-depths" },
-        { label: "bleeding on probing", type: "teeth-selector" },
+        { label: "bleeding on probing", type: "teeth-selector", showG: true },
         { label: "recession", type: "teeth-selector" },
         { label: "furcation", type: "teeth-selector",
           teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
@@ -3700,9 +3700,10 @@ function OdontogramField({ value, onChange, placeholder }) {
 
 // Mini odontogram teeth selector — opens as a dropdown-like panel.
 // Value is "" | "generalized" | "#3, #14, #20" etc.
-// `teeth`: optional array of tooth numbers to show (e.g. [1,2,3,14,15,16,...]).
-//   Positions not in the array render as invisible placeholders, preserving arch layout.
-function TeethSelectorPanel({ value, onChange, placeholder, teeth }) {
+// `teeth`: optional array of tooth numbers to show; others are invisible placeholders.
+// `showG`: when true, renders a "G" toggle button to the right of the input
+//   (replaces the in-dropdown Generalized button). Only used for bleeding on probing.
+function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG }) {
   const [open, setOpen] = useState(false);
   const panelRef = useRef(null);
 
@@ -3714,7 +3715,7 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth }) {
       .filter(n => !isNaN(n))
   );
 
-  // Close on outside click
+  // Close on outside click (panelRef covers input + dropdown only, not G button)
   useEffect(() => {
     if (!open) return;
     const handler = (e) => {
@@ -3740,67 +3741,69 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth }) {
   const displayValue = value || "";
   const [focused, setFocused] = useState(false);
 
+  const toothButton = (n) => allowedTeeth && !allowedTeeth.has(n) ? (
+    <div key={n} style={{ visibility: "hidden" }} />
+  ) : (
+    <button key={n} onClick={() => toggleTooth(n)} style={{
+      background: selectedTeeth.has(n) ? "var(--accent)" : "transparent",
+      color: selectedTeeth.has(n) ? "var(--paper)" : "var(--ink-soft)",
+      border: `1px solid ${selectedTeeth.has(n) ? "var(--accent)" : "var(--rule)"}`,
+      borderRadius: "2px", fontSize: "10px", padding: "4px 0",
+      cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
+      lineHeight: 1.2, textAlign: "center",
+    }}>{n}</button>
+  );
+
   return (
-    <div ref={panelRef} style={{ position: "relative" }}>
-      <input readOnly value={displayValue}
-        placeholder={placeholder || "select teeth"}
-        onClick={() => setOpen(o => !o)}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        style={{ ...inputStyle, cursor: "pointer",
-          borderColor: (open || focused) ? "var(--accent)" : "var(--rule)",
-          boxShadow: (open || focused) ? "0 0 0 3px rgba(122,26,26,0.08)" : "none",
-        }} />
-      {open && (
-        <div style={{
-          position: "absolute", top: "calc(100% + 2px)", left: 0, right: 0,
-          background: "var(--paper)", border: "1px solid var(--rule)",
-          borderRadius: "3px", padding: "8px",
-          zIndex: 200, boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
-        }}>
-          <button onClick={setGeneralized} style={{
-            width: "100%", marginBottom: "7px",
-            background: isGeneralized ? "var(--accent)" : "var(--paper-soft)",
-            color: isGeneralized ? "var(--paper)" : "var(--ink)",
-            border: `1px solid ${isGeneralized ? "var(--accent)" : "var(--rule)"}`,
-            borderRadius: "2px", padding: "4px 8px",
-            fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase",
-            fontFamily: "'Geist', sans-serif", cursor: "pointer",
+    <div style={{ display: "flex", gap: "6px", alignItems: "stretch" }}>
+      <div ref={panelRef} style={{ position: "relative", flex: 1 }}>
+        <input readOnly value={displayValue}
+          placeholder={placeholder || "select teeth"}
+          onClick={() => setOpen(o => !o)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          style={{ ...inputStyle, cursor: "pointer",
+            borderColor: (open || focused) ? "var(--accent)" : "var(--rule)",
+            boxShadow: (open || focused) ? "0 0 0 3px rgba(122,26,26,0.08)" : "none",
+          }} />
+        {open && (
+          <div style={{
+            position: "absolute", top: "calc(100% + 2px)", left: 0, right: 0,
+            background: "var(--paper)", border: "1px solid var(--rule)",
+            borderRadius: "3px", padding: "8px",
+            zIndex: 200, boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
           }}>
-            Generalized
-          </button>
-          {/* Upper arch */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "2px", marginBottom: "2px" }}>
-            {upperTeeth.map(n => allowedTeeth && !allowedTeeth.has(n) ? (
-              <div key={n} style={{ visibility: "hidden" }} />
-            ) : (
-              <button key={n} onClick={() => toggleTooth(n)} style={{
-                background: selectedTeeth.has(n) ? "var(--accent)" : "transparent",
-                color: selectedTeeth.has(n) ? "var(--paper)" : "var(--ink-soft)",
-                border: `1px solid ${selectedTeeth.has(n) ? "var(--accent)" : "var(--rule)"}`,
-                borderRadius: "2px", fontSize: "8px", padding: "2px 0",
-                cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
-                lineHeight: 1.2, textAlign: "center",
-              }}>{n}</button>
-            ))}
+            {/* Upper arch */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "3px", marginBottom: "2px" }}>
+              {upperTeeth.map(toothButton)}
+            </div>
+            <div style={{ height: "1px", background: "var(--rule)", margin: "3px 0" }} />
+            {/* Lower arch */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "3px", marginTop: "2px" }}>
+              {lowerTeeth.map(toothButton)}
+            </div>
           </div>
-          <div style={{ height: "1px", background: "var(--rule)", margin: "2px 0" }} />
-          {/* Lower arch */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "2px", marginTop: "2px" }}>
-            {lowerTeeth.map(n => allowedTeeth && !allowedTeeth.has(n) ? (
-              <div key={n} style={{ visibility: "hidden" }} />
-            ) : (
-              <button key={n} onClick={() => toggleTooth(n)} style={{
-                background: selectedTeeth.has(n) ? "var(--accent)" : "transparent",
-                color: selectedTeeth.has(n) ? "var(--paper)" : "var(--ink-soft)",
-                border: `1px solid ${selectedTeeth.has(n) ? "var(--accent)" : "var(--rule)"}`,
-                borderRadius: "2px", fontSize: "8px", padding: "2px 0",
-                cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
-                lineHeight: 1.2, textAlign: "center",
-              }}>{n}</button>
-            ))}
-          </div>
-        </div>
+        )}
+      </div>
+      {showG && (
+        <button
+          type="button"
+          onClick={setGeneralized}
+          title={isGeneralized ? "Clear generalized" : "Set generalized"}
+          style={{
+            flexShrink: 0,
+            width: "36px",
+            background: isGeneralized ? "var(--accent)" : "var(--paper-soft)",
+            color: isGeneralized ? "var(--paper)" : "var(--ink-soft)",
+            border: `1px solid ${isGeneralized ? "var(--accent)" : "var(--rule)"}`,
+            borderRadius: "2px",
+            fontSize: "12px", fontWeight: 700,
+            fontFamily: "'Geist', sans-serif",
+            cursor: "pointer",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            letterSpacing: "0.02em",
+          }}
+        >G</button>
       )}
     </div>
   );
@@ -4165,7 +4168,8 @@ function ExamFindings({ procedureId, findings, setFindings }) {
           <TeethSelectorPanel value={value}
             onChange={(v) => update(field.label, v)}
             placeholder={field.placeholder}
-            teeth={field.teeth} />
+            teeth={field.teeth}
+            showG={field.showG} />
         ) : field.type === "probing-depths" ? (
           <ProbingDepthsField value={value}
             onChange={(v) => update(field.label, v)} />
