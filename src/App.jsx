@@ -3553,6 +3553,8 @@ const EXAM_FINDINGS_CONFIG = {
         { label: "recession", type: "teeth-selector" },
         { label: "furcation", type: "teeth-selector" },
         { label: "mobility", type: "teeth-selector" },
+        { label: "O'Leary plaque index", type: "input", placeholder: "%",
+          hint: "Perio Chart → Clipboard → O’Leary" },
         { label: "mucogingival defects", type: "input", wNLDefault: true },
         { type: "gingiva-dropdowns" },
       ],
@@ -4161,6 +4163,13 @@ function ExamFindings({ procedureId, findings, setFindings }) {
             placeholder={field.placeholder}
             style={{ ...inputStyle, fontSize: "13px" }} />
         )}
+        {field.hint && (
+          <div style={{
+            marginTop: "4px", fontSize: "10px",
+            color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif",
+            fontStyle: "italic", letterSpacing: "0.02em",
+          }}>{field.hint}</div>
+        )}
       </div>
     );
   };
@@ -4611,11 +4620,11 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   <option value="not improved">has not improved</option>
                 </Select>
               </Field>
-              <Field label="Explanation (optional)">
+              <Field label="Rationale">
                 <TextInput
                   value={fields.perioImprovementDetail || ""}
                   onChange={v => setField("perioImprovementDetail", v)}
-                  placeholder="e.g. patient demonstrates improved OHI" />
+                  placeholder="e.g. decrease in probing depths" />
               </Field>
             </>
           )}
