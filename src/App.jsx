@@ -3505,7 +3505,7 @@ const titleCaseLabel = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 // Selecting "8+" in either dropdown switches to a free-text input for
 // pathological depths. Clearing that text field returns to range mode.
 function ProbingDepthsField({ value, onChange }) {
-  const opts = ["1","2","3","4","5","6","7","8","8+"];
+  const opts = ["1","2","3","4","5","6","7","8+"];
   const [manual, setManual] = useState(false);
 
   // Return to range mode whenever the parent clears the value (form reset).
