@@ -14,10 +14,10 @@ const TEMPLATES = {
  "807": "   y/o female patient presents to Vivaldi clinic for treatment plan presentation.\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n All treatment options, costs, & timelines were thoroughly reviewed with the patient. Discussed advantages & disadvantages of treatments. Pt’s\n questions were answered & pt understood treatment options. Pt opts for optimal treatment plan. Verbal and written consent obtained.\n\n Specific treatments discussed:\n — Pt understands crown on #18 needs to be removed & caries needs to be evaluated/excavated before tooth can be deemed restorable. Pt\n understands that if tooth is nonrestorable, extraction & implant or adding tooth to RPD are tx options.\n — Pt understands caries on #8 approximates pulp, and that pulp may be exposed during excavation. Pt understands tooth may need RCT + crown.\n —\n\n NV:",
  "871": "  y/o female patient presents to Chicago clinic for #4 STI consultation.\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Patient was evaluated for UG STI placement #4. Patient is provisionally accepted for UG STI placement pending CBCT results.\n\n NV:",
  "1091": " - y/o female patient presents to Vivaldi clinic for POE\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n POE:\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n - caries risk:\n\n Took 4 bitewings; updated odontogram with radiographic & clinical hard tissue findings:\n -\n - endo testing:\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed supragingival & subgingival plaque & calculus using Cavitron (with an assistant using HVE) & hand instruments. Flossed. Polished with\n prophy paste. Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation.\n\n Treatment planned for the following treatments:\n -\n Thoroughly reviewed all treatment options, costs, & timelines with pt. Discussed advantages & disadvantages of treatments. Answered pt’s\n questions. Pt understood treatment options. Obtained verbal and written consent for tx plan.\n\n - NV:",
- "1196": " - y/o female patient presents to Vivaldi clinic for prophy\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed plaque & calculus using Cavitron (with assistant using HVE) & hand instruments. Flossed. Polished with prophy paste.\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation. Emphasized that patient needs to .\n\n - NV:",
- "1272": " - y/o female patient presents to Vivaldi clinic for SRP of UR.\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n SRP UR:\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltrations of UR quadrant & greater palatine block on R.\n\n Completed SRP using Cavitron (with an assistant using HVE) & hand instruments to remove supragingival and subgingival plaque & calculus.\n Flossed.\n\n Gave pt post-op instructions re: numbness, sore gums, tooth sensitivity, bleeding, ibuprofen/acetaminophen regimen.\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation. Emphasized that patient needs to .\n\n - NV:",
+ "1196": " - y/o female patient presents to Vivaldi clinic for prophy\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed plaque & calculus using Cavitron (with assistant using HVE) & hand instruments. Flossed. Polished with prophy paste.\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n Reviewed OHI with demonstration. Emphasized that patient needs to .\n\n - NV:",
+ "1272": " - y/o female patient presents to Vivaldi clinic for SRP of UR.\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n SRP UR:\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltrations of UR quadrant & greater palatine block on R.\n\n Completed SRP using Cavitron (with an assistant using HVE) & hand instruments to remove supragingival and subgingival plaque & calculus.\n Flossed.\n\n Gave pt post-op instructions re: numbness, sore gums, tooth sensitivity, bleeding, ibuprofen/acetaminophen regimen.\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n Reviewed OHI with demonstration. Emphasized that patient needs to .\n\n - NV:",
  "1346": " - y/o female patient presents to Vivaldi clinic for perio re-evaluation after SRP 4 quads completed 1/1/2000\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Perio re-eval:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - O’Leary plaque index:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n\n Patient’s periodontal health has improved — . Upon evaluation, patient will be placed on perio maintenance interval of 4 months.\n\n - NV:",
- "1425": " - y/o female patient presents to Vivaldi clinic for perio maintenance\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Perio maintenance:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed plaque & calculus using Cavitron (with assistant using HVE) & hand instruments. Flossed. Polished with prophy paste.\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation. Emphasized that patient needs to .\n\n - NV:",
+ "1425": " - y/o female patient presents to Vivaldi clinic for perio maintenance\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Perio maintenance:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed plaque & calculus using Cavitron (with assistant using HVE) & hand instruments. Flossed. Polished with prophy paste.\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n Reviewed OHI with demonstration. Emphasized that patient needs to .\n\n - NV:",
  "1549": " - y/o female patient presents to Vivaldi clinic for #19-MOD amalgam\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as left IAN & long\n buccal block on right / buccal infiltration #19.\n\n #19-MOD amalgam:\n Placed Isodry (size M). Completely removed failing existing MOD composite restoration and excavated decay using high & slow speed burs.\n Prepared cavity preparation to ideal form. Applied Gluma in scrubbing motion for 10s then rinsed thoroughly. Placed Tofflemire band. Delivered,\n overfilled, & condensed amalgam. Removed excess & carved amalgam to ideal anatomic form. Interproximal contact evaluated with floss &\n adjusted to ideal. Occlusion evaluated with articulating paper & adjusted to ideal. Patient is satisfied. Gave post-op instructions re: numbness,\n sensitivity, sore injection site, uneven bite.\n\n - NV:",
  "1641": " - y/o female patient presents to Vivaldi clinic for #19-O composite\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltration #19.\n\n #19-O:\n Placed Isodry (size M). Removed existing failing O amalgam restoration. Excavated decay using high & slow speed burs. Prepared cavity\n preparation to ideal form. Scrubbed with Consepsis 10s to disinfect, rinsed 5s, gently dried. Applied 0.5 mm Vitrebond in deepest area of prep,\n light cured 20s. Etched with 35% phosphoric acid for 15s, rinsed 5s, gently dried leaving dentin moist. Applied Gluma 45s to desensitize, air dried,\n rinsed 5s, gently dried leaving dentin moist. Applied Scotchbond Universal 20s, air dried 5s, cured 10s. Applied shade A2 Renamel nanofill\n composite in increments, each cured 20s, with 40s final cure. Finished restoration with finishing diamond burs, polished with Shofu & Jiffy brush.\n Evaluated occlusion with articulating paper, adjusted to ideal. Patient is satisfied. Gave post-op instructions re: numbness, sensitivity, sore\n injection site, uneven bite.\n\n - NV:",
  "1745": " - y/o female patient presents to Vivaldi clinic for #19-MOD composite\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltration #19.\n\n #19-MOD:\n Placed Isodry (size M). Removed existing failing MOD amalgam restoration. Excavated decay using high & slow speed burs. Prepared cavity\n preparation to ideal form. Placed Garrison system with matrix band & wedge, burnished. Scrubbed with Consepsis 10s to disinfect, rinsed 5s,\n gently dried. Applied 0.5 mm Vitrebond in deepest area of prep, light cured 20s. Etched with 35% phosphoric acid for 15s, rinsed 5s, gently dried\n leaving dentin moist. Applied Gluma 45s to desensitize, air dried, rinsed 5s, gently dried leaving dentin moist. Applied Scotchbond Universal 20s,\n air dried 5s, cured 10s. Applied shade A2 Renamel nanofill composite in increments, each cured 20s, with 40s final cure. Finished restoration with\n finishing diamond burs, polished with Shofu & Jiffy brush. Evaluated interproximal contact with floss, adjusted to ideal. Evaluated occlusion with\n articulating paper, adjusted to ideal. Patient is satisfied. Gave post-op instructions re: numbness, sensitivity, sore injection site, uneven bite.\n\n - NV:",
@@ -2487,6 +2487,80 @@ function renderTemplate(raw, f) {
     }
   }
 
+  // -------- 7b-perio. Perio-specific field substitutions. --------
+  // Applies only when examFindings contains perio keys — these replacements
+  // are safe to run on any template since the patterns are perio-specific.
+  {
+    const ef = f.examFindings || {};
+
+    // Gingival characteristics: replace [color], [contour], [consistency]
+    // Only runs if the gingiva-dropdowns were used (keys present).
+    const gingivaColor = (ef["gingival color"] || "").trim();
+    const gingivaContour = (ef["gingival contour"] || "").trim();
+    const gingivaConsistency = (ef["gingival consistency"] || "").trim();
+    // Always substitute if any are set; fall back to stored values or defaults
+    if (gingivaColor || gingivaContour || gingivaConsistency) {
+      const c = gingivaColor || "pink";
+      const co = gingivaContour || "scalloped";
+      const cn = gingivaConsistency || "firm";
+      t = t.replace(/\[color\], \[contour\], \[consistency\]/g, `${c}, ${co}, ${cn}`);
+    }
+
+    // Brushing & flossing frequency substitution
+    const formatBrush = (v) => {
+      if (v === "1x") return "1x per day";
+      if (v === "3x") return "3x per day";
+      return "2x per day"; // default
+    };
+    const formatFloss = (v) => {
+      if (v === "2x/week") return "2x per week";
+      if (v === "3-4x/week") return "3-4x per week";
+      if (v === "1x/day") return "1x per day";
+      return "1x per week"; // default
+    };
+    const brushFreq = ef["brushing frequency"];
+    const flossFreq = ef["flossing frequency"];
+    if (brushFreq) t = t.replace(/brushing \d+x per day/, `brushing ${formatBrush(brushFreq)}`);
+    if (flossFreq) t = t.replace(/flossing [\dx-]+ per \w+/, `flossing ${formatFloss(flossFreq)}`);
+
+    // Heavy plaque area
+    const plaqueArea = (ef["plaque area"] || "").trim();
+    if (plaqueArea) {
+      t = t.replace(/heavy plaque on \./, `heavy plaque on ${plaqueArea}.`);
+    }
+
+    // Mucogingival defects: substitute WNL if the stub is still empty
+    // (The form pre-fills it, but if somehow it's empty, keep the note clean.)
+    if (!ef["mucogingival defects"]?.trim()) {
+      t = t.replace(
+        /^([ \t]*-[ \t]*mucogingival defects:)[ \t]*$/im,
+        `$1 WNL`
+      );
+    }
+
+    // OHI: conditional nutritional counseling / tobacco cessation
+    // Templates now read "Reviewed OHI with demonstration." — we insert
+    // "& completed ..." if one or both checkboxes are checked.
+    const nutriCounsel = ef["nutritional counseling"] === true;
+    const tobaccoCess = ef["tobacco cessation"] === true;
+    if (nutriCounsel && tobaccoCess) {
+      t = t.replace(
+        /Reviewed OHI with demonstration\./,
+        "Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation."
+      );
+    } else if (nutriCounsel) {
+      t = t.replace(
+        /Reviewed OHI with demonstration\./,
+        "Reviewed OHI with demonstration & completed nutritional counseling."
+      );
+    } else if (tobaccoCess) {
+      t = t.replace(
+        /Reviewed OHI with demonstration\./,
+        "Reviewed OHI with demonstration & completed tobacco cessation."
+      );
+    }
+  }
+
   // -------- 7c. Nitrous (peds). --------
   // If the user unchecked "Nitrous", strip the "Titrated to 40% nitrous
   // oxide..." sentence + the "Administered for X minutes." follow-on.
@@ -3334,6 +3408,95 @@ const EXAM_FINDINGS_CONFIG = {
       ],
     },
   ],
+  // Prophy — full perio charting + OHI
+  "1196": [
+    {
+      title: "Perio chart",
+      fields: [
+        { label: "probing depths", type: "input", placeholder: "e.g. 2-5mm" },
+        { label: "bleeding on probing", type: "teeth-selector" },
+        { label: "recession", type: "teeth-selector" },
+        { label: "furcation", type: "teeth-selector" },
+        { label: "mobility", type: "teeth-selector" },
+        { label: "mucogingival defects", type: "input", wNLDefault: true },
+        { type: "gingiva-dropdowns" },
+      ],
+    },
+    {
+      title: "OHI",
+      fields: [
+        { type: "brushing-flossing" },
+        { label: "plaque area", type: "input", placeholder: "e.g. UR molars, linguals" },
+        { label: "nutritional counseling", type: "ohi-checkbox" },
+        { label: "tobacco cessation", type: "ohi-checkbox" },
+      ],
+    },
+  ],
+  // SRP — probing depths + BOP only (no charting), no gingival dropdowns
+  "1272": [
+    {
+      title: "Perio chart",
+      fields: [
+        { label: "probing depths", type: "input", placeholder: "e.g. 2-5mm" },
+        { label: "bleeding on probing", type: "teeth-selector" },
+      ],
+    },
+    {
+      title: "OHI",
+      fields: [
+        { type: "brushing-flossing" },
+        { label: "plaque area", type: "input", placeholder: "e.g. UR molars, linguals" },
+        { label: "nutritional counseling", type: "ohi-checkbox" },
+        { label: "tobacco cessation", type: "ohi-checkbox" },
+      ],
+    },
+  ],
+  // Perio Re-Evaluation — full charting, no OHI checkboxes (not in template)
+  "1346": [
+    {
+      title: "Perio chart",
+      fields: [
+        { label: "probing depths", type: "input", placeholder: "e.g. 2-5mm" },
+        { label: "bleeding on probing", type: "teeth-selector" },
+        { label: "recession", type: "teeth-selector" },
+        { label: "furcation", type: "teeth-selector" },
+        { label: "mobility", type: "teeth-selector" },
+        { label: "mucogingival defects", type: "input", wNLDefault: true },
+        { type: "gingiva-dropdowns" },
+      ],
+    },
+    {
+      title: "OHI",
+      fields: [
+        { type: "brushing-flossing" },
+        { label: "plaque area", type: "input", placeholder: "e.g. UR molars, linguals" },
+      ],
+    },
+  ],
+  // Perio Maintenance — full charting + OHI
+  "1425": [
+    {
+      title: "Perio chart",
+      fields: [
+        { label: "probing depths", type: "input", placeholder: "e.g. 2-5mm" },
+        { label: "bleeding on probing", type: "teeth-selector" },
+        { label: "recession", type: "teeth-selector" },
+        { label: "furcation", type: "teeth-selector" },
+        { label: "mobility", type: "teeth-selector" },
+        { label: "mucogingival defects", type: "input", wNLDefault: true },
+        { type: "gingiva-dropdowns" },
+      ],
+    },
+    {
+      title: "OHI",
+      fields: [
+        { type: "brushing-flossing" },
+        { label: "plaque area", type: "input", placeholder: "e.g. UR molars, linguals" },
+        { label: "nutritional counseling", type: "ohi-checkbox" },
+        { label: "tobacco cessation", type: "ohi-checkbox" },
+      ],
+    },
+  ],
 };
 
 const titleCaseLabel = (s) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -3388,6 +3551,107 @@ function OdontogramField({ value, onChange, placeholder }) {
   );
 }
 
+// Mini odontogram teeth selector — opens as a dropdown-like panel.
+// Value is "" | "generalized" | "#3, #14, #20" etc.
+function TeethSelectorPanel({ value, onChange, placeholder }) {
+  const [open, setOpen] = useState(false);
+  const panelRef = useRef(null);
+
+  const isGeneralized = value.trim().toLowerCase() === "generalized";
+  const selectedTeeth = new Set(
+    isGeneralized ? [] :
+    value.split(",")
+      .map(t => parseInt(t.trim().replace(/^#/, ""), 10))
+      .filter(n => !isNaN(n))
+  );
+
+  // Close on outside click
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => {
+      if (panelRef.current && !panelRef.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  const toggleTooth = (num) => {
+    const next = new Set(selectedTeeth);
+    if (next.has(num)) next.delete(num); else next.add(num);
+    if (next.size === 0) onChange("");
+    else onChange([...next].sort((a, b) => a - b).map(n => `#${n}`).join(", "));
+  };
+
+  const setGeneralized = () => onChange(isGeneralized ? "" : "generalized");
+
+  const upperTeeth = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
+  const lowerTeeth = [32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17];
+
+  const displayValue = value || "";
+  const [focused, setFocused] = useState(false);
+
+  return (
+    <div ref={panelRef} style={{ position: "relative" }}>
+      <input readOnly value={displayValue}
+        placeholder={placeholder || "select teeth or generalized"}
+        onClick={() => setOpen(o => !o)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={{ ...inputStyle, cursor: "pointer",
+          borderColor: (open || focused) ? "var(--accent)" : "var(--rule)",
+          boxShadow: (open || focused) ? "0 0 0 3px rgba(122,26,26,0.08)" : "none",
+        }} />
+      {open && (
+        <div style={{
+          position: "absolute", top: "calc(100% + 2px)", left: 0, right: 0,
+          background: "var(--paper)", border: "1px solid var(--rule)",
+          borderRadius: "3px", padding: "8px",
+          zIndex: 200, boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
+        }}>
+          <button onClick={setGeneralized} style={{
+            width: "100%", marginBottom: "7px",
+            background: isGeneralized ? "var(--accent)" : "var(--paper-soft)",
+            color: isGeneralized ? "var(--paper)" : "var(--ink)",
+            border: `1px solid ${isGeneralized ? "var(--accent)" : "var(--rule)"}`,
+            borderRadius: "2px", padding: "4px 8px",
+            fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase",
+            fontFamily: "'Geist', sans-serif", cursor: "pointer",
+          }}>
+            Generalized
+          </button>
+          {/* Upper arch */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "2px", marginBottom: "2px" }}>
+            {upperTeeth.map(n => (
+              <button key={n} onClick={() => toggleTooth(n)} style={{
+                background: selectedTeeth.has(n) ? "var(--accent)" : "transparent",
+                color: selectedTeeth.has(n) ? "var(--paper)" : "var(--ink-soft)",
+                border: `1px solid ${selectedTeeth.has(n) ? "var(--accent)" : "var(--rule)"}`,
+                borderRadius: "2px", fontSize: "8px", padding: "2px 0",
+                cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
+                lineHeight: 1.2, textAlign: "center",
+              }}>{n}</button>
+            ))}
+          </div>
+          <div style={{ height: "1px", background: "var(--rule)", margin: "2px 0" }} />
+          {/* Lower arch */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "2px", marginTop: "2px" }}>
+            {lowerTeeth.map(n => (
+              <button key={n} onClick={() => toggleTooth(n)} style={{
+                background: selectedTeeth.has(n) ? "var(--accent)" : "transparent",
+                color: selectedTeeth.has(n) ? "var(--paper)" : "var(--ink-soft)",
+                border: `1px solid ${selectedTeeth.has(n) ? "var(--accent)" : "var(--rule)"}`,
+                borderRadius: "2px", fontSize: "8px", padding: "2px 0",
+                cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
+                lineHeight: 1.2, textAlign: "center",
+              }}>{n}</button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ExamFindings({ procedureId, findings, setFindings }) {
   const config = EXAM_FINDINGS_CONFIG[procedureId];
   if (!config) return null;
@@ -3409,17 +3673,131 @@ function ExamFindings({ procedureId, findings, setFindings }) {
     setFindings(next);
   };
 
+  // Initialize wNLDefault fields to "WNL" when the procedure loads.
+  useEffect(() => {
+    const allFields = config.flatMap(s => s.fields || []);
+    const wNLFields = allFields.filter(f => f.wNLDefault && f.label);
+    if (wNLFields.length === 0) return;
+    const updates = {};
+    wNLFields.forEach(f => {
+      if (findings[f.label] === undefined || findings[f.label] === null) {
+        updates[f.label] = "WNL";
+      }
+    });
+    if (Object.keys(updates).length > 0) setFindings({ ...findings, ...updates });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [procedureId]);
+
   const renderField = (field) => {
+    // --- Special composite fields (no label key) ---
+    if (field.type === "gingiva-dropdowns") {
+      const colorOpts = ["pink", "red", "pigmented"];
+      const contourOpts = ["scalloped", "blunted"];
+      const consOpts = ["firm", "soft"];
+      const selStyle = { ...inputStyle, fontSize: "13px", flex: 1, minWidth: 0 };
+      return (
+        <div key="gingiva-dropdowns" style={{ marginBottom: "9px" }}>
+          <label style={{ ...labelStyle, fontSize: "10px", textTransform: "none",
+            letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" }}>
+            Gingiva
+          </label>
+          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+            <select value={findings["gingival color"] || "pink"}
+              onChange={e => update("gingival color", e.target.value)}
+              style={selStyle}>
+              {colorOpts.map(o => <option key={o} value={o}>{o}</option>)}
+            </select>
+            <select value={findings["gingival contour"] || "scalloped"}
+              onChange={e => update("gingival contour", e.target.value)}
+              style={selStyle}>
+              {contourOpts.map(o => <option key={o} value={o}>{o}</option>)}
+            </select>
+            <select value={findings["gingival consistency"] || "firm"}
+              onChange={e => update("gingival consistency", e.target.value)}
+              style={selStyle}>
+              {consOpts.map(o => <option key={o} value={o}>{o}</option>)}
+            </select>
+            <span style={{ color: "var(--ink-soft)", fontSize: "13px",
+                fontFamily: "'Geist', sans-serif", whiteSpace: "nowrap" }}>
+              gingiva
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    if (field.type === "brushing-flossing") {
+      const brushOpts = ["1x", "2x", "3x"];
+      const flossOpts = ["1x/week", "2x/week", "3-4x/week", "1x/day"];
+      const selStyle = { ...inputStyle, fontSize: "13px" };
+      return (
+        <div key="brushing-flossing" style={{ marginBottom: "9px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+            <div>
+              <label style={{ ...labelStyle, fontSize: "10px", textTransform: "none",
+                letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" }}>
+                Brushing
+              </label>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <select value={findings["brushing frequency"] || "2x"}
+                  onChange={e => update("brushing frequency", e.target.value)}
+                  style={{ ...selStyle, flex: 1 }}>
+                  {brushOpts.map(o => <option key={o} value={o}>{o}</option>)}
+                </select>
+                <span style={{ color: "var(--ink-soft)", fontSize: "12px",
+                    fontFamily: "'Geist', sans-serif", whiteSpace: "nowrap" }}>
+                  /day
+                </span>
+              </div>
+            </div>
+            <div>
+              <label style={{ ...labelStyle, fontSize: "10px", textTransform: "none",
+                letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" }}>
+                Flossing
+              </label>
+              <select value={findings["flossing frequency"] || "1x/week"}
+                onChange={e => update("flossing frequency", e.target.value)}
+                style={selStyle}>
+                {flossOpts.map(o => <option key={o} value={o}>{o}</option>)}
+              </select>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- Standard labeled fields ---
     const isProgn = field.isPrognosis;
     const value = isProgn
       ? (findings.prognosis || "")
-      : (findings[field.label] || "");
+      : (findings[field.label] !== undefined ? findings[field.label] : (field.wNLDefault ? "WNL" : ""));
     const onChange = isProgn
       ? (e) => updatePrognosis(e.target.value)
       : (e) => update(field.label, e.target.value);
     const display = isProgn
       ? "Prognosis"
       : (field.displayLabel || titleCaseLabel(field.label));
+
+    if (field.type === "ohi-checkbox") {
+      const checked = !!findings[field.label];
+      return (
+        <div key={field.label} style={{ marginBottom: "6px" }}>
+          <label style={{
+            display: "flex", alignItems: "center", gap: "9px",
+            fontSize: "13px", color: "var(--ink)", cursor: "pointer",
+            fontFamily: "'Geist', sans-serif",
+          }}>
+            <input type="checkbox" checked={checked}
+              onChange={e => update(field.label, e.target.checked)}
+              style={{ width: "15px", height: "15px",
+                accentColor: "var(--accent)", cursor: "pointer" }} />
+            <span style={{ color: "var(--ink-soft)", fontSize: "12px" }}>
+              {titleCaseLabel(field.label)}
+            </span>
+          </label>
+        </div>
+      );
+    }
 
     return (
       <div key={field.label} style={{ marginBottom: "9px" }}>
@@ -3454,8 +3832,13 @@ function ExamFindings({ procedureId, findings, setFindings }) {
           <OdontogramField value={value}
             onChange={(v) => update(field.label, v)}
             placeholder={field.placeholder} />
+        ) : field.type === "teeth-selector" ? (
+          <TeethSelectorPanel value={value}
+            onChange={(v) => update(field.label, v)}
+            placeholder={field.placeholder} />
         ) : (
-          <input type="text" value={value} onChange={onChange}
+          <input type="text" value={value}
+            onChange={e => update(field.label, e.target.value)}
             placeholder={field.placeholder}
             style={{ ...inputStyle, fontSize: "13px" }} />
         )}
