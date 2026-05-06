@@ -2340,6 +2340,9 @@ function renderTemplate(raw, f) {
   t = t.replace(/(\S)[ \t]*\n[ \t]+([a-z(&])/g, "$1 $2");
   t = t.replace(/(^|\n) (?! )/g, "$1");
 
+  // Normalize Cavitron assistant language to "isodry" everywhere.
+  t = t.replace(/\(with (?:an )?assistant using HVE\)/g, "(with isodry)");
+
   // -------- 1. Strip the COVID-19 paragraph entirely. --------
   // The block runs from " COVID-19:" through the second screening line,
   // followed by a blank line. The pattern is consistent across all templates.
@@ -2616,10 +2619,41 @@ function renderTemplate(raw, f) {
     if (brushFreq) t = t.replace(/brushing \d+x per day/, `brushing ${formatBrush(brushFreq)}`);
     if (flossFreq) t = t.replace(/flossing [\dx-]+ per \w+/, `flossing ${formatFloss(flossFreq)}`);
 
-    // Heavy plaque area
-    const plaqueArea = (ef["plaque area"] || "").trim();
-    if (plaqueArea) {
-      t = t.replace(/heavy plaque on \./, `heavy plaque on ${plaqueArea}.`);
+    // Plaque level + area + technique + emphasis substitutions
+    {
+      const plaqueLevel = (ef["plaque level"] || "").trim();
+      const plaqueArea  = (ef["plaque area"]  || "").trim();
+      const technique   = (ef["technique"]    || "").trim();
+      const emphasis    = (ef["emphasis"]     || "").trim();
+
+      // Technique: swap "average" for the selected value
+      if (technique && technique !== "average") {
+        t = t.replace(/technique is average/, `technique is ${technique}`);
+      }
+
+      // General plaque level: swap "moderate" for the selected level
+      if (plaqueLevel && plaqueLevel !== "moderate") {
+        t = t.replace(/moderate generalized plaque/, `${plaqueLevel} generalized plaque`);
+      }
+
+      // Area-specific plaque phrase
+      if (plaqueLevel === "heavy") {
+        // Heavy overall → "especially on [area]" or strip the clause
+        if (plaqueArea) {
+          t = t.replace(/with heavy plaque on \./, `especially on ${plaqueArea}.`);
+        } else {
+          t = t.replace(/ with heavy plaque on \./, ".");
+        }
+      } else if (plaqueArea) {
+        // Non-heavy, area provided → fill in the area
+        t = t.replace(/heavy plaque on \./, `heavy plaque on ${plaqueArea}.`);
+      }
+      // Non-heavy, no area → leave "with heavy plaque on ." as placeholder
+
+      // Emphasis: fill in the tail of the OHI sentence
+      if (emphasis) {
+        t = t.replace(/Emphasized that patient needs to \./, `Emphasized that patient needs to ${emphasis}.`);
+      }
     }
 
     // Mucogingival defects: substitute WNL if the stub is still empty
@@ -3520,7 +3554,12 @@ const EXAM_FINDINGS_CONFIG = {
       title: "OHI",
       fields: [
         { type: "brushing-flossing" },
+        { label: "technique", type: "select", defaultValue: "average",
+          options: ["poor", "average", "good"] },
+        { label: "plaque level", type: "select", defaultValue: "moderate",
+          options: ["light", "moderate", "heavy"] },
         { label: "plaque area", type: "input", placeholder: "e.g. UR molars, linguals" },
+        { label: "emphasis", type: "input", placeholder: "e.g. floss daily" },
         { label: "nutritional counseling", type: "ohi-checkbox" },
         { label: "tobacco cessation", type: "ohi-checkbox" },
       ],
@@ -3539,7 +3578,12 @@ const EXAM_FINDINGS_CONFIG = {
       title: "OHI",
       fields: [
         { type: "brushing-flossing" },
+        { label: "technique", type: "select", defaultValue: "average",
+          options: ["poor", "average", "good"] },
+        { label: "plaque level", type: "select", defaultValue: "moderate",
+          options: ["light", "moderate", "heavy"] },
         { label: "plaque area", type: "input", placeholder: "e.g. UR molars, linguals" },
+        { label: "emphasis", type: "input", placeholder: "e.g. floss daily" },
         { label: "nutritional counseling", type: "ohi-checkbox" },
         { label: "tobacco cessation", type: "ohi-checkbox" },
       ],
@@ -3566,6 +3610,10 @@ const EXAM_FINDINGS_CONFIG = {
       title: "OHI",
       fields: [
         { type: "brushing-flossing" },
+        { label: "technique", type: "select", defaultValue: "average",
+          options: ["poor", "average", "good"] },
+        { label: "plaque level", type: "select", defaultValue: "moderate",
+          options: ["light", "moderate", "heavy"] },
         { label: "plaque area", type: "input", placeholder: "e.g. UR molars, linguals" },
       ],
     },
@@ -3589,7 +3637,12 @@ const EXAM_FINDINGS_CONFIG = {
       title: "OHI",
       fields: [
         { type: "brushing-flossing" },
+        { label: "technique", type: "select", defaultValue: "average",
+          options: ["poor", "average", "good"] },
+        { label: "plaque level", type: "select", defaultValue: "moderate",
+          options: ["light", "moderate", "heavy"] },
         { label: "plaque area", type: "input", placeholder: "e.g. UR molars, linguals" },
+        { label: "emphasis", type: "input", placeholder: "e.g. floss daily" },
         { label: "nutritional counseling", type: "ohi-checkbox" },
         { label: "tobacco cessation", type: "ohi-checkbox" },
       ],
@@ -4102,7 +4155,7 @@ function ExamFindings({ procedureId, findings, setFindings }) {
     const isProgn = field.isPrognosis;
     const value = isProgn
       ? (findings.prognosis || "")
-      : (findings[field.label] !== undefined ? findings[field.label] : (field.wNLDefault ? "WNL" : ""));
+      : (findings[field.label] !== undefined ? findings[field.label] : (field.wNLDefault ? "WNL" : (field.defaultValue || "")));
     const onChange = isProgn
       ? (e) => updatePrognosis(e.target.value)
       : (e) => update(field.label, e.target.value);
