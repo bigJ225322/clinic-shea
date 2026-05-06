@@ -3501,59 +3501,51 @@ const EXAM_FINDINGS_CONFIG = {
 
 const titleCaseLabel = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
-// Probing depths field — two dropdowns (1–8 mm) for the typical range, plus
-// an "Over 8mm?" toggle that swaps in a free-text input for pathological cases.
+// Probing depths field — two dropdowns (1–8mm + "8+") for the typical range.
+// Selecting "8+" in either dropdown switches to a free-text input for
+// pathological depths. Clearing that text field returns to range mode.
 function ProbingDepthsField({ value, onChange }) {
-  const opts = ["1","2","3","4","5","6","7","8"];
-  const [overEight, setOverEight] = useState(false);
+  const opts = ["1","2","3","4","5","6","7","8","8+"];
+  const [manual, setManual] = useState(false);
 
-  // Reset to range mode whenever the value is cleared externally (form reset).
+  // Return to range mode whenever the parent clears the value (form reset).
   useEffect(() => {
-    if (!value) setOverEight(false);
+    if (!value) setManual(false);
   }, [value]);
 
-  // Parse "X-Ymm" from stored value; fall back to visual defaults 2/5.
   const rangeMatch = (value || "").match(/^(\d+)-(\d+)mm$/);
   const low  = rangeMatch ? rangeMatch[1] : "2";
   const high = rangeMatch ? rangeMatch[2] : "5";
+  // Also enter manual mode if value is non-empty but isn't a valid range
+  // (e.g. loaded from a previous session where the user had typed free text).
+  const isManual = manual || !!(value && !rangeMatch);
 
   const selStyle = { ...inputStyle, flex: 1, fontSize: "13px" };
 
-  return (
-    <div>
-      {overEight ? (
-        <input type="text" value={value || ""}
-          onChange={e => onChange(e.target.value)}
-          placeholder="e.g. 9mm on #14, 10mm on #19"
-          style={{ ...inputStyle, fontSize: "13px" }} />
-      ) : (
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <select value={low}
-            onChange={e => onChange(`${e.target.value}-${high}mm`)}
-            style={selStyle}>
-            {opts.map(o => <option key={o} value={o}>{o}mm</option>)}
-          </select>
-          <span style={{ color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif" }}>–</span>
-          <select value={high}
-            onChange={e => onChange(`${low}-${e.target.value}mm`)}
-            style={selStyle}>
-            {opts.map(o => <option key={o} value={o}>{o}mm</option>)}
-          </select>
-        </div>
-      )}
-      <label style={{
-        display: "flex", alignItems: "center", gap: "7px",
-        marginTop: "5px", fontSize: "11px", color: "var(--ink-soft)",
-        cursor: "pointer", fontFamily: "'Geist', sans-serif",
-      }}>
-        <input type="checkbox" checked={overEight}
-          onChange={e => {
-            setOverEight(e.target.checked);
-            if (!e.target.checked) onChange(`${low}-${high}mm`);
-          }}
-          style={{ accentColor: "var(--accent)", cursor: "pointer" }} />
-        Over 8mm?
-      </label>
+  return isManual ? (
+    <input type="text" value={value || ""}
+      onChange={e => onChange(e.target.value)}
+      placeholder="e.g. generalized 2-5mm; localized 9mm #14"
+      style={{ ...inputStyle, fontSize: "13px" }} />
+  ) : (
+    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+      <select value={low}
+        onChange={e => {
+          if (e.target.value === "8+") { setManual(true); onChange(""); }
+          else onChange(`${e.target.value}-${high}mm`);
+        }}
+        style={selStyle}>
+        {opts.map(o => <option key={o} value={o}>{o === "8+" ? "8+" : `${o}mm`}</option>)}
+      </select>
+      <span style={{ color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif" }}>–</span>
+      <select value={high}
+        onChange={e => {
+          if (e.target.value === "8+") { setManual(true); onChange(""); }
+          else onChange(`${low}-${e.target.value}mm`);
+        }}
+        style={selStyle}>
+        {opts.map(o => <option key={o} value={o}>{o === "8+" ? "8+" : `${o}mm`}</option>)}
+      </select>
     </div>
   );
 }
