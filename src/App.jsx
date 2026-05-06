@@ -2590,15 +2590,12 @@ function renderTemplate(raw, f) {
     const ef = f.examFindings || {};
 
     // Gingival characteristics: replace [color], [contour], [consistency]
-    // Only runs if the gingiva-dropdowns were used (keys present).
-    const gingivaColor = (ef["gingival color"] || "").trim();
-    const gingivaContour = (ef["gingival contour"] || "").trim();
-    const gingivaConsistency = (ef["gingival consistency"] || "").trim();
-    // Always substitute if any are set; fall back to stored values or defaults
-    if (gingivaColor || gingivaContour || gingivaConsistency) {
-      const c = gingivaColor || "pink";
-      const co = gingivaContour || "scalloped";
-      const cn = gingivaConsistency || "firm";
+    // Always substitutes — defaults (pink / scalloped / firm) apply when
+    // the user hasn't changed the dropdowns.
+    {
+      const c  = (ef["gingival color"]       || "").trim() || "pink";
+      const co = (ef["gingival contour"]     || "").trim() || "scalloped";
+      const cn = (ef["gingival consistency"] || "").trim() || "firm";
       t = t.replace(/\[color\], \[contour\], \[consistency\]/g, `${c}, ${co}, ${cn}`);
     }
 
@@ -3470,7 +3467,7 @@ const EXAM_FINDINGS_CONFIG = {
     {
       title: "Perio chart",
       fields: [
-        { label: "probing depths", type: "probing-depths" },
+        { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
         { label: "bleeding on probing", type: "teeth-selector", showG: true },
         { label: "recession", type: "teeth-selector" },
         { label: "furcation", type: "teeth-selector",
@@ -3540,7 +3537,7 @@ const EXAM_FINDINGS_CONFIG = {
     {
       title: "Perio chart",
       fields: [
-        { label: "probing depths", type: "probing-depths" },
+        { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
         { label: "bleeding on probing", type: "teeth-selector", showG: true },
         { label: "recession", type: "teeth-selector" },
         { label: "furcation", type: "teeth-selector",
@@ -3570,7 +3567,7 @@ const EXAM_FINDINGS_CONFIG = {
     {
       title: "Perio chart",
       fields: [
-        { label: "probing depths", type: "probing-depths" },
+        { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
         { label: "bleeding on probing", type: "teeth-selector", showG: true },
       ],
     },
@@ -3594,7 +3591,7 @@ const EXAM_FINDINGS_CONFIG = {
     {
       title: "Perio chart",
       fields: [
-        { label: "probing depths", type: "probing-depths" },
+        { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
         { label: "bleeding on probing", type: "teeth-selector", showG: true },
         { label: "recession", type: "teeth-selector" },
         { label: "furcation", type: "teeth-selector",
@@ -3623,7 +3620,7 @@ const EXAM_FINDINGS_CONFIG = {
     {
       title: "Perio chart",
       fields: [
-        { label: "probing depths", type: "probing-depths" },
+        { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
         { label: "bleeding on probing", type: "teeth-selector", showG: true },
         { label: "recession", type: "teeth-selector" },
         { label: "furcation", type: "teeth-selector",
@@ -3992,10 +3989,6 @@ function ExamFindings({ procedureId, findings, setFindings }) {
               style={selStyle}>
               {consOpts.map(o => <option key={o} value={o}>{o}</option>)}
             </select>
-            <span style={{ color: "var(--ink-soft)", fontSize: "13px",
-                fontFamily: "'Geist', sans-serif", whiteSpace: "nowrap" }}>
-              gingiva
-            </span>
           </div>
         </div>
       );
@@ -4863,7 +4856,14 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   if (!proc) return null;
                   const stepsChunk = findChunkForProcedure(proc, CHUNKS, "steps");
                   if (!stepsChunk) return null;
-                  const codes = extractCodes(stepsChunk.body);
+                  const ef = fields.examFindings || {};
+                  const nutriChecked = ef["nutritional counseling"] === true;
+                  const tobaccoChecked = ef["tobacco cessation"] === true;
+                  const codes = extractCodes(stepsChunk.body).filter(({ code }) => {
+                    if (code === "D1310") return nutriChecked;
+                    if (code === "D1320.1" || code === "D1320.2") return tobaccoChecked;
+                    return true;
+                  });
                   return codes.map(({ code, desc }) => (
                     <div key={code} style={{
                       display: "flex", alignItems: "baseline", gap: "10px",
