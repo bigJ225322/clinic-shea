@@ -4980,6 +4980,20 @@ function Browse({
     () => findChunkForProcedure(currentProcedure, chunks, "steps"),
     [currentProcedure, chunks]);
 
+  // Strip any "note template" section that was bundled into the same chunk
+  // body as the steps. The Swade PDF sometimes runs them together; we have
+  // a dedicated Note Builder for that content.
+  // Returns null when nothing remains after stripping (chunk was purely a
+  // note template), which causes the "no steps" fallback to render instead.
+  const stepsBody = useMemo(() => {
+    if (!stepsChunk) return null;
+    const body = stepsChunk.body;
+    // Match "note template" whether it leads the body or follows a newline.
+    const m = body.match(/(^|\n)[^\n]*note template/i);
+    const trimmed = m ? body.slice(0, m.index).trimEnd() : body;
+    return trimmed || null;
+  }, [stepsChunk]);
+
   // ─────────────── External cite-jump (unchanged behavior) ───────────────
   const articleRef = useRef(null);
   useEffect(() => {
@@ -5106,7 +5120,7 @@ function Browse({
 
       {/* Right: steps + actions */}
       <div style={{ position: "relative" }}>
-        {currentProcedure && stepsChunk && (
+        {currentProcedure && stepsBody && (
           <div style={{
             position: "absolute", top: "-19px", right: "1px",
             fontSize: "11px", color: "var(--ink-faint)",
@@ -5129,8 +5143,8 @@ function Browse({
             }}>{currentProcedure.label}</h2>
             <div className="hairline" style={{ margin: "0 0 22px" }} />
 
-            {stepsChunk ? (
-              <ProseBlock text={stepsChunk.body} highlight={search} />
+            {stepsBody ? (
+              <ProseBlock text={stepsBody} highlight={search} />
             ) : (
               <div style={{
                 color: "var(--ink-faint)", fontStyle: "italic",
