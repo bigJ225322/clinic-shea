@@ -2362,6 +2362,11 @@ function renderTemplate(raw, f) {
   }
 
   // -------- 3. Age + gender. --------
+  // Some templates (273, 807, 871) start with 2–3 artifact spaces before
+  // "y/o". Collapse those to exactly one space when the field is unfilled,
+  // or to nothing (age precedes y/o directly) when filled.
+  t = t.replace(/^[ \t]+(y\/o\b)/, f.age.trim() ? `${f.age.trim()} $1` : ` $1`);
+  // For "y/o" elsewhere in the note (e.g. "- y/o"), insert age if set.
   if (f.age.trim()) {
     t = t.replace(/(^|[^\d])(\s)y\/o\b/g, `$1$2${f.age.trim()} y/o`);
   }
