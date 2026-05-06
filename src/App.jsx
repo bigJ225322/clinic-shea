@@ -2521,9 +2521,11 @@ function renderTemplate(raw, f) {
     t = t.replace(/^([ \t]*-[ \t]*medications:)[^\n]*/im,
                   `$1 ${f.medications.trim()}`);
   }
-  if (f.allergies.trim()) {
+  // Allergies: default to "NKDA" when the field is left empty.
+  {
+    const allergiesVal = f.allergies.trim() || "NKDA";
     t = t.replace(/^([ \t]*-[ \t]*allergies:)[^\n]*/im,
-                  `$1 ${f.allergies.trim()}`);
+                  `$1 ${allergiesVal}`);
   }
   if (f.bp.trim()) {
     t = t.replace(/^([ \t]*-[ \t]*blood pressure:)[ \t]*$/im,
@@ -4453,8 +4455,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               fontSize: "11px", lineHeight: 1.5,
               color: "var(--ink-soft)",
             }}>
-              <strong style={{ color: "var(--ink)" }}>Reminder:</strong> check
-              the date of the patient's last bitewings.
+              <strong style={{ color: "var(--ink)" }}>Reminder:</strong> bitewings due once per year.
             </div>
           )}
           {userEdited && (
