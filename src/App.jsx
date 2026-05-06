@@ -271,13 +271,13 @@ const CHUNKS = [
 {
 "id": "c025",
 "section": "PERIO",
-"title": "PERIO RE-EVAL",
+"title": "PERIO RE-EVAL — perio re-eval: steps",
 "body": "perio re-eval: equipment\n    ●​ from sterilization: exam kit, prophy handpiece, toothbrush, patient goggles, blood glucose kit\n    ●​ from locker: blood pressure cuff, loupes and/or eye protection\n    ●​ in clinic: ziploc, toothpaste & floss for pt\n    ●​ in unit: prophy angle, prophy paste, disclosing tablet/solution\nperio re-eval: steps\n    1.​ get a start check\n    2.​ complete perio chart\n              ○​ do not plaque disclose immediately\n              ○​ create a new perio chart (Perio Chart → plus sign at top → select “Perio Re-Eval” next to “Exam Type”)\n              ○​ complete the perio chart\n                      ■​ probing depths\n                      ■​ bleeding on probing\n                      ■​ free gingival margin\n                      ■​ mucogingival deformities/defects\n                      ■​ mobility\n                      ■​ furcation involvement\n    3.​ complete perio EPR\n              ○​ under the EHR “Forms” tab, open the “Periodontic EPR” form & update 2 tabs of the perio EPR: “Periodontal Exam”\n                  & “Re-evaluation” — don’t forget to fill out the “Re-evaluation” tab on the perio EPR (!!!)\n    4.​ make perio tx plan\n              ○​ if patient’s periodontal health has improved, you can place the patient into perio recall (perio maintenance) &\n                  determine/adjust perio interval under “Treatment Plan” in perio EPR\n              ○​ if patient’s periodontal health has not improved, referral to PG perio is indicated (or potentially you re-SRP)\n    5.​ check in — present to instructor: findings, treatment plan / referral to PG perio\n    6.​ plaque disclosure — must complete!\n              ○​ have patient use disclosing tablet/solution\n              ○​ enter surfaces with plaque into perio chart\n              ○​ clicking the clipboard icon to access the auto-calculated O’Leary plaque\n                  index\n    7.​ OHI, nutritional counseling, tobacco cessation\n              ○​ must complete!\n              ○​ use dentech to demonstrate proper brushing & flossing technique\n              ○​ have patient demonstrate what they’ve learned using hand-held mirror; critique their technique\n    8.​ complete codes & note\n              ○​ D0170 (Re-Eval. - limited, prob. focus)\n              ○​ D1330 (Oral hygiene instructions)\n              ○​ D1310 (Nutritional counseling)\n              ○​ D1320.1 (Record Tobacco Usage)\n              ○​ D1320.2 (Provide Tobacco Cessation Education)\n    9.​ check in — have instructor swipe EPR/codes/note\n\nperio re-eval: note template\n - y/o female patient presents to Vivaldi clinic for perio re-evaluation after SRP 4 quads completed 1/1/2000\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Perio re-eval:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - O’Leary plaque index:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n\n Patient’s periodontal health has improved — . Upon evaluation, patient will be placed on perio maintenance interval of 4 months.\n\n - NV:"
 },
 {
 "id": "c026",
 "section": "PERIO",
-"title": "PERIO MAINTENANCE",
+"title": "PERIO MAINTENANCE — perio maintenance: steps",
 "body": "perio maintenance: equipment\n    ●​ from sterilization: perio kit, implant kit, Cavitron insert, prophy handpiece, toothbrush, patient goggles, blood glucose kit\n    ●​ from locker: blood pressure cuff, loupes and/or eye protection, dentech & toothbrush for OHI\n    ●​ in clinic: ziploc, toothpaste & floss for pt\n    ●​ in unit: prophy angle, prophy paste, floss\n\nperio maintenance: steps\n    1.​ get a start check\n    2.​ complete perio chart\n             ○​ you need to update the perio chart & perio EPR at every perio maintenance appointment\n             ○​ create a new perio chart (Perio Chart → plus sign at top → select “Perio Maintenance” next to “Exam Type”)\n             ○​ complete the perio chart\n                      ■​ probing depths + bleeding on probing\n                      ■​ free gingival margin\n                      ■​ mobility\n                      ■​ furcation involvement\n                      ■​ mucogingival defects\n    3.​ complete perio EPR\n             ○​ under the EHR “Forms” tab, open the “Periodontic EPR” form & update only the first tab, “Periodontal Exam”\n             ○​ adjust perio maintenance interval as indicated (“Treatment Plan” tab)\n    4.​ check in — have instructor check perio chart & EPR (instructor may have you do plaque disclosure)\n    5.​ cleaning\n             ○​ perio maintenance is basically a prophy (may have localized SRP in areas with deeper pockets; you can get the\n                  patient numb in these areas if they need it, usually they will not with regular perio maintenance)\n             ○​ use Cavitron first\n                      ■​ if pt has gross plaque buildup, use prophy cup first\n             ○​ floss to remove gross plaque from interproximals\n             ○​ finish up with hand instruments — don’t forget interproximals\n             ○​ before you call the instructor over to check, make sure you check your work with the 11/12 ODU explorer,\n                  especially in 3 spots: line angles, CEJ, & under the contact\n             ○​ polish after instructor has checked prophy so that there isn’t prophy paste debris\n    6.​ check in — have your instructor check cleaning\n    7.​ polish\n             ○​ polish after instructor has checked prophy so that there isn’t prophy paste debris\n    8.​ OHI, nutritional counseling, tobacco cessation\n    9.​ complete codes & note\n             ○​ D4910 (Periodontal maintenance)\n             ○​ D1330 (Oral hygiene instructions)\n             ○​ D1310 (Nutritional counseling)\n             ○​ D1320.1 (Record Tobacco Usage)\n             ○​ D1320.2 (Provide Tobacco Cessation Education)\n    10.​ check in — have instructor swipe EPR/codes/notes\n\nperio maintenance: note template\n - y/o female patient presents to Vivaldi clinic for perio maintenance\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Perio maintenance:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed plaque & calculus using Cavitron (with assistant using HVE) & hand instruments. Flossed. Polished with prophy paste.\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation. Emphasized that patient needs to .\n\n - NV:"
 },
 {
@@ -2452,6 +2452,7 @@ function renderTemplate(raw, f) {
   //     findings:" heading with the user's bulleted list.
   if (f.examFindings && typeof f.examFindings === "object") {
     for (const [label, value] of Object.entries(f.examFindings)) {
+      if (typeof value === "boolean") continue; // ohi-checkbox booleans handled in 7b-perio
       const v = (value || "").trim();
       if (!v) continue;
 
@@ -3343,14 +3344,13 @@ const EXAM_FINDINGS_CONFIG = {
     {
       title: "Perio chart",
       fields: [
-        { label: "probing depths", type: "input",
-          placeholder: "generalized 2-3mm; localized 4-5mm" },
-        { label: "bleeding on probing", type: "input",
-          placeholder: "generalized; localized #X" },
-        { label: "recession", type: "input", placeholder: "" },
-        { label: "furcation", type: "input", placeholder: "" },
-        { label: "mobility", type: "input", placeholder: "" },
-        { label: "mucogingival defects", type: "input", placeholder: "" },
+        { label: "probing depths", type: "probing-depths" },
+        { label: "bleeding on probing", type: "teeth-selector" },
+        { label: "recession", type: "teeth-selector" },
+        { label: "furcation", type: "teeth-selector" },
+        { label: "mobility", type: "teeth-selector" },
+        { label: "mucogingival defects", type: "input", wNLDefault: true },
+        { type: "gingiva-dropdowns" },
       ],
     },
     {
@@ -3413,7 +3413,7 @@ const EXAM_FINDINGS_CONFIG = {
     {
       title: "Perio chart",
       fields: [
-        { label: "probing depths", type: "input", placeholder: "e.g. 2-5mm" },
+        { label: "probing depths", type: "probing-depths" },
         { label: "bleeding on probing", type: "teeth-selector" },
         { label: "recession", type: "teeth-selector" },
         { label: "furcation", type: "teeth-selector" },
@@ -3437,7 +3437,7 @@ const EXAM_FINDINGS_CONFIG = {
     {
       title: "Perio chart",
       fields: [
-        { label: "probing depths", type: "input", placeholder: "e.g. 2-5mm" },
+        { label: "probing depths", type: "probing-depths" },
         { label: "bleeding on probing", type: "teeth-selector" },
       ],
     },
@@ -3456,7 +3456,7 @@ const EXAM_FINDINGS_CONFIG = {
     {
       title: "Perio chart",
       fields: [
-        { label: "probing depths", type: "input", placeholder: "e.g. 2-5mm" },
+        { label: "probing depths", type: "probing-depths" },
         { label: "bleeding on probing", type: "teeth-selector" },
         { label: "recession", type: "teeth-selector" },
         { label: "furcation", type: "teeth-selector" },
@@ -3478,7 +3478,7 @@ const EXAM_FINDINGS_CONFIG = {
     {
       title: "Perio chart",
       fields: [
-        { label: "probing depths", type: "input", placeholder: "e.g. 2-5mm" },
+        { label: "probing depths", type: "probing-depths" },
         { label: "bleeding on probing", type: "teeth-selector" },
         { label: "recession", type: "teeth-selector" },
         { label: "furcation", type: "teeth-selector" },
@@ -3500,6 +3500,63 @@ const EXAM_FINDINGS_CONFIG = {
 };
 
 const titleCaseLabel = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+// Probing depths field — two dropdowns (1–8 mm) for the typical range, plus
+// an "Over 8mm?" toggle that swaps in a free-text input for pathological cases.
+function ProbingDepthsField({ value, onChange }) {
+  const opts = ["1","2","3","4","5","6","7","8"];
+  const [overEight, setOverEight] = useState(false);
+
+  // Reset to range mode whenever the value is cleared externally (form reset).
+  useEffect(() => {
+    if (!value) setOverEight(false);
+  }, [value]);
+
+  // Parse "X-Ymm" from stored value; fall back to visual defaults 2/5.
+  const rangeMatch = (value || "").match(/^(\d+)-(\d+)mm$/);
+  const low  = rangeMatch ? rangeMatch[1] : "2";
+  const high = rangeMatch ? rangeMatch[2] : "5";
+
+  const selStyle = { ...inputStyle, flex: 1, fontSize: "13px" };
+
+  return (
+    <div>
+      {overEight ? (
+        <input type="text" value={value || ""}
+          onChange={e => onChange(e.target.value)}
+          placeholder="e.g. 9mm on #14, 10mm on #19"
+          style={{ ...inputStyle, fontSize: "13px" }} />
+      ) : (
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <select value={low}
+            onChange={e => onChange(`${e.target.value}-${high}mm`)}
+            style={selStyle}>
+            {opts.map(o => <option key={o} value={o}>{o}mm</option>)}
+          </select>
+          <span style={{ color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif" }}>–</span>
+          <select value={high}
+            onChange={e => onChange(`${low}-${e.target.value}mm`)}
+            style={selStyle}>
+            {opts.map(o => <option key={o} value={o}>{o}mm</option>)}
+          </select>
+        </div>
+      )}
+      <label style={{
+        display: "flex", alignItems: "center", gap: "7px",
+        marginTop: "5px", fontSize: "11px", color: "var(--ink-soft)",
+        cursor: "pointer", fontFamily: "'Geist', sans-serif",
+      }}>
+        <input type="checkbox" checked={overEight}
+          onChange={e => {
+            setOverEight(e.target.checked);
+            if (!e.target.checked) onChange(`${low}-${high}mm`);
+          }}
+          style={{ accentColor: "var(--accent)", cursor: "pointer" }} />
+        Over 8mm?
+      </label>
+    </div>
+  );
+}
 
 // Odontogram findings field — a textarea that auto-inserts "- " on Enter so
 // each finding becomes its own bulleted line, and auto-resizes vertically
@@ -3836,6 +3893,9 @@ function ExamFindings({ procedureId, findings, setFindings }) {
           <TeethSelectorPanel value={value}
             onChange={(v) => update(field.label, v)}
             placeholder={field.placeholder} />
+        ) : field.type === "probing-depths" ? (
+          <ProbingDepthsField value={value}
+            onChange={(v) => update(field.label, v)} />
         ) : (
           <input type="text" value={value}
             onChange={e => update(field.label, e.target.value)}
@@ -4679,7 +4739,7 @@ function PrivacyBanner() {
       fontStyle: "italic",
     }}>
       Notes and patient fields stay local to your browser — nothing is sent
-      or stored anywhere else. Click codes above to copy to clipboard. Don't forget your name.
+      or stored anywhere else. Clicking codes copies to clipboard. Don't forget your name.
     </p>
   );
 }
