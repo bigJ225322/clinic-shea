@@ -3470,15 +3470,14 @@ const EXAM_FINDINGS_CONFIG = {
       title: "Perio chart",
       rows: [
         [
-          { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
-          { label: "bleeding on probing", type: "teeth-selector", showG: true },
-          { label: "recession", type: "teeth-selector" },
+          { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true, displayLabel: "BoP" },
         ],
         [
+          { label: "recession", type: "teeth-selector" },
           { label: "furcation", type: "teeth-selector",
             teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
           { label: "mobility", type: "teeth-selector" },
-          { label: "mucogingival defects", type: "input", wNLDefault: true },
         ],
         [{ type: "gingiva-dropdowns" }],
       ],
@@ -3544,15 +3543,14 @@ const EXAM_FINDINGS_CONFIG = {
       title: "Perio chart",
       rows: [
         [
-          { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
-          { label: "bleeding on probing", type: "teeth-selector", showG: true },
-          { label: "recession", type: "teeth-selector" },
+          { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true, displayLabel: "BoP" },
         ],
         [
+          { label: "recession", type: "teeth-selector" },
           { label: "furcation", type: "teeth-selector",
             teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
           { label: "mobility", type: "teeth-selector" },
-          { label: "mucogingival defects", type: "input", wNLDefault: true },
         ],
         [{ type: "gingiva-dropdowns" }],
       ],
@@ -3578,8 +3576,8 @@ const EXAM_FINDINGS_CONFIG = {
       title: "Perio chart",
       rows: [
         [
-          { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
-          { label: "bleeding on probing", type: "teeth-selector", showG: true },
+          { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true, displayLabel: "BoP" },
         ],
       ],
     },
@@ -3604,17 +3602,18 @@ const EXAM_FINDINGS_CONFIG = {
       title: "Perio chart",
       rows: [
         [
-          { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
-          { label: "bleeding on probing", type: "teeth-selector", showG: true },
-          { label: "recession", type: "teeth-selector" },
+          { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true, displayLabel: "BoP" },
         ],
         [
+          { label: "recession", type: "teeth-selector" },
           { label: "furcation", type: "teeth-selector",
             teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
           { label: "mobility", type: "teeth-selector" },
+        ],
+        [
           { label: "O’Leary plaque index", type: "input", placeholder: "%",
             hint: "Perio Chart → Clipboard → O’Leary" },
-          { label: "mucogingival defects", type: "input", wNLDefault: true },
         ],
         [{ type: "gingiva-dropdowns" }],
       ],
@@ -3637,15 +3636,14 @@ const EXAM_FINDINGS_CONFIG = {
       title: "Perio chart",
       rows: [
         [
-          { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
-          { label: "bleeding on probing", type: "teeth-selector", showG: true },
-          { label: "recession", type: "teeth-selector" },
+          { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true, displayLabel: "BoP" },
         ],
         [
+          { label: "recession", type: "teeth-selector" },
           { label: "furcation", type: "teeth-selector",
             teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
           { label: "mobility", type: "teeth-selector" },
-          { label: "mucogingival defects", type: "input", wNLDefault: true },
         ],
         [{ type: "gingiva-dropdowns" }],
       ],
@@ -3818,7 +3816,7 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG }) {
       background: selectedTeeth.has(n) ? "var(--accent)" : "transparent",
       color: selectedTeeth.has(n) ? "var(--paper)" : "var(--ink-soft)",
       border: `1px solid ${selectedTeeth.has(n) ? "var(--accent)" : "var(--rule)"}`,
-      borderRadius: "2px", fontSize: "10px", padding: "4px 0",
+      borderRadius: "2px", fontSize: "11px", padding: "5px 0",
       cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
       lineHeight: 1.2, textAlign: "center",
     }}>{n}</button>
@@ -3838,18 +3836,19 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG }) {
           }} />
         {open && (
           <div style={{
-            position: "absolute", top: "calc(100% + 2px)", left: 0, right: 0,
+            position: "absolute", top: "calc(100% + 2px)", left: 0, right: "auto",
+            minWidth: "min(100vw - 32px, 520px)",
             background: "var(--paper)", border: "1px solid var(--rule)",
-            borderRadius: "3px", padding: "8px",
-            zIndex: 200, boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
+            borderRadius: "4px", padding: "10px 12px",
+            zIndex: 200, boxShadow: "0 4px 20px rgba(0,0,0,0.16)",
           }}>
             {/* Upper arch */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "3px", marginBottom: "2px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginBottom: "3px" }}>
               {upperTeeth.map(toothButton)}
             </div>
-            <div style={{ height: "1px", background: "var(--rule)", margin: "3px 0" }} />
+            <div style={{ height: "1px", background: "var(--rule)", margin: "4px 0" }} />
             {/* Lower arch */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "3px", marginTop: "2px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginTop: "3px" }}>
               {lowerTeeth.map(toothButton)}
             </div>
           </div>
