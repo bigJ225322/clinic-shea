@@ -6360,6 +6360,25 @@ const PES_PART7 = [
 // Concatenate all PE arrays into a single PES_ALL constant.
 const PES_ALL = [...PES, ...PES_PART2, ...PES_PART3, ...PES_PART4, ...PES_PART5, ...PES_PART6, ...PES_PART7];
 
+// PE-to-Procedure mapping for "Show Steps" links.
+// Only includes PEs with clear, exact matches to procedures.
+const PE_PROCEDURE_MAP = {
+  "PER01": "573",    // Periodontal Clinical Evaluation → Perio COE
+  "REVA04": "1346",  // Periodontal Re-Evaluation → Perio Re-Evaluation
+  "DXTX2": "2821",   // Single Tooth Replacement Dx & Tx Planning → Crown Prep
+  "CR1": "2821",     // Crown & Fixed Pros Foundation → Crown Prep
+  "CR2": "3204",     // Crown — Clinical Exam & Delivery → Crown Delivery
+  "CD1": "1641",     // Composite I → Composite Class I
+  "CD2": "1745",     // Composite II → Composite Class II
+  "CD3": "1850",     // Composite III → Composite Class III
+  "CD4": "1950",     // Composite IV → Composite Class IV
+  "CD5": "2046",     // Composite V → Composite Class V
+  "AM": "1549",      // Amalgam → Amalgam
+  "RPD": "3704",     // Removable Prosthodontics (Denture) → Complete Denture #1
+  "IMPLANT": "4574", // Implant (STI) → Implant-Level Impression
+  "ENDO": "5472",    // Endo → RCT
+};
+
 
 
 /* ============================================================================
@@ -6577,7 +6596,9 @@ function RubricGrid({ criteria }) {
 
 // Single PE card — collapsed shows code/name/deadline; expanded reveals all
 // the structured detail (prereq, case selection, protocol, rubric, etc.).
-function PECard({ pe, expanded, onToggle, peRef }) {
+function PECard({ pe, expanded, onToggle, peRef, onShowSteps }) {
+  const procedureId = PE_PROCEDURE_MAP[pe.id];
+
   return (
     <div ref={peRef} style={{
       ...cardStyle, padding: 0, overflow: "hidden",
@@ -6627,7 +6648,18 @@ function PECard({ pe, expanded, onToggle, peRef }) {
           borderTop: "1px solid var(--rule-soft)",
         }}>
           <div style={{ paddingTop: "16px" }}>
-            <SubsectionLabel>Prerequisite</SubsectionLabel>
+            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "12px", marginBottom: "12px" }}>
+              <SubsectionLabel>Prerequisite</SubsectionLabel>
+              {procedureId && onShowSteps && (
+                <button onClick={() => onShowSteps(procedureId)} style={{
+                  fontSize: "12px", color: "var(--accent)", cursor: "pointer",
+                  background: "none", border: "none", textDecoration: "underline",
+                  fontFamily: "'Geist', sans-serif", padding: 0, marginRight: "auto",
+                }}>
+                  Show Steps →
+                </button>
+              )}
+            </div>
             <p style={{ fontSize: "13px", color: "var(--ink-soft)",
                 lineHeight: 1.55, margin: "0 0 12px" }}>
               {pe.prereq}
@@ -6665,7 +6697,7 @@ function PECard({ pe, expanded, onToggle, peRef }) {
   );
 }
 
-function PEs() {
+function PEs({ onShowSteps }) {
   const [expanded, setExpanded] = useState(null);
   const peRefs = useRef({});
 
@@ -6702,6 +6734,7 @@ function PEs() {
                 expanded={expanded === pe.id}
                 onToggle={() => setExpanded(e => e === pe.id ? null : pe.id)}
                 peRef={el => { peRefs.current[pe.id] = el; }}
+                onShowSteps={onShowSteps}
               />
             ))}
           </div>
@@ -6774,6 +6807,11 @@ export default function App() {
 
   const handleCiteJump = (chunkId) => {
     setPendingBrowseChunkId(chunkId);
+    setTab("browse");
+  };
+
+  const handleShowSteps = (procedureId) => {
+    setSelectedProcedureId(procedureId);
     setTab("browse");
   };
 
@@ -7019,7 +7057,7 @@ export default function App() {
             onJumpTo={handleCiteJump} />
         )}
         {tab === "rvus" && <RVUs />}
-        {tab === "pes" && <PEs />}
+        {tab === "pes" && <PEs onShowSteps={handleShowSteps} />}
       </main>
     </div>
   );
