@@ -4983,15 +4983,19 @@ function Browse({
   // Strip any "note template" section that was bundled into the same chunk
   // body as the steps. The Swade PDF sometimes runs them together; we have
   // a dedicated Note Builder for that content.
+  // Also strips a redundant leading title line like "implant consult: steps"
+  // since the h2 heading already names the procedure.
   // Returns null when nothing remains after stripping (chunk was purely a
   // note template), which causes the "no steps" fallback to render instead.
   const stepsBody = useMemo(() => {
     if (!stepsChunk) return null;
-    const body = stepsChunk.body;
-    // Match "note template" whether it leads the body or follows a newline.
+    let body = stepsChunk.body;
+    // Strip note template section (mid-body or leading).
     const m = body.match(/(^|\n)[^\n]*note template/i);
-    const trimmed = m ? body.slice(0, m.index).trimEnd() : body;
-    return trimmed || null;
+    body = m ? body.slice(0, m.index).trimEnd() : body;
+    // Strip leading "<procedure>: steps/instructions/equipment" title line.
+    body = body.replace(/^[^\n]+:\s+(?:steps|instructions|equipment)\n+/i, "");
+    return body.trim() || null;
   }, [stepsChunk]);
 
   // ─────────────── External cite-jump (unchanged behavior) ───────────────
@@ -5528,7 +5532,7 @@ function RVUs() {
   // exhaustive (every CDT code) and most students only ever use the subset
   // Swade documented; this toggle cuts noise without losing the option to
   // browse everything.
-  const [swadeOnly, setSwadeOnly] = useState(false);
+  const [swadeOnly, setSwadeOnly] = useState(true);
 
   // Apply category filter + Swade filter + search filter, then sort.
   const rows = useMemo(() => {
