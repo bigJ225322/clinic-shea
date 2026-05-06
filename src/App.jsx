@@ -3468,15 +3468,19 @@ const EXAM_FINDINGS_CONFIG = {
   "573": [
     {
       title: "Perio chart",
-      fields: [
-        { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
-        { label: "bleeding on probing", type: "teeth-selector", showG: true },
-        { label: "recession", type: "teeth-selector" },
-        { label: "furcation", type: "teeth-selector",
-          teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
-        { label: "mobility", type: "teeth-selector" },
-        { label: "mucogingival defects", type: "input", wNLDefault: true },
-        { type: "gingiva-dropdowns" },
+      rows: [
+        [
+          { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true },
+          { label: "recession", type: "teeth-selector" },
+        ],
+        [
+          { label: "furcation", type: "teeth-selector",
+            teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
+          { label: "mobility", type: "teeth-selector" },
+          { label: "mucogingival defects", type: "input", wNLDefault: true },
+        ],
+        [{ type: "gingiva-dropdowns" }],
       ],
     },
     {
@@ -3538,15 +3542,19 @@ const EXAM_FINDINGS_CONFIG = {
   "1196": [
     {
       title: "Perio chart",
-      fields: [
-        { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
-        { label: "bleeding on probing", type: "teeth-selector", showG: true },
-        { label: "recession", type: "teeth-selector" },
-        { label: "furcation", type: "teeth-selector",
-          teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
-        { label: "mobility", type: "teeth-selector" },
-        { label: "mucogingival defects", type: "input", wNLDefault: true },
-        { type: "gingiva-dropdowns" },
+      rows: [
+        [
+          { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true },
+          { label: "recession", type: "teeth-selector" },
+        ],
+        [
+          { label: "furcation", type: "teeth-selector",
+            teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
+          { label: "mobility", type: "teeth-selector" },
+          { label: "mucogingival defects", type: "input", wNLDefault: true },
+        ],
+        [{ type: "gingiva-dropdowns" }],
       ],
     },
     {
@@ -3554,9 +3562,9 @@ const EXAM_FINDINGS_CONFIG = {
       fields: [
         { type: "brushing-flossing" },
         { label: "technique", type: "select", defaultValue: "average",
-          options: ["poor", "average", "good"] },
+          options: ["poor", "average", "good"], absorbed: true },
         { label: "plaque level", type: "select", defaultValue: "moderate",
-          options: ["light", "moderate", "heavy"] },
+          options: ["light", "moderate", "heavy"], absorbed: true },
         { label: "plaque area", type: "input", placeholder: "e.g. UR molars, linguals" },
         { label: "emphasis", type: "input", placeholder: "e.g. floss daily" },
         { label: "nutritional counseling", type: "ohi-checkbox" },
@@ -3568,9 +3576,11 @@ const EXAM_FINDINGS_CONFIG = {
   "1272": [
     {
       title: "Perio chart",
-      fields: [
-        { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
-        { label: "bleeding on probing", type: "teeth-selector", showG: true },
+      rows: [
+        [
+          { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true },
+        ],
       ],
     },
     {
@@ -3578,9 +3588,9 @@ const EXAM_FINDINGS_CONFIG = {
       fields: [
         { type: "brushing-flossing" },
         { label: "technique", type: "select", defaultValue: "average",
-          options: ["poor", "average", "good"] },
+          options: ["poor", "average", "good"], absorbed: true },
         { label: "plaque level", type: "select", defaultValue: "moderate",
-          options: ["light", "moderate", "heavy"] },
+          options: ["light", "moderate", "heavy"], absorbed: true },
         { label: "plaque area", type: "input", placeholder: "e.g. UR molars, linguals" },
         { label: "emphasis", type: "input", placeholder: "e.g. floss daily" },
         { label: "nutritional counseling", type: "ohi-checkbox" },
@@ -3592,17 +3602,21 @@ const EXAM_FINDINGS_CONFIG = {
   "1346": [
     {
       title: "Perio chart",
-      fields: [
-        { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
-        { label: "bleeding on probing", type: "teeth-selector", showG: true },
-        { label: "recession", type: "teeth-selector" },
-        { label: "furcation", type: "teeth-selector",
-          teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
-        { label: "mobility", type: "teeth-selector" },
-        { label: "O'Leary plaque index", type: "input", placeholder: "%",
-          hint: "Perio Chart → Clipboard → O’Leary" },
-        { label: "mucogingival defects", type: "input", wNLDefault: true },
-        { type: "gingiva-dropdowns" },
+      rows: [
+        [
+          { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true },
+          { label: "recession", type: "teeth-selector" },
+        ],
+        [
+          { label: "furcation", type: "teeth-selector",
+            teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
+          { label: "mobility", type: "teeth-selector" },
+          { label: "O’Leary plaque index", type: "input", placeholder: "%",
+            hint: "Perio Chart → Clipboard → O’Leary" },
+          { label: "mucogingival defects", type: "input", wNLDefault: true },
+        ],
+        [{ type: "gingiva-dropdowns" }],
       ],
     },
     {
@@ -3610,9 +3624,9 @@ const EXAM_FINDINGS_CONFIG = {
       fields: [
         { type: "brushing-flossing" },
         { label: "technique", type: "select", defaultValue: "average",
-          options: ["poor", "average", "good"] },
+          options: ["poor", "average", "good"], absorbed: true },
         { label: "plaque level", type: "select", defaultValue: "moderate",
-          options: ["light", "moderate", "heavy"] },
+          options: ["light", "moderate", "heavy"], absorbed: true },
         { label: "plaque area", type: "input", placeholder: "e.g. UR molars, linguals" },
       ],
     },
@@ -3621,15 +3635,19 @@ const EXAM_FINDINGS_CONFIG = {
   "1425": [
     {
       title: "Perio chart",
-      fields: [
-        { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
-        { label: "bleeding on probing", type: "teeth-selector", showG: true },
-        { label: "recession", type: "teeth-selector" },
-        { label: "furcation", type: "teeth-selector",
-          teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
-        { label: "mobility", type: "teeth-selector" },
-        { label: "mucogingival defects", type: "input", wNLDefault: true },
-        { type: "gingiva-dropdowns" },
+      rows: [
+        [
+          { label: "probing depths", type: "probing-depths", displayLabel: "Probing depths (range)" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true },
+          { label: "recession", type: "teeth-selector" },
+        ],
+        [
+          { label: "furcation", type: "teeth-selector",
+            teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
+          { label: "mobility", type: "teeth-selector" },
+          { label: "mucogingival defects", type: "input", wNLDefault: true },
+        ],
+        [{ type: "gingiva-dropdowns" }],
       ],
     },
     {
@@ -3637,9 +3655,9 @@ const EXAM_FINDINGS_CONFIG = {
       fields: [
         { type: "brushing-flossing" },
         { label: "technique", type: "select", defaultValue: "average",
-          options: ["poor", "average", "good"] },
+          options: ["poor", "average", "good"], absorbed: true },
         { label: "plaque level", type: "select", defaultValue: "moderate",
-          options: ["light", "moderate", "heavy"] },
+          options: ["light", "moderate", "heavy"], absorbed: true },
         { label: "plaque area", type: "input", placeholder: "e.g. UR molars, linguals" },
         { label: "emphasis", type: "input", placeholder: "e.g. floss daily" },
         { label: "nutritional counseling", type: "ohi-checkbox" },
@@ -3675,7 +3693,7 @@ function ProbingDepthsField({ value, onChange }) {
   return isManual ? (
     <input type="text" value={value || ""}
       onChange={e => onChange(e.target.value)}
-      placeholder="e.g. generalized 2-5mm; localized 9mm #14"
+      placeholder="e.g. generalized 2-5mm; localized 9mm #14-MB"
       style={{ ...inputStyle, fontSize: "13px" }} />
   ) : (
     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -3996,39 +4014,54 @@ function ExamFindings({ procedureId, findings, setFindings }) {
       );
     }
 
+    // Absorbed fields are rendered inside brushing-flossing's 4-up row.
+    if (field.absorbed) return null;
+
     if (field.type === "brushing-flossing") {
       const brushOpts = ["1x", "2x", "3x"];
       const flossOpts = ["1x/week", "2x/week", "3-4x/week", "1x/day"];
-      const selStyle = { ...inputStyle, fontSize: "13px" };
+      const techOpts  = ["poor", "average", "good"];
+      const plaqOpts  = ["light", "moderate", "heavy"];
+      const selStyle  = { ...inputStyle, fontSize: "13px" };
+      const lblStyle  = { ...labelStyle, fontSize: "10px", textTransform: "none",
+        letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" };
       return (
         <div key="brushing-flossing" style={{ marginBottom: "9px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "8px" }}>
             <div>
-              <label style={{ ...labelStyle, fontSize: "10px", textTransform: "none",
-                letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" }}>
-                Brushing
-              </label>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <label style={lblStyle}>Brushing</label>
+              <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                 <select value={findings["brushing frequency"] || "2x"}
                   onChange={e => update("brushing frequency", e.target.value)}
                   style={{ ...selStyle, flex: 1 }}>
                   {brushOpts.map(o => <option key={o} value={o}>{o}</option>)}
                 </select>
                 <span style={{ color: "var(--ink-soft)", fontSize: "12px",
-                    fontFamily: "'Geist', sans-serif", whiteSpace: "nowrap" }}>
-                  /day
-                </span>
+                    fontFamily: "'Geist', sans-serif", whiteSpace: "nowrap" }}>/day</span>
               </div>
             </div>
             <div>
-              <label style={{ ...labelStyle, fontSize: "10px", textTransform: "none",
-                letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" }}>
-                Flossing
-              </label>
+              <label style={lblStyle}>Flossing</label>
               <select value={findings["flossing frequency"] || "1x/week"}
                 onChange={e => update("flossing frequency", e.target.value)}
                 style={selStyle}>
                 {flossOpts.map(o => <option key={o} value={o}>{o}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={lblStyle}>Technique</label>
+              <select value={findings["technique"] || "average"}
+                onChange={e => update("technique", e.target.value)}
+                style={selStyle}>
+                {techOpts.map(o => <option key={o} value={o}>{o}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={lblStyle}>Plaque level</label>
+              <select value={findings["plaque level"] || "moderate"}
+                onChange={e => update("plaque level", e.target.value)}
+                style={selStyle}>
+                {plaqOpts.map(o => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
           </div>
@@ -4241,7 +4274,19 @@ function ExamFindings({ procedureId, findings, setFindings }) {
   return (
     <>
       {config.map((section, i) => {
-        const fields = section.fields.map(renderField);
+        // sections can declare `rows` (array of field arrays) for horizontal layout,
+        // or the standard `fields` array for the default vertical stack.
+        const fields = section.rows
+          ? section.rows.map((row, ri) => (
+              <div key={ri} style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
+                {row.map((f2, fi) => (
+                  <div key={f2.label || f2.type || fi} style={{ flex: 1, minWidth: 0 }}>
+                    {renderField(f2)}
+                  </div>
+                ))}
+              </div>
+            ))
+          : section.fields.map(renderField);
         if (section.disclosure) {
           return (
             <div key={i} style={{ marginTop: i === 0 ? "4px" : "16px" }}>
@@ -4676,19 +4721,25 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
             <>
               <Hairline />
               <SubsectionLabel>Assessment</SubsectionLabel>
-              <Field label="Periodontal health">
-                <Select value={fields.perioImproved || "improved"}
-                  onChange={v => setField("perioImproved", v)}>
-                  <option value="improved">improved</option>
-                  <option value="not improved">has not improved</option>
-                </Select>
-              </Field>
-              <Field label="Rationale">
-                <TextInput
-                  value={fields.perioImprovementDetail || ""}
-                  onChange={v => setField("perioImprovementDetail", v)}
-                  placeholder="e.g. decrease in probing depths" />
-              </Field>
+              <div style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
+                <div style={{ flex: "0 0 auto" }}>
+                  <Field label="Periodontal health">
+                    <Select value={fields.perioImproved || "improved"}
+                      onChange={v => setField("perioImproved", v)}>
+                      <option value="improved">improved</option>
+                      <option value="not improved">has not improved</option>
+                    </Select>
+                  </Field>
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <Field label="Rationale">
+                    <TextInput
+                      value={fields.perioImprovementDetail || ""}
+                      onChange={v => setField("perioImprovementDetail", v)}
+                      placeholder="e.g. decrease in probing depths" />
+                  </Field>
+                </div>
+              </div>
             </>
           )}
 
