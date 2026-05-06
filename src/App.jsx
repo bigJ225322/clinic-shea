@@ -2289,6 +2289,11 @@ const DEFAULT_FIELDS = {
   cordPlaced: false,
   cordSize: "0",
   crownType: "PFM",
+  // cc: Chief complaint — typed text inserted into the CC: curly-quote placeholder.
+  cc: "",
+  // accepted: "Accepted?" checkbox — when false, strips the provisional acceptance
+  //   sentence from the note. Applies to screening (273) and implant consult (871).
+  accepted: true,
 };
 
 // Anesthetic options from the manual (Local Anesthesia section).
@@ -2365,18 +2370,27 @@ function renderTemplate(raw, f) {
   }
 
   // -------- 4. Clinic substitution. --------
-  // The dropdown defaults to empty (so it reads "Select a clinic"), but the
-  // rendered note should never display the source's "Vivaldi clinic" — that
-  // was just Swade's default in 2021. If the user hasn't picked anything,
-  // we silently substitute Gershwin so the note reads as if Gershwin were
-  // chosen.
-  const clinic = f.clinic.trim() || "Gershwin";
+  // Templates use "Vivaldi clinic" (Swade's 2021 default), "Chicago clinic"
+  // (implant / STI procedures), and "UG clinic" / "UG Peds" (screening).
+  // When the user picks a clinic, substitute it everywhere. When the user
+  // leaves the dropdown empty:
+  //   - "Vivaldi clinic" → "Gershwin clinic" (sensible default for most work)
+  //   - "Chicago clinic" → left unchanged (only Chicago does STI/implant work)
+  //   - "UG clinic" / "UG Peds" → "Gershwin clinic" / "Gershwin"
+  const userClinic = f.clinic.trim();
   const namedClinics = ["Gershwin", "Vivaldi", "Brahms", "Bach", "Mozart", "Pediatrics"];
-  const replacement = namedClinics.includes(clinic) ? `${clinic} clinic` : clinic;
-  t = t.replace(/\bVivaldi clinic\b/g, replacement);
-  t = t.replace(/\bChicago clinic\b/g, replacement);
-  t = t.replace(/\bUG clinic\b/g, replacement);
-  t = t.replace(/\bUG Peds\b/g, replacement);
+  if (userClinic) {
+    const replacement = namedClinics.includes(userClinic) ? `${userClinic} clinic` : userClinic;
+    t = t.replace(/\bVivaldi clinic\b/g, replacement);
+    t = t.replace(/\bChicago clinic\b/g, replacement);
+    t = t.replace(/\bUG clinic\b/g, replacement);
+    t = t.replace(/\bUG Peds\b/g, replacement);
+  } else {
+    t = t.replace(/\bVivaldi clinic\b/g, "Gershwin clinic");
+    t = t.replace(/\bUG clinic\b/g, "Gershwin clinic");
+    t = t.replace(/\bUG Peds\b/g, "Gershwin");
+    // "Chicago clinic" intentionally left as-is — only Chicago does this work.
+  }
 
   // -------- 5. Tooth + surfaces (unified field). --------
   // The tooth field accepts a single string with optional surfaces and
@@ -2450,6 +2464,26 @@ function renderTemplate(raw, f) {
       /Placed #0 gingival retraction cord soaked in Hemodent/g,
       `Placed #${f.cordSize} gingival retraction cord soaked in Hemodent`
     );
+  }
+
+  // -------- 6e. CC (chief complaint). --------
+  // Templates use a curly-quote placeholder: CC: "“ ”" or CC: "“.”".
+  // When the user types a CC, replace whatever sits between the curly quotes.
+  if (f.cc && f.cc.trim()) {
+    t = t.replace(
+      /((?:CC:|Chief complaint:)\s*)“[^”]*”/g,
+      (_, prefix) => `${prefix}“${f.cc.trim()}”`
+    );
+  }
+
+  // -------- 6f. "Accepted?" toggle (screening, implant consult). --------
+  // When unchecked, strips the provisional acceptance sentence.
+  // Covers both forms: "accepted for UG STI placement" (871) and
+  // "accepted to [clinic]" (273).
+  if (f.accepted === false) {
+    t = t.replace(/\s*Patient is provisionally accepted for[^.]+\.\s*/g, " ");
+    t = t.replace(/\s*Patient is provisionally accepted to[^.]+\.\s*/g, " ");
+    t = t.replace(/\n{3,}/g, "\n\n");
   }
 
   // -------- 7. Medical history / meds / allergies / BP. --------
@@ -4048,6 +4082,8 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     const m = rawTemplate.match(/(?:^|\n)[ \t]*-?[ \t]*NV:[ \t]*([^\n]*)/);
     return m ? m[1].trim() : "";
   }, [rawTemplate]);
+  const needsCC = useMemo(
+    () => /(?:CC:|Chief complaint:)\s*“/.test(rawTemplate), [rawTemplate]);
   const needsNitrous = useMemo(
     () => /Titrated to[^.]*nitrous/i.test(rawTemplate), [rawTemplate]);
 
@@ -4202,28 +4238,60 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               </Select>
             </Field>
           </div>
-          <Field label="Clinic">
-            <Select value={fields.clinic} onChange={v=>setField("clinic",v)}>
-              <option value="">— Select a clinic —</option>
-              <option value="Gershwin">Gershwin</option>
-              <option value="Vivaldi">Vivaldi</option>
-              <option value="Brahms">Brahms</option>
-              <option value="Bach">Bach</option>
-              <option value="Mozart">Mozart</option>
-              <option value="Pediatrics">Pediatrics</option>
-              <option value="Chicago">Chicago</option>
-              <option value="UGOS">UGOS</option>
-            </Select>
-          </Field>
+          {procedureId !== "871" && (
+            <Field label="Clinic">
+              <Select value={fields.clinic} onChange={v=>setField("clinic",v)}>
+                <option value="">— Select a clinic —</option>
+                <option value="Gershwin">Gershwin</option>
+                <option value="Vivaldi">Vivaldi</option>
+                <option value="Brahms">Brahms</option>
+                <option value="Bach">Bach</option>
+                <option value="Mozart">Mozart</option>
+                <option value="Pediatrics">Pediatrics</option>
+                <option value="Chicago">Chicago</option>
+                <option value="UGOS">UGOS</option>
+              </Select>
+            </Field>
+          )}
+          {needsCC && (
+            <>
+              <Hairline />
+              <Field label="Chief Complaint">
+                <TextInput value={fields.cc} onChange={v=>setField("cc",v)}
+                  placeholder='e.g. I have pain in my tooth.' />
+              </Field>
+            </>
+          )}
+          {(procedureId === "273" || procedureId === "871") && (
+            <>
+              <Hairline />
+              <label style={{
+                display: "flex", alignItems: "center", gap: "10px",
+                fontSize: "13px", color: "var(--ink)",
+                cursor: "pointer", padding: "6px 0",
+              }}>
+                <input type="checkbox"
+                  checked={fields.accepted !== false}
+                  onChange={e => setField("accepted", e.target.checked)}
+                  style={{ width: "16px", height: "16px",
+                    accentColor: "var(--accent)", cursor: "pointer" }} />
+                <span>Accepted?</span>
+                <span style={{ color: "var(--ink-faint)", fontSize: "11px",
+                    fontStyle: "italic", marginLeft: "auto" }}>
+                  uncheck to remove
+                </span>
+              </label>
+            </>
+          )}
           {(needsTooth || needsShade) && (
             <>
               <Hairline />
               <div style={twoCol}>
                 {needsTooth && (
-                  <Field label={["2742","2821","3002"].includes(procedureId) ? "Tooth" : "Tooth & Surfaces"}>
+                  <Field label={["2742","2821","3002","871"].includes(procedureId) ? "Tooth" : "Tooth & Surfaces"}>
                     <ToothInput value={fields.tooth}
                       onChange={v=>setField("tooth",v)}
-                      placeholder={["2742","2821","3002"].includes(procedureId) ? "e.g. #19" : "#19-MO     or     #19-MO, #24-L"} />
+                      placeholder={["2742","2821","3002","871"].includes(procedureId) ? "e.g. #19" : "#19-MO     or     #19-MO, #24-L"} />
                   </Field>
                 )}
                 {needsShade && (
