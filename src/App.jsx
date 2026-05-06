@@ -3736,7 +3736,7 @@ function TeethSelectorPanel({ value, onChange, placeholder }) {
   return (
     <div ref={panelRef} style={{ position: "relative" }}>
       <input readOnly value={displayValue}
-        placeholder={placeholder || "select teeth or generalized"}
+        placeholder={placeholder || "select teeth"}
         onClick={() => setOpen(o => !o)}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
