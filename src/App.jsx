@@ -5105,6 +5105,16 @@ function Browse({
       </section>
 
       {/* Right: steps + actions */}
+      <div style={{ position: "relative" }}>
+        {currentProcedure && stepsChunk && (
+          <div style={{
+            position: "absolute", top: "-19px", right: "1px",
+            fontSize: "11px", color: "var(--ink-faint)",
+            fontFamily: "'Geist', sans-serif", lineHeight: 1,
+          }}>
+            Steps from <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em>
+          </div>
+        )}
       <article ref={articleRef} style={{
         background: "var(--paper)", border: "1px solid var(--rule)",
         borderRadius: "3px", padding: "32px 36px",
@@ -5114,17 +5124,9 @@ function Browse({
         {currentProcedure ? (
           <>
             <h2 className="serif" style={{
-              fontSize: "30px", margin: "0 0 8px", fontWeight: 400,
+              fontSize: "30px", margin: "0 0 24px", fontWeight: 400,
               letterSpacing: "-0.01em", lineHeight: 1.15,
             }}>{currentProcedure.label}</h2>
-            <div style={{
-              fontSize: "13px", color: "var(--ink-soft)",
-              marginBottom: "22px", lineHeight: 1.5,
-            }}>
-              {stepsChunk ? (
-                <>Steps from <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual.</>
-              ) : "No steps were recorded for this procedure."}
-            </div>
             <div className="hairline" style={{ margin: "0 0 22px" }} />
 
             {stepsChunk ? (
@@ -5165,6 +5167,7 @@ function Browse({
           </div>
         )}
       </article>
+      </div>
     </div>
   );
 }
