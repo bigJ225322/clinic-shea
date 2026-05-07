@@ -2373,13 +2373,17 @@ function renderTemplate(raw, f) {
   }
 
   // -------- 3. Age + gender. --------
+  // Ages over 89 are PHI under HIPAA and must not appear in the note.
+  // If the field is filled but > 89, treat it as blank so "y/o" renders
+  // without a number — the student still sees the value in the form.
+  const ageForNote = f.age.trim() && parseInt(f.age.trim(), 10) <= 89 ? f.age.trim() : "";
   // Some templates (273, 807, 871) start with 2–3 artifact spaces before
   // "y/o". Collapse those to exactly one space when the field is unfilled,
   // or to nothing (age precedes y/o directly) when filled.
-  t = t.replace(/^[ \t]+(y\/o\b)/, f.age.trim() ? `${f.age.trim()} $1` : ` $1`);
+  t = t.replace(/^[ \t]+(y\/o\b)/, ageForNote ? `${ageForNote} $1` : ` $1`);
   // For "y/o" elsewhere in the note (e.g. "- y/o"), insert age if set.
-  if (f.age.trim()) {
-    t = t.replace(/(^|[^\d])(\s)y\/o\b/g, `$1$2${f.age.trim()} y/o`);
+  if (ageForNote) {
+    t = t.replace(/(^|[^\d])(\s)y\/o\b/g, `$1$2${ageForNote} y/o`);
   }
   if (f.gender.trim() && f.gender.trim().toLowerCase() !== "female") {
     t = t.replace(/\bfemale\b/g, f.gender.trim());
@@ -3012,20 +3016,27 @@ function Select({ value, onChange, children, prominent = false }) {
 function AgeInput({ value, onChange }) {
   const [focused, setFocused] = useState(false);
   const handleChange = (raw) => {
-    // strip non-digits, then clamp
     const digits = raw.replace(/\D/g, "");
     if (!digits) { onChange(""); return; }
-    const n = Math.min(89, Math.max(0, parseInt(digits, 10)));
-    onChange(String(n));
+    onChange(String(Math.max(0, parseInt(digits, 10))));
   };
+  const over89 = value && parseInt(value, 10) > 89;
   return (
-    <input type="text" inputMode="numeric" value={value} placeholder="e.g. 42"
-      onChange={(e) => handleChange(e.target.value)}
-      onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
-      style={{ ...inputStyle,
-        borderColor: focused ? "var(--accent)" : "var(--rule)",
-        boxShadow: focused ? "0 0 0 3px rgba(122, 26, 26, 0.08)" : "none",
-      }} />
+    <>
+      <input type="text" inputMode="numeric" value={value} placeholder="e.g. 42"
+        onChange={(e) => handleChange(e.target.value)}
+        onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+        style={{ ...inputStyle,
+          borderColor: over89 ? "var(--accent)" : focused ? "var(--accent)" : "var(--rule)",
+          boxShadow: over89 ? "0 0 0 3px rgba(122,26,26,0.12)" : focused ? "0 0 0 3px rgba(122,26,26,0.08)" : "none",
+        }} />
+      {over89 && (
+        <div style={{ marginTop: "4px", fontSize: "11px", color: "var(--accent)",
+          fontFamily: "'Geist', sans-serif" }}>
+          Max age 89 — record as 90+
+        </div>
+      )}
+    </>
   );
 }
 
@@ -4720,7 +4731,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
             </div>
           )}
           <div style={twoCol}>
-            <Field label="Age (max 89)">
+            <Field label="Age">
               <AgeInput value={fields.age} onChange={v=>setField("age",v)} />
             </Field>
             <Field label="Gender">
