@@ -2299,6 +2299,9 @@ const DEFAULT_FIELDS = {
   perioImproved: "improved",
   // perioImprovementDetail: free-text explanation for the improvement note.
   perioImprovementDetail: "",
+  // srpDate: date SRP was completed, shown in perio re-eval (1346) header line.
+  //   Replaces the "1/1/2000" placeholder.
+  srpDate: "",
 };
 
 // Anesthetic options from the manual (Local Anesthesia section).
@@ -2497,6 +2500,15 @@ function renderTemplate(raw, f) {
     t = t.replace(/\s*Patient is provisionally accepted for[^.]+\.\s*/g, " ");
     t = t.replace(/\s*Patient is provisionally accepted to[^.]+\.\s*/g, " ");
     t = t.replace(/\n{3,}/g, "\n\n");
+  }
+
+  // -------- 6f. Perio re-eval SRP completion date. --------
+  // Applies to template 1346. Replaces the "1/1/2000" placeholder with the
+  // date the student enters. Leaves "1/1/2000" if the field is empty so the
+  // student can see something is expected there.
+  if (f.srpDate !== undefined) {
+    const d = (f.srpDate || "").trim();
+    if (d) t = t.replace(/\b1\/1\/2000\b/, d);
   }
 
   // -------- 6g. Perio re-eval improvement status + detail. --------
@@ -4587,6 +4599,13 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                 <option value="Mozart">Mozart</option>
                 {showChicago && <option value="Chicago">Chicago</option>}
               </Select>
+            </Field>
+          )}
+          {procedureId === "1346" && (
+            <Field label="SRP completed">
+              <TextInput value={fields.srpDate || ""}
+                onChange={v => setField("srpDate", v)}
+                placeholder="e.g. 3/15/2025" />
             </Field>
           )}
           {needsCC && (
