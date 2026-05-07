@@ -3496,13 +3496,13 @@ const EXAM_FINDINGS_CONFIG = {
     },
     {
       title: "Diagnosis",
-      fields: [
-        { type: "perio-classification" },
-        { label: "prognosis", type: "select",
-          options: ["", "fair", "questionable", "hopeless"],
-          // Special: this writes to all three of fair/questionable/hopeless
-          // by setting the matching one. Custom handler in the component.
-          isPrognosis: true },
+      rows: [
+        [{ type: "perio-classification" }],
+        [
+          { label: "fair", type: "teeth-selector" },
+          { label: "questionable", type: "teeth-selector" },
+          { label: "hopeless", type: "teeth-selector" },
+        ],
       ],
     },
   ],
@@ -3962,19 +3962,6 @@ function ExamFindings({ procedureId, findings, setFindings }) {
     setFindings({ ...findings, ...updates });
   };
 
-  // Prognosis is an exclusive choice — selecting "fair" should set
-  // findings.fair = "X" (matching the radio-button-like convention in the
-  // source notes) and clear questionable/hopeless. Selecting blank clears all.
-  const updatePrognosis = (value) => {
-    const next = { ...findings };
-    delete next.fair;
-    delete next.questionable;
-    delete next.hopeless;
-    next.prognosis = value;  // remembered so the dropdown re-renders correctly
-    if (value) next[value] = "X";
-    setFindings(next);
-  };
-
   // Initialize wNLDefault fields to "WNL" when the procedure loads.
   useEffect(() => {
     const allFields = config.flatMap(s => s.fields || []);
@@ -4305,16 +4292,9 @@ function ExamFindings({ procedureId, findings, setFindings }) {
     }
 
     // --- Standard labeled fields ---
-    const isProgn = field.isPrognosis;
-    const value = isProgn
-      ? (findings.prognosis || "")
-      : (findings[field.label] !== undefined ? findings[field.label] : (field.wNLDefault ? "WNL" : (field.defaultValue || "")));
-    const onChange = isProgn
-      ? (e) => updatePrognosis(e.target.value)
-      : (e) => update(field.label, e.target.value);
-    const display = isProgn
-      ? "Prognosis"
-      : (field.displayLabel || titleCaseLabel(field.label));
+    const value = findings[field.label] !== undefined ? findings[field.label] : (field.wNLDefault ? "WNL" : (field.defaultValue || ""));
+    const onChange = (e) => update(field.label, e.target.value);
+    const display = field.displayLabel || titleCaseLabel(field.label);
 
     if (field.type === "ohi-checkbox") {
       const checked = !!findings[field.label];
