@@ -3817,6 +3817,19 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG }) {
   const lowerTeeth = [32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17];
   const allowedTeeth = teeth ? new Set(teeth) : null;
 
+  // Split layout: furcation-style selectors where only end clusters exist (no middle teeth 4–13).
+  // Renders two tight clusters per arch row separated by a small gap, with a truncated-axis
+  // break mark on the horizontal divider, instead of a 16-column grid full of hidden stubs.
+  const isSplit = !!allowedTeeth && [4,5,6,7,8,9,10,11,12,13].every(t => !allowedTeeth.has(t));
+  const splitUpper = isSplit ? [
+    upperTeeth.filter(n => allowedTeeth.has(n) && n <= 8),
+    upperTeeth.filter(n => allowedTeeth.has(n) && n > 8),
+  ] : null;
+  const splitLower = isSplit ? [
+    lowerTeeth.filter(n => allowedTeeth.has(n) && n >= 25),
+    lowerTeeth.filter(n => allowedTeeth.has(n) && n < 25),
+  ] : null;
+
   const displayValue = value || "";
   const [focused, setFocused] = useState(false);
 
@@ -3848,20 +3861,56 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG }) {
         {open && (
           <div style={{
             position: "absolute", top: "calc(100% + 2px)", left: 0, right: "auto",
-            minWidth: "min(100vw - 32px, 520px)",
+            minWidth: isSplit ? "auto" : "min(100vw - 32px, 520px)",
             background: "var(--paper)", border: "1px solid var(--rule)",
             borderRadius: "4px", padding: "10px 12px",
             zIndex: 200, boxShadow: "0 4px 20px rgba(0,0,0,0.16)",
           }}>
-            {/* Upper arch */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginBottom: "3px" }}>
-              {upperTeeth.map(toothButton)}
-            </div>
-            <div style={{ height: "1px", background: "var(--rule)", margin: "4px 0" }} />
-            {/* Lower arch */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginTop: "3px" }}>
-              {lowerTeeth.map(toothButton)}
-            </div>
+            {isSplit ? (
+              <>
+                {/* Upper arch — two tight clusters */}
+                <div style={{ display: "flex", gap: "12px", justifyContent: "center", marginBottom: "3px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: `repeat(${splitUpper[0].length}, 28px)`, gap: "4px" }}>
+                    {splitUpper[0].map(n => toothButton(n))}
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: `repeat(${splitUpper[1].length}, 28px)`, gap: "4px" }}>
+                    {splitUpper[1].map(n => toothButton(n))}
+                  </div>
+                </div>
+                {/* Truncated-axis divider */}
+                <div style={{ display: "flex", alignItems: "center", margin: "4px 0" }}>
+                  <div style={{ flex: 1, height: "1px", background: "var(--rule)" }} />
+                  <svg width="22" height="8" viewBox="0 0 22 8" fill="none"
+                    style={{ margin: "0 5px", display: "block", flexShrink: 0 }}>
+                    <polyline points="0,4 4,1 8,7 12,1 16,7 20,4"
+                      stroke="var(--ink-faint)" strokeWidth="1.5"
+                      strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <div style={{ flex: 1, height: "1px", background: "var(--rule)" }} />
+                </div>
+                {/* Lower arch — two tight clusters */}
+                <div style={{ display: "flex", gap: "12px", justifyContent: "center", marginTop: "3px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: `repeat(${splitLower[0].length}, 28px)`, gap: "4px" }}>
+                    {splitLower[0].map(n => toothButton(n))}
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: `repeat(${splitLower[1].length}, 28px)`, gap: "4px" }}>
+                    {splitLower[1].map(n => toothButton(n))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Upper arch */}
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginBottom: "3px" }}>
+                  {upperTeeth.map(toothButton)}
+                </div>
+                <div style={{ height: "1px", background: "var(--rule)", margin: "4px 0" }} />
+                {/* Lower arch */}
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginTop: "3px" }}>
+                  {lowerTeeth.map(toothButton)}
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
