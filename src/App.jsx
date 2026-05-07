@@ -3497,8 +3497,7 @@ const EXAM_FINDINGS_CONFIG = {
     {
       title: "Diagnosis",
       fields: [
-        { type: "perio-aap-dropdowns" },
-        { type: "perio-ada-dropdown" },
+        { type: "perio-classification" },
         { label: "prognosis", type: "select",
           options: ["", "fair", "questionable", "hopeless"],
           // Special: this writes to all three of fair/questionable/hopeless
@@ -3895,7 +3894,7 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG }) {
 function HelpPopup({ children }) {
   const [open, setOpen] = useState(false);
   return (
-    <span style={{ position: "relative", display: "inline-block", verticalAlign: "middle" }}>
+    <span style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
       <button
         type="button"
         onClick={() => setOpen(v => !v)}
@@ -4074,6 +4073,115 @@ function ExamFindings({ procedureId, findings, setFindings }) {
                 style={selStyle}>
                 {plaqOpts.map(o => <option key={o} value={o}>{o}</option>)}
               </select>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (field.type === "perio-classification") {
+      const stage    = findings["AAP stage"] || "";
+      const grade    = findings["AAP grade"] || "";
+      const caseType = findings["ADA case type"] || "";
+      const selStyle = { ...inputStyle, fontSize: "13px", width: "56px", padding: "6px 8px" };
+      const lblStyle = {
+        ...labelStyle, fontSize: "10px", textTransform: "none",
+        letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic",
+      };
+      const grpLabel = { fontSize: "11px", color: "var(--ink-soft)",
+        fontFamily: "'Geist', sans-serif" };
+      const updateAAP = (newStage, newGrade) => {
+        const combined = [
+          newStage && `Stage ${newStage}`,
+          newGrade && `Grade ${newGrade}`,
+        ].filter(Boolean).join(", ");
+        batchUpdate({ "AAP stage": newStage, "AAP grade": newGrade, "AAP": combined });
+      };
+      const updateADA = (newType) => {
+        batchUpdate({ "ADA case type": newType, "ADA": newType ? `Case Type ${newType}` : "" });
+      };
+      return (
+        <div key="perio-classification" style={{ marginBottom: "9px" }}>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "0" }}>
+            {/* AAP group */}
+            <div>
+              <label style={lblStyle}>AAP</label>
+              <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                  <span style={grpLabel}>Stage</span>
+                  <select value={stage} onChange={e => updateAAP(e.target.value, grade)} style={selStyle}>
+                    <option value="">—</option>
+                    {["I","II","III","IV"].map(o => <option key={o} value={o}>{o}</option>)}
+                  </select>
+                  <HelpPopup>
+                    <div style={{ fontWeight: 600, marginBottom: "7px" }}>Staging criteria</div>
+                    {[
+                      ["I",   "CAL 1–2mm, PD ≤4mm, no tooth loss due to perio"],
+                      ["II",  "CAL 3–4mm, PD ≤5mm, no tooth loss due to perio"],
+                      ["III", "CAL ≥5mm, PD ≥6mm, ≤4 teeth lost"],
+                      ["IV",  "Stage III + masticatory dysfunction (≤20 teeth, bite collapse…)"],
+                    ].map(([s, d]) => (
+                      <div key={s} style={{ marginBottom: "5px" }}>
+                        <strong>Stage {s}</strong> — {d}
+                      </div>
+                    ))}
+                  </HelpPopup>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                  <span style={grpLabel}>Grade</span>
+                  <select value={grade} onChange={e => updateAAP(stage, e.target.value)} style={selStyle}>
+                    <option value="">—</option>
+                    {["A","B","C"].map(o => <option key={o} value={o}>{o}</option>)}
+                  </select>
+                  <HelpPopup>
+                    <div style={{ fontWeight: 600, marginBottom: "6px" }}>Grading criteria</div>
+                    <div style={{ marginBottom: "7px", fontSize: "10px", color: "var(--ink-soft)", fontStyle: "italic" }}>
+                      % bone loss (worst site) ÷ age
+                    </div>
+                    {[
+                      ["A", "≤ 0.25", "No progression in 5 yrs, non-smoker, normoglycemic"],
+                      ["B", "0.25 – 1.0", "Evidence of progression, <10 cigs/day, HbA1c <7%"],
+                      ["C", "> 1.0", "Rapid progression, ≥10 cigs/day, HbA1c ≥7%"],
+                    ].map(([g, ratio, d]) => (
+                      <div key={g} style={{ marginBottom: "5px" }}>
+                        <strong>Grade {g}</strong>
+                        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "10px",
+                          color: "var(--ink-soft)", margin: "0 5px" }}>{ratio}</span>
+                        — {d}
+                      </div>
+                    ))}
+                  </HelpPopup>
+                </div>
+              </div>
+            </div>
+            {/* Separator */}
+            <div style={{
+              width: "1px", background: "var(--rule)", margin: "0 14px",
+              alignSelf: "stretch",
+            }} />
+            {/* ADA group */}
+            <div>
+              <label style={lblStyle}>ADA</label>
+              <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <select value={caseType} onChange={e => updateADA(e.target.value)}
+                  style={{ ...inputStyle, fontSize: "13px" }}>
+                  <option value="">— Case Type —</option>
+                  {["I","II","III","IV"].map(o => <option key={o} value={o}>{o}</option>)}
+                </select>
+                <HelpPopup>
+                  <div style={{ fontWeight: 600, marginBottom: "7px" }}>ADA Case Type</div>
+                  {[
+                    ["I",   "Gingivitis (no bone loss, reversible)"],
+                    ["II",  "Early periodontitis (≤25% bone loss)"],
+                    ["III", "Moderate periodontitis (25–50% bone loss)"],
+                    ["IV",  "Advanced periodontitis (>50% bone loss)"],
+                  ].map(([t, d]) => (
+                    <div key={t} style={{ marginBottom: "5px" }}>
+                      <strong>Type {t}</strong> — {d}
+                    </div>
+                  ))}
+                </HelpPopup>
+              </div>
             </div>
           </div>
         </div>
