@@ -2391,7 +2391,7 @@ function renderTemplate(raw, f) {
   //   - "Chicago clinic" → left unchanged (only Chicago does STI/implant work)
   //   - "UG clinic" / "UG Peds" → "Gershwin clinic" / "Gershwin"
   const userClinic = f.clinic.trim();
-  const namedClinics = ["Gershwin", "Vivaldi", "Brahms", "Bach", "Mozart", "Pediatrics"];
+  const namedClinics = ["Gershwin", "Vivaldi", "Brahms", "Bach", "Mozart", "Pediatrics", "Chicago"];
   if (userClinic) {
     const replacement = namedClinics.includes(userClinic) ? `${userClinic} clinic` : userClinic;
     t = t.replace(/\bVivaldi clinic\b/g, replacement);
@@ -4432,6 +4432,30 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
   }, [fields]);
 
   const setField = (k, v) => setFields(p => ({ ...p, [k]: v }));
+
+  // Clinic visibility rules:
+  //   peds       → no dropdown, note always uses "UG Peds"
+  //   implant / endo / 871 (Implant Consult) → no dropdown, note uses "Chicago clinic"
+  //   digital    → dropdown includes Chicago in addition to the standard five
+  //   all others → standard five clinics only (no Pediatrics, no Chicago, no UGOS)
+  const isClinicPeds    = categoryId === "peds";
+  const isClinicChicago = categoryId === "implant" || categoryId === "endo" || procedureId === "871";
+  const showChicago     = categoryId === "digital";
+
+  // Auto-sync clinic field when switching into/out of restricted categories.
+  // Peds → force "UG Peds"; Implant/Endo → clear (template already says "Chicago clinic");
+  // leaving peds → clear any lingering "UG Peds" value so it doesn't bleed into the note.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (isClinicPeds) {
+      setField("clinic", "UG Peds");
+    } else if (isClinicChicago) {
+      setField("clinic", "");
+    } else {
+      setFields(p => p.clinic === "UG Peds" ? { ...p, clinic: "" } : p);
+    }
+  }, [categoryId, procedureId]);
+
   // When category changes, clear local procedure AND lift that change up
   // so the App-level selection doesn't go stale. Also clear the note since
   // there's no procedure to generate one for.
@@ -4552,7 +4576,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               </Select>
             </Field>
           </div>
-          {procedureId !== "871" && (
+          {!isClinicPeds && !isClinicChicago && (
             <Field label="Clinic">
               <Select value={fields.clinic} onChange={v=>setField("clinic",v)}>
                 <option value="">— Select a clinic —</option>
@@ -4561,9 +4585,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                 <option value="Brahms">Brahms</option>
                 <option value="Bach">Bach</option>
                 <option value="Mozart">Mozart</option>
-                <option value="Pediatrics">Pediatrics</option>
-                <option value="Chicago">Chicago</option>
-                <option value="UGOS">UGOS</option>
+                {showChicago && <option value="Chicago">Chicago</option>}
               </Select>
             </Field>
           )}
