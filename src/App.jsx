@@ -4919,7 +4919,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                     <TextInput
                       value={fields.perioImprovementDetail || ""}
                       onChange={v => setField("perioImprovementDetail", v)}
-                      placeholder="e.g. decrease in probing depths" />
+                      placeholder={fields.perioImproved === "not improved" ? "e.g. no change in probing depths" : "e.g. decrease in probing depths"} />
                   </Field>
                 </div>
               </div>
