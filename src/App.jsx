@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useLayoutEffect, useRef } from "react";
 
 /* ============================================================================
  * EMBEDDED DATA — injected at build time.
@@ -1386,8 +1386,11 @@ const RVU_DATA = [
   { code: "D0310", desc: "Sialography", rvu: 1 },
   { code: "D0320", desc: "TMJ arthrogram, incl injection", rvu: 2 },
   { code: "D0322", desc: "Tomographic survey", rvu: 2 },
+  { code: "D0330", desc: "Panoramic film", rvu: 2 },
   { code: "D0340", desc: "Cephalometric film", rvu: 2 },
   { code: "D0350", desc: "2D Oral/facial photog img obtained intra/extra orally", rvu: 2 },
+  { code: "D0365L", desc: "CBCT — one arch (mandible)", rvu: 3 },
+  { code: "D0366U", desc: "CBCT — one arch (maxilla)", rvu: 3 },
   { code: "D0415", desc: "Bact. studies for path. agents", rvu: 1 },
   { code: "D0425", desc: "Caries susceptibility tests", rvu: 1 },
   { code: "D0431", desc: "Pre-diagnostic test (T-blue)", rvu: 1 },
@@ -1609,6 +1612,7 @@ const RVU_DATA = [
   { code: "D4000NC", desc: "In Process Step or PO Periodontics", rvu: 2 },
   { code: "D4322", desc: "Splint - Intracoronal; Natural Teeth/Prosthetic Crowns", rvu: 3 },
   { code: "D4323", desc: "Splint - Extracoronal; Natural Teeth/Prosthetic Crowns", rvu: 3 },
+  { code: "D4241", desc: "Gingivectomy/Gingivoplasty — 4+ teeth/quad", rvu: 4 },
   { code: "D4341", desc: "Sc/Rp 4 or more teeth/quad", rvu: 5 },
   { code: "D4341C", desc: "Sc/RP Competency", rvu: 5 },
   { code: "D4342", desc: "Sc/Rp 1-3 teeth/quad", rvu: 3 },
@@ -1921,6 +1925,7 @@ const RVU_DATA = [
   { code: "D6793", desc: "Provisional retainer crown", rvu: 2 },
   { code: "D6930", desc: "Recement FPD", rvu: 3 },
   { code: "D6975", desc: "Coping - metal", rvu: 8 },
+  { code: "DD6057A", desc: "Digital custom abutment — Initial Preparation", rvu: 5 },
   { code: "DD6057B", desc: "Digital custom abutment — Scan & Design", rvu: 5 },
   { code: "DD6057C", desc: "Digital custom abutment — Delivery", rvu: 5 },
   { code: "DD6058A", desc: "All porc/cer crown on abutment — Initial Preparation", rvu: 5 },
@@ -1994,6 +1999,7 @@ const RVU_DATA = [
   { code: "D9380", desc: "Orthodontic Consultation", rvu: 1 },
   { code: "D9390A", desc: "Request", rvu: 2 },
   { code: "D9390B", desc: "Response", rvu: 2 },
+  { code: "D9423NC", desc: "Code for unplanned appointment", rvu: 0 },
   { code: "D9445", desc: "Office visit - follow up n/c", rvu: 1 },
   { code: "D9630.1", desc: "Other drugs/medicaments - PreviDent 5000", rvu: 1 },
   { code: "D9630.2", desc: "Other drugs/medicaments - chlorhexidine", rvu: 1 },
@@ -2030,6 +2036,7 @@ const RVU_DATA = [
   { code: "D9973", desc: "External Bleaching - per tooth", rvu: 3 },
   { code: "D9974", desc: "Internal Bleaching - per tooth", rvu: 7 },
   { code: "D9975", desc: "Ext Bleach - per arch, home", rvu: 3 },
+  { code: "D9930", desc: "Treatment of complications, unusual circumstance", rvu: 2 },
   { code: "D9999", desc: "Unspecified adjunctive proc.", rvu: 2 },
   { code: "I9001", desc: "IPE - InterProfessional Education", rvu: 2 },
   { code: "I9002", desc: "Lab Quality Review", rvu: 4 },
@@ -2257,7 +2264,7 @@ const DEFAULT_INJECTION = {
 };
 
 const DEFAULT_FIELDS = {
-  age: "", gender: "", clinic: "", tooth: "", shade: "",
+  age: "", gender: "", clinic: "", tooth: "", shade: "A2",
   medHistory: "", medications: "", allergies: "",
   bp: "", bg: "", temp: "",
   // Anesthetic — list of injections (default: one).
@@ -2617,6 +2624,35 @@ function renderTemplate(raw, f) {
       t = t.replace(/\[color\], \[contour\], \[consistency\]/g, `${c}, ${co}, ${cn}`);
     }
 
+    // Radiographic findings substitutions (Perio COE only)
+    {
+      const blDist  = (ef["bl distribution"]    || "generalized").toLowerCase();
+      const blWhere = (ef["bl where"]           || "").trim();
+      const calcDist= (ef["calc distribution"]  || "generalized").toLowerCase();
+      const calcAmt = (ef["calc amount"]        || "moderate").toLowerCase();
+      const calcWhere=(ef["calc where"]         || "").trim();
+
+      // BL line — template has: "- generalized horizontal bone loss"
+      if (blDist === "none") {
+        // Remove the entire line (including its leading newline+indent)
+        t = t.replace(/\n[ \t]*-[ \t]*generalized horizontal bone loss/i, "");
+      } else if (blDist === "localized") {
+        const suffix = blWhere ? `: ${blWhere}` : "";
+        t = t.replace(/generalized horizontal bone loss/i,
+                      `localized horizontal bone loss${suffix}`);
+      }
+      // "generalized" default → template text is already correct
+
+      // Calculus line — template has: "- generalized moderate interproximal calculus"
+      if (calcDist === "none") {
+        t = t.replace(/\n[ \t]*-[ \t]*generalized moderate interproximal calculus/i, "");
+      } else {
+        let calcText = `${calcDist} ${calcAmt} interproximal calculus`;
+        if (calcDist === "localized" && calcWhere) calcText += `: ${calcWhere}`;
+        t = t.replace(/generalized moderate interproximal calculus/i, calcText);
+      }
+    }
+
     // Brushing & flossing frequency substitution
     const formatBrush = (v) => {
       if (v === "1x") return "1x per day";
@@ -2700,6 +2736,28 @@ function renderTemplate(raw, f) {
         /Reviewed OHI with demonstration\./,
         "Reviewed OHI with demonstration & completed tobacco cessation."
       );
+    }
+
+    // Mounting records (Perio COE / Restorative COE)
+    // Build the "- Took impressions, facebow, & bite registration." line
+    // dynamically from checkboxes; remove the line entirely if none checked.
+    {
+      const items = [
+        ef["impressions"]        === true && "diagnostic impressions",
+        ef["facebow"]            === true && "facebow",
+        ef["bite registration"]  === true && "bite registration",
+      ].filter(Boolean);
+      const mountingRe = /^[ \t]*-[ \t]*Took diagnostic impressions, facebow, & bite registration\.[ \t]*$/im;
+      if (items.length === 0) {
+        t = t.replace(mountingRe, "").replace(/\n{3,}/g, "\n\n");
+      } else {
+        const list = items.length === 1
+          ? items[0]
+          : items.length === 2
+            ? `${items[0]} & ${items[1]}`
+            : `${items[0]}, ${items[1]}, & ${items[2]}`;
+        t = t.replace(mountingRe, `- Took ${list}.`);
+      }
     }
   }
 
@@ -2942,6 +3000,387 @@ function ColorizedMirror({ value }) {
   );
 }
 
+// ── ShadeInput ─────────────────────────────────────────────────────────────
+// Popup shade picker using VITA classical A–D groups.
+// Colors are CSS-approximated from published spectral data — no copyrighted imagery.
+function ShadeInput({ value, onChange }) {
+  const [open, setOpen]     = useState(false);
+  const [focused, setFocused] = useState(false);
+  const panelRef = useRef(null);
+
+  // Treat empty/unset as A2 (template default)
+  const effective = value || "A2";
+
+  const GROUPS = [
+    { id: "A", shades: ["A1","A2","A3","A3.5","A4"] },
+    { id: "B", shades: ["B1","B2","B3","B4"] },
+    { id: "C", shades: ["C1","C2","C3","C4"] },
+    { id: "D", shades: ["D2","D3","D4"] },
+  ];
+
+  const COLORS = {
+    "A1":  "#F5EBD5", "A2":  "#EEE0BE", "A3":  "#E6CE9E",
+    "A3.5":"#DCC189", "A4":  "#D1AB6B",
+    "B1":  "#F6EDD8", "B2":  "#EFDFC2", "B3":  "#E6CFA6", "B4":  "#DABF8C",
+    "C1":  "#EAE0C8", "C2":  "#E0D1B0", "C3":  "#D4C297", "C4":  "#C8B37F",
+    "D2":  "#EBE0C2", "D3":  "#DFCFA6", "D4":  "#D3BD8C",
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const h = (e) => {
+      if (panelRef.current && !panelRef.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
+  }, [open]);
+
+  return (
+    <div ref={panelRef} style={{ position: "relative" }}>
+      <input readOnly value={effective}
+        onClick={() => setOpen(o => !o)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={{
+          ...inputStyle, cursor: "pointer",
+          borderColor: (open || focused) ? "var(--accent)" : "var(--rule)",
+          boxShadow: (open || focused) ? "0 0 0 3px rgba(122,26,26,0.08)" : "none",
+        }} />
+      {open && (
+        <div style={{
+          position: "absolute", top: "calc(100% + 2px)", left: 0,
+          background: "var(--paper)", border: "1px solid var(--rule)",
+          borderRadius: "4px", padding: "12px 14px",
+          zIndex: 200, boxShadow: "0 4px 20px rgba(0,0,0,0.16)",
+          minWidth: "fit-content",
+        }}>
+          {GROUPS.map(({ id, shades }) => (
+            <div key={id} style={{ marginBottom: "10px" }}>
+              <div style={{
+                fontSize: "9px", letterSpacing: "0.16em",
+                textTransform: "uppercase", color: "var(--ink-faint)",
+                fontFamily: "'Geist', sans-serif", marginBottom: "6px",
+              }}>{id}</div>
+              <div style={{ display: "flex", gap: "5px" }}>
+                {shades.map(shade => {
+                  const isActive = effective === shade;
+                  return (
+                    <button key={shade}
+                      onClick={() => { onChange(shade); setOpen(false); }}
+                      onMouseEnter={e => { if (!isActive) e.currentTarget.style.borderColor = "var(--ink-soft)"; }}
+                      onMouseLeave={e => { if (!isActive) e.currentTarget.style.borderColor = "var(--rule)"; }}
+                      style={{
+                        display: "flex", flexDirection: "column",
+                        alignItems: "center", gap: "4px",
+                        background: isActive ? "rgba(122,26,26,0.07)" : "transparent",
+                        border: `1.5px solid ${isActive ? "var(--accent)" : "var(--rule)"}`,
+                        borderRadius: "3px", padding: "5px 5px 4px",
+                        cursor: "pointer", transition: "border-color 100ms",
+                      }}>
+                      <div style={{
+                        width: "22px", height: "30px",
+                        background: COLORS[shade],
+                        borderRadius: "10px 10px 3px 3px",
+                        border: "1px solid rgba(0,0,0,0.10)",
+                      }} />
+                      <span style={{
+                        fontSize: "8.5px",
+                        fontFamily: "'JetBrains Mono', monospace",
+                        color: isActive ? "var(--accent)" : "var(--ink-soft)",
+                        letterSpacing: "-0.2px", lineHeight: 1,
+                      }}>{shade}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Tooth (+ surfaces) selector — replaces the plain ToothInput.
+// Renders a teeth grid popup identical to TeethSelectorPanel; when withSurfaces
+// is true, clicking a tooth opens a small surface-picker card anchored below
+// the active tooth with a triangle pointer. Surface layout mirrors Axium
+// odontogram: B/F top, L bottom, O/I center, M/D sides (M/D flip by quadrant).
+// A "enter as text" toggle falls back to the original ToothInput.
+function ToothSurfaceInput({ value, onChange, withSurfaces }) {
+  const [open, setOpen]           = useState(false);
+  const [activeTooth, setActiveTooth] = useState(null);
+  const [tailLeft, setTailLeft]   = useState(0);
+  const [cardLeft, setCardLeft]   = useState(0);
+  const panelRef   = useRef(null);
+  const gridRef    = useRef(null);
+  const surfCardRef = useRef(null);
+  const btnRefs    = useRef({});   // keyed by tooth number
+
+  // Standard dental surface order: M O/I D B/F L
+  const SURF_ORDER = { M: 0, O: 1, I: 1, D: 2, B: 3, F: 3, L: 4 };
+
+  // ── Parse string value → { "19": ["M","O","D"], ... } ─────────────────
+  const parseValue = (val) => {
+    const out = {};
+    if (!val.trim()) return out;
+    val.split(",").forEach(token => {
+      const m = token.trim().match(/^#?([A-Za-z0-9]+)(?:-([A-Za-z]+))?$/);
+      if (!m) return;
+      out[m[1]] = m[2] ? m[2].toUpperCase().split("") : [];
+    });
+    return out;
+  };
+
+  const [sels, setSels] = useState(() => parseValue(value));
+
+  // Keep selections in sync when value prop changes from outside
+  useEffect(() => {
+    setSels(parseValue(value));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
+  // ── Serialize → string ────────────────────────────────────────────────
+  const serialize = (s) => {
+    const entries = Object.entries(s).sort(([a], [b]) => Number(a) - Number(b));
+    if (!entries.length) return "";
+    return entries.map(([num, surfs]) => {
+      if (!withSurfaces || surfs.length === 0) return num;
+      const sorted = [...surfs].sort((a, b) =>
+        (SURF_ORDER[a] ?? 99) - (SURF_ORDER[b] ?? 99));
+      return `${num}-${sorted.join("")}`;
+    }).join(", ");
+  };
+
+  // ── Close on outside click ────────────────────────────────────────────
+  useEffect(() => {
+    if (!open) return;
+    const h = (e) => {
+      if (panelRef.current && !panelRef.current.contains(e.target)) {
+        setOpen(false); setActiveTooth(null);
+      }
+    };
+    document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
+  }, [open]);
+
+  // ── Update tail arrow position whenever activeTooth changes ──────────
+  useEffect(() => {
+    if (!activeTooth || !withSurfaces) return;
+    const toothEl = btnRefs.current[activeTooth];
+    const gridEl  = gridRef.current;
+    if (!toothEl || !gridEl) return;
+    const tr = toothEl.getBoundingClientRect();
+    const gr = gridEl.getBoundingClientRect();
+    const cx = tr.left + tr.width / 2 - gr.left;
+    setTailLeft(Math.max(16, Math.min(cx, gr.width - 16)));
+  }, [activeTooth, withSurfaces, open]);
+
+  // ── Center surface card under active tooth after it renders ───────────
+  useLayoutEffect(() => {
+    if (!activeTooth || !withSurfaces) return;
+    const cardEl = surfCardRef.current;
+    const gridEl = gridRef.current;
+    if (!cardEl || !gridEl) return;
+    const gr = gridEl.getBoundingClientRect();
+    const tr = btnRefs.current[activeTooth]?.getBoundingClientRect();
+    if (!tr) return;
+    const cx     = tr.left + tr.width / 2 - gr.left;
+    const cardW  = cardEl.offsetWidth;
+    setCardLeft(Math.max(0, Math.min(cx - cardW / 2, gr.width - cardW)));
+  }, [activeTooth, withSurfaces, open]);
+
+  // ── Toggle a tooth ────────────────────────────────────────────────────
+  const toggleTooth = (num) => {
+    const k = String(num);
+    const next = { ...sels };
+    if (next[k] !== undefined) {
+      delete next[k];
+      const remaining = Object.keys(next).map(Number).sort((a, b) => b - a);
+      setActiveTooth(remaining.length > 0 ? remaining[0] : null);
+    } else {
+      next[k] = [];
+      setActiveTooth(num);
+    }
+    setSels(next);
+    onChange(serialize(next));
+  };
+
+  // ── Toggle a surface ─────────────────────────────────────────────────
+  const toggleSurface = (surf) => {
+    if (!activeTooth) return;
+    const k = String(activeTooth);
+    const cur = sels[k] || [];
+    const nxt = cur.includes(surf) ? cur.filter(s => s !== surf) : [...cur, surf];
+    const next = { ...sels, [k]: nxt };
+    setSels(next);
+    onChange(serialize(next));
+  };
+
+  // ── Tooth geometry helpers ────────────────────────────────────────────
+  // Universal numbering: upper right 1-8, upper left 9-16,
+  // lower left 17-24, lower right 25-32.
+  // M always faces the midline; the midline sits between 8|9 (upper)
+  // and 24|25 (lower). In our grid (1→16 left-to-right, 32→17 L-to-R):
+  //   teeth 1-8 and 25-32 → M is to the RIGHT of the tooth box.
+  //   teeth 9-24           → M is to the LEFT.
+  const mOnRight = (n) => n <= 8 || n >= 25;
+  const isAnterior = (n) => (n >= 6 && n <= 11) || (n >= 22 && n <= 27);
+
+  const surfLayout = (n) => ({
+    top:    isAnterior(n) ? "F" : "B",
+    bottom: "L",
+    center: isAnterior(n) ? "I" : "O",
+    left:   mOnRight(n)   ? "D" : "M",
+    right:  mOnRight(n)   ? "M" : "D",
+  });
+
+  // ── Render helpers ────────────────────────────────────────────────────
+  const upperTeeth = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
+  const lowerTeeth = [32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17];
+
+  const toothBtn = (n) => {
+    const k = String(n);
+    const isSel    = sels[k] !== undefined;
+    const isActive = activeTooth === n;
+    const surfs    = sels[k] || [];
+    return (
+      <button key={n} ref={el => btnRefs.current[n] = el}
+        onClick={() => toggleTooth(n)}
+        style={{
+          position: "relative",
+          background: isActive ? "var(--accent)" : isSel ? "rgba(122,26,26,0.10)" : "transparent",
+          color:      isActive ? "var(--paper)"  : isSel ? "var(--accent)"         : "var(--ink-soft)",
+          border:    `1px solid ${isActive || isSel ? "var(--accent)" : "var(--rule)"}`,
+          borderRadius: "2px", fontSize: "11px", padding: "5px 0",
+          cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
+          lineHeight: 1.2, textAlign: "center",
+        }}>
+        {n}
+      </button>
+    );
+  };
+
+  const surfBtn = (label) => {
+    if (!label) return <div style={{ width: "34px", height: "34px" }} />;
+    const on = (sels[String(activeTooth)] || []).includes(label);
+    return (
+      <button key={label} onClick={e => { e.stopPropagation(); toggleSurface(label); }}
+        style={{
+          width: "34px", height: "34px",
+          background: on ? "var(--accent)" : "var(--paper)",
+          color:      on ? "var(--paper)"  : "var(--ink)",
+          border:    `1px solid ${on ? "var(--accent)" : "var(--rule)"}`,
+          borderRadius: "3px", cursor: "pointer",
+          fontSize: "11px", fontFamily: "'Geist', sans-serif", fontWeight: 600,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          transition: "background 100ms, color 100ms",
+        }}>
+        {label}
+      </button>
+    );
+  };
+
+  const [focused, setFocused] = useState(false);
+  const sl = activeTooth ? surfLayout(activeTooth) : null;
+
+  return (
+    <div ref={panelRef} style={{ position: "relative" }}>
+      <input readOnly value={value || ""}
+        placeholder={withSurfaces ? "select tooth + surfaces" : "select tooth"}
+        onClick={() => setOpen(o => !o)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={{ ...inputStyle, cursor: "pointer",
+          borderColor: (open || focused) ? "var(--accent)" : "var(--rule)",
+          boxShadow: (open || focused) ? "0 0 0 3px rgba(122,26,26,0.08)" : "none",
+        }} />
+      {open && (
+        <div style={{
+          position: "absolute", top: "calc(100% + 2px)", left: 0,
+          minWidth: "min(100vw - 32px, 520px)",
+          background: "var(--paper)", border: "1px solid var(--rule)",
+          borderRadius: "4px", padding: "10px 12px 12px",
+          zIndex: 200, boxShadow: "0 4px 20px rgba(0,0,0,0.16)",
+        }}>
+          {/* Tooth grid */}
+          <div ref={gridRef}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginBottom: "3px" }}>
+              {upperTeeth.map(toothBtn)}
+            </div>
+            <div style={{ height: "1px", background: "var(--rule)", margin: "4px 0" }} />
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginTop: "3px" }}>
+              {lowerTeeth.map(toothBtn)}
+            </div>
+          </div>
+
+          {/* Surface picker — centered under the active tooth */}
+          {withSurfaces && activeTooth && sl && (
+            <div style={{ position: "relative", marginTop: "10px", height: "132px" }}>
+              {/* Caret pointing up toward the active tooth */}
+              <div style={{
+                position: "absolute", top: -7, left: tailLeft,
+                transform: "translateX(-50%)",
+                width: 0, height: 0,
+                borderLeft: "7px solid transparent",
+                borderRight: "7px solid transparent",
+                borderBottom: `7px solid var(--rule)`,
+                pointerEvents: "none",
+              }} />
+              <div style={{
+                position: "absolute", top: -6, left: tailLeft,
+                transform: "translateX(-50%)",
+                width: 0, height: 0,
+                borderLeft: "6px solid transparent",
+                borderRight: "6px solid transparent",
+                borderBottom: `6px solid var(--card)`,
+                pointerEvents: "none", zIndex: 1,
+              }} />
+              {/* Surface card — absolutely positioned, centered on active tooth */}
+              <div ref={surfCardRef} style={{
+                position: "absolute", top: 0, left: cardLeft,
+                border: "1px solid var(--rule)", borderRadius: "6px",
+                background: "var(--card)",
+                padding: "10px 14px",
+                display: "inline-flex", alignItems: "center", gap: "14px",
+                whiteSpace: "nowrap",
+              }}>
+                <span style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "13px", fontWeight: 600, color: "var(--accent)",
+                  minWidth: "32px", flexShrink: 0,
+                }}>#{activeTooth}</span>
+                {/* 3×3 diamond grid */}
+                <div style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 34px)",
+                  gridTemplateRows: "repeat(3, 34px)",
+                  gap: "3px",
+                }}>
+                  {/* row 1 */}
+                  <div />{surfBtn(sl.top)}<div />
+                  {/* row 2 */}
+                  {surfBtn(sl.left)}{surfBtn(sl.center)}{surfBtn(sl.right)}
+                  {/* row 3 */}
+                  <div />{surfBtn(sl.bottom)}<div />
+                </div>
+                {/* Hint text */}
+                <span style={{
+                  fontSize: "11px", color: "var(--ink-faint)",
+                  fontStyle: "italic", fontFamily: "'Geist', sans-serif",
+                  alignSelf: "flex-end", paddingBottom: "2px",
+                }}>
+                  {isAnterior(activeTooth) ? "anterior" : "posterior"}
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ToothInput({ value, onChange, placeholder }) {
   const [focused, setFocused] = useState(false);
   // The mirror sits behind a transparent <input>. For the caret to align
@@ -3013,8 +3452,20 @@ function Select({ value, onChange, children, prominent = false }) {
 
 // Age input — clamps to 0-89 inclusive (HIPAA Safe Harbor: ages 90+ are
 // considered identifiers in their own right, so we hard-stop at 89).
-function AgeInput({ value, onChange }) {
+function AgeInput({ value, onChange, peds }) {
   const [focused, setFocused] = useState(false);
+
+  if (peds) {
+    return (
+      <Select value={value} onChange={onChange} prominent>
+        <option value="">— Age —</option>
+        {Array.from({ length: 17 }, (_, i) => i + 1).map(n => (
+          <option key={n} value={String(n)}>{n}</option>
+        ))}
+      </Select>
+    );
+  }
+
   const handleChange = (raw) => {
     const digits = raw.replace(/\D/g, "");
     if (!digits) { onChange(""); return; }
@@ -3317,7 +3768,9 @@ function CodesPanel({ procedure, chunks }) {
       padding: "16px 22px 18px",
     }}>
       <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-        {codes.map(({ code, desc }) => (
+        {codes.map(({ code, desc }) => {
+          const fee = lookupFee(code);
+          return (
           <div key={code} style={{
             display: "flex", alignItems: "baseline", gap: "10px",
             fontSize: "12px", lineHeight: 1.45,
@@ -3327,11 +3780,18 @@ function CodesPanel({ procedure, chunks }) {
               fontVariantNumeric: "tabular-nums",
               flexShrink: 0, minWidth: "60px",
             }}>{code}</span>
-            <span style={{ color: "var(--ink-soft)" }}>
+            <span style={{ color: "var(--ink-soft)", flex: 1 }}>
               {desc || <em style={{ color: "var(--ink-faint)" }}>(no description in source)</em>}
             </span>
+            {fee != null && (
+              <span className="mono" style={{
+                color: "var(--ink-soft)", flexShrink: 0,
+                fontVariantNumeric: "tabular-nums", fontSize: "11px",
+              }}>${fee}</span>
+            )}
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -3483,6 +3943,16 @@ const EXAM_FINDINGS_CONFIG = {
           placeholder: "List each finding on its own line. Press Enter to add another." },
       ],
     },
+    {
+      title: "Mounting records",
+      rows: [
+        [
+          { label: "impressions", type: "ohi-checkbox" },
+          { label: "facebow", type: "ohi-checkbox" },
+          { label: "bite registration", type: "ohi-checkbox" },
+        ],
+      ],
+    },
   ],
   // Perio COE — perio-chart values are short, so inputs not textareas.
   // Diagnosis is a single dropdown for prognosis (mutually exclusive),
@@ -3506,6 +3976,10 @@ const EXAM_FINDINGS_CONFIG = {
       ],
     },
     {
+      title: "Radiographic findings",
+      rows: [[{ type: "radiographic-findings" }]],
+    },
+    {
       title: "Diagnosis",
       rows: [
         [{ type: "perio-classification" }],
@@ -3513,6 +3987,16 @@ const EXAM_FINDINGS_CONFIG = {
           { label: "fair", type: "teeth-selector" },
           { label: "questionable", type: "teeth-selector" },
           { label: "hopeless", type: "teeth-selector" },
+        ],
+      ],
+    },
+    {
+      title: "Mounting records",
+      rows: [
+        [
+          { label: "impressions", type: "ohi-checkbox" },
+          { label: "facebow", type: "ohi-checkbox" },
+          { label: "bite registration", type: "ohi-checkbox" },
         ],
       ],
     },
@@ -3594,15 +4078,6 @@ const EXAM_FINDINGS_CONFIG = {
   ],
   // SRP — probing depths + BOP only (no charting), no gingival dropdowns
   "1272": [
-    {
-      title: "Perio chart",
-      rows: [
-        [
-          { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
-          { label: "bleeding on probing", type: "teeth-selector", showG: true, displayLabel: "BoP" },
-        ],
-      ],
-    },
     {
       title: "OHI",
       fields: [
@@ -4066,6 +4541,118 @@ function ExamFindings({ procedureId, findings, setFindings }) {
               style={selStyle}>
               {consOpts.map(o => <option key={o} value={o}>{o}</option>)}
             </select>
+          </div>
+        </div>
+      );
+    }
+
+    if (field.type === "radiographic-findings") {
+      const distOpts = ["generalized", "localized", "none"];
+      const lblStyle = { ...labelStyle, fontSize: "10px", textTransform: "none",
+        letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" };
+      const compactSel = {
+        ...inputStyle, fontSize: "12px",
+        padding: "5px 6px", width: "auto",
+      };
+      const blDist   = findings["bl distribution"]   || "generalized";
+      const calcDist = findings["calc distribution"] || "generalized";
+      const calcAmt  = findings["calc amount"]       || "moderate";
+
+      // L/M/H segmented button control for calculus amount
+      const amtBtn = (opt, letter) => {
+        const active = calcAmt === opt && calcDist !== "none";
+        return (
+          <button key={opt} onClick={() => update("calc amount", opt)}
+            style={{
+              padding: "4px 8px", fontSize: "11px", lineHeight: 1,
+              fontFamily: "'Geist', sans-serif", fontWeight: 500,
+              border: "1px solid var(--rule)",
+              borderLeft: letter === "L" ? "1px solid var(--rule)" : "none",
+              borderRadius: letter === "L" ? "2px 0 0 2px" : letter === "H" ? "0 2px 2px 0" : "0",
+              background: active ? "var(--accent)" : "var(--paper)",
+              color: active ? "var(--paper)" : "var(--ink-soft)",
+              cursor: "pointer", transition: "all 100ms",
+              opacity: calcDist === "none" ? 0.35 : 1,
+            }}>{letter}</button>
+        );
+      };
+
+      return (
+        <div key="radiographic-findings">
+          {/* Row 1 — BL + Calc on same line */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "6px" }}>
+            {/* BL */}
+            <div>
+              <label style={lblStyle}>Horizontal BL</label>
+              <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+                <select value={blDist}
+                  onChange={e => update("bl distribution", e.target.value)}
+                  style={compactSel}>
+                  {distOpts.map(o => <option key={o} value={o}>{o}</option>)}
+                </select>
+              </div>
+            </div>
+            {/* Calc */}
+            <div>
+              <label style={lblStyle}>Interproximal calc.</label>
+              <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+                <select value={calcDist}
+                  onChange={e => update("calc distribution", e.target.value)}
+                  style={compactSel}>
+                  {distOpts.map(o => <option key={o} value={o}>{o}</option>)}
+                </select>
+                <div style={{ display: "flex" }}>
+                  {amtBtn("light",    "L")}
+                  {amtBtn("moderate", "M")}
+                  {amtBtn("heavy",    "H")}
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Conditional "where?" inputs — only shown when localized */}
+          {(blDist === "localized" || calcDist === "localized") && (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "6px" }}>
+              <div>
+                {blDist === "localized" && (
+                  <input type="text"
+                    value={findings["bl where"] || ""}
+                    onChange={e => update("bl where", e.target.value)}
+                    placeholder="BL — where?"
+                    style={{ ...inputStyle, fontSize: "12px", width: "100%", boxSizing: "border-box" }} />
+                )}
+              </div>
+              <div>
+                {calcDist === "localized" && (
+                  <input type="text"
+                    value={findings["calc where"] || ""}
+                    onChange={e => update("calc where", e.target.value)}
+                    placeholder="calc — where?"
+                    style={{ ...inputStyle, fontSize: "12px", width: "100%", boxSizing: "border-box" }} />
+                )}
+              </div>
+            </div>
+          )}
+          {/* Row 2 — Three teeth selectors on same line */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "10px", marginBottom: "9px" }}>
+            <div>
+              <label style={lblStyle}>Adverse C/R ratio</label>
+              <TeethSelectorPanel
+                value={findings["adverse crown to root ratio"] || ""}
+                onChange={v => update("adverse crown to root ratio", v)} />
+            </div>
+            <div>
+              <label style={lblStyle}>Furcation</label>
+              <TeethSelectorPanel
+                value={findings["evidence of furcation"] || ""}
+                onChange={v => update("evidence of furcation", v)}
+                teeth={[1,2,3,14,15,16,17,18,19,30,31,32]} />
+            </div>
+            <div>
+              <label style={lblStyle}>Widened PDL</label>
+              <TeethSelectorPanel
+                value={findings["widened PDL"] || ""}
+                onChange={v => update("widened PDL", v)} />
+            </div>
           </div>
         </div>
       );
@@ -4539,6 +5126,9 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     () => /Vitrebond|Consepsis|Gluma/.test(rawTemplate), [rawTemplate]);
   const needsTooth = useMemo(
     () => /#[A-Z0-9]+(-[A-Z]+)?/.test(rawTemplate), [rawTemplate]);
+  // True when the template's tooth reference includes surfaces (e.g. #19-MOD, not just #19)
+  const needsSurfaces = useMemo(
+    () => /#[A-Z0-9]+-[A-Z]+/.test(rawTemplate), [rawTemplate]);
   const needsShade = useMemo(
     () => /\bshade\b/i.test(rawTemplate), [rawTemplate]);
   const needsMedHistory = useMemo(
@@ -4732,7 +5322,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
           )}
           <div style={twoCol}>
             <Field label="Age">
-              <AgeInput value={fields.age} onChange={v=>setField("age",v)} />
+              <AgeInput value={fields.age} onChange={v=>setField("age",v)} peds={isClinicPeds} />
             </Field>
             <Field label="Gender">
               <Select value={fields.gender} onChange={v=>setField("gender",v)}>
@@ -4797,15 +5387,17 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               <Hairline />
               <div style={twoCol}>
                 {needsTooth && (
-                  <Field label={["2742","2821","3002","871"].includes(procedureId) ? "Tooth" : "Tooth & Surfaces"}>
-                    <ToothInput value={fields.tooth}
-                      onChange={v=>setField("tooth",v)}
-                      placeholder={["2742","2821","3002","871"].includes(procedureId) ? "e.g. #19" : "#19-MO     or     #19-MO, #24-L"} />
+                  <Field label={needsSurfaces ? "Tooth & Surfaces" : "Tooth"}>
+                    <ToothSurfaceInput
+                      value={fields.tooth}
+                      onChange={v => setField("tooth", v)}
+                      withSurfaces={needsSurfaces}
+                    />
                   </Field>
                 )}
                 {needsShade && (
                   <Field label="Shade">
-                    <TextInput value={fields.shade} onChange={v=>setField("shade",v)} placeholder="e.g. A2" />
+                    <ShadeInput value={fields.shade} onChange={v=>setField("shade",v)} />
                   </Field>
                 )}
               </div>
@@ -5105,9 +5697,11 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   const ef = fields.examFindings || {};
                   const nutriChecked = ef["nutritional counseling"] === true;
                   const tobaccoChecked = ef["tobacco cessation"] === true;
+                  const impressionsChecked = ef["impressions"] === true;
                   const codes = extractCodes(stepsChunk.body).filter(({ code }) => {
                     if (code === "D1310") return nutriChecked;
-                    if (code === "D1320.1" || code === "D1320.2") return tobaccoChecked;
+                    if (code === "D1320.1" || code === "D1320.2" || code === "D1320.3") return tobaccoChecked;
+                    if (code === "D0475") return impressionsChecked;
                     return true;
                   });
                   return codes.map(({ code, desc }) => (
@@ -5429,8 +6023,9 @@ function PrivacyBanner() {
       color: "var(--ink-faint)",
       fontStyle: "italic",
     }}>
-      Notes and patient fields stay local to your browser — nothing is sent
-      or stored anywhere else. Clicking codes copies to clipboard. Don't forget your name.
+      Notes and patient fields stay local to your browser — nothing is sent or stored anywhere else.
+      <br />
+      Clicking codes copies to clipboard. Don't forget your name.
     </p>
   );
 }
@@ -5457,51 +6052,59 @@ const Hairline = () => <div className="hairline-soft" style={{ margin: "14px 0 1
 function Browse({
   chunks,
   selectedProcedureId, onSelectProcedure,
-  onGenerateNote, onAddToPrepList,
+  onGenerateNote,
   jumpToId, onJumped,
 }) {
-  // ─────────────── Selection state ───────────────
-  // Local mirrors of section/group selection that are derived from the
-  // App-level `selectedProcedureId` whenever it changes.
+  // ── Session: ordered list of procedure IDs (null = empty slot) ──────
+  const [slots, setSlots] = useState(() =>
+    [selectedProcedureId || null]);
+  const [activeSlot, setActiveSlot] = useState(0);
+  const [itemsChecked, setItemsChecked] = useState({});
+
+  const activeProcId = slots[activeSlot] ?? null;
+
+  // ── Navigation dropdowns (category / group) ─────────────────────────
   const initial = useMemo(() => {
-    if (selectedProcedureId) {
-      const proc = findProcedure(selectedProcedureId);
-      if (proc) return { categoryId: proc.categoryId, groupId: proc.groupId };
-    }
+    const proc = findProcedure(selectedProcedureId);
+    if (proc) return { categoryId: proc.categoryId, groupId: proc.groupId };
     return { categoryId: CATEGORIES[0].id, groupId: CATEGORIES[0].groups[0].id };
-  }, [selectedProcedureId]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [categoryId, setCategoryId] = useState(initial.categoryId);
-  const [groupId, setGroupId] = useState(initial.groupId);
-  const [search, setSearch] = useState("");
-
-  // Sync local nav state when the App-level selection changes.
-  useEffect(() => {
-    if (!selectedProcedureId) return;
-    const proc = findProcedure(selectedProcedureId);
-    if (proc && (proc.categoryId !== categoryId || proc.groupId !== groupId)) {
-      setCategoryId(proc.categoryId);
-      setGroupId(proc.groupId);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProcedureId]);
+  const [groupId, setGroupId]       = useState(initial.groupId);
+  const [search, setSearch]         = useState("");
 
   const currentCategory = useMemo(
     () => CATEGORIES.find(c => c.id === categoryId), [categoryId]);
   const currentGroup = useMemo(
     () => currentCategory?.groups.find(g => g.id === groupId), [currentCategory, groupId]);
 
-  // When category changes, default to its first group.
+  // ── Sync from parent (PEs "Show Steps", etc.) ───────────────────────
+  useEffect(() => {
+    if (!selectedProcedureId || selectedProcedureId === slots[activeSlot]) return;
+    const proc = findProcedure(selectedProcedureId);
+    if (!proc) return;
+    setSlots(s => { const n = [...s]; n[activeSlot] = selectedProcedureId; return n; });
+    setCategoryId(proc.categoryId);
+    setGroupId(proc.groupId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedProcedureId]);
+
+  // ── Procedure selection (via dropdown or search) ─────────────────────
+  const handleProcedureSelect = (id) => {
+    setSlots(s => { const n = [...s]; n[activeSlot] = id || null; return n; });
+    onSelectProcedure(id);
+  };
+
   const handleCategoryChange = (id) => {
     setCategoryId(id);
     const cat = CATEGORIES.find(c => c.id === id);
     const firstGroup = cat?.groups[0];
     if (firstGroup) {
       setGroupId(firstGroup.id);
-      // Auto-select first procedure in that group too, so the article view
-      // is never empty.
       const firstProc = firstGroup.procedures[0];
-      if (firstProc) onSelectProcedure(firstProc.id);
+      if (firstProc) handleProcedureSelect(firstProc.id);
     }
   };
 
@@ -5509,53 +6112,90 @@ function Browse({
     setGroupId(id);
     const grp = currentCategory?.groups.find(g => g.id === id);
     const firstProc = grp?.procedures[0];
-    if (firstProc) onSelectProcedure(firstProc.id);
+    if (firstProc) handleProcedureSelect(firstProc.id);
   };
 
-  // The currently displayed procedure (may be null if none selected).
-  const currentProcedure = useMemo(
-    () => findProcedure(selectedProcedureId), [selectedProcedureId]);
+  // ── Session slot management ──────────────────────────────────────────
+  const addProcedureSlot = () => {
+    const newIdx = slots.length;
+    setSlots(s => [...s, null]);
+    setActiveSlot(newIdx);
+    setCategoryId(CATEGORIES[0].id);
+    setGroupId(CATEGORIES[0].groups[0].id);
+    onSelectProcedure("");
+  };
 
-  // The "steps" chunk for the current procedure (with fallback to the main
-  // entry chunk when no separate steps chunk exists).
+  const switchToSlot = (idx) => {
+    setActiveSlot(idx);
+    const procId = slots[idx];
+    if (procId) {
+      const proc = findProcedure(procId);
+      if (proc) {
+        setCategoryId(proc.categoryId);
+        setGroupId(proc.groupId);
+        onSelectProcedure(procId);
+      }
+    } else {
+      setCategoryId(CATEGORIES[0].id);
+      setGroupId(CATEGORIES[0].groups[0].id);
+      onSelectProcedure("");
+    }
+  };
+
+  // ── Derived: current procedure + steps ──────────────────────────────
+  const currentProcedure = useMemo(
+    () => findProcedure(activeProcId), [activeProcId]);
+
   const stepsChunk = useMemo(
     () => findChunkForProcedure(currentProcedure, chunks, "steps"),
     [currentProcedure, chunks]);
 
-  // Strip any "note template" section that was bundled into the same chunk
-  // body as the steps. The Swade PDF sometimes runs them together; we have
-  // a dedicated Note Builder for that content.
-  // Also strips a redundant leading title line like "implant consult: steps"
-  // since the h2 heading already names the procedure.
-  // Returns null when nothing remains after stripping (chunk was purely a
-  // note template), which causes the "no steps" fallback to render instead.
   const stepsBody = useMemo(() => {
     if (!stepsChunk) return null;
     let body = stepsChunk.body;
-    // Strip note template section (mid-body or leading).
     const m = body.match(/(^|\n)[^\n]*note template/i);
     body = m ? body.slice(0, m.index).trimEnd() : body;
-    // Strip leading "<procedure>: steps/instructions/equipment" title line.
     body = body.replace(/^[^\n]+:\s+(?:steps|instructions|equipment)\n+/i, "");
     return body.trim() || null;
   }, [stepsChunk]);
 
-  // ─────────────── External cite-jump (unchanged behavior) ───────────────
+  // ── Items: merged equipment from all non-empty slots ────────────────
+  const perProc = useMemo(() =>
+    slots
+      .filter(Boolean)
+      .map(procId => {
+        const proc = findProcedure(procId);
+        if (!proc) return null;
+        const eq = findChunkForProcedure(proc, chunks, "equipment", { noFallback: true });
+        return { label: proc.label, procId, groups: parseEquipment(eq) };
+      })
+      .filter(Boolean),
+    [slots, chunks]);
+
+  const merged = useMemo(() => mergeEquipment(perProc), [perProc]);
+  const totalItems = Object.values(merged).reduce((sum, list) => sum + list.length, 0);
+  const toggleItem = (key) => setItemsChecked(c => ({ ...c, [key]: !c[key] }));
+
+  const groupMeta = {
+    sterilization: { label: "Sterilization", icon: "⚙" },
+    locker:        { label: "Your Locker",   icon: "❏" },
+    clinic:        { label: "In Clinic",     icon: "✦" },
+    unit:          { label: "In the Unit",   icon: "◐" },
+    other:         { label: "Other",          icon: "·" },
+  };
+
+  // ── Jump behavior ────────────────────────────────────────────────────
   const articleRef = useRef(null);
   useEffect(() => {
     if (!jumpToId) return;
     const target = chunks.find(c => c.id === jumpToId);
     if (target) {
-      // For citation jumps, find the procedure whose role-chunks include the
-      // target, and select it; otherwise just leave the user where they are.
-      // Simple fallback: scroll to top of article.
       articleRef.current?.scrollTo?.({ top: 0, behavior: "smooth" });
     }
     onJumped && onJumped();
   }, [jumpToId, onJumped, chunks]);
 
-  // ─────────────── Search across all procedures ───────────────
-  // Search matches procedure labels (from breadcrumbs) AND chunk bodies.
+  // ── Search ───────────────────────────────────────────────────────────
   const searchResults = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return null;
@@ -5564,21 +6204,22 @@ function Browse({
       const inLabel = p.breadcrumb.toLowerCase().includes(q);
       const stepChunk = findChunkForProcedure(p, chunks, "steps");
       const inSteps = stepChunk && stepChunk.body.toLowerCase().includes(q);
-      if (inLabel || inSteps) {
-        results.push({ procedure: p, matchedIn: inLabel ? "label" : "steps" });
-      }
+      if (inLabel || inSteps) results.push({ procedure: p });
     }
     return results;
   }, [search, chunks]);
 
-  // ─────────────── Render ───────────────
+  // ── Render ───────────────────────────────────────────────────────────
   return (
     <div className="layout" style={{
       display: "grid", gridTemplateColumns: "minmax(300px, 380px) 1fr",
       gap: "44px", alignItems: "start",
     }}>
-      {/* Left: navigation */}
+
+      {/* ── Left: navigation + add-procedure + search + items ── */}
       <section>
+
+        {/* Procedure selection card */}
         <div style={cardStyle}>
           <Field label="Section">
             <Select value={categoryId} onChange={handleCategoryChange} prominent>
@@ -5597,8 +6238,8 @@ function Browse({
             </Field>
           )}
           <Field label="Procedure">
-            <Select value={selectedProcedureId}
-              onChange={onSelectProcedure} prominent>
+            <Select value={activeProcId || ""}
+              onChange={handleProcedureSelect} prominent>
               <option value="">— Select a procedure —</option>
               {(currentGroup?.procedures || []).map(p => (
                 <option key={p.id} value={p.id}>{p.label}</option>
@@ -5607,13 +6248,18 @@ function Browse({
           </Field>
         </div>
 
+        {/* Add procedure to session */}
+        <button className="ghost" onClick={addProcedureSlot}
+          style={{ width: "100%", marginTop: "10px", fontSize: "11px" }}>
+          + add procedure to session
+        </button>
+
         {/* Search card */}
-        <div style={{ ...cardStyle, marginTop: "20px" }}>
+        <div style={{ ...cardStyle, marginTop: "10px" }}>
           <label style={labelStyle}>Search</label>
           <input type="text" placeholder="e.g. cold test, Vitrebond, RCT"
-            value={search} onChange={(e) => setSearch(e.target.value)}
-            style={{ ...inputStyle, fontSize: "13px",
-              background: "var(--paper-soft)" }} />
+            value={search} onChange={e => setSearch(e.target.value)}
+            style={{ ...inputStyle, fontSize: "13px", background: "var(--paper-soft)" }} />
           {search.trim() && (
             <div style={{ marginTop: "10px", fontSize: "11px",
                 color: "var(--ink-soft)", letterSpacing: "0.04em" }}>
@@ -5626,11 +6272,11 @@ function Browse({
               borderTop: "1px solid var(--rule-soft)", paddingTop: "8px",
             }}>
               {searchResults.map(({ procedure: p }) => {
-                const active = p.id === selectedProcedureId;
+                const active = p.id === activeProcId;
                 return (
                   <div key={p.id}
                     onClick={() => {
-                      onSelectProcedure(p.id);
+                      handleProcedureSelect(p.id);
                       setCategoryId(p.categoryId);
                       setGroupId(p.groupId);
                       setSearch("");
@@ -5640,19 +6286,14 @@ function Browse({
                       cursor: "pointer", borderRadius: "2px",
                       color: active ? "var(--paper)" : "var(--ink)",
                       background: active ? "var(--accent)" : "transparent",
-                      lineHeight: 1.4,
-                      transition: "background 100ms ease",
+                      lineHeight: 1.4, transition: "background 100ms ease",
                     }}
-                    onMouseEnter={(e) => {
-                      if (!active) e.currentTarget.style.background = "var(--paper-soft)";
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!active) e.currentTarget.style.background = "transparent";
-                    }}>
+                    onMouseEnter={e => { if (!active) e.currentTarget.style.background = "var(--paper-soft)"; }}
+                    onMouseLeave={e => { if (!active) e.currentTarget.style.background = "transparent"; }}>
                     <div style={{
                       fontSize: "9px", letterSpacing: "0.16em",
                       textTransform: "uppercase",
-                      color: active ? "rgba(250, 246, 237, 0.65)" : "var(--ink-soft)",
+                      color: active ? "rgba(250,246,237,.65)" : "var(--ink-soft)",
                       marginBottom: "2px",
                     }}>{p.categoryLabel} / {p.groupLabel}</div>
                     {p.label}
@@ -5662,9 +6303,95 @@ function Browse({
             </div>
           )}
         </div>
+
+        {/* Items panel — shown once any slot has a procedure */}
+        {totalItems > 0 && (
+          <div style={{ marginTop: "24px" }}>
+            <div style={{
+              display: "flex", justifyContent: "space-between",
+              alignItems: "baseline", marginBottom: "12px",
+            }}>
+              <div style={labelStyle}>Items</div>
+              <span style={{
+                fontSize: "11px", color: "var(--ink-faint)",
+                fontStyle: "italic", fontFamily: "'Fraunces', Georgia, serif",
+              }}>Save time — grab all at once.</span>
+            </div>
+            {Object.entries(groupMeta).map(([key, meta]) => {
+              const items = merged[key];
+              if (!items || items.length === 0) return null;
+              return (
+                <div key={key} style={{
+                  background: "var(--paper)", border: "1px solid var(--rule)",
+                  borderRadius: "3px", padding: "14px 16px", marginBottom: "10px",
+                }}>
+                  <div style={{
+                    display: "flex", alignItems: "center", gap: "8px",
+                    marginBottom: "10px", paddingBottom: "8px",
+                    borderBottom: "1px solid var(--rule-soft)",
+                  }}>
+                    <span style={{ color: "var(--accent)", fontSize: "14px" }}>{meta.icon}</span>
+                    <span className="serif" style={{ fontSize: "13px", fontWeight: 500 }}>
+                      {meta.label}
+                    </span>
+                    <span style={{ marginLeft: "auto", fontSize: "10px", color: "var(--ink-faint)" }}>
+                      {items.length}
+                    </span>
+                  </div>
+                  <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                    {items.map((item, i) => {
+                      const ckey = `${key}:${item.text.toLowerCase()}`;
+                      const isChecked = !!itemsChecked[ckey];
+                      return (
+                        <li key={i} style={{
+                          padding: "4px 0",
+                          borderBottom: i < items.length - 1 ? "1px solid var(--rule-soft)" : "none",
+                        }}>
+                          <label style={{ display: "flex", alignItems: "flex-start", gap: "10px", cursor: "pointer" }}>
+                            <span style={{
+                              width: "14px", height: "14px", flexShrink: 0,
+                              border: `1.5px solid ${isChecked ? "var(--accent)" : "var(--rule)"}`,
+                              background: isChecked ? "var(--accent)" : "transparent",
+                              borderRadius: "2px", marginTop: "2px",
+                              display: "flex", alignItems: "center", justifyContent: "center",
+                              color: "var(--paper)", fontSize: "10px",
+                              transition: "background 120ms ease, border-color 120ms ease",
+                            }}>{isChecked ? "✓" : ""}</span>
+                            <input type="checkbox" checked={isChecked}
+                              onChange={() => toggleItem(ckey)}
+                              style={{ position: "absolute", opacity: 0, width: 0, height: 0 }} />
+                            <span style={{
+                              flex: 1, fontSize: "12px",
+                              color: isChecked ? "var(--ink-faint)" : "var(--ink)",
+                              textDecoration: isChecked ? "line-through" : "none",
+                              lineHeight: 1.5,
+                            }}>
+                              {item.text}
+                              {item.sources.length > 1 && (
+                                <span style={{
+                                  marginLeft: "6px", fontSize: "10px",
+                                  color: "var(--accent-soft)",
+                                }}>×{item.sources.length}</span>
+                              )}
+                            </span>
+                          </label>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              );
+            })}
+            <button className="ghost" onClick={() => setItemsChecked({})}
+              style={{ width: "100%", marginTop: "4px", fontSize: "10px" }}>
+              Reset checks
+            </button>
+          </div>
+        )}
+
       </section>
 
-      {/* Right: steps + actions */}
+      {/* ── Right: steps article ── */}
       <div style={{ position: "relative" }}>
         {currentProcedure && stepsBody && (
           <div style={{
@@ -5675,59 +6402,84 @@ function Browse({
             Steps from <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em>
           </div>
         )}
-      <article ref={articleRef} style={{
-        background: "var(--paper)", border: "1px solid var(--rule)",
-        borderRadius: "3px", padding: "32px 36px",
-        maxHeight: "78vh", overflowY: "auto",
-        textAlign: "left",
-      }}>
-        {currentProcedure ? (
-          <>
-            <h2 className="serif" style={{
-              fontSize: "30px", margin: "0 0 24px", fontWeight: 400,
-              letterSpacing: "-0.01em", lineHeight: 1.15,
-            }}>{currentProcedure.label}</h2>
-            <div className="hairline" style={{ margin: "0 0 22px" }} />
-
-            {stepsBody ? (
-              <ProseBlock text={stepsBody} highlight={search} />
-            ) : (
-              <div style={{
-                color: "var(--ink-faint)", fontStyle: "italic",
-                fontSize: "13px", padding: "20px 0",
-              }}>
-                Sarah Swade&apos;s guide doesn&apos;t include a structured steps
-                section for this procedure. The Note Builder still has its
-                template, and the Class Notebook (Ask) can answer questions
-                about it.
-              </div>
-            )}
-
-            {/* Action row at the bottom of the steps view */}
-            <div className="hairline" style={{ margin: "32px 0 22px" }} />
+        <article ref={articleRef} style={{
+          background: "var(--paper)", border: "1px solid var(--rule)",
+          borderRadius: "3px", padding: "32px 36px",
+          maxHeight: "78vh", overflowY: "auto",
+          textAlign: "left",
+        }}>
+          {/* Session procedure tabs — only when 2+ slots exist */}
+          {slots.length > 1 && (
             <div style={{
-              display: "flex", gap: "10px", flexWrap: "wrap",
+              display: "flex", justifyContent: "flex-end",
+              gap: "6px", marginBottom: "22px",
             }}>
-              <button className="primary"
-                onClick={() => onGenerateNote(currentProcedure.id)}>
-                Generate Note  →
-              </button>
-              <button className="ghost"
-                onClick={() => onAddToPrepList(currentProcedure.id)}>
-                Add to Prep List  →
-              </button>
+              {slots.map((procId, i) => {
+                const isActive = i === activeSlot;
+                const proc = procId ? findProcedure(procId) : null;
+                return (
+                  <button key={i}
+                    title={proc?.label || "Empty"}
+                    onClick={() => switchToSlot(i)}
+                    style={{
+                      width: "28px", height: "28px", borderRadius: "50%",
+                      border: `1.5px solid ${isActive ? "var(--accent)" : "var(--rule)"}`,
+                      background: isActive ? "var(--accent)" : "transparent",
+                      color: isActive ? "var(--paper)" : "var(--ink-soft)",
+                      fontSize: "12px", fontFamily: "'Geist', sans-serif",
+                      fontWeight: 600, cursor: "pointer",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      transition: "background 120ms, border-color 120ms",
+                    }}>
+                    {i + 1}
+                  </button>
+                );
+              })}
             </div>
-          </>
-        ) : (
-          <div style={{
-            color: "var(--ink-faint)", fontStyle: "italic",
-            fontSize: "13px", padding: "20px 0",
-          }}>
-            Select a procedure on the left to view its steps.
-          </div>
-        )}
-      </article>
+          )}
+
+          {currentProcedure ? (
+            <>
+              <h2 className="serif" style={{
+                fontSize: "30px", margin: "0 0 24px", fontWeight: 400,
+                letterSpacing: "-0.01em", lineHeight: 1.15,
+                color: "var(--accent)",
+              }}>{currentProcedure.label}</h2>
+              <div className="hairline" style={{ margin: "0 0 22px" }} />
+
+              {stepsBody ? (
+                <ProseBlock text={stepsBody} highlight={search} />
+              ) : (
+                <div style={{
+                  color: "var(--ink-faint)", fontStyle: "italic",
+                  fontSize: "13px", padding: "20px 0",
+                }}>
+                  Sarah Swade&apos;s guide doesn&apos;t include a structured steps
+                  section for this procedure. The Note Builder still has its
+                  template, and the Class Notebook (Ask) can answer questions
+                  about it.
+                </div>
+              )}
+
+              <div className="hairline" style={{ margin: "32px 0 22px" }} />
+              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                <button className="primary"
+                  onClick={() => onGenerateNote(currentProcedure.id)}>
+                  Generate Note  →
+                </button>
+              </div>
+            </>
+          ) : (
+            <div style={{
+              color: "var(--ink-faint)", fontStyle: "italic",
+              fontSize: "13px", padding: "20px 0",
+            }}>
+              Select a procedure on the left to view its steps.
+            </div>
+          )}
+        </article>
       </div>
+
     </div>
   );
 }
@@ -5896,12 +6648,227 @@ function mergeEquipment(perProc) {
 
 // Build a one-time set of every code referenced anywhere in TEMPLATES or
 // CHUNKS, used to mark "Swade-relevant" rows. Computed once at module load.
-const SWADE_CODES = (() => {
+// SWADE_CODES: authoritative static set of every code present in the UIC Swade
+// manual. Source: full code list extracted from Swade, verified May 2026.
+// Internal form identifiers (ADJ, EM-CSF, ENDO, etc.) are omitted — they are
+// workflow identifiers, not billable CDT codes, and don't appear in RVU_DATA.
+const SWADE_CODES = new Set([
+  // Diagnostic & Preventive
+  "D0120","D0140","D0147","D0150","D0150A","D0150B","D0150C",
+  "D0170","D0210","D0220","D0225","D0270","D0274","D0275",
+  "D0330","D0350","D0365L","D0366U","D0460","D0475",
+  "D0601","D0602","D0603","D0604",
+  "D1110","D1310","D1320.1","D1320.2","D1320.3","D1330",
+  // Restorative
+  "D2140","D2150","D2160","D2161",
+  "D2330","D2331","D2332","D2335","D2390","D2391","D2392","D2393",
+  "D2740A","D2740B","D2750A","D2750B","D2790A","D2790B",
+  "D2950","D2960",
+  // Endodontics
+  "D3310A","D3310B","D3320A","D3320B","D3330A","D3330B",
+  // Periodontics
+  "D4241","D4266UG","D4341","D4342","D4910",
+  // Prosthodontics
+  "D5110A","D5120A","D5750",
+  // Implant
+  "D6010U2","D6051","D6059","D6062","D6065","D6066","D6067",
+  "D6104UG","D6190","D6199",
+  // Oral Surgery
+  "D7140","D7952UG","D7953UG",
+  // Orthodontics
+  "D8080",
+  // Adjunctive
+  "D9360","D9365","D9423NC","D9930",
+  // Digital (UIC DD-prefix codes)
+  "DD2610A","DD2610B","DD2620A","DD2620B","DD2630A","DD2630B",
+  "DD2642A","DD2642B","DD2643A","DD2643B","DD2644A","DD2644B",
+  "DD2740A","DD2740B",
+  "DD6057","DD6057A","DD6057B","DD6058",
+]);
+
+// SWADE_FREQ: count of how many times each code appears in the steps/template
+// text — used only as a sort weight so frequently-referenced codes (D0120,
+// D1110, D4341…) rank first in "relevance" order. Not used for
+// inclusion/exclusion — SWADE_CODES is the authoritative source for that.
+const SWADE_FREQ = (() => {
   const text = Object.values(TEMPLATES).join("\n") +
                "\n" + CHUNKS.map(c => c.body).join("\n");
-  const matches = text.match(/D\d{4}[A-Z]?(?:\.\d)?/g) || [];
-  return new Set(matches);
+  const matches = text.match(/D{1,2}\d{4}[A-Z]{0,2}(?:\.\d)?/g) || [];
+  const freq = {};
+  for (const m of matches) freq[m] = (freq[m] || 0) + 1;
+  return freq;
 })();
+
+// UIC Predoctoral Fee Guide — patient-facing fees, keyed by CDT code.
+// Only non-zero fees are included; $0/N/C codes are omitted.
+// Source: UIC predoctoral fee guide, printed 10/30/2025.
+const UIC_FEES = {
+  // Diagnostic & Radiographic
+  D0120:38, D0140:57, D0150:62, D0160:63,
+  D0210:81, D0220:28, D0230:21, D0240:37,
+  D0270:28, D0272:39, D0273:46, D0274:51, D0277:50,
+  D0330:81, "D0330UG":81, D0340:94, D0351:64,
+  D0364:124, D0365L:202, D0366U:202, D0367:202,
+  D0396:47, D0415:43, D0486:97,
+  // Preventive
+  D1110:61, D1120:63, D1206:43, D1208:41,
+  D1351:57, D1352:57, D1353:51, D1354:43,
+  D1510:198, D1516:287, D1517:287, D1526:287, D1527:287,
+  D1551:47, D1552:47, D1553:47, D1556:48, D1557:48, D1558:48,
+  // Restorative
+  D2140:99,  D2150:131, D2160:150, D2161:160,
+  D2330:86,  D2331:128, D2332:157, D2335:189,
+  D2391:118, D2392:153, D2393:187, D2394:220,
+  D2410:132, D2420:158, D2430:183,
+  D2510:391, D2520:505, D2530:505,
+  D2542:505, D2543:505, D2544:505,
+  D2610:157, D2620:174, D2630:185,
+  D2642:350, D2643:350, D2644:350,
+  D2650:391, D2651:505, D2652:505,
+  D2662:505, D2663:505, D2664:505,
+  D2710:302,
+  D2740:525, D2750:525, D2751:525, D2752:525,
+  D2780:505, D2781:505, D2782:505, D2783:505,
+  D2790:625, D2791:505, D2792:625,
+  D2799:117, D2910:41,  D2920:41,
+  D2930:154, D2931:132, D2933:198,
+  D2940:63,  D2950:200, D2951:30,  D2952:183, D2954:267, D2955:84,
+  D2960:190, D2961:190, D2962:524, D2970:118,
+  D2980:43,  D2981:69,  D2982:69,  D2983:79,  D2990:57,
+  // Endodontics
+  D3110:48,  D3120:48,  D3220:120,
+  D3310:199, D3320:200, D3330:399,
+  D3346:559, D3347:635, D3348:784,
+  D3351:89,  D3352:86,  D3353:100,
+  D3410:183, D3421:259, D3425:445,
+  D3920:244, D3921:85,
+  // Periodontics
+  D4210:352, D4211:352,
+  D4230:515, D4231:498,
+  D4240:413, D4241:352, D4245:406,
+  "D4249":338, "D4249UG":338,
+  D4260:522, D4261:468,
+  D4263:347, D4264:206, D4265:206,
+  D4266:178, "D4266UG":178, D4267:178,
+  D4270:379, D4273:407, D4274:232, D4275:607,
+  D4322:41,  D4323:102,
+  D4341:80,  D4341C:62, D4342:56,  D4346:102, D4355:63, D4381:59,
+  D4910:73,  D4910C:73,
+  // Prosthodontics — Removable
+  D5110:625, D5110P:625, D5120:625, D5120P:625,
+  D5130:625, D5140:625,
+  D5211:578, D5212:578, D5213:678, D5214:678,
+  D5221:352, D5222:352,
+  D5410:38,  D5411:38,  D5421:38,  D5422:38,
+  D5511:131, D5512:131, D5520:91,
+  D5611:144, D5612:144, D5621:144, D5622:144,
+  D5630:158, D5640:91,  D5650:91,  D5660:158,
+  D5670:377, D5671:377,
+  D5710:270, D5711:270, D5720:270, D5721:270,
+  D5730:190, D5731:190, D5740:190, D5741:190,
+  D5750:217, D5751:217, D5760:270, D5761:270,
+  D5810:255, D5811:255,
+  D5820:352, D5820E:118, D5820S:192,
+  D5821:352, D5821E:118, D5821S:192,
+  D5850:79,  D5851:79,
+  D5860:662, D5861:662, D5867:51,  D5875:31,  D5876:85,
+  D5986:64,
+  // Implants
+  D6010:245, "D6010U1":238, "D6010U2":292,
+  D6051:145, D6056:128, "D6056U1":64, "D6056U2":145,
+  D6057:282, D6058:631, D6059:631, D6060:540, D6061:631,
+  D6062:631, D6064:632, D6065:631, D6066:631, D6067:631,
+  D6068:631, D6069:631, D6070:540, D6071:631, D6072:631,
+  D6073:540, D6074:631, D6075:631, D6076:631, D6077:631,
+  D6082:631, D6083:631, D6085:145, D6086:631, D6087:631,
+  D6089:27,  D6091:42,  D6092:38,  D6093:47,
+  D6098:631, D6099:631,
+  D6103:178, D6104:178, "D6104UG":178,
+  D6110:662, D6111:662, D6112:662, D6113:662,
+  D6116:631, D6117:631, D6190:41,
+  D6210:591, D6211:505, D6212:505,
+  D6240:505, D6241:505, D6242:505, D6245:505,
+  D6545:317, D6548:317,
+  D6750:505, D6752:505, D6780:505, D6782:505,
+  D6790:591, D6792:505, D6930:82,  D6975:158,
+  // Oral Surgery
+  D7111:73,  D7140:95,  D7210:120, D7220:195,
+  D7230:226, D7240:271, D7250:109, D7270:97,
+  D7285:232, D7286:173, D7287:132, D7288:114,
+  D7310:130, D7320:199, D7321:130,
+  D7410:314, D7471:197, D7472:197, D7473:197,
+  D7510:90,  D7530:43,  D7540:120, D7910:50,
+  D7950:178, "D7950UG":178, "D7952UG":178,
+  D7953:178, "D7953UG":178,
+  D7961:161, D7962:161, D7970:163, D7972:163,
+  // Orthodontics
+  D8010:323, D8020:323, D8030:370, D8210:252,
+  D8703:116, D8704:116,
+  // Adjunctive
+  D9090:43,  D9110:68,  "D9110.1":68, "D9110.2":68,
+  D9120:122, D9215:27,
+  D9222:451, D9223:197, D9230:101,
+  D9239:451, D9243:197, D9248:356,
+  D9370:45,  D9910:43,  D9920:60,
+  D9932:40,  D9933:40,  D9934:40,  D9935:40,
+  D9941:158, D9943:40,
+  D9944:303, D9945:303, D9946:303,
+  D9950:43,  D9951:43,  D9952:404,
+  D9970:71,  D9972:141, D9973:79,  D9974:64, D9975:141, D9976:31,
+  // Digital workflow variants
+  DD2610:157, DD2620:174, DD2630:185,
+  DD2642:350, DD2643:350, DD2644:350,
+  DD2740:525, DD6057:282, DD6058:630, DD6065:630,
+  DD6190:83,  DD6245:505, DD6548:156,
+};
+
+// Fee lookup: try exact code first, then strip a trailing step-letter (A–D)
+// so that DD2610A → DD2610, D2740B → D2740, D3310A → D3310, etc.
+const lookupFee = code => UIC_FEES[code] ?? UIC_FEES[code.replace(/[A-D]$/, '')];
+
+// Expandable parent→children groups for the Codes tab tree view.
+// Each key is the "parent" code shown collapsed; children expand below it.
+// Parent rows are synthesized (no catalog entry needed for the parent itself).
+const CODE_GROUPS = {
+  // ── Conventional multi-step ──────────────────────────────────────────────
+  "D0150":  { desc: "Comprehensive Oral Exam (COE)",               children: ["D0150A","D0150B","D0150C"] },
+  "D1320":  { desc: "Tobacco counseling",                           children: ["D1320.1","D1320.2","D1320.3"] },
+  "D2510":  { desc: "Inlay, metallic, 1 surf",                      children: ["D2510A","D2510B","D2510C"] },
+  "D2520":  { desc: "Inlay, metallic, 2 surf",                      children: ["D2520A","D2520B","D2520C"] },
+  "D2530":  { desc: "Inlay, metallic, 3+ surf",                     children: ["D2530A","D2530B","D2530C"] },
+  "D2542":  { desc: "Onlay, metallic, 2 surf",                      children: ["D2542A","D2542B","D2542C"] },
+  "D2543":  { desc: "Onlay, metallic, 3 surf",                      children: ["D2543A","D2543B","D2543C"] },
+  "D2544":  { desc: "Onlay, metallic, 4+ surf",                     children: ["D2544A","D2544B","D2544C"] },
+  "D2740":  { desc: "Crown — porcelain/ceramic",                    children: ["D2740A","D2740B","D2740C"] },
+  "D2750":  { desc: "Crown — PFM, high noble",                      children: ["D2750A","D2750B"] },
+  "D2790":  { desc: "Crown — full cast, high noble",                children: ["D2790A","D2790B"] },
+  "D3310":  { desc: "Endo therapy — anterior",                      children: ["D3310A","D3310B"] },
+  "D3320":  { desc: "Endo therapy — premolar",                      children: ["D3320A","D3320B"] },
+  "D3330":  { desc: "Endo therapy — molar",                         children: ["D3330A","D3330B"] },
+  "D5110":  { desc: "Complete denture — maxillary",                 children: ["D5110A","D5110B","D5110C"] },
+  "D5120":  { desc: "Complete denture — mandibular",                children: ["D5120A","D5120B","D5120C"] },
+  "D9390":  { desc: "Consultation report",                          children: ["D9390A","D9390B"] },
+  "D9940":  { desc: "Occlusal guard — hard, full arch",             children: ["D9940A","D9940B"] },
+  "D9944":  { desc: "Occlusal guard — hard, partial arch",          children: ["D9944A","D9944B"] },
+  "D9945":  { desc: "Occlusal guard — soft, full arch",             children: ["D9945A","D9945B"] },
+  "D9946":  { desc: "Occlusal guard — hard, full arch (alt)",       children: ["D9946A","D9946B"] },
+  // ── Digital workflow ─────────────────────────────────────────────────────
+  "DD2610": { desc: "Inlay porc/cer, 1 surf",                       children: ["DD2610A","DD2610B","DD2610C","DD2610D"] },
+  "DD2620": { desc: "Inlay porc/cer, 2 surf",                       children: ["DD2620A","DD2620B","DD2620C","DD2620D"] },
+  "DD2630": { desc: "Inlay porc/cer, 3+ surf",                      children: ["DD2630A","DD2630B","DD2630C","DD2630D"] },
+  "DD2642": { desc: "Onlay porc/cer, 2 surf",                       children: ["DD2642A","DD2642B","DD2642C","DD2642D"] },
+  "DD2643": { desc: "Onlay porc/cer, 3 surf",                       children: ["DD2643A","DD2643B","DD2643C","DD2643D"] },
+  "DD2644": { desc: "Onlay porc/cer, 4+ surf",                      children: ["DD2644A","DD2644B","DD2644C","DD2644D"] },
+  "DD2740": { desc: "Crown porc/cer (digital)",                     children: ["DD2740A","DD2740B","DD2740C","DD2740D"] },
+  "DD6057": { desc: "Digital custom abutment",                      children: ["DD6057A","DD6057B","DD6057C"] },
+  "DD6058": { desc: "All porc/cer crown on abutment (digital)",     children: ["DD6058A","DD6058B","DD6058C"] },
+  "DD6065": { desc: "All ceramic crown, screw-retained (digital)",  children: ["DD6065A","DD6065B","DD6065C"] },
+  "DD6245": { desc: "Digital composite crown",                      children: ["DD6245A","DD6245B","DD6245C","DD6245D"] },
+  "DD6548": { desc: "Digital procedure (DD6548)",                   children: ["DD6548B","DD6548C","DD6548D"] },
+};
+// Reverse map: child code → parent code (built from CODE_GROUPS).
+const CHILD_TO_PARENT = {};
+Object.entries(CODE_GROUPS).forEach(([p, g]) => g.children.forEach(c => { CHILD_TO_PARENT[c] = p; }));
 
 // CDT category convention by code prefix. Used by the code lookup table
 // for quick filtering.
@@ -6075,27 +7042,84 @@ function RVUs() {
   // Swade documented; this toggle cuts noise without losing the option to
   // browse everything.
   const [swadeOnly, setSwadeOnly] = useState(true);
+  const [expandedGroups, setExpandedGroups] = useState(new Set());
+  const toggleGroup = code => setExpandedGroups(prev => {
+    const s = new Set(prev); s.has(code) ? s.delete(code) : s.add(code); return s;
+  });
+
+  // Helper: is a code (or its parent group) SWADE-relevant?
+  const isSwade = code => {
+    if (SWADE_CODES.has(code)) return true;
+    const grp = CODE_GROUPS[code];
+    return grp ? grp.children.some(c => SWADE_CODES.has(c)) : false;
+  };
 
   // Apply category filter + Swade filter + search filter, then sort.
-  const rows = useMemo(() => {
+  // Returns { rows, autoExpand } — autoExpand is the set of parent codes whose
+  // children matched the search term (so they open automatically).
+  const { rows, autoExpand } = useMemo(() => {
     const q = search.trim().toLowerCase();
     const cat = RVU_CATEGORIES.find(c => c.id === activeCategory);
-    let filtered = RVU_DATA.filter(r => cat ? cat.match(r.code) : true);
+
+    // 1. Collect all candidate catalog entries after category filter.
+    let base = RVU_DATA.filter(r => cat ? cat.match(r.code) : true);
+
+    // 2. Determine which parent groups have at least one child in this category.
+    const parentsInCat = new Set(
+      base.filter(r => CHILD_TO_PARENT[r.code]).map(r => CHILD_TO_PARENT[r.code])
+    );
+    // Also include parent codes that are themselves in the catalog (e.g. D1320).
+    base.filter(r => CODE_GROUPS[r.code]).forEach(r => parentsInCat.add(r.code));
+
+    // 3. Build parent row objects for every qualifying parent.
+    const parentEntries = [...parentsInCat].map(pCode => {
+      const grp = CODE_GROUPS[pCode];
+      const kids = grp.children.map(c => RVU_DATA.find(x => x.code === c)).filter(Boolean);
+      return {
+        _type: "parent", code: pCode, desc: grp.desc,
+        rvu: kids.reduce((s, c) => s + (c.rvu || 0), 0),
+        children: kids,
+      };
+    });
+
+    // 4. Combine: standalone codes (not a child or a catalog-resident parent) + parent rows.
+    let rows = [
+      ...base
+        .filter(r => !CHILD_TO_PARENT[r.code] && !CODE_GROUPS[r.code])
+        .map(r => ({ _type: "single", ...r })),
+      ...parentEntries,
+    ];
+
+    // 5. SWADE filter.
     if (swadeOnly) {
-      filtered = filtered.filter(r => SWADE_CODES.has(r.code));
+      rows = rows.filter(r =>
+        r._type === "parent"
+          ? r.children.some(c => SWADE_CODES.has(c.code)) || SWADE_CODES.has(r.code)
+          : SWADE_CODES.has(r.code)
+      );
     }
+
+    // 6. Search filter — also compute which parents to auto-expand.
+    const autoExp = new Set();
     if (q) {
-      filtered = filtered.filter(r =>
-        r.code.toLowerCase().includes(q) ||
-        r.desc.toLowerCase().includes(q));
+      rows = rows.filter(r => {
+        if (r._type === "parent") {
+          const parentMatch = r.code.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q);
+          const childMatch  = r.children.some(c =>
+            c.code.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q));
+          if (childMatch) autoExp.add(r.code);
+          return parentMatch || childMatch;
+        }
+        return r.code.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q);
+      });
     }
-    const sorted = [...filtered];
-    sorted.sort((a, b) => {
+
+    // 7. Sort.
+    rows.sort((a, b) => {
       let cmp = 0;
       if (sortBy === "relevance") {
-        const aRel = SWADE_CODES.has(a.code) ? 1 : 0;
-        const bRel = SWADE_CODES.has(b.code) ? 1 : 0;
-        cmp = bRel - aRel;
+        cmp = (isSwade(b.code) ? 1 : 0) - (isSwade(a.code) ? 1 : 0);
+        if (cmp === 0) cmp = (SWADE_FREQ[b.code] || 0) - (SWADE_FREQ[a.code] || 0);
         if (cmp === 0) cmp = a.code.localeCompare(b.code);
       } else if (sortBy === "code") {
         cmp = a.code.localeCompare(b.code);
@@ -6106,7 +7130,8 @@ function RVUs() {
       }
       return sortDir === "asc" ? cmp : -cmp;
     });
-    return sorted;
+
+    return { rows, autoExpand: autoExp };
   }, [search, sortBy, sortDir, activeCategory, swadeOnly]);
 
   // Stats summary for the current filter.
@@ -6118,15 +7143,28 @@ function RVUs() {
     return { count: rows.length, valued: total, avg, max };
   }, [rows]);
 
-  // Per-category counts for the pill row.
+  // Per-category counts for the pill row (counts parent rows, not raw children).
   const categoryCounts = useMemo(() => {
     const counts = {};
     for (const cat of RVU_CATEGORIES) {
-      let filtered = RVU_DATA.filter(r => cat.match(r.code));
+      let catBase = RVU_DATA.filter(r => cat.match(r.code));
+      // Build parent rows for this category (same logic as main rows useMemo).
+      const parentsHere = new Set([
+        ...catBase.filter(r => CHILD_TO_PARENT[r.code]).map(r => CHILD_TO_PARENT[r.code]),
+        ...catBase.filter(r => CODE_GROUPS[r.code]).map(r => r.code),
+      ]);
+      let visible = [
+        ...catBase.filter(r => !CHILD_TO_PARENT[r.code] && !CODE_GROUPS[r.code]),
+        ...[...parentsHere].map(p => ({ code: p, _parent: true })),
+      ];
       if (swadeOnly) {
-        filtered = filtered.filter(r => SWADE_CODES.has(r.code));
+        visible = visible.filter(r =>
+          r._parent
+            ? CODE_GROUPS[r.code].children.some(c => SWADE_CODES.has(c)) || SWADE_CODES.has(r.code)
+            : SWADE_CODES.has(r.code)
+        );
       }
-      counts[cat.id] = filtered.length;
+      counts[cat.id] = visible.length;
     }
     return counts;
   }, [swadeOnly]);
@@ -6164,20 +7202,22 @@ function RVUs() {
             style={headerInput} />
         </div>
 
-        {/* Swade-only toggle — hides the long tail of CDT codes the manual
-            doesn't mention so the table reads like the codes everyone uses. */}
-        <label style={{
-          display: "inline-flex", alignItems: "center", gap: "8px",
-          fontSize: "11px", color: "var(--ink-soft)",
-          marginBottom: "16px", cursor: "pointer",
-          fontFamily: "'Geist', sans-serif",
-          userSelect: "none",
-        }}>
-          <input type="checkbox" checked={swadeOnly}
-            onChange={e => setSwadeOnly(e.target.checked)}
-            style={{ accentColor: "var(--accent)", cursor: "pointer" }} />
-          Hide codes not in <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual
-        </label>
+        {/* Toggles row */}
+        <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", marginBottom: "16px" }}>
+          {/* Swade-only toggle */}
+          <label style={{
+            display: "inline-flex", alignItems: "center", gap: "8px",
+            fontSize: "11px", color: "var(--ink-soft)",
+            cursor: "pointer",
+            fontFamily: "'Geist', sans-serif",
+            userSelect: "none",
+          }}>
+            <input type="checkbox" checked={swadeOnly}
+              onChange={e => setSwadeOnly(e.target.checked)}
+              style={{ accentColor: "var(--accent)", cursor: "pointer" }} />
+            Hide codes not in <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual
+          </label>
+        </div>
 
         {/* Category filter pills */}
         <div style={{
@@ -6213,11 +7253,14 @@ function RVUs() {
           })}
         </div>
 
-        {/* Table */}
+        {/* Table — fee col is fixed-width and sits left of Code so Code never shifts */}
+        {(() => {
+          const cols = "1fr 60px 80px 50px";
+          return (
         <div style={{ ...cardStyle, padding: 0, overflow: "hidden", maxWidth: "600px", margin: "0 auto" }}>
           <div style={{
             display: "grid",
-            gridTemplateColumns: "1fr auto 50px",
+            gridTemplateColumns: cols,
             gap: "12px",
             fontSize: "10px", letterSpacing: "0.18em",
             textTransform: "uppercase", fontWeight: 500,
@@ -6229,6 +7272,7 @@ function RVUs() {
               style={{ textAlign: "left" }}>
               Description {sortIndicator("desc")}
             </button>
+            <div style={{ textAlign: "right", color: "var(--ink-soft)" }}>Fee</div>
             <button onClick={() => toggleSort("code")} className="rvu-th"
               style={{ textAlign: "center" }}>
               Code {sortIndicator("code")}
@@ -6239,65 +7283,125 @@ function RVUs() {
             </button>
           </div>
 
-          <div style={{
-            maxHeight: "60vh",
-            overflowY: "auto",
-          }}>
+          <div style={{ maxHeight: "60vh", overflowY: "auto" }}>
             {rows.length === 0 ? (
               <div style={{ padding: "40px 20px", textAlign: "center",
                   color: "var(--ink-faint)", fontStyle: "italic" }}>
                 No matches.
               </div>
-            ) : rows.map(r => {
-              const isRelevant = SWADE_CODES.has(r.code);
-              return (
-                <div key={r.code} style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr auto 50px",
-                  gap: "12px",
-                  fontSize: "13px", lineHeight: 1.45,
-                  padding: "10px 18px",
-                  borderBottom: "1px solid var(--rule-soft)",
-                  alignItems: "center",
+            ) : rows.flatMap(r => {
+              const isOpen = expandedGroups.has(r.code) || autoExpand.has(r.code);
+              const rowSwade = isSwade(r.code);
+              const fee = lookupFee(r.code);
+              const rowStyle = {
+                display: "grid", gridTemplateColumns: cols, gap: "12px",
+                fontSize: "13px", lineHeight: 1.45, padding: "10px 18px",
+                borderBottom: "1px solid var(--rule-soft)", alignItems: "center",
+              };
+              const codeCell = (code, swadeFlag) => (
+                <div className="mono" style={{
+                  color: "var(--accent)", fontWeight: 500,
+                  fontVariantNumeric: "tabular-nums",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: "4px",
                 }}>
-                  <div style={{ color: "var(--ink)", textAlign: "left" }}>
-                    {r.desc}
-                  </div>
-                  <div className="mono" style={{
-                    color: "var(--accent)", fontWeight: 500,
-                    fontVariantNumeric: "tabular-nums",
-                    display: "flex", alignItems: "center", justifyContent: "center", gap: "4px",
-                  }}>
-                    {isRelevant && (
-                      <span title="Used in the Swade guide" style={{
-                        width: "5px", height: "5px", borderRadius: "50%",
-                        background: "var(--accent)", display: "inline-block",
-                        flexShrink: 0,
-                      }} />
-                    )}
-                    {r.code}
-                  </div>
-                  <div style={{
-                    textAlign: "right", color: "var(--ink-soft)",
-                    fontVariantNumeric: "tabular-nums",
-                  }}>{r.rvu}</div>
+                  {swadeFlag && !swadeOnly && (
+                    <span title="Used in the Swade guide" style={{
+                      width: "5px", height: "5px", borderRadius: "50%",
+                      background: "var(--accent)", display: "inline-block", flexShrink: 0,
+                    }} />
+                  )}
+                  {code}
                 </div>
               );
+
+              if (r._type === "parent") {
+                const parentRow = (
+                  <div key={r.code} style={rowStyle}>
+                    <button onClick={() => toggleGroup(r.code)} style={{
+                      background: "none", border: "none", padding: 0, cursor: "pointer",
+                      color: "var(--ink)", textAlign: "left", fontFamily: "inherit",
+                      fontSize: "inherit", display: "flex", alignItems: "center", gap: "6px",
+                    }}>
+                      <span style={{
+                        fontSize: "10px", color: "var(--ink-soft)",
+                        transition: "transform 120ms", display: "inline-block",
+                        transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
+                      }}>▶</span>
+                      {r.desc}
+                    </button>
+                    <div style={{
+                      textAlign: "right",
+                      color: fee ? "var(--ink-soft)" : "var(--ink-faint)",
+                      fontVariantNumeric: "tabular-nums", fontSize: "12px",
+                    }}>
+                      {fee ? `$${fee}` : "—"}
+                    </div>
+                    {codeCell(r.code, rowSwade)}
+                    <div style={{ textAlign: "right", color: "var(--ink-soft)",
+                        fontVariantNumeric: "tabular-nums" }}>{r.rvu}</div>
+                  </div>
+                );
+                const childRows = isOpen ? r.children.map(child => (
+                  <div key={child.code} style={{
+                    ...rowStyle,
+                    padding: "7px 18px 7px 36px",
+                    background: "var(--paper-soft)",
+                    borderBottom: "1px solid var(--rule-soft)",
+                  }}>
+                    <div style={{ color: "var(--ink-soft)", fontSize: "12px" }}>
+                      {child.desc}
+                    </div>
+                    <div style={{
+                      textAlign: "right", color: "var(--ink-faint)",
+                      fontVariantNumeric: "tabular-nums", fontSize: "12px",
+                    }}>—</div>
+                    {codeCell(child.code, SWADE_CODES.has(child.code))}
+                    <div style={{ textAlign: "right", color: "var(--ink-soft)",
+                        fontVariantNumeric: "tabular-nums", fontSize: "12px" }}>{child.rvu}</div>
+                  </div>
+                )) : [];
+                return [parentRow, ...childRows];
+              }
+
+              // Single (non-grouped) row
+              return [(
+                <div key={r.code} style={rowStyle}>
+                  <div style={{ color: "var(--ink)", textAlign: "left" }}>{r.desc}</div>
+                  <div style={{
+                    textAlign: "right",
+                    color: fee ? "var(--ink-soft)" : "var(--ink-faint)",
+                    fontVariantNumeric: "tabular-nums", fontSize: "12px",
+                  }}>
+                    {fee ? `$${fee}` : "—"}
+                  </div>
+                  {codeCell(r.code, rowSwade)}
+                  <div style={{ textAlign: "right", color: "var(--ink-soft)",
+                      fontVariantNumeric: "tabular-nums" }}>{r.rvu}</div>
+                </div>
+              )];
             })}
           </div>
         </div>
+          );
+        })()}
 
         <p style={{
           marginTop: "14px", fontSize: "11px",
           color: "var(--ink-faint)", fontStyle: "italic",
           lineHeight: 1.5,
         }}>
-          <span style={{
-            width: "5px", height: "5px", borderRadius: "50%",
-            background: "var(--accent)", display: "inline-block",
-            marginRight: "6px", verticalAlign: "middle",
-          }} />
-          codes referenced in <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual
+          {!swadeOnly && (
+            <>
+              <span style={{
+                width: "5px", height: "5px", borderRadius: "50%",
+                background: "var(--accent)", display: "inline-block",
+                marginRight: "6px", verticalAlign: "middle",
+              }} />
+              codes referenced in <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual
+              {" · "}
+            </>
+          )}
+          fees from UIC predoctoral fee guide (Oct 2025)
         </p>
       </div>
     </div>
@@ -6899,7 +8003,7 @@ const PES_PART3 = [
   {
     id: "CR2", code: "CR2", part: "operative",
     name: "Class II Preparation & Resin Composite Restoration",
-    deadline: { semester: "D3-spring", text: "One of CR2/CR3 by end of DAOB 341, the other by end of DAOB 342" },
+    deadline: { semester: "D4-summer", text: "One of CR2/CR3 by end of DAOB 341 (D4 Summer)" },
     prereq: "Caries Diagnosis (CARDX) and Caries Excavation (CAREX) PEs completed.",
     prereqCheck: null,
     caseSelect: "Caries into dentin (D1, D2, D3) verified clinically/radiographically. Restorative site must have proximal contacting tooth and should have opposing tooth. Tooth must be treatment planned for Class II conventional or slot restoration.",
@@ -6939,7 +8043,7 @@ const PES_PART3 = [
   {
     id: "CR3", code: "CR3", part: "operative",
     name: "Class III Preparation & Resin Composite Restoration",
-    deadline: { semester: "D3-spring", text: "One of CR2/CR3 by end of DAOB 341, the other by end of DAOB 342" },
+    deadline: { semester: "D4-fall", text: "Other of CR2/CR3 by end of DAOB 342 (D4 Fall)" },
     prereq: "CARDX and CAREX PEs completed.",
     prereqCheck: null,
     caseSelect: "Caries into dentin (D1, D2, D3) verified. Site must have proximal contacting tooth, should have opposing tooth. Treatment planned for Class III restoration.",
@@ -7353,7 +8457,7 @@ const PES_PART6 = [
   {
     id: "OMED", code: "OMED", part: "specialty",
     name: "Oral Medicine — Extraoral/Intraoral Exam",
-    deadline: { semester: "D4-fall", text: "During Oral Medicine rotation" },
+    deadline: { semester: "D3-fall", text: "During D3 Oral Medicine rotation (by 5th of 6 rotations)" },
     prereq: "None specified.",
     prereqCheck: null,
     caseSelect: "Comprehensive head and neck examination patient.",
@@ -7509,22 +8613,13 @@ const PES_PART7 = [
 const PES_ALL = [...PES, ...PES_PART2, ...PES_PART3, ...PES_PART4, ...PES_PART5, ...PES_PART6, ...PES_PART7];
 
 // PE-to-Procedure mapping for "Show Steps" links.
-// Only includes PEs with clear, exact matches to procedures.
+// Only includes PEs with clear, exact matches to procedure IDs in the Steps tab.
 const PE_PROCEDURE_MAP = {
-  "PER01": "573",    // Periodontal Clinical Evaluation → Perio COE
-  "REVA04": "1346",  // Periodontal Re-Evaluation → Perio Re-Evaluation
-  "DXTX2": "2821",   // Single Tooth Replacement Dx & Tx Planning → Crown Prep
-  "CR1": "2821",     // Crown & Fixed Pros Foundation → Crown Prep
-  "CR2": "3204",     // Crown — Clinical Exam & Delivery → Crown Delivery
-  "CD1": "1641",     // Composite I → Composite Class I
-  "CD2": "1745",     // Composite II → Composite Class II
-  "CD3": "1850",     // Composite III → Composite Class III
-  "CD4": "1950",     // Composite IV → Composite Class IV
-  "CD5": "2046",     // Composite V → Composite Class V
-  "AM": "1549",      // Amalgam → Amalgam
-  "RPD": "3704",     // Removable Prosthodontics (Denture) → Complete Denture #1
-  "IMPLANT": "4574", // Implant (STI) → Implant-Level Impression
-  "ENDO": "5472",    // Endo → RCT
+  "PER01":  "573",   // Periodontal Clinical Evaluation → Perio COE steps
+  "REVA04": "1346",  // Periodontal Re-Evaluation → Perio Re-Evaluation steps
+  "DXTX2":  "2821",  // Single-Tooth Dx & Tx Planning → Crown Prep (primary use case)
+  "CRN1":   "2821",  // Crown Prep & Provisionalization → Crown Prep steps
+  "CRN3":   "3204",  // Crown Cementation → Crown Delivery steps
 };
 
 
@@ -7583,23 +8678,22 @@ function semesterStatus(pe, current) {
 // any "Need N more X" or "✓ Eligible" rendering was misleading. The PE's
 // prereq text remains visible in the expanded view as plain prose.)
 
-// Timeline — horizontal strip. Each semester is a column; PEs are chips
-// inside their column. Tapping a chip scrolls to that PE's card below.
-function PETimeline({ pes, scrollToPE }) {
+// Timeline — full-width strip at top; chips are selectable (highlight selected).
+function PETimeline({ pes, selectedId, onSelect }) {
   const current = currentSemester();
   return (
-    <div style={{ marginBottom: "24px" }}>
+    <div style={{ marginBottom: "20px" }}>
       <div style={{
         fontSize: "10px", letterSpacing: "0.22em",
         textTransform: "uppercase", color: "var(--accent)",
-        fontWeight: 500, marginBottom: "12px",
+        fontWeight: 500, marginBottom: "10px",
       }}>
         Timeline
       </div>
       <div style={{
         display: "grid",
         gridTemplateColumns: `repeat(${PE_SEMESTERS.length}, 1fr)`,
-        gap: "8px",
+        gap: "6px",
       }}>
         {PE_SEMESTERS.map(sem => {
           const semPes = pes.filter(p => p.deadline.semester === sem.id);
@@ -7607,59 +8701,110 @@ function PETimeline({ pes, scrollToPE }) {
             <div key={sem.id} style={{
               border: "1px solid var(--rule)",
               borderRadius: "3px",
-              padding: "10px 8px",
-              minHeight: "120px",
+              padding: "8px 6px",
               background: "var(--paper-soft)",
             }}>
               <div style={{
-                fontSize: "10px", letterSpacing: "0.06em",
+                fontSize: "9px", letterSpacing: "0.08em",
                 textTransform: "uppercase",
                 color: "var(--ink-soft)",
                 fontWeight: 500, textAlign: "center",
-                marginBottom: "8px",
+                marginBottom: "6px",
                 fontFamily: "'Geist', sans-serif",
               }}>
                 {sem.label}
               </div>
-              <div style={{
-                display: "flex", flexDirection: "column", gap: "4px",
-              }}>
-                {semPes.map(pe => {
-                  const status = semesterStatus(pe, current);
-                  const isPast = status === "past";
+              {(() => {
+                // Compact groups — rendered as a single horizontal strip.
+                // Each sub-array is one group; PEs are identified by id.
+                const COMPACT = [
+                  ["CD1","CD2","CD3","CD4","CD5"],
+                  ["CRN1","CRN2","CRN3"],
+                  ["DXTX2","DXTX3"],
+                ];
+                const idToGroup = {};
+                COMPACT.forEach((g, i) => g.forEach(id => { idToGroup[id] = i; }));
+
+                const rows = [];
+                let buf = null; // { groupIdx, pes[] }
+                for (const pe of semPes) {
+                  const gIdx = idToGroup[pe.id];
+                  if (gIdx !== undefined) {
+                    if (buf && buf.groupIdx === gIdx) { buf.pes.push(pe); }
+                    else {
+                      if (buf) rows.push({ kind: "compact", pes: buf.pes });
+                      buf = { groupIdx: gIdx, pes: [pe] };
+                    }
+                  } else {
+                    if (buf) { rows.push({ kind: "compact", pes: buf.pes }); buf = null; }
+                    rows.push({ kind: "single", pe });
+                  }
+                }
+                if (buf) rows.push({ kind: "compact", pes: buf.pes });
+
+                const peBtn = (pe) => {
+                  const isPast = semesterStatus(pe, current) === "past";
+                  const isSelected = selectedId === pe.id;
                   return (
-                    <button key={pe.id}
-                      onClick={() => scrollToPE(pe.id)}
+                    <button key={pe.id} onClick={() => onSelect(pe.id)} title={pe.name}
                       style={{
                         width: "100%",
-                        background: isPast ? "rgba(122, 30, 30, 0.08)" : "var(--paper)",
-                        border: `1px solid ${isPast ? "var(--accent)" : "var(--rule)"}`,
-                        borderRadius: "2px",
-                        padding: "5px 7px",
-                        fontSize: "10px",
-                        fontFamily: "'Geist', sans-serif",
-                        fontWeight: 500,
-                        color: isPast ? "var(--accent)" : "var(--ink)",
-                        cursor: "pointer",
-                        textAlign: "left",
-                        transition: "transform 100ms ease",
-                      }}
-                      title={pe.name}
-                    >
-                      <span className="mono" style={{
-                        fontVariantNumeric: "tabular-nums",
-                      }}>{pe.code}</span>
+                        background: isSelected ? "var(--accent)" : isPast ? "rgba(122,30,30,0.07)" : "var(--paper)",
+                        border: `1px solid ${isSelected || isPast ? "var(--accent)" : "var(--rule)"}`,
+                        borderRadius: "2px", padding: "4px 6px",
+                        fontSize: "10px", fontFamily: "'Geist', sans-serif", fontWeight: 500,
+                        color: isSelected ? "var(--paper)" : isPast ? "var(--accent)" : "var(--ink)",
+                        cursor: "pointer", textAlign: "left",
+                        transition: "background 80ms, color 80ms",
+                      }}>
+                      <span className="mono" style={{ fontVariantNumeric: "tabular-nums" }}>{pe.code}</span>
                     </button>
                   );
-                })}
-                {semPes.length === 0 && (
-                  <div style={{ color: "var(--ink-faint)", fontSize: "10px",
-                      fontStyle: "italic", textAlign: "center",
-                      padding: "10px 0" }}>
-                    —
+                };
+
+                return (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+                    {rows.length === 0 && (
+                      <div style={{ color: "var(--ink-faint)", fontSize: "10px",
+                          fontStyle: "italic", textAlign: "center", padding: "8px 0" }}>—</div>
+                    )}
+                    {rows.map((row, ri) => {
+                      if (row.kind === "single") return peBtn(row.pe);
+                      // Compact group — horizontal strip, shared outer border, dividers between
+                      const anySelected = row.pes.some(p => selectedId === p.id);
+                      const anyPast = row.pes.some(p => semesterStatus(p, current) === "past");
+                      return (
+                        <div key={`compact-${ri}`} style={{
+                          display: "flex",
+                          border: `1px solid ${anySelected || anyPast ? "var(--accent)" : "var(--rule)"}`,
+                          borderRadius: "2px", overflow: "hidden",
+                        }}>
+                          {row.pes.map((pe, i) => {
+                            const isPast = semesterStatus(pe, current) === "past";
+                            const isSelected = selectedId === pe.id;
+                            return (
+                              <button key={pe.id} onClick={() => onSelect(pe.id)} title={pe.name}
+                                style={{
+                                  flex: 1,
+                                  background: isSelected ? "var(--accent)" : isPast ? "rgba(122,30,30,0.07)" : "var(--paper)",
+                                  border: "none",
+                                  borderLeft: i > 0 ? "1px solid var(--rule)" : "none",
+                                  padding: "4px 0",
+                                  fontSize: "9px", fontFamily: "'Geist', sans-serif", fontWeight: 500,
+                                  color: isSelected ? "var(--paper)" : isPast ? "var(--accent)" : "var(--ink)",
+                                  cursor: "pointer", textAlign: "center",
+                                  transition: "background 80ms, color 80ms",
+                                }}>
+                                <span className="mono" style={{ fontVariantNumeric: "tabular-nums" }}>{pe.code}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      );
+                    })}
                   </div>
-                )}
-              </div>
+                );
+              })()}
             </div>
           );
         })}
@@ -7668,237 +8813,288 @@ function PETimeline({ pes, scrollToPE }) {
   );
 }
 
-// Rubric grid — three columns for the three grade tiers. Side-by-side
-// scannable; null cells (N/A) render as a dash.
+// Rubric grid — one unified grid so header and data columns are always
+// pixel-perfect aligned. All cells are direct children of the outer container;
+// no per-row sub-grids that could drift.
 function RubricGrid({ criteria }) {
+  const COLS = "140px 1fr 1fr 1fr";
+  const hdr = {
+    padding: "10px 14px",
+    fontSize: "10px", letterSpacing: "0.16em",
+    textTransform: "uppercase", fontWeight: 500,
+    background: "var(--paper-soft)",
+    borderBottom: "1px solid var(--rule)",
+  };
+  const cell = (i, isLast) => ({
+    padding: "12px 14px",
+    fontSize: "12px", lineHeight: 1.5,
+    borderBottom: isLast ? "none" : "1px solid var(--rule-soft)",
+  });
+
   return (
     <div style={{
       ...cardStyle, padding: 0, overflow: "hidden",
       marginTop: "16px",
+      display: "grid",
+      gridTemplateColumns: COLS,
     }}>
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "minmax(160px, 200px) 1fr 1fr 1fr",
-        gap: 0,
-        fontSize: "10px", letterSpacing: "0.16em",
-        textTransform: "uppercase", fontWeight: 500,
-        color: "var(--ink-soft)",
-        background: "var(--paper-soft)",
-        borderBottom: "1px solid var(--rule)",
-      }}>
-        <div style={{ padding: "10px 14px" }}>Criterion</div>
-        <div style={{ padding: "10px 14px",
-            borderLeft: "1px solid var(--rule-soft)",
-            color: "var(--teal)" }}>Excellent</div>
-        <div style={{ padding: "10px 14px",
-            borderLeft: "1px solid var(--rule-soft)",
-            color: "var(--gold)" }}>Clinically Acceptable</div>
-        <div style={{ padding: "10px 14px",
-            borderLeft: "1px solid var(--rule-soft)",
-            color: "var(--accent)" }}>Standard Not Met</div>
-      </div>
-      {criteria.map((c, i) => (
-        <div key={i} style={{
-          display: "grid",
-          gridTemplateColumns: "minmax(160px, 200px) 1fr 1fr 1fr",
-          gap: 0,
-          fontSize: "12px", lineHeight: 1.5,
-          borderBottom: i < criteria.length - 1 ? "1px solid var(--rule-soft)" : "none",
-        }}>
-          <div style={{
-            padding: "12px 14px",
+      {/* Header row */}
+      <div style={{ ...hdr, color: "var(--ink-soft)" }}>Criterion</div>
+      <div style={{ ...hdr, color: "var(--teal)",  borderLeft: "1px solid var(--rule-soft)" }}>Excellent</div>
+      <div style={{ ...hdr, color: "var(--gold)",  borderLeft: "1px solid var(--rule-soft)" }}>Clinically Acceptable</div>
+      <div style={{ ...hdr, color: "var(--accent)", borderLeft: "1px solid var(--rule-soft)" }}>Standard Not Met</div>
+
+      {/* Data rows — flatMap avoids Fragment import */}
+      {criteria.flatMap((c, i) => {
+        const isLast = i === criteria.length - 1;
+        const base = cell(i, isLast);
+        return [
+          <div key={`${i}-name`} style={{
+            ...base,
             background: "var(--paper-soft)",
             color: "var(--ink)", fontWeight: 500,
-            fontSize: "12px",
           }}>
             {c.name}
-          </div>
-          <div style={{
-            padding: "12px 14px",
+          </div>,
+          <div key={`${i}-exc`} style={{
+            ...base,
             borderLeft: "1px solid var(--rule-soft)",
             color: c.excellent ? "var(--ink)" : "var(--ink-faint)",
             fontStyle: c.excellent ? "normal" : "italic",
           }}>
             {c.excellent || "—"}
-          </div>
-          <div style={{
-            padding: "12px 14px",
+          </div>,
+          <div key={`${i}-acc`} style={{
+            ...base,
             borderLeft: "1px solid var(--rule-soft)",
             color: c.acceptable ? "var(--ink)" : "var(--ink-faint)",
             fontStyle: c.acceptable ? "normal" : "italic",
           }}>
-            {c.acceptable || "N/A"}
-          </div>
-          <div style={{
-            padding: "12px 14px",
+            {c.acceptable || "—"}
+          </div>,
+          <div key={`${i}-not`} style={{
+            ...base,
             borderLeft: "1px solid var(--rule-soft)",
             color: c.notMet ? "var(--ink)" : "var(--ink-faint)",
+            fontStyle: c.notMet ? "normal" : "italic",
           }}>
             {c.notMet || "—"}
-          </div>
-        </div>
-      ))}
+          </div>,
+        ];
+      })}
     </div>
   );
 }
 
-// Single PE card — collapsed shows code/name/deadline; expanded reveals all
-// the structured detail (prereq, case selection, protocol, rubric, etc.).
-function PECard({ pe, expanded, onToggle, peRef, onShowSteps }) {
+// Right-panel detail — always fully expanded for the selected PE.
+function PEDetail({ pe, onShowSteps }) {
   const procedureId = PE_PROCEDURE_MAP[pe.id];
-
   return (
-    <div ref={peRef} style={{
-      ...cardStyle, padding: 0, overflow: "hidden",
-      marginBottom: "12px",
-      scrollMarginTop: "20px",
-    }}>
-      <button onClick={onToggle} style={{
-        width: "100%", textAlign: "left",
-        background: "transparent", border: "none",
-        cursor: "pointer", padding: "16px 18px",
-        display: "grid",
-        gridTemplateColumns: "minmax(80px, 100px) 1fr auto 24px",
-        gap: "16px", alignItems: "center",
-        fontFamily: "'Geist', sans-serif",
-      }}>
-        <span className="mono" style={{
-          color: "var(--accent)", fontWeight: 500,
-          fontSize: "13px", fontVariantNumeric: "tabular-nums",
-        }}>
-          {pe.code}
-        </span>
-        <span style={{
-          color: "var(--ink)", fontSize: "13px", fontWeight: 500,
-        }}>
-          {pe.name}
-        </span>
-        <span style={{
-          fontSize: "10px", color: "var(--ink-soft)",
-          letterSpacing: "0.04em",
-          fontStyle: "italic",
-        }}>
-          {pe.deadline.text}
-        </span>
-        <span style={{
-          color: "var(--ink-faint)", fontSize: "13px",
-          transform: expanded ? "rotate(90deg)" : "none",
-          transition: "transform 140ms ease",
-        }}>
-          ›
-        </span>
-      </button>
-
-      {expanded && (
-        <div style={{
-          padding: "0 18px 20px",
-          fontFamily: "'Geist', sans-serif",
-          borderTop: "1px solid var(--rule-soft)",
-        }}>
-          <div style={{ paddingTop: "16px" }}>
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "12px", marginBottom: "12px" }}>
-              <SubsectionLabel>Prerequisite</SubsectionLabel>
-              {procedureId && onShowSteps && (
-                <button onClick={() => onShowSteps(procedureId)} style={{
-                  fontSize: "12px", color: "var(--accent)", cursor: "pointer",
-                  background: "none", border: "none", textDecoration: "underline",
-                  fontFamily: "'Geist', sans-serif", padding: 0, marginRight: "auto",
-                }}>
-                  Show Steps →
-                </button>
-              )}
-            </div>
-            <p style={{ fontSize: "13px", color: "var(--ink-soft)",
-                lineHeight: 1.55, margin: "0 0 12px" }}>
-              {pe.prereq}
-            </p>
-            <SubsectionLabel>Case Selection</SubsectionLabel>
-            <p style={{ fontSize: "13px", color: "var(--ink-soft)",
-                lineHeight: 1.55, margin: "0 0 12px" }}>
-              {pe.caseSelect}
-            </p>
-            <SubsectionLabel>Protocol</SubsectionLabel>
-            <p style={{ fontSize: "13px", color: "var(--ink-soft)",
-                lineHeight: 1.55, margin: "0 0 4px" }}>
-              {pe.protocol}
-            </p>
-            <div style={{ marginTop: "20px" }}>
-              <SubsectionLabel>Rubric</SubsectionLabel>
-              <RubricGrid criteria={pe.criteria} />
-            </div>
-            <div style={{ marginTop: "20px" }}>
-              <SubsectionLabel>Critical deficiencies (auto-fail)</SubsectionLabel>
-              <ul style={{
-                margin: "4px 0 0", padding: "0 0 0 18px",
-                fontSize: "12px", color: "var(--ink-soft)",
-                lineHeight: 1.55,
-              }}>
-                {pe.criticalDeficiencies.map((d, i) => (
-                  <li key={i} style={{ marginBottom: "3px" }}>{d}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
+    <div style={{ ...cardStyle, padding: "20px 22px" }}>
+      {/* Header */}
+      <div style={{ marginBottom: "18px", paddingBottom: "14px", borderBottom: "1px solid var(--rule-soft)" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: "12px", marginBottom: "5px", flexWrap: "wrap" }}>
+          <span className="mono" style={{
+            color: "var(--accent)", fontWeight: 500,
+            fontSize: "14px", fontVariantNumeric: "tabular-nums",
+          }}>
+            {pe.code}
+          </span>
+          <span style={{ fontSize: "15px", fontWeight: 500, color: "var(--ink)", flex: "1 1 auto" }}>
+            {pe.name}
+          </span>
         </div>
-      )}
+        <div style={{ fontSize: "11px", color: "var(--ink-soft)", fontStyle: "italic" }}>
+          {pe.deadline.text}
+        </div>
+      </div>
+
+      {/* Prereq */}
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "12px", marginBottom: "6px" }}>
+        <SubsectionLabel>Prerequisite</SubsectionLabel>
+        {procedureId && onShowSteps && (
+          <button onClick={() => onShowSteps(procedureId)} style={{
+            fontSize: "11px", color: "var(--accent)", cursor: "pointer",
+            background: "none", border: "none", textDecoration: "underline",
+            fontFamily: "'Geist', sans-serif", padding: 0,
+          }}>
+            Show Steps →
+          </button>
+        )}
+      </div>
+      <p style={{ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: "0 0 14px" }}>
+        {pe.prereq}
+      </p>
+
+      <SubsectionLabel>Case Selection</SubsectionLabel>
+      <p style={{ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: "0 0 14px" }}>
+        {pe.caseSelect}
+      </p>
+
+      <SubsectionLabel>Protocol</SubsectionLabel>
+      <p style={{ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: "0 0 4px" }}>
+        {pe.protocol}
+      </p>
+
+      <div style={{ marginTop: "20px" }}>
+        <SubsectionLabel>Rubric</SubsectionLabel>
+        <RubricGrid criteria={pe.criteria} />
+      </div>
+
+      <div style={{ marginTop: "20px" }}>
+        <SubsectionLabel>Critical deficiencies (auto-fail)</SubsectionLabel>
+        <ul style={{
+          margin: "4px 0 0", padding: "0 0 0 18px",
+          fontSize: "12px", color: "var(--ink-soft)",
+          lineHeight: 1.55,
+        }}>
+          {pe.criticalDeficiencies.map((d, i) => (
+            <li key={i} style={{ marginBottom: "3px" }}>{d}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
 
 function PEs({ onShowSteps }) {
-  const [expanded, setExpanded] = useState(null);
-  const peRefs = useRef({});
+  const [selectedId, setSelectedId] = useState(null);
+  const [groupBy, setGroupBy] = useState("type"); // "type" | "semester"
 
-  const scrollToPE = (peId) => {
-    setExpanded(peId);
-    // Wait for re-render, then scroll
-    setTimeout(() => {
-      const node = peRefs.current[peId];
-      if (node) {
-        node.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }, 50);
+  const selectedPE = PES_ALL.find(p => p.id === selectedId) ?? null;
+
+  const handleSelect = (peId) => {
+    setSelectedId(id => (id === peId ? null : peId));
   };
+
+  // Build the navigation groups for the left panel
+  const navGroups = groupBy === "type"
+    ? PE_PARTS
+        .map(part => ({ label: part.label, pes: PES_ALL.filter(p => p.part === part.id) }))
+        .filter(g => g.pes.length > 0)
+    : PE_SEMESTERS
+        .map(sem => ({ label: sem.label, pes: PES_ALL.filter(p => p.deadline.semester === sem.id) }))
+        .filter(g => g.pes.length > 0);
 
   return (
     <div>
-      <PETimeline pes={PES_ALL} scrollToPE={scrollToPE} />
+      {/* Full-width timeline — chips are clickable to select */}
+      <PETimeline pes={PES_ALL} selectedId={selectedId} onSelect={handleSelect} />
 
-      {PE_PARTS.map(part => {
-        const partPEs = PES_ALL.filter(p => p.part === part.id);
-        if (partPEs.length === 0) return null;
-        return (
-          <div key={part.id} style={{ marginBottom: "28px" }}>
+      {/* Split panel */}
+      <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: "20px", alignItems: "start" }}>
+
+        {/* LEFT: grouped navigation list */}
+        <div>
+          {/* Header + toggle */}
+          <div style={{
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+            marginBottom: "12px",
+          }}>
             <div style={{
               fontSize: "10px", letterSpacing: "0.22em",
-              textTransform: "uppercase", color: "var(--accent)",
-              fontWeight: 500, marginBottom: "10px",
+              textTransform: "uppercase", color: "var(--accent)", fontWeight: 500,
             }}>
-              {part.label}
+              Exams
             </div>
-            {partPEs.map(pe => (
-              <PECard key={pe.id}
-                pe={pe}
-                expanded={expanded === pe.id}
-                onToggle={() => setExpanded(e => e === pe.id ? null : pe.id)}
-                peRef={el => { peRefs.current[pe.id] = el; }}
-                onShowSteps={onShowSteps}
-              />
-            ))}
+            {/* Pill toggle: Type / Semester */}
+            <div style={{
+              display: "flex",
+              background: "var(--paper-soft)",
+              border: "1px solid var(--rule)",
+              borderRadius: "3px", overflow: "hidden",
+            }}>
+              {[{ id: "type", label: "Type" }, { id: "semester", label: "Semester" }].map(opt => (
+                <button key={opt.id}
+                  onClick={() => setGroupBy(opt.id)}
+                  style={{
+                    padding: "4px 10px",
+                    fontSize: "10px", letterSpacing: "0.04em",
+                    background: groupBy === opt.id ? "var(--accent)" : "transparent",
+                    color: groupBy === opt.id ? "var(--paper)" : "var(--ink-soft)",
+                    border: "none", cursor: "pointer",
+                    fontFamily: "'Geist', sans-serif", fontWeight: 500,
+                    transition: "background 100ms ease, color 100ms ease",
+                  }}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
           </div>
-        );
-      })}
+
+          {/* Grouped list */}
+          {navGroups.map(group => (
+            <div key={group.label} style={{ marginBottom: "14px" }}>
+              <div style={{
+                fontSize: "9px", letterSpacing: "0.14em",
+                textTransform: "uppercase", color: "var(--ink-faint)",
+                fontWeight: 500, fontFamily: "'Geist', sans-serif",
+                marginBottom: "4px", paddingBottom: "3px",
+                borderBottom: "1px solid var(--rule-soft)",
+              }}>
+                {group.label}
+              </div>
+              {group.pes.map(pe => {
+                const isActive = selectedId === pe.id;
+                return (
+                  <button key={pe.id}
+                    onClick={() => handleSelect(pe.id)}
+                    style={{
+                      display: "block", width: "100%", textAlign: "left",
+                      background: isActive ? "rgba(122,30,30,0.06)" : "transparent",
+                      border: "none",
+                      borderLeft: `2px solid ${isActive ? "var(--accent)" : "transparent"}`,
+                      padding: "5px 8px",
+                      cursor: "pointer",
+                      fontFamily: "'Geist', sans-serif",
+                      transition: "background 80ms ease",
+                    }}
+                  >
+                    <span className="mono" style={{
+                      fontSize: "11px", fontWeight: 500,
+                      color: "var(--accent)", marginRight: "7px",
+                      fontVariantNumeric: "tabular-nums",
+                    }}>
+                      {pe.code}
+                    </span>
+                    <span style={{ fontSize: "11px", color: isActive ? "var(--ink)" : "var(--ink-soft)" }}>
+                      {pe.name}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+
+        {/* RIGHT: detail panel */}
+        <div>
+          {selectedPE ? (
+            <PEDetail pe={selectedPE} onShowSteps={onShowSteps} />
+          ) : (
+            <div style={{
+              color: "var(--ink-faint)", fontSize: "13px",
+              fontStyle: "italic", textAlign: "center",
+              paddingTop: "80px",
+              fontFamily: "'Fraunces', serif",
+            }}>
+              Select an exam from the timeline or list.
+            </div>
+          )}
+        </div>
+
+      </div>
     </div>
   );
 }
 
 
 const TABS = [
-  { id: "note",        label: "Note",          hint: "Generate chart notes" },
-  { id: "browse",      label: "Steps",         hint: "Read the guide" },
-  { id: "walkthrough", label: "Items",         hint: "Today's equipment" },
-  { id: "rvus",        label: "RVUs",          hint: "Progress & code lookup" },
-  { id: "pes",         label: "PEs",           hint: "Performance exam reference" },
+  { id: "note",   label: "Note",  hint: "Generate chart notes" },
+  { id: "browse", label: "Steps", hint: "Read the guide" },
+  { id: "rvus",   label: "Codes", hint: "Progress & code lookup" },
+  { id: "pes",    label: "PEs",   hint: "Performance exam reference" },
 ];
 
 export default function App() {
@@ -7912,45 +9108,12 @@ export default function App() {
   const [noteFields, setNoteFields] = useState(DEFAULT_FIELDS);
   const [noteText, setNoteText] = useState("");
   const [noteUserEdited, setNoteUserEdited] = useState(false);
-  // For Prep List: separate "schedule" of multiple procedures. The Browse
-  // "Add to prep list" button appends to this; selecting via the global
-  // selection does not.
-  const [prepRows, setPrepRows] = useState([
-    { id: 1, categoryId: "", procedureId: "" },
-  ]);
   const [pendingBrowseChunkId, setPendingBrowseChunkId] = useState("");
 
   // Browse → "Generate note for this" button.
   const handleGenerateNote = (procedureId) => {
     if (procedureId) setSelectedProcedureId(procedureId);
     setTab("note");
-  };
-
-  // Browse → "Add to prep list" button — appends a new row, then jumps tab.
-  const handleAddToPrepList = (procedureId) => {
-    const proc = findProcedure(procedureId);
-    if (!proc) return;
-    setPrepRows(rows => {
-      // Dedup: if this procedure is already on the schedule, don't add again.
-      if (rows.some(r => r.procedureId === procedureId)) return rows;
-      // If there's an empty row at the end, fill it in instead of appending.
-      const lastEmpty = rows.length > 0 &&
-                        !rows[rows.length - 1].procedureId &&
-                        !rows[rows.length - 1].categoryId;
-      if (lastEmpty) {
-        const newRows = [...rows];
-        newRows[newRows.length - 1] = {
-          ...newRows[newRows.length - 1],
-          categoryId: proc.categoryId,
-          procedureId,
-        };
-        return newRows;
-      }
-      // Else append.
-      const nextId = rows.length > 0 ? Math.max(...rows.map(r => r.id)) + 1 : 1;
-      return [...rows, { id: nextId, categoryId: proc.categoryId, procedureId }];
-    });
-    setTab("walkthrough");
   };
 
   const handleCiteJump = (chunkId) => {
@@ -8193,16 +9356,8 @@ export default function App() {
             selectedProcedureId={selectedProcedureId}
             onSelectProcedure={setSelectedProcedureId}
             onGenerateNote={handleGenerateNote}
-            onAddToPrepList={handleAddToPrepList}
             jumpToId={pendingBrowseChunkId}
             onJumped={() => setPendingBrowseChunkId("")} />
-        )}
-        {tab === "walkthrough" && (
-          <PrepList chunks={CHUNKS}
-            rows={prepRows}
-            onRowsChange={setPrepRows}
-            onGenerateNote={handleGenerateNote}
-            onJumpTo={handleCiteJump} />
         )}
         {tab === "rvus" && <RVUs />}
         {tab === "pes" && <PEs onShowSteps={handleShowSteps} />}
