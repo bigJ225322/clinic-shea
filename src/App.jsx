@@ -6507,7 +6507,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     () => currentCategory?.procedures.find(p => p.id === procedureId),
     [currentCategory, procedureId]);
   const rawTemplate = useMemo(
-    () => (procedureId ? TEMPLATES[procedureId] : ""), [procedureId]);
+    () => (procedureId ? TEMPLATES[procedureId] ?? "" : ""), [procedureId]);
 
   // Derive "what sections does this procedure need?" from the raw template.
   // - Anesthetic: only if the template contains the standard administered
