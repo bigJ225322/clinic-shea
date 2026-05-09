@@ -2285,6 +2285,10 @@ function flattenCategory(cat) {
 // All categories with .procedures available (for NoteBuilder, PrepList).
 const FLAT_CATEGORIES = CATEGORIES.map(flattenCategory);
 
+// Steps tab only: exclude note-only categories (lab scripts have templates
+// but no CHUNKS steps content, so they don't belong in Browse).
+const BROWSE_CATEGORIES = CATEGORIES.filter(c => c.id !== "lab");
+
 // Default values for a single anesthetic injection. Multiple injections live
 // in fields.injections (array of these). Most procedures need only one; the
 // "+ Add another anesthetic" button appends a new one.
@@ -6102,7 +6106,7 @@ function Browse({
   const initial = useMemo(() => {
     const proc = findProcedure(selectedProcedureId);
     if (proc) return { categoryId: proc.categoryId, groupId: proc.groupId };
-    return { categoryId: CATEGORIES[0].id, groupId: CATEGORIES[0].groups[0].id };
+    return { categoryId: BROWSE_CATEGORIES[0].id, groupId: BROWSE_CATEGORIES[0].groups[0].id };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -6111,7 +6115,7 @@ function Browse({
   const [search, setSearch]         = useState("");
 
   const currentCategory = useMemo(
-    () => CATEGORIES.find(c => c.id === categoryId), [categoryId]);
+    () => BROWSE_CATEGORIES.find(c => c.id === categoryId), [categoryId]);
   const currentGroup = useMemo(
     () => currentCategory?.groups.find(g => g.id === groupId), [currentCategory, groupId]);
 
@@ -6134,7 +6138,7 @@ function Browse({
 
   const handleCategoryChange = (id) => {
     setCategoryId(id);
-    const cat = CATEGORIES.find(c => c.id === id);
+    const cat = BROWSE_CATEGORIES.find(c => c.id === id);
     const firstGroup = cat?.groups[0];
     if (firstGroup) {
       setGroupId(firstGroup.id);
@@ -6235,7 +6239,7 @@ function Browse({
     const q = search.trim().toLowerCase();
     if (!q) return null;
     const results = [];
-    for (const p of ALL_PROCEDURES) {
+    for (const p of ALL_PROCEDURES.filter(p => p.categoryId !== "lab")) {
       const inLabel = p.breadcrumb.toLowerCase().includes(q);
       const stepChunk = findChunkForProcedure(p, chunks, "steps");
       const inSteps = stepChunk && stepChunk.body.toLowerCase().includes(q);
@@ -6258,7 +6262,7 @@ function Browse({
         <div style={cardStyle}>
           <Field label="Section">
             <Select value={categoryId} onChange={handleCategoryChange} prominent>
-              {CATEGORIES.map(c => (
+              {BROWSE_CATEGORIES.map(c => (
                 <option key={c.id} value={c.id}>{c.label}</option>
               ))}
             </Select>
