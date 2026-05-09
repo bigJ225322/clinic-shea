@@ -1366,6 +1366,12 @@ const CHUNKS = [
 "section": "AXIUM",
 "title": "REMOVING AN AXIUM ABSENCE",
 "body": "●​ if you were at school but forgot to log in & get an absence, you can ask your clinic manager to remove it\n  ●​ clinic manager needs to email (not Axium message): CODaxiumsupport@uic.edu\n          ○​ include the following information:\n                   ■​ student first & last name\n                   ■​ date & session (AM/PM) of absence"
+},
+{
+"id": "c113",
+"section": "MISC",
+"title": "LAB SCRIPT STEPS",
+"body": "filling out a lab script\n\n  1.  select your patient in Rolodex & open their EHR\n  2.  click the \"Labs\" tab\n  3.  click the plus (right)\n  4.  choose your clinic next to \"Discipline\"\n  5.  click the \"...\" next to \"Treatment\"\n  6.  select the appropriate treatments\n  7.  click the \"...\" next to \"Lab Proc\"\n  8.  select the procedure\n  9.  click \"Add\"\n  10. click \"OK\"\n  11. write your lab script next to \"Details\"\n  12. click the plus (center)\n  13. click the \"...\" next to \"Supplements\"\n  14. add all materials you'll be sending to the lab (select in left column, then click the > arrow to add to the right column)\n  15. click \"Close\"\n  16. click the pencil check mark (\"Modify Record\") to save\n  17. have instructor swipe form\n  18. print the form\n  19. have instructor sign the printed form\n  20. if a lab script for a partial denture, draw the partial denture design on the printed form\n  21. bring the lab script + supplements to the 5th floor lab\n  22. you will get an Axium message when info has been sent to the lab; you will get another when the item is back from the lab & ready for pickup"
 }
 ];
 
@@ -2213,6 +2219,11 @@ const CATEGORIES = [
     { id: "peds-space", label: "Space Maintenance", procedures: [
       { id: "7306", label: "Impression" },
       { id: "7399", label: "Delivery" },
+    ]},
+  ]},
+  { id: "misc", label: "Misc.", groups: [
+    { id: "misc-axium", label: "Procedures", procedures: [
+      { id: "misc-lab-script", label: "Lab Script" },
     ]},
   ]},
   { id: "lab", label: "Lab Scripts", groups: [
