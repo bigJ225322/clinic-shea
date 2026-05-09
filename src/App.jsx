@@ -2426,7 +2426,8 @@ function flattenCategory(cat) {
 }
 
 // All categories with .procedures available (for NoteBuilder, PrepList).
-const FLAT_CATEGORIES = CATEGORIES.map(flattenCategory);
+// Exclude misc (Axium workflows / lookup references — no note codes) and lab.
+const FLAT_CATEGORIES = CATEGORIES.filter(c => c.id !== "misc" && c.id !== "lab").map(flattenCategory);
 
 // Steps tab only: exclude note-only categories (lab scripts have templates
 // but no CHUNKS steps content, so they don't belong in Browse).
