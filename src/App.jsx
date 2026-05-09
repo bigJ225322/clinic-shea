@@ -1462,6 +1462,12 @@ const CHUNKS = [
 "section": "MISC",
 "title": "PHONE NUMBERS STEPS",
 "body": "UIC College of Dentistry main: (312) 996-7555\n  (patients can reach all departments through this number)\n\n  ●  2nd floor front desk:       (312) 355-3368\n  ●  Chicago (Vivaldi) front desk:(312) 355-0524\n  ●  faculty practice:           (312) 413-2835\n  ●  implant:                    (312) 996-3145\n  ●  oral medicine:              (312) 355-1222\n  ●  orthodontics:               (312) 996-7505\n  ●  pediatrics:                 (312) 996-7532\n  ●  pediatrics urgent care:     (312) 413-0972\n  ●  PG endodontics:             (312) 355-3615\n  ●  PG OMFS:                    (312) 996-7460\n  ●  PG periodontics:            (312) 996-7374\n  ●  PG prosthodontics:          (312) 996-9223\n  ●  radiology:                  (312) 996-6477\n  ●  urgent care:                (312) 996-8636"
+},
+{
+"id": "c129",
+"section": "REFERENCES",
+"title": "CARIES DIAGNOSIS (ADA)",
+"body": "ADA caries classification system\n\n  sound\n     no clinical or radiographic evidence of caries\n     ●  ICDAS: 0\n     ●  radiographic: no change in density\n     ●  infected dentin: absent\n\n  initial\n     earliest clinically detectable lesion, confined to enamel; white or brown spot visible after air drying; surface intact, no cavitation\n     ●  other names: incipient caries, white spot lesion\n     ●  ICDAS: 1 – 2\n     ●  radiographic: radiolucency limited to enamel, not past DEJ\n     ●  infected dentin: absent\n\n  moderate\n     distinct visual change in enamel; grey shadowing may be visible in dentin; microcavitation possible but surface mostly intact\n     ●  other names: dentinal caries\n     ●  ICDAS: 3 – 4\n     ●  radiographic: radiolucency into outer ½ of dentin\n     ●  infected dentin: present (outer infected dentin)\n\n  advanced\n     distinct cavitation with visible dentin; extensive destruction; pulpal involvement possible\n     ●  other names: deep caries\n     ●  ICDAS: 5 – 6\n     ●  radiographic: radiolucency into inner ½ of dentin or into pulp\n     ●  infected dentin: present (significant infected dentin)"
 }
 ];
 
@@ -2310,6 +2316,10 @@ const CATEGORIES = [
       { id: "7306", label: "Impression" },
       { id: "7399", label: "Delivery" },
     ]},
+    { id: "peds-info", label: "Info", procedures: [
+      { id: "peds-info-proc", label: "Peds Info" },
+      { id: "peds-eruption",  label: "Tooth Eruption" },
+    ]},
   ]},
   { id: "misc", label: "Misc.", groups: [
     { id: "misc-axium", label: "Procedures", procedures: [
@@ -2343,6 +2353,8 @@ const CATEGORIES = [
       { id: "ref-mronj",            label: "Bisphosphonates / MRONJ" },
       { id: "ref-pregnant",         label: "Pregnant Patients" },
       { id: "ref-prescriptions",    label: "Common Prescriptions" },
+      { id: "ref-extraction",       label: "Extraction" },
+      { id: "ref-caries-dx",        label: "Caries Diagnosis" },
     ]},
   ]},
   { id: "lab", label: "Lab Scripts", groups: [
