@@ -7211,6 +7211,11 @@ function RVUs() {
     return counts;
   }, [swadeOnly]);
 
+  // If the active category drops to zero codes (e.g. swadeOnly hides it), reset to "all".
+  useEffect(() => {
+    if (categoryCounts[activeCategory] === 0) setActiveCategory("all");
+  }, [categoryCounts, activeCategory]);
+
   const toggleSort = (col) => {
     if (sortBy === col) {
       setSortDir(d => d === "asc" ? "desc" : "asc");
@@ -7269,6 +7274,7 @@ function RVUs() {
           {RVU_CATEGORIES.map(cat => {
             const isActive = activeCategory === cat.id;
             const count = categoryCounts[cat.id];
+            if (count === 0) return null;
             return (
               <button key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
