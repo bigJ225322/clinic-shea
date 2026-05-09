@@ -6632,7 +6632,17 @@ function Browse({
               <div className="hairline" style={{ margin: "0 0 22px" }} />
 
               {stepsBody ? (
-                <ProseBlock text={stepsBody} highlight={search} />
+                currentProcedure?.groupId === "misc-lookup" ? (
+                  <div style={{ overflowX: "auto" }}>
+                    <pre style={{
+                      fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+                      fontSize: "11.5px", lineHeight: 1.72,
+                      whiteSpace: "pre", color: "var(--ink)", margin: 0,
+                    }}>{stepsBody.replace(/​/g, "")}</pre>
+                  </div>
+                ) : (
+                  <ProseBlock text={stepsBody} highlight={search} />
+                )
               ) : (
                 <div style={{
                   color: "var(--ink-faint)", fontStyle: "italic",
