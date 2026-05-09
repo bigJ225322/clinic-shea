@@ -6632,15 +6632,30 @@ function Browse({
               <div className="hairline" style={{ margin: "0 0 22px" }} />
 
               {stepsBody ? (
-                currentProcedure?.groupId === "misc-lookup" ? (
-                  <div style={{ overflowX: "auto" }}>
-                    <pre style={{
-                      fontFamily: "'JetBrains Mono', ui-monospace, monospace",
-                      fontSize: "11.5px", lineHeight: 1.72,
-                      whiteSpace: "pre", color: "var(--ink)", margin: 0,
-                    }}>{stepsBody.replace(/​/g, "")}</pre>
-                  </div>
-                ) : (
+                currentProcedure?.groupId === "misc-lookup" ? (() => {
+                  const lines = stepsBody.replace(/​/g, "").split("\n");
+                  return (
+                    <div style={{ overflowX: "auto", border: "1px solid var(--rule)",
+                      borderRadius: "3px" }}>
+                      {lines.map((line, i) => {
+                        if (!line.trim()) return (
+                          <div key={i} style={{ height: "7px",
+                            borderBottom: "1px solid var(--rule-soft)" }} />
+                        );
+                        return (
+                          <div key={i} style={{
+                            fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+                            fontSize: "11.5px", lineHeight: 1.7,
+                            whiteSpace: "pre", color: "var(--ink)",
+                            padding: "3px 10px",
+                            borderBottom: i < lines.length - 1
+                              ? "1px solid var(--rule-soft)" : "none",
+                          }}>{line}</div>
+                        );
+                      })}
+                    </div>
+                  );
+                })() : (
                   <ProseBlock text={stepsBody} highlight={search} />
                 )
               ) : (
