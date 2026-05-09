@@ -2433,6 +2433,289 @@ const FLAT_CATEGORIES = CATEGORIES.filter(c => c.id !== "misc" && c.id !== "lab"
 // but no CHUNKS steps content, so they don't belong in Browse).
 const BROWSE_CATEGORIES = CATEGORIES.filter(c => c.id !== "lab");
 
+/* ============================================================================
+ * REF_DATA — structured rendering for Misc. > Lookup procedures.
+ *
+ * Lookup chunks are reference material (BP categories, drug catalog, materials,
+ * prescription formulations, caries staging). The raw bodies are space-aligned
+ * ASCII tables that render badly in any proportional font. Rather than force
+ * monospace, we hand-author structured data here and render it with proper
+ * typography. Procedures NOT keyed in this map fall back to ProseBlock — fine
+ * for the prose-heavy ones (anesthesia narrative, MRONJ, pregnant pts, etc.).
+ *
+ * Block shapes:
+ *   { type: "table", caption?, headers, rows, footnote? }
+ *   { type: "cards", caption?, cards: [{ title, subtitle?, body?, rows? }] }
+ *   { type: "prose", heading?, lines: [...] }
+ * ==========================================================================*/
+const REF_DATA = {
+  "ref-blood-pressure": {
+    verdict: "Hypertension is staged by whichever number is higher — systolic or diastolic. Above stage II, dental care at UIC is restricted.",
+    blocks: [
+      { type: "table", caption: "AHA blood pressure categories",
+        headers: ["Category", "Systolic (mm Hg)", "Diastolic (mm Hg)"],
+        rows: [
+          ["Normal", "< 120", "< 80"],
+          ["Elevated", "120 – 129", "< 80"],
+          ["Stage I hypertension", "130 – 139", "80 – 89"],
+          ["Stage II hypertension", "140 – 179", "90 – 119"],
+          ["Hypertensive crisis", "≥ 180", "≥ 120"],
+        ],
+      },
+      { type: "prose", heading: "UIC protocol — blood pressure", lines: [
+        "If systolic > 160 or diastolic > 100, routine dental care is contraindicated; only urgent care can be provided.",
+        "If systolic > 180 or diastolic > 110, no dental care can be provided (even emergency); refer the patient to the emergency room.",
+      ]},
+      { type: "prose", heading: "UIC protocol — blood glucose", lines: [
+        "Routine dental care is contraindicated when blood glucose is 200 or above.",
+        "Patients with blood glucose under 70 should eat — food they brought, food provided, or the emergency-cart glucose gel (which tastes awful, so try alternatives first).",
+      ]},
+    ],
+  },
+
+  "ref-caries-dx": {
+    verdict: "The ADA classifies caries by extent of demineralization, from sound enamel through pulp involvement.",
+    blocks: [
+      { type: "cards", cards: [
+        { title: "Sound", subtitle: "ICDAS 0", rows: [
+          ["Clinical", "No clinical evidence of caries"],
+          ["Radiographic", "No change in density"],
+          ["Infected dentin", "Absent"],
+        ]},
+        { title: "Initial", subtitle: "ICDAS 1 – 2", rows: [
+          ["Clinical", "White or brown spot lesion in enamel only; intact surface; visible after air drying"],
+          ["Other names", "Incipient caries, white spot lesion"],
+          ["Radiographic", "Radiolucency limited to enamel, not past DEJ"],
+          ["Infected dentin", "Absent"],
+        ]},
+        { title: "Moderate", subtitle: "ICDAS 3 – 4", rows: [
+          ["Clinical", "Distinct visual change in enamel; possible grey shadowing in dentin; microcavitation possible"],
+          ["Other names", "Dentinal caries"],
+          ["Radiographic", "Radiolucency into outer ½ of dentin"],
+          ["Infected dentin", "Present (outer infected dentin)"],
+        ]},
+        { title: "Advanced", subtitle: "ICDAS 5 – 6", rows: [
+          ["Clinical", "Distinct cavitation with visible dentin; extensive destruction; pulpal involvement possible"],
+          ["Other names", "Deep caries"],
+          ["Radiographic", "Radiolucency into inner ½ of dentin or into pulp"],
+          ["Infected dentin", "Present (significant)"],
+        ]},
+      ]},
+    ],
+  },
+
+  "ref-materials": {
+    verdict: "Materials kept in UIC clinic, grouped by use.",
+    blocks: [
+      { type: "cards", cards: [
+        { title: "Temporary restoration", rows: [
+          ["JetSet", "temporary crown or bridge"],
+          ["Integrity", "temporary crown (no bridge)"],
+          ["Telio", "temporary inlay/onlay (digital clinic)"],
+        ]},
+        { title: "Temporary direct restoration", body: "IRM (zinc oxide eugenol)" },
+        { title: "Temporary cement", rows: [
+          ["TempBond NE", ""],
+          ["UltraTemp", ""],
+          ["Durelon", ""],
+        ]},
+        { title: "Permanent cement", rows: [
+          ["FujiCem", "RMGI"],
+          ["RelyX Ultimate", "resin; for ceramic restorations"],
+          ["Panavia", "resin, dual-cure; for digitally-designed ceramic crowns"],
+        ]},
+        { title: "Direct restoration", rows: [
+          ["Renamel Microfill", "anterior restorations"],
+          ["Renamel Nanofill", "anterior or posterior restorations"],
+          ["Ketac Nano", "RMGI; non-stress-bearing areas"],
+          ["Wave", "flowable composite; small defects & intermediate layer only"],
+        ]},
+        { title: "Pulp protectors", rows: [
+          ["Gluma", "dentin desensitizer for cavity or crown prep"],
+          ["Vitrebond", "RMGI liner; releases fluoride; not for pulp capping"],
+          ["Dycal", "calcium hydroxide; pulp cap (direct or indirect)"],
+        ]},
+        { title: "Core buildup", body: "Bisco Light-Core (blue or natural)" },
+        { title: "Prefabricated post", body: "ParaPost" },
+        { title: "Hemorrhage control", rows: [
+          ["Viscostat", "ferric sulfate 20%"],
+          ["Viscostat Clear", "aluminum chloride 25%"],
+          ["Hemodent", "buffered aluminum chloride"],
+        ]},
+        { title: "Denture fit evaluation", body: "Pressure indicating paste (PIP)" },
+        { title: "Crown / bridge fit evaluation", body: "Fit-checker" },
+        { title: "Denture retention", body: "Fixodent" },
+        { title: "Denture reline", rows: [
+          ["Coe Comfort", "tissue conditioner"],
+          ["Coe Soft", "soft reline material"],
+          ["GC Reline", "hard reline material"],
+        ]},
+      ]},
+    ],
+  },
+
+  "ref-prescriptions": {
+    verdict: "Standard prescription formulations used at UIC for common dental conditions.",
+    blocks: [
+      { type: "cards", cards: [
+        { title: "Antibiotic prophylaxis", rows: [
+          ["Rx", "amoxicillin 500 mg"],
+          ["Disp", "4 tablets"],
+          ["Sig", "take 4 tablets 1 hour prior to dental procedure when directed by dentist"],
+        ]},
+        { title: "Antibiotic prophylaxis (PCN allergy)", rows: [
+          ["Rx", "clindamycin 300 mg"],
+          ["Disp", "2 tablets"],
+          ["Sig", "take 2 tablets 1 hour prior to dental procedure when directed by dentist"],
+        ]},
+        { title: "Primary herpetic gingivostomatitis", rows: [
+          ["Rx", "“Magic Mouthwash” — viscous lidocaine 2% 150 mL; diphenhydramine 12.5 mg/5 mL 20 mL; hydrocortisone 100 mg; tetracycline 2 g; nystatin suspension 20 mL"],
+          ["Disp", "1 bottle"],
+          ["Sig", "swish & expectorate 15 to 30 mL every 4 to 6 hours"],
+        ]},
+        { title: "Aphthous ulcers", rows: [
+          ["Rx", "debacterol"],
+          ["Disp", "1 kit"],
+          ["Sig", "one clinical application directly to the ulcer for 15 seconds, then rinse thoroughly"],
+        ]},
+        { title: "Candidiasis", rows: [
+          ["Rx", "nystatin oral suspension 100,000 units/mL"],
+          ["Disp", "60 mL"],
+          ["Sig", "swish 2 – 5 mL 4× daily; rinse for 2 minutes and swallow; add 2 mL to water used to soak dentures"],
+        ]},
+        { title: "Candidiasis (alternative)", rows: [
+          ["Rx", "Mycelex (clotrimazole) troche 10 mg"],
+          ["Disp", "50 troches"],
+          ["Sig", "let 1 troche dissolve in mouth 5× daily"],
+        ]},
+        { title: "Angular cheilitis", rows: [
+          ["Rx", "nystatin + triamcinolone acetonide ointment (Mycolog II)"],
+          ["Disp", "15 g tube"],
+          ["Sig", "apply to affected area after each meal & at bedtime"],
+        ]},
+        { title: "Xerostomia", rows: [
+          ["Rx", "pilocarpine 5 mg (Salagen)"],
+          ["Disp", "100 tablets"],
+          ["Sig", "take 1 tablet 3× daily"],
+        ]},
+        { title: "Post-op pain", rows: [
+          ["Rx", "acetaminophen 300 mg with codeine 30 mg (Tylenol #3)"],
+          ["Disp", "16 tablets"],
+          ["Sig", "take 2 tablets every 6 hours for pain"],
+        ]},
+      ]},
+    ],
+  },
+
+  "ref-common-meds": {
+    verdict: "Patient-history medications you'll see often, with type, indication, and mechanism.",
+    blocks: [
+      { type: "cards", cards: [
+        { title: "alprazolam", subtitle: "Xanax", rows: [
+          ["Type", "benzodiazepine"],
+          ["Use", "anxiety; panic disorder"],
+          ["Mechanism", "binds benzodiazepine receptor on GABA neurons & inhibits neuron firing in the brain"],
+        ]},
+        { title: "amlodipine", rows: [
+          ["Type", "calcium channel blocker"],
+          ["Use", "hypertension; angina"],
+          ["Mechanism", "blocks calcium channels in heart muscle (coronary vasodilation) & vascular smooth muscle (peripheral vasodilation, lowers BP)"],
+        ]},
+        { title: "amoxicillin", rows: [
+          ["Type", "penicillin antibiotic"],
+          ["Use", "infection"],
+          ["Mechanism", "inhibits bacterial cell wall synthesis by binding penicillin-binding proteins (PBPs), inhibiting peptidoglycan synthesis"],
+        ]},
+        { title: "atorvastatin", subtitle: "Lipitor", rows: [
+          ["Type", "HMG-CoA reductase inhibitor"],
+          ["Use", "hyperlipidemia"],
+          ["Mechanism", "inhibits HMG-CoA reductase, the rate-limiting enzyme in cholesterol synthesis"],
+        ]},
+        { title: "azithromycin", rows: [
+          ["Type", "macrolide antibiotic"],
+          ["Use", "infection"],
+          ["Mechanism", "inhibits bacterial 50S ribosome to block bacterial protein synthesis"],
+        ]},
+        { title: "furosemide", rows: [
+          ["Type", "loop diuretic"],
+          ["Use", "hypertension; edema"],
+          ["Mechanism", "inhibits NaCl reabsorption in the kidney"],
+        ]},
+        { title: "gabapentin", subtitle: "Gralise, Neurontin", rows: [
+          ["Type", "anticonvulsant"],
+          ["Use", "seizures; neuralgia"],
+          ["Mechanism", "binds calcium channels in the brain & inhibits neurotransmitter release to reduce brain activity"],
+        ]},
+        { title: "hydrochlorothiazide", rows: [
+          ["Type", "thiazide diuretic"],
+          ["Use", "hypertension; edema"],
+          ["Mechanism", "inhibits Na reabsorption in the kidney"],
+        ]},
+        { title: "hydrocodone", rows: [
+          ["Type", "opioid analgesic"],
+          ["Use", "pain management"],
+          ["Mechanism", "binds opioid receptors in the CNS, inhibiting ascending pain pathways and altering perception of and response to pain"],
+        ]},
+        { title: "ibuprofen", subtitle: "Advil, Motrin", rows: [
+          ["Type", "NSAID"],
+          ["Use", "pain management; fever"],
+          ["Mechanism", "inhibits COX-1 & COX-2 enzymes, decreasing prostaglandin production"],
+        ]},
+        { title: "levothyroxine", subtitle: "Synthroid", rows: [
+          ["Type", "thyroid product"],
+          ["Use", "hypothyroidism"],
+          ["Mechanism", "synthetic thyroxine (T4); converted in body to active L-triiodothyronine (T3)"],
+        ]},
+        { title: "lisinopril", rows: [
+          ["Type", "ACE inhibitor"],
+          ["Use", "hypertension; heart failure"],
+          ["Mechanism", "inhibits angiotensin-converting enzyme; prevents conversion of angiotensin I to angiotensin II (a potent vasoconstrictor) and reduces aldosterone"],
+        ]},
+        { title: "losartan", rows: [
+          ["Type", "angiotensin II receptor blocker (ARB)"],
+          ["Use", "hypertension; diabetic neuropathy"],
+          ["Mechanism", "binds & blocks angiotensin II receptor, blocking vasoconstrictive & aldosterone-secreting effects of angiotensin II"],
+        ]},
+        { title: "metformin", subtitle: "Fortamet, Glucophage, Glumetza, Riomet", rows: [
+          ["Type", "biguanide antidiabetic"],
+          ["Use", "type 2 diabetes"],
+          ["Mechanism", "decreases hepatic glucose production, decreases intestinal glucose absorption, improves insulin sensitivity"],
+        ]},
+        { title: "metoprolol", subtitle: "Lopressor", rows: [
+          ["Type", "β blocker"],
+          ["Use", "hypertension; angina; heart failure"],
+          ["Mechanism", "selectively inhibits β1 receptors (nor/epinephrine receptors)"],
+        ]},
+        { title: "omeprazole", subtitle: "Prilosec", rows: [
+          ["Type", "proton pump inhibitor"],
+          ["Use", "heartburn; GERD; stomach ulcer"],
+          ["Mechanism", "inhibits gastric acid secretion by blocking proton pumps in stomach parietal cells"],
+        ]},
+        { title: "ondansetron", subtitle: "Zofran", rows: [
+          ["Type", "antiemetic"],
+          ["Use", "nausea & vomiting"],
+          ["Mechanism", "blocks the 5-HT3 serotonin receptor"],
+        ]},
+        { title: "prednisone", rows: [
+          ["Type", "corticosteroid"],
+          ["Use", "various"],
+          ["Mechanism", "reduces inflammation & suppresses the immune system by inhibiting neutrophil migration, decreasing capillary permeability, reducing activity of the lymphatic system"],
+        ]},
+        { title: "sertraline", subtitle: "Zoloft", rows: [
+          ["Type", "SSRI antidepressant"],
+          ["Use", "depression; OCD; panic disorder; PTSD; anxiety"],
+          ["Mechanism", "inhibits serotonin (5-HT) reuptake"],
+        ]},
+        { title: "zolpidem", subtitle: "Ambien", rows: [
+          ["Type", "sedative"],
+          ["Use", "insomnia"],
+          ["Mechanism", "enhances GABA inhibitory activity in the brain"],
+        ]},
+      ]},
+    ],
+  },
+};
+
 // Default values for a single anesthetic injection. Multiple injections live
 // in fields.injections (array of these). Most procedures need only one; the
 // "+ Add another anesthetic" button appends a new one.
@@ -4057,6 +4340,177 @@ function ProseBlock({ text, highlight }) {
           </div>
         );
       })}
+    </div>
+  );
+}
+
+/* ============================================================================
+ * REF BLOCKS — structured rendering for Misc. > Lookup procedures.
+ *
+ * Drives REF_DATA. Three block shapes (table / cards / prose), each with the
+ * same overall typography as the rest of the site (Fraunces for headings,
+ * Geist for body, oxblood accent). The verdict line at the top mirrors the
+ * verdict-first style used elsewhere.
+ * ==========================================================================*/
+function RefBlock({ data }) {
+  return (
+    <div>
+      {data.verdict && (
+        <p style={{
+          fontFamily: "'Fraunces', serif", fontStyle: "italic",
+          fontSize: "16px", lineHeight: 1.5, color: "var(--ink-soft)",
+          margin: "0 0 26px", paddingLeft: "14px",
+          borderLeft: "2px solid var(--accent)",
+        }}>{data.verdict}</p>
+      )}
+      {(data.blocks || []).map((b, i) => {
+        if (b.type === "table") return <RefTable key={i} {...b} />;
+        if (b.type === "cards") return <RefCards key={i} {...b} />;
+        if (b.type === "prose") return <RefProse key={i} {...b} />;
+        return null;
+      })}
+    </div>
+  );
+}
+
+function RefTable({ caption, headers, rows, footnote }) {
+  return (
+    <div style={{ marginBottom: "26px" }}>
+      {caption && (
+        <h3 className="serif" style={{
+          fontWeight: 400, fontSize: "18px", color: "var(--accent)",
+          margin: "0 0 12px", letterSpacing: "-0.005em",
+        }}>{caption}</h3>
+      )}
+      <div style={{ overflowX: "auto" }}>
+        <table style={{
+          borderCollapse: "collapse", width: "100%",
+          fontFamily: "'Geist', sans-serif", fontSize: "13.5px",
+        }}>
+          {headers && (
+            <thead>
+              <tr>
+                {headers.map((h, i) => (
+                  <th key={i} style={{
+                    textAlign: "left", padding: "8px 14px 10px",
+                    borderBottom: "1.5px solid var(--ink-soft)",
+                    fontWeight: 600, fontSize: "10.5px",
+                    letterSpacing: "0.07em", textTransform: "uppercase",
+                    color: "var(--ink-soft)",
+                  }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+          )}
+          <tbody>
+            {rows.map((row, ri) => (
+              <tr key={ri}>
+                {row.map((cell, ci) => (
+                  <td key={ci} style={{
+                    padding: "10px 14px",
+                    borderBottom: ri < rows.length - 1
+                      ? "1px solid var(--rule-soft)" : "none",
+                    verticalAlign: "top", lineHeight: 1.55,
+                    fontWeight: ci === 0 ? 500 : 400,
+                    color: ci === 0 ? "var(--ink)" : "var(--ink-soft)",
+                  }}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {footnote && (
+        <p style={{
+          fontSize: "11.5px", color: "var(--ink-faint)",
+          marginTop: "10px", fontStyle: "italic",
+        }}>{footnote}</p>
+      )}
+    </div>
+  );
+}
+
+function RefCards({ caption, cards }) {
+  return (
+    <div style={{ marginBottom: "26px" }}>
+      {caption && (
+        <h3 className="serif" style={{
+          fontWeight: 400, fontSize: "18px", color: "var(--accent)",
+          margin: "0 0 14px", letterSpacing: "-0.005em",
+        }}>{caption}</h3>
+      )}
+      <div style={{ display: "grid", gap: "12px" }}>
+        {cards.map((c, i) => (
+          <div key={i} style={{
+            background: "var(--card)",
+            border: "1px solid var(--rule-soft)",
+            borderRadius: "4px", padding: "14px 18px",
+          }}>
+            <div style={{
+              display: "flex", alignItems: "baseline", flexWrap: "wrap",
+              gap: "10px", marginBottom: (c.rows || c.body) ? "10px" : 0,
+            }}>
+              <h4 className="serif" style={{
+                fontWeight: 500, fontSize: "16px", color: "var(--accent)",
+                margin: 0, letterSpacing: "-0.005em",
+              }}>{c.title}</h4>
+              {c.subtitle && (
+                <span style={{
+                  fontSize: "11px", color: "var(--ink-faint)",
+                  fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+                  letterSpacing: "0.04em",
+                }}>{c.subtitle}</span>
+              )}
+            </div>
+            {c.body && (
+              <p style={{
+                fontFamily: "'Geist', sans-serif", fontSize: "13.5px",
+                lineHeight: 1.6, color: "var(--ink-soft)",
+                margin: c.rows ? "0 0 10px" : 0,
+              }}>{c.body}</p>
+            )}
+            {c.rows && (
+              <div style={{
+                display: "grid", gridTemplateColumns: "auto 1fr",
+                gap: "6px 16px", fontSize: "13.5px", lineHeight: 1.55,
+                fontFamily: "'Geist', sans-serif",
+              }}>
+                {c.rows.flatMap(([label, value], ri) => [
+                  <span key={`l${ri}`} style={{
+                    fontWeight: 600, fontSize: "10px",
+                    letterSpacing: "0.07em", textTransform: "uppercase",
+                    color: "var(--ink-soft)", paddingTop: "3px",
+                    whiteSpace: "nowrap",
+                  }}>{label}</span>,
+                  <span key={`v${ri}`} style={{ color: "var(--ink)" }}>
+                    {value}
+                  </span>,
+                ])}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RefProse({ heading, lines }) {
+  return (
+    <div style={{ marginBottom: "22px" }}>
+      {heading && (
+        <h4 className="serif" style={{
+          fontWeight: 500, fontSize: "15px", color: "var(--ink)",
+          margin: "0 0 8px", letterSpacing: "-0.005em",
+        }}>{heading}</h4>
+      )}
+      {lines.map((line, i) => (
+        <p key={i} style={{
+          fontFamily: "'Geist', sans-serif", fontSize: "13.5px",
+          lineHeight: 1.65, color: "var(--ink-soft)",
+          margin: i < lines.length - 1 ? "0 0 8px" : 0,
+        }}>{line}</p>
+      ))}
     </div>
   );
 }
@@ -6631,43 +7085,10 @@ function Browse({
               }}>{currentProcedure.label}</h2>
               <div className="hairline" style={{ margin: "0 0 22px" }} />
 
-              {stepsBody ? (
-                currentProcedure?.groupId === "misc-lookup" ? (() => {
-                  const lines = stepsBody.replace(/​/g, "").split("\n");
-                  const groups = [];
-                  let cur = [];
-                  for (const line of lines) {
-                    if (!line.trim() && cur.length) { groups.push(cur); cur = []; }
-                    else if (line.trim()) cur.push(line);
-                  }
-                  if (cur.length) groups.push(cur);
-                  return (
-                    <div style={{ overflowX: "auto" }}>
-                      <table style={{
-                        borderCollapse: "collapse", tableLayout: "auto",
-                        fontFamily: "'JetBrains Mono', ui-monospace, monospace",
-                        fontSize: "11.5px", lineHeight: 1.7,
-                      }}>
-                        <tbody>
-                          {groups.map((grp, gi) => grp.map((line, li) => (
-                            <tr key={`${gi}-${li}`}>
-                              <td style={{
-                                border: "1px solid var(--rule-soft)",
-                                padding: "3px 10px", whiteSpace: "pre",
-                                color: "var(--ink)",
-                                ...(li === 0 && gi > 0 ? {
-                                  borderTopColor: "var(--rule)",
-                                } : {}),
-                              }}>{line}</td>
-                            </tr>
-                          )))}
-                        </tbody>
-                      </table>
-                    </div>
-                  );
-                })() : (
-                  <ProseBlock text={stepsBody} highlight={search} />
-                )
+              {REF_DATA[currentProcedure?.id] ? (
+                <RefBlock data={REF_DATA[currentProcedure.id]} />
+              ) : stepsBody ? (
+                <ProseBlock text={stepsBody} highlight={search} />
               ) : (
                 <div style={{
                   color: "var(--ink-faint)", fontStyle: "italic",
