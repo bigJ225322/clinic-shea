@@ -2112,6 +2112,9 @@ const CATEGORIES = [
       { id: "1346", label: "Perio Re-Evaluation" },
       { id: "1425", label: "Perio Maintenance" },
     ]},
+    { id: "perio-ref", label: "Reference", procedures: [
+      { id: "ohi", label: "OHI" },
+    ]},
   ]},
   { id: "restorative", label: "Restorative", groups: [
     { id: "amalgam", label: "Amalgam", procedures: [
@@ -8655,6 +8658,7 @@ const PES_ALL = [...PES, ...PES_PART2, ...PES_PART3, ...PES_PART4, ...PES_PART5,
 // Only includes PEs with clear, exact matches to procedure IDs in the Steps tab.
 const PE_PROCEDURE_MAP = {
   "PER01":  "573",   // Periodontal Clinical Evaluation → Perio COE steps
+  "PER02":  "ohi",   // Periodontal Prevention & Risk Factor (OHI) Exam → OHI reference
   "REVA04": "1346",  // Periodontal Re-Evaluation → Perio Re-Evaluation steps
   "DXTX2":  "2821",  // Single-Tooth Dx & Tx Planning → Crown Prep (primary use case)
   "CRN1":   "2821",  // Crown Prep & Provisionalization → Crown Prep steps
