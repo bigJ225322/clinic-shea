@@ -1390,6 +1390,36 @@ const CHUNKS = [
 "section": "MISC",
 "title": "REFERRAL STEPS",
 "body": "completing a referral in Axium\n\n  1.  click the \"Forms\" tab\n  2.  click the plus sign (right)\n  3.  next to \"Form,\" select \"REFER - Referral To Another Dept\" from the drop-down menu; click OK\n  4.  fill out the referral form — copy the \"Reason for the referral\" so you can paste it later\n  5.  have instructor swipe\n  6.  click the running man icon (right)\n        ○  paste the \"Reason for the referral\" text into the \"Comment\" box\n        ○  under \"Assigned To: Message Group,\" click the \"...\" to select the department; click OK"
+},
+{
+"id": "c117",
+"section": "MISC",
+"title": "PREVIDENT CHLORHEXIDINE MI PASTE STEPS",
+"body": "1.  determine if patient's insurance will cover the payment\n        ○  go to the front desk & ask\n        ○  if not covered: $10\n  2.  tell the patient how much it will cost\n  3.  complete (C) the appropriate code:\n        ○  D9630.1 = PreviDent 5000\n        ○  D9630.2 = Chlorhexidine\n        ○  D9630.4 = MI Paste\n  4.  have the instructor swipe the code\n  5.  bring the patient to the front desk to accept payment & get a card\n  6.  bring the patient & card to sterilization to redeem for the product\n        ○  for PreviDent, sterilization will also give you a paper prescription — give this to the patient (allows them to refill at a local pharmacy if they run out)"
+},
+{
+"id": "c118",
+"section": "MISC",
+"title": "TOBACCO CESSATION STEPS",
+"body": "1.  complete the 2 codes:\n        ○  D1230.1 (Record Tobacco Usage)\n        ○  D1230.2 (Provide Tobacco Cessation Education)\n  2.  follow the pop-up prompts after completing D1230.1 to add the tobacco form\n  3.  complete the form\n        ○  if pt is interested in quitting, tobacco cessation materials are on the Intranet under \"Tobacco/Smoking Cessation Resources\"\n  4.  at the next visit, complete the last section of the form (\"Follow-Up\") then complete code D1230.3 (Tobacco Cessation Follow Up with Patient)"
+},
+{
+"id": "c119",
+"section": "MISC",
+"title": "PROSTHETIC JOINT FORM STEPS",
+"body": "if patient has a prosthetic joint:\n\n  1.  when patient reports a prosthetic joint in medical history, click \"Links\" at the top → \"AAOS Appropriate Use Criteria Tool\"\n  2.  fill out the forms on the AAOS website → the website will give recommendations\n  3.  print the completed AAOS form & recommendations — after printing, write in the date, patient name, and patient DOB\n  4.  exit & go back to Axium\n  5.  in the patient's \"Medical History\" tab (EHR → \"Forms\" tab), under \"Bones/Muscles/Joints,\" select \"Prosthetic Joint Replacement\"\n  6.  the \"Prosthetic Joint Replacement\" window will pop up\n  7.  under \"Comments,\" include: (1) which joint, (2) when was surgery, (3) has the joint ever had an infection requiring surgery\n  8.  use the drop-down to select the AAOS treatment recommendations\n  9.  bring the printed form to the front desk & ask them to scan it into the patient's chart"
+},
+{
+"id": "c120",
+"section": "MISC",
+"title": "NEW PERIO CHART STEPS",
+"body": "1.  open a new perio chart by clicking \"Perio Chart\" on the Axium sidebar\n  2.  click the plus at the top of the perio chart\n  3.  select the proper procedure next to \"Exam Type\"\n  4.  click save before exiting — everything will be lost if you don't"
+},
+{
+"id": "c121",
+"section": "MISC",
+"title": "AXIUM ERX STEPS",
+"body": "opening Axium eRx\n\n  1.  select patient (Rolodex) & open EHR\n  2.  click \"Medications\" tab\n  3.  click the plus sign (right) → click \"Axium eRx\"\n\n  medications\n\n  1.  scroll down → under \"Medications,\" click \"Show Medication History\"\n  2.  from the \"Select time period...\" drop-down, select \"1 year\" — shows all prescriptions filled in the last year\n  3.  use the check boxes to select the medications the patient is currently taking → click \"+ Add to Active Medications\"\n  4.  to add additional medications, click \"Add Medication\" & search for the drug name (and dose, if pt knows)\n  5.  once the medication list is complete, click the check mark next to \"Complete\"\n  6.  if the patient takes no medications: click the hammer next to \"Unknown or Incomplete\" → select \"Complete\" → click \"Confirm Review\"\n\n  allergies\n\n  1.  scroll down → under \"Allergies\"\n  2.  if patient has no allergies, click \"Mark patient NKDA\"\n  3.  if patient has allergies, click the \"+\" to add them\n  4.  when done, click the check mark"
 }
 ];
 
@@ -2245,6 +2275,11 @@ const CATEGORIES = [
       { id: "misc-prescriptions", label: "Prescriptions" },
       { id: "misc-med-consult",   label: "Medical Consultation" },
       { id: "misc-referral",      label: "Referral" },
+      { id: "misc-prevident",     label: "PreviDent / Chlorhexidine / MI Paste" },
+      { id: "misc-tobacco",       label: "Tobacco Cessation" },
+      { id: "misc-prosth-joint",  label: "Prosthetic Joint Form" },
+      { id: "misc-perio-chart",   label: "New Perio Chart" },
+      { id: "misc-erx",           label: "Axium eRx" },
     ]},
   ]},
   { id: "lab", label: "Lab Scripts", groups: [
