@@ -1372,6 +1372,24 @@ const CHUNKS = [
 "section": "MISC",
 "title": "LAB SCRIPT STEPS",
 "body": "filling out a lab script\n\n  1.  select your patient in Rolodex & open their EHR\n  2.  click the \"Labs\" tab\n  3.  click the plus (right)\n  4.  choose your clinic next to \"Discipline\"\n  5.  click the \"...\" next to \"Treatment\"\n  6.  select the appropriate treatments\n  7.  click the \"...\" next to \"Lab Proc\"\n  8.  select the procedure\n  9.  click \"Add\"\n  10. click \"OK\"\n  11. write your lab script next to \"Details\"\n  12. click the plus (center)\n  13. click the \"...\" next to \"Supplements\"\n  14. add all materials you'll be sending to the lab (select in left column, then click the > arrow to add to the right column)\n  15. click \"Close\"\n  16. click the pencil check mark (\"Modify Record\") to save\n  17. have instructor swipe form\n  18. print the form\n  19. have instructor sign the printed form\n  20. if a lab script for a partial denture, draw the partial denture design on the printed form\n  21. bring the lab script + supplements to the 5th floor lab\n  22. you will get an Axium message when info has been sent to the lab; you will get another when the item is back from the lab & ready for pickup"
+},
+{
+"id": "c114",
+"section": "MISC",
+"title": "PRESCRIPTIONS STEPS",
+"body": "1.  select patient & open Axium eRx (follow Step 1–3 in AXIUM eRx / MEDICATIONS & ALLERGIES)\n  2.  in the top-center of the screen, click the magnifying glass to select a pharmacy\n  3.  click \"Create New Prescription\" (top-center of screen)\n  4.  search the appropriate drug and complete all fields, then click \"Review\"\n  5.  on the next screen, click \"Save Pending Rx\"\n  6.  close Axium eRx\n  7.  have instructor swipe prescription:\n        a.  have the instructor open Axium eRx Authorized User Signin\n        b.  scroll down under the \"Prescription Management\" heading\n        c.  have the instructor click the check box next to the prescription\n        d.  have the instructor type their signature password next to \"Signature Password\"\n              ○  the password is usually the faculty's pin number\n              ○  otherwise: instructor's first or last name followed by \"rx\" (all lowercase, e.g. \"smithrx\")\n        e.  to send electronically, click \"Send\"\n        f.  to print, click \"Print don't Send\"\n              ○  must be printed on prescription paper — select the printer labeled \"Rx\" or \"Prescription\"\n              ○  in Vivaldi or Chicago: prescription printer is at the UG OS front desk\n              ○  in 2nd floor clinics: prescription printer is at the 2nd floor front desk"
+},
+{
+"id": "c115",
+"section": "MISC",
+"title": "MEDICAL CONSULTATION STEPS",
+"body": "writing a med consult\n\n  1.  plan the code D9390 (Medical Consultation)\n  2.  complete the sub-code D9390A (Request)\n  3.  complete the Form CONS — a window will pop up to add the form\n        ○  if window does not pop up: right-click D9390A (Request) → \"Add/Edit Tx Form…\" → next to \"Form,\" select \"CONS\" → click OK\n        ○  next to consultant, put the name or title of the physician (\"Dr. Smith\" or \"Neurologist\")\n        ○  the form will auto-create a consult note if you select one of the listed conditions\n        ○  for a condition not on the list, select \"Other\" for consult reason & type a note in that field\n        ○  select \"Yes\" next to \"form printed for patient\"\n  4.  have instructor swipe\n  5.  print the medical consult form & give it to the patient; have them bring it to their doctor & return with the form completed\n\n  when pt returns with completed med consult\n\n  1.  complete (C) the subcode D9390B (Response) — a window will pop up to add the form\n  2.  fill out the physician's response in the medical consult form on Axium\n  3.  bring the completed form to the front desk to be scanned into Patient Attachments"
+},
+{
+"id": "c116",
+"section": "MISC",
+"title": "REFERRAL STEPS",
+"body": "completing a referral in Axium\n\n  1.  click the \"Forms\" tab\n  2.  click the plus sign (right)\n  3.  next to \"Form,\" select \"REFER - Referral To Another Dept\" from the drop-down menu; click OK\n  4.  fill out the referral form — copy the \"Reason for the referral\" so you can paste it later\n  5.  have instructor swipe\n  6.  click the running man icon (right)\n        ○  paste the \"Reason for the referral\" text into the \"Comment\" box\n        ○  under \"Assigned To: Message Group,\" click the \"...\" to select the department; click OK"
 }
 ];
 
@@ -2223,7 +2241,10 @@ const CATEGORIES = [
   ]},
   { id: "misc", label: "Misc.", groups: [
     { id: "misc-axium", label: "Procedures", procedures: [
-      { id: "misc-lab-script", label: "Lab Script" },
+      { id: "misc-lab-script",    label: "Lab Script" },
+      { id: "misc-prescriptions", label: "Prescriptions" },
+      { id: "misc-med-consult",   label: "Medical Consultation" },
+      { id: "misc-referral",      label: "Referral" },
     ]},
   ]},
   { id: "lab", label: "Lab Scripts", groups: [
