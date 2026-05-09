@@ -6634,25 +6634,35 @@ function Browse({
               {stepsBody ? (
                 currentProcedure?.groupId === "misc-lookup" ? (() => {
                   const lines = stepsBody.replace(/​/g, "").split("\n");
+                  const groups = [];
+                  let cur = [];
+                  for (const line of lines) {
+                    if (!line.trim() && cur.length) { groups.push(cur); cur = []; }
+                    else if (line.trim()) cur.push(line);
+                  }
+                  if (cur.length) groups.push(cur);
                   return (
-                    <div style={{ overflowX: "auto", border: "1px solid var(--rule)",
-                      borderRadius: "3px" }}>
-                      {lines.map((line, i) => {
-                        if (!line.trim()) return (
-                          <div key={i} style={{ height: "7px",
-                            borderBottom: "1px solid var(--rule-soft)" }} />
-                        );
-                        return (
-                          <div key={i} style={{
-                            fontFamily: "'JetBrains Mono', ui-monospace, monospace",
-                            fontSize: "11.5px", lineHeight: 1.7,
-                            whiteSpace: "pre", color: "var(--ink)",
-                            padding: "3px 10px",
-                            borderBottom: i < lines.length - 1
-                              ? "1px solid var(--rule-soft)" : "none",
-                          }}>{line}</div>
-                        );
-                      })}
+                    <div style={{ overflowX: "auto" }}>
+                      <table style={{
+                        borderCollapse: "collapse", tableLayout: "auto",
+                        fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+                        fontSize: "11.5px", lineHeight: 1.7,
+                      }}>
+                        <tbody>
+                          {groups.map((grp, gi) => grp.map((line, li) => (
+                            <tr key={`${gi}-${li}`}>
+                              <td style={{
+                                border: "1px solid var(--rule-soft)",
+                                padding: "3px 10px", whiteSpace: "pre",
+                                color: "var(--ink)",
+                                ...(li === 0 && gi > 0 ? {
+                                  borderTopColor: "var(--rule)",
+                                } : {}),
+                              }}>{line}</td>
+                            </tr>
+                          )))}
+                        </tbody>
+                      </table>
                     </div>
                   );
                 })() : (
