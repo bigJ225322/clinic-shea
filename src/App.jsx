@@ -67,7 +67,25 @@ const TEMPLATES = {
  "7139": " - y/o female presents to UG Peds with mother for #A pulpotomy & SSC\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Titrated to 40% nitrous oxide / 60% oxygen at 4L/min. Administered for 90 minutes. Applied 20% topical benzocaine & administered 1 carpule of\n 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal block on right / buccal infiltration #A.\n\n #A pulpotomy\n Placed bite block & rubber dam. Completely removed failing existing MOD composite restoration and excavated decay using high & slow speed\n burs. Pulp chamber accessed & unroofed completely. Amputated coronal pulp tissue. Hemostasis achieved via moist cotton pellet followed by\n Viscostat for 10s & thorough rinsing. Hemostasis confirmed. IRM placed.\n\n #A-SSC\n Completed crown prep to ideal form. Tried on SSC #5; trimmed & crimped to ideal fit. Confirmed occlusion. Cemented crown with GIC FujiCEM &\n seated using a bite stick. Excess cement cleaned, flossed. Re-confirmed occlusion.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Informed mother that pt is still numb, monitor lip & soft\n tissue biting.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr.",
  "7242": " - y/o female presents to UG Peds with mother for #F composite strip crown\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Titrated to 40% nitrous oxide / 60% oxygen at 4L/min. Administered for 90 minutes. Applied 20% topical benzocaine & administered 1 carpule of\n 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal block / buccal infiltration #F.\n\n #F composite strip crown\n Placed Isodry (size P). Removed existing failing ML composite restoration. Excavated decay using high & slow speed burs. Completed crown prep to\n ideal form. Strip crown selected & fitted to tooth. Etched with 35% phosphoric acid for 15s, rinsed 5s, gently dried leaving dentin moist. Applied\n Scotchbond Universal 20s, air dried 5s, cured 10s. Loaded shade A2 Renamel nanofill into strip crown, seated crown, cured 60s. Finished\n restoration with finishing diamond burs, polished with Shofu, Jiffy brush, Cosmedent discs. Evaluated interproximal contact with floss, adjusted to\n ideal. Evaluated occlusion with articulating paper, adjusted to ideal.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Informed mother that pt is still numb, monitor lip & soft\n tissue biting.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr.",
  "7306": " - y/o female presents to UG Peds with mother for band & loop impression\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n #36 band fit to #30 with band seater. Pick-up impression taken in alginate.\n\n - behavior: F4 --\n - NV:\n - Sarah Swade / Dr.",
- "7399": " - y/o female presents to UG Peds with mother for #30-#S band & loop cementation\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n #30-#S band & loop cementation\n Band & loop #30-#S tried in. Occlusion evaluated with articulating & is satisfactory; band & loop does not interfere with occlusion. #30 & #S\n cleaned with prophy cup & pumice. Band & loop cemented with FujiCem.\n\n Post-op instructions reviewed with mother — soft diet today, soreness for 24hr, excess saliva, temporary speech disturbance, OHI, loss of\n appliance. Pt released in good condition.\n\n - behavior: F4 --\n - NV:\n - Sarah Swade / Dr."
+ "7399": " - y/o female presents to UG Peds with mother for #30-#S band & loop cementation\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n #30-#S band & loop cementation\n Band & loop #30-#S tried in. Occlusion evaluated with articulating & is satisfactory; band & loop does not interfere with occlusion. #30 & #S\n cleaned with prophy cup & pumice. Band & loop cemented with FujiCem.\n\n Post-op instructions reviewed with mother — soft diet today, soreness for 24hr, excess saliva, temporary speech disturbance, OHI, loss of\n appliance. Pt released in good condition.\n\n - behavior: F4 --\n - NV:\n - Sarah Swade / Dr.",
+
+ // ── Lab Script templates ───────────────────────────────────────────────────
+ // These are written to the Axium Labs "Details" field, not the chart note.
+ // Tooth + shade substitution works for single-tooth cases. Bridge spans and
+ // RPD designs use [bracket] placeholders — students fill those in manually.
+ "lab-pfm":           "Please pour impression & fabricate PFM crown for #30 using high-noble alloy.\nOcclusal and interproximal contacts should be in porcelain.\n1-2 mm metal collar on the lingual margin, no metal collar on the buccal margin.\nShade A2.\nThank you.",
+ "lab-implant-cast":  "Please pour final impression & create soft tissue cast for implant-supported crown, #30.\nImplant replica is provided for [Straumann / Nobel / Dentsply EV] Implant diameter [4.8] mm.\nPlease return working cast for mount.\nThank you.",
+ "lab-abutment":      "Please fabricate an Atlantis custom abutment for [Straumann / Nobel / Dentsply EV] Implant diameter [4.8] mm for #30.\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown]\nThank you.",
+ "lab-implant-crown": "Please fabricate all-ceramic emax CAD/CAM crown (lithium disilicate) for site #30 ([Straumann / Nobel / Dentsply EV] [4.8] mm): Shade LT A2. Please crystalize and return it for delivery. Thank you.",
+ "lab-bridge-cast":   "Please pour impression for PFM bridge from [##-##].\nPlease section dies & return working cast for mounting.\nThank you.",
+ "lab-bridge":        "Please fabricate PFM bridge from [##-##] using high-noble alloy.\nOcclusal and interproximal contacts should be in porcelain.\n2-3 mm metal collar on the lingual margins, no metal collar on the buccal margins.\nModified ridge lap pontic design.\nPlease return metal framework for try-in.\nThank you.",
+ "lab-porcelain":     "Please apply porcelain to metal framework for PFM bridge from [##-##].\nShade A2.\nThank you.",
+ "lab-og":            "Please fabricate maxillary full arch flat plane occlusal guard. Please process in dual layer acrylic with VDO raised to create at least 1 mm space measured between the tips of the canines & all posterior teeth during eccentric movements (pin +3 mm). Please achieve all of the following:\n(a) point-to-flat-plane contact in centric (buccal cusps & incisal edges of mandibular teeth)\n(b) 1-2 mm of freedom in centric\n(c) minimal incisal guidance, but enough to disclude posterior teeth in protrusion\n(d) canine guidance during lateral excursion\nPlease return for delivery. Thank you.",
+ "lab-ff":            "F/F: Please festoon, pack, and process maxillary & mandibular complete dentures. Gingival shade: [gingival shade]. Please return for delivery. Thank you.",
+ "lab-ii-denture":    "F/F: Please fabricate maxillary and mandibular interim complete dentures. Use existing teeth [6, 11, 22, 27] as reference. [6, 11, 22, 27] will be extracted. Please set posterior teeth over the residual ridge and do not increase VDO. Please use Trubyte Classic anterior tooth mold [4H] and posterior teeth mold [F30] 10°. Please use tooth shade [81] for all teeth. Please use acrylic shade: 50% OR (original) + 50% DK (dark). Please set teeth, festoon, process & polish, and return for delivery. Thank you.",
+ "lab-reline":        "F/[M or D]: Please reline the denture with heat-cured acrylic resin, shade L199-OR. Please add the posterior palatal seal as indicated on the impression. Please polish and return for delivery. Thank you.",
+ "lab-rpd":           "Please fabricate [mandibular / maxillary] RPD framework using Vitallium alloy.\nMajor connector: [lingual bar / palatal plate].\nRest seats: [21-MO, 28-DO].\nGuide planes: [21-D, 28-D].\nClasps:\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [21]\n- 18 gauge wrought wire reciprocal arm on lingual of [21]\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [28]\n- 18 gauge wrought wire reciprocal arm on lingual of [28]\nTissue stops marked on cast.\nRetentive loops on areas: [18, 19, 20, 29, 30].\nReturn framework for try-in.\nThank you.",
+ "lab-ii-rpd":        "Please fabricate [mandibular / maxillary] interim immediate acrylic removable partial denture. Use existing teeth [22-28] as a reference for occlusal plane. [18 and 28] will be extracted. Please set posterior teeth over the residual ridge and do not increase VDO. Please place wrought wire clasps on [22 and 27]. Please use Trubyte classic posterior tooth mold F30 10°, tooth shade 81. Please use acrylic shade: 50% OR (original) + 50% DK (dark). Please set teeth, festoon, process & polish, and return for delivery.\nThank you.",
 };
 
 const CHUNKS = [
@@ -2194,6 +2212,25 @@ const CATEGORIES = [
     { id: "peds-space", label: "Space Maintenance", procedures: [
       { id: "7306", label: "Impression" },
       { id: "7399", label: "Delivery" },
+    ]},
+  ]},
+  { id: "lab", label: "Lab Scripts", groups: [
+    { id: "lab-fixed", label: "Fixed & Implant", procedures: [
+      { id: "lab-pfm",           label: "PFM Crown" },
+      { id: "lab-implant-cast",  label: "Implant — Working Cast" },
+      { id: "lab-abutment",      label: "Implant — Custom Abutment" },
+      { id: "lab-implant-crown", label: "Implant — Crown" },
+      { id: "lab-bridge-cast",   label: "Bridge — Working Cast" },
+      { id: "lab-bridge",        label: "Bridge" },
+      { id: "lab-porcelain",     label: "Bridge — Add Porcelain to Framework" },
+      { id: "lab-og",            label: "Occlusal Guard" },
+    ]},
+    { id: "lab-removable", label: "Removable", procedures: [
+      { id: "lab-ff",         label: "Complete Dentures" },
+      { id: "lab-ii-denture", label: "Interim Immediate Dentures" },
+      { id: "lab-reline",     label: "Lab Reline" },
+      { id: "lab-rpd",        label: "Partial Dentures (RPD)" },
+      { id: "lab-ii-rpd",     label: "Interim Immediate Partial" },
     ]},
   ]},
 ];
@@ -5189,6 +5226,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
   //   all others → standard five clinics only (no Pediatrics, no Chicago, no UGOS)
   const isClinicPeds    = categoryId === "peds";
   const isClinicChicago = categoryId === "implant" || categoryId === "endo" || procedureId === "871";
+  const isLabScript     = categoryId === "lab";
   const showChicago     = categoryId === "digital";
 
   // Auto-sync clinic field when switching into/out of restricted categories.
@@ -5262,6 +5300,19 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
 
         {procedureId && (
           <div style={{ ...cardStyle, marginTop: "24px" }}>
+          {isLabScript && (
+            <div style={{
+              marginBottom: "16px",
+              padding: "10px 14px",
+              background: "var(--paper-soft)",
+              borderLeft: "2px solid var(--teal)",
+              borderRadius: "2px",
+              fontSize: "11px", lineHeight: 1.5,
+              color: "var(--ink-soft)",
+            }}>
+              <em>Copy this script into the Axium <strong style={{ color: "var(--ink)" }}>Details</strong> field. Fill in the bracketed sections with your case specifics before sending to the lab.</em>
+            </div>
+          )}
           {(procedureId === "1091" || procedureId === "1425") && (
             <div style={{
               marginBottom: "16px",
@@ -5313,19 +5364,21 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               </button>
             </div>
           )}
-          <div style={twoCol}>
-            <Field label="Age">
-              <AgeInput value={fields.age} onChange={v=>setField("age",v)} peds={isClinicPeds} />
-            </Field>
-            <Field label="Gender">
-              <Select value={fields.gender} onChange={v=>setField("gender",v)}>
-                <option value="">—</option>
-                <option value="male">male</option>
-                <option value="female">female</option>
-              </Select>
-            </Field>
-          </div>
-          {!isClinicPeds && !isClinicChicago && (
+          {!isLabScript && (
+            <div style={twoCol}>
+              <Field label="Age">
+                <AgeInput value={fields.age} onChange={v=>setField("age",v)} peds={isClinicPeds} />
+              </Field>
+              <Field label="Gender">
+                <Select value={fields.gender} onChange={v=>setField("gender",v)}>
+                  <option value="">—</option>
+                  <option value="male">male</option>
+                  <option value="female">female</option>
+                </Select>
+              </Field>
+            </div>
+          )}
+          {!isLabScript && !isClinicPeds && !isClinicChicago && (
             <Field label="Clinic">
               <Select value={fields.clinic} onChange={v=>setField("clinic",v)}>
                 <option value="">— Select a clinic —</option>
