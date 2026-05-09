@@ -6501,6 +6501,7 @@ function Browse({
                 </div>
               )}
 
+              {TEMPLATES[currentProcedure.id] && (<>
               <div className="hairline" style={{ margin: "32px 0 22px" }} />
               <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                 <button className="primary"
@@ -6508,6 +6509,7 @@ function Browse({
                   Generate Note  →
                 </button>
               </div>
+              </>)}
             </>
           ) : (
             <div style={{
