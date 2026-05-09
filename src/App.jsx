@@ -2330,6 +2330,20 @@ const CATEGORIES = [
       { id: "misc-tooth-req",        label: "Tooth Requisition" },
       { id: "misc-phone-numbers",    label: "Phone Numbers" },
     ]},
+    { id: "misc-lookup", label: "Lookup", procedures: [
+      { id: "ref-blood-pressure",   label: "Blood Pressure" },
+      { id: "ref-common-meds",      label: "Common Medications" },
+      { id: "ref-materials",        label: "Materials" },
+      { id: "ref-endo-dx",          label: "Endodontic Diagnosis" },
+      { id: "ref-endo-testing",     label: "Endodontic Testing" },
+      { id: "ref-local-anes",       label: "Local Anesthetic" },
+      { id: "ref-max-anes",         label: "Maxillary Anesthesia" },
+      { id: "ref-mand-anes",        label: "Mandibular Anesthesia" },
+      { id: "ref-antibiotic-proph", label: "Antibiotic Prophylaxis" },
+      { id: "ref-mronj",            label: "Bisphosphonates / MRONJ" },
+      { id: "ref-pregnant",         label: "Pregnant Patients" },
+      { id: "ref-prescriptions",    label: "Common Prescriptions" },
+    ]},
   ]},
   { id: "lab", label: "Lab Scripts", groups: [
     { id: "lab-fixed", label: "Fixed & Implant", procedures: [
