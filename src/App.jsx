@@ -1438,6 +1438,18 @@ const CHUNKS = [
 "section": "MISC",
 "title": "CONTACT NOTE STEPS",
 "body": "1.  open the Rolodex & select the patient\n  2.  click the patient notecard in the middle of the screen\n  3.  click the \"Contact Notes\" icon at the top\n  4.  type in the box under \"Note\"\n  5.  click the plus sign to add the contact note"
+},
+{
+"id": "c125",
+"section": "MISC",
+"title": "ADDING PHOTOS RADIOGRAPHS STEPS",
+"body": "adding photos\n\n  1.  check out the digital camera from sterilization & take photos\n  2.  when ready to upload: turn camera off → connect via USB cable → turn camera on → select \"Storage\" on the camera\n  3.  open Dexis\n  4.  select the camera icon at the top\n  5.  select the import icon at the top (or right-click the screen → \"Import\")\n  6.  select \"Browse\"\n  7.  select the digital camera DCIM folder\n  8.  hold Command and select all your photos\n  9.  click \"Import Selected\"\n  10. unplug the camera and delete all images from it — required to avoid HIPAA violations!\n\n  adding radiographs\n\n  1.  locate the x-ray files & save to the computer; or plug in the flash drive containing the files\n  2.  open Dexis\n  3.  select the FMX or Panoramic icon at the top (depending on whether you're uploading individual x-rays or panos)\n  4.  select the import icon at the top (or right-click → \"Import\")\n  5.  select \"Browse\"\n  6.  select the folder with the x-ray files\n  7.  hold Command and select all the x-rays\n  8.  click \"Import Selected\""
+},
+{
+"id": "c126",
+"section": "MISC",
+"title": "LAB TURNAROUND TIME STEPS",
+"body": "5 business days\n  ●  model work\n  ●  reline\n  ●  acrylic-only denture or partial repair\n  ●  cast pattern for post & core\n\n  9 business days\n  ●  rebase denture or partial\n  ●  partial framework\n  ●  denture teeth set-up\n  ●  acrylic processing for denture or partial\n  ●  PFM bridge metal try-in\n  ●  porcelain application to metal try-in\n  ●  metal crown, inlay, onlay\n  ●  night guard\n  ●  wax and cast post & core (from impression)\n  ●  partial repair with soldering\n  ●  solder PFM bridge\n\n  12 business days\n  ●  PFM crown\n  ●  ceramic crown, inlay, onlay, veneers\n  ●  implant crown"
 }
 ];
 
@@ -2301,6 +2313,8 @@ const CATEGORIES = [
       { id: "misc-calling-patients", label: "Calling Patients" },
       { id: "misc-booking-chair",    label: "Booking a Chair" },
       { id: "misc-contact-note",     label: "Contact Note" },
+      { id: "misc-photos-xrays",     label: "Adding Photos & Radiographs" },
+      { id: "misc-lab-turnaround",   label: "Lab Turn-Around Time" },
     ]},
   ]},
   { id: "lab", label: "Lab Scripts", groups: [
