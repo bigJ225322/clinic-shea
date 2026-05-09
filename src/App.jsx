@@ -1420,6 +1420,24 @@ const CHUNKS = [
 "section": "MISC",
 "title": "AXIUM ERX STEPS",
 "body": "opening Axium eRx\n\n  1.  select patient (Rolodex) & open EHR\n  2.  click \"Medications\" tab\n  3.  click the plus sign (right) → click \"Axium eRx\"\n\n  medications\n\n  1.  scroll down → under \"Medications,\" click \"Show Medication History\"\n  2.  from the \"Select time period...\" drop-down, select \"1 year\" — shows all prescriptions filled in the last year\n  3.  use the check boxes to select the medications the patient is currently taking → click \"+ Add to Active Medications\"\n  4.  to add additional medications, click \"Add Medication\" & search for the drug name (and dose, if pt knows)\n  5.  once the medication list is complete, click the check mark next to \"Complete\"\n  6.  if the patient takes no medications: click the hammer next to \"Unknown or Incomplete\" → select \"Complete\" → click \"Confirm Review\"\n\n  allergies\n\n  1.  scroll down → under \"Allergies\"\n  2.  if patient has no allergies, click \"Mark patient NKDA\"\n  3.  if patient has allergies, click the \"+\" to add them\n  4.  when done, click the check mark"
+},
+{
+"id": "c122",
+"section": "MISC",
+"title": "CALLING PATIENTS STEPS",
+"body": "before calling — research your patient\n\n  active patients:\n  ○  review chart & contact notes; note treatment phase, last visit, next planned visit\n  ○  determine appointment type:\n\n        exam (COE/POE/OV):\n              ●  COE/POE < 6 months ago → schedule Office Visit (D0105)\n              ●  COE/POE > 6 months ago → schedule POE (D0120)\n              ●  no COE yet (recently screened) → check Dexis for FMX & pan:\n                    FMX/pan done → schedule COE (D0150)\n                    FMX/pan not done → give pt radiology # (312)-996-6477; enter contact note\n                    ⚠  pts without FMX/pan cannot be seen until radiographs are taken\n\n        cleaning:\n              ●  last cleaning was SRP:\n                    re-eval done → check recall interval (Forms → Perio EPR → Treatment Plan tab → scroll to bottom) → if due, schedule perio maintenance (D4910)\n                    re-eval not done → schedule re-eval (D0170)\n              ●  last cleaning was perio maintenance → check recall interval → if due, schedule perio maintenance (D4910)\n              ●  last cleaning was prophy → check recall interval → if due, schedule prophy (D1110)\n\n        active treatment:\n              ●  if pt was recently seen & tx plan is straightforward, schedule the next needed procedure\n\n  recall patients:\n  ○  review chart & contact notes\n  ○  determine last POE & cleaning; check recall interval to see if pt is due\n  ○  if not due yet, don't schedule yet — call to introduce yourself now so they know who to contact\n\n  both:\n  ○  confirm pt is not already scheduled\n        Tx History tab: green + \"S\" = scheduled; green + \"RC\" = recall reminder (not an actual appt)\n  ○  note recent treatments, last UIC contact, alternate phones, language barriers\n  ○  check treatment plan costs in case pt asks\n\n  making the call\n\n  sample script:\n  \"Hi, this is Sarah from the UIC College of Dentistry — is John available? I'm calling to introduce myself\n  as your new student dentist. I noticed you're due for an exam and cleaning. Interested in scheduling?\n  What day works best — morning or afternoon? The fee will be $72. Perfect, I'll see you Wednesday,\n  August 2 at 1:30 in Vivaldi clinic, 3rd floor, check in at room 321. Please call or text me at\n  708-669-9449 if you need to cancel.\"\n\n  things to cover:\n  ○  know the fee in case pt asks\n  ○  asthma/bronchitis → remind pt to bring inhaler\n  ○  antibiotic prophylaxis → confirm pt has antibiotics at home (if not, write Rx); remind to take 1 hour before appt\n  ○  remind pt to cancel at least 24 hours in advance\n\n  leaving a message:\n  \"Hello, this is Sarah from the UIC College of Dentistry. I'm your new student dentist. Please call or\n  text me back at 708-669-9449. Thank you!\"\n  ○  always leave a message — Google Voice numbers are unfamiliar, pts may not call back otherwise\n\n  if a family member answers (HIPAA):\n  \"Please let [patient] know Sarah called from UIC College of Dentistry. They can reach me at 708-669-9449.\"\n\n  ○  document every call in Axium contact notes"
+},
+{
+"id": "c123",
+"section": "MISC",
+"title": "BOOKING CHAIR STEPS",
+"body": "1.  open Scheduler (sidebar, left)\n  2.  click the \"Weekly\" tab (right)\n  3.  determine when & where you want to schedule\n  4.  click the \"Chair\" tab (right)\n  5.  click the open book icon (right) to select your clinic; double click\n  6.  navigate to the day you want\n  7.  click the times on the left to set the appointment time\n  8.  find an available chair:\n        ○  white = open\n        ○  yellow = held but no pt booked\n        ○  red = pt booked by another student\n        ○  blue = pt booked & confirmed by another student\n  9.  click the chair you want — it turns green\n  10. click back to the \"Weekly\" tab\n  11. the selected date & time appears tan; click on it\n  12. double click the patient you want to schedule\n  13. under \"Reason,\" type the procedure & instructor (e.g. \"Dr. Afshari — #19-B composite\")\n  14. next to \"Appt. Code,\" select the appointment length\n  15. click \"Accept\"\n  16. move codes from \"Planned Treatments\" (left) to \"Appointed Treatments\" (right) by double clicking or selecting + clicking >\n        ○  the appointment code doesn't matter much — if there's no matching code, pick any; you described the procedure in the Reason box\n  17. click \"Close\"\n  18. the tentative appointment appears in yellow\n  19. drag the yellow appointment to the tan open slot (align start time correctly)\n  20. double click the appointment → changes from yellow to white\n\n  appointment colors (Weekly tab):\n  ○  green = scheduled\n  ○  blue = scheduled & confirmed\n  ○  red = pt checked in\n\n  to un-reserve a yellow chair: right-click → \"Un-reserve chair\""
+},
+{
+"id": "c124",
+"section": "MISC",
+"title": "CONTACT NOTE STEPS",
+"body": "1.  open the Rolodex & select the patient\n  2.  click the patient notecard in the middle of the screen\n  3.  click the \"Contact Notes\" icon at the top\n  4.  type in the box under \"Note\"\n  5.  click the plus sign to add the contact note"
 }
 ];
 
@@ -2278,8 +2296,11 @@ const CATEGORIES = [
       { id: "misc-prevident",     label: "PreviDent / Chlorhexidine / MI Paste" },
       { id: "misc-tobacco",       label: "Tobacco Cessation" },
       { id: "misc-prosth-joint",  label: "Prosthetic Joint Form" },
-      { id: "misc-perio-chart",   label: "New Perio Chart" },
-      { id: "misc-erx",           label: "Axium eRx" },
+      { id: "misc-perio-chart",      label: "New Perio Chart" },
+      { id: "misc-erx",              label: "Axium eRx" },
+      { id: "misc-calling-patients", label: "Calling Patients" },
+      { id: "misc-booking-chair",    label: "Booking a Chair" },
+      { id: "misc-contact-note",     label: "Contact Note" },
     ]},
   ]},
   { id: "lab", label: "Lab Scripts", groups: [
