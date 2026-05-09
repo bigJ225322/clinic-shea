@@ -2111,8 +2111,6 @@ const CATEGORIES = [
       { id: "1272", label: "SRP (Scaling & Root Planing)" },
       { id: "1346", label: "Perio Re-Evaluation" },
       { id: "1425", label: "Perio Maintenance" },
-    ]},
-    { id: "perio-ref", label: "Reference", procedures: [
       { id: "ohi", label: "OHI" },
     ]},
   ]},
