@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useLayoutEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useLayoutEffect, useRef, Fragment } from "react";
 
 /* ============================================================================
  * EMBEDDED DATA — injected at build time.
@@ -14,7 +14,7 @@ const TEMPLATES = {
  "703": " S\n\n - y/o female patient presents to Vivaldi clinic for Restorative COE with CC: “”\n - medical history:\n - medications:\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: last time at dentist: ; brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n O\n\n Completed extraoral exam & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n\n Updated odontogram with radiographic & clinical hard tissue findings:\n -\n\n - occlusal assessment:\n - endo testing:\n\n A\n - TMJ conditions: WNL\n - soft tissue conditions: WNL\n - hard tissue conditions: WNL\n - caries risk:\n - pulpal diagnosis: WNL\n - occlusal conditions: WNL\n - esthetic considerations: WNL\n\n P\n - Took diagnostic impressions, facebow, & bite registration.\n - Took intraoral photos.\n\n - NV: treatment plan",
  "807": "   y/o female patient presents to Vivaldi clinic for treatment plan presentation.\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n All treatment options, costs, & timelines were thoroughly reviewed with the patient. Discussed advantages & disadvantages of treatments. Pt’s\n questions were answered & pt understood treatment options. Pt opts for optimal treatment plan. Verbal and written consent obtained.\n\n Specific treatments discussed:\n — Pt understands crown on #18 needs to be removed & caries needs to be evaluated/excavated before tooth can be deemed restorable. Pt\n understands that if tooth is nonrestorable, extraction & implant or adding tooth to RPD are tx options.\n — Pt understands caries on #8 approximates pulp, and that pulp may be exposed during excavation. Pt understands tooth may need RCT + crown.\n —\n\n NV:",
  "871": "  y/o female patient presents to Chicago clinic for #4 STI consultation.\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Patient was evaluated for UG STI placement #4. Patient is provisionally accepted for UG STI placement pending CBCT results.\n\n NV:",
- "1091": " - y/o female patient presents to Vivaldi clinic for POE\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n POE:\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n - caries risk:\n\n Took 4 bitewings; updated odontogram with radiographic & clinical hard tissue findings:\n -\n - endo testing:\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed supragingival & subgingival plaque & calculus using Cavitron (with an assistant using HVE) & hand instruments. Flossed. Polished with\n prophy paste. Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation.\n\n Treatment planned for the following treatments:\n -\n Thoroughly reviewed all treatment options, costs, & timelines with pt. Discussed advantages & disadvantages of treatments. Answered pt’s\n questions. Pt understood treatment options. Obtained verbal and written consent for tx plan.\n\n - NV:",
+ "1091": " - y/o female patient presents to Vivaldi clinic for POE\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n POE:\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n - caries risk:\n\n Took 4 bitewings; updated odontogram with radiographic & clinical hard tissue findings:\n -\n - endo testing:\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed supragingival & subgingival plaque & calculus using Cavitron (with an assistant using HVE) & hand instruments. Flossed. Polished with\n prophy paste. Reviewed OHI with demonstration.\n\n Treatment planned for the following treatments:\n -\n Thoroughly reviewed all treatment options, costs, & timelines with pt. Discussed advantages & disadvantages of treatments. Answered pt’s\n questions. Pt understood treatment options. Obtained verbal and written consent for tx plan.\n\n - NV:",
  "1196": " - y/o female patient presents to Vivaldi clinic for prophy\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed plaque & calculus using Cavitron (with assistant using HVE) & hand instruments. Flossed. Polished with prophy paste.\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n Reviewed OHI with demonstration. Emphasized that patient needs to .\n\n - NV:",
  "1272": " - y/o female patient presents to Vivaldi clinic for SRP of UR.\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n SRP UR:\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltrations of UR quadrant & greater palatine block on R.\n\n Completed SRP using Cavitron (with an assistant using HVE) & hand instruments to remove supragingival and subgingival plaque & calculus.\n Flossed.\n\n Gave pt post-op instructions re: numbness, sore gums, tooth sensitivity, bleeding, ibuprofen/acetaminophen regimen.\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n Reviewed OHI with demonstration. Emphasized that patient needs to .\n\n - NV:",
  "1346": " - y/o female patient presents to Vivaldi clinic for perio re-evaluation after SRP 4 quads completed 1/1/2000\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Perio re-eval:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - O’Leary plaque index:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Patient is brushing 2x per day and flossing 1x per week. Patient technique is average — moderate generalized plaque with heavy plaque on .\n\n Patient’s periodontal health has improved — . Upon evaluation, patient will be placed on perio maintenance interval of 4 months.\n\n - NV:",
@@ -273,7 +273,7 @@ const CHUNKS = [
 "id": "c022.2",
 "section": "EXAMS",
 "title": "POE — POE: note template",
-"body": "POE: note template\n - y/o female patient presents to Vivaldi clinic for POE\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n POE:\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n - caries risk: high (see completed caries risk form)\n\n Took 4 bitewings; updated odontogram with radiographic & clinical hard tissue findings:\n -\n - endo testing:\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed supragingival & subgingival plaque & calculus using Cavitron (with an assistant using HVE) & hand instruments. Flossed. Polished with\n prophy paste. Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation.\n\n Treatment planned for the following treatments:\n -\n Thoroughly reviewed all treatment options, costs, & timelines with pt. Discussed advantages & disadvantages of treatments. Answered pt’s\n questions. Pt understood treatment options. Obtained verbal and written consent for tx plan.\n\n - NV:"
+"body": "POE: note template\n - y/o female patient presents to Vivaldi clinic for POE\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n POE:\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n - caries risk: high (see completed caries risk form)\n\n Took 4 bitewings; updated odontogram with radiographic & clinical hard tissue findings:\n -\n - endo testing:\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed supragingival & subgingival plaque & calculus using Cavitron (with an assistant using HVE) & hand instruments. Flossed. Polished with\n prophy paste. Reviewed OHI with demonstration.\n\n Treatment planned for the following treatments:\n -\n Thoroughly reviewed all treatment options, costs, & timelines with pt. Discussed advantages & disadvantages of treatments. Answered pt’s\n questions. Pt understood treatment options. Obtained verbal and written consent for tx plan.\n\n - NV:"
 },
 {
 "id": "c023",
@@ -2883,6 +2883,122 @@ const REF_DATA = {
       ]},
     ],
   },
+
+  "ref-max-anes": {
+    verdict: "Maxillary bone is thin and porous — a buccal infiltration at the apex usually achieves adequate depth. Block techniques (PSA, MSA, ASA) cover broader areas for quadrant dentistry.",
+    blocks: [
+      { type: "cards", caption: "Injection techniques", cards: [
+        { title: "(1) Buccal infiltration",
+          subtitle: "individual maxillary tooth + associated buccal gingiva",
+          rows: [
+            ["Technique", "pull mucobuccal fold outward; puncture at fold aligned with center of tooth, bevel toward bone; contact maxilla then withdraw 1 mm; aspirate; deposit"],
+            ["Note", "canine/1st premolar infiltration also covers MSA + ASA territory"],
+            ["Failure reasons", "solution deposited too far from periosteum; needle too far above or below roots; unusually dense bone"],
+          ]},
+        { title: "(2) Palatal infiltration",
+          subtitle: "palatal gingiva immediately surrounding a single tooth",
+          rows: [
+            ["Technique", "blanch injection site by pressing cotton-tip applicator for ~30 s; puncture within blanched area; advance until bone contact while depositing a small volume"],
+          ]},
+        { title: "(3) PSA block",
+          subtitle: "maxillary molars + associated buccal gingiva",
+          rows: [
+            ["Note", "MB root of max 1st molar is usually innervated by MSA — may need supplemental injection"],
+            ["Landmark", "mucobuccal fold just distal to distobuccal root of max 2nd molar"],
+            ["Direction", "upward, backward, inward along maxillary tuberosity; 2.0–2.5 cm depth"],
+            ["Risk", "aspirate carefully — inadvertent injection into pterygoid plexus causes hematoma"],
+          ]},
+        { title: "(4) MSA block",
+          subtitle: "maxillary premolars + MB root of max 1st molar + associated buccal gingiva",
+          rows: [
+            ["Landmark", "mucobuccal fold between max 2nd premolar and max 1st molar"],
+            ["Direction", "posteriorly at 45°, needle at 45°; advance 1.0–1.5 cm; aspirate; deposit"],
+          ]},
+        { title: "(5) ASA block",
+          subtitle: "maxillary incisors + maxillary canine + associated buccal gingiva",
+          rows: [
+            ["Landmark", "mucobuccal fold at apex of canine"],
+            ["Direction", "45° angle at apex/center of canine; advance 1.0–1.5 cm; aspirate; deposit"],
+          ]},
+        { title: "(6) Greater palatine block",
+          subtitle: "posterior ⅔ of palatal gingiva (premolars distally, unilateral)",
+          rows: [
+            ["Landmark", "greater palatine foramen: 1 cm medial to distal of 2nd molar; cotton-tip will fall into place"],
+            ["Technique", "blanch tissue; puncture within blanched area at 90° to hard palate curvature; do not advance needle; aspirate; deposit"],
+            ["Volume", "¼ carpule only — excess volume risks separating mucosa from palate (necrosis)"],
+          ]},
+        { title: "(7) Nasopalatine block",
+          subtitle: "anterior ⅓ of palatal gingiva (canine to canine, bilateral)",
+          rows: [
+            ["Landmark", "incisive foramen: under incisive papilla, ~0.5 cm posterior to central incisors at midline"],
+            ["Technique", "blanch tissue; puncture just lateral to incisive papilla; advance 3–4 mm medially or until bone; aspirate; deposit"],
+            ["Volume", "¼ carpule only — excess volume risks separating mucosa from palate"],
+          ]},
+        { title: "(8) Infraorbital block",
+          subtitle: "incisors, premolars, buccal gingiva, lower eyelid, upper cheek, part of nose, upper lip",
+          rows: [
+            ["Landmark", "infraorbital foramen: just medial to vertical line from pupil to inferior infraorbital ridge"],
+            ["Entry", "mucobuccal fold at junction of premolars; parallel to long axis of 2nd premolar; advance 1.5–2 cm"],
+            ["Risks", "angle too acute → maxillary eminence; angle too superior → orbital entry"],
+          ]},
+      ]},
+    ],
+  },
+
+  "ref-mand-anes": {
+    verdict: "The IAN + lingual block anesthetizes the entire ipsilateral half of the mandible. Add the long buccal block for molar buccal gingiva; use the mental block for anterior coverage without a full IAN.",
+    blocks: [
+      { type: "cards", caption: "Injection techniques", cards: [
+        { title: "(1) IAN + lingual block",
+          subtitle: "all mandibular teeth, buccal gingiva premolars–midline, lingual gingiva, floor of mouth, tongue, lower lip, chin",
+          rows: [
+            ["Landmark", "pterygomandibular triangle, 1 cm above occlusal plane of molars"],
+            ["Barrel position", "parallel to occlusal plane, syringe over contralateral premolars"],
+            ["Endpoint", "contact posterior wall of mandibular sulcus (bone); withdraw slightly then aspirate"],
+            ["Lingual nerve", "deposit additional anesthetic on withdrawal to anesthetize lingual nerve"],
+            ["Failure risk", "syringe directed too posterior → parotid gland injection → facial nerve block"],
+          ]},
+        { title: "(2) Long buccal block",
+          subtitle: "buccal gingiva of mandibular molars",
+          rows: [
+            ["Landmark", "1 mm lateral to molars, anterior border of ramus, at occlusal plane"],
+            ["Depth", "advance 3–4 mm; aspirate; deposit"],
+          ]},
+        { title: "(3) Mental nerve block",
+          subtitle: "premolars, canine, ± incisors; buccal gingiva premolars–midline; lower lip; chin",
+          rows: [
+            ["Landmark", "mental foramen: halfway between upper and lower edge of mandible, below 2nd premolar (confirm on pan if needed)"],
+            ["Technique", "retract lower lip; puncture at buccal vestibule at 2nd premolar, parallel to its long axis; advance ~1 cm; aspirate; deposit"],
+          ]},
+      ]},
+      { type: "table", caption: "Local anesthetic maximum doses",
+        headers: ["Drug", "Conc.", "Vasoconstrictor", "mg/carpule", "Max carpules"],
+        rows: [
+          ["lidocaine", "2%", "none", "36 mg", "13"],
+          ["", "2%", "1:100,000 epi", "36 mg", "13"],
+          ["", "2%", "1:50,000 epi", "36 mg", "13"],
+          ["", "3%", "none", "54 mg", "7"],
+          ["mepivacaine", "3%", "none", "54 mg", "7"],
+          ["", "2%", "1:200,000 lev", "36 mg", "11"],
+          ["prilocaine", "4%", "none", "72 mg", "8"],
+          ["", "4%", "1:200,000 epi", "72 mg", "8"],
+          ["articaine", "4%", "1:200,000 epi", "72 mg", "6"],
+          ["", "4%", "1:100,000 epi", "72 mg", "6"],
+          ["bupivacaine", "0.5%", "1:200,000 epi", "9 mg", "10"],
+        ],
+        footnote: "Max dose by weight: lidocaine 7 mg/kg (500 mg) · mepivacaine 6.6 mg/kg (400 mg) · prilocaine 8 mg/kg (600 mg) · articaine 7 mg/kg (500 mg) · bupivacaine 1.3 mg/kg (90 mg). 1 carpule = 1.8 mL.",
+      },
+      { type: "table", caption: "Vasoconstrictor maximum doses",
+        headers: ["Vasoconstrictor", "Max total dose", "mg/carpule", "Max carpules"],
+        rows: [
+          ["1:50,000 epi", "0.2 mg", "0.036 mg", "5"],
+          ["1:100,000 epi", "0.2 mg", "0.018 mg", "11"],
+          ["1:200,000 epi", "0.2 mg", "0.009 mg", "22"],
+          ["levonordefrin 1:200,000", "0.1 mg", "0.009 mg", "11"],
+        ],
+      },
+    ],
+  },
 };
 
 // Default values for a single anesthetic injection. Multiple injections live
@@ -2946,6 +3062,9 @@ const DEFAULT_FIELDS = {
   // srpDate: date SRP was completed, shown in perio re-eval (1346) header line.
   //   Replaces the "1/1/2000" placeholder.
   srpDate: "",
+  // poeOnly: when true for POE (1091), strips the Prophy section from the note
+  //   and hides the perio chart & OHI form sections.
+  poeOnly: false,
 };
 
 // Anesthetic options from the manual (Local Anesthesia section).
@@ -3203,6 +3322,9 @@ function renderTemplate(raw, f) {
   if (f.examFindings && typeof f.examFindings === "object") {
     for (const [label, value] of Object.entries(f.examFindings)) {
       if (typeof value === "boolean") continue; // ohi-checkbox booleans handled in 7b-perio
+      // Compound endo testing keys (endo1 #, endo2 perc, etc.) and the UI
+      // count key are assembled into the Endo testing block separately below.
+      if (/^endo\d+ /.test(label) || label === "endo count") continue;
       const v = (value || "").trim();
       if (!v) continue;
 
@@ -3211,12 +3333,102 @@ function renderTemplate(raw, f) {
         // Ensure the user's content starts with a dash so the first line is
         // a proper bullet. Subsequent lines inherit dashes from auto-dash.
         const odon = v.startsWith("-") ? v : `- ${v}`;
+        // Match the heading case-insensitively and allow preceding text on the same
+        // line (e.g. "Took 4 bitewings; updated odontogram..." in the POE template).
         t = t.replace(
-          /(Updated odontogram with radiographic & clinical hard tissue findings:)\n[ \t]*-[ \t]*(?=\n|$)/,
+          /([^\n]*updated odontogram with radiographic & clinical hard tissue findings:)\n[ \t]*-[ \t]*(?=\n|$)/i,
           (_m, heading) => `${heading}\n${odon}`
         );
         continue;
       }
+
+      // Special-case: treatment plan "specific treatments" — replaces the
+      // hardcoded em-dash bullet block under "Specific treatments discussed:".
+      if (label === "specific treatments") {
+        const lines = v.split("\n").map(l => l.trim()).filter(Boolean);
+        const rendered = lines
+          .map(l => { const c = l.replace(/^[-—]\s*/, "").trim(); return c ? `— ${c}` : ""; })
+          .filter(Boolean)
+          .join("\n");
+        if (rendered) {
+          // Replace every em-dash line after the heading (including the lone — stub)
+          t = t.replace(
+            /(Specific treatments discussed:)\n(?:—[^\n]*\n?)*/,
+            `$1\n${rendered}\n`
+          );
+        }
+        continue;
+      }
+
+      // ---- Urgent care (374) special cases ----
+
+      // CC: inline in the first sentence as  CC: ""
+      if (label === "cc") {
+        t = t.replace(/CC: ""/, `CC: "${v}"`);
+        continue;
+      }
+
+      // EOE: urgent care has a boilerplate paragraph, not a "- EOE:" stub.
+      // Replace the paragraph when the user overrides it. COE/POE fall through
+      // to the generic stub handler below.
+      if (label === "EOE" && t.includes("Pt appears generally healthy in the dental chair.")) {
+        t = t.replace(
+          /Pt appears generally healthy in the dental chair\.[\s\S]*?bilaterally\./,
+          v
+        );
+        continue;
+      }
+
+      // IOE dentition: replace the choices line "(heavily restored / carious dentition)..."
+      if (label === "ioe description") {
+        t = t.replace(
+          /- \(heavily restored \/ carious dentition\)[^\n]*/,
+          `- ${v}`
+        );
+        continue;
+      }
+
+      // Radiograph findings: append to the "- Radiographs reveal" line.
+      if (label === "radiograph findings") {
+        t = t.replace(/(- Radiographs reveal)\s*(?=\n|$)/, `$1 ${v}`);
+        continue;
+      }
+
+      // Endo findings: odontogram-style field that replaces the whole testing block.
+      if (label === "endo findings") {
+        const efLines = v.split("\n").map(l => l.trim()).filter(l => l && l !== "-");
+        const efBullets = efLines.map(l => l.startsWith("-") ? l : `- ${l}`).join("\n");
+        if (efBullets) {
+          t = t.replace(
+            /(Endo testing:)\n(?:-[^\n]*\n?)*/,
+            `$1\n${efBullets}\n`
+          );
+        }
+        continue;
+      }
+
+      // Pulpal / periapical diagnosis: replace "- Pulpal diagnosis #:" stubs,
+      // substituting the actual tooth number from the companion "diagnosis tooth" field.
+      if (label === "pulpal diagnosis" || label === "periapical diagnosis") {
+        const tooth = ((f.examFindings || {})["diagnosis tooth"] || "").trim() || "#";
+        const type = label === "pulpal diagnosis" ? "Pulpal" : "Periapical";
+        t = t.replace(
+          new RegExp(`^([ \\t]*-[ \\t]*${type} diagnosis )#:[ \\t]*$`, "im"),
+          `$1#${tooth}: ${v}`
+        );
+        continue;
+      }
+
+      // Skip the helper field used only to build diagnosis lines above.
+      if (label === "diagnosis tooth") continue;
+
+      // "Pt opts for ." — fill in the patient's choice.
+      if (label === "pt opts for") {
+        t = t.replace(/Pt opts for \./, `Pt opts for ${v}.`);
+        continue;
+      }
+
+      // ---- end urgent care special cases ----
 
       // Special-case: caries risk — append the standard reference suffix.
       const display = label === "caries risk"
@@ -3236,6 +3448,36 @@ function renderTemplate(raw, f) {
         : `$1 ${lines[0]}\n   ${lines.slice(1).join("\n   ")}`;
       t = t.replace(re, replacement);
     }
+  }
+
+  // -------- 7a-endo. Urgent care structured endo testing assembly. --------
+  // Collects compound examFindings keys (endo1 #, endo2 perc, …) and assembles
+  // the Endo testing block, replacing the hardcoded placeholder rows.
+  {
+    const ef = f.examFindings || {};
+    const endoFormCount = Math.max(1, parseInt(ef["endo count"] || 3, 10));
+    const toothRows = Array.from({ length: endoFormCount }, (_, idx) => idx + 1).map(n => {
+      const p = `endo${n}`;
+      const toothRaw = (ef[`${p} #`] || "").trim().replace(/^#/, "");
+      const perc = (ef[`${p} perc`] || "").trim() || "-";
+      const palp = (ef[`${p} palp`] || "").trim() || "-";
+      const prob = (ef[`${p} prob`] || "").trim() || "—";
+      const mob  = (ef[`${p} mob`]  || "").trim() || "—";
+      const cold = (ef[`${p} cold`] || "").trim() || "—";
+      const toothLabel = toothRaw ? `#${toothRaw}` : "#";
+      const parts = [
+        `percussion ${perc}`,
+        `palpation ${palp}`,
+        `probing ${prob === "—" ? "—" : `${prob}mm`}`,
+        `mobility ${mob}`,
+        `cold test ${cold}`,
+      ].join(", ");
+      return `- ${toothLabel}: ${parts}`;
+    });
+    t = t.replace(
+      /(Endo testing:)\n(?:-[^\n]*\n?)*/,
+      `$1\n${toothRows.join("\n")}\n`
+    );
   }
 
   // -------- 7b-perio. Perio-specific field substitutions. --------
@@ -3337,6 +3579,11 @@ function renderTemplate(raw, f) {
       }
     }
 
+    // Endo testing: omit the line entirely when left blank.
+    if (!(ef["endo testing"] || "").trim()) {
+      t = t.replace(/\n[ \t]*-[ \t]*endo testing:[^\n]*/g, "");
+    }
+
     // Mucogingival defects: substitute WNL if the stub is still empty
     // (The form pre-fills it, but if somehow it's empty, keep the note clean.)
     if (!ef["mucogingival defects"]?.trim()) {
@@ -3369,13 +3616,13 @@ function renderTemplate(raw, f) {
     }
 
     // Mounting records (Perio COE / Restorative COE)
-    // Build the "- Took impressions, facebow, & bite registration." line
+    // Build the "- Took impressions, facebow, & bite record." line
     // dynamically from checkboxes; remove the line entirely if none checked.
     {
       const items = [
-        ef["impressions"]        === true && "diagnostic impressions",
-        ef["facebow"]            === true && "facebow",
-        ef["bite registration"]  === true && "bite registration",
+        ef["impressions"]       === true && "diagnostic impressions",
+        ef["facebow"]           === true && "facebow",
+        ef["bite registration"] === true && "bite registration",
       ].filter(Boolean);
       const mountingRe = /^[ \t]*-[ \t]*Took diagnostic impressions, facebow, & bite registration\.[ \t]*$/im;
       if (items.length === 0) {
@@ -3389,6 +3636,14 @@ function renderTemplate(raw, f) {
         t = t.replace(mountingRe, `- Took ${list}.`);
       }
     }
+  }
+
+  // -------- 7b-poe. POE-only: strip the Prophy section. --------
+  // When "POE only — no prophy this visit" is checked, remove everything from
+  // the "Prophy:" heading through the OHI sentence, leaving the treatment-plan
+  // section intact.
+  if (f.poeOnly === true) {
+    t = t.replace(/\n+\s*Prophy:[\s\S]*?(?=\n+\s*Treatment planned)/, "\n\n");
   }
 
   // -------- 7c. Nitrous (peds). --------
@@ -3510,7 +3765,7 @@ function renderTemplate(raw, f) {
   // -------- 11. Names (signature line). --------
   if (f.names.trim()) {
     t = t.replace(/(^|\n)([ \t]*-?[ \t]*NV:.*)$/m,
-                  (_m, pre, nv) => `${_m}\n ${f.names.trim()}`);
+                  (_m, pre, nv) => `${_m}\n${f.names.trim()}`);
   }
 
   // -------- 12. Tidy: collapse 3+ consecutive newlines down to 2. --------
@@ -4725,8 +4980,6 @@ const EXAM_FINDINGS_CONFIG = {
           placeholder: "WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx" },
         { label: "TMJ conditions", type: "input", placeholder: "WNL" },
         { label: "soft tissue conditions", type: "input", placeholder: "WNL" },
-        { label: "caries risk", type: "select",
-          options: ["", "Low", "Moderate", "High"] },
         { label: "pulpal diagnosis", type: "input", placeholder: "WNL" },
         { label: "occlusal conditions", type: "input", placeholder: "WNL" },
         { label: "esthetic considerations", type: "input", placeholder: "WNL" },
@@ -4734,14 +4987,16 @@ const EXAM_FINDINGS_CONFIG = {
     },
     {
       title: "Findings",
-      fields: [
-        { label: "occlusal assessment", type: "input",
-          placeholder: "Class I; no wear facets" },
-        { label: "endo testing", type: "input",
-          placeholder: "all teeth WNL on cold and percussion" },
-        { label: "odontogram", type: "odontogram",
-          displayLabel: "Updated odontogram with clinical and radiographic findings",
-          placeholder: "List each finding on its own line. Press Enter to add another." },
+      rows: [
+        [
+          { label: "caries risk", type: "select", options: ["", "Low", "Moderate", "High"] },
+          { label: "endo testing", type: "input", placeholder: "blank to omit" },
+        ],
+        [{ label: "occlusal assessment", type: "input",
+           placeholder: "Class I; no wear facets" }],
+        [{ label: "odontogram", type: "odontogram",
+           displayLabel: "Updated odontogram with clinical and radiographic findings",
+           placeholder: "List each finding on its own line. Press Enter to add another." }],
       ],
     },
     {
@@ -4750,8 +5005,98 @@ const EXAM_FINDINGS_CONFIG = {
         [
           { label: "impressions", type: "ohi-checkbox" },
           { label: "facebow", type: "ohi-checkbox" },
-          { label: "bite registration", type: "ohi-checkbox" },
+          { label: "bite registration", type: "ohi-checkbox", displayLabel: "Bite reg." },
         ],
+      ],
+    },
+  ],
+  // Urgent Care — full HPI, objective findings, endo testing, diagnoses, plan.
+  "374": [
+    {
+      title: "HPI",
+      rows: [
+        [{ label: "cc", type: "input", displayLabel: "Chief complaint",
+           placeholder: "in the patient's words" }],
+        [
+          { label: "location", type: "input", placeholder: "e.g. #8, upper left" },
+          { label: "inception", type: "input", placeholder: "e.g. 3 days ago" },
+        ],
+        [
+          { label: "quality", type: "select",
+            options: ["", "dull", "sharp", "throbbing", "aching", "pressure", "burning"] },
+          { label: "intensity", type: "input", placeholder: "e.g. 7/10" },
+        ],
+        [
+          { label: "spontaneous pain", type: "yn-toggle" },
+          { label: "lingering pain",   type: "yn-toggle" },
+          { label: "pain wakes pt up at night", type: "yn-toggle", displayLabel: "Wakes pt" },
+        ],
+        [
+          { label: "triggers", type: "input", placeholder: "e.g. cold, biting, heat" },
+          { label: "relief",   type: "input", placeholder: "e.g. ibuprofen, nothing" },
+        ],
+        [
+          { label: "treatment/evaluation thus far", type: "input", placeholder: "e.g. none" },
+          { label: "last pain medication taken & effectiveness", type: "input",
+            placeholder: "e.g. Advil 400mg, moderate relief",
+            displayLabel: "Last pain med. & effectiveness" },
+        ],
+        [{ label: "anything else?", type: "input", placeholder: "blank to omit" }],
+      ],
+    },
+    {
+      title: "EOE/IOE",
+      disclosure: true,
+      summary: "WNL by default · click to override",
+      fields: [
+        { label: "EOE", type: "textarea",
+          placeholder: "Pt appears generally healthy in the dental chair. No visible asymmetries. EOE WNL with normal skin texture and color, normal facial movements, no visible/palpable masses, no lymphadenopathy, normal facial muscle movement & palpation, and normal TMJ movement and palpation bilaterally." },
+        { label: "ioe description", type: "input", displayLabel: "IOE — dentition",
+          placeholder: "e.g. heavily restored, complete dentition" },
+      ],
+    },
+    {
+      title: "Radiographs",
+      rows: [
+        [{ label: "radiograph findings", type: "input", displayLabel: "Radiographs reveal",
+           placeholder: "e.g. periapical radiolucency on #8, widened PDL" }],
+      ],
+    },
+    { type: "endo-test-rows" },
+    {
+      title: "Diagnoses",
+      rows: [
+        [{ label: "diagnosis tooth", type: "input", displayLabel: "Tooth #",
+           placeholder: "e.g. 8" }],
+        [
+          { label: "pulpal diagnosis", type: "select",
+            options: ["", "Normal pulp", "Reversible pulpitis",
+                      "Symptomatic irreversible pulpitis", "Asymptomatic irreversible pulpitis",
+                      "Pulp necrosis", "Previously treated", "Previously initiated therapy"] },
+          { label: "periapical diagnosis", type: "select",
+            options: ["", "Normal apical tissues", "Symptomatic apical periodontitis",
+                      "Asymptomatic apical periodontitis", "Acute apical abscess",
+                      "Chronic apical abscess", "Condensing osteitis"] },
+        ],
+      ],
+    },
+    {
+      title: "Plan",
+      rows: [
+        [{ label: "pt opts for", type: "input", displayLabel: "Pt opts for",
+           placeholder: "e.g. RCT, extraction, no treatment at this time" }],
+      ],
+    },
+  ],
+  // Treatment Plan Presentation — the boilerplate consent text is fixed;
+  // only the "Specific treatments discussed" bullets need per-patient input.
+  "807": [
+    {
+      title: "Specific treatments discussed",
+      fields: [
+        { label: "specific treatments", type: "odontogram", bullet: "—",
+          displayLabel: "Each line becomes a — bullet in the note",
+          placeholder: "Describe each treatment the patient was counseled on. Press Enter to add another." },
       ],
     },
   ],
@@ -4797,13 +5142,15 @@ const EXAM_FINDINGS_CONFIG = {
         [
           { label: "impressions", type: "ohi-checkbox" },
           { label: "facebow", type: "ohi-checkbox" },
-          { label: "bite registration", type: "ohi-checkbox" },
+          { label: "bite registration", type: "ohi-checkbox", displayLabel: "Bite reg." },
         ],
       ],
     },
   ],
-  // POE — same Disclosure pattern as Restorative COE, but POE doesn't have
-  // the A-section diagnostic fields, so the Disclosure is shorter.
+  // POE — EOE/IOE disclosure same as Restorative COE. Perio chart uses the
+  // same tooth-selector / probing-depths / gingiva-dropdowns setup as Perio
+  // COE and Prophy. Sections marked poeOnlyHide:true are hidden when the
+  // "POE only" toggle is checked (no prophy that day).
   "1091": [
     {
       title: "EOE/IOE findings",
@@ -4818,29 +5165,44 @@ const EXAM_FINDINGS_CONFIG = {
           placeholder: "WNL - no soft tissue pathology" },
         { label: "oral cancer screening", type: "textarea",
           placeholder: "WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx" },
-        { label: "caries risk", type: "select",
-          options: ["", "Low", "Moderate", "High"] },
       ],
     },
     {
       title: "Findings",
-      fields: [
-        { label: "endo testing", type: "input",
-          placeholder: "all teeth WNL on cold and percussion" },
-        { label: "odontogram", type: "odontogram",
-          displayLabel: "Updated odontogram with clinical and radiographic findings",
-          placeholder: "List each finding on its own line. Press Enter to add another." },
+      rows: [
+        [
+          { label: "caries risk", type: "select", options: ["", "Low", "Moderate", "High"] },
+          { label: "endo testing", type: "input", placeholder: "blank to omit" },
+        ],
+        [{ label: "odontogram", type: "odontogram",
+           displayLabel: "Updated odontogram with clinical and radiographic findings",
+           placeholder: "List each finding on its own line. Press Enter to add another." }],
+      ],
+    },
+    { type: "prophy-toggle" },
+    {
+      title: "Perio chart",
+      poeOnlyHide: true,
+      rows: [
+        [
+          { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true, displayLabel: "BoP" },
+        ],
+        [
+          { label: "recession", type: "teeth-selector" },
+          { label: "furcation", type: "teeth-selector",
+            teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
+          { label: "mobility", type: "teeth-selector" },
+        ],
+        [{ type: "gingiva-dropdowns" }],
       ],
     },
     {
-      title: "Perio chart",
+      title: "OHI",
+      poeOnlyHide: true,
       fields: [
-        { label: "probing depths", type: "input", placeholder: "" },
-        { label: "bleeding on probing", type: "input", placeholder: "" },
-        { label: "recession", type: "input", placeholder: "" },
-        { label: "furcation", type: "input", placeholder: "" },
-        { label: "mobility", type: "input", placeholder: "" },
-        { label: "mucogingival defects", type: "input", placeholder: "" },
+        { label: "nutritional counseling", type: "ohi-checkbox" },
+        { label: "tobacco cessation", type: "ohi-checkbox" },
       ],
     },
   ],
@@ -5019,8 +5381,15 @@ function ProbingDepthsField({ value, onChange }) {
 // as content grows. Students can also drag the resize handle if they want
 // even more room. The value is plain text (with literal "- " prefixes) so
 // it can be pasted into renderTemplate without any transformation.
-function OdontogramField({ value, onChange, placeholder }) {
+function OdontogramField({ value, onChange, placeholder, bullet = "-" }) {
   const ref = useRef(null);
+
+  // Seed with "bullet " on first mount so the user sees the list format
+  // and gets a feel for how entries display in the note.
+  useEffect(() => {
+    if (!value) onChange(`${bullet} `);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Re-measure the textarea on every value change so its visible height
   // matches its content. Floor at ~3 lines so the empty field still feels
@@ -5038,7 +5407,7 @@ function OdontogramField({ value, onChange, placeholder }) {
     const el = e.target;
     const start = el.selectionStart;
     const end = el.selectionEnd;
-    const insert = "\n- ";
+    const insert = `\n${bullet} `;
     const next = value.slice(0, start) + insert + value.slice(end);
     onChange(next);
     // Restore caret position after React commits the new value.
@@ -5284,9 +5653,14 @@ function HelpPopup({ children }) {
   );
 }
 
-function ExamFindings({ procedureId, findings, setFindings }) {
+function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle }) {
   const config = EXAM_FINDINGS_CONFIG[procedureId];
   if (!config) return null;
+  // When poeOnly is true for POE (1091), hide the perio chart / OHI sections
+  // so the form matches the stripped template.
+  const visibleConfig = poeOnly
+    ? config.filter(s => !s.poeOnlyHide)
+    : config;
 
   const update = (label, value) => {
     setFindings({ ...findings, [label]: value });
@@ -5749,18 +6123,57 @@ function ExamFindings({ procedureId, findings, setFindings }) {
       return (
         <div key={field.label} style={{ marginBottom: "6px" }}>
           <label style={{
-            display: "flex", alignItems: "center", gap: "9px",
+            display: "flex", alignItems: "flex-start", gap: "9px",
             fontSize: "13px", color: "var(--ink)", cursor: "pointer",
             fontFamily: "'Geist', sans-serif",
           }}>
             <input type="checkbox" checked={checked}
               onChange={e => update(field.label, e.target.checked)}
-              style={{ width: "15px", height: "15px",
-                accentColor: "var(--accent)", cursor: "pointer" }} />
+              style={{ width: "15px", height: "15px", marginTop: "2px",
+                accentColor: "var(--accent)", cursor: "pointer", flexShrink: 0 }} />
             <span style={{ color: "var(--ink-soft)", fontSize: "12px" }}>
-              {titleCaseLabel(field.label)}
+              {field.displayLabel || titleCaseLabel(field.label)}
             </span>
           </label>
+        </div>
+      );
+    }
+
+    if (field.type === "yn-toggle") {
+      const val = findings[field.label] || "";
+      return (
+        <div key={field.label} style={{ marginBottom: "9px" }}>
+          <label style={{
+            ...labelStyle, fontSize: "10px", textTransform: "none",
+            letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic",
+          }}>
+            {display}
+          </label>
+          <div style={{ display: "flex" }}>
+            {[["Y", "Yes"], ["N", "No"]].map(([short, full], idx) => {
+              const active = val === full;
+              return (
+                <button key={full}
+                  type="button"
+                  onClick={() => update(field.label, active ? "" : full)}
+                  style={{
+                    flex: 1, padding: "6px 0",
+                    fontSize: "12px", fontWeight: active ? 600 : 400,
+                    fontFamily: "'Geist', sans-serif",
+                    background: active ? "var(--accent)" : "var(--paper)",
+                    color: active ? "#fff" : "var(--ink-soft)",
+                    border: `1px solid ${active ? "var(--accent)" : "var(--rule)"}`,
+                    borderRadius: idx === 0 ? "2px 0 0 2px" : "0 2px 2px 0",
+                    marginLeft: idx === 1 ? "-1px" : 0,
+                    position: "relative", zIndex: active ? 1 : 0,
+                    cursor: "pointer",
+                    transition: "background 140ms, color 140ms, border-color 140ms",
+                  }}>
+                  {short}
+                </button>
+              );
+            })}
+          </div>
         </div>
       );
     }
@@ -5797,7 +6210,8 @@ function ExamFindings({ procedureId, findings, setFindings }) {
         ) : field.type === "odontogram" ? (
           <OdontogramField value={value}
             onChange={(v) => update(field.label, v)}
-            placeholder={field.placeholder} />
+            placeholder={field.placeholder}
+            bullet={field.bullet} />
         ) : field.type === "teeth-selector" ? (
           <TeethSelectorPanel value={value}
             onChange={(v) => update(field.label, v)}
@@ -5826,7 +6240,194 @@ function ExamFindings({ procedureId, findings, setFindings }) {
 
   return (
     <>
-      {config.map((section, i) => {
+      {visibleConfig.map((section, i) => {
+        // Prophy toggle — special section for POE
+        if (section.type === "prophy-toggle") {
+          return (
+            <div key={i} style={{ marginTop: "16px" }}>
+              <label style={{
+                display: "flex", alignItems: "center", gap: "10px",
+                fontSize: "13px", color: "var(--ink)",
+                cursor: "pointer", padding: "6px 0",
+                fontFamily: "'Geist', sans-serif",
+              }}>
+                <input type="checkbox"
+                  checked={!poeOnly}
+                  onChange={e => onPoeToggle && onPoeToggle(!e.target.checked)}
+                  style={{
+                    width: "16px", height: "16px",
+                    accentColor: "var(--accent)", cursor: "pointer",
+                  }} />
+                <span style={{ color: "var(--ink-soft)", fontSize: "12px" }}>Prophy</span>
+              </label>
+            </div>
+          );
+        }
+
+        // Structured endo testing rows — urgent care
+        if (section.type === "endo-test-rows") {
+          const OPTS = ["-", "+", "++", "+++"];
+          const endoLbl = {
+            fontSize: "10px", letterSpacing: "0.04em", textTransform: "none",
+            color: "var(--ink-soft)", fontWeight: 500, fontStyle: "italic",
+            fontFamily: "'Geist', sans-serif", display: "block", marginBottom: "3px",
+          };
+          const percPalp = (prefix, field, lbl) => {
+            const val = findings[`${prefix} ${field}`] || "";
+            return (
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <label style={endoLbl}>{lbl}</label>
+                <div style={{ display: "flex" }}>
+                  {OPTS.map((opt, idx) => {
+                    const active = val === opt;
+                    return (
+                      <button key={opt} type="button"
+                        onClick={() => update(`${prefix} ${field}`, active ? "" : opt)}
+                        style={{
+                          flex: 1, padding: "5px 1px",
+                          fontSize: "10px", fontWeight: active ? 700 : 400,
+                          fontFamily: "'JetBrains Mono', monospace",
+                          background: active ? "var(--accent)" : "var(--paper)",
+                          color: active ? "#fff" : "var(--ink-soft)",
+                          border: `1px solid ${active ? "var(--accent)" : "var(--rule)"}`,
+                          borderRadius: idx === 0 ? "2px 0 0 2px"
+                            : idx === OPTS.length - 1 ? "0 2px 2px 0" : "0",
+                          marginLeft: idx > 0 ? "-1px" : 0,
+                          position: "relative", zIndex: active ? 1 : 0,
+                          cursor: "pointer",
+                          transition: "background 140ms, color 140ms, border-color 140ms",
+                        }}>
+                        {opt}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          };
+          return (
+            <div key={i} style={{ marginTop: "16px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "10px" }}>
+                <span style={{ fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
+                  color: "var(--accent)", fontWeight: 500, fontFamily: "'Geist', sans-serif" }}>
+                  Endo testing
+                </span>
+                <HelpPopup>
+                  <div style={{ fontWeight: 600, marginBottom: "6px" }}>Percussion &amp; palpation</div>
+                  {[
+                    ["+++", "Exaggerated, very painful response"],
+                    ["++",  "Significant tenderness"],
+                    ["+",   "Slight tenderness"],
+                    ["-",   "No response"],
+                  ].map(([sym, desc]) => (
+                    <div key={sym} style={{ marginBottom: "5px", display: "flex", gap: "8px", alignItems: "flex-start" }}>
+                      <code style={{ fontFamily: "'JetBrains Mono', monospace", color: "var(--accent)",
+                        fontWeight: 600, minWidth: "26px", flexShrink: 0, fontSize: "10px" }}>{sym}</code>
+                      <span>{desc}</span>
+                    </div>
+                  ))}
+                  <div style={{ fontWeight: 600, marginTop: "8px", marginBottom: "5px" }}>Cold test</div>
+                  <div style={{ color: "var(--ink-soft)", fontStyle: "italic" }}>
+                    seconds until response / seconds until response ends
+                  </div>
+                </HelpPopup>
+              </div>
+              {Array.from({ length: Math.max(1, parseInt(findings["endo count"] || 3, 10)) }, (_, idx) => {
+                const n = idx + 1;
+                const endoCount = Math.max(1, parseInt(findings["endo count"] || 3, 10));
+                const prefix = `endo${n}`;
+                const canRemove = endoCount > 1;
+                return (
+                  <div key={n}>
+                    {n > 1 && <div style={{ height: "1px", background: "var(--rule)", margin: "6px 0 8px" }} />}
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "5px" }}>
+                      <div style={{ fontSize: "10px", color: "var(--ink-faint)",
+                        fontFamily: "'Geist', sans-serif", letterSpacing: "0.04em" }}>
+                        {n === 1 ? "Tooth under evaluation" : `Tooth ${n}`}
+                      </div>
+                      {canRemove && (
+                        <button type="button" onClick={() => {
+                          const count = endoCount;
+                          const newF = { ...findings };
+                          for (let i = n; i < count; i++) {
+                            const from = `endo${i + 1}`;
+                            const to = `endo${i}`;
+                            ["#", "perc", "palp", "prob", "mob", "cold"].forEach(fld => {
+                              newF[`${to} ${fld}`] = newF[`${from} ${fld}`] ?? "";
+                            });
+                          }
+                          ["#", "perc", "palp", "prob", "mob", "cold"].forEach(fld => {
+                            delete newF[`endo${count} ${fld}`];
+                          });
+                          newF["endo count"] = count - 1;
+                          setFindings(newF);
+                        }}
+                        style={{ fontSize: "11px", color: "var(--ink-faint)", background: "none",
+                          border: "none", cursor: "pointer", padding: "0 2px", lineHeight: 1 }}>
+                          ✕
+                        </button>
+                      )}
+                    </div>
+                    <div style={{ display: "flex", gap: "6px", marginBottom: "6px", alignItems: "flex-start" }}>
+                      <div style={{ flex: "0 0 80px" }}>
+                        <label style={endoLbl}>Tooth</label>
+                        <TeethSelectorPanel
+                          value={findings[`${prefix} #`] || ""}
+                          onChange={(v) => {
+                            // single-select: keep only the most recently added tooth
+                            const nums = v.split(",").map(s => s.trim()).filter(Boolean);
+                            const current = (findings[`${prefix} #`] || "").split(",").map(s => s.trim()).filter(Boolean);
+                            const added = nums.filter(t => !current.includes(t));
+                            update(`${prefix} #`, added.length ? added[added.length - 1] : (nums[nums.length - 1] || ""));
+                          }}
+                          placeholder="#" />
+                      </div>
+                      {percPalp(prefix, "perc", "Percussion")}
+                      {percPalp(prefix, "palp", "Palpation")}
+                    </div>
+                    <div style={{ display: "flex", gap: "6px", alignItems: "flex-start" }}>
+                      <div style={{ flex: 1 }}>
+                        <label style={endoLbl}>Probing (mm)</label>
+                        <input type="text"
+                          value={findings[`${prefix} prob`] || ""}
+                          onChange={e => update(`${prefix} prob`, e.target.value)}
+                          placeholder="e.g. 3-5"
+                          style={{ ...inputStyle }} />
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <label style={endoLbl}>Mobility</label>
+                        <select value={findings[`${prefix} mob`] || ""}
+                          onChange={e => update(`${prefix} mob`, e.target.value)}
+                          style={{ ...inputStyle, fontSize: "13px" }}>
+                          {["", "0", "1", "2", "3"].map(o => (
+                            <option key={o} value={o}>{o || "—"}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <label style={endoLbl}>Cold test</label>
+                        <input type="text"
+                          value={findings[`${prefix} cold`] || ""}
+                          onChange={e => update(`${prefix} cold`, e.target.value)}
+                          placeholder="NR or 2/2s"
+                          style={{ ...inputStyle }} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+              {Math.max(1, parseInt(findings["endo count"] || 3, 10)) < 6 && (
+                <button type="button"
+                  onClick={() => update("endo count", Math.max(1, parseInt(findings["endo count"] || 3, 10)) + 1)}
+                  style={{ marginTop: "10px", fontSize: "12px", color: "var(--accent)", background: "none",
+                    border: "none", cursor: "pointer", fontFamily: "'Geist', sans-serif", padding: 0 }}>
+                  + Add tooth
+                </button>
+              )}
+            </div>
+          );
+        }
+
         // sections can declare `rows` (array of field arrays) for horizontal layout,
         // or the standard `fields` array for the default vertical stack.
         const fields = section.rows
@@ -6305,7 +6906,10 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               <ExamFindings
                 procedureId={procedureId}
                 findings={fields.examFindings || {}}
-                setFindings={(f) => setField("examFindings", f)} />
+                setFindings={(f) => setField("examFindings", f)}
+                poeOnly={fields.poeOnly === true}
+                onPoeToggle={procedureId === "1091"
+                  ? (v => setField("poeOnly", v)) : undefined} />
             </>
           )}
 
@@ -6504,12 +7108,35 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   const nutriChecked = ef["nutritional counseling"] === true;
                   const tobaccoChecked = ef["tobacco cessation"] === true;
                   const impressionsChecked = ef["impressions"] === true;
-                  const codes = extractCodes(stepsChunk.body).filter(({ code }) => {
+                  const selectedRisk = (ef["caries risk"] || "").trim();
+                  // Only inject D060x when this procedure actually has a caries risk form field —
+                  // prevents a prior procedure's selection from bleeding into unrelated notes.
+                  const hasCariesRiskField = (EXAM_FINDINGS_CONFIG[procedureId] || []).some(s =>
+                    [...(s.fields || []), ...(s.rows || []).flat()].some(f => f.label === "caries risk")
+                  );
+                  const CARIES_CODES = {
+                    "Low":      { code: "D0601", desc: "Caries Risk Assessment and Documentation, finding of low" },
+                    "Moderate": { code: "D0602", desc: "Caries Risk Assessment and Documentation, finding of moderate" },
+                    "High":     { code: "D0603", desc: "Caries Risk Assessment and Documentation, finding of high" },
+                  };
+                  let codes = extractCodes(stepsChunk.body).filter(({ code }) => {
                     if (code === "D1310") return nutriChecked;
                     if (code === "D1320.1" || code === "D1320.2" || code === "D1320.3") return tobaccoChecked;
                     if (code === "D0475") return impressionsChecked;
+                    // D0601–D0603 stripped here; the selected one is re-injected below
+                    if (code === "D0601" || code === "D0602" || code === "D0603") return false;
                     return true;
                   });
+                  // Inject the matching caries risk code right after D0604 (if present)
+                  if (hasCariesRiskField && selectedRisk && CARIES_CODES[selectedRisk]) {
+                    const d0604Idx = codes.findIndex(c => c.code === "D0604");
+                    const entry = CARIES_CODES[selectedRisk];
+                    if (d0604Idx >= 0) {
+                      codes = [...codes.slice(0, d0604Idx + 1), entry, ...codes.slice(d0604Idx + 1)];
+                    } else {
+                      codes = [...codes, entry];
+                    }
+                  }
                   return codes.map(({ code, desc }) => (
                     <div key={code} style={{
                       display: "flex", alignItems: "baseline", gap: "10px",
@@ -7718,7 +8345,17 @@ const MEE_CATEGORIES = [
     id: "diagnostic",
     dashKey: "Diagnostic",
     d3: 400, d4: 600,
-    codeMatcher: c => /^D0(120|140|147|150|160)/.test(c),
+    // Exams: D0120/D0140/D0147/D0150/D0160/D0170/D0180
+    // Radiographs: D021x-D024x, D027x, D0330, D0340, D0350/D0351, D036x, D0372
+    // Diagnostic tests: D0460, D0470, D0475, D0486; caries risk D0601-D0604
+    codeMatcher: c =>
+      /^D0(120|140|147|150|160|170|180)/.test(c) ||
+      /^D02[1-4][0-9]/.test(c) ||
+      /^D027[0-4]/.test(c) ||
+      /^D0(330|340|350|351)/.test(c) ||
+      /^D036[4-7]/.test(c) || /^D0372/.test(c) ||
+      /^D0(460|470|475|486)/.test(c) ||
+      /^D060[1-4]/.test(c),
   },
   {
     id: "prevention",
@@ -7730,75 +8367,113 @@ const MEE_CATEGORIES = [
     id: "directRest",
     dashKey: "Direct Rest",
     d3: 172, d4: 318,
-    // Amalgam D2140-D2161, composite D2330-D2394, core buildup D2950
-    codeMatcher: c => /^D21[456]/.test(c) || /^D23[3-9]/.test(c) || /^D2950/.test(c),
+    // Amalgam D2140-D2161, composite D2330-D2394, sedative fill D2940,
+    // core buildup D2950, pin retention D2951
+    codeMatcher: c =>
+      /^D21[456]/.test(c) ||
+      /^D23[3-9]/.test(c) ||
+      /^D29(40|50|51)/.test(c),
   },
   {
     id: "indirectRestSU",
     dashKey: "InDirect Rest SU",
     d3: 30, d4: 200,
-    // Conventional crowns D2740/D2750/D2790 + digital DD2610/DD2620/DD2630/
-    // DD2642/DD2643/DD2644/DD2740
-    codeMatcher: c => /^D27(40|50|90)/.test(c) || /^DD27(40|10|20|30|42|43|44)/.test(c),
+    // Inlays D2510-D2544, onlays D2610-D2664, crowns D2710-D2792,
+    // other indirect D2980-D2983, all digital DD2xx codes
+    codeMatcher: c =>
+      /^D25[1-4][0-9]/.test(c) ||
+      /^D26[1-6][0-9]/.test(c) ||
+      /^D27[1-9][0-9]/.test(c) ||
+      /^D298[0-3]/.test(c) ||
+      /^DD2/.test(c),
     notes: "n=3 from DD codes or D2740. Class of 2026: at least 2 must be partial coverage (inlays/onlays).",
   },
   {
     id: "endo",
     dashKey: "Endo",
     d3: 12, d4: 35,
-    // D3220 pulpotomy + D3310/D3320/D3330 with A/B suffixes
-    codeMatcher: c => /^D33[123]0[AB]?$/.test(c) || /^D3220/.test(c),
+    // Pulp caps D3110/D3120, pulpotomy D3220/D3221, RCT D3310-D3330 (A/B),
+    // retreatment D3346-D3348, apico D3410-D3426
+    codeMatcher: c =>
+      /^D31[012]0/.test(c) ||
+      /^D322[01]/.test(c) ||
+      /^D33[123]0[AB]?$/.test(c) ||
+      /^D33(46|47|48)/.test(c) ||
+      /^D34[12]/.test(c),
   },
   {
     id: "perio",
     dashKey: "Perio",
     d3: 220, d4: 380,
-    codeMatcher: c => /^D4(341|342|346|910)/.test(c),
+    // SRP D4341/D4342, perio maint D4346, full mouth debridement D4355, D4910
+    codeMatcher: c => /^D4(341|342|346|355|910)/.test(c),
   },
   {
     id: "completeDent",
     dashKey: "Complete Dent",
     d3: 25, d4: 116,
-    // D5110/D5120 with A/B/C suffixes
-    codeMatcher: c => /^D51[12]0[ABC]?$/.test(c),
+    // Complete dentures D5110/D5120 (A/B/C), immediate D5130/D5140,
+    // overdentures D5860/D5861, adjustments D5410/D5411, relines D5730/D5731/D5750/D5751/D5850/D5851
+    codeMatcher: c =>
+      /^D51[12]0[ABC]?$/.test(c) ||
+      /^D51[34]/.test(c) ||
+      /^D586[01]/.test(c) ||
+      /^D5(41[01]|73[01]|75[01]|85[01])/.test(c),
   },
   {
     id: "partialDent",
     dashKey: "Partial Dent",
     d3: 5, d4: 70,
-    codeMatcher: c => /^D52(11|12|13|14)/.test(c),
+    // RPD D5211-D5214, D5221-D5224, interim D5820/D5821, RPD components D5611-D5660
+    codeMatcher: c =>
+      /^D52[12][1-4]/.test(c) ||
+      /^D582[01]/.test(c) ||
+      /^D56[1-6][0-9]/.test(c),
     notes: "n=1 mandatory: at least one D5213 or D5214 delivery to graduate.",
   },
   {
     id: "fdpImplants",
     dashKey: "FDP/Implants",
     d3: 5, d4: 30,
-    // FPD pontics D6210-D6252, retainers D6740-D6792, implant codes
-    // D6058-D6077 and DD6058
+    // FPD pontics D6210-D6252, retainers D6710-D6792, implant codes
+    // D6058-D6077, implant-supported D6114-D6117, DD digital codes
     codeMatcher: c =>
-      /^D6(2[1-5]|7[4-9]|9[2])/.test(c) ||
+      /^D62[1-5]/.test(c) ||
+      /^D67[1-9]/.test(c) ||
       /^D60(5[89]|6[0-9]|7[0-7])/.test(c) ||
+      /^D611[4-7]/.test(c) ||
       /^DD60(58|65)/.test(c),
-    notes: "n=1 mandatory: at least one implant-related procedure.",
+    notes: "n=1 mandatory: at least one implant-supported restoration.",
   },
   {
     id: "os",
     dashKey: "OS",
     d3: 155, d4: 170,
-    // Routine extractions D7111/D7140, surgical D7210-D7250
-    codeMatcher: c => /^D71(11|40)/.test(c) || /^D72[1-5]0/.test(c),
+    // Simple extractions D7111/D7140, surgical D7210-D7250,
+    // alveoloplasty D7310-D7321, root removal D7472/D7473, I&D D7510
+    codeMatcher: c =>
+      /^D71(11|40)/.test(c) ||
+      /^D72[1-5]0/.test(c) ||
+      /^D73[12][0-9]/.test(c) ||
+      /^D7(472|473|510)/.test(c),
   },
   {
     id: "ortho",
     dashKey: "Ortho",
     d3: 10, d4: 10,
-    codeMatcher: c => /^D8(010|020|030|090|670)/.test(c),
+    // Comprehensive/limited D8010-D8099, space maintainers D1510/D1516/D1517,
+    // retainers D8210, records/deband D8660/D8670/D8680, appliances D8703/D8704
+    codeMatcher: c =>
+      /^D80[1-9][0-9]/.test(c) ||
+      /^D1(510|516|517)/.test(c) ||
+      /^D8(210|660|670|680|703|704)/.test(c),
   },
   {
     id: "phase12",
     dashKey: "Phase I,II ReEval",
     d3: 5, d4: 10,
-    codeMatcher: c => /^D0170/.test(c),
+    // Comprehensive periodontal re-evaluation D0101/D0102
+    codeMatcher: c => /^D010[12]/.test(c),
   },
   {
     id: "phase3",
@@ -7853,7 +8528,24 @@ function RVUs() {
   // Swade documented; this toggle cuts noise without losing the option to
   // browse everything.
   const [swadeOnly, setSwadeOnly] = useState(true);
+  const [showD3Pct, setShowD3Pct] = useState(false);
+  const [showD4Pct, setShowD4Pct] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState(new Set());
+  const [showMeeMinPopup, setShowMeeMinPopup] = useState(false);
+
+  // MEE = RVU total. Percentage = rvu / threshold × 100.
+  const getMeePct = (code, rvu = 0) => {
+    const cat = MEE_CATEGORIES.find(c => c.d3 !== null && c.codeMatcher(code));
+    if (!cat || !rvu) return null;
+    return {
+      d3: cat.d3 ? (rvu * 100 / cat.d3) : null,
+      d4: cat.d4 ? (rvu * 100 / cat.d4) : null,
+      d3thresh: cat.d3,
+      d4thresh: cat.d4,
+      label: cat.dashKey,
+    };
+  };
+  const showMee = showD3Pct || showD4Pct;
   const toggleGroup = code => setExpandedGroups(prev => {
     const s = new Set(prev); s.has(code) ? s.delete(code) : s.add(code); return s;
   });
@@ -8033,6 +8725,83 @@ function RVUs() {
               style={{ accentColor: "var(--accent)", cursor: "pointer" }} />
             Hide codes not in <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual
           </label>
+          {/* MEE contribution % toggles */}
+          {[["D3", showD3Pct, setShowD3Pct], ["D4", showD4Pct, setShowD4Pct]].map(([lbl, val, set]) => (
+            <label key={lbl} style={{
+              display: "inline-flex", alignItems: "center", gap: "8px",
+              fontSize: "11px", color: "var(--ink-soft)",
+              cursor: "pointer",
+              fontFamily: "'Geist', sans-serif",
+              userSelect: "none",
+            }}>
+              <input type="checkbox" checked={val}
+                onChange={e => set(e.target.checked)}
+                style={{ accentColor: "var(--accent)", cursor: "pointer" }} />
+              {lbl} MEE&nbsp;%
+            </label>
+          ))}
+
+          {/* MEE Minimums popup — pushed to far right */}
+          <div style={{ marginLeft: "auto", position: "relative" }}>
+            <button
+              onClick={() => setShowMeeMinPopup(v => !v)}
+              style={{
+                background: "none", border: "none", padding: 0, cursor: "pointer",
+                fontSize: "11px", color: "var(--accent)", fontFamily: "'Geist', sans-serif",
+                textDecoration: "underline", textUnderlineOffset: "2px",
+              }}
+            >
+              MEE Minimums
+            </button>
+            {showMeeMinPopup && (
+              <>
+                {/* backdrop to close on outside click */}
+                <div
+                  onClick={() => setShowMeeMinPopup(false)}
+                  style={{
+                    position: "fixed", inset: 0, zIndex: 49,
+                  }}
+                />
+                <div style={{
+                  position: "absolute", top: "calc(100% + 8px)", right: 0,
+                  zIndex: 50, minWidth: "280px",
+                  background: "var(--paper)", border: "1px solid var(--rule)",
+                  borderRadius: "8px", boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+                  padding: "14px 16px",
+                  fontFamily: "'Geist', sans-serif",
+                }}>
+                  <div style={{
+                    fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
+                    color: "var(--ink-faint)", fontWeight: 500, marginBottom: "10px",
+                  }}>
+                    MEE Minimums
+                  </div>
+                  <div style={{
+                    display: "grid", gridTemplateColumns: "1fr 48px 48px",
+                    gap: "4px 10px", alignItems: "baseline",
+                    fontSize: "12px",
+                  }}>
+                    {/* header */}
+                    <div style={{ fontSize: "10px", color: "var(--ink-faint)", letterSpacing: "0.1em", textTransform: "uppercase" }}>Category</div>
+                    <div style={{ fontSize: "10px", color: "var(--ink-faint)", letterSpacing: "0.1em", textTransform: "uppercase", textAlign: "right" }}>D3</div>
+                    <div style={{ fontSize: "10px", color: "var(--ink-faint)", letterSpacing: "0.1em", textTransform: "uppercase", textAlign: "right" }}>D4</div>
+                    {/* rows */}
+                    {MEE_CATEGORIES.map(cat => (
+                      <Fragment key={cat.id}>
+                        <div style={{ color: "var(--ink)", paddingTop: "3px", borderTop: "1px solid var(--rule-soft)" }}>{cat.dashKey}</div>
+                        <div style={{ color: "var(--ink-soft)", textAlign: "right", paddingTop: "3px", borderTop: "1px solid var(--rule-soft)", fontVariantNumeric: "tabular-nums" }}>
+                          {cat.d3 ?? "—"}
+                        </div>
+                        <div style={{ color: "var(--ink-soft)", textAlign: "right", paddingTop: "3px", borderTop: "1px solid var(--rule-soft)", fontVariantNumeric: "tabular-nums" }}>
+                          {cat.d4 ?? "—"}
+                        </div>
+                      </Fragment>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         {/* Category filter pills */}
@@ -8072,9 +8841,27 @@ function RVUs() {
 
         {/* Table — fee col is fixed-width and sits left of Code so Code never shifts */}
         {(() => {
-          const cols = "1fr 60px 80px 50px";
+          const meeColW = showD3Pct && showD4Pct ? "80px" : "56px";
+          // Column order: Description | Fee | Code | RVU | MEE Cat. | MEE %
+          const cols = showMee ? `1fr 60px 80px 50px 140px ${meeColW}` : "1fr 60px 80px 50px";
+          const meeHeader = showD3Pct && showD4Pct ? "D3 / D4" : showD3Pct ? "D3 %" : "D4 %";
+          // Resolve MEE category label for a code (checks code itself then first child)
+          const getMeeCat = (code, children = []) => {
+            const check = c => MEE_CATEGORIES.find(m => m.codeMatcher(c))?.dashKey ?? null;
+            return check(code) || children.map(c => check(c)).find(Boolean) || null;
+          };
+          const catCell = (label, small = false) => showMee ? (
+            <div style={{
+              fontSize: small ? "10px" : "11px",
+              color: label ? "var(--ink-soft)" : "var(--ink-faint)",
+              fontFamily: "'Geist', sans-serif",
+              whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+            }}>
+              {label || "—"}
+            </div>
+          ) : null;
           return (
-        <div style={{ ...cardStyle, padding: 0, overflow: "hidden", maxWidth: "600px", margin: "0 auto" }}>
+        <div style={{ ...cardStyle, padding: 0, overflow: "hidden" }}>
           <div style={{
             display: "grid",
             gridTemplateColumns: cols,
@@ -8098,6 +8885,10 @@ function RVUs() {
               style={{ textAlign: "right" }}>
               RVU {sortIndicator("rvu")}
             </button>
+            {showMee && <div style={{ color: "var(--ink-soft)" }}>MEE cat.</div>}
+            {showMee && (
+              <div style={{ textAlign: "right", color: "var(--ink-soft)" }}>{meeHeader}</div>
+            )}
           </div>
 
           <div style={{ maxHeight: "60vh", overflowY: "auto" }}>
@@ -8131,6 +8922,46 @@ function RVUs() {
                 </div>
               );
 
+              const fmtPct = n => n == null || n === 0 ? null : (n < 1 ? n.toFixed(1) : n.toFixed(0)) + "%";
+              // items = [{code, rvu}]. MEE % = rvu / threshold × 100.
+              const meeCellContent = (items) => {
+                const pcts = items.map(({ code, rvu }) => getMeePct(code, rvu)).filter(Boolean);
+                if (!pcts.length) return <span style={{ color: "var(--ink-faint)" }}>—</span>;
+                const sumD3 = pcts.reduce((a, p) => a + (p.d3 || 0), 0);
+                const sumD4 = pcts.reduce((a, p) => a + (p.d4 || 0), 0);
+                const d3thresh = pcts[0]?.d3thresh;
+                const d4thresh = pcts[0]?.d4thresh;
+                const tipParts = [];
+                if (showD3Pct && d3thresh) tipParts.push(`D3 min: ${d3thresh} RVU`);
+                if (showD4Pct && d4thresh) tipParts.push(`D4 min: ${d4thresh} RVU`);
+                const tip = tipParts.join(" · ") || undefined;
+                if (showD3Pct && showD4Pct) {
+                  return (
+                    <div title={tip} style={{ display: "flex", flexDirection: "column", gap: "1px", alignItems: "flex-end" }}>
+                      <span style={{ color: sumD3 ? "var(--teal)" : "var(--ink-faint)" }}>
+                        {fmtPct(sumD3) || "—"}
+                      </span>
+                      <span style={{ color: sumD4 ? "var(--ink-soft)" : "var(--ink-faint)", fontSize: "11px" }}>
+                        {fmtPct(sumD4) || "—"}
+                      </span>
+                    </div>
+                  );
+                }
+                const val = fmtPct(showD3Pct ? sumD3 : sumD4);
+                return val
+                  ? <span title={tip}>{val}</span>
+                  : <span style={{ color: "var(--ink-faint)" }}>—</span>;
+              };
+              const meeCell = (items, small = false) => showMee ? (
+                <div style={{
+                  textAlign: "right", fontVariantNumeric: "tabular-nums",
+                  fontSize: small ? "11px" : "12px",
+                  color: "var(--ink-soft)",
+                }}>
+                  {meeCellContent(items)}
+                </div>
+              ) : null;
+
               if (r._type === "parent") {
                 const parentRow = (
                   <div key={r.code} style={rowStyle}>
@@ -8156,6 +8987,8 @@ function RVUs() {
                     {codeCell(r.code, rowSwade)}
                     <div style={{ textAlign: "right", color: "var(--ink-soft)",
                         fontVariantNumeric: "tabular-nums" }}>{r.rvu}</div>
+                    {catCell(getMeeCat(r.code, r.children.map(c => c.code)))}
+                    {meeCell(r.children.map(c => ({ code: c.code, rvu: c.rvu || 0 })))}
                   </div>
                 );
                 const childRows = isOpen ? r.children.map(child => (
@@ -8175,6 +9008,8 @@ function RVUs() {
                     {codeCell(child.code, SWADE_CODES.has(child.code))}
                     <div style={{ textAlign: "right", color: "var(--ink-soft)",
                         fontVariantNumeric: "tabular-nums", fontSize: "12px" }}>{child.rvu}</div>
+                    {catCell(getMeeCat(child.code), true)}
+                    {meeCell([{ code: child.code, rvu: child.rvu || 0 }], true)}
                   </div>
                 )) : [];
                 return [parentRow, ...childRows];
@@ -8194,6 +9029,8 @@ function RVUs() {
                   {codeCell(r.code, rowSwade)}
                   <div style={{ textAlign: "right", color: "var(--ink-soft)",
                       fontVariantNumeric: "tabular-nums" }}>{r.rvu}</div>
+                  {catCell(getMeeCat(r.code))}
+                  {meeCell([{ code: r.code, rvu: r.rvu || 0 }])}
                 </div>
               )];
             })}
@@ -9431,13 +10268,45 @@ const PES_ALL = [...PES, ...PES_PART2, ...PES_PART3, ...PES_PART4, ...PES_PART5,
 
 // PE-to-Procedure mapping for "Show Steps" links.
 // Only includes PEs with clear, exact matches to procedure IDs in the Steps tab.
+// PEs without a clean 1:1 procedure match are intentionally omitted (their
+// "Show Steps" link won't render).
+//
+// Value format: either a string (single procedure) or an array of
+// { id, label } objects when one PE maps to multiple distinct procedures.
 const PE_PROCEDURE_MAP = {
-  "PER01":  "573",   // Periodontal Clinical Evaluation → Perio COE steps
-  "PER02":  "ohi",   // Periodontal Prevention & Risk Factor (OHI) Exam → OHI reference
-  "REVA04": "1346",  // Periodontal Re-Evaluation → Perio Re-Evaluation steps
-  "DXTX2":  "2821",  // Single-Tooth Dx & Tx Planning → Crown Prep (primary use case)
-  "CRN1":   "2821",  // Crown Prep & Provisionalization → Crown Prep steps
-  "CRN3":   "3204",  // Crown Cementation → Crown Delivery steps
+  // Perio
+  "PER01":     "573",   // Periodontal Clinical Evaluation → Perio COE
+  "PER02":     "ohi",   // Prevention & Risk Factor (OHI) Exam → OHI
+  "SRP04":     "1272",  // Calculus Detection & SRP → SRP
+  "MAINT04":   "1425",  // Periodontal Maintenance → Perio Maintenance
+  "REVA04":    "1346",  // Periodontal Re-Evaluation → Perio Re-Evaluation
+  // Restorative Foundation
+  "CARDX":     "ref-caries-dx",  // Caries Dx & ADA Classification → Caries Diagnosis ref
+  // Operative
+  "CR2":       "1745",  // Class II Composite → Class II
+  "CR3":       "1850",  // Class III Composite → Class III
+  // Fixed Prosthodontics
+  "CRN1":      "2821",  // Crown Prep & Provisionalization → Crown Prep
+  "CRN2":      "3076",  // Crown Final Impression → Final Impression
+  "CRN3":      "3204",  // Crown Cementation → Crown Delivery
+  // Removable Prosthodontics — PE has 5 steps, Steps tab has 6 (anterior + posterior
+  // try-ins are split). PE CD4 "Trial Denture Try-in" = full setup with all teeth =
+  // posterior try-in (#5). Anterior try-in (#4) doesn't have a dedicated PE.
+  "CD1":       "3704",  // Preliminary Impression → #1 COE & Diagnostic Impressions
+  "CD2":       "3831",  // Border Molding & Final Impression → #2 Border Molding
+  "CD3":       "3954",  // Wax-Rim Try-In → #3 Wax Rims
+  "CD4":       "4169",  // Trial Denture Try-in → #5 Posterior Try-In
+  "CD5":       "4257",  // Denture Delivery → #6 Delivery
+  // Specialty
+  "EROOT1":    "5472",  // Endo Single-Rooted → RCT 1 Visit
+  "EROOT2":    "5472",  // Endo Multi-Rooted → RCT 1 Visit
+  // Rotation
+  "PEDO_EXAM": "5985",  // Pediatric Exam & Tx Planning → Peds Initial/Recall
+  "PEDO_REST": [        // Peds Primary Tooth Restorative — most representative pair
+    { id: "6406", label: "Class II" },
+    { id: "6991", label: "SSC" },
+  ],
+  "URGENT":    "374",   // Urgent Care Exam → Urgent Care
 };
 
 
@@ -9706,7 +10575,18 @@ function RubricGrid({ criteria }) {
 
 // Right-panel detail — always fully expanded for the selected PE.
 function PEDetail({ pe, onShowSteps }) {
-  const procedureId = PE_PROCEDURE_MAP[pe.id];
+  // Normalize the map value: a string becomes a single-entry array; an array
+  // is used as-is. Each entry is { id, label? } — label is shown only when
+  // multiple procedures map to the same PE.
+  const mapped = PE_PROCEDURE_MAP[pe.id];
+  const procedures = mapped == null
+    ? []
+    : (typeof mapped === "string" ? [{ id: mapped }] : mapped);
+  const showStepsLinkStyle = {
+    fontSize: "11px", color: "var(--accent)", cursor: "pointer",
+    background: "none", border: "none", textDecoration: "underline",
+    fontFamily: "'Geist', sans-serif", padding: 0,
+  };
   return (
     <div style={{ ...cardStyle, padding: "20px 22px" }}>
       {/* Header */}
@@ -9730,14 +10610,28 @@ function PEDetail({ pe, onShowSteps }) {
       {/* Prereq */}
       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "12px", marginBottom: "6px" }}>
         <SubsectionLabel>Prerequisite</SubsectionLabel>
-        {procedureId && onShowSteps && (
-          <button onClick={() => onShowSteps(procedureId)} style={{
-            fontSize: "11px", color: "var(--accent)", cursor: "pointer",
-            background: "none", border: "none", textDecoration: "underline",
-            fontFamily: "'Geist', sans-serif", padding: 0,
-          }}>
-            Show Steps →
-          </button>
+        {procedures.length > 0 && onShowSteps && (
+          procedures.length === 1 ? (
+            <button onClick={() => onShowSteps(procedures[0].id)} style={showStepsLinkStyle}>
+              Show Steps →
+            </button>
+          ) : (
+            <div style={{ display: "flex", alignItems: "baseline", gap: "8px", flexWrap: "wrap" }}>
+              <span style={{ fontSize: "11px", color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif" }}>
+                Steps:
+              </span>
+              {procedures.map((p, i) => (
+                <Fragment key={p.id}>
+                  {i > 0 && (
+                    <span style={{ fontSize: "11px", color: "var(--ink-faint)" }}>·</span>
+                  )}
+                  <button onClick={() => onShowSteps(p.id)} style={showStepsLinkStyle}>
+                    {p.label} →
+                  </button>
+                </Fragment>
+              ))}
+            </div>
+          )
         )}
       </div>
       <p style={{ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: "0 0 14px" }}>
