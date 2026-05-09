@@ -6217,6 +6217,7 @@ function Browse({
       .map(procId => {
         const proc = findProcedure(procId);
         if (!proc) return null;
+        if (proc.categoryId === "misc") return null;
         const eq = findChunkForProcedure(proc, chunks, "equipment", { noFallback: true });
         return { label: proc.label, procId, groups: parseEquipment(eq) };
       })
