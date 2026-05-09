@@ -1450,6 +1450,18 @@ const CHUNKS = [
 "section": "MISC",
 "title": "LAB TURNAROUND TIME STEPS",
 "body": "5 business days\n  ●  model work\n  ●  reline\n  ●  acrylic-only denture or partial repair\n  ●  cast pattern for post & core\n\n  9 business days\n  ●  rebase denture or partial\n  ●  partial framework\n  ●  denture teeth set-up\n  ●  acrylic processing for denture or partial\n  ●  PFM bridge metal try-in\n  ●  porcelain application to metal try-in\n  ●  metal crown, inlay, onlay\n  ●  night guard\n  ●  wax and cast post & core (from impression)\n  ●  partial repair with soldering\n  ●  solder PFM bridge\n\n  12 business days\n  ●  PFM crown\n  ●  ceramic crown, inlay, onlay, veneers\n  ●  implant crown"
+},
+{
+"id": "c127",
+"section": "MISC",
+"title": "TOOTH REQUISITION STEPS",
+"body": "requesting denture teeth\n\n  1.  select your patient in Rolodex → open their EHR → click the \"Forms\" tab\n  2.  click the plus (right) to add a form\n  3.  choose \"Tooth Requisition\" (TOOREQ) then click OK\n  4.  fill out the appropriate parts of the form:\n        ○  if requesting all anteriors: write \"1x6\" next to \"Teeth\" (6 anterior teeth)\n        ○  if requesting all posteriors: write \"1x8\" next to \"Teeth\" (8 posterior teeth)\n  5.  have instructor swipe form\n  6.  print the form\n  7.  have instructor sign the printed form\n  8.  take the signed form to the 5th floor lab — they will give you the teeth (if not in stock, they will order them)"
+},
+{
+"id": "c128",
+"section": "MISC",
+"title": "PHONE NUMBERS STEPS",
+"body": "UIC College of Dentistry main: (312) 996-7555\n  (patients can reach all departments through this number)\n\n  ●  2nd floor front desk:       (312) 355-3368\n  ●  Chicago (Vivaldi) front desk:(312) 355-0524\n  ●  faculty practice:           (312) 413-2835\n  ●  implant:                    (312) 996-3145\n  ●  oral medicine:              (312) 355-1222\n  ●  orthodontics:               (312) 996-7505\n  ●  pediatrics:                 (312) 996-7532\n  ●  pediatrics urgent care:     (312) 413-0972\n  ●  PG endodontics:             (312) 355-3615\n  ●  PG OMFS:                    (312) 996-7460\n  ●  PG periodontics:            (312) 996-7374\n  ●  PG prosthodontics:          (312) 996-9223\n  ●  radiology:                  (312) 996-6477\n  ●  urgent care:                (312) 996-8636"
 }
 ];
 
@@ -2315,6 +2327,8 @@ const CATEGORIES = [
       { id: "misc-contact-note",     label: "Contact Note" },
       { id: "misc-photos-xrays",     label: "Adding Photos & Radiographs" },
       { id: "misc-lab-turnaround",   label: "Lab Turn-Around Time" },
+      { id: "misc-tooth-req",        label: "Tooth Requisition" },
+      { id: "misc-phone-numbers",    label: "Phone Numbers" },
     ]},
   ]},
   { id: "lab", label: "Lab Scripts", groups: [
