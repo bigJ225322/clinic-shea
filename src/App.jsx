@@ -2714,6 +2714,175 @@ const REF_DATA = {
       ]},
     ],
   },
+
+  "ref-endo-dx": {
+    verdict: "Pulpal diagnosis turns on cold-test response; apical diagnosis turns on percussion and radiographic findings.",
+    blocks: [
+      { type: "cards", caption: "Pulpal diagnosis", cards: [
+        { title: "Normal pulp", subtitle: "vital", rows: [
+          ["Pain", "none"],
+          ["Pulp testing", "normal cold; vital EPT"],
+          ["Common causes", "—"],
+        ]},
+        { title: "Reversible pulpitis", subtitle: "vital, inflamed", rows: [
+          ["Pain", "provoked; no spontaneous pain"],
+          ["Pulp testing", "sharp, quick, hypersensitive — subsides without lingering; vital EPT"],
+          ["Common causes", "dentin hypersensitivity; caries; deep restorations"],
+        ]},
+        { title: "Irreversible pulpitis — symptomatic", subtitle: "vital, inflamed", rows: [
+          ["Pain", "provoked; spontaneous possible; referred possible"],
+          ["Pulp testing", "sharp severe pain on cold/hot that lingers; vital EPT"],
+          ["Common causes", "deep caries; extensive restorations; fractures exposing pulp"],
+        ]},
+        { title: "Irreversible pulpitis — asymptomatic", subtitle: "vital, inflamed", rows: [
+          ["Pain", "none — diagnosed from trauma or deep caries that would expose pulp on excavation"],
+          ["Pulp testing", "normal cold; vital EPT"],
+          ["Common causes", "trauma; deep caries that will expose pulp upon excavation"],
+        ]},
+        { title: "Pulpal necrosis", subtitle: "nonvital", rows: [
+          ["Pain", "none"],
+          ["Pulp testing", "unresponsive to cold/hot; nonvital EPT (80)"],
+          ["Common causes", "deep caries; extensive restorations; fractures exposing pulp"],
+        ]},
+      ]},
+      { type: "prose", heading: "Pulpal — quick rules", lines: [
+        "Cold-test pain that subsides → reversible pulpitis.",
+        "Cold-test pain that lingers → irreversible pulpitis.",
+        "No response to cold → necrotic pulp.",
+      ]},
+      { type: "cards", caption: "Apical (periradicular) diagnosis", cards: [
+        { title: "Normal apical tissues", rows: [
+          ["Symptoms", "not tender to percussion"],
+          ["Radiographic", "none"],
+        ]},
+        { title: "Apical periodontitis — symptomatic", rows: [
+          ["Symptoms", "tender to percussion; may be tender to palpation; may be mobile"],
+          ["Radiographic", "may have apical radiolucency or widened PDL space"],
+        ]},
+        { title: "Apical periodontitis — asymptomatic", rows: [
+          ["Symptoms", "not tender to percussion or palpation; may be mobile"],
+          ["Radiographic", "apical radiolucency"],
+        ]},
+        { title: "Apical abscess — acute", rows: [
+          ["Symptoms", "tender to percussion & palpation; pus formation; rapid onset; spontaneous pain; swelling; may be mobile"],
+          ["Radiographic", "may have apical radiolucency or widened PDL space"],
+        ]},
+        { title: "Apical abscess — chronic", rows: [
+          ["Symptoms", "may be tender to percussion or palpation; pus discharge through a sinus tract; gradual onset; little to no pain; may be mobile"],
+          ["Radiographic", "apical radiolucency"],
+        ]},
+        { title: "Condensing osteitis", rows: [
+          ["Symptoms", "usually asymptomatic"],
+          ["Radiographic", "commonly seen in mandibular molars"],
+        ]},
+      ]},
+      { type: "prose", heading: "Apical — quick rules", lines: [
+        "Pain on percussion → symptomatic apical periodontitis.",
+        "Apical radiolucency without symptoms → asymptomatic apical periodontitis.",
+        "Symptoms + pus + swelling + rapid onset → acute apical abscess.",
+        "Sinus tract → chronic apical abscess.",
+      ]},
+    ],
+  },
+
+  "ref-endo-testing": {
+    verdict: "Each test isolates a different aspect of the pulp or periradicular tissues. Record duration, scale of tenderness, or location as appropriate.",
+    blocks: [
+      { type: "cards", cards: [
+        { title: "Cold test", subtitle: "differentiates normal / inflamed / necrotic pulp", rows: [
+          ["Record", "duration until response / duration of linger; NR if no response"],
+          ["Normal", "2 s / 2 s — pt feels cold, no significant linger"],
+          ["Reversible pulpitis", "0.5 s / 3 s — sharp, painful, quicker; minimal linger"],
+          ["Symptomatic irreversible pulpitis", "0.5 s / 20 s — sharp, painful, lingers"],
+          ["False results", "false positive: cotton pellet touches adjacent teeth, anxious patients respond preemptively. False negative: pulp chamber calcification, inadequate Endo Ice."],
+        ]},
+        { title: "EPT", subtitle: "differentiates normal / inflamed / necrotic pulp", rows: [
+          ["Record", "the displayed number"],
+          ["Necrotic pulp", "= 80"],
+          ["False results", "false negative from pulp chamber calcification or pulpal recession"],
+        ]},
+        { title: "Percussion", subtitle: "PDL inflammation", rows: [
+          ["Record", "− none, + mild, ++ moderate, +++ severe"],
+          ["Consistent with", "symptomatic apical periodontitis"],
+          ["Other explanations", "high restoration, parafunctional habits, blunt trauma, advanced periodontal disease, sinusitis, orthodontics"],
+        ]},
+        { title: "Bite test", subtitle: "PDL inflammation; reproduces \"chewing pain\"", rows: [
+          ["Record", "− none, + mild, ++ moderate, +++ severe"],
+          ["Consistent with", "cracked tooth/root with vital pulp; faulty restoration"],
+        ]},
+        { title: "Palpation", subtitle: "periosteum inflammation", rows: [
+          ["Record", "− none, + mild, ++ moderate, +++ severe; also indicate location"],
+          ["Consistent with", "necrotic pulp; apical periodontitis; apical abscess (fluctuant area or pus)"],
+          ["Other explanations", "gingival conditions (herpes, aphthous ulcers), trauma; sinus inflammation in posterior maxilla"],
+        ]},
+        { title: "Mobility", subtitle: "loss of supporting alveolar bone", rows: [
+          ["Record", "0 none, 1 < 1 mm BL, 2 ≥ 1 mm BL, 3 ≥ 1 mm BL + vertical"],
+          ["Consistent with", "necrotic pulp"],
+          ["Other explanations", "periodontal disease, trauma, parafunctional habits, crown fracture"],
+        ]},
+        { title: "Probing depth", subtitle: "tooth fractures", rows: [
+          ["Record", "in mm"],
+          ["Narrow + deep on proximal of posterior tooth", "consistent with crown/root fracture"],
+          ["Narrow + deep + sinus tract", "consistent with apical abscess; necrotic pulp"],
+          ["Other explanations", "periodontal disease"],
+        ]},
+        { title: "Hot test", subtitle: "differentiates normal / inflamed / necrotic pulp", rows: [
+          ["Record", "duration until response / duration of linger"],
+          ["When to use", "rarely performed; only when chief complaint is heat sensitivity"],
+        ]},
+        { title: "Test cavity", subtitle: "differentiates normal / inflamed / necrotic pulp", rows: [
+          ["Record", "NR if no response; or pain upon test cavity"],
+          ["When to use", "rarely performed"],
+          ["No response", "necrotic pulp"],
+        ]},
+      ]},
+    ],
+  },
+
+  "ref-antibiotic-proph": {
+    verdict: "Cardiac conditions almost always require prophylaxis. Prosthetic joints almost never do, despite common belief — defer to the orthopedic surgeon.",
+    blocks: [
+      { type: "prose", heading: "Note text to include", lines: [
+        "ANTIBIOTIC PROPHYLAXIS — Patient reported taking 2 g amoxicillin 1 hour before appointment for antibiotic prophylaxis as prescribed.",
+      ]},
+      { type: "cards", caption: "Conditions requiring prophylaxis", cards: [
+        { title: "Cardiac", rows: [
+          ["Prosthetic valve", "any patient with a prosthetic cardiac valve"],
+          ["Prior endocarditis", "previous infective endocarditis"],
+          ["CHD — unrepaired cyanotic", "including palliative shunts & conduits"],
+          ["CHD — completely repaired", "with prosthetic material/device, only during the first 6 months after the procedure"],
+          ["CHD — repaired with residual defects", "at the site or adjacent to a prosthetic patch/device (which inhibit endothelialization)"],
+          ["Cardiac transplant", "recipients who develop cardiac valvulopathy"],
+        ]},
+        { title: "Prosthetic joints",
+          body: "Antibiotic prophylaxis is usually NOT required. The current ADA/CSA guideline reserves prophylaxis for medically compromised patients — and only after consultation with the orthopedic surgeon. When antibiotics are deemed necessary, the orthopedic surgeon should recommend the regimen and, when reasonable, write the prescription.",
+        },
+      ]},
+      { type: "prose", heading: "Procedures requiring prophylaxis", lines: [
+        "Any procedure involving manipulation of gingival tissue, the periapical region, or perforation of oral mucosa: perio probing, prophy, perio maintenance, rubber dam clamp placement, matrix band placement (Class II / III / IV), gingival retraction cord placement.",
+      ]},
+      { type: "prose", heading: "Procedures NOT requiring prophylaxis", lines: [
+        "Routine anesthetic injections through non-infected tissue, dental radiographs, placement or adjustment of removable prosthodontic or orthodontic appliances, placement of orthodontic brackets, shedding of deciduous teeth, bleeding from trauma to the lips or oral mucosa, denture fabrication / delivery / adjustment.",
+      ]},
+      { type: "table", caption: "Antibiotic regimen",
+        headers: ["Situation", "Agent", "Adults", "Children"],
+        rows: [
+          ["Oral", "amoxicillin", "2 g", "50 mg/kg"],
+          ["Unable to take oral", "ampicillin", "2 g IM/IV", "50 mg/kg IM/IV"],
+          ["", "cefazolin / ceftriaxone", "1 g IM/IV", "50 mg/kg IM/IV"],
+          ["Allergic to penicillin", "cephalexin", "2 g", "50 mg/kg"],
+          ["", "clindamycin", "600 mg", "20 mg/kg"],
+          ["", "azithromycin / clarithromycin", "500 mg", "15 mg/kg"],
+          ["Allergic + unable to take oral", "cefazolin / ceftriaxone", "1 g IM/IV", "50 mg/kg IM/IV"],
+          ["", "clindamycin", "600 mg IM/IV", "20 mg/kg IM/IV"],
+        ],
+      },
+      { type: "prose", heading: "On-site antibiotics for emergencies", lines: [
+        "If a patient who needs prophylaxis hasn't filled the prescription — or if a prophylaxis-required patient needs an emergency procedure — clindamycin and amoxicillin are stocked on site. Generate the prescription in Axium, have the supervising instructor sign it, take it to the predoctoral OS clinic, and the OS instructor will dispense.",
+        "If the dose isn't given before the procedure, it can be administered up to 2 hours after.",
+      ]},
+    ],
+  },
 };
 
 // Default values for a single anesthetic injection. Multiple injections live
