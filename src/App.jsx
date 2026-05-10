@@ -3178,7 +3178,7 @@ function renderTemplate(raw, f) {
     t = t.replace(/\bUG Peds\b/g, replacement);
   } else {
     t = t.replace(/\bVivaldi clinic\b/g, "Gershwin clinic");
-    t = t.replace(/\bUG clinic\b/g, "Gershwin clinic");
+    if (!raw.includes("UIC COD")) t = t.replace(/\bUG clinic\b/g, "Gershwin clinic");
     t = t.replace(/\bUG Peds\b/g, "Gershwin");
     // "Chicago clinic" intentionally left as-is — only Chicago does this work.
   }
@@ -6841,7 +6841,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               </Field>
             </div>
           )}
-          {!isLabScript && !isClinicPeds && !isClinicChicago && (
+          {!isLabScript && !isClinicPeds && !isClinicChicago && procedureId !== "273" && (
             <Field label="Clinic">
               <Select value={fields.clinic} onChange={v=>setField("clinic",v)}>
                 <option value="">— Select a clinic —</option>
