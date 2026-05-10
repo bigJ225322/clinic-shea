@@ -3065,6 +3065,12 @@ const DEFAULT_FIELDS = {
   // poeOnly: when true for POE (1091), strips the Prophy section from the note
   //   and hides the perio chart & OHI form sections.
   poeOnly: false,
+  // Dental history fields (COE / POE templates).
+  //   lastDentist: fills "last time at dentist: ;" → "last time at dentist: 6 months ago;"
+  //   brushing / flossing: override the template defaults "2x a day" / "1x a day".
+  lastDentist: "",
+  brushing: "2x a day",
+  flossing: "1x a day",
 };
 
 // Anesthetic options from the manual (Local Anesthesia section).
@@ -3302,6 +3308,22 @@ function renderTemplate(raw, f) {
   if (f.bp.trim()) {
     t = t.replace(/^([ \t]*-[ \t]*blood pressure:)[ \t]*$/im,
                   `$1 ${f.bp.trim()}`);
+  }
+
+  // -------- 7c. Dental history. --------
+  // "last time at dentist: ;" → fill in the elapsed time.
+  if (f.lastDentist !== undefined && f.lastDentist.trim()) {
+    t = t.replace(
+      /last time at dentist: ;/,
+      `last time at dentist: ${f.lastDentist.trim()};`
+    );
+  }
+  // brushing / flossing: only substitute when the value differs from template default.
+  if (f.brushing && f.brushing.trim() && f.brushing.trim() !== "2x a day") {
+    t = t.replace(/\bbrushing 2x a day\b/g, `brushing ${f.brushing.trim()}`);
+  }
+  if (f.flossing && f.flossing.trim() && f.flossing.trim() !== "1x a day") {
+    t = t.replace(/\bflossing 1x a day\b/g, `flossing ${f.flossing.trim()}`);
   }
 
   // -------- 7b. Exam findings (COE / POE structured fields). --------
@@ -6610,6 +6632,14 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     () => /(?:CC:|Chief complaint:)\s*“/.test(rawTemplate), [rawTemplate]);
   const needsNitrous = useMemo(
     () => /Titrated to[^.]*nitrous/i.test(rawTemplate), [rawTemplate]);
+  const needsDentalHistory = useMemo(
+    () => /dental history:/i.test(rawTemplate), [rawTemplate]);
+  const needsLastDentist = useMemo(
+    () => /last time at dentist:/i.test(rawTemplate), [rawTemplate]);
+  const needsBrushing = useMemo(
+    () => /\bbrushing 2x a day\b/.test(rawTemplate), [rawTemplate]);
+  const needsFlossing = useMemo(
+    () => /\bflossing 1x a day\b/.test(rawTemplate), [rawTemplate]);
 
   // Regenerate the note when needed.
   //
@@ -6945,6 +6975,48 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   )}
                 </div>
               )}
+            </>
+          )}
+
+          {needsDentalHistory && (
+            <>
+              <Hairline />
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: [needsLastDentist, needsBrushing, needsFlossing]
+                  .filter(Boolean).map(() => "1fr").join(" "),
+                gap: "10px",
+              }}>
+                {needsLastDentist && (
+                  <Field label="Last dentist visit">
+                    <TextInput
+                      value={fields.lastDentist}
+                      onChange={v => setField("lastDentist", v)}
+                      placeholder="e.g. 6 months ago" />
+                  </Field>
+                )}
+                {needsBrushing && (
+                  <Field label="Brushing">
+                    <Select value={fields.brushing} onChange={v => setField("brushing", v)}>
+                      <option value="2x a day">2x a day</option>
+                      <option value="1x a day">1x a day</option>
+                      <option value="3x a day">3x a day</option>
+                      <option value="after each meal">after each meal</option>
+                    </Select>
+                  </Field>
+                )}
+                {needsFlossing && (
+                  <Field label="Flossing">
+                    <Select value={fields.flossing} onChange={v => setField("flossing", v)}>
+                      <option value="1x a day">1x a day</option>
+                      <option value="1x a week">1x a week</option>
+                      <option value="occasionally">occasionally</option>
+                      <option value="rarely">rarely</option>
+                      <option value="never">never</option>
+                    </Select>
+                  </Field>
+                )}
+              </div>
             </>
           )}
 
