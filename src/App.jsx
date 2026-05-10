@@ -3071,6 +3071,8 @@ const DEFAULT_FIELDS = {
   lastDentist: "",
   brushing: "2x a day",
   flossing: "1x a day",
+  // intraoralPhotos: when false, strips "- Took intraoral photos." from the note.
+  intraoralPhotos: false,
 };
 
 // Anesthetic options from the manual (Local Anesthesia section).
@@ -3324,6 +3326,12 @@ function renderTemplate(raw, f) {
   }
   if (f.flossing && f.flossing.trim() && f.flossing.trim() !== "1x a day") {
     t = t.replace(/\bflossing 1x a day\b/g, `flossing ${f.flossing.trim()}`);
+  }
+
+  // -------- 7d. Intraoral photos. --------
+  // Strip "- Took intraoral photos." when the checkbox is unchecked (default off).
+  if (!f.intraoralPhotos) {
+    t = t.replace(/^[ \t]*-[ \t]*Took intraoral photos\.[ \t]*\n?/im, "");
   }
 
   // -------- 7b. Exam findings (COE / POE structured fields). --------
@@ -6640,6 +6648,8 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     () => /\bbrushing 2x a day\b/.test(rawTemplate), [rawTemplate]);
   const needsFlossing = useMemo(
     () => /\bflossing 1x a day\b/.test(rawTemplate), [rawTemplate]);
+  const needsIntraoralPhotos = useMemo(
+    () => /Took intraoral photos/i.test(rawTemplate), [rawTemplate]);
 
   // Regenerate the note when needed.
   //
@@ -7158,6 +7168,24 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                     hint="Desensitizer — 45s, dry, rinse, dry" />
                 </div>
               </Disclosure>
+            </>
+          )}
+
+          {needsIntraoralPhotos && (
+            <>
+              <Hairline />
+              <label style={{
+                display: "flex", alignItems: "center", gap: "10px",
+                fontSize: "13px", color: "var(--ink)",
+                cursor: "pointer", padding: "6px 0",
+              }}>
+                <input type="checkbox"
+                  checked={fields.intraoralPhotos === true}
+                  onChange={e => setField("intraoralPhotos", e.target.checked)}
+                  style={{ width: "16px", height: "16px",
+                    accentColor: "var(--accent)", cursor: "pointer" }} />
+                <span>Took intraoral photos</span>
+              </label>
             </>
           )}
 
