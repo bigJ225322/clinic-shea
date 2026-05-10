@@ -6844,10 +6844,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   style={{ width: "16px", height: "16px",
                     accentColor: "var(--accent)", cursor: "pointer" }} />
                 <span>Accepted?</span>
-                <span style={{ color: "var(--ink-faint)", fontSize: "11px",
-                    fontStyle: "italic", marginLeft: "auto" }}>
-                  uncheck to remove
-                </span>
               </label>
             </>
           )}
