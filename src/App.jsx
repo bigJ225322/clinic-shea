@@ -7008,10 +7008,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                     accentColor: "var(--accent)", cursor: "pointer",
                   }} />
                 <span>Administered nitrous oxide</span>
-                <span style={{ color: "var(--ink-faint)", fontSize: "11px",
-                    fontStyle: "italic", marginLeft: "auto" }}>
-                  uncheck to omit from note
-                </span>
               </label>
             </>
           )}
