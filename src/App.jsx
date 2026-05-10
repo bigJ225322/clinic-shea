@@ -2210,7 +2210,7 @@ const CATEGORIES = [
   { id: "perio", label: "Perio", groups: [
     { id: "perio-procs", label: "Procedures", procedures: [
       { id: "1196", label: "Prophy" },
-      { id: "1272", label: "SRP (Scaling & Root Planing)" },
+      { id: "1272", label: "SRP (Scaling & Root Planing)", pinnedCodes: ["D4243","D4341","D1330","D1310","D1320.1","D1320.2"] },
       { id: "1346", label: "Perio Re-Evaluation" },
       { id: "1425", label: "Perio Maintenance" },
       { id: "ohi", label: "OHI" },
@@ -2394,6 +2394,7 @@ function getAllProcedures() {
           groupId: grp.id,
           groupLabel: grp.label,
           breadcrumb: `${cat.label} → ${grp.label} → ${proc.label}`,
+          ...(proc.pinnedCodes && { pinnedCodes: proc.pinnedCodes }),
         });
       }
     }
@@ -3372,6 +3373,17 @@ function renderTemplate(raw, f) {
         continue;
       }
 
+      // Special-case: "treatment plan" — replaces the lone dash stub under
+      // "Treatment planned for the following treatments:" with the user's list.
+      if (label === "treatment plan") {
+        const tp = v.startsWith("-") ? v : `- ${v}`;
+        t = t.replace(
+          /(Treatment planned for the following treatments:)\n[ \t]*-[ \t]*(?=\n|$)/i,
+          (_m, heading) => `${heading}\n${tp}`
+        );
+        continue;
+      }
+
       // Special-case: treatment plan "specific treatments" — replaces the
       // hardcoded em-dash bullet block under "Specific treatments discussed:".
       if (label === "specific treatments") {
@@ -4239,9 +4251,8 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
         }}>
           {/* P toggle + tooth columns share gridRef for surface-picker positioning */}
           <div ref={gridRef} style={{ display: "flex", alignItems: "stretch", gap: "4px" }}>
-            {/* "P" button — toggles primary/adult grid; lives inside gridRef so
-                tail-arrow math (tr.left - gr.left) already accounts for its width */}
-            <button
+            {/* "P" button — only shown in peds context (defaultPrimary); toggles primary/adult grid */}
+            {defaultPrimary && <button
               onClick={() => { setPrimaryMode(m => !m); setActiveTooth(null); }}
               title={primaryMode ? "Switch to adult teeth" : "Switch to primary teeth"}
               style={{
@@ -4254,7 +4265,7 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>
               P
-            </button>
+            </button>}
             <div style={{ flex: 1 }}>
               {primaryMode ? (
                 <>
@@ -4450,7 +4461,7 @@ function AgeInput({ value, onChange, peds }) {
       {over89 && (
         <div style={{ marginTop: "4px", fontSize: "11px", color: "var(--accent)",
           fontFamily: "'Geist', sans-serif" }}>
-          Max age 89 — record as 90+
+          Max age 89
         </div>
       )}
     </>
@@ -4721,8 +4732,16 @@ function CodesPanel({ procedure, chunks }) {
   const codes = useMemo(() => {
     if (!procedure) return [];
     const stepsChunk = findChunkForProcedure(procedure, chunks, "steps");
+    const extracted = stepsChunk ? extractCodes(stepsChunk.body) : [];
+    if (procedure.pinnedCodes) {
+      return procedure.pinnedCodes.map(c => {
+        const r = RVU_DATA.find(x => x.code === c);
+        const fallback = extracted.find(x => x.code === c);
+        return { code: c, desc: r?.desc || fallback?.desc || "" };
+      });
+    }
     if (!stepsChunk) return [];
-    return extractCodes(stepsChunk.body);
+    return extracted;
   }, [procedure, chunks]);
 
   if (!procedure || codes.length === 0) return null;
@@ -5077,7 +5096,7 @@ const EXAM_FINDINGS_CONFIG = {
            placeholder: "Class I; no wear facets" }],
         [{ label: "odontogram", type: "odontogram",
            displayLabel: "Updated odontogram with clinical and radiographic findings",
-           placeholder: "List each finding on its own line. Press Enter to add another." }],
+           placeholder: "List each finding on its own line. Press Enter to add another.", seedOnFocus: true }],
       ],
     },
     {
@@ -5191,13 +5210,13 @@ const EXAM_FINDINGS_CONFIG = {
       rows: [
         [
           { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
-          { label: "bleeding on probing", type: "teeth-selector", showG: true, displayLabel: "BoP" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true, showW: true, displayLabel: "BoP" },
         ],
         [
-          { label: "recession", type: "teeth-selector" },
-          { label: "furcation", type: "teeth-selector",
+          { label: "recession", type: "teeth-selector", showW: true },
+          { label: "furcation", type: "teeth-selector", showW: true,
             teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
-          { label: "mobility", type: "teeth-selector" },
+          { label: "mobility", type: "teeth-selector", showW: true },
         ],
         [{ type: "gingiva-dropdowns" }],
       ],
@@ -5257,7 +5276,7 @@ const EXAM_FINDINGS_CONFIG = {
         ],
         [{ label: "odontogram", type: "odontogram",
            displayLabel: "Updated odontogram with clinical and radiographic findings",
-           placeholder: "List each finding on its own line. Press Enter to add another." }],
+           placeholder: "List each finding on its own line. Press Enter to add another.", seedOnFocus: true }],
       ],
     },
     { type: "prophy-toggle" },
@@ -5267,13 +5286,13 @@ const EXAM_FINDINGS_CONFIG = {
       rows: [
         [
           { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
-          { label: "bleeding on probing", type: "teeth-selector", showG: true, displayLabel: "BoP" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true, showW: true, displayLabel: "BoP" },
         ],
         [
-          { label: "recession", type: "teeth-selector" },
-          { label: "furcation", type: "teeth-selector",
+          { label: "recession", type: "teeth-selector", showW: true },
+          { label: "furcation", type: "teeth-selector", showW: true,
             teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
-          { label: "mobility", type: "teeth-selector" },
+          { label: "mobility", type: "teeth-selector", showW: true },
         ],
         [{ type: "gingiva-dropdowns" }],
       ],
@@ -5286,6 +5305,13 @@ const EXAM_FINDINGS_CONFIG = {
         { label: "tobacco cessation", type: "ohi-checkbox" },
       ],
     },
+    {
+      title: "Treatment plan",
+      fields: [
+        { label: "treatment plan", type: "odontogram", hideLabel: true,
+          placeholder: "List each treatment on its own line. Press Enter to add another.", seedOnFocus: true },
+      ],
+    },
   ],
   // Prophy — full perio charting + OHI
   "1196": [
@@ -5294,13 +5320,13 @@ const EXAM_FINDINGS_CONFIG = {
       rows: [
         [
           { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
-          { label: "bleeding on probing", type: "teeth-selector", showG: true, displayLabel: "BoP" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true, showW: true, displayLabel: "BoP" },
         ],
         [
-          { label: "recession", type: "teeth-selector" },
-          { label: "furcation", type: "teeth-selector",
+          { label: "recession", type: "teeth-selector", showW: true },
+          { label: "furcation", type: "teeth-selector", showW: true,
             teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
-          { label: "mobility", type: "teeth-selector" },
+          { label: "mobility", type: "teeth-selector", showW: true },
         ],
         [{ type: "gingiva-dropdowns" }],
       ],
@@ -5344,13 +5370,13 @@ const EXAM_FINDINGS_CONFIG = {
       rows: [
         [
           { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
-          { label: "bleeding on probing", type: "teeth-selector", showG: true, displayLabel: "BoP" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true, showW: true, displayLabel: "BoP" },
         ],
         [
-          { label: "recession", type: "teeth-selector" },
-          { label: "furcation", type: "teeth-selector",
+          { label: "recession", type: "teeth-selector", showW: true },
+          { label: "furcation", type: "teeth-selector", showW: true,
             teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
-          { label: "mobility", type: "teeth-selector" },
+          { label: "mobility", type: "teeth-selector", showW: true },
         ],
         [
           { label: "O’Leary plaque index", type: "input", placeholder: "%",
@@ -5371,6 +5397,16 @@ const EXAM_FINDINGS_CONFIG = {
       ],
     },
   ],
+  // Peds Initial/Recall — treatment plan list only
+  "5985": [
+    {
+      title: "Treatment plan",
+      fields: [
+        { label: "treatment plan", type: "odontogram", hideLabel: true,
+          placeholder: "List each treatment on its own line. Press Enter to add another.", seedOnFocus: true },
+      ],
+    },
+  ],
   // Perio Maintenance — full charting + OHI
   "1425": [
     {
@@ -5378,13 +5414,13 @@ const EXAM_FINDINGS_CONFIG = {
       rows: [
         [
           { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
-          { label: "bleeding on probing", type: "teeth-selector", showG: true, displayLabel: "BoP" },
+          { label: "bleeding on probing", type: "teeth-selector", showG: true, showW: true, displayLabel: "BoP" },
         ],
         [
-          { label: "recession", type: "teeth-selector" },
-          { label: "furcation", type: "teeth-selector",
+          { label: "recession", type: "teeth-selector", showW: true },
+          { label: "furcation", type: "teeth-selector", showW: true,
             teeth: [1,2,3,14,15,16,17,18,19,30,31,32] },
-          { label: "mobility", type: "teeth-selector" },
+          { label: "mobility", type: "teeth-selector", showW: true },
         ],
         [{ type: "gingiva-dropdowns" }],
       ],
@@ -5462,15 +5498,22 @@ function ProbingDepthsField({ value, onChange }) {
 // as content grows. Students can also drag the resize handle if they want
 // even more room. The value is plain text (with literal "- " prefixes) so
 // it can be pasted into renderTemplate without any transformation.
-function OdontogramField({ value, onChange, placeholder, bullet = "-" }) {
+function OdontogramField({ value, onChange, placeholder, bullet = "-", seedOnFocus = false }) {
   const ref = useRef(null);
+  const seeded = useRef(false);
 
-  // Seed with "bullet " on first mount so the user sees the list format
-  // and gets a feel for how entries display in the note.
+  // Seed with "bullet " on first mount (or on first focus if seedOnFocus).
   useEffect(() => {
-    if (!value) onChange(`${bullet} `);
+    if (!seedOnFocus && !value) onChange(`${bullet} `);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleFocus = () => {
+    if (seedOnFocus && !seeded.current && !value) {
+      seeded.current = true;
+      onChange(`${bullet} `);
+    }
+  };
 
   // Re-measure the textarea on every value change so its visible height
   // matches its content. Floor at ~3 lines so the empty field still feels
@@ -5503,7 +5546,11 @@ function OdontogramField({ value, onChange, placeholder, bullet = "-" }) {
   return (
     <textarea ref={ref} value={value}
       placeholder={placeholder}
-      onChange={(e) => onChange(e.target.value)}
+      onFocus={handleFocus}
+      onChange={(e) => {
+        const next = e.target.value;
+        onChange(next.startsWith(`${bullet} `) ? next : `${bullet} `);
+      }}
       onKeyDown={handleKeyDown}
       style={{
         ...inputStyle,
@@ -5519,13 +5566,14 @@ function OdontogramField({ value, onChange, placeholder, bullet = "-" }) {
 // `teeth`: optional array of tooth numbers to show; others are invisible placeholders.
 // `showG`: when true, renders a "G" toggle button to the right of the input
 //   (replaces the in-dropdown Generalized button). Only used for bleeding on probing.
-function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG }) {
+function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG, showW }) {
   const [open, setOpen] = useState(false);
   const panelRef = useRef(null);
 
   const isGeneralized = value.trim().toLowerCase() === "generalized";
+  const isWNL = value.trim().toLowerCase() === "wnl";
   const selectedTeeth = new Set(
-    isGeneralized ? [] :
+    (isGeneralized || isWNL) ? [] :
     value.split(",")
       .map(t => parseInt(t.trim().replace(/^#/, ""), 10))
       .filter(n => !isNaN(n))
@@ -5549,6 +5597,7 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG }) {
   };
 
   const setGeneralized = () => onChange(isGeneralized ? "" : "generalized");
+  const setWNL = () => { onChange(isWNL ? "" : "WNL"); setOpen(false); };
 
   const upperTeeth = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
   const lowerTeeth = [32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17];
@@ -5603,51 +5652,73 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG }) {
             borderRadius: "4px", padding: "10px 12px",
             zIndex: 200, boxShadow: "0 4px 20px rgba(0,0,0,0.16)",
           }}>
-            {isSplit ? (
-              <>
-                {/* Upper arch — two tight clusters */}
-                <div style={{ display: "flex", gap: "12px", justifyContent: "center", marginBottom: "3px" }}>
-                  <div style={{ display: "grid", gridTemplateColumns: `repeat(${splitUpper[0].length}, 28px)`, gap: "4px" }}>
-                    {splitUpper[0].map(n => toothButton(n))}
-                  </div>
-                  <div style={{ display: "grid", gridTemplateColumns: `repeat(${splitUpper[1].length}, 28px)`, gap: "4px" }}>
-                    {splitUpper[1].map(n => toothButton(n))}
-                  </div>
+            <div style={{ display: "flex", alignItems: "stretch", gap: "6px" }}>
+              {showW && (
+                <div style={{ display: "flex", alignItems: "flex-start", flexShrink: 0 }}>
+                  <button
+                    type="button"
+                    onClick={setWNL}
+                    title={isWNL ? "Clear WNL" : "Set WNL"}
+                    style={{
+                      width: "22px",
+                      background: isWNL ? "var(--accent)" : "transparent",
+                      color: isWNL ? "var(--paper)" : "var(--ink-soft)",
+                      border: `1px solid ${isWNL ? "var(--accent)" : "var(--rule)"}`,
+                      borderRadius: "2px", fontSize: "11px", cursor: "pointer",
+                      fontFamily: "'JetBrains Mono', monospace", lineHeight: 1.2,
+                      padding: "5px 0", textAlign: "center",
+                    }}
+                  >W</button>
                 </div>
-                {/* Truncated-axis divider */}
-                <div style={{ display: "flex", alignItems: "center", margin: "4px 0" }}>
-                  <div style={{ flex: 1, height: "1px", background: "var(--rule)" }} />
-                  <svg width="22" height="8" viewBox="0 0 22 8" fill="none"
-                    style={{ margin: "0 5px", display: "block", flexShrink: 0 }}>
-                    <polyline points="0,4 4,1 8,7 12,1 16,7 20,4"
-                      stroke="var(--ink-faint)" strokeWidth="1.5"
-                      strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  <div style={{ flex: 1, height: "1px", background: "var(--rule)" }} />
-                </div>
-                {/* Lower arch — two tight clusters */}
-                <div style={{ display: "flex", gap: "12px", justifyContent: "center", marginTop: "3px" }}>
-                  <div style={{ display: "grid", gridTemplateColumns: `repeat(${splitLower[0].length}, 28px)`, gap: "4px" }}>
-                    {splitLower[0].map(n => toothButton(n))}
-                  </div>
-                  <div style={{ display: "grid", gridTemplateColumns: `repeat(${splitLower[1].length}, 28px)`, gap: "4px" }}>
-                    {splitLower[1].map(n => toothButton(n))}
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* Upper arch */}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginBottom: "3px" }}>
-                  {upperTeeth.map(toothButton)}
-                </div>
-                <div style={{ height: "1px", background: "var(--rule)", margin: "4px 0" }} />
-                {/* Lower arch */}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginTop: "3px" }}>
-                  {lowerTeeth.map(toothButton)}
-                </div>
-              </>
-            )}
+              )}
+              <div style={{ flex: 1 }}>
+                {isSplit ? (
+                  <>
+                    {/* Upper arch — two tight clusters */}
+                    <div style={{ display: "flex", gap: "12px", justifyContent: "center", marginBottom: "3px" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: `repeat(${splitUpper[0].length}, 28px)`, gap: "4px" }}>
+                        {splitUpper[0].map(n => toothButton(n))}
+                      </div>
+                      <div style={{ display: "grid", gridTemplateColumns: `repeat(${splitUpper[1].length}, 28px)`, gap: "4px" }}>
+                        {splitUpper[1].map(n => toothButton(n))}
+                      </div>
+                    </div>
+                    {/* Truncated-axis divider */}
+                    <div style={{ display: "flex", alignItems: "center", margin: "4px 0" }}>
+                      <div style={{ flex: 1, height: "1px", background: "var(--rule)" }} />
+                      <svg width="22" height="8" viewBox="0 0 22 8" fill="none"
+                        style={{ margin: "0 5px", display: "block", flexShrink: 0 }}>
+                        <polyline points="0,4 4,1 8,7 12,1 16,7 20,4"
+                          stroke="var(--ink-faint)" strokeWidth="1.5"
+                          strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <div style={{ flex: 1, height: "1px", background: "var(--rule)" }} />
+                    </div>
+                    {/* Lower arch — two tight clusters */}
+                    <div style={{ display: "flex", gap: "12px", justifyContent: "center", marginTop: "3px" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: `repeat(${splitLower[0].length}, 28px)`, gap: "4px" }}>
+                        {splitLower[0].map(n => toothButton(n))}
+                      </div>
+                      <div style={{ display: "grid", gridTemplateColumns: `repeat(${splitLower[1].length}, 28px)`, gap: "4px" }}>
+                        {splitLower[1].map(n => toothButton(n))}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {/* Upper arch */}
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginBottom: "3px" }}>
+                      {upperTeeth.map(toothButton)}
+                    </div>
+                    <div style={{ height: "1px", background: "var(--rule)", margin: "4px 0" }} />
+                    {/* Lower arch */}
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginTop: "3px" }}>
+                      {lowerTeeth.map(toothButton)}
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -5894,20 +5965,23 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
               <label style={lblStyle}>Adverse C/R ratio</label>
               <TeethSelectorPanel
                 value={findings["adverse crown to root ratio"] || ""}
-                onChange={v => update("adverse crown to root ratio", v)} />
+                onChange={v => update("adverse crown to root ratio", v)}
+                showW />
             </div>
             <div>
               <label style={lblStyle}>Furcation</label>
               <TeethSelectorPanel
                 value={findings["evidence of furcation"] || ""}
                 onChange={v => update("evidence of furcation", v)}
-                teeth={[1,2,3,14,15,16,17,18,19,30,31,32]} />
+                teeth={[1,2,3,14,15,16,17,18,19,30,31,32]}
+                showW />
             </div>
             <div>
               <label style={lblStyle}>Widened PDL</label>
               <TeethSelectorPanel
                 value={findings["widened PDL"] || ""}
-                onChange={v => update("widened PDL", v)} />
+                onChange={v => update("widened PDL", v)}
+                showW />
             </div>
           </div>
         </div>
@@ -6197,7 +6271,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
     // --- Standard labeled fields ---
     const value = findings[field.label] !== undefined ? findings[field.label] : (field.wNLDefault ? "WNL" : (field.defaultValue || ""));
     const onChange = (e) => update(field.label, e.target.value);
-    const display = field.displayLabel || titleCaseLabel(field.label);
+    const display = field.hideLabel ? null : (field.displayLabel || titleCaseLabel(field.label));
 
     if (field.type === "ohi-checkbox") {
       const checked = !!findings[field.label];
@@ -6261,7 +6335,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
 
     return (
       <div key={field.label} style={{ marginBottom: "9px" }}>
-        <label style={{
+        {display && <label style={{
           ...labelStyle,
           fontSize: "10px",
           textTransform: "none",
@@ -6270,7 +6344,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
           fontStyle: "italic",
         }}>
           {display}
-        </label>
+        </label>}
         {field.type === "textarea" ? (
           <textarea value={value} onChange={onChange}
             placeholder={field.placeholder} rows={1}
@@ -6292,13 +6366,15 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
           <OdontogramField value={value}
             onChange={(v) => update(field.label, v)}
             placeholder={field.placeholder}
-            bullet={field.bullet} />
+            bullet={field.bullet}
+            seedOnFocus={field.seedOnFocus} />
         ) : field.type === "teeth-selector" ? (
           <TeethSelectorPanel value={value}
             onChange={(v) => update(field.label, v)}
             placeholder={field.placeholder}
             teeth={field.teeth}
-            showG={field.showG} />
+            showG={field.showG}
+            showW={field.showW} />
         ) : field.type === "probing-depths" ? (
           <ProbingDepthsField value={value}
             onChange={(v) => update(field.label, v)} />
@@ -6559,6 +6635,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
   const [categoryId, setCategoryId] = useState(initialProc?.categoryId || "");
   const [procedureId, setProcedureId] = useState(selectedProcedureId || "");
   const [copied, setCopied] = useState(false);
+  const [warnEmpty, setWarnEmpty] = useState(false);
   const textareaRef = useRef(null);
 
   // Sync local state with the App-level selection (e.g. when user navigates
@@ -6677,6 +6754,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     if (!procedureId) return;
     if (userEdited) return;
     setNote(renderTemplate(rawTemplate, fields));
+    setWarnEmpty(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields]);
 
@@ -6725,6 +6803,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     setUserEdited(false);
   };
   const handleCopy = async () => {
+    if (/^- [^:\n]+:\s*$/m.test(note)) setWarnEmpty(true);
     try { await navigator.clipboard.writeText(note); setCopied(true);
       setTimeout(() => setCopied(false), 1800); }
     catch { textareaRef.current?.select(); }
@@ -7019,9 +7098,9 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   <Field label="Flossing">
                     <Select value={fields.flossing} onChange={v => setField("flossing", v)}>
                       <option value="1x a day">1x a day</option>
+                      <option value="2-3 times per week">2-3 times per week</option>
+                      <option value="3-4 times per week">3-4 times per week</option>
                       <option value="1x a week">1x a week</option>
-                      <option value="occasionally">occasionally</option>
-                      <option value="rarely">rarely</option>
                       <option value="never">never</option>
                     </Select>
                   </Field>
@@ -7219,7 +7298,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
         {procedureId ? (
           <div className="fade-in" key={procedureId}>
             <textarea ref={textareaRef} className="note-area" value={note} spellCheck={false}
-              onChange={(e) => { setNote(e.target.value); setUserEdited(true); }} />
+              onChange={(e) => { setNote(e.target.value); setUserEdited(true); setWarnEmpty(false); }} />
             {userEdited && (
               <p style={{ marginTop: "10px", fontSize: "12px",
                   color: "var(--accent)", lineHeight: 1.55,
@@ -7263,7 +7342,15 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                     "Moderate": { code: "D0602", desc: "Caries Risk Assessment and Documentation, finding of moderate" },
                     "High":     { code: "D0603", desc: "Caries Risk Assessment and Documentation, finding of high" },
                   };
-                  let codes = extractCodes(stepsChunk.body).filter(({ code }) => {
+                  const extracted = extractCodes(stepsChunk.body);
+                  const basePool = proc.pinnedCodes
+                    ? proc.pinnedCodes.map(c => {
+                        const r = RVU_DATA.find(x => x.code === c);
+                        const fallback = extracted.find(x => x.code === c);
+                        return { code: c, desc: r?.desc || fallback?.desc || "" };
+                      })
+                    : extracted;
+                  let codes = basePool.filter(({ code }) => {
                     if (code === "D1310") return nutriChecked;
                     if (code === "D1320.1" || code === "D1320.2" || code === "D1320.3") return tobaccoChecked;
                     if (code === "D0475") return impressionsChecked;
@@ -7304,15 +7391,23 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   ));
                 })()}
               </div>
-              <button className="primary" disabled={!note} onClick={handleCopy}
-                style={{
-                  opacity: note ? 1 : 0.4, cursor: note ? "pointer" : "not-allowed",
-                  width: "56px", height: "56px", padding: "0",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  flexShrink: 0, fontSize: "12px", fontWeight: 500,
-                }}>
-                {copied ? "✓" : "COPY"}
-              </button>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", flexShrink: 0 }}>
+                <button className="primary" disabled={!note} onClick={handleCopy}
+                  style={{
+                    opacity: note ? 1 : 0.4, cursor: note ? "pointer" : "not-allowed",
+                    width: "56px", height: "56px", padding: "0",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: "12px", fontWeight: 500,
+                  }}>
+                  {copied ? "✓" : "COPY"}
+                </button>
+                {warnEmpty && (
+                  <span style={{
+                    fontSize: "10px", color: "var(--accent)",
+                    fontFamily: "'Geist', sans-serif", whiteSpace: "nowrap",
+                  }}>* empty fields</span>
+                )}
+              </div>
             </div>
             <PrivacyBanner />
           </div>
