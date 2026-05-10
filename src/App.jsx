@@ -3986,33 +3986,45 @@ function ShadeInput({ value, onChange }) {
   );
 }
 
+// ── Primary-tooth constants (US letter system A–T) ───────────────────────
+// Upper: A(UR 2nd mol)–E(UR central) | F(UL central)–J(UL 2nd mol)
+// Lower display order: T(LR 2nd mol)→K(LL 2nd mol)
+const TSI_PRIMARY_UPPER    = ['A','B','C','D','E','F','G','H','I','J'];
+const TSI_PRIMARY_LOWER    = ['T','S','R','Q','P','O','N','M','L','K'];
+const TSI_PRIMARY_ORDER    = 'ABCDEFGHIJKLMNOPQRST';
+// Teeth whose mesial surface is to the RIGHT in the display grid
+const TSI_PRIMARY_M_RIGHT  = new Set(['A','B','C','D','E','T','S','R','Q','P']);
+const TSI_PRIMARY_ANTERIOR = new Set(['C','D','E','F','G','H','M','N','O','P','Q','R']);
+
 // Tooth (+ surfaces) selector — replaces the plain ToothInput.
 // Renders a teeth grid popup identical to TeethSelectorPanel; when withSurfaces
 // is true, clicking a tooth opens a small surface-picker card anchored below
 // the active tooth with a triangle pointer. Surface layout mirrors Axium
 // odontogram: B/F top, L bottom, O/I center, M/D sides (M/D flip by quadrant).
-// A "enter as text" toggle falls back to the original ToothInput.
-function ToothSurfaceInput({ value, onChange, withSurfaces }) {
-  const [open, setOpen]           = useState(false);
+// defaultPrimary: open in primary-teeth mode (for peds context).
+// Adult and primary teeth can be selected simultaneously.
+function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = false }) {
+  const [open, setOpen]               = useState(false);
   const [activeTooth, setActiveTooth] = useState(null);
-  const [tailLeft, setTailLeft]   = useState(0);
-  const [cardLeft, setCardLeft]   = useState(0);
-  const panelRef   = useRef(null);
-  const gridRef    = useRef(null);
+  const [tailLeft, setTailLeft]       = useState(0);
+  const [cardLeft, setCardLeft]       = useState(0);
+  const [primaryMode, setPrimaryMode] = useState(defaultPrimary);
+  const panelRef    = useRef(null);
+  const gridRef     = useRef(null);
   const surfCardRef = useRef(null);
-  const btnRefs    = useRef({});   // keyed by tooth number
+  const btnRefs     = useRef({});   // keyed by tooth id (number or letter)
 
   // Standard dental surface order: M O/I D B/F L
   const SURF_ORDER = { M: 0, O: 1, I: 1, D: 2, B: 3, F: 3, L: 4 };
 
-  // ── Parse string value → { "19": ["M","O","D"], ... } ─────────────────
+  // ── Parse string value → { "19": ["M","O"], "C": ["M","O"], ... } ────
   const parseValue = (val) => {
     const out = {};
     if (!val.trim()) return out;
     val.split(",").forEach(token => {
       const m = token.trim().match(/^#?([A-Za-z0-9]+)(?:-([A-Za-z]+))?$/);
       if (!m) return;
-      out[m[1]] = m[2] ? m[2].toUpperCase().split("") : [];
+      out[m[1].toUpperCase()] = m[2] ? m[2].toUpperCase().split("") : [];
     });
     return out;
   };
@@ -4025,15 +4037,20 @@ function ToothSurfaceInput({ value, onChange, withSurfaces }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
-  // ── Serialize → string ────────────────────────────────────────────────
+  // ── Serialize → string (adults numerically sorted, primaries A→T) ────
   const serialize = (s) => {
-    const entries = Object.entries(s).sort(([a], [b]) => Number(a) - Number(b));
-    if (!entries.length) return "";
-    return entries.map(([num, surfs]) => {
-      if (!withSurfaces || surfs.length === 0) return num;
+    const isPrim = k => /^[A-T]$/.test(k);
+    const adult   = Object.entries(s).filter(([k]) => !isPrim(k))
+                      .sort(([a],[b]) => Number(a) - Number(b));
+    const primary = Object.entries(s).filter(([k]) => isPrim(k))
+                      .sort(([a],[b]) => TSI_PRIMARY_ORDER.indexOf(a) - TSI_PRIMARY_ORDER.indexOf(b));
+    const all = [...adult, ...primary];
+    if (!all.length) return "";
+    return all.map(([key, surfs]) => {
+      if (!withSurfaces || surfs.length === 0) return key;
       const sorted = [...surfs].sort((a, b) =>
         (SURF_ORDER[a] ?? 99) - (SURF_ORDER[b] ?? 99));
-      return `${num}-${sorted.join("")}`;
+      return `${key}-${sorted.join("")}`;
     }).join(", ");
   };
 
@@ -4070,22 +4087,21 @@ function ToothSurfaceInput({ value, onChange, withSurfaces }) {
     const gr = gridEl.getBoundingClientRect();
     const tr = btnRefs.current[activeTooth]?.getBoundingClientRect();
     if (!tr) return;
-    const cx     = tr.left + tr.width / 2 - gr.left;
-    const cardW  = cardEl.offsetWidth;
+    const cx    = tr.left + tr.width / 2 - gr.left;
+    const cardW = cardEl.offsetWidth;
     setCardLeft(Math.max(0, Math.min(cx - cardW / 2, gr.width - cardW)));
   }, [activeTooth, withSurfaces, open]);
 
   // ── Toggle a tooth ────────────────────────────────────────────────────
-  const toggleTooth = (num) => {
-    const k = String(num);
+  const toggleTooth = (id) => {
+    const k = String(id);
     const next = { ...sels };
     if (next[k] !== undefined) {
       delete next[k];
-      const remaining = Object.keys(next).map(Number).sort((a, b) => b - a);
-      setActiveTooth(remaining.length > 0 ? remaining[0] : null);
+      setActiveTooth(null);
     } else {
       next[k] = [];
-      setActiveTooth(num);
+      setActiveTooth(id);
     }
     setSels(next);
     onChange(serialize(next));
@@ -4102,36 +4118,39 @@ function ToothSurfaceInput({ value, onChange, withSurfaces }) {
     onChange(serialize(next));
   };
 
-  // ── Tooth geometry helpers ────────────────────────────────────────────
-  // Universal numbering: upper right 1-8, upper left 9-16,
-  // lower left 17-24, lower right 25-32.
-  // M always faces the midline; the midline sits between 8|9 (upper)
-  // and 24|25 (lower). In our grid (1→16 left-to-right, 32→17 L-to-R):
-  //   teeth 1-8 and 25-32 → M is to the RIGHT of the tooth box.
-  //   teeth 9-24           → M is to the LEFT.
-  const mOnRight = (n) => n <= 8 || n >= 25;
-  const isAnterior = (n) => (n >= 6 && n <= 11) || (n >= 22 && n <= 27);
+  // ── Tooth geometry helpers — dispatch on adult vs. primary ────────────
+  // Adult: universal numbering 1-32
+  //   M faces midline: teeth 1-8 and 25-32 → M on right; 9-24 → M on left
+  // Primary: letter system A-T
+  //   Upper A-E (patient's right) → M on right; F-J → M on left
+  //   Lower T-P (patient's right, displayed left) → M on right; O-K → M on left
+  const isPrimLetter = (t) => /^[A-T]$/.test(String(t));
+  const mOnRight = (t) => isPrimLetter(t)
+    ? TSI_PRIMARY_M_RIGHT.has(String(t))
+    : (n => n <= 8 || n >= 25)(Number(t));
+  const isAnterior = (t) => isPrimLetter(t)
+    ? TSI_PRIMARY_ANTERIOR.has(String(t))
+    : (n => (n >= 6 && n <= 11) || (n >= 22 && n <= 27))(Number(t));
 
-  const surfLayout = (n) => ({
-    top:    isAnterior(n) ? "F" : "B",
+  const surfLayout = (t) => ({
+    top:    isAnterior(t) ? "F" : "B",
     bottom: "L",
-    center: isAnterior(n) ? "I" : "O",
-    left:   mOnRight(n)   ? "D" : "M",
-    right:  mOnRight(n)   ? "M" : "D",
+    center: isAnterior(t) ? "I" : "O",
+    left:   mOnRight(t)   ? "D" : "M",
+    right:  mOnRight(t)   ? "M" : "D",
   });
 
   // ── Render helpers ────────────────────────────────────────────────────
   const upperTeeth = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
   const lowerTeeth = [32,31,30,29,28,27,26,25,24,23,22,21,20,19,18,17];
 
-  const toothBtn = (n) => {
-    const k = String(n);
+  const toothBtn = (id) => {
+    const k = String(id);
     const isSel    = sels[k] !== undefined;
-    const isActive = activeTooth === n;
-    const surfs    = sels[k] || [];
+    const isActive = String(activeTooth) === k;
     return (
-      <button key={n} ref={el => btnRefs.current[n] = el}
-        onClick={() => toggleTooth(n)}
+      <button key={id} ref={el => btnRefs.current[id] = el}
+        onClick={() => toggleTooth(id)}
         style={{
           position: "relative",
           background: isActive ? "var(--accent)" : isSel ? "rgba(122,26,26,0.10)" : "transparent",
@@ -4141,7 +4160,7 @@ function ToothSurfaceInput({ value, onChange, withSurfaces }) {
           cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
           lineHeight: 1.2, textAlign: "center",
         }}>
-        {n}
+        {id}
       </button>
     );
   };
@@ -4188,14 +4207,46 @@ function ToothSurfaceInput({ value, onChange, withSurfaces }) {
           borderRadius: "4px", padding: "10px 12px 12px",
           zIndex: 200, boxShadow: "0 4px 20px rgba(0,0,0,0.16)",
         }}>
-          {/* Tooth grid */}
-          <div ref={gridRef}>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginBottom: "3px" }}>
-              {upperTeeth.map(toothBtn)}
-            </div>
-            <div style={{ height: "1px", background: "var(--rule)", margin: "4px 0" }} />
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginTop: "3px" }}>
-              {lowerTeeth.map(toothBtn)}
+          {/* P toggle + tooth columns share gridRef for surface-picker positioning */}
+          <div ref={gridRef} style={{ display: "flex", alignItems: "stretch", gap: "4px" }}>
+            {/* "P" button — toggles primary/adult grid; lives inside gridRef so
+                tail-arrow math (tr.left - gr.left) already accounts for its width */}
+            <button
+              onClick={() => { setPrimaryMode(m => !m); setActiveTooth(null); }}
+              title={primaryMode ? "Switch to adult teeth" : "Switch to primary teeth"}
+              style={{
+                background: primaryMode ? "var(--accent)" : "transparent",
+                color: primaryMode ? "var(--paper)" : "var(--ink-soft)",
+                border: `1px solid ${primaryMode ? "var(--accent)" : "var(--rule)"}`,
+                borderRadius: "2px", fontSize: "11px", cursor: "pointer",
+                fontFamily: "'JetBrains Mono', monospace", lineHeight: 1.2,
+                flexShrink: 0, minWidth: "22px",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+              P
+            </button>
+            <div style={{ flex: 1 }}>
+              {primaryMode ? (
+                <>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(10, 1fr)", gap: "4px", marginBottom: "3px" }}>
+                    {TSI_PRIMARY_UPPER.map(toothBtn)}
+                  </div>
+                  <div style={{ height: "1px", background: "var(--rule)", margin: "4px 0" }} />
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(10, 1fr)", gap: "4px", marginTop: "3px" }}>
+                    {TSI_PRIMARY_LOWER.map(toothBtn)}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginBottom: "3px" }}>
+                    {upperTeeth.map(toothBtn)}
+                  </div>
+                  <div style={{ height: "1px", background: "var(--rule)", margin: "4px 0" }} />
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(16, 1fr)", gap: "4px", marginTop: "3px" }}>
+                    {lowerTeeth.map(toothBtn)}
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -6810,6 +6861,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                       value={fields.tooth}
                       onChange={v => setField("tooth", v)}
                       withSurfaces={needsSurfaces}
+                      defaultPrimary={isClinicPeds}
                     />
                   </Field>
                 )}
