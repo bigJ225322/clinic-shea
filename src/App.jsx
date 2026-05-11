@@ -3017,6 +3017,22 @@ const DEFAULT_INJECTION = {
   techMaxInfil: false,                      // Maxillary buccal infiltration
 };
 
+// Returns an injection preset based on a single tooth number and patient type.
+// Upper teeth and lower anteriors → buccal infiltration.
+// Lower posteriors (17-21 = LL, 28-32 = LR) → IAN + long buccal, 27G 35mm.
+// Peds always → buccal infiltration (no block distinction for primary teeth).
+const injectionForTooth = (tooth, isPeds) => {
+  if (isPeds) return { ...DEFAULT_INJECTION, techBuccalInfil: true };
+  const num = parseInt((tooth || "").replace(/\D/g, ""), 10);
+  if (!num || num < 1 || num > 32) return null;
+  const isRight = num <= 8 || num >= 25;
+  const side = isRight ? "right" : "left";
+  if ((num >= 17 && num <= 21) || (num >= 28 && num <= 32)) {
+    return { ...DEFAULT_INJECTION, needle: "27G 35mm", side, techIAN: true };
+  }
+  return { ...DEFAULT_INJECTION, side, techBuccalInfil: true };
+};
+
 // Returns an injection preset for a given SRP quadrant (UR/UL/LR/LL).
 // Upper quads → maxillary buccal infiltration + greater palatine, 30G 25mm.
 // Lower quads → IAN + long buccal, 27G 35mm.
@@ -3330,6 +3346,8 @@ function renderTemplate(raw, f) {
     const allergiesVal = f.allergies.trim() || "NKDA";
     t = t.replace(/^([ \t]*-[ \t]*allergies:)[^\n]*/im,
                   `$1 ${allergiesVal}`);
+    // Peds templates use inline "allergies???" placeholder.
+    t = t.replace(/allergies\?\?\?/, allergiesVal);
   }
   if (f.bp.trim()) {
     t = t.replace(/^([ \t]*-[ \t]*blood pressure:)[ \t]*$/im,
@@ -3521,7 +3539,7 @@ function renderTemplate(raw, f) {
   // the Endo testing block, replacing the hardcoded placeholder rows.
   {
     const ef = f.examFindings || {};
-    const endoFormCount = Math.max(1, parseInt(ef["endo count"] || 3, 10));
+    const endoFormCount = Math.max(1, parseInt(ef["endo count"] || 1, 10));
     const toothRows = Array.from({ length: endoFormCount }, (_, idx) => idx + 1).map(n => {
       const p = `endo${n}`;
       const toothRaw = (ef[`${p} #`] || "").trim().replace(/^#/, "");
@@ -3742,6 +3760,8 @@ function renderTemplate(raw, f) {
       /Titrated to [^.]*nitrous[^.]*\.\s*Administered for [^.]*\.\s*/i,
       ""
     );
+    // Strip the O2 purge sentence that follows nitrous (diffusion hypoxia protocol).
+    t = t.replace(/Patient given 100% oxygen at 4L\/min for 5 minutes\.\s*/g, "");
   }
 
   // -------- 8. Anesthetic substitution. --------
@@ -6534,9 +6554,9 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
                   </div>
                 </HelpPopup>
               </div>
-              {Array.from({ length: Math.max(1, parseInt(findings["endo count"] || 3, 10)) }, (_, idx) => {
+              {Array.from({ length: Math.max(1, parseInt(findings["endo count"] || 1, 10)) }, (_, idx) => {
                 const n = idx + 1;
-                const endoCount = Math.max(1, parseInt(findings["endo count"] || 3, 10));
+                const endoCount = Math.max(1, parseInt(findings["endo count"] || 1, 10));
                 const prefix = `endo${n}`;
                 const canRemove = endoCount > 1;
                 return (
@@ -6618,9 +6638,9 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
                   </div>
                 );
               })}
-              {Math.max(1, parseInt(findings["endo count"] || 3, 10)) < 6 && (
+              {Math.max(1, parseInt(findings["endo count"] || 1, 10)) < 6 && (
                 <button type="button"
-                  onClick={() => update("endo count", Math.max(1, parseInt(findings["endo count"] || 3, 10)) + 1)}
+                  onClick={() => update("endo count", Math.max(1, parseInt(findings["endo count"] || 1, 10)) + 1)}
                   style={{ marginTop: "10px", fontSize: "12px", color: "var(--accent)", background: "none",
                     border: "none", cursor: "pointer", fontFamily: "'Geist', sans-serif", padding: 0 }}>
                   + Add tooth
@@ -6801,6 +6821,8 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     () => /medications:/i.test(rawTemplate), [rawTemplate]);
   const needsAllergies = useMemo(
     () => /allergies:/i.test(rawTemplate), [rawTemplate]);
+  const needsPedsAllergies = useMemo(
+    () => /allergies\?\?\?/.test(rawTemplate), [rawTemplate]);
   const needsBP = useMemo(
     () => /blood pressure:/i.test(rawTemplate), [rawTemplate]);
   const needsBG = useMemo(
@@ -6863,6 +6885,20 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
   }, [fields]);
 
   const setField = (k, v) => setFields(p => ({ ...p, [k]: v }));
+
+  // When a tooth is entered and the procedure needs anesthetic, auto-set the
+  // injection technique if the user hasn't touched the injection yet.
+  useEffect(() => {
+    if (!needsAnesthetic || !fields.tooth) return;
+    const inj = fields.injections[0] || {};
+    const pristine = !inj.techIAN && !inj.techBuccalInfil &&
+      !inj.techGreaterPalatine && !inj.techNasopalatine && !inj.techMaxInfil;
+    if (!pristine) return;
+    const preset = injectionForTooth(fields.tooth, isClinicPeds);
+    if (!preset) return;
+    setFields(p => ({ ...p, injections: [preset, ...p.injections.slice(1)] }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fields.tooth]);
 
   // Clinic visibility rules:
   //   peds       → no dropdown, note always uses "UG Peds"
@@ -7191,7 +7227,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               </div>
             </>
           )}
-          {(needsMedHistory || needsMedications || needsAllergies ||
+          {(needsMedHistory || needsMedications || needsAllergies || needsPedsAllergies ||
             needsBP || needsBG) && (
             <>
               <Hairline />
@@ -7205,9 +7241,9 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   <TextInput value={fields.medications} onChange={v=>setField("medications",v)} placeholder="none / list meds" />
                 </Field>
               )}
-              {(needsAllergies || needsBP || needsBG) && (
+              {(needsAllergies || needsPedsAllergies || needsBP || needsBG) && (
                 <div style={threeCol}>
-                  {needsAllergies && (
+                  {(needsAllergies || needsPedsAllergies) && (
                     <Field label="Allergies">
                       <TextInput value={fields.allergies} onChange={v=>setField("allergies",v)} placeholder="NKDA" />
                     </Field>
@@ -7561,12 +7597,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   }}>
                   {copied ? "✓" : "COPY"}
                 </button>
-                {warnEmpty && (
-                  <span style={{
-                    fontSize: "10px", color: "var(--accent)",
-                    fontFamily: "'Geist', sans-serif", whiteSpace: "nowrap",
-                  }}>* empty fields</span>
-                )}
               </div>
             </div>
             <PrivacyBanner />
@@ -8713,11 +8743,13 @@ const RVU_CATEGORIES = [
   { id: "all",   label: "All",            match: () => true },
   { id: "diag",  label: "Diagnostic",     match: c => /^D0/.test(c) },
   { id: "prev",  label: "Preventive",     match: c => /^D1/.test(c) },
-  { id: "rest",  label: "Restorative",    match: c => /^D2/.test(c) },
+  // Crowns (D27xx, prefab/SSC D292x–D293x) are separated from fillings so
+  // Restorative aligns with the MEE "Direct Restorative" category.
+  { id: "rest",  label: "Restorative",    match: c => /^D2/.test(c) && !/^D27/.test(c) && !/^D29(2[0-9]|3[0-5])/.test(c) },
   { id: "endo",  label: "Endo",           match: c => /^D3/.test(c) },
   { id: "perio", label: "Perio",          match: c => /^D4/.test(c) },
   { id: "rpd",   label: "Removable",      match: c => /^D5/.test(c) },
-  { id: "fix",   label: "Fixed/Implant",  match: c => /^D6/.test(c) },
+  { id: "fix",   label: "Fixed/Implant",  match: c => /^D27/.test(c) || /^D29(2[0-9]|3[0-5])/.test(c) || /^D6/.test(c) },
   { id: "os",    label: "Oral Surgery",   match: c => /^D7/.test(c) },
   { id: "ortho", label: "Orthodontics",   match: c => /^D8/.test(c) },
   { id: "adj",   label: "Adjunctive",     match: c => /^D9/.test(c) },
