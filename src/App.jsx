@@ -3017,6 +3017,18 @@ const DEFAULT_INJECTION = {
   techMaxInfil: false,                      // Maxillary buccal infiltration
 };
 
+// Returns an injection preset for a given SRP quadrant (UR/UL/LR/LL).
+// Upper quads → maxillary buccal infiltration + greater palatine, 30G 25mm.
+// Lower quads → IAN + long buccal, 27G 35mm.
+const injectionForQuad = (quad) => ({
+  ...DEFAULT_INJECTION,
+  needle: (quad === "LR" || quad === "LL") ? "27G 35mm" : "30G 25mm",
+  side: (quad === "UR" || quad === "LR") ? "right" : "left",
+  techIAN: quad === "LR" || quad === "LL",
+  techMaxInfil: quad === "UR" || quad === "UL",
+  techGreaterPalatine: quad === "UR" || quad === "UL",
+});
+
 const DEFAULT_FIELDS = {
   age: "", gender: "", clinic: "", tooth: "", shade: "A2",
   medHistory: "", medications: "", allergies: "",
@@ -3063,6 +3075,9 @@ const DEFAULT_FIELDS = {
   // srpDate: date SRP was completed, shown in perio re-eval (1346) header line.
   //   Replaces the "1/1/2000" placeholder.
   srpDate: "",
+  // srpQuads: quadrant(s) treated in SRP (1272). Array of "UR"|"UL"|"LR"|"LL".
+  //   Replaces "UR" in "for SRP of UR." and "SRP UR:" in the template.
+  srpQuads: ["UR"],
   // poeOnly: when true for POE (1091), strips the Prophy section from the note
   //   and hides the perio chart & OHI form sections.
   poeOnly: false,
@@ -3271,6 +3286,14 @@ function renderTemplate(raw, f) {
     t = t.replace(/\n{3,}/g, "\n\n");
   }
 
+  // -------- 6e2. SRP quadrant(s). --------
+  // Replaces "UR" in "for SRP of UR." and "SRP UR:" with the selected quad(s).
+  if (Array.isArray(f.srpQuads) && f.srpQuads.length > 0) {
+    const q = f.srpQuads.join(", ");
+    t = t.replace(/(?<=for SRP of )UR(?=\.)/, q);
+    t = t.replace(/(?<=\nSRP )UR(?=:)/, q);
+  }
+
   // -------- 6f. Perio re-eval SRP completion date. --------
   // Applies to template 1346. Replaces the "1/1/2000" placeholder with the
   // date the student enters. Leaves "1/1/2000" if the field is empty so the
@@ -3353,6 +3376,7 @@ function renderTemplate(raw, f) {
   if (f.examFindings && typeof f.examFindings === "object") {
     for (const [label, value] of Object.entries(f.examFindings)) {
       if (typeof value === "boolean") continue; // ohi-checkbox booleans handled in 7b-perio
+      if (Array.isArray(value)) continue; // structured data (e.g. consultations) handled separately
       // Compound endo testing keys (endo1 #, endo2 perc, etc.) and the UI
       // count key are assembled into the Endo testing block separately below.
       if (/^endo\d+ /.test(label) || label === "endo count") continue;
@@ -3520,6 +3544,26 @@ function renderTemplate(raw, f) {
       /(Endo testing:)\n(?:-[^\n]*\n?)*/,
       `$1\n${toothRows.join("\n")}\n`
     );
+  }
+
+  // -------- 7b-consult. Urgent care consultations assembly. --------
+  // Reads examFindings.consultations array and replaces the hardcoded
+  // "Consultations:" block in the template.
+  {
+    const cons = f.examFindings?.consultations;
+    if (Array.isArray(cons)) {
+      if (cons.length === 0) {
+        t = t.replace(/ Consultations:\n(?: *- Dr\. \[Name\][^\n]*\n)*/g, "");
+      } else {
+        const lines = cons.map(c =>
+          ` - ${c.name ? `Dr. ${c.name}` : "Dr. [Name]"} -- ${c.type} consult:`
+        ).join("\n");
+        t = t.replace(
+          / Consultations:\n(?: *- Dr\. \[Name\][^\n]*\n)*/g,
+          ` Consultations:\n${lines}\n`
+        );
+      }
+    }
   }
 
   // -------- 7b-perio. Perio-specific field substitutions. --------
@@ -5163,6 +5207,7 @@ const EXAM_FINDINGS_CONFIG = {
       ],
     },
     { type: "endo-test-rows" },
+    { type: "consultations" },
     {
       title: "Diagnoses",
       rows: [
@@ -6585,6 +6630,65 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
           );
         }
 
+        // Consultations list — urgent care
+        if (section.type === "consultations") {
+          const CONSULT_TYPES = ["restorative", "perio", "OS", "endo", "ortho", "prostho", "other"];
+          const cons = Array.isArray(findings["consultations"])
+            ? findings["consultations"]
+            : [{ name: "", type: "restorative" }];
+          return (
+            <div key={i} style={{ marginTop: "16px" }}>
+              <SubsectionLabel>Consultations</SubsectionLabel>
+              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                {cons.map((c, ci) => (
+                  <div key={ci} style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                    <input
+                      value={c.name}
+                      placeholder="Dr. name"
+                      onChange={e => {
+                        const next = cons.map((x, j) => j === ci ? { ...x, name: e.target.value } : x);
+                        update("consultations", next);
+                      }}
+                      style={{ ...inputStyle, flex: 1, fontSize: "13px", minWidth: 0 }}
+                    />
+                    <div style={{ position: "relative", flexShrink: 0 }}>
+                      <select
+                        value={c.type}
+                        onChange={e => {
+                          const next = cons.map((x, j) => j === ci ? { ...x, type: e.target.value } : x);
+                          update("consultations", next);
+                        }}
+                        style={{ ...inputStyle, fontSize: "13px", width: "110px",
+                          padding: "7px 28px 7px 10px", appearance: "none" }}>
+                        {CONSULT_TYPES.map(t => <option key={t}>{t}</option>)}
+                      </select>
+                      <span style={{ position: "absolute", right: "8px", top: "50%",
+                        transform: "translateY(-50%)", pointerEvents: "none",
+                        fontSize: "10px", color: "var(--ink-soft)" }}>▼</span>
+                    </div>
+                    <button type="button"
+                      onClick={() => update("consultations", cons.filter((_, j) => j !== ci))}
+                      style={{ background: "none", border: "none", cursor: "pointer",
+                        color: "var(--ink-faint)", fontSize: "16px", lineHeight: 1,
+                        padding: "0 2px", flexShrink: 0 }}
+                      onMouseEnter={e => { e.currentTarget.style.color = "var(--accent)"; }}
+                      onMouseLeave={e => { e.currentTarget.style.color = "var(--ink-faint)"; }}>
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <button type="button"
+                onClick={() => update("consultations", [...cons, { name: "", type: "restorative" }])}
+                style={{ marginTop: "8px", fontSize: "12px", color: "var(--accent)",
+                  background: "none", border: "none", cursor: "pointer",
+                  fontFamily: "'Geist', sans-serif", padding: 0 }}>
+                + Add consult
+              </button>
+            </div>
+          );
+        }
+
         // sections can declare `rows` (array of field arrays) for horizontal layout,
         // or the standard `fields` array for the default vertical stack.
         const fields = section.rows
@@ -6784,6 +6888,15 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     }
   }, [categoryId, procedureId]);
 
+  // When switching into SRP (1272), auto-populate injections from srpQuads.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (procedureId === "1272") {
+      const quads = fields.srpQuads?.length ? fields.srpQuads : ["UR"];
+      setFields(p => ({ ...p, injections: quads.map(injectionForQuad) }));
+    }
+  }, [procedureId]);
+
   // When category changes, clear local procedure AND lift that change up
   // so the App-level selection doesn't go stale. Also clear the note since
   // there's no procedure to generate one for.
@@ -6931,6 +7044,53 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                 <option value="Mozart">Mozart</option>
                 {showChicago && <option value="Chicago">Chicago</option>}
               </Select>
+            </Field>
+          )}
+          {procedureId === "1272" && (
+            <Field label="Quadrant">
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+                {(fields.srpQuads || ["UR"]).map((q, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                    <div style={{ position: "relative" }}>
+                      <select value={q}
+                        onChange={e => {
+                          const next = [...(fields.srpQuads || ["UR"])];
+                          next[i] = e.target.value;
+                          setFields(p => ({ ...p, srpQuads: next, injections: next.map(injectionForQuad) }));
+                        }}
+                        style={{ ...inputStyle, fontSize: "13px", width: "64px",
+                          padding: "7px 28px 7px 10px", appearance: "none" }}>
+                        <option>UR</option>
+                        <option>UL</option>
+                        <option>LR</option>
+                        <option>LL</option>
+                      </select>
+                      <span style={{ position: "absolute", right: "8px", top: "50%",
+                        transform: "translateY(-50%)", pointerEvents: "none",
+                        fontSize: "10px", color: "var(--ink-soft)" }}>▼</span>
+                    </div>
+                    {i > 0 && (
+                      <button type="button" onClick={() => {
+                        const next = (fields.srpQuads || ["UR"]).filter((_, j) => j !== i);
+                        setFields(p => ({ ...p, srpQuads: next, injections: next.map(injectionForQuad) }));
+                      }} style={{ background: "none", border: "none", cursor: "pointer",
+                        color: "var(--ink-faint)", fontSize: "16px", lineHeight: 1,
+                        padding: "0 2px" }}>×</button>
+                    )}
+                  </div>
+                ))}
+                {(fields.srpQuads || ["UR"]).length < 4 && (
+                  <button type="button" onClick={() => {
+                    const used = new Set(fields.srpQuads || ["UR"]);
+                    const nextQ = ["UR","UL","LR","LL"].find(q => !used.has(q)) || "UR";
+                    const next = [...(fields.srpQuads || ["UR"]), nextQ];
+                    setFields(p => ({ ...p, srpQuads: next, injections: next.map(injectionForQuad) }));
+                  }} style={{ background: "none", border: "1px solid var(--rule)",
+                    borderRadius: "2px", cursor: "pointer", color: "var(--ink-soft)",
+                    fontSize: "16px", lineHeight: 1, padding: "3px 8px",
+                    fontFamily: "monospace" }}>+</button>
+                )}
+              </div>
             </Field>
           )}
           {procedureId === "1346" && (
@@ -9632,7 +9792,7 @@ const PES = [
   {
     id: "PER02", code: "PER02", part: "perio",
     name: "Periodontal Prevention & Risk Factor (OHI) Exam",
-    deadline: { semester: "D3-summer", text: "Summer D3 (DMD) / Fall AS3 (DMD-AS)" },
+    deadline: { semester: "D3-spring", text: "Spring D3/AS3 (DAOB 333)" },
     prereq: "3 OHI procedures including O'Leary Plaque Index",
     prereqCheck: null,
     caseSelect: "Any patient requiring oral hygiene instructions.",
@@ -10274,7 +10434,7 @@ const PES_PART6 = [
   {
     id: "EROOT2", code: "EROOT2", part: "specialty",
     name: "Endodontic PE — Multi-Rooted Tooth",
-    deadline: { semester: "D4-fall", text: "End of Fall D4/AS4" },
+    deadline: { semester: "D4-spring", text: "End of Spring D4/AS4" },
     prereq: "At least 1 root canal treatment (RCT) completed.",
     prereqCheck: (counts) => checkCount(counts, "endo", 1, "RCTs"),
     caseSelect: "Premolars or molars with 'Minimal' or 'Moderate' AAE difficulty level.",
@@ -10322,7 +10482,8 @@ const PES_PART6 = [
   {
     id: "OS", code: "OS", part: "specialty",
     name: "Oral Surgery Performance Exam",
-    deadline: { semester: "D4-spring", text: "Throughout OS rotation" },
+    deadline: { semester: "D3-spring", text: "Throughout OS rotation" },
+    tracks: { dmd: "D3-spring", as: "D4-summer" },
     prereq: "Declare procedure as PE prior to starting.",
     prereqCheck: null,
     caseSelect: "Routine extraction.",
@@ -10350,7 +10511,7 @@ const PES_PART6 = [
   {
     id: "OMED", code: "OMED", part: "specialty",
     name: "Oral Medicine — Extraoral/Intraoral Exam",
-    deadline: { semester: "D3-fall", text: "During D3 Oral Medicine rotation (by 5th of 6 rotations)" },
+    deadline: { semester: "D3-spring", text: "During D3 Oral Medicine rotation (by end of rotation)" },
     prereq: "None specified.",
     prereqCheck: null,
     caseSelect: "Comprehensive head and neck examination patient.",
@@ -10371,6 +10532,30 @@ const PES_PART6 = [
     ],
     criticalDeficiencies: ["Standard six"],
   },
+  {
+    id: "EBD", code: "EBD", part: "specialty",
+    name: "Evidence-Based Dentistry Presentation",
+    deadline: { semester: "D4-spring", text: "Spring D4/AS4 — topic approved and presented prior to graduation" },
+    prereq: "Topic must be approved by faculty before presentation.",
+    prereqCheck: null,
+    caseSelect: "Clinically relevant question from student's own patient care experience. Must follow PICO format.",
+    protocol: "Submit topic for faculty approval (I9005A). Prepare and deliver formal presentation to faculty and peers (I9005B). Presentation must critically appraise the evidence and apply findings to a clinical scenario.",
+    criteria: [
+      { name: "Topic Approval",
+        excellent: null,
+        acceptable: "PICO question clearly stated; clinically relevant topic submitted and approved.",
+        notMet: "Topic not submitted, not approved, or not in PICO format." },
+      { name: "Literature Search & Appraisal",
+        excellent: null,
+        acceptable: "Appropriate databases searched; evidence hierarchy recognized; study quality assessed.",
+        notMet: "Inadequate search strategy; evidence hierarchy not considered; quality not appraised." },
+      { name: "Presentation",
+        excellent: null,
+        acceptable: "Clinical question, methods, findings, and applicability communicated clearly.",
+        notMet: "Presentation incomplete, incoherent, or fails to connect evidence to clinical practice." },
+    ],
+    criticalDeficiencies: ["Topic not approved prior to presentation."],
+  },
 ];
 
 
@@ -10379,7 +10564,8 @@ const PES_PART7 = [
   {
     id: "PEDO_EXAM", code: "D9107", part: "rotation",
     name: "Pediatric Examination & Treatment Planning",
-    deadline: { semester: "D3-spring", text: "End of Spring D3 / Fall A4 (must be by end of pediatric rotation)" },
+    deadline: { semester: "D3-spring", text: "By end of pediatric rotation" },
+    tracks: { dmd: "D3-spring", as: "D4-summer" },
     prereq: "2 comprehensive oral examinations & treatment planning on pediatric patients.",
     prereqCheck: null, // peds COE not separately tracked from adult COE in MEE
     caseSelect: "Pediatric patient in mixed dentition; either initial exam or recall ≥24 months from last exam. Patient must need new radiographs.",
@@ -10424,6 +10610,7 @@ const PES_PART7 = [
     id: "PEDO_REST", code: "D9106", part: "rotation",
     name: "Pediatric Primary Tooth Restorative Exam",
     deadline: { semester: "D3-spring", text: "By end of pediatric rotation" },
+    tracks: { dmd: "D3-spring", as: "D4-summer" },
     prereq: "None specified.",
     prereqCheck: null,
     caseSelect: "Primary tooth requiring an interproximal restoration (Class II, Class III, or stainless steel crown).",
@@ -10467,7 +10654,8 @@ const PES_PART7 = [
   {
     id: "URGENT", code: "Urgent Care", part: "rotation",
     name: "Urgent Care Performance Exam",
-    deadline: { semester: "D4-fall", text: "Third semester of Urgent Care Rotation" },
+    deadline: { semester: "D3-spring", text: "Third semester of Urgent Care Rotation" },
+    tracks: { dmd: "D3-spring", as: "D4-summer" },
     prereq: "Urgent Care faculty assists with identifying suitable patient.",
     prereqCheck: null,
     caseSelect: "Urgent Care faculty will assist with identifying suitable patient.",
@@ -10622,7 +10810,13 @@ function PETimeline({ pes, selectedId, onSelect }) {
         gap: "6px",
       }}>
         {PE_SEMESTERS.map(sem => {
-          const semPes = pes.filter(p => p.deadline.semester === sem.id);
+          // Track-split PEs (PEDO_EXAM, PEDO_REST, URGENT, OS) appear in two
+          // columns: D3-spring labeled "DMD only" and D4-summer labeled "AS only".
+          const TRACK_IDS = new Set(["PEDO_EXAM", "PEDO_REST", "URGENT", "OS"]);
+          const semPes = pes.filter(p => !TRACK_IDS.has(p.id) && p.deadline.semester === sem.id);
+          const trackPes = pes.filter(p => TRACK_IDS.has(p.id));
+          const showDMD = sem.id === "D3-spring";
+          const showAS  = sem.id === "D4-summer";
           return (
             <div key={sem.id} style={{
               border: "1px solid var(--rule)",
@@ -10688,9 +10882,49 @@ function PETimeline({ pes, selectedId, onSelect }) {
                   );
                 };
 
+                // Track group — compact horizontal strip of track-split PEs with a label.
+                const trackGroup = (label) => {
+                  const anySelected = trackPes.some(p => selectedId === p.id);
+                  return (
+                    <div style={{ marginTop: rows.length > 0 ? "5px" : 0 }}>
+                      <div style={{
+                        fontSize: "8px", letterSpacing: "0.08em", textTransform: "uppercase",
+                        color: "var(--ink-faint)", marginBottom: "3px",
+                        fontFamily: "'Geist', sans-serif",
+                      }}>{label}</div>
+                      <div style={{
+                        display: "flex",
+                        border: `1px solid ${anySelected ? "var(--accent)" : "var(--rule)"}`,
+                        borderRadius: "2px", overflow: "hidden",
+                      }}>
+                        {trackPes.map((pe, i) => {
+                          const isSelected = selectedId === pe.id;
+                          return (
+                            <button key={pe.id} onClick={() => onSelect(pe.id)} title={pe.name}
+                              style={{
+                                flex: 1,
+                                background: isSelected ? "var(--accent)" : "var(--paper)",
+                                border: "none",
+                                borderLeft: i > 0 ? "1px solid var(--rule)" : "none",
+                                padding: "4px 0",
+                                fontSize: "9px", fontFamily: "'Geist', sans-serif", fontWeight: 500,
+                                color: isSelected ? "var(--paper)" : "var(--ink)",
+                                cursor: "pointer", textAlign: "center",
+                                transition: "background 80ms, color 80ms",
+                              }}>
+                              <span className="mono" style={{ fontVariantNumeric: "tabular-nums" }}>{pe.code}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                };
+
+                const hasContent = rows.length > 0 || showDMD || showAS;
                 return (
                   <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-                    {rows.length === 0 && (
+                    {!hasContent && (
                       <div style={{ color: "var(--ink-faint)", fontSize: "10px",
                           fontStyle: "italic", textAlign: "center", padding: "8px 0" }}>—</div>
                     )}
@@ -10728,6 +10962,8 @@ function PETimeline({ pes, selectedId, onSelect }) {
                         </div>
                       );
                     })}
+                    {showDMD && trackGroup("DMD only")}
+                    {showAS  && trackGroup("AS only")}
                   </div>
                 );
               })()}
@@ -10924,7 +11160,12 @@ function PEs({ onShowSteps }) {
         .map(part => ({ label: part.label, pes: PES_ALL.filter(p => p.part === part.id) }))
         .filter(g => g.pes.length > 0)
     : PE_SEMESTERS
-        .map(sem => ({ label: sem.label, pes: PES_ALL.filter(p => p.deadline.semester === sem.id) }))
+        .map(sem => ({
+          label: sem.label,
+          pes: PES_ALL.filter(p => p.tracks
+            ? (p.tracks.dmd === sem.id || p.tracks.as === sem.id)
+            : p.deadline.semester === sem.id),
+        }))
         .filter(g => g.pes.length > 0);
 
   return (
