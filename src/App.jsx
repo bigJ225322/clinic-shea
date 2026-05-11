@@ -1531,9 +1531,6 @@ const RVU_DATA = [
   { code: "D1208NC", desc: "Topical application of fluoride-excluding varnish-NoCharge", rvu: 2 },
   { code: "D1310", desc: "Nutritional counseling", rvu: 1 },
   { code: "D1320", desc: "Tobacco counseling", rvu: 1 },
-  { code: "D1320.1", desc: "Record Tobacco usage", rvu: 1 },
-  { code: "D1320.2", desc: "Provide Tobacco Cessation Education", rvu: 2 },
-  { code: "D1320.3", desc: "Tobacco Cessation Follow Up with Patient", rvu: 1 },
   { code: "D1330", desc: "Oral hygiene instructions", rvu: 1 },
   { code: "D1351", desc: "Sealant - per tooth", rvu: 1 },
   { code: "D1354", desc: "Interim caries arresting medicament application-SDF", rvu: 2 },
@@ -2215,7 +2212,7 @@ const CATEGORIES = [
   { id: "perio", label: "Perio", groups: [
     { id: "perio-procs", label: "Procedures", procedures: [
       { id: "1196", label: "Prophy" },
-      { id: "1272", label: "SRP (Scaling & Root Planing)", pinnedCodes: ["D4243","D4341","D1330","D1310","D1320.1","D1320.2"] },
+      { id: "1272", label: "SRP (Scaling & Root Planing)", pinnedCodes: ["D4243","D4341","D1330","D1310"] },
       { id: "1346", label: "Perio Re-Evaluation" },
       { id: "1425", label: "Perio Maintenance" },
       { id: "ohi", label: "OHI" },
@@ -7562,7 +7559,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   let codes = basePool.filter(({ code }) => {
                     if (code === "D1110" || code === "D1120") return prophyChecked;
                     if (code === "D1310") return nutriChecked && prophyChecked;
-                    if (code === "D1320.1" || code === "D1320.2" || code === "D1320.3") return tobaccoChecked && prophyChecked;
                     if (code === "D0475") return impressionsChecked;
                     // D0601–D0603 stripped here; the selected one is re-injected below
                     if (code === "D0601" || code === "D0602" || code === "D0603") return false;
@@ -8541,7 +8537,7 @@ const SWADE_CODES = new Set([
   "D0330","D0350","D0365L","D0366U","D0460","D0475",
   "D0601","D0602","D0603","D0604",
   // Preventive
-  "D1110","D1120","D1206","D1310","D1320.1","D1320.2","D1320.3","D1330","D1351",
+  "D1110","D1120","D1206","D1310","D1330","D1351",
   // Restorative
   "D2140","D2150","D2160","D2161",
   "D2330","D2331","D2332","D2335","D2390","D2391","D2392","D2393",
@@ -8723,7 +8719,7 @@ const lookupFee = code => UIC_FEES[code] ?? UIC_FEES[code.replace(/[A-D]$/, '')]
 const CODE_GROUPS = {
   // ── Conventional multi-step ──────────────────────────────────────────────
   "D0150":  { desc: "Comprehensive Oral Exam (COE)",               children: ["D0150A","D0150B","D0150C"] },
-  "D1320":  { desc: "Tobacco counseling",                           children: ["D1320.1","D1320.2","D1320.3"] },
+  "D1320":  { desc: "Tobacco counseling" },
   "D2510":  { desc: "Inlay, metallic, 1 surf",                      children: ["D2510A","D2510B","D2510C"] },
   "D2520":  { desc: "Inlay, metallic, 2 surf",                      children: ["D2520A","D2520B","D2520C"] },
   "D2530":  { desc: "Inlay, metallic, 3+ surf",                     children: ["D2530A","D2530B","D2530C"] },
