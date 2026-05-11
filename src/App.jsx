@@ -8756,7 +8756,7 @@ const CODE_GROUPS = {
 };
 // Reverse map: child code → parent code (built from CODE_GROUPS).
 const CHILD_TO_PARENT = {};
-Object.entries(CODE_GROUPS).forEach(([p, g]) => g.children.forEach(c => { CHILD_TO_PARENT[c] = p; }));
+Object.entries(CODE_GROUPS).forEach(([p, g]) => (g.children || []).forEach(c => { CHILD_TO_PARENT[c] = p; }));
 
 // CDT category convention by code prefix. Used by the code lookup table
 // for quick filtering.
