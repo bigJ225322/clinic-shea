@@ -7559,6 +7559,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   let codes = basePool.filter(({ code }) => {
                     if (code === "D1110" || code === "D1120") return prophyChecked;
                     if (code === "D1310") return nutriChecked && prophyChecked;
+                    if (code === "D1320" || code === "D1320.1" || code === "D1320.2" || code === "D1320.3") return tobaccoChecked;
                     if (code === "D0475") return impressionsChecked;
                     // D0601–D0603 stripped here; the selected one is re-injected below
                     if (code === "D0601" || code === "D0602" || code === "D0603") return false;
@@ -8719,7 +8720,6 @@ const lookupFee = code => UIC_FEES[code] ?? UIC_FEES[code.replace(/[A-D]$/, '')]
 const CODE_GROUPS = {
   // ── Conventional multi-step ──────────────────────────────────────────────
   "D0150":  { desc: "Comprehensive Oral Exam (COE)",               children: ["D0150A","D0150B","D0150C"] },
-  "D1320":  { desc: "Tobacco counseling" },
   "D2510":  { desc: "Inlay, metallic, 1 surf",                      children: ["D2510A","D2510B","D2510C"] },
   "D2520":  { desc: "Inlay, metallic, 2 surf",                      children: ["D2520A","D2520B","D2520C"] },
   "D2530":  { desc: "Inlay, metallic, 3+ surf",                     children: ["D2530A","D2530B","D2530C"] },
@@ -8756,7 +8756,7 @@ const CODE_GROUPS = {
 };
 // Reverse map: child code → parent code (built from CODE_GROUPS).
 const CHILD_TO_PARENT = {};
-Object.entries(CODE_GROUPS).forEach(([p, g]) => (g.children || []).forEach(c => { CHILD_TO_PARENT[c] = p; }));
+Object.entries(CODE_GROUPS).forEach(([p, g]) => g.children.forEach(c => { CHILD_TO_PARENT[c] = p; }));
 
 // CDT category convention by code prefix. Used by the code lookup table
 // for quick filtering.
