@@ -1475,6 +1475,7 @@ const RVU_DATA = [
   { code: "D0101", desc: "Phase 1 Reevaluation", rvu: 1 },
   { code: "D0102", desc: "Phase 2 Reevaluation", rvu: 1 },
   { code: "D0103", desc: "Phase 3 Reevaluation", rvu: 10 },
+  { code: "D0105", desc: "Office Visit", rvu: 5 },
   { code: "D0106", desc: "UG implant recall exam-OD", rvu: 1 },
   { code: "D0107", desc: "UG implant recall exam-STI", rvu: 1 },
   { code: "D0120", desc: "Periodic oral evaluation", rvu: 2 },
@@ -1737,6 +1738,7 @@ const RVU_DATA = [
   { code: "D4241", desc: "Gingivectomy/Gingivoplasty — 4+ teeth/quad", rvu: 4 },
   { code: "D4341", desc: "Sc/Rp 4 or more teeth/quad", rvu: 5 },
   { code: "D4341C", desc: "Sc/RP Competency", rvu: 5 },
+  { code: "D4243", desc: "Sc/Rp 1-3 teeth/quad", rvu: 3 },
   { code: "D4342", desc: "Sc/Rp 1-3 teeth/quad", rvu: 3 },
   { code: "D4346", desc: "Scaling w/ general, moderate or severe gingival inflammation", rvu: 5 },
   { code: "D4355", desc: "Full mouth debridement", rvu: 4 },
@@ -1747,6 +1749,7 @@ const RVU_DATA = [
   { code: "D4910C", desc: "Perio Maintenance Competency", rvu: 4 },
   { code: "I4002", desc: "Perio Pro Health System", rvu: 2 },
   { code: "D5000FD", desc: "In Process Step of PO Removable - Full Denture", rvu: 2 },
+  { code: "D5000NC", desc: "In-Process Step or PO Removable - N/C", rvu: 2 },
   { code: "D5000PD", desc: "In Process Step or PO Removable - Partial Denture", rvu: 2 },
   { code: "D5110A", desc: "Final Impression", rvu: 10 },
   { code: "D5110B", desc: "Wax Tryin", rvu: 10 },
@@ -7533,6 +7536,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   const stepsChunk = findChunkForProcedure(proc, CHUNKS, "steps");
                   if (!stepsChunk) return null;
                   const ef = fields.examFindings || {};
+                  const prophyChecked = !fields.poeOnly;
                   const nutriChecked = ef["nutritional counseling"] === true;
                   const tobaccoChecked = ef["tobacco cessation"] === true;
                   const impressionsChecked = ef["impressions"] === true;
@@ -7556,8 +7560,9 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                       })
                     : extracted;
                   let codes = basePool.filter(({ code }) => {
-                    if (code === "D1310") return nutriChecked;
-                    if (code === "D1320.1" || code === "D1320.2" || code === "D1320.3") return tobaccoChecked;
+                    if (code === "D1110" || code === "D1120") return prophyChecked;
+                    if (code === "D1310") return nutriChecked && prophyChecked;
+                    if (code === "D1320.1" || code === "D1320.2" || code === "D1320.3") return tobaccoChecked && prophyChecked;
                     if (code === "D0475") return impressionsChecked;
                     // D0601–D0603 stripped here; the selected one is re-injected below
                     if (code === "D0601" || code === "D0602" || code === "D0603") return false;
@@ -8529,24 +8534,31 @@ function mergeEquipment(perProc) {
 // Internal form identifiers (ADJ, EM-CSF, ENDO, etc.) are omitted — they are
 // workflow identifiers, not billable CDT codes, and don't appear in RVU_DATA.
 const SWADE_CODES = new Set([
-  // Diagnostic & Preventive
+  // Diagnostic
+  "D0103","D0105",
   "D0120","D0140","D0147","D0150","D0150A","D0150B","D0150C",
   "D0170","D0210","D0220","D0225","D0270","D0274","D0275",
   "D0330","D0350","D0365L","D0366U","D0460","D0475",
   "D0601","D0602","D0603","D0604",
-  "D1110","D1310","D1320.1","D1320.2","D1320.3","D1330",
+  // Preventive
+  "D1110","D1120","D1206","D1310","D1320.1","D1320.2","D1320.3","D1330","D1351",
   // Restorative
   "D2140","D2150","D2160","D2161",
   "D2330","D2331","D2332","D2335","D2390","D2391","D2392","D2393",
-  "D2740A","D2740B","D2750A","D2750B","D2790A","D2790B",
+  "D2740A","D2740B","D2740C","D2750A","D2750B","D2750C","D2790A","D2790B","D2790C",
+  "D2930","D2931",
   "D2950","D2960",
   // Endodontics
   "D3230","D3240",
   "D3310A","D3310B","D3320A","D3320B","D3330A","D3330B",
   // Periodontics
-  "D4241","D4266UG","D4341","D4342","D4910",
+  "D4241","D4243","D4266UG","D4341","D4342","D4910",
   // Prosthodontics
-  "D5110A","D5120A","D5750",
+  "D5000NC",
+  "D5110A","D5110B","D5110C","D5120A","D5120B","D5120C",
+  "D5455FD","D5455PD",
+  "D5750","D5750A","D5750C","D5751A","D5751C",
+  "D5850","D5851",
   // Implant
   "D6010U2","D6051","D6059","D6062","D6065","D6066","D6067",
   "D6104UG","D6190","D6199",
@@ -8556,6 +8568,8 @@ const SWADE_CODES = new Set([
   "D8080",
   // Adjunctive
   "D9360","D9365","D9390A","D9390B","D9423NC","D9930",
+  "D9630.1","D9630.2","D9630.4",
+  "D9944A","D9944B",
   // Digital (UIC DD-prefix codes)
   "DD2610A","DD2610B","DD2620A","DD2620B","DD2630A","DD2630B",
   "DD2642A","DD2642B","DD2643A","DD2643B","DD2644A","DD2644B",
@@ -8725,6 +8739,7 @@ const CODE_GROUPS = {
   "D5110":  { desc: "Complete denture — maxillary",                 children: ["D5110A","D5110B","D5110C"] },
   "D5120":  { desc: "Complete denture — mandibular",                children: ["D5120A","D5120B","D5120C"] },
   "D9390":  { desc: "Consultation report",                          children: ["D9390A","D9390B"] },
+  "D9630":  { desc: "Other drugs/medicaments",                      children: ["D9630.1","D9630.2","D9630.4"] },
   "D9940":  { desc: "Occlusal guard — hard, full arch",             children: ["D9940A","D9940B"] },
   "D9944":  { desc: "Occlusal guard — hard, partial arch",          children: ["D9944A","D9944B"] },
   "D9945":  { desc: "Occlusal guard — soft, full arch",             children: ["D9945A","D9945B"] },
