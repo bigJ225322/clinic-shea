@@ -8555,7 +8555,7 @@ const SWADE_CODES = new Set([
   // Orthodontics
   "D8080",
   // Adjunctive
-  "D9360","D9365","D9423NC","D9930",
+  "D9360","D9365","D9390A","D9390B","D9423NC","D9930",
   // Digital (UIC DD-prefix codes)
   "DD2610A","DD2610B","DD2620A","DD2620B","DD2630A","DD2630B",
   "DD2642A","DD2642B","DD2643A","DD2643B","DD2644A","DD2644B",
