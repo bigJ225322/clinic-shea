@@ -1712,6 +1712,8 @@ const RVU_DATA = [
   { code: "D3120", desc: "Indirect Pulp Cap", rvu: 0.5 },
   { code: "D3220", desc: "Therapeutic pulpotomy", rvu: 3 },
   { code: "D3220LS", desc: "Theraputic pulpotomy", rvu: 3 },
+  { code: "D3230", desc: "Pulpal therapy (resorbable filling) - anterior, primary", rvu: 3 },
+  { code: "D3240", desc: "Pulpal therapy (resorbable filling) - posterior, primary", rvu: 3 },
   { code: "D3310A", desc: "Access", rvu: 5 },
   { code: "D3310B", desc: "Fill", rvu: 7 },
   { code: "D3320A", desc: "Access", rvu: 5 },
@@ -3793,7 +3795,7 @@ function renderTemplate(raw, f) {
     if (inj.techIAN) techParts.push(`IAN & long buccal block on ${side}`);
     if (inj.techGreaterPalatine) techParts.push(`greater palatine block on ${side === "left" ? "L" : "R"}`);
     if (inj.techNasopalatine) techParts.push("nasopalatine block");
-    if (inj.techMaxInfil) techParts.push(`maxillary buccal infiltration on ${side}`);
+    if (inj.techMaxInfil) techParts.push(`maxillary buccal infiltrations on the ${side === "right" ? "UR" : "UL"}`);
     if (inj.techBuccalInfil) {
       // Extract just the tooth number from the first token (strip leading
       // # and any "-MO"-style surface suffix).
@@ -4665,7 +4667,7 @@ function Disclosure({ title, summary, children, defaultOpen = false }) {
 // fields.injections[] list; each injection card has its own drug, needle,
 // carpules, side, and technique checkboxes. The × remove button only shows
 // when there's more than one injection.
-function InjectionEditor({ index, total, injection, tooth, onChange, onRemove }) {
+function InjectionEditor({ index, total, injection, tooth, isSRP, onChange, onRemove }) {
   const set = (k, v) => onChange({ [k]: v });
   const firstTooth = tooth.split(",")[0].trim().replace(/^#/, "").split("-")[0];
   return (
@@ -4730,20 +4732,26 @@ function InjectionEditor({ index, total, injection, tooth, onChange, onRemove })
         <Checkbox checked={injection.techIAN}
           onChange={(v) => set("techIAN", v)}
           label="IAN + long buccal block" />
-        <Checkbox checked={injection.techBuccalInfil}
-          onChange={(v) => set("techBuccalInfil", v)}
-          label={firstTooth
-            ? `Buccal infiltration #${firstTooth}`
-            : "Buccal infiltration #(tooth number)"} />
-        <Checkbox checked={injection.techMaxInfil}
-          onChange={(v) => set("techMaxInfil", v)}
-          label="Maxillary buccal infiltration" />
+        {!isSRP && (
+          <Checkbox checked={injection.techBuccalInfil}
+            onChange={(v) => set("techBuccalInfil", v)}
+            label={firstTooth
+              ? `Buccal infiltration #${firstTooth}`
+              : "Buccal infiltration #(tooth number)"} />
+        )}
+        {isSRP && (
+          <Checkbox checked={injection.techMaxInfil}
+            onChange={(v) => set("techMaxInfil", v)}
+            label={`Maxillary buccal infiltrations on the ${injection.side === "left" ? "UL" : "UR"}`} />
+        )}
         <Checkbox checked={injection.techGreaterPalatine}
           onChange={(v) => set("techGreaterPalatine", v)}
           label="Greater palatine block" />
-        <Checkbox checked={injection.techNasopalatine}
-          onChange={(v) => set("techNasopalatine", v)}
-          label="Nasopalatine block" />
+        {!isSRP && (
+          <Checkbox checked={injection.techNasopalatine}
+            onChange={(v) => set("techNasopalatine", v)}
+            label="Nasopalatine block" />
+        )}
       </div>
     </div>
   );
@@ -7377,6 +7385,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   total={fields.injections.length}
                   injection={inj}
                   tooth={fields.tooth}
+                  isSRP={procedureId === "1272"}
                   onChange={(patch) => {
                     const next = [...fields.injections];
                     next[idx] = { ...next[idx], ...patch };
@@ -8532,6 +8541,7 @@ const SWADE_CODES = new Set([
   "D2740A","D2740B","D2750A","D2750B","D2790A","D2790B",
   "D2950","D2960",
   // Endodontics
+  "D3230","D3240",
   "D3310A","D3310B","D3320A","D3320B","D3330A","D3330B",
   // Periodontics
   "D4241","D4266UG","D4341","D4342","D4910",
