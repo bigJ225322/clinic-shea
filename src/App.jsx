@@ -2201,12 +2201,10 @@ const CATEGORIES = [
       { id: "273",  label: "Screening" },
       { id: "1091", label: "POE (Periodic Oral Exam)" },
       { id: "374",  label: "Urgent Care" },
-      { id: "448",  label: "Urgent Care — Wisdom Tooth" },
       { id: "573",  label: "Perio COE" },
       { id: "703",  label: "Restorative COE" },
       { id: "807",  label: "Treatment Plan Presentation" },
       { id: "871",  label: "Implant Consult" },
-      { id: "loe",  label: "LOE" },
     ]},
   ]},
   { id: "perio", label: "Perio", groups: [
@@ -2428,7 +2426,7 @@ function flattenCategory(cat) {
   return { ...cat, procedures: procs };
 }
 
-// All categories with .procedures available (for NoteBuilder, PrepList).
+// All categories with .procedures available (for NoteBuilder).
 // Exclude misc (Axium workflows / lookup references — no note codes) and lab.
 const FLAT_CATEGORIES = CATEGORIES.filter(c => c.id !== "misc" && c.id !== "lab").map(flattenCategory);
 
@@ -3873,7 +3871,7 @@ function renderTemplate(raw, f) {
   // -------- 11. Names (signature line). --------
   if (f.names.trim()) {
     t = t.replace(/(^|\n)([ \t]*-?[ \t]*NV:.*)$/m,
-                  (_m, pre, nv) => `${_m}\n${f.names.trim()}`);
+                  _m => `${_m}\n${f.names.trim()}`);
   }
 
   // -------- 12. Tidy: collapse 3+ consecutive newlines down to 2. --------
@@ -3959,40 +3957,6 @@ function TextInput({ value, onChange, placeholder }) {
 
 // Per-segment colors for multi-tooth input. Position 1 = accent (oxblood),
 // position 2 = teal, position 3+ = gold. The Tooth field and Surfaces field
-// share the same palette by index so the user can see at a glance which
-// surface belongs to which tooth. These tie into the site palette tokens
-// rather than being arbitrary RGBs, so any future palette tweak propagates.
-const SEGMENT_COLORS = ["var(--ink)", "var(--accent)", "var(--teal)", "var(--gold)"];
-//                      ^single        ^position 1     ^position 2    ^position 3+
-
-// Render the value with each comma-separated segment colored. Used inside
-// ToothInput as an absolutely-positioned mirror behind an invisible <input>.
-function ColorizedMirror({ value }) {
-  if (!value) return null;
-  // Split on comma but KEEP the commas so the mirror is a perfect width match.
-  // We'll style segments and commas independently.
-  const parts = value.split(/(,)/);
-  // parts looks like: ["19", ",", " 30", ",", " 31"] etc.
-  // Count non-comma parts to decide if we should colorize at all.
-  const segmentParts = parts.filter(p => p !== ",");
-  const colorize = segmentParts.length > 1;
-  let segIdx = 0;
-  return (
-    <>{parts.map((p, i) => {
-      if (p === ",") {
-        return <span key={i} style={{ color: "var(--ink-soft)" }}>,</span>;
-      }
-      // Color: position 1 → SEGMENT_COLORS[1], position 2 → [2], etc.
-      // When only 1 segment exists, use index 0 (default ink).
-      const color = colorize
-        ? (SEGMENT_COLORS[Math.min(segIdx + 1, SEGMENT_COLORS.length - 1)])
-        : SEGMENT_COLORS[0];
-      segIdx += 1;
-      return <span key={i} style={{ color }}>{p}</span>;
-    })}</>
-  );
-}
-
 // ── ShadeInput ─────────────────────────────────────────────────────────────
 // Popup shade picker using VITA classical A–D groups.
 // Colors are CSS-approximated from published spectral data — no copyrighted imagery.
@@ -4424,53 +4388,6 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
   );
 }
 
-function ToothInput({ value, onChange, placeholder }) {
-  const [focused, setFocused] = useState(false);
-  // The mirror sits behind a transparent <input>. For the caret to align
-  // exactly with the visible (mirrored) text, the inner box geometry must
-  // match the input's exactly:
-  //   - same padding
-  //   - same font-size / family / weight
-  //   - the mirror is inset by 1px on all sides to sit inside the input's
-  //     1px border
-  //   - line-height set to 1 (matching what <input> uses by default for
-  //     single-line layout) so vertical position is deterministic
-  const inner = {
-    padding: "7px 10px",
-    fontSize: "13px",
-    fontFamily: "'Geist', sans-serif",
-    fontWeight: 400,
-    lineHeight: 1.5,
-  };
-  return (
-    <div style={{ position: "relative" }}>
-      <div aria-hidden style={{
-        position: "absolute",
-        top: "1px", left: "1px", right: "1px", bottom: "1px",
-        ...inner,
-        pointerEvents: "none", whiteSpace: "pre",
-        overflow: "hidden", textOverflow: "clip",
-        boxSizing: "border-box",
-      }}>
-        <ColorizedMirror value={value} />
-      </div>
-      <input type="text" value={value} placeholder={placeholder || ""}
-        onChange={(e) => onChange(e.target.value)}
-        onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
-        style={{ ...inputStyle,
-          ...inner,
-          color: "transparent",
-          caretColor: "var(--ink)",
-          background: "transparent",
-          position: "relative",
-          textAlign: "center",
-          borderColor: focused ? "var(--accent)" : "var(--rule)",
-          boxShadow: focused ? "0 0 0 3px rgba(122, 26, 26, 0.08)" : "none",
-        }} />
-    </div>
-  );
-}
-
 function Select({ value, onChange, children, prominent = false }) {
   const [focused, setFocused] = useState(false);
   return (
@@ -4757,29 +4674,6 @@ function InjectionEditor({ index, total, injection, tooth, isSRP, onChange, onRe
   );
 }
 
-function SectionHeader({ children, n }) {
-  return (
-    <div className="serif" style={{
-      fontSize: "12px", letterSpacing: "0.22em", textTransform: "uppercase",
-      color: "var(--accent)", fontWeight: 500, marginBottom: "18px",
-    }}>
-      {children}
-    </div>
-  );
-}
-
-/* ============================================================================
- * RENDERED-PROSE COMPONENT (used in Browse + Walkthrough preview)
- * ==========================================================================*/
-/* ============================================================================
- * CODES PANEL — shows CDT codes for the selected procedure.
- *
- * Codes are scraped from the procedure's "steps" chunk in CHUNKS, where the
- * Swade guide consistently lists them with their parenthetical descriptions.
- * Display-only — students still type codes manually into Axium's billing
- * field, which preserves their judgment about which code applies.
- * ==========================================================================*/
-
 // Extract D-codes (CDT codes) from a chunk body, preserving order and
 // deduplicating. Returns [{code, desc}, ...].
 function extractCodes(text) {
@@ -4798,60 +4692,6 @@ function extractCodes(text) {
     }
   }
   return Array.from(seen, ([code, desc]) => ({ code, desc }));
-}
-
-function CodesPanel({ procedure, chunks }) {
-  const codes = useMemo(() => {
-    if (!procedure) return [];
-    const stepsChunk = findChunkForProcedure(procedure, chunks, "steps");
-    const extracted = stepsChunk ? extractCodes(stepsChunk.body) : [];
-    if (procedure.pinnedCodes) {
-      return procedure.pinnedCodes.map(c => {
-        const r = RVU_DATA.find(x => x.code === c);
-        const fallback = extracted.find(x => x.code === c);
-        return { code: c, desc: r?.desc || fallback?.desc || "" };
-      });
-    }
-    if (!stepsChunk) return [];
-    return extracted;
-  }, [procedure, chunks]);
-
-  if (!procedure || codes.length === 0) return null;
-
-  return (
-    <div style={{
-      ...cardStyle,
-      marginBottom: "20px",
-      padding: "16px 22px 18px",
-    }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-        {codes.map(({ code, desc }) => {
-          const fee = lookupFee(code);
-          return (
-          <div key={code} style={{
-            display: "flex", alignItems: "baseline", gap: "10px",
-            fontSize: "12px", lineHeight: 1.45,
-          }}>
-            <span className="mono" style={{
-              color: "var(--accent)", fontWeight: 500,
-              fontVariantNumeric: "tabular-nums",
-              flexShrink: 0, minWidth: "60px",
-            }}>{code}</span>
-            <span style={{ color: "var(--ink-soft)", flex: 1 }}>
-              {desc || <em style={{ color: "var(--ink-faint)" }}>(no description in source)</em>}
-            </span>
-            {fee != null && (
-              <span className="mono" style={{
-                color: "var(--ink-soft)", flexShrink: 0,
-                fontVariantNumeric: "tabular-nums", fontSize: "11px",
-              }}>${fee}</span>
-            )}
-          </div>
-          );
-        })}
-      </div>
-    </div>
-  );
 }
 
 function ProseBlock({ text, highlight }) {
@@ -5880,6 +5720,23 @@ function HelpPopup({ children }) {
 
 function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle }) {
   const config = EXAM_FINDINGS_CONFIG[procedureId];
+
+  // Initialize wNLDefault fields to "WNL" when the procedure loads.
+  useEffect(() => {
+    if (!config) return;
+    const allFields = config.flatMap(s => s.fields || []);
+    const wNLFields = allFields.filter(f => f.wNLDefault && f.label);
+    if (wNLFields.length === 0) return;
+    const updates = {};
+    wNLFields.forEach(f => {
+      if (findings[f.label] === undefined || findings[f.label] === null) {
+        updates[f.label] = "WNL";
+      }
+    });
+    if (Object.keys(updates).length > 0) setFindings({ ...findings, ...updates });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [procedureId]);
+
   if (!config) return null;
   // When poeOnly is true for POE (1091), hide the perio chart / OHI sections
   // so the form matches the stripped template.
@@ -5896,21 +5753,6 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
   const batchUpdate = (updates) => {
     setFindings({ ...findings, ...updates });
   };
-
-  // Initialize wNLDefault fields to "WNL" when the procedure loads.
-  useEffect(() => {
-    const allFields = config.flatMap(s => s.fields || []);
-    const wNLFields = allFields.filter(f => f.wNLDefault && f.label);
-    if (wNLFields.length === 0) return;
-    const updates = {};
-    wNLFields.forEach(f => {
-      if (findings[f.label] === undefined || findings[f.label] === null) {
-        updates[f.label] = "WNL";
-      }
-    });
-    if (Object.keys(updates).length > 0) setFindings({ ...findings, ...updates });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [procedureId]);
 
   const renderField = (field) => {
     // --- Special composite fields (no label key) ---
@@ -6767,7 +6609,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
   const [categoryId, setCategoryId] = useState(initialProc?.categoryId || "");
   const [procedureId, setProcedureId] = useState(selectedProcedureId || "");
   const [copied, setCopied] = useState(false);
-  const [warnEmpty, setWarnEmpty] = useState(false);
   const textareaRef = useRef(null);
 
   // Sync local state with the App-level selection (e.g. when user navigates
@@ -6793,9 +6634,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
 
   const currentCategory = useMemo(
     () => FLAT_CATEGORIES.find(c => c.id === categoryId), [categoryId]);
-  const currentProcedure = useMemo(
-    () => currentCategory?.procedures.find(p => p.id === procedureId),
-    [currentCategory, procedureId]);
   const rawTemplate = useMemo(
     () => (procedureId ? TEMPLATES[procedureId] ?? "" : ""), [procedureId]);
 
@@ -6835,8 +6673,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     () => /blood pressure:/i.test(rawTemplate), [rawTemplate]);
   const needsBG = useMemo(
     () => /blood glucose:/i.test(rawTemplate), [rawTemplate]);
-  const needsTemp = useMemo(
-    () => /temperature:/i.test(rawTemplate), [rawTemplate]);
   const needsNV = useMemo(
     () => /NV:/.test(rawTemplate), [rawTemplate]);
   // The text following "NV:" in the template, if any. Mirrored into the form's
@@ -6888,11 +6724,20 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     if (!procedureId) return;
     if (userEdited) return;
     setNote(renderTemplate(rawTemplate, fields));
-    setWarnEmpty(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields]);
 
   const setField = (k, v) => setFields(p => ({ ...p, [k]: v }));
+
+  // Clinic visibility rules:
+  //   peds       → no dropdown, note always uses "UG Peds"
+  //   implant / endo / 871 (Implant Consult) → no dropdown, note uses "Chicago clinic"
+  //   digital    → dropdown includes Chicago in addition to the standard five
+  //   all others → standard five clinics only (no Pediatrics, no Chicago, no UGOS)
+  const isClinicPeds    = categoryId === "peds";
+  const isClinicChicago = categoryId === "implant" || categoryId === "endo" || procedureId === "871";
+  const isLabScript     = categoryId === "lab";
+  const showChicago     = categoryId === "digital";
 
   // When a tooth is entered and the procedure needs anesthetic, auto-set the
   // injection technique if the user hasn't touched the injection yet.
@@ -6907,16 +6752,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     setFields(p => ({ ...p, injections: [preset, ...p.injections.slice(1)] }));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields.tooth]);
-
-  // Clinic visibility rules:
-  //   peds       → no dropdown, note always uses "UG Peds"
-  //   implant / endo / 871 (Implant Consult) → no dropdown, note uses "Chicago clinic"
-  //   digital    → dropdown includes Chicago in addition to the standard five
-  //   all others → standard five clinics only (no Pediatrics, no Chicago, no UGOS)
-  const isClinicPeds    = categoryId === "peds";
-  const isClinicChicago = categoryId === "implant" || categoryId === "endo" || procedureId === "871";
-  const isLabScript     = categoryId === "lab";
-  const showChicago     = categoryId === "digital";
 
   // Auto-sync clinic field when switching into/out of restricted categories.
   // Peds → force "UG Peds"; Implant/Endo → clear (template already says "Chicago clinic");
@@ -6960,7 +6795,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     setUserEdited(false);
   };
   const handleCopy = async () => {
-    if (/^- [^:\n]+:\s*$/m.test(note)) setWarnEmpty(true);
     try { await navigator.clipboard.writeText(note); setCopied(true);
       setTimeout(() => setCopied(false), 1800); }
     catch { textareaRef.current?.select(); }
@@ -7503,7 +7337,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
         {procedureId ? (
           <div className="fade-in" key={procedureId}>
             <textarea ref={textareaRef} className="note-area" value={note} spellCheck={false}
-              onChange={(e) => { setNote(e.target.value); setUserEdited(true); setWarnEmpty(false); }} />
+              onChange={(e) => { setNote(e.target.value); setUserEdited(true); }} />
             {userEdited && (
               <p style={{ marginTop: "10px", fontSize: "12px",
                   color: "var(--accent)", lineHeight: 1.55,
@@ -7549,13 +7383,13 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                     "High":     { code: "D0603", desc: "Caries Risk Assessment and Documentation, finding of high" },
                   };
                   const extracted = extractCodes(stepsChunk.body);
+                  const withRvuDesc = (code, fallbackDesc) => {
+                    const r = RVU_DATA.find(x => x.code === code);
+                    return { code, desc: r?.desc || fallbackDesc || "" };
+                  };
                   const basePool = proc.pinnedCodes
-                    ? proc.pinnedCodes.map(c => {
-                        const r = RVU_DATA.find(x => x.code === c);
-                        const fallback = extracted.find(x => x.code === c);
-                        return { code: c, desc: r?.desc || fallback?.desc || "" };
-                      })
-                    : extracted;
+                    ? proc.pinnedCodes.map(c => withRvuDesc(c, extracted.find(x => x.code === c)?.desc))
+                    : extracted.map(({ code, desc }) => withRvuDesc(code, desc));
                   let codes = basePool.filter(({ code }) => {
                     if (code === "D1110" || code === "D1120") return prophyChecked;
                     if (code === "D1310") return nutriChecked && prophyChecked;
@@ -7634,260 +7468,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  * never sent anywhere, but the generated note still ends up pasted into
  * Axium, so we want students thinking about PHI before they type anything.
  * ==========================================================================*/
-/* ============================================================================
- * CLOCK PANEL — large digital clock + optional Axium auto-logout timer.
- *
- * Lives in the Note Builder right column, above the chart note. Visible only
- * when chairside (i.e. when you're actually generating a note), not on the
- * Browse or Prep List pages. Both pieces are designed to glance-read from
- * across the operatory.
- * ==========================================================================*/
-
-// Format hours/mins/secs for the wall clock. 12-hour with AM/PM reads more
-// naturally for clinic ("until 11:30") than military time.
-function useLiveClock() {
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => {
-    const tick = () => setNow(new Date());
-    // Align the first tick to the next second boundary so the seconds digit
-    // changes precisely when it should, not at some random offset.
-    const ms = 1000 - (Date.now() % 1000);
-    let interval;
-    const timeout = setTimeout(() => {
-      tick();
-      interval = setInterval(tick, 1000);
-    }, ms);
-    return () => { clearTimeout(timeout); if (interval) clearInterval(interval); };
-  }, []);
-  return now;
-}
-
-function ClockPanel() {
-  const now = useLiveClock();
-  let hours = now.getHours();
-  const ampm = hours >= 12 ? "PM" : "AM";
-  hours = hours % 12 || 12;
-  const mm = String(now.getMinutes()).padStart(2, "0");
-  const ss = String(now.getSeconds()).padStart(2, "0");
-  return (
-    <div style={{
-      ...cardStyle,
-      marginBottom: "20px",
-      padding: "18px 22px",
-      display: "flex", justifyContent: "space-between",
-      alignItems: "center", gap: "16px", flexWrap: "wrap",
-    }}>
-      <div>
-        <div style={{
-          fontSize: "9px", letterSpacing: "0.22em",
-          textTransform: "uppercase", color: "var(--ink-soft)",
-          fontWeight: 500, marginBottom: "4px",
-        }}>Current Time</div>
-        <div className="mono" style={{
-          fontSize: "38px", fontWeight: 500, lineHeight: 1,
-          color: "var(--ink)", letterSpacing: "0.02em",
-          fontVariantNumeric: "tabular-nums",
-        }}>
-          {hours}<span style={{ color: "var(--ink-faint)" }}>:</span>{mm}
-          <span style={{
-            color: "var(--ink-faint)", fontSize: "20px",
-            marginLeft: "4px", letterSpacing: "0.04em",
-          }}>:{ss} {ampm}</span>
-        </div>
-      </div>
-      <AxiumTimer />
-    </div>
-  );
-}
-
-/* ============================================================================
- * AXIUM AUTO-LOGOUT TIMER
- *
- * Optional countdown for the Axium auto-logout duration. Click "Reset" each
- * time you have activity in Axium (open a chart, save a note, etc.) and the
- * countdown restarts from the configured duration. When it reaches zero the
- * display turns oxblood and pulses gently — a visual "Axium just kicked you
- * out, expect to log back in."
- *
- * The timeout duration is configurable via a small "Edit" affordance. Default
- * is 15 minutes, but each institution configures Axium differently — UIC's
- * specific timeout can be set once via the editor and stored in localStorage.
- * ==========================================================================*/
-function AxiumTimer() {
-  // Read the user's configured duration (in seconds) from localStorage,
-  // defaulting to 15 minutes if unset.
-  const STORAGE_KEY = "axiumTimerSeconds";
-  const DEFAULT_DURATION = 15 * 60;
-
-  const [duration, setDuration] = useState(() => {
-    if (typeof window === "undefined") return DEFAULT_DURATION;
-    const stored = window.localStorage?.getItem(STORAGE_KEY);
-    const n = stored ? parseInt(stored, 10) : NaN;
-    return Number.isFinite(n) && n > 0 ? n : DEFAULT_DURATION;
-  });
-  const [running, setRunning] = useState(false);
-  const [remaining, setRemaining] = useState(0);
-  const [editing, setEditing] = useState(false);
-  const [editMins, setEditMins] = useState(String(Math.round(duration / 60)));
-
-  // Persist duration changes.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    try { window.localStorage?.setItem(STORAGE_KEY, String(duration)); } catch {}
-  }, [duration]);
-
-  // Tick down each second when running. We use a wall-clock anchor instead
-  // of a setInterval counter so background-tab throttling doesn't drift.
-  const startedAt = useRef(null);
-  useEffect(() => {
-    if (!running) return;
-    startedAt.current = Date.now();
-    const tick = () => {
-      const elapsed = Math.floor((Date.now() - startedAt.current) / 1000);
-      const left = Math.max(0, duration - elapsed);
-      setRemaining(left);
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, [running, duration]);
-
-  const start = () => { setRunning(true); setRemaining(duration); };
-  const stop = () => { setRunning(false); setRemaining(0); };
-  const reset = () => { startedAt.current = Date.now(); setRemaining(duration); };
-
-  const mm = String(Math.floor(remaining / 60)).padStart(2, "0");
-  const ss = String(remaining % 60).padStart(2, "0");
-  const expired = running && remaining === 0;
-
-  // Edit form for changing the duration.
-  if (editing) {
-    return (
-      <div style={{
-        display: "flex", alignItems: "center", gap: "8px",
-        padding: "8px 10px", border: "1px solid var(--accent)",
-        borderRadius: "2px", background: "var(--paper-soft)",
-      }}>
-        <input type="number" min="1" max="120" value={editMins}
-          onChange={e => setEditMins(e.target.value)}
-          style={{
-            width: "50px", padding: "4px 6px", fontSize: "13px",
-            fontFamily: "'Geist', sans-serif", textAlign: "center",
-            border: "1px solid var(--rule)", borderRadius: "2px",
-            outline: "none", color: "var(--ink)",
-          }} />
-        <span style={{ fontSize: "11px", color: "var(--ink-soft)" }}>min</span>
-        <button type="button"
-          onClick={() => {
-            const m = parseInt(editMins, 10);
-            if (Number.isFinite(m) && m > 0) {
-              setDuration(m * 60);
-              if (running) setRemaining(m * 60);
-            }
-            setEditing(false);
-          }}
-          style={{
-            background: "var(--accent)", color: "var(--paper)",
-            border: "none", borderRadius: "2px",
-            padding: "4px 10px", fontSize: "10px",
-            fontFamily: "'Geist', sans-serif", fontWeight: 500,
-            letterSpacing: "0.08em", textTransform: "uppercase",
-            cursor: "pointer",
-          }}>Save</button>
-      </div>
-    );
-  }
-
-  // Idle (timer not running): show the "Start Axium timer" affordance.
-  if (!running) {
-    return (
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <div>
-          <div style={{
-            fontSize: "9px", letterSpacing: "0.22em",
-            textTransform: "uppercase", color: "var(--ink-soft)",
-            fontWeight: 500, marginBottom: "4px", textAlign: "right",
-          }}>Axium logout</div>
-          <button type="button" onClick={start}
-            style={{
-              background: "transparent",
-              border: "1px dashed var(--rule)",
-              color: "var(--ink-soft)", borderRadius: "2px",
-              padding: "6px 12px", fontSize: "11px",
-              fontFamily: "'Geist', sans-serif",
-              cursor: "pointer", letterSpacing: "0.04em",
-              transition: "border-color 140ms ease, color 140ms ease",
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.borderColor = "var(--accent)";
-              e.currentTarget.style.color = "var(--accent)";
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.borderColor = "var(--rule)";
-              e.currentTarget.style.color = "var(--ink-soft)";
-            }}>
-            Start ({Math.round(duration / 60)} min)
-          </button>
-        </div>
-        <button type="button" onClick={() => { setEditMins(String(Math.round(duration / 60))); setEditing(true); }}
-          aria-label="Edit timer duration"
-          title="Edit duration"
-          style={{
-            background: "transparent", border: "none",
-            color: "var(--ink-faint)", fontSize: "14px",
-            cursor: "pointer", padding: "4px 6px", lineHeight: 1,
-            alignSelf: "flex-end",
-          }}>⚙</button>
-      </div>
-    );
-  }
-
-  // Running: show the countdown + Reset/Stop buttons.
-  return (
-    <div style={{
-      display: "flex", alignItems: "center", gap: "12px",
-      padding: "8px 12px", borderRadius: "2px",
-      background: expired ? "rgba(122, 30, 30, 0.10)" : "var(--paper-soft)",
-      border: `1px solid ${expired ? "var(--accent)" : "var(--rule)"}`,
-      animation: expired ? "axiumPulse 1.4s ease-in-out infinite" : "none",
-    }}>
-      <div>
-        <div style={{
-          fontSize: "9px", letterSpacing: "0.22em",
-          textTransform: "uppercase",
-          color: expired ? "var(--accent)" : "var(--ink-soft)",
-          fontWeight: 500, marginBottom: "2px",
-        }}>{expired ? "Axium expired" : "Axium logout in"}</div>
-        <div className="mono" style={{
-          fontSize: "20px", fontWeight: 500, lineHeight: 1,
-          color: expired ? "var(--accent)" : "var(--ink)",
-          fontVariantNumeric: "tabular-nums",
-        }}>{mm}:{ss}</div>
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-        <button type="button" onClick={reset}
-          style={{
-            background: "var(--accent)", color: "var(--paper)",
-            border: "none", borderRadius: "2px",
-            padding: "4px 10px", fontSize: "10px",
-            fontFamily: "'Geist', sans-serif", fontWeight: 500,
-            letterSpacing: "0.08em", textTransform: "uppercase",
-            cursor: "pointer",
-          }}>Reset</button>
-        <button type="button" onClick={stop}
-          style={{
-            background: "transparent", color: "var(--ink-soft)",
-            border: "1px solid var(--rule)", borderRadius: "2px",
-            padding: "3px 10px", fontSize: "10px",
-            fontFamily: "'Geist', sans-serif",
-            letterSpacing: "0.08em", textTransform: "uppercase",
-            cursor: "pointer",
-          }}>Stop</button>
-      </div>
-    </div>
-  );
-}
-
 function PrivacyBanner() {
   return (
     <p style={{
@@ -8418,8 +7998,8 @@ function findChunkForProcedure(procedure, chunks, role, opts = {}) {
 
 // Parse one equipment chunk into { sterilization, locker, clinic, unit, other }.
 // Equipment lines look like:
-//   "●​ from sterilization: exam kit, …"  (top-level group)
-//   "    ○​ in case crown doesn't fit, also get: PVS gun (2), …"  (sub-group)
+//   "● from sterilization: exam kit, …"  (top-level group)
+//   "    ○ in case crown doesn't fit, also get: PVS gun (2), …"  (sub-group)
 // Continuation lines wrap mid-list. We need to:
 //   1. Treat each ●-bullet as a new top-level group.
 //   2. Treat each ○-bullet as a continuation of its parent group (so
@@ -8943,8 +8523,6 @@ const MEE_CATEGORIES = [
   },
 ];
 
-const PROGRESS_STORAGE_KEY = "meeProgress";
-
 /* ============================================================================
  * MEE PROGRESS — top of the RVUs tab.
  *
@@ -9088,15 +8666,6 @@ function RVUs() {
 
     return { rows, autoExpand: autoExp };
   }, [search, sortBy, sortDir, activeCategory, swadeOnly]);
-
-  // Stats summary for the current filter.
-  const stats = useMemo(() => {
-    const rvus = rows.map(r => r.rvu).filter(v => v > 0);
-    const total = rvus.length;
-    const avg = total ? (rvus.reduce((a, b) => a + b, 0) / total) : 0;
-    const max = total ? Math.max(...rvus) : 0;
-    return { count: rows.length, valued: total, avg, max };
-  }, [rows]);
 
   // Per-category counts for the pill row (counts parent rows, not raw children).
   const categoryCounts = useMemo(() => {
@@ -9514,219 +9083,6 @@ function RVUs() {
   );
 }
 
-function PrepList({ chunks, rows, onRowsChange, onJumpTo, onGenerateNote }) {
-  const [checked, setChecked] = useState({});
-
-  // Compute next ID lazily from current rows so we don't need separate state.
-  const nextRowId = () => rows.length > 0 ? Math.max(...rows.map(r => r.id)) + 1 : 1;
-
-  const updateRow = (id, patch) => {
-    onRowsChange(rows.map(r => r.id === id ? { ...r, ...patch } : r));
-  };
-  const addRow = () => {
-    onRowsChange([...rows, { id: nextRowId(), categoryId: "", procedureId: "" }]);
-  };
-  const removeRow = (id) => {
-    onRowsChange(rows.length > 1 ? rows.filter(r => r.id !== id) : rows);
-  };
-
-  // For each filled row, compute its equipment groups.
-  const perProc = useMemo(() => {
-    const out = [];
-    for (const r of rows) {
-      const proc = findProcedure(r.procedureId);
-      if (!proc) continue;
-      // Use the breadcrumb-aware matcher (handles peds parity correctly).
-      const eq = findChunkForProcedure(proc, chunks, "equipment", { noFallback: true });
-      out.push({
-        rowId: r.id,
-        label: proc.label,
-        procedureId: r.procedureId,
-        chunkId: eq?.id || null,
-        groups: parseEquipment(eq),
-      });
-    }
-    return out;
-  }, [rows, chunks]);
-
-  const merged = useMemo(() => mergeEquipment(perProc), [perProc]);
-
-  const toggle = (key) => setChecked(c => ({ ...c, [key]: !c[key] }));
-
-  const totalItems = Object.values(merged).reduce((sum, list) => sum + list.length, 0);
-  const checkedCount = Object.values(checked).filter(Boolean).length;
-
-  const groupMeta = {
-    sterilization: { label: "From Sterilization", icon: "⚙" },
-    locker:        { label: "From Your Locker",   icon: "❏" },
-    clinic:        { label: "In Clinic",           icon: "✦" },
-    unit:          { label: "In the Unit",         icon: "◐" },
-    other:         { label: "Other",                icon: "·" },
-  };
-
-  return (
-    <div className="layout" style={{
-      display: "grid", gridTemplateColumns: "minmax(300px, 380px) 1fr",
-      gap: "44px", alignItems: "start",
-    }}>
-      {/* ───── Left: today's schedule ───── */}
-      <section>
-        <div style={cardStyle}>
-          {rows.map((r, i) => {
-            const cat = FLAT_CATEGORIES.find(c => c.id === r.categoryId);
-            return (
-              <div key={r.id} style={{
-                paddingBottom: "14px", marginBottom: "14px",
-                borderBottom: i < rows.length - 1 ? "1px dashed var(--rule-soft)" : "none",
-              }}>
-                {rows.length > 1 && (
-                  <div style={{
-                    display: "flex", justifyContent: "space-between",
-                    alignItems: "center", marginBottom: "8px",
-                  }}>
-                    <div className="serif" style={{
-                      fontSize: "11px", letterSpacing: "0.18em",
-                      textTransform: "uppercase", color: "var(--ink-soft)",
-                      fontWeight: 500,
-                    }}>Patient {i + 1}</div>
-                    <button onClick={() => removeRow(r.id)} style={{
-                      background: "none", border: "none",
-                      color: "var(--ink-faint)", fontSize: "16px",
-                      cursor: "pointer", padding: "0 4px", lineHeight: 1,
-                    }}>×</button>
-                  </div>
-                )}
-                <Field label="Category">
-                  <Select value={r.categoryId}
-                    onChange={(v) => updateRow(r.id, { categoryId: v, procedureId: "" })}>
-                    <option value="">— Select a category —</option>
-                    {FLAT_CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
-                  </Select>
-                </Field>
-                <Field label="Procedure">
-                  <Select value={r.procedureId}
-                    onChange={(v) => updateRow(r.id, { procedureId: v })}>
-                    <option value="">{cat ? "— Pick a procedure —" : "—"}</option>
-                    {cat?.procedures.map(p =>
-                      <option key={p.id} value={p.id}>{p.label}</option>)}
-                  </Select>
-                </Field>
-                {r.procedureId && (
-                  <button className="ghost" style={{
-                    width: "100%", marginTop: "4px", fontSize: "10px",
-                    padding: "8px 10px",
-                  }}
-                  onClick={() => onGenerateNote(r.procedureId)}>
-                    Open note for this →
-                  </button>
-                )}
-              </div>
-            );
-          })}
-
-          <button className="ghost" onClick={addRow}
-            style={{ width: "100%", marginTop: "4px" }}>
-            + add procedure
-          </button>
-        </div>
-      </section>
-
-      {/* ───── Right: merged equipment list ───── */}
-      <section>
-
-        {totalItems === 0 ? null : (
-          <>
-            {Object.entries(groupMeta).map(([key, meta]) => {
-              const items = merged[key];
-              if (!items || items.length === 0) return null;
-              return (
-                <div key={key} style={{
-                  background: "var(--paper)", border: "1px solid var(--rule)",
-                  borderRadius: "3px", padding: "20px 24px",
-                  marginBottom: "16px",
-                }}>
-                  <div style={{
-                    display: "flex", alignItems: "center", gap: "12px",
-                    marginBottom: "14px",
-                    paddingBottom: "10px", borderBottom: "1px solid var(--rule-soft)",
-                  }}>
-                    <span style={{
-                      color: "var(--accent)", fontSize: "16px",
-                    }}>{meta.icon}</span>
-                    <span className="serif" style={{
-                      fontSize: "16px", fontWeight: 500,
-                      letterSpacing: "0.02em",
-                    }}>{meta.label}</span>
-                    <span style={{
-                      marginLeft: "auto", fontSize: "11px",
-                      color: "var(--ink-faint)",
-                      letterSpacing: "0.06em",
-                    }}>{items.length} item{items.length === 1 ? "" : "s"}</span>
-                  </div>
-                  <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                    {items.map((item, i) => {
-                      const ckey = `${key}:${item.text.toLowerCase()}`;
-                      const isChecked = !!checked[ckey];
-                      return (
-                        <li key={i} style={{
-                          padding: "5px 0",
-                          borderBottom: i < items.length - 1 ? "1px solid var(--rule-soft)" : "none",
-                        }}>
-                          <label style={{
-                            display: "flex", alignItems: "flex-start",
-                            gap: "12px", cursor: "pointer",
-                          }}>
-                            <span aria-hidden style={{
-                              width: "16px", height: "16px", flexShrink: 0,
-                              border: `1.5px solid ${isChecked ? "var(--accent)" : "var(--rule)"}`,
-                              background: isChecked ? "var(--accent)" : "transparent",
-                              borderRadius: "2px", marginTop: "2px",
-                              display: "flex", alignItems: "center", justifyContent: "center",
-                              color: "var(--paper)", fontSize: "11px",
-                              transition: "background 120ms ease, border-color 120ms ease",
-                            }}>{isChecked ? "✓" : ""}</span>
-                            <input type="checkbox" checked={isChecked}
-                              onChange={() => toggle(ckey)}
-                              style={{ position: "absolute", opacity: 0, width: 0, height: 0 }} />
-                            <span style={{
-                              flex: 1, fontSize: "14px",
-                              color: isChecked ? "var(--ink-faint)" : "var(--ink)",
-                              textDecoration: isChecked ? "line-through" : "none",
-                              lineHeight: 1.5,
-                            }}>
-                              {item.text}
-                              {item.sources.length > 1 && (
-                                <span style={{
-                                  marginLeft: "8px", fontSize: "10px",
-                                  color: "var(--accent-soft)",
-                                  letterSpacing: "0.04em",
-                                  textDecoration: "none",
-                                }}>×{item.sources.length}</span>
-                              )}
-                            </span>
-                          </label>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              );
-            })}
-
-            <div style={{
-              marginTop: "20px",
-              display: "flex", justifyContent: "flex-end", gap: "10px",
-            }}>
-              <button className="ghost" onClick={() => setChecked({})}>
-                Reset checks
-              </button>
-            </div>
-          </>
-        )}
-      </section>
-    </div>
-  );
-}
 
 /* ============================================================================
  * APP SHELL  —  tabs, header, layout
@@ -11359,11 +10715,6 @@ export default function App() {
   const handleGenerateNote = (procedureId) => {
     if (procedureId) setSelectedProcedureId(procedureId);
     setTab("note");
-  };
-
-  const handleCiteJump = (chunkId) => {
-    setPendingBrowseChunkId(chunkId);
-    setTab("browse");
   };
 
   const handleShowSteps = (procedureId) => {
