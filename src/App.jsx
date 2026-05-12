@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useLayoutEffect, useRef, Fragment } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 /* ============================================================================
  * EMBEDDED DATA — injected at build time.
@@ -10958,6 +10959,7 @@ export default function App() {
         {tab === "rvus" && <RVUs />}
         {tab === "pes" && <PEs onShowSteps={handleShowSteps} />}
       </main>
+      <Analytics />
     </div>
   );
 }
