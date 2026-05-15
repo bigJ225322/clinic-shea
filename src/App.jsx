@@ -6443,17 +6443,22 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
                   type="button"
                   onClick={() => setDxOpen(o => !o)}
                   style={{
-                    width: "44px", height: "32px",
-                    background: dxOpen ? "var(--accent)" : "white",
-                    color: dxOpen ? "white" : "var(--accent)",
-                    border: "1px solid var(--accent)", borderRadius: "2px",
+                    /* Match height of the AAP/ADA selects to its left and
+                       borrow the same visual language as the "G/L/M/H"
+                       buttons elsewhere in the perio panel. Active state
+                       (dxOpen) uses accent fill so it reads as engaged. */
+                    width: "56px", height: "32px",
+                    background: dxOpen ? "var(--accent)" : "var(--paper-soft)",
+                    color: dxOpen ? "white" : "var(--ink-soft)",
+                    border: "1px solid " + (dxOpen ? "var(--accent)" : "var(--rule)"),
+                    borderRadius: "2px",
                     cursor: "pointer",
-                    fontFamily: "'Fraunces', serif",
-                    fontSize: "14px", fontWeight: 700, letterSpacing: "0.02em",
+                    fontFamily: "'Geist', sans-serif",
+                    fontSize: "12px", fontWeight: 700, letterSpacing: "0.02em",
                     display: "flex", alignItems: "center", justifyContent: "center",
                   }}
-                  onMouseEnter={e => { if (!dxOpen) e.currentTarget.style.background = "rgba(124,30,32,0.06)"; }}
-                  onMouseLeave={e => { if (!dxOpen) e.currentTarget.style.background = "white"; }}
+                  onMouseEnter={e => { if (!dxOpen) e.currentTarget.style.background = "var(--paper)"; }}
+                  onMouseLeave={e => { if (!dxOpen) e.currentTarget.style.background = "var(--paper-soft)"; }}
                   title="Compute AAP stage + grade"
                 >
                   Dx
