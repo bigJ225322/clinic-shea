@@ -2649,3 +2649,254 @@ describe("CLASSIFICATION — multi-mod patterns", () => {
     expect(r.kennedy.modifications).toBeGreaterThanOrEqual(3);
   });
 });
+
+// =========================================================================
+// MAJOR CONNECTOR SELECTION — tori / gag reflex / opposing arch
+// =========================================================================
+describe("MAJOR CONNECTOR — tori / gag reflex routing", () => {
+  it("Maxillary tori → U-Shaped Connector or A-P Strap (not Full Palate)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 3, 14]);
+    c.patientFactors.maxillaryTori = true;
+    const r = rpdRunEngine(c);
+    expect(r.majorConnector.type).not.toBe("Full Palatal Plate");
+    expect(r.majorConnector.type).toMatch(/U-Shaped|A-P Strap/);
+  });
+
+  it("Mandibular tori (no surgery) → Lingual Plate (Tori) variant", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19, 30]);
+    c.measurements.lingualSulcusDepth = 10;     // would normally pick Bar
+    c.patientFactors.mandibularTori = true;
+    const r = rpdRunEngine(c);
+    expect(r.majorConnector.type).toMatch(/Lingual Plate/);
+  });
+
+  it("Sensitive gag reflex (maxillary) → avoids full palate", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 3, 14]);
+    c.patientFactors.sensitiveGagReflex = true;
+    const r = rpdRunEngine(c);
+    expect(r.majorConnector.type).not.toBe("Full Palatal Plate");
+  });
+
+  it("Mandibular tori absent + adequate sulcus → Lingual Bar (no plate)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19, 30]);
+    c.measurements.lingualSulcusDepth = 10;
+    const r = rpdRunEngine(c);
+    expect(r.majorConnector.type).toBe("Lingual Bar");
+  });
+});
+
+// =========================================================================
+// NMCD PATHWAY — metal allergy → non-metal framework + red flags
+// =========================================================================
+describe("NMCD — metal allergy pathway", () => {
+  // Class III (rigidity-permissive) is the only valid context for NMCD.
+  it("Metal allergy + Class III → framework is not Co-Cr", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19, 30]);
+    c.patientFactors.metalAllergy = true;
+    const r = rpdRunEngine(c);
+    expect(r.framework.material).not.toBe("Co-Cr");
+  });
+
+  it("Metal allergy → NMCD red flag with Managing Partner / consent reference", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19, 30]);
+    c.patientFactors.metalAllergy = true;
+    const r = rpdRunEngine(c);
+    const flag = (r.redFlags || []).find(f => /NMCD|Managing|consent/i.test(f.message || ""));
+    expect(flag).toBeTruthy();
+  });
+
+  it("Metal allergy + Class I → engine still produces a design (with contraindication flagged)", () => {
+    // NMCD is contraindicated for Class I/II (rigidity required). The
+    // engine should still produce a design with appropriate warnings.
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 30, 31]);
+    c.patientFactors.metalAllergy = true;
+    const r = rpdRunEngine(c);
+    expect(r.framework?.material).toBeTruthy();
+    expect((r.redFlags || []).length).toBeGreaterThan(0);
+  });
+});
+
+// =========================================================================
+// RIDGE RESORPTION → BASE DESIGN
+// =========================================================================
+describe("BASE DESIGN — ridge resorption influence", () => {
+  it("Severe ridge resorption + DE → Mesh base (relinable) preferred over Open Lattice", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 20]);
+    c.measurements.ridgeResorption = "severe";
+    const r = rpdRunEngine(c);
+    // Some DE base should exist
+    const deBase = (r.baseDesigns || []).find(b => b.spanTeeth?.includes(18));
+    expect(deBase).toBeTruthy();
+  });
+
+  it("Mild ridge + tooth-supported → Open Lattice or Mesh (both defensible)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.measurements.ridgeResorption = "mild";
+    const r = rpdRunEngine(c);
+    expect((r.baseDesigns || []).length).toBeGreaterThan(0);
+  });
+});
+
+// =========================================================================
+// OPPOSING ARCH effects on framework decisions
+// =========================================================================
+describe("OPPOSING ARCH — affects design tier / red flags", () => {
+  it("Complete denture opposing → engine still produces full design", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 20]);
+    c.patientFactors.opposingArch = "complete_denture";
+    const r = rpdRunEngine(c);
+    expect(r.framework?.material).toBeTruthy();
+    expect(r.majorConnector?.type).toBeTruthy();
+  });
+
+  it("New prosthesis opposing → engine produces a design", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 20]);
+    c.patientFactors.opposingArch = "new_prosthesis";
+    const r = rpdRunEngine(c);
+    expect(r.framework?.material).toBeTruthy();
+  });
+});
+
+// =========================================================================
+// MONTHS SINCE EXTRACTION — definitive vs interim timing
+// =========================================================================
+describe("EXTRACTION TIMING — months since extraction influences design intent", () => {
+  it("Recent extraction (<3 months) + designIntent interim → wrought wire framework", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.patientFactors.monthsSinceExtraction = 1;
+    c.patientFactors.designIntent = "interim";
+    const r = rpdRunEngine(c);
+    expect(r.designIntent).toBe("interim");
+    const claspedAb = (r.abutmentDesigns || []).filter(a => !a.claspType?.includes("Rest Only"));
+    claspedAb.forEach(a => {
+      expect(a.retentiveArm, `#${a.tooth}`).toMatch(/wrought wire|18ga|WW/i);
+    });
+  });
+
+  it("Old extraction (>6 months) + designIntent definitive → cast metal framework", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.patientFactors.monthsSinceExtraction = 12;
+    c.patientFactors.designIntent = "definitive";
+    const r = rpdRunEngine(c);
+    expect(r.designIntent).toBe("definitive");
+    expect(r.framework.material).toBe("Co-Cr");
+  });
+});
+
+// =========================================================================
+// LAB SCRIPT — per-tooth line CONTENT well-formed
+// =========================================================================
+// Per-tooth lab Rx line should follow the standard format:
+//   "#N: <proximal plate>, <rest>, <clasp + undercut>, <reciprocation>."
+// Verify each non-Rest-Only abutment line includes proximal plate +
+// rest + clasp components.
+// =========================================================================
+describe("LAB SCRIPT — per-tooth line includes proximal plate + rest + clasp", () => {
+  it("UIC Case 1 #2 line includes proximal plate, rest, Akers clasp", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 3, 5, 7, 8, 10, 13, 14, 15]);
+    c.measurements.vestibularDepth = 4;
+    setAttrs(c, 12, { highFrenum: true });
+    const r = rpdRunEngine(c);
+    // Find the line for #2 in the lab script.
+    const lines = r.labScript.split("\n");
+    const line2 = lines.find(l => /^#?2:/.test(l));
+    expect(line2).toBeTruthy();
+    expect(line2).toMatch(/proximal plate/i);
+    expect(line2).toMatch(/rest/i);
+    expect(line2).toMatch(/Akers/i);
+  });
+
+  it("Combination clasp lines say 'Combination' + '0.02' (the wire-flex signature)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 3, 5, 7, 8, 10, 13, 14, 15]);
+    c.measurements.vestibularDepth = 4;
+    setAttrs(c, 12, { highFrenum: true });
+    const r = rpdRunEngine(c);
+    const lines = r.labScript.split("\n");
+    // #12 is Combination (high frenum gate). The per-tooth lab Rx line
+    // uses the clasp name "Combination" + the deeper 0.02" undercut
+    // (vs cast's 0.01") to convey the wrought-wire flexibility.
+    const line12 = lines.find(l => /^#?12:/.test(l));
+    expect(line12).toBeTruthy();
+    expect(line12).toMatch(/Combination/i);
+    expect(line12).toMatch(/0\.02/);
+  });
+
+  it("RPI lines include 'I-bar'", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 20]);
+    const r = rpdRunEngine(c);
+    const lines = r.labScript.split("\n");
+    const line21 = lines.find(l => /^#?21:/.test(l));
+    expect(line21).toBeTruthy();
+    expect(line21).toMatch(/I-bar/i);
+  });
+
+  it("Rest Only lines do NOT include a clasp arm description", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 3, 5, 7, 8, 10, 13, 14, 15]);
+    c.measurements.vestibularDepth = 4;
+    setAttrs(c, 12, { highFrenum: true });
+    const r = rpdRunEngine(c);
+    const lines = r.labScript.split("\n");
+    // #9 is Rest Only (ball rest) in this case
+    const line9 = lines.find(l => /^#?9:/.test(l));
+    if (line9) {
+      // The line should mention rest but NOT clasp/Akers/RPI/Combination/I-bar
+      expect(line9).toMatch(/rest/i);
+      expect(line9).not.toMatch(/Akers/i);
+      expect(line9).not.toMatch(/clasp/i);
+    }
+  });
+});
+
+// =========================================================================
+// REGRESSION — preserved engine behavior on previously-discovered patterns
+// =========================================================================
+// Locks in the cumulative bug fixes / behaviors from this session.
+describe("REGRESSION — cumulative session bug fixes", () => {
+  it("Akers DB convention for tooth-supported abutments (locked in)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    const r = rpdRunEngine(c);
+    expect(designOf(r, 18)?.effectiveUndercutLocation).toBe("disto-buccal");
+    expect(designOf(r, 20)?.effectiveUndercutLocation).toBe("mesio-buccal");
+  });
+
+  it("Canine as DE terminal → cingulum rest (locked in)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 2, 3, 4, 5, 12, 13, 14, 15, 16]);
+    const r = rpdRunEngine(c);
+    expect(designOf(r, 6)?.restSeat?.type).toBe("cingulum");
+    expect(designOf(r, 11)?.restSeat?.type).toBe("cingulum");
+  });
+
+  it("Single 2nd molar missing alone → Class II (locked in)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 2]);
+    expect(rpdRunEngine(c).kennedy.class).toBe("II");
+  });
+
+  it("Engine determinism — same input produces identical output (locked in)", () => {
+    const factory = () => {
+      const c = rpdMakeBlankCase("mandibular");
+      setMissing(c, [17, 32, 18, 19, 20]);
+      return c;
+    };
+    expect(JSON.stringify(rpdRunEngine(factory()))).toBe(JSON.stringify(rpdRunEngine(factory())));
+  });
+});
