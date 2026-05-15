@@ -436,3 +436,213 @@ describe("Case 6 — Maxillary Class II Mod 2 (Huddle Week 6 Case 2)", () => {
   it("#13 is Akers", () => expect(designOf(r, 13)?.claspType).toBe("Akers"));
   it("#15 is Akers", () => expect(designOf(r, 15)?.claspType).toBe("Akers"));
 });
+
+// =========================================================================
+// EDGE-CASE TEST BANK — pressure-test known weak spots
+// =========================================================================
+// Eight test groups targeting situations where the engine could plausibly
+// produce a wrong or unclinical answer. Tests assert clinically defensible
+// expectations; if any fail, the failure pinpoints an engine gap to fix.
+//
+//   Edge 1 — Class IV (anterior crossing midline)
+//   Edge 2 — All 4 third molars missing only (Applegate Rule 2)
+//   Edge 3 — Long-span tooth-supported Class III
+//   Edge 4 — Mandibular Class I with severe ridge + tori
+//   Edge 5 — Hopeless terminal abutment (perio prognosis red flag)
+//   Edge 6 — Single posterior tooth missing (FPD/implant candidate)
+//   Edge 7 — Interim RPD (recent extractions, wrought-wire framework)
+//   Edge 8 — Metal allergy (NMCD pathway + Managing Partner flag)
+// =========================================================================
+
+// -------- Edge 1 — Class IV (anterior crossing midline) --------
+// Missing all four maxillary incisors (#7-#10). The span crosses the
+// midline → Kennedy Class IV. Engine should:
+//   - Identify class as IV
+//   - Produce a defensible design (not crash)
+//   - Use esthetic treatment on canines if used as abutments (rest-only
+//     or wrought-wire — cast clasps on max anteriors are visible during
+//     smile per UIC esthetic-omission rule)
+describe("Edge 1 — Class IV (anterior crossing midline)", () => {
+  const c = rpdMakeBlankCase("maxillary");
+  setMissing(c, [1, 16]);                  // 3rd molars (Rule 2 default)
+  setMissing(c, [7, 8, 9, 10]);            // all four maxillary incisors
+  const r = rpdRunEngine(c);
+
+  it("Classified as Class IV", () => {
+    expect(r.kennedy.class).toBe("IV");
+  });
+  it("Framework material is selected", () => {
+    expect(r.framework?.material).toBeTruthy();
+  });
+  it("Major connector is selected", () => {
+    expect(r.majorConnector?.type).toBeTruthy();
+  });
+  it("Canine abutments (#6/#11) avoid cast circumferential clasps", () => {
+    // Per UIC esthetic-omission rule, max anteriors used as Class IV
+    // primary abutments should NOT receive Akers (visible in smile).
+    // Acceptable: Rest Only (esthetic omission), I-bar (esthetic),
+    // Combination with wrought wire, or similar.
+    const ar6 = designOf(r, 6);
+    const ar11 = designOf(r, 11);
+    const okClasp = (a) => !a || a.claspType !== "Akers";
+    expect(okClasp(ar6)).toBe(true);
+    expect(okClasp(ar11)).toBe(true);
+  });
+});
+
+// -------- Edge 2 — All 4 third molars missing only --------
+// Per Applegate Rule 2, missing 3rd molars are omitted from classification
+// unless flagged for replacement. With ONLY 3rd molars missing and no
+// replacement flag, the engine should report "no qualifying span" — i.e.
+// no Kennedy class assigned (null).
+describe("Edge 2 — All four third molars missing (Rule 2 omits all)", () => {
+  const c = rpdMakeBlankCase("maxillary");
+  setMissing(c, [1, 16, 17, 32]);          // all four 3rd molars; nothing else
+  const r = rpdRunEngine(c);
+
+  it("Kennedy class is null (no qualifying span after Rule 2)", () => {
+    expect(r.kennedy.class).toBeNull();
+  });
+  it("Engine does not raise red flags about missing 3rd molars", () => {
+    // Rule 2 omission is automatic — shouldn't be flagged as an issue.
+    const hasUnexpectedFlag = (r.redFlags || []).some(f =>
+      /3rd molar.*missing|third molar/i.test(f.message || ""));
+    expect(hasUnexpectedFlag).toBe(false);
+  });
+});
+
+// -------- Edge 3 — Long-span tooth-supported Class III --------
+// Long unilateral edentulous span bounded by teeth on both sides.
+// Missing #2-#7 (right maxillary, doesn't cross midline — #8/#9 still
+// present). Engine should classify as Class III (tooth-supported) and
+// PDI should escalate to ≥ Class III due to long span.
+describe("Edge 3 — Long-span tooth-supported Class III", () => {
+  const c = rpdMakeBlankCase("maxillary");
+  setMissing(c, [1, 16]);                  // 3rd molars
+  // Long right-side span (#2-#7) bounded by #8 anteriorly
+  setMissing(c, [2, 3, 4, 5, 6, 7]);
+  const r = rpdRunEngine(c);
+
+  it("Engine produces a complete design without crashing", () => {
+    expect(r.framework?.material).toBeTruthy();
+    expect(r.majorConnector?.type).toBeTruthy();
+    expect(Array.isArray(r.abutmentDesigns)).toBe(true);
+  });
+  it("PDI escalates due to long-span location", () => {
+    // Worst-criterion-wins; PDI for long spans typically ≥ Class III.
+    // PDI class is reported as a Roman numeral string ("I"–"IV").
+    expect(["III", "IV"]).toContain(r.pdi?.class);
+  });
+});
+
+// -------- Edge 4 — Mandibular Class I with severe ridge + tori --------
+// Bilateral mandibular DE + severe ridge resorption + mandibular tori.
+// Tori force a Lingual Plate (Tori) major connector (lingual bar can't
+// pass over the exostoses). Severe ridge should drive a relinable base
+// (Mesh) rather than Open Lattice.
+describe("Edge 4 — Mandibular Class I + severe ridge + mandibular tori", () => {
+  const c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32]);                 // 3rd molars
+  setMissing(c, [18, 19, 30, 31]);         // bilateral DE
+  c.measurements.ridgeResorption = "severe";
+  c.patientFactors.mandibularTori = true;
+  const r = rpdRunEngine(c);
+
+  it("Classified as Class I (bilateral distal extension)", () => {
+    expect(r.kennedy.class).toBe("I");
+  });
+  it("Major connector handles tori (Lingual Plate variant)", () => {
+    expect(r.majorConnector.type).toMatch(/Lingual Plate/);
+  });
+  it("Base designs are present (saddles over DE areas)", () => {
+    expect(r.baseDesigns?.length).toBeGreaterThan(0);
+  });
+});
+
+// -------- Edge 5 — Hopeless terminal abutment --------
+// Class II DE case where the terminal (primary) abutment has hopeless
+// perio prognosis. Engine should surface a red flag — extracting the
+// hopeless tooth first changes the design entirely (different abutment,
+// different classification).
+describe("Edge 5 — Hopeless terminal abutment (perio red flag)", () => {
+  const c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32]);                 // 3rd molars
+  setMissing(c, [18, 19, 20]);             // left DE, #21 terminal
+  c.teeth[21].attrs = { ...(c.teeth[21].attrs || {}), perioPrognosis: "hopeless" };
+  const r = rpdRunEngine(c);
+
+  it("Engine produces output and includes a perio-related red flag", () => {
+    expect(r.framework?.material).toBeTruthy();
+    const flags = r.redFlags || [];
+    const perioFlag = flags.some(f =>
+      /hopeless|perio|prognosis|abutment/i.test(f.message || ""));
+    expect(perioFlag).toBe(true);
+  });
+});
+
+// -------- Edge 6 — Single posterior tooth missing --------
+// Only #14 missing. Engine should classify as Class III (tooth-supported,
+// single tooth bounded) and produce a framework design. (The UI gates
+// the FPD/implant visualization separately for single-tooth cases — the
+// engine still emits an RPD design for the case.)
+describe("Edge 6 — Single posterior tooth missing", () => {
+  const c = rpdMakeBlankCase("maxillary");
+  setMissing(c, [1, 16]);                  // 3rd molars
+  setMissing(c, [14]);                     // single tooth missing
+  const r = rpdRunEngine(c);
+
+  it("Classified as Class III (single bounded edentulous space)", () => {
+    expect(r.kennedy.class).toBe("III");
+  });
+  it("Engine produces a complete design (UI gates FPD visualization)", () => {
+    expect(r.framework?.material).toBeTruthy();
+    expect(r.majorConnector?.type).toBeTruthy();
+  });
+});
+
+// -------- Edge 7 — Interim RPD (recent extractions) --------
+// Recent extractions (1 month since most recent) + designIntent=interim.
+// Engine should use wrought-wire C-clasps, NOT cast clasps. Framework
+// is acrylic-based, not Co-Cr cast metal.
+describe("Edge 7 — Interim RPD (recent extractions, wrought-wire)", () => {
+  const c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32]);                 // 3rd molars
+  setMissing(c, [19, 30]);                 // Class III Mod 1
+  c.patientFactors.designIntent = "interim";
+  c.patientFactors.monthsSinceExtraction = 1;
+  const r = rpdRunEngine(c);
+
+  it("Design intent recognized as interim", () => {
+    expect(r.designIntent).toBe("interim");
+  });
+  it("All clasped abutments use wrought wire (no cast clasps)", () => {
+    const clasped = (r.abutmentDesigns || []).filter(a =>
+      a.claspType && !a.claspType.includes("Rest Only"));
+    expect(clasped.length).toBeGreaterThan(0);
+    const allWW = clasped.every(a => /WW|wrought/i.test(a.claspType));
+    expect(allWW).toBe(true);
+  });
+});
+
+// -------- Edge 8 — Metal allergy (NMCD pathway) --------
+// Patient with documented metal allergy. Engine should not select Co-Cr
+// framework, and should surface a red flag noting NMCD requires Managing
+// Partner approval and signed specific consent form. Class I/II are
+// formally contraindicated for NMCD (rigidity required) — the test below
+// uses Class III so the NMCD pathway is at least permissible.
+describe("Edge 8 — Metal allergy (NMCD pathway + Managing Partner flag)", () => {
+  const c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32]);                 // 3rd molars
+  setMissing(c, [19, 30]);                 // Class III Mod 1 (tooth-supported)
+  c.patientFactors.metalAllergy = true;
+  const r = rpdRunEngine(c);
+
+  it("Framework is NOT Co-Cr (allergy gate fired)", () => {
+    expect(r.framework.material).not.toBe("Co-Cr");
+  });
+  it("Red flag mentions NMCD / Managing Partner / allergy", () => {
+    const flag = (r.redFlags || []).find(f =>
+      /NMCD|Managing|allergy|non-metal/i.test(f.message || ""));
+    expect(flag).toBeTruthy();
+  });
+});

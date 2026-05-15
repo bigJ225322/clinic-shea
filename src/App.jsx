@@ -17558,11 +17558,9 @@ function RPDInputsForm({ caseInput, onUpdate }) {
         )}
       </div>
 
-      {/* ─── Input reference ─────────────────────────────────────────────
-          Subordinate disclosure at the bottom of the inputs overlay.
-          Closed by default so the input controls remain visually clean;
-          opens to a one-stop reference for what each input clinically
-          affects and what design decision it gates. */}
+      {/* Toggle for the input-reference panel. The reference itself is
+          rendered as a SEPARATE absolute-positioned overlay (below) that
+          sits to the LEFT of this Case Inputs panel, edge-to-edge. */}
       <div style={{
         marginTop: "14px", paddingTop: "10px",
         borderTop: "1px solid var(--rule-soft)",
@@ -17572,7 +17570,7 @@ function RPDInputsForm({ caseInput, onUpdate }) {
           onClick={() => setRefOpen(o => !o)}
           style={{
             width: "100%",
-            background: "transparent",
+            background: refOpen ? "var(--paper-soft)" : "transparent",
             color: "var(--ink-soft)",
             border: "1px dashed var(--rule)",
             borderRadius: "2px",
@@ -17586,15 +17584,43 @@ function RPDInputsForm({ caseInput, onUpdate }) {
           <span>What each input affects</span>
           <span style={{
             fontSize: "11px", color: "var(--ink-faint)",
-            transform: refOpen ? "rotate(90deg)" : "none",
+            /* Arrow points LEFT (where the panel opens) when expanded */
+            transform: refOpen ? "rotate(180deg)" : "none",
             transition: "transform 120ms ease",
           }}>▸</span>
         </button>
-        {refOpen && (
+      </div>
+      </div>)}
+
+      {/* ─── Input reference panel ──────────────────────────────────────
+          Sits IMMEDIATELY TO THE LEFT of the Case Inputs panel, same
+          dimensions, edge-to-edge. Scrollable since the content is long.
+          Only visible when both `open` (Case Inputs) and `refOpen` are
+          true — opening the reference without Case Inputs context would
+          be disorienting. */}
+      {open && refOpen && (
+        <div style={{
+          position: "absolute",
+          top: "calc(100% + 6px)",
+          right: "340px",          /* edge-to-edge: Case Inputs width = 340px */
+          width: "340px",
+          maxHeight: "70vh",
+          overflowY: "auto",
+          background: "var(--paper)",
+          border: "1px solid var(--rule)",
+          borderRight: "none",      /* fuse with Case Inputs left border */
+          borderRadius: "2px 0 0 2px",
+          padding: "14px 16px",
+          boxShadow: "-12px 12px 28px rgba(0,0,0,0.10)",
+          zIndex: 99,               /* one below Case Inputs */
+          fontFamily: "'Geist', sans-serif",
+        }}>
           <div style={{
-            marginTop: "10px",
+            fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
+            color: "var(--accent)", fontWeight: 600, marginBottom: "14px",
+          }}>What each input affects</div>
+          <div style={{
             fontSize: "11px", lineHeight: 1.55, color: "var(--ink)",
-            fontFamily: "'Geist', sans-serif",
           }}>
             {[
               { k: "Opposing arch",
@@ -17629,9 +17655,8 @@ function RPDInputsForm({ caseInput, onUpdate }) {
               </div>
             ))}
           </div>
-        )}
-      </div>
-      </div>)}
+        </div>
+      )}
     </div>
   );
 }
