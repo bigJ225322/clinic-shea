@@ -15350,14 +15350,16 @@ function RPDPaperFormArchDrawing({
     // tooth-number label so the two never visually collide. Tooth number
     // sits at halfBL + 20 along radial; annotation starts further out at
     // R + 58 to clear it with breathing room. The undercut-spec line is
-    // placed an additional 22 px FURTHER OUT along the radial direction
+    // placed an additional 30 px FURTHER OUT along the radial direction
     // (not just below in screen-Y) — this keeps the second line away from
     // the tooth on both arches rather than collapsing inward on maxillary
-    // teeth where rad.y is negative.
+    // teeth where rad.y is negative. 30 px (vs 22 previously) accounts
+    // for the 22 px clasp glyph height + 17 px undercut glyph height so
+    // the two labels don't overlap.
     const ax = cx + rad.x * (R + 58);
     const ay = cy + rad.y * (R + 58);
-    const ax2 = ax + rad.x * 22;
-    const ay2 = ay + rad.y * 22;
+    const ax2 = ax + rad.x * 30;
+    const ay2 = ay + rad.y * 30;
     // Clasp name text → selects the clasp element. Undercut spec text →
     // selects the undercut. For Rest-only abutments (no clasp), the
     // single label selects the rest seat instead.
