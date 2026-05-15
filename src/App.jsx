@@ -12391,7 +12391,29 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
       claspTier = "strong";
     }
   } else {
-    const useEstheticIBar = inEsthetic && claspContras.length === 0 && attrs.undercutLocation !== "disto-buccal" && attrs.undercutLocation !== "none";
+    // ─── Effective undercut location for tooth-supported abutments ─────
+    // The global default `attrs.undercutLocation = "mid-buccal"` is correct
+    // for RPI / I-bar (those clasps approach from the gingival vestibule
+    // and engage mid-buccal by design). For an Akers clasp, the textbook
+    // standard is that the retentive arm's terminal third engages an
+    // undercut on the side OPPOSITE the rest seat (which sits on
+    // `sideToward`, adjacent to the edentulous space):
+    //   • Rest mesial (sideToward = "mesial") → undercut DB
+    //   • Rest distal (sideToward = "distal") → undercut MB
+    // So when the user hasn't overridden the default mid-buccal, we
+    // substitute the context-appropriate location for the Akers/Reverse
+    // Akers description. If the user has explicitly set a non-default
+    // location (because their surveyed cast shows it elsewhere), we
+    // respect their choice.
+    const akersStandardUndercut = sideToward === "mesial" ? "disto-buccal" : "mesio-buccal";
+    const userUndercut = attrs.undercutLocation;
+    const effectiveUndercut = (userUndercut === "mid-buccal") ? akersStandardUndercut : userUndercut;
+    // For esthetic I-bar gating: needs a mid- or mesio-buccal undercut.
+    // Use the user's EXPLICIT setting (not the engine-substituted default)
+    // because the I-bar evaluation reflects the surveyed reality, not the
+    // "what Akers would default to" mapping.
+    const useEstheticIBar = inEsthetic && claspContras.length === 0
+      && userUndercut !== "disto-buccal" && userUndercut !== "none";
     if (useEstheticIBar) {
       claspType = "I-bar (esthetic)";
       claspRationale = RPD_RATIONALE.clasp["I-bar (esthetic)"];
@@ -12403,23 +12425,24 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
       claspTier = "judgment";
       claspAlternative = "Rest Only (esthetic omission)";
       claspAlternativeRationale = "Design Case II uses Rest Only on max-anterior abutments when the case already has adequate retention from other clasps (e.g., bilateral RPI on premolars). Consider Rest Only if the design has ≥2 strong retentive clasps elsewhere.";
-    } else if (attrs.undercutLocation === "disto-buccal" || attrs.undercutLocation === "disto-lingual") {
+    } else if (userUndercut === "disto-buccal" || userUndercut === "disto-lingual") {
+      // Reverse Akers — only when the USER explicitly sets a distal
+      // undercut location. The engine's own DB default for sideToward=mesial
+      // does NOT trigger Reverse Akers (that case is a standard Akers
+      // engaging DB, which is the textbook expectation).
       claspType = "Reverse Akers";
-      claspRationale = RPD_RATIONALE.clasp["Reverse Akers"] + ` (Reverse Akers pattern: retentive arm engages ${attrs.undercutLocation} undercut)`;
-      retentiveArm = `Cast retentive arm engaging 0.01" ${attrs.undercutLocation} undercut`;
+      claspRationale = RPD_RATIONALE.clasp["Reverse Akers"] + ` (Reverse Akers pattern: retentive arm engages ${userUndercut} undercut)`;
+      retentiveArm = `Cast retentive arm engaging 0.01" ${userUndercut} undercut`;
       reciprocation = { type: "arm",
-        text: attrs.undercutLocation === "disto-lingual" ? "Cast buccal reciprocal arm" : "Cast lingual reciprocal arm",
+        text: userUndercut === "disto-lingual" ? "Cast buccal reciprocal arm" : "Cast lingual reciprocal arm",
         rationale: RPD_RATIONALE.reciprocation.arm };
-      // Reverse Akers is the standard for DB/DL undercuts. UIC lecture
-      // materials sometimes label this just "Akers" with notation about the
-      // retentive direction — same design, different name.
       claspTier = "common";
       claspAlternative = null;
       claspAlternativeRationale = "Some clinical nomenclature in some lectures labels this clasp simply as \"Akers\" with notation that the retentive arm engages the DL/DB undercut (rather than calling it \"Reverse Akers\" explicitly). Same physical design.";
     } else {
       claspType = "Akers";
       claspRationale = RPD_RATIONALE.clasp["Akers"];
-      retentiveArm = `Cast circumferential retentive arm engaging 0.01" ${attrs.undercutLocation} undercut`;
+      retentiveArm = `Cast circumferential retentive arm engaging 0.01" ${effectiveUndercut} undercut`;
       reciprocation = { type: "arm", text: "Cast lingual reciprocal arm", rationale: RPD_RATIONALE.reciprocation.arm };
       // Akers is the UIC default for tooth-supported abutments — deterministic.
       claspTier = "strong";
@@ -12466,6 +12489,15 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
   const gpLength = (claspType === "I-bar (esthetic)") ? "long/parallel (full clinical crown height)" : "2/3 clinical crown height, 1/3 BL width";
   const gpRationale = gpLength.startsWith("long") ? RPD_RATIONALE.guidePlane.longParallel : RPD_RATIONALE.guidePlane.standard;
 
+  // Compute the effective undercut location for chart annotation / inspector
+  // display. For Akers on tooth-supported abutments, this differs from the
+  // user's attrs.undercutLocation when the user has the default mid-buccal
+  // (the engine substitutes the context-appropriate DB or MB). For all
+  // other clasp types, this equals attrs.undercutLocation.
+  const isAkersStandard = claspType === "Akers";
+  const effectiveUndercutLocation = isAkersStandard && attrs.undercutLocation === "mid-buccal"
+    ? (sideToward === "mesial" ? "disto-buccal" : "mesio-buccal")
+    : attrs.undercutLocation;
   return {
     tooth, isPrimaryAbutment: isDE, spanType: span.type,
     claspType, claspRationale, retentiveArm, reciprocation,
@@ -12476,6 +12508,8 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
     guidePlaneRationale: gpRationale,
     surveyCrown, crownLengthening,
     contraindications: claspContras,
+    effectiveUndercutLocation,
+    attrs,                // expose for downstream renderers (chart annotation)
   };
 }
 
@@ -15459,7 +15493,10 @@ function RPDPaperFormArchDrawing({
     const R = toothRadius(tooth);
     const rad = radialUnit(tooth);
     const attrs = teethState[tooth]?.attrs || {};
-    const ucLoc = attrs.undercutLocation || "mid-buccal";
+    // Prefer the engine's effective undercut (e.g. Akers default DB based
+    // on sideToward) over the raw user attrs default. Falls back to
+    // attrs.undercutLocation if the engine didn't compute one.
+    const ucLoc = a.effectiveUndercutLocation || attrs.undercutLocation || "mid-buccal";
     const ucDepth = attrs.undercutDepth || "0.01\"";
     const ucShort = ucLoc === "mesio-buccal" ? "MB"
                    : ucLoc === "disto-buccal" ? "DB"
@@ -15960,7 +15997,9 @@ function RPDPaperFormArchDrawing({
             {abutments.flatMap((a, i) => {
               const ct = a.claspType || "";
               const attrs = teethState[a.tooth]?.attrs || {};
-              const ucLoc = attrs.undercutLocation || "mid-buccal";
+              // Prefer engine-computed effective undercut (e.g. Akers DB
+              // default) over raw user attrs default.
+              const ucLoc = a.effectiveUndercutLocation || attrs.undercutLocation || "mid-buccal";
               const plateSide = a.guidePlane?.surface || (a.restSeat?.surface === "mesial" ? "distal" : "mesial");
               if (ct.includes("Rest Only")) return [];
               let el;
@@ -16828,9 +16867,11 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
   } else if (kind === 'clasp' && abutment) {
     const attrs = { ...(RPD_ABUTMENT_DEFAULTS || {}), ...(caseInput.teeth?.[tooth]?.attrs || {}) };
     title = `${abutment.claspType} retentive arm — ${rpdToothName(tooth)}`;
+    // Prefer engine-computed effective undercut over raw user default.
+    const claspEngages = abutment.effectiveUndercutLocation || attrs.undercutLocation || "mid-buccal";
     lines = [
       ["Type",      abutment.claspType],
-      ["Engages",   attrs.undercutLocation || "mid-buccal"],
+      ["Engages",   claspEngages],
       ["Depth",     attrs.undercutDepth || "0.01\""],
       ["Span",      abutment.spanType === "distal-extension" ? "Distal extension (tooth-tissue support)" : "Tooth-supported"],
       ["Material",  abutment.retentiveArm || "—"],
