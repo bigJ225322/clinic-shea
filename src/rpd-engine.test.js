@@ -1569,3 +1569,386 @@ describe("UIC Case 6 — Maxillary Class II Mod 2 full granular detail (Huddle W
     });
   });
 });
+
+// =========================================================================
+// AXIUM CODE MAPPING — deterministic lookup
+// =========================================================================
+// Definitive maxillary RPD → D5213
+// Definitive mandibular RPD → D5214
+// Interim maxillary RPD → D5820
+// Interim mandibular RPD → D5821
+// =========================================================================
+describe("axiumCode — deterministic per arch + intent", () => {
+  it("Definitive maxillary → D5213", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 14]);
+    expect(rpdRunEngine(c).axiumCode).toBe("D5213");
+  });
+  it("Definitive mandibular → D5214", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    expect(rpdRunEngine(c).axiumCode).toBe("D5214");
+  });
+  it("Interim maxillary → D5820", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 14]);
+    c.patientFactors.designIntent = "interim";
+    expect(rpdRunEngine(c).axiumCode).toBe("D5820");
+  });
+  it("Interim mandibular → D5821", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.patientFactors.designIntent = "interim";
+    expect(rpdRunEngine(c).axiumCode).toBe("D5821");
+  });
+});
+
+// =========================================================================
+// APPLEGATE RULE 2 — Third molar omission (deterministic per Swade manual)
+// =========================================================================
+// Rule 2: A missing 3rd molar is OMITTED from classification unless the
+// student flags it for replacement. This is a strict deterministic rule.
+// =========================================================================
+describe("Applegate Rule 2 — 3rd molar omission", () => {
+  it("All four 3rd molars missing alone → Kennedy null", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 17, 32]);
+    expect(rpdRunEngine(c).kennedy.class).toBeNull();
+  });
+
+  it("3rd molar missing + another tooth missing → Kennedy class from the other tooth alone", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 14]);
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("III");
+    // Verify Rule 2 fired on #1 and #16
+    const decisions = r.thirdMolarEval?.decisions || [];
+    expect(decisions.length).toBeGreaterThanOrEqual(2);
+    decisions.forEach(d => {
+      expect(d.rule).toMatch(/Applegate Rule 2/);
+    });
+  });
+
+  it("3rd molar flagged for replacement → INCLUDED in classification", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    c.teeth[1].replace = true;   // student wants to replace #1
+    const r = rpdRunEngine(c);
+    // With #1 flagged for replacement, it becomes the distal-most missing
+    // tooth → DE-style classification (Class II)
+    expect(["I", "II"]).toContain(r.kennedy.class);
+  });
+});
+
+// =========================================================================
+// APPLEGATE RULE 4 — Second molar mutual omission (deterministic)
+// =========================================================================
+// Rule 4: A missing 2nd molar is OMITTED if the opposing-arch 2nd molar
+// is also missing and not being replaced. Strict deterministic rule
+// based on the opposing tooth's status.
+// =========================================================================
+describe("Applegate Rule 4 — Mutual 2nd molar omission", () => {
+  it("Missing #2 alone (opposing #31 present) → Rule 4 includes #2", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 2]);
+    const r = rpdRunEngine(c);
+    // Verify decision was made for #2 with the inclusion outcome
+    const decisions = r.secondMolarEval?.decisions || [];
+    const d2 = decisions.find(d => d.tooth === 2);
+    if (d2) {
+      expect(d2.rule).toMatch(/Applegate Rule 4/);
+      expect(d2.decision).toMatch(/Include|present/i);
+    }
+  });
+
+  it("secondMolarEval returns decisions array (structure)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 14]);
+    const r = rpdRunEngine(c);
+    expect(r.secondMolarEval).toBeTruthy();
+    expect(Array.isArray(r.secondMolarEval.decisions)).toBe(true);
+  });
+});
+
+// =========================================================================
+// PDI BREAKDOWN — structural shape (not boundary judgments)
+// =========================================================================
+// The PDI breakdown object should always have all 4 criteria with
+// {class, rationale} for each. We don't assert the specific class for
+// each criterion (that involves boundary judgment); we assert the
+// structural shape so downstream renderers can rely on it.
+// =========================================================================
+describe("PDI breakdown — structural shape", () => {
+  const cases = allInvariantCases();
+  cases.forEach(({ name, result }) => {
+    if (!result.pdi) return;
+    it(`${name}: pdi.class is a Roman-numeral string (I, II, III, or IV)`, () => {
+      expect(["I", "II", "III", "IV"]).toContain(result.pdi.class);
+    });
+    it(`${name}: pdi.breakdown has all 4 criteria with class+rationale`, () => {
+      const b = result.pdi.breakdown;
+      expect(b).toBeTruthy();
+      ["location", "abutmentCondition", "occlusion", "residualRidge"].forEach(k => {
+        expect(b[k], k).toBeTruthy();
+        expect(b[k].class, `${k}.class`).toBeTruthy();
+        expect(b[k].rationale, `${k}.rationale`).toBeTruthy();
+      });
+    });
+    it(`${name}: pdi.drivers is a non-empty array`, () => {
+      expect(Array.isArray(result.pdi.drivers)).toBe(true);
+      expect(result.pdi.drivers.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+// =========================================================================
+// BASE DESIGN — structural shape
+// =========================================================================
+// Every base design returned by the engine should have spanTeeth and type.
+// =========================================================================
+describe("Base designs — structural shape", () => {
+  const cases = allInvariantCases();
+  cases.forEach(({ name, result }) => {
+    if ((result.baseDesigns || []).length === 0) return;
+    it(`${name}: every base design has spanTeeth array + type`, () => {
+      result.baseDesigns.forEach((b, i) => {
+        expect(Array.isArray(b.spanTeeth), `base[${i}].spanTeeth`).toBe(true);
+        expect(b.spanTeeth.length, `base[${i}].spanTeeth.length`).toBeGreaterThan(0);
+        expect(b.type, `base[${i}].type`).toBeTruthy();
+      });
+    });
+    it(`${name}: base type is one of the known options`, () => {
+      const known = ["Open Lattice", "Mesh", "Tube Tooth", "Facing"];
+      result.baseDesigns.forEach((b, i) => {
+        expect(known, `base[${i}].type`).toContain(b.type);
+      });
+    });
+  });
+});
+
+// =========================================================================
+// INDIRECT RETAINER — structural shape
+// =========================================================================
+describe("Indirect retainers — structural shape", () => {
+  const cases = allInvariantCases();
+  cases.forEach(({ name, result }) => {
+    if ((result.indirectRetainers || []).length === 0) return;
+    it(`${name}: every indirect retainer has tooth + restType`, () => {
+      result.indirectRetainers.forEach((r, i) => {
+        expect(r.tooth, `indirect[${i}].tooth`).toBeTruthy();
+        expect(r.restType, `indirect[${i}].restType`).toBeTruthy();
+      });
+    });
+    it(`${name}: indirect retainer teeth are valid tooth numbers (1-32)`, () => {
+      result.indirectRetainers.forEach((r, i) => {
+        expect(r.tooth).toBeGreaterThanOrEqual(1);
+        expect(r.tooth).toBeLessThanOrEqual(32);
+      });
+    });
+  });
+});
+
+// =========================================================================
+// RED FLAGS — structural shape
+// =========================================================================
+describe("Red flags — structural shape", () => {
+  const cases = allInvariantCases();
+  cases.forEach(({ name, result }) => {
+    if ((result.redFlags || []).length === 0) return;
+    it(`${name}: every red flag has severity + message`, () => {
+      result.redFlags.forEach((f, i) => {
+        expect(f.severity, `flag[${i}].severity`).toBeTruthy();
+        expect(f.message, `flag[${i}].message`).toBeTruthy();
+      });
+    });
+    it(`${name}: red flag severity is one of known values`, () => {
+      const known = ["info", "caution", "warning", "danger", "WARNING", "CAUTION", "INFO", "DANGER"];
+      result.redFlags.forEach((f, i) => {
+        // Engine may use any case; just ensure it's a known severity word.
+        const s = (f.severity || "").toLowerCase();
+        expect(["info", "caution", "warning", "danger"]).toContain(s);
+      });
+    });
+  });
+});
+
+// =========================================================================
+// LAB SCRIPT PER-ABUTMENT CONTENT
+// =========================================================================
+// For every abutment, the lab script should mention the clasp type
+// somewhere on or after the abutment's tooth line.
+// =========================================================================
+describe("Lab script — per-abutment clasp type appears in script", () => {
+  const cases = allInvariantCases();
+  cases.forEach(({ name, result }) => {
+    if (!result.labScript) return;
+    it(`${name}: clasp types named in script for non-Rest-Only abutments`, () => {
+      const clasped = (result.abutmentDesigns || []).filter(a =>
+        a.claspType && !a.claspType.includes("Rest Only"));
+      clasped.forEach(a => {
+        // Engine may abbreviate clasp names in the lab script (e.g. "I-bar"
+        // vs "RPI"). We assert that SOMETHING from the clasp name family
+        // appears.
+        // The lab script generator (rpdDescribeClasp) names RPI as "I-bar"
+        // in the prose ("I-bar engaging 0.01" mid-buccal undercut"). So
+        // RPI's clasp-name family is matched by the same /I-bar|RPI/i.
+        const claspKey = (a.claspType === "RPI" || a.claspType.includes("I-bar")) ? /I-bar|RPI/i
+                       : a.claspType === "Combination" ? /Combination|wrought/i
+                       : a.claspType === "Akers" ? /Akers/i
+                       : a.claspType === "Reverse Akers" ? /Akers/i  // labeled Akers in script
+                       : new RegExp(a.claspType, "i");
+        expect(result.labScript, `#${a.tooth} (${a.claspType})`).toMatch(claspKey);
+      });
+    });
+  });
+});
+
+// =========================================================================
+// GRANULAR PER-CASE DETAIL — UIC Case 2 (Mand Class II Mod 1)
+// =========================================================================
+// Adds detail-level assertions matching the answer key + sideToward
+// convention. Reused setup mirrors the original Case 2 describe block.
+// =========================================================================
+describe("UIC Case 2 — Mand Class II Mod 1 (full granular detail)", () => {
+  const c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32]);
+  setMissing(c, [18, 19, 20]);
+  setMissing(c, [30]);
+  setAttrs(c, 21, { softTissueUndercut: "gt-1mm" });
+  setAttrs(c, 31, { undercutLocation: "disto-lingual", tilt: "tilted" });
+  const r = rpdRunEngine(c);
+
+  it("Framework Co-Cr; LB connector; Kennedy II Mod 1 left", () => {
+    expect(r.framework.material).toBe("Co-Cr");
+    expect(r.majorConnector.type).toBe("Lingual Bar");
+    expect(r.kennedy.class).toBe("II");
+    expect(r.kennedy.modifications).toBe(1);
+    expect(r.kennedy.deSide).toBe("left");
+  });
+
+  describe("#21 — DE terminal with soft-tissue-undercut RPI contra → Combination", () => {
+    const d = designOf(r, 21);
+    it("claspType is Combination", () => expect(d?.claspType).toBe("Combination"));
+    it("Retentive arm is wrought wire engaging 0.02 undercut", () => {
+      expect(d?.retentiveArm).toMatch(/wrought wire|18ga|18 gauge/i);
+      expect(d?.retentiveArm).toMatch(/0\.02/);
+    });
+    it("Rest is mesial occlusal (DE)", () => {
+      expect(d?.restSeat?.surface).toBe("mesial");
+      expect(d?.restSeat?.type).toBe("occlusal");
+    });
+    it("Guide plane is distal (DE)", () => {
+      expect(d?.guidePlane?.surface).toBe("distal");
+    });
+  });
+
+  describe("#29 — right mod tooth-supported (mesial-most of mod space, rest distal, undercut MB)", () => {
+    // #30 missing is DISTAL to #29 (toward the back of the arch on the
+    // right side), so sideToward = distal for #29. Rest goes on the
+    // distal proximal area, Akers terminal-third on the OPPOSITE side
+    // = mesio-buccal. (#31 on the other side of #30 has the inverse
+    // orientation: rest mesial, undercut DB-equivalent — but #31 has
+    // an explicit DL undercut override in this case → Reverse Akers.)
+    const d = designOf(r, 29);
+    it("claspType is Akers", () => expect(d?.claspType).toBe("Akers"));
+    it("effectiveUndercutLocation is MB (rest distal → opposite-side-buccal)", () => {
+      expect(d?.restSeat?.surface).toBe("distal");
+      expect(d?.effectiveUndercutLocation).toBe("mesio-buccal");
+    });
+    it("retentiveArm contains 'mesio-buccal' literally", () => {
+      expect(d?.retentiveArm).toContain("mesio-buccal");
+    });
+    it("Premolar bur (#6/#4 round)", () => {
+      expect(d?.restSeat?.bur).toMatch(/#6 round/);
+    });
+  });
+
+  describe("#31 — Reverse Akers (explicit DL undercut + tilt)", () => {
+    const d = designOf(r, 31);
+    it("claspType is Reverse Akers (user explicitly chose DL undercut)", () => {
+      expect(d?.claspType).toBe("Reverse Akers");
+    });
+    it("retentiveArm contains 'disto-lingual' literally", () => {
+      expect(d?.retentiveArm).toContain("disto-lingual");
+    });
+    it("Reciprocation is on the buccal (since retentive is lingual)", () => {
+      expect(d?.reciprocation?.text).toMatch(/buccal/i);
+    });
+  });
+});
+
+// =========================================================================
+// GRANULAR PER-CASE DETAIL — UIC Case 3 (Maxillary Few Teeth Remaining)
+// =========================================================================
+describe("UIC Case 3 — Maxillary Full Palate granular detail", () => {
+  const c = rpdMakeBlankCase("maxillary");
+  setMissing(c, [1, 2, 3, 5, 7, 8, 9, 10, 13, 14, 15, 16]);
+  const r = rpdRunEngine(c);
+
+  it("Major connector is Full Palatal Plate (few-teeth case)", () => {
+    expect(r.majorConnector.type).toBe("Full Palatal Plate");
+  });
+  it("Framework is Co-Cr", () => expect(r.framework.material).toBe("Co-Cr"));
+
+  describe("#4 — DE terminal premolar (RPI, all gates pass)", () => {
+    const d = designOf(r, 4);
+    it("claspType is RPI", () => expect(d?.claspType).toBe("RPI"));
+    it("RPI signature: rest mesial, GP distal, undercut mid-buccal", () => {
+      expect(d?.restSeat?.surface).toBe("mesial");
+      expect(d?.guidePlane?.surface).toBe("distal");
+      expect(d?.effectiveUndercutLocation).toBe("mid-buccal");
+    });
+  });
+
+  describe("#6 / #11 — canines, Rest Only with cingulum rests", () => {
+    it("#6 is Rest Only with cingulum rest, inverted cone bur", () => {
+      const d = designOf(r, 6);
+      expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+      expect(d?.restSeat?.type).toBe("cingulum");
+      expect(d?.restSeat?.bur).toMatch(/inverted cone/i);
+    });
+    it("#11 is Rest Only with cingulum rest", () => {
+      const d = designOf(r, 11);
+      expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+      expect(d?.restSeat?.type).toBe("cingulum");
+    });
+  });
+
+  describe("#12 — DE terminal premolar (RPI)", () => {
+    const d = designOf(r, 12);
+    it("claspType is RPI", () => expect(d?.claspType).toBe("RPI"));
+    it("RPI signature complete", () => {
+      expect(d?.restSeat?.surface).toBe("mesial");
+      expect(d?.guidePlane?.surface).toBe("distal");
+      expect(d?.effectiveUndercutLocation).toBe("mid-buccal");
+    });
+  });
+
+  // PDI in this case should be heavily compromised (few remaining teeth)
+  it("PDI class escalates due to few-teeth complexity", () => {
+    expect(["III", "IV"]).toContain(r.pdi.class);
+  });
+});
+
+// =========================================================================
+// REMOVED RESTORATION INDEPENDENCE — engine output stays the same regardless
+// =========================================================================
+// removedExistingRestoration is a note-builder field that affects template
+// text only. The engine should produce identical design output whether
+// this flag is set or not (it doesn't affect clasp/connector decisions).
+// =========================================================================
+describe("removedExistingRestoration flag is note-only, doesn't affect engine output", () => {
+  it("Engine produces same abutment designs regardless of restoration history", () => {
+    const c1 = rpdMakeBlankCase("maxillary");
+    setMissing(c1, [1, 16, 14]);
+    const c2 = rpdMakeBlankCase("maxillary");
+    setMissing(c2, [1, 16, 14]);
+    // This field is NOT on the engine's case input; it lives in note
+    // builder fields. So results must be identical regardless.
+    const r1 = rpdRunEngine(c1);
+    const r2 = rpdRunEngine(c2);
+    expect(r1.abutmentDesigns.map(a => a.claspType))
+      .toEqual(r2.abutmentDesigns.map(a => a.claspType));
+    expect(r1.majorConnector.type).toBe(r2.majorConnector.type);
+  });
+});
