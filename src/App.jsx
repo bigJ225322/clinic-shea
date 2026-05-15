@@ -3088,6 +3088,21 @@ const DEFAULT_FIELDS = {
   perioImproved: "improved",
   // perioImprovementDetail: free-text explanation for the improvement note.
   perioImprovementDetail: "",
+  // Perio Re-Evaluation Dx engine inputs (procedure 1346). When the student
+  // opens the Dx dialog and computes a stability call, these fields hold the
+  // bucketed inputs (so they persist across re-renders). The computed
+  // narrative is stored in perioDxNarrative; perioDxInsert toggles whether
+  // it's substituted into the note in place of the simpler improved/detail
+  // template line.
+  perioDxCurrentMaxPD: "",         // "≤4" | "5-6" | "≥7"
+  perioDxDeepSiteWithBoP: false,   // any site PD ≥5mm + BoP?
+  perioDxBoPExtent: "",            // "none" | "localized" | "generalized"
+  perioDxPlaqueControl: "",        // "good" | "fair" | "poor"
+  perioDxTrendPD: "improved",
+  perioDxTrendBoP: "reduced",
+  perioDxTrendMobility: "unchanged",
+  perioDxTrendCompliance: "same",
+  perioDxInsert: false,            // checkbox: insert computed Dx into note?
   // srpDate: date SRP was completed, shown in perio re-eval (1346) header line.
   //   Replaces the "1/1/2000" placeholder.
   srpDate: "",
@@ -3176,6 +3191,107 @@ const ANESTHETIC_OPTIONS = [
 /* ============================================================================
  * UTILITIES
  * ==========================================================================*/
+
+// --- Perio Re-Evaluation diagnosis engine ------------------------------------
+// Computes the stability determination + maintenance interval + a note-ready
+// narrative paragraph from a small set of bucketed clinical inputs. The
+// per-site numeric data (every PD, every BoP site) lives in the Axium perio
+// chart — students fill that out separately. This engine works off summary
+// inputs that match the mental model the student already has when writing
+// the note ("everything was 4mm or less except #18; BoP at scattered sites").
+//
+// Stability call follows AAP 2018 perio maintenance criteria:
+//   • Stable      = max PD ≤4mm, no BoP, good plaque control
+//   • In remission = max PD ≤4mm but residual BoP, OR PD 5–6mm with no BoP
+//   • Unstable    = any site PD ≥5mm + BoP, OR generalized BoP, OR poor
+//                   plaque control with active inflammation
+//
+// Maintenance interval follows from stability + prior disease severity:
+//   • 3 months → unstable
+//   • 4 months → in remission OR stable with prior Stage III/IV history
+//   • 6 months → stable with Stage I/II history only (rare in re-eval — most
+//                                                     re-eval patients had SRP)
+//
+// Inputs (all bucketed, no numeric per-site data):
+//   currentMaxPD:        "≤4" | "5-6" | "≥7"
+//   deepSiteWithBoP:     boolean — any site with PD ≥5mm AND bleeding?
+//   currentBoPExtent:    "none" | "localized" | "generalized"  (<30% vs ≥30%)
+//   plaqueControl:       "good" | "fair" | "poor"  (O'Leary <20 / 20-40 / >40)
+//   trendPD:             "significantly improved" | "improved" | "minimal" | "worsened"
+//   trendBoP:            "significantly reduced" | "reduced" | "unchanged" | "worsened"
+//   trendMobility:       "improved" | "unchanged" | "worsened"
+//   trendCompliance:     "improved" | "same" | "declined"
+function computePerioReEvalDx(inputs) {
+  const {
+    currentMaxPD, deepSiteWithBoP, currentBoPExtent, plaqueControl,
+    trendPD, trendBoP, trendMobility, trendCompliance,
+  } = inputs;
+
+  // ── Stability determination ──
+  let stability;
+  let stabilityRationale;
+  if (deepSiteWithBoP || currentMaxPD === "≥7"
+      || (currentMaxPD === "5-6" && currentBoPExtent !== "none")
+      || currentBoPExtent === "generalized"
+      || (plaqueControl === "poor" && currentBoPExtent !== "none")) {
+    stability = "unstable";
+    if (deepSiteWithBoP) {
+      stabilityRationale = "active disease — sites with probing depth ≥5mm and bleeding on probing remain";
+    } else if (currentMaxPD === "≥7") {
+      stabilityRationale = "residual probing depths ≥7mm indicate uncontrolled disease";
+    } else if (currentBoPExtent === "generalized") {
+      stabilityRationale = "generalized bleeding on probing (≥30% of sites) indicates ongoing inflammation";
+    } else if (plaqueControl === "poor") {
+      stabilityRationale = "poor plaque control with active inflammation";
+    } else {
+      stabilityRationale = "residual probing depths 5–6mm with bleeding on probing";
+    }
+  } else if (currentMaxPD === "≤4" && currentBoPExtent === "none"
+             && plaqueControl !== "poor") {
+    stability = "stable";
+    stabilityRationale = "all probing depths ≤4mm, no bleeding on probing, adequate plaque control";
+  } else {
+    stability = "in remission";
+    if (currentMaxPD === "≤4" && currentBoPExtent === "localized") {
+      stabilityRationale = "probing depths resolved to ≤4mm but residual localized BoP indicates incomplete resolution of inflammation";
+    } else if (currentMaxPD === "5-6" && currentBoPExtent === "none") {
+      stabilityRationale = "residual probing depths 5–6mm without bleeding — depths persist but disease appears quiescent";
+    } else {
+      stabilityRationale = "partial resolution — pocket depths or inflammation are reduced but not fully resolved";
+    }
+  }
+
+  // ── Maintenance interval ──
+  const interval = stability === "unstable" ? 3 : 4;
+
+  // ── Trend prose ──
+  const trendBits = [];
+  if (trendPD === "significantly improved") trendBits.push("probing depths significantly reduced (avg ↓ ≥2mm)");
+  else if (trendPD === "improved")          trendBits.push("probing depths reduced (avg ↓ 1–2mm)");
+  else if (trendPD === "minimal")           trendBits.push("probing depths minimally changed");
+  else if (trendPD === "worsened")          trendBits.push("probing depths increased");
+  if (trendBoP === "significantly reduced") trendBits.push("BoP significantly reduced");
+  else if (trendBoP === "reduced")          trendBits.push("BoP reduced");
+  else if (trendBoP === "unchanged")        trendBits.push("BoP unchanged");
+  else if (trendBoP === "worsened")         trendBits.push("BoP increased");
+  if (trendMobility === "improved")         trendBits.push("mobility improved");
+  else if (trendMobility === "worsened")    trendBits.push("mobility worsened");
+  if (trendCompliance === "improved")       trendBits.push("patient compliance improved");
+  else if (trendCompliance === "declined")  trendBits.push("patient compliance declined");
+
+  const trendProse = trendBits.length ? trendBits.join(", ") + "." : "";
+
+  // ── Note-ready narrative ──
+  // Used to replace the template's hardcoded "has improved — ." + maintenance
+  // interval sentences. Reads like a real perio re-eval assessment paragraph.
+  const narrative = [
+    `Patient's periodontal health is currently ${stability} — ${stabilityRationale}.`,
+    trendProse,
+    `Upon evaluation, patient will be placed on perio maintenance interval of ${interval} months.`,
+  ].filter(Boolean).join(" ");
+
+  return { stability, stabilityRationale, interval, trendProse, narrative };
+}
 
 // --- Note rendering: substitute user fields into a raw template ----------
 function renderTemplate(raw, f) {
@@ -3375,10 +3491,33 @@ function renderTemplate(raw, f) {
   }
 
   // -------- 6g. Perio re-eval improvement status + detail. --------
-  // Applies to template 1346 (Perio Re-Evaluation). Replaces
-  // "has improved — ." with "has [status] — [detail]."
-  // Runs whenever either field is present in f (including defaults).
-  if (f.perioImproved !== undefined || f.perioImprovementDetail !== undefined) {
+  // Applies to template 1346 (Perio Re-Evaluation).
+  //
+  // Two paths:
+  //   • perioDxInsert == true with enough inputs → engine generates a full
+  //     stability paragraph (stable / in remission / unstable + trend prose
+  //     + maintenance interval rationale) that REPLACES both the "has
+  //     improved — ." line AND the "perio maintenance interval of 4 months"
+  //     sentence.
+  //   • Otherwise → the original simple substitution (status + detail).
+  if (f.perioDxInsert && f.perioDxCurrentMaxPD && f.perioDxBoPExtent && f.perioDxPlaqueControl) {
+    const dx = computePerioReEvalDx({
+      currentMaxPD:      f.perioDxCurrentMaxPD,
+      deepSiteWithBoP:   !!f.perioDxDeepSiteWithBoP,
+      currentBoPExtent:  f.perioDxBoPExtent,
+      plaqueControl:     f.perioDxPlaqueControl,
+      trendPD:           f.perioDxTrendPD || "improved",
+      trendBoP:          f.perioDxTrendBoP || "reduced",
+      trendMobility:     f.perioDxTrendMobility || "unchanged",
+      trendCompliance:   f.perioDxTrendCompliance || "same",
+    });
+    // Replace the two-sentence block (improvement line + maintenance interval)
+    // with the engine narrative. The regex matches across both sentences.
+    t = t.replace(
+      /Patient[’']s periodontal health has improved — \.[^\n]*perio maintenance interval of 4 months\./,
+      dx.narrative
+    );
+  } else if (f.perioImproved !== undefined || f.perioImprovementDetail !== undefined) {
     const status = (f.perioImproved || "improved");
     const detail = (f.perioImprovementDetail || "").trim();
     t = t.replace(
@@ -6749,6 +6888,274 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
 }
 
 /* ============================================================================
+ * PERIO RE-EVAL Dx BLOCK
+ *
+ * Inline block rendered inside NoteBuilder for the Perio Re-Evaluation
+ * template (1346). Shows the existing improved/not-improved + rationale
+ * fields by default, plus a "Dx" toggle button. When toggled on, expands
+ * to the bucketed-input Dx engine: current state buckets + trend prose,
+ * live preview of the computed stability call, and a "Dx in note?"
+ * checkbox that swaps the auto-generated narrative into the note in
+ * place of the simpler template line.
+ * ==========================================================================*/
+function PerioReEvalDxBlock({ fields, setField }) {
+  const [dxOpen, setDxOpen] = useState(false);
+
+  // Live-computed preview. Only valid when the required current-state
+  // inputs are filled; otherwise we render a placeholder hint instead.
+  const haveAllInputs = !!(fields.perioDxCurrentMaxPD
+    && fields.perioDxBoPExtent && fields.perioDxPlaqueControl);
+  const dx = haveAllInputs ? computePerioReEvalDx({
+    currentMaxPD:      fields.perioDxCurrentMaxPD,
+    deepSiteWithBoP:   !!fields.perioDxDeepSiteWithBoP,
+    currentBoPExtent:  fields.perioDxBoPExtent,
+    plaqueControl:     fields.perioDxPlaqueControl,
+    trendPD:           fields.perioDxTrendPD || "improved",
+    trendBoP:          fields.perioDxTrendBoP || "reduced",
+    trendMobility:     fields.perioDxTrendMobility || "unchanged",
+    trendCompliance:   fields.perioDxTrendCompliance || "same",
+  }) : null;
+
+  // Pill color for the stability output. Matches the site's existing
+  // semantic palette: teal = good, gold = in-progress, oxblood = attention.
+  const stabilityColor = dx?.stability === "stable" ? "var(--teal)"
+                        : dx?.stability === "in remission" ? "var(--gold)"
+                        : "var(--accent)";
+
+  return (
+    <>
+      {/* Simple improved / not-improved + rationale (unchanged from before).
+          Disabled visually when the Dx engine is active and inserting,
+          since the engine's narrative will override the substitution. */}
+      <div style={{
+        display: "flex", gap: "8px", alignItems: "flex-start",
+        opacity: (fields.perioDxInsert && dx) ? 0.5 : 1,
+      }}>
+        <div style={{ flex: "0 0 auto" }}>
+          <Field label="Periodontal health">
+            <Select value={fields.perioImproved || "improved"}
+              onChange={v => setField("perioImproved", v)}>
+              <option value="improved">improved</option>
+              <option value="not improved">has not improved</option>
+            </Select>
+          </Field>
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <Field label="Rationale">
+            <TextInput
+              value={fields.perioImprovementDetail || ""}
+              onChange={v => setField("perioImprovementDetail", v)}
+              placeholder={fields.perioImproved === "not improved" ? "e.g. no change in probing depths" : "e.g. decrease in probing depths"} />
+          </Field>
+        </div>
+      </div>
+
+      {/* Dx toggle button — opens the diagnosis engine inline. Designed to
+          look inviting (oxblood accent text on cream, like the lab Rx
+          tab elsewhere in the site). */}
+      <div style={{ marginTop: "12px" }}>
+        <button
+          type="button"
+          onClick={() => setDxOpen(o => !o)}
+          style={{
+            display: "inline-flex", alignItems: "center", gap: "10px",
+            padding: "10px 16px",
+            background: dxOpen ? "var(--paper)" : "white",
+            color: "var(--accent)",
+            border: "1px solid var(--accent)", borderRadius: "2px",
+            cursor: "pointer",
+            fontFamily: "'Fraunces', serif",
+            fontSize: "13px", fontWeight: 600, letterSpacing: "0.02em",
+          }}
+          onMouseEnter={e => { if (!dxOpen) e.currentTarget.style.background = "rgba(124,30,32,0.06)"; }}
+          onMouseLeave={e => { if (!dxOpen) e.currentTarget.style.background = "white"; }}
+        >
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "14px", lineHeight: 1 }}>
+            {dxOpen ? "−" : "+"}
+          </span>
+          <span>Dx — compute stability call</span>
+          <span style={{ fontFamily: "'Geist', sans-serif", fontWeight: 400, fontSize: "11px", opacity: 0.7, marginLeft: "6px" }}>
+            stable · in remission · unstable
+          </span>
+        </button>
+      </div>
+
+      {/* Inline Dx form — bucketed inputs, live preview, insert checkbox. */}
+      {dxOpen && (
+        <div style={{
+          marginTop: "12px", padding: "18px 20px",
+          background: "var(--paper)", border: "1px solid var(--rule)",
+          borderRadius: "2px",
+        }}>
+          <div style={{
+            fontSize: "11px", color: "var(--ink-soft)",
+            fontStyle: "italic", marginBottom: "16px",
+            lineHeight: 1.5,
+          }}>
+            Enter bucketed summary values — students don't need to re-enter
+            every probing depth. Stability call uses current state; the
+            trend inputs generate the prose in the note.
+          </div>
+
+          {/* ── Current state ── */}
+          <SubsectionLabel>Current state (drives Dx)</SubsectionLabel>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+            <Field label="Max probing depth">
+              <Select value={fields.perioDxCurrentMaxPD || ""}
+                onChange={v => setField("perioDxCurrentMaxPD", v)}>
+                <option value="">— select —</option>
+                <option value="≤4">≤4 mm (resolved)</option>
+                <option value="5-6">5–6 mm (residual)</option>
+                <option value="≥7">≥7 mm (deep residual)</option>
+              </Select>
+            </Field>
+            <Field label="BoP extent">
+              <Select value={fields.perioDxBoPExtent || ""}
+                onChange={v => setField("perioDxBoPExtent", v)}>
+                <option value="">— select —</option>
+                <option value="none">none</option>
+                <option value="localized">localized (&lt;30% sites)</option>
+                <option value="generalized">generalized (≥30% sites)</option>
+              </Select>
+            </Field>
+            <Field label="O'Leary plaque control">
+              <Select value={fields.perioDxPlaqueControl || ""}
+                onChange={v => setField("perioDxPlaqueControl", v)}>
+                <option value="">— select —</option>
+                <option value="good">good (&lt;20%)</option>
+                <option value="fair">fair (20–40%)</option>
+                <option value="poor">poor (&gt;40%)</option>
+              </Select>
+            </Field>
+            <Field label="Any site PD ≥5mm + BoP?">
+              <label style={{
+                display: "flex", alignItems: "center", gap: "10px",
+                padding: "8px 0", fontSize: "13px", cursor: "pointer",
+              }}>
+                <input type="checkbox"
+                  checked={!!fields.perioDxDeepSiteWithBoP}
+                  onChange={e => setField("perioDxDeepSiteWithBoP", e.target.checked)}
+                  style={{ width: "16px", height: "16px", accentColor: "var(--accent)", cursor: "pointer" }} />
+                <span>{fields.perioDxDeepSiteWithBoP ? "yes (disqualifies stability)" : "no"}</span>
+              </label>
+            </Field>
+          </div>
+
+          {/* ── Trends ── */}
+          <div style={{ marginTop: "16px" }}>
+            <SubsectionLabel>Trends (drive narrative prose)</SubsectionLabel>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+              <Field label="Probing depths">
+                <Select value={fields.perioDxTrendPD || "improved"}
+                  onChange={v => setField("perioDxTrendPD", v)}>
+                  <option value="significantly improved">significantly improved (↓ ≥2mm)</option>
+                  <option value="improved">improved (↓ 1–2mm)</option>
+                  <option value="minimal">minimal change</option>
+                  <option value="worsened">worsened</option>
+                </Select>
+              </Field>
+              <Field label="BoP">
+                <Select value={fields.perioDxTrendBoP || "reduced"}
+                  onChange={v => setField("perioDxTrendBoP", v)}>
+                  <option value="significantly reduced">significantly reduced</option>
+                  <option value="reduced">reduced</option>
+                  <option value="unchanged">unchanged</option>
+                  <option value="worsened">worsened</option>
+                </Select>
+              </Field>
+              <Field label="Mobility">
+                <Select value={fields.perioDxTrendMobility || "unchanged"}
+                  onChange={v => setField("perioDxTrendMobility", v)}>
+                  <option value="improved">improved</option>
+                  <option value="unchanged">unchanged</option>
+                  <option value="worsened">worsened</option>
+                </Select>
+              </Field>
+              <Field label="Patient compliance">
+                <Select value={fields.perioDxTrendCompliance || "same"}
+                  onChange={v => setField("perioDxTrendCompliance", v)}>
+                  <option value="improved">improved</option>
+                  <option value="same">same</option>
+                  <option value="declined">declined</option>
+                </Select>
+              </Field>
+            </div>
+          </div>
+
+          {/* ── Live preview ── */}
+          <div style={{ marginTop: "20px", paddingTop: "16px", borderTop: "1px solid var(--rule)" }}>
+            <SubsectionLabel>Dx</SubsectionLabel>
+            {dx ? (
+              <>
+                <div style={{
+                  display: "inline-flex", alignItems: "center", gap: "10px",
+                  padding: "8px 16px",
+                  background: stabilityColor, color: "white",
+                  borderRadius: "16px",
+                  fontFamily: "'Fraunces', serif", fontSize: "14px",
+                  fontWeight: 600, fontStyle: "italic",
+                  marginBottom: "10px",
+                }}>
+                  <span style={{ textTransform: "uppercase", letterSpacing: "0.08em", fontStyle: "normal", fontSize: "11px", fontFamily: "'Geist', sans-serif" }}>
+                    {dx.stability === "stable" ? "STABLE"
+                     : dx.stability === "in remission" ? "IN REMISSION"
+                     : "UNSTABLE"}
+                  </span>
+                  <span style={{ opacity: 0.75, fontSize: "12px", fontFamily: "'Geist', sans-serif", fontStyle: "normal", fontWeight: 400 }}>
+                    · {dx.interval}-month interval
+                  </span>
+                </div>
+                <div style={{
+                  padding: "12px 14px",
+                  background: "white", border: "1px solid var(--rule)",
+                  borderRadius: "2px",
+                  fontFamily: "'Geist', sans-serif",
+                  fontSize: "13px", lineHeight: 1.55, color: "var(--ink)",
+                }}>
+                  {dx.narrative}
+                </div>
+              </>
+            ) : (
+              <div style={{
+                padding: "12px 14px",
+                border: "1px dashed var(--rule)", borderRadius: "2px",
+                color: "var(--ink-faint)", fontSize: "12px", fontStyle: "italic",
+              }}>
+                Fill in max probing depth, BoP extent, and plaque control to compute the Dx.
+              </div>
+            )}
+          </div>
+
+          {/* ── Insert checkbox ── */}
+          <div style={{ marginTop: "14px" }}>
+            <label style={{
+              display: "flex", alignItems: "center", gap: "10px",
+              padding: "10px 14px",
+              background: fields.perioDxInsert ? "rgba(45,90,86,0.10)" : "transparent",
+              border: "1px solid " + (fields.perioDxInsert ? "var(--teal)" : "var(--rule)"),
+              borderRadius: "2px",
+              cursor: dx ? "pointer" : "not-allowed",
+              opacity: dx ? 1 : 0.5,
+              fontSize: "13px", color: "var(--ink)",
+            }}>
+              <input type="checkbox"
+                checked={!!fields.perioDxInsert}
+                disabled={!dx}
+                onChange={e => setField("perioDxInsert", e.target.checked)}
+                style={{ width: "16px", height: "16px", accentColor: "var(--teal)", cursor: dx ? "pointer" : "not-allowed" }} />
+              <span style={{ fontWeight: 600 }}>Dx in note?</span>
+              <span style={{ color: "var(--ink-soft)", fontSize: "12px" }}>
+                Replaces the improved/rationale line with the full stability paragraph above.
+              </span>
+            </label>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+/* ============================================================================
  * NOTE BUILDER  (full-feature port of the previous artifact)
  * ==========================================================================*/
 function NoteBuilder({ selectedProcedureId, onSelectProcedure,
@@ -7483,25 +7890,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
             <>
               <Hairline />
               <SubsectionLabel>Assessment</SubsectionLabel>
-              <div style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
-                <div style={{ flex: "0 0 auto" }}>
-                  <Field label="Periodontal health">
-                    <Select value={fields.perioImproved || "improved"}
-                      onChange={v => setField("perioImproved", v)}>
-                      <option value="improved">improved</option>
-                      <option value="not improved">has not improved</option>
-                    </Select>
-                  </Field>
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <Field label="Rationale">
-                    <TextInput
-                      value={fields.perioImprovementDetail || ""}
-                      onChange={v => setField("perioImprovementDetail", v)}
-                      placeholder={fields.perioImproved === "not improved" ? "e.g. no change in probing depths" : "e.g. decrease in probing depths"} />
-                  </Field>
-                </div>
-              </div>
+              <PerioReEvalDxBlock fields={fields} setField={setField} />
             </>
           )}
 
