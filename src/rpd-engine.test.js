@@ -1108,10 +1108,11 @@ describe("INVARIANTS — rules that must hold across ALL test cases", () => {
     cases.forEach(({ name, result }) => {
       const rpi = (result.abutmentDesigns || []).filter(a => a.claspType === "RPI");
       if (rpi.length === 0) return;
-      it(`${name}: every RPI has mesial occlusal rest`, () => {
+      it(`${name}: every RPI has mesial rest (occlusal on posteriors, cingulum on anteriors)`, () => {
         rpi.forEach(a => {
           expect(a.restSeat?.surface, `#${a.tooth}`).toBe("mesial");
-          expect(a.restSeat?.type, `#${a.tooth}`).toBe("occlusal");
+          const isAnterior = RPD_ANTERIOR_SET.has(a.tooth);
+          expect(a.restSeat?.type, `#${a.tooth}`).toBe(isAnterior ? "cingulum" : "occlusal");
         });
       });
       it(`${name}: every RPI has distal proximal plate`, () => {
@@ -2343,6 +2344,78 @@ describe("ROBUSTNESS — malformed input handling", () => {
       const r = rpdRunEngine(factory());
       expect(typeof r.labScript, name).toBe("string");
       expect(r.labScript.length, name).toBeGreaterThan(0);
+    });
+  });
+});
+
+// =========================================================================
+// CANINE-SPECIFIC RULES — verifying the "no ban on canines" correction
+// =========================================================================
+// Earlier audit incorrectly claimed our engine forbids RPI on canines.
+// It does not. Lock in the correct behavior:
+//   • Canine as DE terminal → RPI (or Combination if gates fail). No
+//     canine-specific override.
+//   • Canine as tooth-supported abutment in mod space → Rest Only
+//     (esthetic omission per UIC rule) — NOT Akers, NOT cast clasp.
+//   The single esthetic restriction is on cast Akers (visible during
+//   smile). RPI's I-bar approaches gingivally, so it's more esthetic
+//   than Akers, not less, and is permitted on max anteriors.
+// =========================================================================
+describe("CANINE rules — RPI allowed on DE-terminal canines; esthetic omission for tooth-supported", () => {
+  // Max Class I with both canines as DE terminals (all premolars +
+  // molars missing). #6 and #11 should produce RPI if gates pass.
+  it("Max Class I, both canines as DE terminals → both produce RPI (or Combination)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 2, 3, 4, 5, 12, 13, 14, 15, 16]);
+    const r = rpdRunEngine(c);
+    const ar6 = designOf(r, 6);
+    const ar11 = designOf(r, 11);
+    expect(ar6?.claspType, "#6 (right canine)").toMatch(/RPI|Combination/);
+    expect(ar11?.claspType, "#11 (left canine)").toMatch(/RPI|Combination/);
+  });
+
+  // Same case: verify the canines' rest seats are cingulum (not
+  // occlusal) — canines don't have an occlusal table for a standard
+  // rest, so cingulum is the correct choice.
+  it("Canines as DE terminals use cingulum rests (anatomically appropriate)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 2, 3, 4, 5, 12, 13, 14, 15, 16]);
+    const r = rpdRunEngine(c);
+    const ar6 = designOf(r, 6);
+    expect(ar6?.restSeat?.type).toBe("cingulum");
+    expect(ar6?.restSeat?.bur).toMatch(/inverted cone/i);
+  });
+
+  // Tooth-supported canine in a mod space → Rest Only (esthetic).
+  // Setup: Max Class III with #5 missing, abutments #4 (premolar) and
+  // #6 (canine).
+  it("Tooth-supported canine in mod space → Rest Only with cingulum rest", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 5]);
+    const r = rpdRunEngine(c);
+    const d = designOf(r, 6);
+    expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    expect(d?.restSeat?.type).toBe("cingulum");
+  });
+});
+
+// =========================================================================
+// DE TERMINAL INVARIANT — claspType is RPI / Combination / WW C-clasp
+// =========================================================================
+// A DE terminal must use a stress-releasing or wrought-wire retention
+// design — never a cast Akers (which would torque the abutment under
+// load). Loops over all invariant cases.
+// =========================================================================
+describe("INVARIANT — every DE terminal uses a stress-releasing design (never cast Akers)", () => {
+  const cases = allInvariantCases();
+  cases.forEach(({ name, result }) => {
+    const deTerminals = (result.abutmentDesigns || []).filter(a => a.spanType === "distal-extension");
+    if (deTerminals.length === 0) return;
+    it(`${name}: every DE terminal is RPI / Combination / WW C-clasp — never Akers`, () => {
+      deTerminals.forEach(a => {
+        expect(["RPI", "Combination", "WW C-clasp", "I-bar (esthetic)", "Rest Only (esthetic omission)"], `#${a.tooth}`)
+          .toContain(a.claspType);
+      });
     });
   });
 });

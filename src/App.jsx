@@ -12465,10 +12465,18 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
   // Rest seat type
   let restSeat;
   if (isDE) {
-    const burForTooth = (RPD_FIRST_MOLARS.has(tooth) || RPD_SECOND_MOLARS.has(tooth))
-      ? "#8 round (outline) / #6 round (deepening)"
-      : "#6 round (outline) / #4 round (deepening)";
-    restSeat = { surface: "mesial", type: "occlusal", bur: burForTooth };
+    // For a DE terminal, the rest type depends on tooth anatomy:
+    // canines (and other anteriors) lack an occlusal table — use a
+    // cingulum rest with inverted cone bur. Posteriors get the
+    // standard mesial occlusal rest (RPI signature).
+    if (RPD_CANINES.has(tooth) || RPD_MAX_INCISORS.has(tooth) || RPD_MAND_INCISORS.has(tooth)) {
+      restSeat = { surface: "mesial", type: "cingulum", bur: "inverted cone" };
+    } else {
+      const burForTooth = (RPD_FIRST_MOLARS.has(tooth) || RPD_SECOND_MOLARS.has(tooth))
+        ? "#8 round (outline) / #6 round (deepening)"
+        : "#6 round (outline) / #4 round (deepening)";
+      restSeat = { surface: "mesial", type: "occlusal", bur: burForTooth };
+    }
   } else {
     if (RPD_POSTERIOR.has(tooth)) {
       restSeat = {
