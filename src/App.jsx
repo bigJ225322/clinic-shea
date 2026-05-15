@@ -16030,10 +16030,19 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
     rationale = "Red dashed outline marks the location of an artificial replacement tooth. Pontic form (denture tooth / tube tooth / facing) is governed by the base design over this slot.";
   } else if (kind === 'indirect' && indirect) {
     title = `Indirect retainer — ${rpdToothName(tooth)}`;
+    // Same disambiguation as for direct rest seats: cingulum/ball rests sit
+    // on the LINGUAL surface, with mesial/distal naming the position along
+    // the cingulum (not a tooth surface). Surface this explicitly so labels
+    // like "mesial cingulum rest" don't read as proximal-surface rests.
+    const rt = (indirect.restType || "").toLowerCase();
+    const surface = /cingulum|ball/.test(rt) ? "lingual"
+                  : /occlusal/.test(rt) ? "occlusal"
+                  : null;
     lines = [
       ["Rest type", indirect.restType],
+      surface && ["Surface", surface],
       ["Function",  "Counteracts tissue-ward rotation of distal extension"],
-    ];
+    ].filter(Boolean);
     rationale = indirect.rationale || "Indirect retainer prevents the distal extension base from rotating away from the residual ridge. Located on the opposite side of the fulcrum line from the distal extension.";
   } else if (kind === 'minorConnector' && tooth != null) {
     title = `Minor connector — ${rpdToothName(tooth)}`;
