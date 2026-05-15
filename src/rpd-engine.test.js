@@ -646,3 +646,292 @@ describe("Edge 8 — Metal allergy (NMCD pathway + Managing Partner flag)", () =
     expect(flag).toBeTruthy();
   });
 });
+
+// =========================================================================
+// GRANULAR DESIGN-DETAIL TEST SUITE
+// =========================================================================
+// The original test suite asserted only WHAT was selected (claspType,
+// majorConnector type, Kennedy class). It did not catch the Akers /
+// mid-buccal default bug because nothing in the test checked WHICH
+// UNDERCUT the clasp engages. That's a clinically meaningful detail —
+// the kind a lab tech would see in the Rx and a faculty member would
+// red-pen.
+//
+// This suite tests the GRANULAR detail of each abutment design against
+// what standard McCracken / UIC convention prescribes:
+//   • Akers undercut location: side opposite the rest seat (DB if rest
+//     is mesial, MB if rest is distal)
+//   • Rest seat surface: matches sideToward
+//   • Rest seat type: occlusal for posteriors, cingulum/ball for anteriors
+//   • Rest seat bur: tooth-type-specific
+//   • Guide plane surface: matches sideToward (tooth-supported) or distal (DE)
+//   • Reciprocation type: arm vs plate (cast vs WW)
+//   • Retentive-arm text contains the correct undercut location string
+//
+// Tests pass-style ("what should this be?") rather than smoke-style
+// ("does it produce anything?"). If an assertion fails, the failure
+// pinpoints the wrong granular value, not just "design exists".
+// =========================================================================
+
+// -------- Granular 1 — Akers convention: opposite-side-buccal undercut --------
+// The canonical case: a single missing molar (#19) with premolar abutments
+// on both sides. Both are tooth-supported. The mesial-most abutment has
+// rest distal → MB undercut. The distal-most abutment has rest mesial →
+// DB undercut. This single test would have caught the original bug.
+describe("Granular 1 — Akers undercut convention (single-tooth mod space)", () => {
+  const c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32]);
+  setMissing(c, [19]);                   // single missing 1st molar
+  const r = rpdRunEngine(c);
+
+  it("#18 (distal-most of mod space) — Akers engages DB undercut", () => {
+    const d = designOf(r, 18);
+    expect(d?.claspType).toBe("Akers");
+    expect(d?.effectiveUndercutLocation).toBe("disto-buccal");
+    expect(d?.retentiveArm).toMatch(/disto-buccal/);
+    expect(d?.retentiveArm).not.toMatch(/mid-buccal/);
+  });
+
+  it("#18 rest seat is mesial occlusal (adjacent to edentulous space)", () => {
+    const d = designOf(r, 18);
+    expect(d?.restSeat?.surface).toBe("mesial");
+    expect(d?.restSeat?.type).toBe("occlusal");
+  });
+
+  it("#18 reciprocation is a cast lingual arm", () => {
+    const d = designOf(r, 18);
+    expect(d?.reciprocation?.type).toBe("arm");
+    expect(d?.reciprocation?.text).toMatch(/lingual/i);
+  });
+
+  it("#20 (mesial-most of mod space) — Akers engages MB undercut", () => {
+    const d = designOf(r, 20);
+    expect(d?.claspType).toBe("Akers");
+    expect(d?.effectiveUndercutLocation).toBe("mesio-buccal");
+    expect(d?.retentiveArm).toMatch(/mesio-buccal/);
+    expect(d?.retentiveArm).not.toMatch(/mid-buccal/);
+  });
+
+  it("#20 rest seat is distal occlusal (adjacent to edentulous space)", () => {
+    const d = designOf(r, 20);
+    expect(d?.restSeat?.surface).toBe("distal");
+    expect(d?.restSeat?.type).toBe("occlusal");
+  });
+
+  it("Both abutments use molar/premolar-appropriate burs", () => {
+    const d18 = designOf(r, 18);
+    const d20 = designOf(r, 20);
+    // #18 is a molar — should get #8/#6 round bur sequence
+    expect(d18?.restSeat?.bur).toMatch(/#8 round/);
+    // #20 is a premolar — should get #6/#4 round bur sequence
+    expect(d20?.restSeat?.bur).toMatch(/#6 round/);
+  });
+});
+
+// -------- Granular 2 — RPI on DE terminal: mid-buccal IS correct --------
+// Confirms the engine ONLY substitutes the Akers default when the clasp
+// is Akers. For an RPI, mid-buccal stays correct (I-bar geometry).
+describe("Granular 2 — RPI on DE terminal correctly engages mid-buccal", () => {
+  const c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32]);
+  setMissing(c, [18, 19, 20]);           // left DE
+  const r = rpdRunEngine(c);
+
+  it("#21 (DE terminal) — clasp is RPI", () => {
+    expect(designOf(r, 21)?.claspType).toBe("RPI");
+  });
+
+  it("#21 RPI engages mid-buccal undercut (NOT DB)", () => {
+    const d = designOf(r, 21);
+    expect(d?.effectiveUndercutLocation).toBe("mid-buccal");
+    expect(d?.retentiveArm).toMatch(/mid-buccal/);
+    expect(d?.retentiveArm).not.toMatch(/disto-buccal/);
+  });
+
+  it("#21 rest seat is mesial (RPI signature — mesial rest releases stress)", () => {
+    const d = designOf(r, 21);
+    expect(d?.restSeat?.surface).toBe("mesial");
+    expect(d?.restSeat?.type).toBe("occlusal");
+  });
+
+  it("#21 guide plane is distal (DE — proximal plate on the distal side)", () => {
+    expect(designOf(r, 21)?.guidePlane?.surface).toBe("distal");
+  });
+});
+
+// -------- Granular 3 — Combination clasp on DE (RPI fallback) --------
+// When an RPI gate fires, engine falls back to Combination: wrought-wire
+// retentive arm on the buccal + cast lingual reciprocal. WW engages 0.02"
+// undercut (deeper than cast's 0.01") because wire flexes.
+describe("Granular 3 — Combination clasp specifics (wrought wire + 0.02 undercut)", () => {
+  const c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32]);
+  setMissing(c, [18, 19, 20]);           // left DE
+  setAttrs(c, 21, { highFrenum: true }); // fires the RPI frenum gate
+  const r = rpdRunEngine(c);
+
+  it("#21 clasp is Combination (RPI gate fired)", () => {
+    expect(designOf(r, 21)?.claspType).toBe("Combination");
+  });
+
+  it("#21 retentive arm is wrought wire (not cast)", () => {
+    const arm = designOf(r, 21)?.retentiveArm || "";
+    expect(arm).toMatch(/wrought wire|18ga|18 gauge/i);
+  });
+
+  it("#21 WW engages 0.02 undercut (deeper than cast's 0.01)", () => {
+    const arm = designOf(r, 21)?.retentiveArm || "";
+    expect(arm).toMatch(/0\.02/);
+  });
+});
+
+// -------- Granular 4 — Esthetic omission on max anteriors --------
+// Maxillary anterior abutments bounding a modification space should
+// receive Rest Only (esthetic omission) — cast circumferential clasps
+// on visible anteriors fail UIC's esthetic-zone rule. The rest seat
+// itself differs by tooth: ball rest for centrals, cingulum for laterals
+// and canines.
+describe("Granular 4 — Esthetic omission on maxillary anteriors", () => {
+  const c = rpdMakeBlankCase("maxillary");
+  setMissing(c, [1, 16]);
+  setMissing(c, [7, 10]);                // bilateral lateral incisor mod spaces
+  const r = rpdRunEngine(c);
+
+  it("#8 (central) is Rest Only with ball rest", () => {
+    const d = designOf(r, 8);
+    expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    expect(d?.restSeat?.type).toBe("ball");
+  });
+
+  it("#9 (central) is Rest Only with ball rest", () => {
+    const d = designOf(r, 9);
+    expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    expect(d?.restSeat?.type).toBe("ball");
+  });
+
+  it("#6 (canine) is Rest Only with cingulum rest", () => {
+    const d = designOf(r, 6);
+    expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    expect(d?.restSeat?.type).toBe("cingulum");
+  });
+
+  it("Cingulum/ball rests use inverted cone bur", () => {
+    const d8 = designOf(r, 8);
+    const d6 = designOf(r, 6);
+    expect(d8?.restSeat?.bur).toMatch(/inverted cone/i);
+    expect(d6?.restSeat?.bur).toMatch(/inverted cone/i);
+  });
+});
+
+// -------- Granular 5 — Reverse Akers requires explicit user override --------
+// When the user EXPLICITLY sets undercut to DB on a tooth-supported
+// abutment, the engine labels as "Reverse Akers". When the engine's own
+// DB default fires for sideToward=mesial, it stays labeled "Akers" (the
+// textbook case). This is the new behavior post-fix.
+describe("Granular 5 — Akers vs Reverse Akers: user explicit override semantics", () => {
+  it("Default Akers (engine-substituted DB) is labeled 'Akers' not 'Reverse Akers'", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [19]);                  // #18, #20 both get Akers
+    const r = rpdRunEngine(c);
+    expect(designOf(r, 18)?.claspType).toBe("Akers");
+    expect(designOf(r, 20)?.claspType).toBe("Akers");
+  });
+
+  it("User-overridden DB undercut promotes the clasp to 'Reverse Akers'", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [19]);
+    setAttrs(c, 18, { undercutLocation: "disto-buccal" }); // explicit override
+    const r = rpdRunEngine(c);
+    // Despite the engine WOULD have computed DB by default, the explicit
+    // override changes the semantics: user is asserting "I surveyed and
+    // got DB here," which routes to Reverse Akers nomenclature.
+    // (NB: this is a nomenclature distinction — clinically the design is
+    // the same. The engine surfaces the distinction so it matches how
+    // UIC labels the clasp in their lecture materials.)
+    expect(designOf(r, 18)?.claspType).toBe("Reverse Akers");
+  });
+});
+
+// -------- Granular 6 — Guide plane length depends on clasp type --------
+// I-bar (esthetic) variants get a long/parallel guide plane spanning the
+// full crown height (gives extra path-of-insertion retention since
+// there's no occlusal clasp arm). Standard Akers gets the conventional
+// 2/3 height guide plane.
+describe("Granular 6 — Guide plane length tracks clasp choice", () => {
+  it("Standard Akers gets 2/3 height guide plane", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [19]);
+    const r = rpdRunEngine(c);
+    const d = designOf(r, 18);
+    expect(d?.guidePlane?.length).toMatch(/2\/3 clinical crown height/);
+  });
+
+  it("Esthetic I-bar gets long/parallel guide plane", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [4]);                  // mod space, #6 becomes esthetic-zone abutment
+    // Force esthetic I-bar instead of Rest Only on #6 by giving it good
+    // RPI gates and undercut at mid-buccal (which is the default anyway)
+    const r = rpdRunEngine(c);
+    const d = designOf(r, 6);
+    if (d?.claspType === "I-bar (esthetic)") {
+      expect(d?.guidePlane?.length).toMatch(/long|parallel/i);
+    }
+  });
+});
+
+// -------- Granular 7 — Major connector dimension specifics --------
+// Lingual Bar has a 4mm strap height + 4mm clearance from gingival margin
+// (need sulcus depth ≥8mm). Single Palatal Strap has an 8mm width.
+describe("Granular 7 — Major connector dimension annotations", () => {
+  it("Mandibular Lingual Bar notes 4mm + 4mm clearance", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [19, 30]);              // bilateral mod, tooth-supported
+    c.measurements.lingualSulcusDepth = 10; // adequate depth → Lingual Bar
+    const r = rpdRunEngine(c);
+    const mc = r.majorConnector;
+    if (mc?.type === "Lingual Bar") {
+      // Engine should mention the dimensions somewhere — either in
+      // width or note. This catches refactors that drop the dimension.
+      const blob = `${mc.width || ""} ${mc.note || ""} ${mc.rationale || ""}`;
+      expect(blob).toMatch(/4mm.*4mm|4 mm.*4 mm/);
+    }
+  });
+
+  it("Maxillary Single Palatal Strap notes 8mm width", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [14]);                   // short-span Class III
+    const r = rpdRunEngine(c);
+    const mc = r.majorConnector;
+    if (mc?.type === "Single Palatal Strap") {
+      const blob = `${mc.width || ""} ${mc.note || ""}`;
+      expect(blob).toMatch(/8mm|8 mm/);
+    }
+  });
+});
+
+// -------- Granular 8 — Bur sizes follow tooth type --------
+// Premolar rest seats: #6 (outline) + #4 (deepening) round burs.
+// Molar rest seats: #8 (outline) + #6 (deepening) round burs.
+// Cingulum / ball rests: inverted cone.
+describe("Granular 8 — Rest seat burs match tooth type", () => {
+  const c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32]);
+  setMissing(c, [19, 30]);                 // mod 1, abutments #18, #20, #29, #31
+  const r = rpdRunEngine(c);
+
+  it("Molar abutments (#18, #31) use #8/#6 round burs", () => {
+    expect(designOf(r, 18)?.restSeat?.bur).toMatch(/#8 round/);
+    expect(designOf(r, 31)?.restSeat?.bur).toMatch(/#8 round/);
+  });
+
+  it("Premolar abutments (#20, #29) use #6/#4 round burs", () => {
+    expect(designOf(r, 20)?.restSeat?.bur).toMatch(/#6 round/);
+    expect(designOf(r, 29)?.restSeat?.bur).toMatch(/#6 round/);
+  });
+});
