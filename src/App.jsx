@@ -3350,14 +3350,25 @@ function computePerioCOEDx(inputs) {
   // Bone loss can override upward
   let bl = boneLossPct === "<15" ? 1 : boneLossPct === "15-33" ? 2 : 3;
   let baseStage = Math.max(calStage, bl);
-  // Tooth loss + complexity can push to Stage IV
-  const cplxCount = (complexityFactors || []).length;
+  // Tooth loss + complexity can push to Stage IV. Stage IV requires either
+  // ≥5 teeth lost OR rehabilitation-complexity elevators (severe ridge
+  // defect, mobility ≥2 / secondary occlusal trauma, <20 remaining teeth).
+  // Stage III modifiers (vertical ≥3mm, furcation II/III, moderate ridge
+  // defect) keep a case at Stage III but don't push to IV on their own.
+  const factors = complexityFactors || [];
+  const hasStageIVElevator = factors.includes("mobility-2plus")
+    || factors.includes("ridge-severe")
+    || factors.includes("lt20-teeth");
   if (teethLostFromPerio === "≥5") {
     stage = "IV";
-    stageRationale = `${cal}mm max interdental CAL with ≥5 teeth lost from periodontitis — rehabilitation complexity drives Stage IV`;
-  } else if (baseStage >= 3 && cplxCount >= 2) {
+    stageRationale = `CAL ${cal}mm with ≥5 teeth lost from periodontitis — rehabilitation complexity drives Stage IV`;
+  } else if (baseStage >= 3 && hasStageIVElevator) {
     stage = "IV";
-    stageRationale = `${cal}mm max interdental CAL with multiple complexity factors (${cplxCount}) — Stage IV`;
+    const reasons = [];
+    if (factors.includes("mobility-2plus")) reasons.push("secondary occlusal trauma (mobility ≥2)");
+    if (factors.includes("ridge-severe")) reasons.push("severe ridge defect");
+    if (factors.includes("lt20-teeth")) reasons.push("<20 remaining teeth");
+    stageRationale = `CAL ${cal}mm + Stage IV rehabilitation criteria (${reasons.join(", ")})`;
   } else if (baseStage === 3) {
     stage = "III";
     stageRationale = `${cal}mm max interdental CAL, bone loss ${boneLossPct === ">33" ? "extending to mid-third or beyond" : boneLossPct} — severe (Stage III)`;
@@ -6117,7 +6128,11 @@ function HelpPopup({ children }) {
   );
 }
 
-function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle }) {
+function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle,
+                        fields, setField }) {
+  // Local toggle for the perio COE Dx engine (square "Dx" button next to
+  // the AAP/ADA dropdowns expands the staging+grading form inline below).
+  const [dxOpen, setDxOpen] = useState(false);
   const config = EXAM_FINDINGS_CONFIG[procedureId];
 
   // Initialize wNLDefault fields to "WNL" when the procedure loads.
@@ -6391,19 +6406,6 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
                     <option value="">—</option>
                     {["I","II","III","IV"].map(o => <option key={o} value={o}>{o}</option>)}
                   </select>
-                  <HelpPopup>
-                    <div style={{ fontWeight: 600, marginBottom: "7px" }}>Staging criteria</div>
-                    {[
-                      ["I",   "CAL 1–2mm, PD ≤4mm, no tooth loss due to perio"],
-                      ["II",  "CAL 3–4mm, PD ≤5mm, no tooth loss due to perio"],
-                      ["III", "CAL ≥5mm, PD ≥6mm, ≤4 teeth lost"],
-                      ["IV",  "Stage III + masticatory dysfunction (≤20 teeth, bite collapse…)"],
-                    ].map(([s, d]) => (
-                      <div key={s} style={{ marginBottom: "5px" }}>
-                        <strong>Stage {s}</strong> — {d}
-                      </div>
-                    ))}
-                  </HelpPopup>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                   <span style={grpLabel}>Grade</span>
@@ -6411,24 +6413,6 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
                     <option value="">—</option>
                     {["A","B","C"].map(o => <option key={o} value={o}>{o}</option>)}
                   </select>
-                  <HelpPopup>
-                    <div style={{ fontWeight: 600, marginBottom: "6px" }}>Grading criteria</div>
-                    <div style={{ marginBottom: "7px", fontSize: "10px", color: "var(--ink-soft)", fontStyle: "italic" }}>
-                      % bone loss (worst site) ÷ age
-                    </div>
-                    {[
-                      ["A", "≤ 0.25", "No progression in 5 yrs, non-smoker, normoglycemic"],
-                      ["B", "0.25 – 1.0", "Evidence of progression, <10 cigs/day, HbA1c <7%"],
-                      ["C", "> 1.0", "Rapid progression, ≥10 cigs/day, HbA1c ≥7%"],
-                    ].map(([g, ratio, d]) => (
-                      <div key={g} style={{ marginBottom: "5px" }}>
-                        <strong>Grade {g}</strong>
-                        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "10px",
-                          color: "var(--ink-soft)", margin: "0 5px" }}>{ratio}</span>
-                        — {d}
-                      </div>
-                    ))}
-                  </HelpPopup>
                 </div>
               </div>
             </div>
@@ -6446,22 +6430,41 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
                   <option value="">— Case Type —</option>
                   {["I","II","III","IV"].map(o => <option key={o} value={o}>{o}</option>)}
                 </select>
-                <HelpPopup>
-                  <div style={{ fontWeight: 600, marginBottom: "7px" }}>ADA Case Type</div>
-                  {[
-                    ["I",   "Gingivitis (no bone loss, reversible)"],
-                    ["II",  "Early periodontitis (≤25% bone loss)"],
-                    ["III", "Moderate periodontitis (25–50% bone loss)"],
-                    ["IV",  "Advanced periodontitis (>50% bone loss)"],
-                  ].map(([t, d]) => (
-                    <div key={t} style={{ marginBottom: "5px" }}>
-                      <strong>Type {t}</strong> — {d}
-                    </div>
-                  ))}
-                </HelpPopup>
               </div>
             </div>
+            {/* Dx button — square, adjacent to AAP/ADA. Toggles the
+                staging+grading engine inline below. Only rendered when
+                fields/setField were passed (i.e. we're inside a NoteBuilder
+                that has the Dx machinery wired up). */}
+            {fields && setField && (
+              <div style={{ marginLeft: "16px", alignSelf: "stretch", display: "flex", alignItems: "flex-end" }}>
+                <button
+                  type="button"
+                  onClick={() => setDxOpen(o => !o)}
+                  style={{
+                    width: "44px", height: "32px",
+                    background: dxOpen ? "var(--accent)" : "white",
+                    color: dxOpen ? "white" : "var(--accent)",
+                    border: "1px solid var(--accent)", borderRadius: "2px",
+                    cursor: "pointer",
+                    fontFamily: "'Fraunces', serif",
+                    fontSize: "14px", fontWeight: 700, letterSpacing: "0.02em",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}
+                  onMouseEnter={e => { if (!dxOpen) e.currentTarget.style.background = "rgba(124,30,32,0.06)"; }}
+                  onMouseLeave={e => { if (!dxOpen) e.currentTarget.style.background = "white"; }}
+                  title="Compute AAP stage + grade"
+                >
+                  Dx
+                </button>
+              </div>
+            )}
           </div>
+          {dxOpen && fields && setField && (
+            <div style={{ marginTop: "10px" }}>
+              <PerioCOEDxForm fields={fields} setField={setField} />
+            </div>
+          )}
         </div>
       );
     }
@@ -7183,9 +7186,7 @@ function PerioReEvalDxBlock({ fields, setField }) {
  * max interdental PD + recession at the worst site — formula shown
  * inline so students see the math.
  * ==========================================================================*/
-function PerioCOEDxBlock({ fields, setField }) {
-  const [dxOpen, setDxOpen] = useState(false);
-
+function PerioCOEDxForm({ fields, setField }) {
   // Required inputs for a valid Dx
   const haveAllInputs = !!(fields.perioCOEMaxIntPD !== "" && fields.perioCOEBoneLossPct
     && fields.perioCOETeethLost && fields.perioCOEExtent && fields.perioCOEAge !== "");
@@ -7207,12 +7208,18 @@ function PerioCOEDxBlock({ fields, setField }) {
                    : dx?.stage === "III" ? "var(--gold)"
                    : "var(--accent)";
 
-  // Complexity factor checkboxes — track in the array field
+  // Complexity factor labels refined to match AAP 2018 case definitions.
+  // The manual is descriptive — "moderate" vs "severe" ridge defects are
+  // clinical judgments, not mm-quantified. Vertical bone loss is anchored
+  // to ≥3mm specifically. Mobility ≥2 is a Stage IV criterion (secondary
+  // occlusal trauma), conceptually expecting more than one tooth.
   const COMPLEXITY_OPTIONS = [
-    { id: "vertical-defect", label: "Vertical bony defect" },
+    { id: "vertical-3mm",    label: "Vertical bone loss ≥3mm" },
     { id: "furcation-23",    label: "Furcation Class II–III" },
-    { id: "mobility-2plus",  label: "Mobility ≥2" },
-    { id: "ridge-defect",    label: "Ridge defect" },
+    { id: "ridge-moderate",  label: "Moderate ridge defect" },
+    { id: "mobility-2plus",  label: "Mobility ≥2 (multiple teeth)" },
+    { id: "ridge-severe",    label: "Severe ridge defect" },
+    { id: "lt20-teeth",      label: "<20 remaining teeth" },
   ];
   const toggleFactor = (id) => {
     const current = fields.perioCOEComplexityFactors || [];
@@ -7221,52 +7228,22 @@ function PerioCOEDxBlock({ fields, setField }) {
   };
 
   return (
-    <>
-      <div style={{ marginTop: "12px" }}>
-        <button
-          type="button"
-          onClick={() => setDxOpen(o => !o)}
-          style={{
-            display: "inline-flex", alignItems: "center", gap: "10px",
-            padding: "10px 16px",
-            background: dxOpen ? "var(--paper)" : "white",
-            color: "var(--accent)",
-            border: "1px solid var(--accent)", borderRadius: "2px",
-            cursor: "pointer",
-            fontFamily: "'Fraunces', serif",
-            fontSize: "13px", fontWeight: 600, letterSpacing: "0.02em",
-          }}
-          onMouseEnter={e => { if (!dxOpen) e.currentTarget.style.background = "rgba(124,30,32,0.06)"; }}
-          onMouseLeave={e => { if (!dxOpen) e.currentTarget.style.background = "white"; }}
-        >
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "14px", lineHeight: 1 }}>
-            {dxOpen ? "−" : "+"}
-          </span>
-          <span>Dx — compute AAP stage + grade</span>
-          <span style={{ fontFamily: "'Geist', sans-serif", fontWeight: 400, fontSize: "11px", opacity: 0.7, marginLeft: "6px" }}>
-            stage I–IV · grade A–C
-          </span>
-        </button>
-      </div>
-
-      {dxOpen && (
-        <div style={{
-          marginTop: "12px", padding: "18px 20px",
-          background: "var(--paper)", border: "1px solid var(--rule)",
-          borderRadius: "2px",
-        }}>
+    <div style={{
+      padding: "18px 20px",
+      background: "var(--paper)", border: "1px solid var(--rule)",
+      borderRadius: "2px",
+    }}>
           <div style={{
             fontSize: "11px", color: "var(--ink-soft)",
             fontStyle: "italic", marginBottom: "16px", lineHeight: 1.5,
           }}>
-            AAP 2018 staging + grading. CAL is calculated from your inputs —
-            you don't have to compute it manually.
+            AAP 2018 staging + grading. CAL is calculated from your inputs.
           </div>
 
           {/* ── Staging inputs ── */}
           <SubsectionLabel>Staging</SubsectionLabel>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
-            <Field label="Max interdental PD (mm)">
+            <Field label="Max PD (mm)">
               <TextInput value={fields.perioCOEMaxIntPD || ""}
                 onChange={v => setField("perioCOEMaxIntPD", v.replace(/[^\d.]/g, ""))}
                 placeholder="worst site, e.g. 6" />
@@ -7314,8 +7291,11 @@ function PerioCOEDxBlock({ fields, setField }) {
               </Select>
             </Field>
           </div>
-          {/* Complexity factors */}
-          <Field label="Complexity factors (Stage III/IV)">
+          {/* Complexity factors — refined per AAP 2018. The first three rows
+              are Stage III modifiers; the last three are Stage IV elevators.
+              AAP 2018 case definitions are descriptive, not strict checkboxes
+              — these are best-effort categorical anchors. */}
+          <Field label="Complexity factors (descriptive — AAP 2018)">
             <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "2px" }}>
               {COMPLEXITY_OPTIONS.map(opt => {
                 const on = (fields.perioCOEComplexityFactors || []).includes(opt.id);
@@ -7371,7 +7351,7 @@ function PerioCOEDxBlock({ fields, setField }) {
 
           {/* ── Extent ── */}
           <div style={{ marginTop: "12px" }}>
-            <Field label="Extent">
+            <Field label="Disease extent (% of teeth affected)">
               <Select value={fields.perioCOEExtent || ""}
                 onChange={v => setField("perioCOEExtent", v)}>
                 <option value="">— select —</option>
@@ -7425,13 +7405,11 @@ function PerioCOEDxBlock({ fields, setField }) {
                 border: "1px dashed var(--rule)", borderRadius: "2px",
                 color: "var(--ink-faint)", fontSize: "12px", fontStyle: "italic",
               }}>
-                Fill in max interdental PD, bone loss, teeth lost, age, and extent.
+                Fill in max PD, bone loss, teeth lost, age, and extent.
               </div>
             )}
           </div>
-        </div>
-      )}
-    </>
+    </div>
   );
 }
 
@@ -8162,7 +8140,9 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                 setFindings={(f) => setField("examFindings", f)}
                 poeOnly={fields.poeOnly === true}
                 onPoeToggle={procedureId === "1091"
-                  ? (v => setField("poeOnly", v)) : undefined} />
+                  ? (v => setField("poeOnly", v)) : undefined}
+                fields={fields}
+                setField={setField} />
             </>
           )}
 
@@ -8171,14 +8151,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
               <Hairline />
               <SubsectionLabel>Assessment</SubsectionLabel>
               <PerioReEvalDxBlock fields={fields} setField={setField} />
-            </>
-          )}
-
-          {procedureId === "573" && (
-            <>
-              <Hairline />
-              <SubsectionLabel>Diagnosis</SubsectionLabel>
-              <PerioCOEDxBlock fields={fields} setField={setField} />
             </>
           )}
 
