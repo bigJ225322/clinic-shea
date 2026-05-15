@@ -1763,11 +1763,11 @@ describe("Red flags — structural shape", () => {
       });
     });
     it(`${name}: red flag severity is one of known values`, () => {
-      const known = ["info", "caution", "warning", "danger", "WARNING", "CAUTION", "INFO", "DANGER"];
       result.redFlags.forEach((f, i) => {
-        // Engine may use any case; just ensure it's a known severity word.
+        // Engine uses any of these severity values: info, caution,
+        // warning, danger, blocker.
         const s = (f.severity || "").toLowerCase();
-        expect(["info", "caution", "warning", "danger"]).toContain(s);
+        expect(["info", "caution", "warning", "danger", "blocker"]).toContain(s);
       });
     });
   });
@@ -2898,5 +2898,305 @@ describe("REGRESSION — cumulative session bug fixes", () => {
       return c;
     };
     expect(JSON.stringify(rpdRunEngine(factory()))).toBe(JSON.stringify(rpdRunEngine(factory())));
+  });
+});
+
+// =========================================================================
+// BASE DESIGN — granular selection logic (Mesh / Open Lattice / Tube Tooth / Facing)
+// =========================================================================
+// Per UIC standards:
+//   • Mesh: anterior span ≥3 teeth (esthetic-bulk preference)
+//   • Facing: extremely limited space + single anterior + non-resorbed ridge
+//   • Tube Tooth: limited space + ≤2 teeth + well-healed ridge
+//   • Open Lattice: default, only choice that supports distal tissue stops
+// =========================================================================
+describe("BASE DESIGN — selection per span shape + space + ridge", () => {
+  it("Anterior span ≥3 teeth → Mesh base", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 7, 8, 9, 10]);    // 4 anterior teeth missing
+    const r = rpdRunEngine(c);
+    const antBase = r.baseDesigns?.find(b => b.spanTeeth?.includes(8));
+    expect(antBase?.type).toBe("Mesh");
+  });
+
+  it("Distal extension → Open Lattice + Distal tissue stop note", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 20]);    // left DE
+    const r = rpdRunEngine(c);
+    const deBase = r.baseDesigns?.find(b => b.spanTeeth?.includes(18));
+    expect(deBase?.type).toBe("Open Lattice");
+    expect(deBase?.note || "").toMatch(/distal tissue stop/i);
+  });
+
+  it("Limited space + small tooth-supported span + healed ridge → Tube Tooth", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.measurements.interocclusalSpace = "limited";
+    c.patientFactors.monthsSinceExtraction = 12;  // well-healed
+    const r = rpdRunEngine(c);
+    const base = r.baseDesigns?.find(b => b.spanTeeth?.includes(19));
+    expect(base?.type).toBe("Tube Tooth");
+  });
+
+  it("Single tooth missing with normal space → Open Lattice (default)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    const r = rpdRunEngine(c);
+    const base = r.baseDesigns?.find(b => b.spanTeeth?.includes(19));
+    expect(base?.type).toBe("Open Lattice");
+  });
+
+  it("Every base design has known type", () => {
+    const known = new Set(["Open Lattice", "Mesh", "Tube Tooth", "Facing"]);
+    snapshotInputs().forEach(({ name, factory }) => {
+      const r = rpdRunEngine(factory());
+      (r.baseDesigns || []).forEach((b, i) => {
+        expect(known.has(b.type), `${name} baseDesigns[${i}].type=${b.type}`).toBe(true);
+      });
+    });
+  });
+});
+
+// =========================================================================
+// FRAMEWORK MATERIAL — Co-Cr vs Gold (metal allergy)
+// =========================================================================
+describe("FRAMEWORK MATERIAL — Co-Cr default, Gold for metal allergy", () => {
+  it("No allergy → Co-Cr", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    expect(rpdRunEngine(c).framework.material).toBe("Co-Cr");
+  });
+
+  it("Metal allergy → Gold framework (requires approval)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.patientFactors.metalAllergy = true;
+    const r = rpdRunEngine(c);
+    expect(r.framework.material).toBe("Gold");
+    expect(r.framework.rationale).toBeTruthy();
+  });
+
+  it("Framework rationale is non-empty for every test case", () => {
+    snapshotInputs().forEach(({ name, factory }) => {
+      const r = rpdRunEngine(factory());
+      expect(r.framework.rationale, name).toBeTruthy();
+      expect(r.framework.rationale.length, name).toBeGreaterThan(20);
+    });
+  });
+});
+
+// =========================================================================
+// RED FLAGS — healing period blocker
+// =========================================================================
+describe("RED FLAGS — healing period blocker for definitive RPD <6 months post-extraction", () => {
+  it("monthsSinceExtraction = 3 + designIntent definitive → blocker red flag", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.patientFactors.monthsSinceExtraction = 3;
+    c.patientFactors.designIntent = "definitive";
+    const r = rpdRunEngine(c);
+    const blocker = (r.redFlags || []).find(f =>
+      /healing|extraction|6 months|interim/i.test(f.message || ""));
+    expect(blocker).toBeTruthy();
+    expect(blocker.severity).toBe("blocker");
+  });
+
+  it("monthsSinceExtraction = 3 + designIntent INTERIM → no blocker (interim is the right choice)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.patientFactors.monthsSinceExtraction = 3;
+    c.patientFactors.designIntent = "interim";
+    const r = rpdRunEngine(c);
+    const healingBlocker = (r.redFlags || []).find(f =>
+      f.severity === "blocker" && /healing/i.test(f.message || ""));
+    expect(healingBlocker).toBeFalsy();
+  });
+
+  it("monthsSinceExtraction = 12 + designIntent definitive → no healing blocker (well-healed)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.patientFactors.monthsSinceExtraction = 12;
+    c.patientFactors.designIntent = "definitive";
+    const r = rpdRunEngine(c);
+    const healingBlocker = (r.redFlags || []).find(f =>
+      f.severity === "blocker" && /healing/i.test(f.message || ""));
+    expect(healingBlocker).toBeFalsy();
+  });
+
+  it("BOUNDARY: monthsSinceExtraction = 6 + definitive → no blocker (boundary inclusive)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.patientFactors.monthsSinceExtraction = 6;
+    c.patientFactors.designIntent = "definitive";
+    const r = rpdRunEngine(c);
+    const healingBlocker = (r.redFlags || []).find(f =>
+      f.severity === "blocker" && /healing/i.test(f.message || ""));
+    expect(healingBlocker).toBeFalsy();
+  });
+
+  it("BOUNDARY: monthsSinceExtraction = 5 + definitive → blocker (boundary exclusive)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.patientFactors.monthsSinceExtraction = 5;
+    c.patientFactors.designIntent = "definitive";
+    const r = rpdRunEngine(c);
+    const healingBlocker = (r.redFlags || []).find(f =>
+      f.severity === "blocker" && /healing/i.test(f.message || ""));
+    expect(healingBlocker).toBeTruthy();
+  });
+});
+
+// =========================================================================
+// RED FLAGS — perio prognosis triggers
+// =========================================================================
+describe("RED FLAGS — perio prognosis triggers", () => {
+  it("Hopeless prognosis on terminal abutment → red flag", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 20]);   // left DE
+    setAttrs(c, 21, { perioPrognosis: "hopeless" });
+    const r = rpdRunEngine(c);
+    const flag = (r.redFlags || []).find(f =>
+      /hopeless|perio|prognosis/i.test(f.message || ""));
+    expect(flag).toBeTruthy();
+  });
+
+  it("Good prognosis on terminal abutment → no perio red flag", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 20]);
+    setAttrs(c, 21, { perioPrognosis: "good" });
+    const r = rpdRunEngine(c);
+    const perioFlag = (r.redFlags || []).find(f =>
+      /hopeless|guarded/i.test(f.message || ""));
+    expect(perioFlag).toBeFalsy();
+  });
+});
+
+// =========================================================================
+// CLASS II SIDE DETECTION
+// =========================================================================
+// Engine must correctly identify which side has the DE (left vs right).
+// Mandibular and maxillary number from different ends; easy place for
+// off-by-one or arch confusion bugs.
+// =========================================================================
+describe("CLASS II — DE side detection", () => {
+  it("Maxillary right DE (missing #1-#3) → deSide = right", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 2, 3, 16]);
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("II");
+    expect(r.kennedy.deSide).toBe("right");
+  });
+
+  it("Maxillary left DE (missing #14-#16) → deSide = left", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 14, 15, 16]);
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("II");
+    expect(r.kennedy.deSide).toBe("left");
+  });
+
+  it("Mandibular left DE (missing #17-#20) → deSide = left", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 18, 19, 20, 32]);
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("II");
+    expect(r.kennedy.deSide).toBe("left");
+  });
+
+  it("Mandibular right DE (missing #30-#32) → deSide = right", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 30, 31, 32]);
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("II");
+    expect(r.kennedy.deSide).toBe("right");
+  });
+});
+
+// =========================================================================
+// INTEROCCLUSAL SPACE — affects framework + base
+// =========================================================================
+describe("INTEROCCLUSAL SPACE — limited vs extremely_limited", () => {
+  it("Normal space + small span → Open Lattice (default)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.measurements.interocclusalSpace = "normal";
+    const r = rpdRunEngine(c);
+    const base = r.baseDesigns?.find(b => b.spanTeeth?.includes(19));
+    expect(base?.type).toBe("Open Lattice");
+  });
+
+  it("Limited space + small span + healed ridge → Tube Tooth", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.measurements.interocclusalSpace = "limited";
+    c.patientFactors.monthsSinceExtraction = 12;
+    const r = rpdRunEngine(c);
+    const base = r.baseDesigns?.find(b => b.spanTeeth?.includes(19));
+    expect(base?.type).toBe("Tube Tooth");
+  });
+
+  it("Extremely limited + single anterior + recent extraction → Facing", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 8]);
+    c.measurements.interocclusalSpace = "extremely_limited";
+    c.patientFactors.monthsSinceExtraction = 2;
+    const r = rpdRunEngine(c);
+    const base = r.baseDesigns?.find(b => b.spanTeeth?.includes(8));
+    expect(base?.type).toBe("Facing");
+  });
+});
+
+// =========================================================================
+// CLASS III — no indirect retainer required
+// =========================================================================
+describe("CLASS III — tooth-supported, no indirect retainer needed", () => {
+  it("Class III single tooth missing → 0 indirect retainers", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    expect(rpdRunEngine(c).indirectRetainers.length).toBe(0);
+  });
+
+  it("Class III Mod 1 → 0 indirect retainers", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19, 30]);
+    expect(rpdRunEngine(c).indirectRetainers.length).toBe(0);
+  });
+});
+
+// =========================================================================
+// GUIDE PLANE — esthetic I-bar gets long/parallel
+// =========================================================================
+describe("GUIDE PLANE — length tracks clasp type", () => {
+  it("Standard Akers → 2/3 height guide plane", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    expect(designOf(rpdRunEngine(c), 18)?.guidePlane?.length).toMatch(/2\/3 clinical crown height/);
+  });
+
+  it("RPI → 2/3 height (standard, not long/parallel — I-bar handles vertical)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 20]);
+    const d = designOf(rpdRunEngine(c), 21);
+    if (d?.claspType === "RPI") {
+      expect(d?.guidePlane?.length).toMatch(/2\/3 clinical crown height/);
+    }
+  });
+});
+
+// =========================================================================
+// EVERY ABUTMENT HAS A GUIDE PLANE
+// =========================================================================
+describe("INVARIANT — every clasped abutment has a guide plane", () => {
+  const cases = allInvariantCases();
+  cases.forEach(({ name, result }) => {
+    const clasped = (result.abutmentDesigns || []).filter(a =>
+      a.claspType && !a.claspType.includes("Rest Only"));
+    if (clasped.length === 0) return;
+    it(`${name}: every clasped abutment has guide plane (surface + length)`, () => {
+      clasped.forEach(a => {
+        expect(a.guidePlane?.surface, `#${a.tooth}`).toBeTruthy();
+        expect(a.guidePlane?.length, `#${a.tooth}`).toBeTruthy();
+      });
+    });
   });
 });
