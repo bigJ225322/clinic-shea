@@ -16191,6 +16191,7 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false }) {
 // into the Instructions box.
 function RPDLabRxForm({ caseInput, result }) {
   const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
   if (!result || result.kennedy.class === null) return null;
   const arch = caseInput.arch === "maxillary" ? "maxillary" : "mandibular";
 
@@ -16343,16 +16344,43 @@ function RPDLabRxForm({ caseInput, result }) {
         Procedure Code: <strong>{result.axiumCode || "—"}</strong> &nbsp; Site: __________ &nbsp; Lab Code: __________
       </div>
 
-      {/* Instructions box */}
-      <div style={{ border: "1px solid var(--ink)", padding: "12px 14px", marginBottom: "12px" }}>
+      {/* Instructions box. The RPD lab Rx form is physical (sent to the lab
+          with the case) but the Instructions text also goes into Axium's
+          Lab Cases tab — so the COPY button lets students grab the
+          prescription text for that. Same visual language as the Note
+          Builder's COPY (square, accent fill), sized smaller since this
+          sits inside a paper-form box. */}
+      <div style={{
+        border: "1px solid var(--ink)", padding: "12px 14px", marginBottom: "12px",
+        position: "relative",
+      }}>
         <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "8px" }}>Instructions:</div>
         <pre style={{
           margin: 0, fontFamily: "'JetBrains Mono', monospace",
           fontSize: "11px", lineHeight: 1.55, whiteSpace: "pre-wrap",
           color: "var(--ink)",
+          paddingRight: "56px",   /* keep text clear of the copy button */
         }}>
           {txLines.join("\n")}
         </pre>
+        <button
+          className="primary rpd-print-hide"
+          type="button"
+          onClick={() => {
+            navigator.clipboard?.writeText(txLines.join("\n")).then(() => {
+              setCopied(true);
+              setTimeout(() => setCopied(false), 1600);
+            });
+          }}
+          style={{
+            position: "absolute", right: "10px", bottom: "10px",
+            width: "48px", height: "48px", padding: 0,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: "11px", fontWeight: 500, letterSpacing: "0.04em",
+          }}
+        >
+          {copied ? "✓" : "COPY"}
+        </button>
       </div>
 
       {/* Footer: instructor + signature */}
@@ -17304,7 +17332,7 @@ function RPDInputsForm({ caseInput, onUpdate }) {
 
       {/* Boolean patient factors — moved to bottom; metal allergy first
           (highest design impact). */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px 20px", paddingTop: "8px", borderTop: "1px solid var(--rule-soft)" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "8px 24px", paddingTop: "8px", borderTop: "1px solid var(--rule-soft)" }}>
         <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--ink)" }}>
           <input type="checkbox" checked={!!pf.metalAllergy} onChange={(e) => setFactor("metalAllergy", e.target.checked)} />
           Metal allergy
