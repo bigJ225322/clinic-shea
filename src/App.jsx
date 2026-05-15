@@ -8490,6 +8490,21 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   const basePool = proc.pinnedCodes
                     ? proc.pinnedCodes.map(c => withRvuDesc(c, extracted.find(x => x.code === c)?.desc))
                     : extracted.map(({ code, desc }) => withRvuDesc(code, desc));
+                  // RCT (5472) only: filter endo codes by tooth type. The
+                  // Swade manual lists all six endo codes (D3310 anterior,
+                  // D3320 premolar, D3330 molar — each with A access and B
+                  // fill) in the steps. Only the pair matching the selected
+                  // tooth is clinically applicable.
+                  const rctToothType = (() => {
+                    if (procedureId !== "5472") return null;
+                    const raw = (fields.tooth || "").split(",")[0].trim().replace(/^#/, "").split("-")[0];
+                    const n = parseInt(raw, 10);
+                    if (!n || n < 1 || n > 32) return null;
+                    if (RPD_ANTERIOR.has(n)) return "anterior";
+                    if (RPD_FIRST_PREMOLARS.has(n) || RPD_SECOND_PREMOLARS.has(n)) return "premolar";
+                    if (RPD_FIRST_MOLARS.has(n) || RPD_SECOND_MOLARS.has(n) || RPD_THIRD_MOLARS.has(n)) return "molar";
+                    return null;
+                  })();
                   let codes = basePool.filter(({ code }) => {
                     if (code === "D1110" || code === "D1120") return prophyChecked;
                     if (code === "D1310") return nutriChecked && prophyChecked;
@@ -8497,6 +8512,12 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                     if (code === "D0475") return impressionsChecked;
                     // D0601–D0603 stripped here; the selected one is re-injected below
                     if (code === "D0601" || code === "D0602" || code === "D0603") return false;
+                    // Tooth-type-gated endo codes (RCT only)
+                    if (rctToothType) {
+                      if (rctToothType !== "anterior" && (code === "D3310A" || code === "D3310B")) return false;
+                      if (rctToothType !== "premolar" && (code === "D3320A" || code === "D3320B")) return false;
+                      if (rctToothType !== "molar" && (code === "D3330A" || code === "D3330B")) return false;
+                    }
                     return true;
                   });
                   // Inject the matching caries risk code right after D0604 (if present)
@@ -17013,175 +17034,186 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
           BOTH the chosen path (●) and the rejected path (○) so the student
           can see what was evaluated, not just what was picked. Gates within
           a step show ✓/✕. Results and leaves show the final consequence. */}
-      {decisionTree && decisionTree.length > 0 && (
-        <div style={{
-          marginTop: "10px", paddingTop: "10px",
-          borderTop: "1px solid var(--rule-soft)",
-        }}>
+      {decisionTree && decisionTree.length > 0 && (() => {
+        // Re-shape the flat node list into one numbered "decision row" per
+        // step (with its branches, gates, and result), plus a separate
+        // leaf at the end. This lets the per-component tree share the
+        // visual language of the case-level RPDDecisionTree (numbered
+        // markers on a vertical spine, chip pills for branches).
+        const groups = [];
+        let cur = null;
+        let leafNode = null;
+        for (const node of decisionTree) {
+          if (node.kind === "step") {
+            if (cur) groups.push(cur);
+            cur = { step: node, branches: [], gates: [], result: null };
+          } else if (node.kind === "branch-taken" || node.kind === "branch-skipped") {
+            (cur ||= { step: null, branches: [], gates: [], result: null }).branches.push(node);
+          } else if (node.kind === "gate") {
+            (cur ||= { step: null, branches: [], gates: [], result: null }).gates.push(node);
+          } else if (node.kind === "result") {
+            if (cur) cur.result = node;
+          } else if (node.kind === "leaf") {
+            leafNode = node;
+          }
+        }
+        if (cur) groups.push(cur);
+        return (
           <div style={{
-            fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase",
-            color: "var(--ink-soft)", marginBottom: "10px",
+            marginTop: "10px", paddingTop: "10px",
+            borderTop: "1px solid var(--rule-soft)",
           }}>
-            Engine decision tree — why this clasp on #{tooth}
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-            {decisionTree.map((node, i) => {
-              const isStep = node.kind === "step";
-              const isBranchTaken = node.kind === "branch-taken";
-              const isBranchSkipped = node.kind === "branch-skipped";
-              const isGate = node.kind === "gate";
-              const isResult = node.kind === "result";
-              const isLeaf = node.kind === "leaf";
-
-              // Step headers — bold, no indent, top spacing
-              if (isStep) {
-                return (
-                  <div key={i} style={{
-                    marginTop: i === 0 ? 0 : "12px",
-                    marginBottom: "4px",
-                    fontSize: "12px", fontWeight: 600, color: "var(--ink)",
-                    lineHeight: 1.4,
-                  }}>
-                    {node.text}
-                    {node.detail && (
+            <div style={{
+              fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase",
+              color: "var(--ink-soft)", marginBottom: "12px",
+            }}>
+              Engine decision tree — why this clasp on #{tooth}
+            </div>
+            {groups.map((g, gi) => {
+              const isLast = gi === groups.length - 1 && !leafNode;
+              return (
+                <div key={gi} style={{
+                  position: "relative",
+                  paddingLeft: "44px",
+                  paddingBottom: "16px",
+                }}>
+                  {/* horizontal stub from spine into this decision row */}
+                  <div style={{
+                    position: "absolute", left: "14px", top: "12px",
+                    width: "20px", height: "1px",
+                    background: "var(--rule)",
+                  }} />
+                  {/* vertical spine; stops at the last row */}
+                  <div style={{
+                    position: "absolute", left: "14px", top: 0,
+                    width: "1px", bottom: isLast ? "calc(100% - 12px)" : 0,
+                    background: "var(--rule)",
+                  }} />
+                  {/* numbered ink marker on the spine */}
+                  <div style={{
+                    position: "absolute", left: "6px", top: "4px",
+                    width: "18px", height: "18px", borderRadius: "50%",
+                    background: "var(--ink)", color: "white",
+                    border: "1px solid var(--ink)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: "10px", fontWeight: 600, fontFamily: "'Geist', sans-serif",
+                  }}>{gi + 1}</div>
+                  {/* step text + detail */}
+                  {g.step && (
+                    <>
                       <div style={{
-                        fontSize: "11px", fontWeight: 400, color: "var(--ink-soft)",
-                        fontStyle: "italic", marginTop: "3px",
-                      }}>
-                        {node.detail}
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-
-              // Branches — indented with ●/○ marker
-              if (isBranchTaken || isBranchSkipped) {
-                return (
-                  <div key={i} style={{
-                    display: "flex", gap: "8px", alignItems: "flex-start",
-                    paddingLeft: "8px", marginLeft: "4px",
-                    borderLeft: "1.5px solid var(--rule-soft)",
-                    paddingTop: "4px", paddingBottom: "4px",
-                  }}>
-                    <span style={{
-                      flex: "0 0 14px", marginTop: "3px",
-                      fontSize: "13px", lineHeight: 1,
-                      color: isBranchTaken ? "var(--accent)" : "var(--ink-faint)",
-                    }}>
-                      {isBranchTaken ? "●" : "○"}
-                    </span>
-                    <div style={{ flex: 1, fontSize: "12px", lineHeight: 1.45 }}>
-                      <span style={{
-                        color: isBranchTaken ? "var(--ink)" : "var(--ink-faint)",
-                        fontWeight: isBranchTaken ? 600 : 400,
-                        textDecoration: isBranchSkipped ? "line-through" : "none",
-                        textDecorationColor: "var(--ink-faint)",
-                      }}>
-                        {node.text}
-                      </span>
-                      {node.detail && (
+                        fontFamily: "'Geist', sans-serif", fontSize: "11px",
+                        textTransform: "uppercase", letterSpacing: "0.09em",
+                        color: "var(--ink-soft)", fontWeight: 600,
+                        marginBottom: "6px", marginTop: "2px",
+                      }}>{g.step.text.replace(/^Step \d+ — /, "")}</div>
+                      {g.step.detail && (
                         <div style={{
                           fontSize: "11px", color: "var(--ink-soft)",
-                          fontStyle: "italic", marginTop: "2px",
-                        }}>
-                          {node.detail}
-                        </div>
+                          fontStyle: "italic", marginBottom: "8px",
+                        }}>{g.step.detail}</div>
                       )}
+                    </>
+                  )}
+                  {/* branch chips — chosen (filled accent) vs skipped (outlined faded) */}
+                  {g.branches.length > 0 && (
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: g.gates.length > 0 ? "10px" : 0 }}>
+                      {g.branches.map((b, i) => {
+                        const chosen = b.kind === "branch-taken";
+                        return (
+                          <div key={i} style={{
+                            display: "inline-flex", flexDirection: "column", gap: "2px",
+                            padding: "6px 12px",
+                            background: chosen ? "var(--accent)" : "white",
+                            color: chosen ? "white" : "var(--ink-soft)",
+                            border: chosen ? "1px solid var(--accent)" : "1px solid var(--rule)",
+                            borderRadius: "14px",
+                            fontSize: "12px", lineHeight: 1.25,
+                            opacity: chosen ? 1 : 0.65,
+                            maxWidth: "320px",
+                          }}>
+                            <span style={{ fontWeight: chosen ? 600 : 500 }}>{b.text}</span>
+                            {b.detail && (
+                              <span style={{
+                                fontSize: "10px", fontStyle: "italic",
+                                color: chosen ? "rgba(255,255,255,0.85)" : "var(--ink-faint)",
+                              }}>{b.detail}</span>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
-                  </div>
-                );
-              }
-
-              // Gates — deeply indented checklist with ✓/✕
-              if (isGate) {
-                return (
-                  <div key={i} style={{
-                    display: "flex", gap: "8px", alignItems: "flex-start",
-                    paddingLeft: "20px", marginLeft: "4px",
-                    borderLeft: "1.5px solid var(--rule-soft)",
-                    paddingTop: "3px", paddingBottom: "3px",
-                  }}>
-                    <span style={{
-                      flex: "0 0 14px", width: 14, height: 14, borderRadius: "50%",
-                      display: "inline-flex", alignItems: "center", justifyContent: "center",
-                      fontSize: "10px", lineHeight: 1, marginTop: "1px",
-                      color: node.ok ? "var(--teal, #4a847a)" : "var(--accent)",
-                      border: `1.4px solid ${node.ok ? "var(--teal, #4a847a)" : "var(--accent)"}`,
-                      fontWeight: 700,
-                    }}>
-                      {node.ok ? "✓" : "✕"}
-                    </span>
-                    <div style={{ flex: 1, fontSize: "12px", lineHeight: 1.45,
-                      color: node.ok ? "var(--ink)" : "var(--accent)" }}>
-                      {node.text}
-                      {node.detail && !node.ok && (
-                        <div style={{
-                          fontSize: "11px", color: "var(--accent)",
-                          marginTop: "2px",
-                        }}>
-                          → {node.detail}
+                  )}
+                  {/* gates — small pass/fail chips */}
+                  {g.gates.length > 0 && (
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                      {g.gates.map((gt, i) => (
+                        <div key={i} style={{
+                          display: "inline-flex", alignItems: "center", gap: "6px",
+                          padding: "3px 9px",
+                          background: gt.ok ? "rgba(45,90,86,0.08)" : "rgba(124,30,32,0.06)",
+                          border: gt.ok ? "1px solid var(--teal)" : "1px solid var(--accent)",
+                          borderRadius: "10px",
+                          fontSize: "11px", lineHeight: 1.25,
+                          color: gt.ok ? "var(--ink)" : "var(--accent)",
+                          maxWidth: "320px",
+                        }}
+                        title={!gt.ok && gt.detail ? gt.detail : undefined}>
+                          <span style={{
+                            display: "inline-flex", alignItems: "center", justifyContent: "center",
+                            width: "14px", height: "14px", borderRadius: "50%",
+                            fontSize: "9px", fontWeight: 700,
+                            background: gt.ok ? "var(--teal)" : "var(--accent)",
+                            color: "white",
+                          }}>{gt.ok ? "✓" : "✕"}</span>
+                          <span>{gt.text}</span>
                         </div>
-                      )}
+                      ))}
                     </div>
-                  </div>
-                );
-              }
-
-              // Result — arrow with conclusion of the gate group
-              if (isResult) {
-                return (
-                  <div key={i} style={{
-                    display: "flex", gap: "8px", alignItems: "flex-start",
-                    paddingLeft: "20px", marginLeft: "4px",
-                    borderLeft: "1.5px solid var(--rule-soft)",
-                    marginTop: "4px", paddingTop: "4px",
-                    fontSize: "12px", fontWeight: 600,
-                    color: node.ok ? "var(--ink)" : "var(--accent)",
-                  }}>
-                    <span style={{ flex: "0 0 14px" }}>→</span>
-                    <div style={{ flex: 1 }}>{node.text}</div>
-                  </div>
-                );
-              }
-
-              // Leaf — final answer in a highlighted box
-              if (isLeaf) {
-                return (
-                  <div key={i} style={{
-                    marginTop: "10px",
-                    padding: "10px 12px",
-                    background: "rgba(74, 132, 122, 0.08)",
-                    border: "1.5px solid var(--teal, #4a847a)",
-                    borderRadius: "2px",
-                  }}>
+                  )}
+                  {/* result summary */}
+                  {g.result && (
                     <div style={{
-                      fontSize: "9px", letterSpacing: "0.18em",
-                      textTransform: "uppercase", fontWeight: 700,
-                      color: "var(--teal, #4a847a)", marginBottom: "4px",
-                    }}>
-                      Engine selection
-                    </div>
-                    <div style={{ fontSize: "13px", fontWeight: 600, color: "var(--ink)" }}>
-                      {node.text}
-                    </div>
-                    {node.detail && (
-                      <div style={{
-                        fontSize: "11.5px", color: "var(--ink-soft)",
-                        fontStyle: "italic", marginTop: "5px", lineHeight: 1.5,
-                      }}>
-                        {node.detail}
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-
-              return null;
+                      marginTop: "8px", fontSize: "11px", fontStyle: "italic",
+                      color: g.result.ok ? "var(--teal)" : "var(--accent)",
+                      fontWeight: 600,
+                    }}>→ {g.result.text}</div>
+                  )}
+                </div>
+              );
             })}
+            {/* Leaf — highlighted engine-selection box, unchanged visual */}
+            {leafNode && (
+              <div style={{
+                marginTop: "4px", marginLeft: "44px",
+                padding: "10px 12px",
+                background: "rgba(45,90,86,0.08)",
+                border: "1.5px solid var(--teal)",
+                borderRadius: "2px",
+              }}>
+                <div style={{
+                  fontSize: "9px", letterSpacing: "0.18em",
+                  textTransform: "uppercase", fontWeight: 700,
+                  color: "var(--teal)", marginBottom: "4px",
+                }}>
+                  Engine selection
+                </div>
+                <div style={{ fontSize: "13px", fontWeight: 600, color: "var(--ink)" }}>
+                  {leafNode.text}
+                </div>
+                {leafNode.detail && (
+                  <div style={{
+                    fontSize: "11.5px", color: "var(--ink-soft)",
+                    fontStyle: "italic", marginTop: "5px", lineHeight: 1.5,
+                  }}>
+                    {leafNode.detail}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-        </div>
-      )}
+        );
+      })()}
       {rationale && (
         <div style={{
           fontSize: "12px", color: "var(--ink-soft)", fontStyle: "italic",
