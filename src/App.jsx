@@ -16366,11 +16366,25 @@ function RPDLabRxForm({ caseInput, result }) {
         <button
           className="primary rpd-print-hide"
           type="button"
-          onClick={() => {
-            navigator.clipboard?.writeText(txLines.join("\n")).then(() => {
+          onClick={async () => {
+            try {
+              await navigator.clipboard.writeText(txLines.join("\n"));
               setCopied(true);
               setTimeout(() => setCopied(false), 1600);
-            });
+            } catch (_) {
+              // clipboard API unavailable or denied — fall back to a
+              // hidden textarea + execCommand for older / permission-
+              // restricted browsers.
+              const ta = document.createElement("textarea");
+              ta.value = txLines.join("\n");
+              ta.style.position = "fixed";
+              ta.style.opacity = "0";
+              document.body.appendChild(ta);
+              ta.select();
+              try { document.execCommand("copy"); setCopied(true); setTimeout(() => setCopied(false), 1600); }
+              catch (_) {}
+              document.body.removeChild(ta);
+            }
           }}
           style={{
             position: "absolute", right: "10px", bottom: "10px",
