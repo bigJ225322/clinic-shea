@@ -15136,7 +15136,7 @@ function RPDPaperFormArchDrawing({
 // printable / screenshot-able so it can be copied directly to the paper
 // form.
 function RPDPreliminaryDesignForm({ caseInput, result, compact = false }) {
-  const [drawingOpen, setDrawingOpen] = React.useState(false);
+  const [drawingOpen, setDrawingOpen] = useState(false);
   if (!result || result.kennedy.class === null) return null;
   const arch = caseInput.arch === "maxillary" ? "MAXILLARY" : "MANDIBULAR";
   const pf = caseInput.patientFactors || {};
