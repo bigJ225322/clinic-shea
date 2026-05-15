@@ -17776,74 +17776,63 @@ function RPDHelper() {
 
   return (
     <div style={{ ...cardStyle, padding: "26px 28px" }}>
-      <div style={{ marginBottom: "20px" }}>
-        <h2 className="serif" style={{
-          fontSize: "24px", fontWeight: 400, color: "var(--ink)",
-          margin: "0 0 6px",
-        }}>
-          RPD Design <span style={{ color: "var(--accent)", fontStyle: "italic" }}>Helper</span>
-        </h2>
-      </div>
-
-      {/* Top action bar: Clear all on the left, Case inputs on the right.
-          Case inputs is a button that opens an absolute-positioned overlay
-          panel (anchored to the button) so expanding it floats over the
-          chart rather than pushing it down. */}
+      {/* Top action bar — all three controls on one horizontal line.
+          Clear all (left), Mx/Mn toggle (center), Case inputs (right).
+          The "RPD Design Helper" h2 title was cut; the tab label "RPD"
+          already identifies the section. */}
       <div className="rpd-print-hide" style={{
         marginBottom: "16px",
-        display: "flex",
+        display: "grid",
+        gridTemplateColumns: "1fr auto 1fr",
         alignItems: "center",
-        justifyContent: "space-between",
         gap: "12px",
         position: "relative",
         zIndex: 5,
       }}>
-        <button
-          onClick={clearAll}
-          style={{ background: "transparent", color: "var(--ink-soft)", border: "1px solid var(--rule)", padding: "6px 14px",
-            fontFamily: "'Geist', sans-serif", fontSize: "10px", letterSpacing: "0.16em",
-            textTransform: "uppercase", cursor: "pointer", borderRadius: "2px" }}
-          title="Reset all teeth to present, default measurements and patient factors">
-          Clear all
-        </button>
-        <RPDInputsForm caseInput={caseInput} onUpdate={setCaseInput} />
+        <div style={{ justifySelf: "start" }}>
+          <button
+            onClick={clearAll}
+            style={{ background: "transparent", color: "var(--ink-soft)", border: "1px solid var(--rule)", padding: "6px 14px",
+              fontFamily: "'Geist', sans-serif", fontSize: "10px", letterSpacing: "0.16em",
+              textTransform: "uppercase", cursor: "pointer", borderRadius: "2px" }}
+            title="Reset all teeth to present, default measurements and patient factors">
+            Clear all
+          </button>
+        </div>
+        {/* Mx/Mn segmented toggle, centered */}
+        <div style={{ display: "inline-flex", border: "1px solid var(--rule)", borderRadius: "2px", overflow: "hidden", justifySelf: "center" }}>
+          {[
+            { v: "maxillary",  label: "Mx" },
+            { v: "mandibular", label: "Mn" },
+          ].map(opt => {
+            const active = (caseInput.arch || "mandibular") === opt.v;
+            return (
+              <button key={opt.v} type="button"
+                onClick={() => setCaseInput({ ...caseInput, arch: opt.v })}
+                title={opt.v === "maxillary" ? "Maxillary arch" : "Mandibular arch"}
+                style={{
+                  background: active ? "var(--accent)" : "transparent",
+                  color: active ? "var(--paper)" : "var(--ink-soft)",
+                  border: "none", padding: "6px 18px",
+                  fontFamily: "'Geist', sans-serif", fontSize: "13px",
+                  letterSpacing: "0.04em",
+                  cursor: "pointer", fontWeight: active ? 600 : 400,
+                }}>
+                {opt.label}
+              </button>
+            );
+          })}
+        </div>
+        <div style={{ justifySelf: "end" }}>
+          <RPDInputsForm caseInput={caseInput} onUpdate={setCaseInput} />
+        </div>
       </div>
 
       {/* Tooth chart + element-detail panel. Inputs panel was previously the
           LEFT column here — moved to the top header bar above so the chart
           gets that horizontal space and renders at larger tooth/component
-          sizes. Stacks on narrow viewports (see CSS @media block). */}
+          sizes. */}
       <div style={{ margin: "20px 0 24px" }}>
-        {/* Arch toggle sits ABOVE the chart, centered. Mx/Mn segmented
-            button — the arch field was removed from Case inputs so users
-            can flip arch with one click without opening the inputs panel. */}
-        <div className="rpd-print-hide" style={{
-          display: "flex", justifyContent: "center", marginBottom: "10px",
-        }}>
-          <div style={{ display: "inline-flex", border: "1px solid var(--rule)", borderRadius: "2px", overflow: "hidden" }}>
-            {[
-              { v: "maxillary",  label: "Mx" },
-              { v: "mandibular", label: "Mn" },
-            ].map(opt => {
-              const active = (caseInput.arch || "mandibular") === opt.v;
-              return (
-                <button key={opt.v} type="button"
-                  onClick={() => setCaseInput({ ...caseInput, arch: opt.v })}
-                  title={opt.v === "maxillary" ? "Maxillary arch" : "Mandibular arch"}
-                  style={{
-                    background: active ? "var(--accent)" : "transparent",
-                    color: active ? "var(--paper)" : "var(--ink-soft)",
-                    border: "none", padding: "6px 18px",
-                    fontFamily: "'Geist', sans-serif", fontSize: "13px",
-                    letterSpacing: "0.04em",
-                    cursor: "pointer", fontWeight: active ? 600 : 400,
-                  }}>
-                  {opt.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
         {/* CHART — full width. Inspector was previously a right-side
             column; moved BELOW the chart so the chart can use the entire
             row width and render teeth + components at a larger size. */}
