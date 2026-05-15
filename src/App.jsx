@@ -16782,6 +16782,7 @@ function RPDHelper() {
       {hasContent && !isSingleToothFixedCase && (
         <div style={{ marginTop: "12px", marginBottom: "20px" }}>
           <RPDPreliminaryDesignForm caseInput={caseInput} result={result} />
+          <RPDLabRxForm caseInput={caseInput} result={result} />
         </div>
       )}
 
