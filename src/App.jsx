@@ -3096,17 +3096,18 @@ const DEFAULT_FIELDS = {
   perioDxBoPExtent: "",            // "none" | "localized" | "generalized"
   perioDxPlaqueControl: "",        // "good" | "fair" | "poor"
   // Perio COE Dx engine inputs (procedure 573). Bucketed clinical inputs
-  // for AAP 2018 staging + grading. Output is a reference for the Axium
-  // perio EPR — not inserted into the note.
-  perioCOEMaxIntPD: "",            // mm (number entered as string)
+  // for AAP 2018 staging + grading. Max PD is derived from the perio
+  // chart's "probing depths" field — not stored here. When perioCOEDxSendToNote
+  // is true, the engine output syncs into the AAP/ADA dropdowns (and the note).
   perioCOEMaxRecession: "",        // mm
   perioCOEBoneLossPct: "",         // "<15" | "15-33" | ">33"
   perioCOETeethLost: "",           // "0" | "1-4" | "≥5"
-  perioCOEComplexityFactors: [],   // array of strings (checkboxes)
+  perioCOEComplexityFactors: [],   // array of strings (chips)
   perioCOEAge: "",                 // years
   perioCOESmoking: "none",         // "none" | "<10" | "≥10"
   perioCOEDiabetes: "none",        // "none" | "controlled" | "uncontrolled"
   perioCOEExtent: "",              // "localized" | "generalized" | "molar-incisor"
+  perioCOEDxSendToNote: false,     // checkbox: send Dx to AAP/ADA dropdowns + note
   // srpDate: date SRP was completed, shown in perio re-eval (1346) header line.
   //   Replaces the "1/1/2000" placeholder.
   srpDate: "",
@@ -6462,7 +6463,12 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
           </div>
           {dxOpen && fields && setField && (
             <div style={{ marginTop: "10px" }}>
-              <PerioCOEDxForm fields={fields} setField={setField} />
+              <PerioCOEDxForm
+                fields={fields}
+                setField={setField}
+                findings={findings}
+                applyToFindings={(updates) => setFindings({ ...findings, ...updates })}
+              />
             </div>
           )}
         </div>
@@ -7186,12 +7192,98 @@ function PerioReEvalDxBlock({ fields, setField }) {
  * max interdental PD + recession at the worst site — formula shown
  * inline so students see the math.
  * ==========================================================================*/
-function PerioCOEDxForm({ fields, setField }) {
-  // Required inputs for a valid Dx
-  const haveAllInputs = !!(fields.perioCOEMaxIntPD !== "" && fields.perioCOEBoneLossPct
+// Parse max PD from the perio chart's "probing depths" field. The field is
+// typically "2-5mm" (range mode) or free text like "generalized 3-6mm;
+// localized 9mm #14-MB" (manual mode). Returns { value, source } where
+// source describes where the number came from, or { invalid: true } if
+// the string yields no usable mm value.
+function parseMaxPDFromString(s) {
+  if (!s || typeof s !== "string") return { invalid: true };
+  // Find all numbers followed by "mm" or part of a range like "X-Ymm".
+  // Prefer the highest mm number found (the worst site).
+  const matches = [...s.matchAll(/(\d+)\s*(?:-\s*(\d+))?\s*mm/gi)];
+  if (matches.length === 0) return { invalid: true };
+  let max = 0;
+  for (const m of matches) {
+    // For "X-Ymm" matches, take Y (the upper end); for "Nmm" take N.
+    const hi = m[2] ? Number(m[2]) : Number(m[1]);
+    if (hi > max) max = hi;
+  }
+  return max > 0 ? { value: max } : { invalid: true };
+}
+
+// Build a structured rationale object explaining why the engine picked
+// this stage + grade. Used by the Rationale popover.
+function buildPerioCOERationale(dx, inputs) {
+  if (!dx) return null;
+  const { maxIntPD, maxRecession, boneLossPct, teethLostFromPerio, complexityFactors, age, smoking, diabetes, extent } = inputs;
+  const cal = (Number(maxIntPD) || 0) + (Number(maxRecession) || 0);
+  const blMid = boneLossPct === "<15" ? 10 : boneLossPct === "15-33" ? 25 : 50;
+  const ratio = Number(age) > 0 ? (blMid / Number(age)).toFixed(2) : "n/a";
+
+  const stageDrivers = [];
+  // CAL contribution
+  if (cal <= 2) stageDrivers.push({ k: "CAL", v: `${cal}mm`, says: "Stage I per AAP 2018 (CAL 1–2mm)" });
+  else if (cal <= 4) stageDrivers.push({ k: "CAL", v: `${cal}mm`, says: "Stage II per AAP 2018 (CAL 3–4mm)" });
+  else stageDrivers.push({ k: "CAL", v: `${cal}mm`, says: "Stage III or IV per AAP 2018 (CAL ≥5mm)" });
+  // Bone loss
+  if (boneLossPct === "<15") stageDrivers.push({ k: "Bone loss", v: "<15%", says: "Stage I (coronal third)" });
+  else if (boneLossPct === "15-33") stageDrivers.push({ k: "Bone loss", v: "15–33%", says: "Stage II (coronal-to-mid third)" });
+  else stageDrivers.push({ k: "Bone loss", v: ">33%", says: "Stage III or IV (mid third or beyond)" });
+  // Tooth loss
+  if (teethLostFromPerio === "≥5") stageDrivers.push({ k: "Teeth lost from perio", v: "≥5", says: "Stage IV (rehabilitation complexity)" });
+  else if (teethLostFromPerio === "1-4") stageDrivers.push({ k: "Teeth lost from perio", v: "1–4", says: "Stage III ceiling unless Stage IV elevators present" });
+  else stageDrivers.push({ k: "Teeth lost from perio", v: "0", says: "No tooth-loss contribution to staging" });
+
+  const gradeDrivers = [];
+  gradeDrivers.push({ k: "Bone loss / age ratio", v: ratio, says: ratio === "n/a" ? "age not provided" : Number(ratio) > 1.0 ? "Grade C (>1.0)" : Number(ratio) >= 0.25 ? "Grade B (0.25–1.0)" : "Grade A (<0.25)" });
+  if (smoking === "≥10") gradeDrivers.push({ k: "Smoking", v: "≥10 cig/day", says: "Grade C modifier (overrides ratio if lower)" });
+  else if (smoking === "<10") gradeDrivers.push({ k: "Smoking", v: "<10 cig/day", says: "Grade B modifier" });
+  if (diabetes === "uncontrolled") gradeDrivers.push({ k: "Diabetes", v: "HbA1c ≥7", says: "Grade C modifier (overrides ratio if lower)" });
+  else if (diabetes === "controlled") gradeDrivers.push({ k: "Diabetes", v: "HbA1c <7", says: "Grade B modifier" });
+
+  // Ambiguity flags
+  const ambiguity = [];
+  if (cal === 4 || cal === 5) ambiguity.push("CAL sits at the Stage II / III boundary. AAP 2018 anchors II at 3–4mm and III at ≥5mm; rounding or measurement variance can shift the call.");
+  if (boneLossPct === "15-33" && cal >= 5) ambiguity.push("Bone loss in the 15–33% bracket combined with CAL ≥5mm is unusual — typically severe CAL is accompanied by more radiographic bone loss. Worth double-checking the radiograph.");
+  const hasStageIVElevator = (complexityFactors || []).some(f => ["mobility-2plus", "ridge-severe", "lt20-teeth"].includes(f));
+  const stageIIIComplex = (complexityFactors || []).some(f => ["vertical-3mm", "furcation-23", "ridge-moderate"].includes(f));
+  if (dx.stage === "III" && hasStageIVElevator && teethLostFromPerio !== "≥5") {
+    ambiguity.push("Stage IV elevators are checked but tooth loss is <5. Engine kept the case at Stage III; AAP 2018 says complexity 'may' elevate to IV. A periodontist could argue either way here.");
+  }
+  if (stageIIIComplex && dx.stage === "II") {
+    ambiguity.push("Stage III complexity modifiers (vertical ≥3mm, furcation II–III, moderate ridge defect) are checked, but CAL/bone loss suggest Stage II. AAP 2018 allows these modifiers to elevate the stage — engine defaults to the more conservative reading.");
+  }
+  if ((complexityFactors || []).includes("ridge-moderate") || (complexityFactors || []).includes("ridge-severe")) {
+    ambiguity.push("Ridge defect severity (moderate vs severe) is NOT mm-quantified in AAP 2018 — it's a clinical judgment about rehabilitation difficulty.");
+  }
+
+  // Judgment calls the engine made
+  const judgmentCalls = [
+    "AAP 2018 case definitions are descriptive, not algorithmic. Some thresholds are anchored (CAL, bone loss %, ratio bands); others (\"complex rehabilitation\", \"ridge defect severity\") require clinical judgment.",
+    "Stage = worst single criterion among CAL / bone loss / tooth loss. Engine applies AAP's stated rule.",
+    "Stage IV requires either ≥5 teeth lost from perio OR Stage III baseline + a rehabilitation-complexity elevator (mobility ≥2, severe ridge defect, <20 remaining teeth). This threshold is the engine's reading — the manual is fuzzy here.",
+    "Grade = worst single criterion (ratio / smoking / diabetes). Any single Grade C trigger sets grade to C. AAP's stated rule.",
+  ];
+
+  return { stageDrivers, gradeDrivers, ambiguity, judgmentCalls, cal, ratio };
+}
+
+function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
+  const [factorsExpanded, setFactorsExpanded] = useState(false);
+  const [rationaleOpen, setRationaleOpen] = useState(false);
+
+  // ── Max PD comes from the perio chart's "probing depths" field, NOT a
+  // separate input. The student already enters PD range above; the Dx form
+  // reads from it as a stat. If unparseable, surface "invalid Max PD" so
+  // the student knows to fix the PD field. ──
+  const pdParsed = parseMaxPDFromString(findings?.["probing depths"]);
+  const maxPD = pdParsed.invalid ? null : pdParsed.value;
+
+  const haveAllInputs = !!(maxPD !== null && fields.perioCOEBoneLossPct
     && fields.perioCOETeethLost && fields.perioCOEExtent && fields.perioCOEAge !== "");
-  const dx = haveAllInputs ? computePerioCOEDx({
-    maxIntPD:           fields.perioCOEMaxIntPD,
+  const engineInputs = {
+    maxIntPD:           String(maxPD || ""),
     maxRecession:       fields.perioCOEMaxRecession || "0",
     boneLossPct:        fields.perioCOEBoneLossPct,
     teethLostFromPerio: fields.perioCOETeethLost,
@@ -7200,19 +7292,15 @@ function PerioCOEDxForm({ fields, setField }) {
     smoking:            fields.perioCOESmoking || "none",
     diabetes:           fields.perioCOEDiabetes || "none",
     extent:             fields.perioCOEExtent,
-  }) : null;
+  };
+  const dx = haveAllInputs ? computePerioCOEDx(engineInputs) : null;
+  const rationale = dx ? buildPerioCOERationale(dx, engineInputs) : null;
 
-  // Stage color: I/II = teal (mild/moderate), III = gold (severe but manageable),
-  // IV = oxblood (severe + complex rehab needed).
+  // Stage color: I/II = teal, III = gold, IV = oxblood.
   const stageColor = dx?.stage === "I" || dx?.stage === "II" ? "var(--teal)"
                    : dx?.stage === "III" ? "var(--gold)"
                    : "var(--accent)";
 
-  // Complexity factor labels refined to match AAP 2018 case definitions.
-  // The manual is descriptive — "moderate" vs "severe" ridge defects are
-  // clinical judgments, not mm-quantified. Vertical bone loss is anchored
-  // to ≥3mm specifically. Mobility ≥2 is a Stage IV criterion (secondary
-  // occlusal trauma), conceptually expecting more than one tooth.
   const COMPLEXITY_OPTIONS = [
     { id: "vertical-3mm",    label: "Vertical bone loss ≥3mm" },
     { id: "furcation-23",    label: "Furcation Class II–III" },
@@ -7226,189 +7314,370 @@ function PerioCOEDxForm({ fields, setField }) {
     const next = current.includes(id) ? current.filter(f => f !== id) : [...current, id];
     setField("perioCOEComplexityFactors", next);
   };
+  const selectedFactors = COMPLEXITY_OPTIONS.filter(o => (fields.perioCOEComplexityFactors || []).includes(o.id));
+
+  // "Send to note" — when checked, populates the existing AAP/ADA dropdowns
+  // (perio-classification row) with the engine's output. Auto-syncs whenever
+  // the Dx changes while the checkbox is on.
+  useEffect(() => {
+    if (fields.perioCOEDxSendToNote && dx && applyToFindings) {
+      const adaMatch = (dx.ada || "").match(/Type (I+V?|IV)/);
+      const adaType = adaMatch ? adaMatch[1] : "";
+      applyToFindings({
+        "AAP stage": dx.stage,
+        "AAP grade": dx.grade,
+        "AAP":       `Stage ${dx.stage}, Grade ${dx.grade}`,
+        "ADA case type": adaType,
+        "ADA":       adaType ? `Case Type ${adaType}` : "",
+      });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fields.perioCOEDxSendToNote, dx?.stage, dx?.grade, dx?.ada]);
 
   return (
     <div style={{
-      padding: "18px 20px",
+      padding: "16px 18px",
       background: "var(--paper)", border: "1px solid var(--rule)",
       borderRadius: "2px",
+      position: "relative",
     }}>
-          <div style={{
-            fontSize: "11px", color: "var(--ink-soft)",
-            fontStyle: "italic", marginBottom: "16px", lineHeight: 1.5,
-          }}>
-            AAP 2018 staging + grading. CAL is calculated from your inputs.
-          </div>
+      {/* Top-left section header */}
+      <div style={{
+        fontSize: "10px", letterSpacing: "0.14em",
+        textTransform: "uppercase", color: "var(--accent)",
+        fontWeight: 600, marginBottom: "14px",
+        fontFamily: "'Geist', sans-serif",
+      }}>
+        AAP 2018 staging
+      </div>
 
-          {/* ── Staging inputs ── */}
-          <SubsectionLabel>Staging</SubsectionLabel>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
-            <Field label="Max PD (mm)">
-              <TextInput value={fields.perioCOEMaxIntPD || ""}
-                onChange={v => setField("perioCOEMaxIntPD", v.replace(/[^\d.]/g, ""))}
-                placeholder="worst site, e.g. 6" />
-            </Field>
-            <Field label="Recession at same site (mm)">
-              <TextInput value={fields.perioCOEMaxRecession || ""}
-                onChange={v => setField("perioCOEMaxRecession", v.replace(/[^\d.]/g, ""))}
-                placeholder="0 if none, e.g. 2" />
-            </Field>
-          </div>
-          {/* CAL inline explainer + live calc */}
-          <div style={{
-            marginTop: "-2px", marginBottom: "12px",
-            padding: "8px 12px",
-            background: "rgba(124,30,32,0.04)",
-            border: "1px solid var(--rule-soft)",
-            borderRadius: "2px",
-            fontSize: "11px", color: "var(--ink-soft)", lineHeight: 1.55,
+      {/* Max PD stat — pulled from the perio chart's PD Range field */}
+      <div style={{
+        display: "flex", alignItems: "center", gap: "10px",
+        padding: "8px 12px", marginBottom: "12px",
+        background: pdParsed.invalid ? "rgba(124,30,32,0.06)" : "white",
+        border: "1px solid " + (pdParsed.invalid ? "var(--accent)" : "var(--rule)"),
+        borderRadius: "2px",
+      }}>
+        <span style={{
+          fontSize: "9px", letterSpacing: "0.12em",
+          textTransform: "uppercase", color: "var(--ink-soft)",
+          fontFamily: "'Geist', sans-serif",
+        }}>Max PD</span>
+        <span style={{
+          fontFamily: "'Fraunces', serif", fontSize: "18px", fontWeight: 600,
+          color: pdParsed.invalid ? "var(--accent)" : "var(--ink)",
+        }}>
+          {pdParsed.invalid ? "invalid Max PD" : `${maxPD}mm`}
+        </span>
+        <span style={{ fontSize: "11px", color: "var(--ink-faint)", fontStyle: "italic" }}>
+          {pdParsed.invalid
+            ? "fill in the PD Range field above first"
+            : "from perio chart PD Range"}
+        </span>
+      </div>
+
+      {/* Three staging fields on one row: Recession, BL %, Teeth Lost */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px" }}>
+        <Field label="Recession (mm)">
+          <TextInput value={fields.perioCOEMaxRecession || ""}
+            onChange={v => setField("perioCOEMaxRecession", v.replace(/[^\d.]/g, ""))}
+            placeholder="0 if none" />
+        </Field>
+        <Field label="BL %">
+          <Select value={fields.perioCOEBoneLossPct || ""}
+            onChange={v => setField("perioCOEBoneLossPct", v)}>
+            <option value="">— select —</option>
+            <option value="<15">&lt;15% (coronal third)</option>
+            <option value="15-33">15–33% (coronal-to-mid)</option>
+            <option value=">33">&gt;33% (mid third+)</option>
+          </Select>
+        </Field>
+        <Field label="Teeth lost from perio">
+          <Select value={fields.perioCOETeethLost || ""}
+            onChange={v => setField("perioCOETeethLost", v)}>
+            <option value="">— select —</option>
+            <option value="0">0</option>
+            <option value="1-4">1–4</option>
+            <option value="≥5">≥5 (Stage IV)</option>
+          </Select>
+        </Field>
+      </div>
+
+      {/* Compact CAL readout */}
+      {maxPD !== null && (
+        <div style={{
+          marginTop: "4px", marginBottom: "12px",
+          padding: "6px 10px",
+          fontSize: "11px", color: "var(--ink-soft)",
+          fontFamily: "'Geist', sans-serif",
+        }}>
+          CAL = {maxPD} + {Number(fields.perioCOEMaxRecession) || 0} = <strong style={{ color: "var(--ink)" }}>{maxPD + (Number(fields.perioCOEMaxRecession) || 0)}mm</strong>
+          <span style={{ marginLeft: "8px", fontStyle: "italic", opacity: 0.7 }}>
+            (PD + Recession; standard when GM is at/apical to CEJ)
+          </span>
+        </div>
+      )}
+
+      {/* Complexity factors — selected chips always visible; expandable
+          to reveal the full set so unselected options don't clutter. */}
+      <div style={{ marginTop: "12px", marginBottom: "12px" }}>
+        <div style={{
+          display: "flex", alignItems: "center", gap: "10px",
+          flexWrap: "wrap", marginBottom: "8px",
+        }}>
+          <span style={{
+            fontSize: "9px", letterSpacing: "0.12em",
+            textTransform: "uppercase", color: "var(--ink-soft)",
+            fontWeight: 500, fontFamily: "'Geist', sans-serif",
           }}>
-            <strong style={{ color: "var(--ink)" }}>CAL = PD + Recession</strong> (standard
-            formula when gingival margin sits at or apical to the CEJ).
-            {fields.perioCOEMaxIntPD !== "" && (
-              <span style={{ color: "var(--ink)" }}>
-                {" "}Current CAL: <strong>{(Number(fields.perioCOEMaxIntPD) || 0) + (Number(fields.perioCOEMaxRecession) || 0)}mm</strong>
+            Complexity factors
+          </span>
+          {/* Selected chips persist */}
+          {selectedFactors.map(opt => (
+            <button
+              type="button" key={opt.id}
+              onClick={() => toggleFactor(opt.id)}
+              style={{
+                padding: "4px 10px", borderRadius: "12px",
+                background: "var(--accent)", color: "white",
+                border: "1px solid var(--accent)",
+                fontSize: "11px", fontWeight: 600,
+                cursor: "pointer", fontFamily: "'Geist', sans-serif",
+              }}
+              title="Click to remove"
+            >
+              {opt.label} ×
+            </button>
+          ))}
+          <button
+            type="button"
+            onClick={() => setFactorsExpanded(e => !e)}
+            style={{
+              padding: "4px 10px", borderRadius: "12px",
+              background: factorsExpanded ? "var(--paper)" : "transparent",
+              color: "var(--ink-soft)",
+              border: "1px dashed var(--rule)",
+              fontSize: "11px", fontWeight: 500,
+              cursor: "pointer", fontFamily: "'Geist', sans-serif",
+            }}
+          >
+            {factorsExpanded ? "− hide options" : "+ add factor"}
+          </button>
+        </div>
+        {factorsExpanded && (
+          <div style={{
+            padding: "10px 12px", marginTop: "4px",
+            background: "white", border: "1px solid var(--rule)",
+            borderRadius: "2px",
+            display: "flex", flexWrap: "wrap", gap: "8px",
+          }}>
+            {COMPLEXITY_OPTIONS.filter(o => !(fields.perioCOEComplexityFactors || []).includes(o.id)).map(opt => (
+              <button
+                type="button" key={opt.id}
+                onClick={() => toggleFactor(opt.id)}
+                style={{
+                  padding: "5px 11px", borderRadius: "12px",
+                  background: "white", color: "var(--ink-soft)",
+                  border: "1px solid var(--rule)",
+                  fontSize: "11px", fontWeight: 500,
+                  cursor: "pointer", fontFamily: "'Geist', sans-serif",
+                }}
+              >
+                {opt.label}
+              </button>
+            ))}
+            {COMPLEXITY_OPTIONS.every(o => (fields.perioCOEComplexityFactors || []).includes(o.id)) && (
+              <span style={{ fontSize: "11px", color: "var(--ink-faint)", fontStyle: "italic" }}>
+                All factors selected.
               </span>
             )}
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
-            <Field label="Bone loss %">
-              <Select value={fields.perioCOEBoneLossPct || ""}
-                onChange={v => setField("perioCOEBoneLossPct", v)}>
-                <option value="">— select —</option>
-                <option value="<15">&lt;15% (coronal third)</option>
-                <option value="15-33">15–33% (coronal-to-mid third)</option>
-                <option value=">33">&gt;33% (mid third or beyond)</option>
-              </Select>
-            </Field>
-            <Field label="Teeth lost from perio">
-              <Select value={fields.perioCOETeethLost || ""}
-                onChange={v => setField("perioCOETeethLost", v)}>
-                <option value="">— select —</option>
-                <option value="0">0 (none lost to perio)</option>
-                <option value="1-4">1–4</option>
-                <option value="≥5">≥5 (Stage IV trigger)</option>
-              </Select>
-            </Field>
-          </div>
-          {/* Complexity factors — refined per AAP 2018. The first three rows
-              are Stage III modifiers; the last three are Stage IV elevators.
-              AAP 2018 case definitions are descriptive, not strict checkboxes
-              — these are best-effort categorical anchors. */}
-          <Field label="Complexity factors (descriptive — AAP 2018)">
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "2px" }}>
-              {COMPLEXITY_OPTIONS.map(opt => {
-                const on = (fields.perioCOEComplexityFactors || []).includes(opt.id);
-                return (
-                  <button
-                    type="button"
-                    key={opt.id}
-                    onClick={() => toggleFactor(opt.id)}
-                    style={{
-                      padding: "5px 11px", borderRadius: "12px",
-                      background: on ? "var(--accent)" : "white",
-                      color: on ? "white" : "var(--ink-soft)",
-                      border: on ? "1px solid var(--accent)" : "1px solid var(--rule)",
-                      fontSize: "11px", fontWeight: on ? 600 : 500,
-                      cursor: "pointer",
-                      fontFamily: "'Geist', sans-serif",
-                    }}
-                  >
-                    {opt.label}
-                  </button>
-                );
-              })}
+        )}
+      </div>
+
+      {/* ── Grading ── */}
+      <SubsectionLabel>Grading</SubsectionLabel>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px" }}>
+        <Field label="Age (years)">
+          <TextInput value={fields.perioCOEAge || ""}
+            onChange={v => setField("perioCOEAge", v.replace(/[^\d]/g, ""))}
+            placeholder="e.g. 52" />
+        </Field>
+        <Field label="Smoking">
+          <Select value={fields.perioCOESmoking || "none"}
+            onChange={v => setField("perioCOESmoking", v)}>
+            <option value="none">non-smoker</option>
+            <option value="<10">&lt;10 cig/day</option>
+            <option value="≥10">≥10 cig/day (C)</option>
+          </Select>
+        </Field>
+        <Field label="Diabetes">
+          <Select value={fields.perioCOEDiabetes || "none"}
+            onChange={v => setField("perioCOEDiabetes", v)}>
+            <option value="none">none</option>
+            <option value="controlled">controlled (&lt;7)</option>
+            <option value="uncontrolled">uncontrolled (≥7)</option>
+          </Select>
+        </Field>
+      </div>
+
+      {/* ── Extent ── */}
+      <div style={{ marginTop: "10px" }}>
+        <Field label="Disease extent">
+          <Select value={fields.perioCOEExtent || ""}
+            onChange={v => setField("perioCOEExtent", v)}>
+            <option value="">— select —</option>
+            <option value="localized">Localized (&lt;30%)</option>
+            <option value="generalized">Generalized (≥30%)</option>
+            <option value="molar-incisor">Molar-incisor pattern</option>
+          </Select>
+        </Field>
+      </div>
+
+      {/* ── Suggestion output ── */}
+      <div style={{ marginTop: "18px", paddingTop: "14px", borderTop: "1px solid var(--rule)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+          <span style={{
+            fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
+            color: "var(--accent)", fontWeight: 500, fontFamily: "'Geist', sans-serif",
+          }}>Suggested</span>
+          {dx && (
+            <button
+              type="button"
+              onClick={() => setRationaleOpen(o => !o)}
+              style={{
+                padding: "3px 10px", borderRadius: "2px",
+                background: rationaleOpen ? "var(--accent)" : "transparent",
+                color: rationaleOpen ? "white" : "var(--accent)",
+                border: "1px solid var(--accent)",
+                fontSize: "11px", fontWeight: 600, letterSpacing: "0.04em",
+                cursor: "pointer", fontFamily: "'Geist', sans-serif",
+              }}
+            >
+              {rationaleOpen ? "Hide rationale" : "Rationale"}
+            </button>
+          )}
+        </div>
+        {dx ? (
+          <>
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: "10px",
+              padding: "8px 16px", marginBottom: "10px",
+              background: stageColor, color: "white",
+              borderRadius: "16px",
+              fontFamily: "'Fraunces', serif", fontSize: "14px",
+              fontWeight: 600, fontStyle: "italic",
+            }}>
+              <span style={{ textTransform: "uppercase", letterSpacing: "0.08em",
+                  fontStyle: "normal", fontSize: "11px", fontFamily: "'Geist', sans-serif" }}>
+                Stage {dx.stage} · Grade {dx.grade}
+              </span>
             </div>
-          </Field>
-
-          {/* ── Grading inputs ── */}
-          <div style={{ marginTop: "16px" }}>
-            <SubsectionLabel>Grading</SubsectionLabel>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "14px" }}>
-              <Field label="Age (years)">
-                <TextInput value={fields.perioCOEAge || ""}
-                  onChange={v => setField("perioCOEAge", v.replace(/[^\d]/g, ""))}
-                  placeholder="e.g. 52" />
-              </Field>
-              <Field label="Smoking">
-                <Select value={fields.perioCOESmoking || "none"}
-                  onChange={v => setField("perioCOESmoking", v)}>
-                  <option value="none">non-smoker</option>
-                  <option value="<10">&lt;10 cig/day</option>
-                  <option value="≥10">≥10 cig/day (Grade C)</option>
-                </Select>
-              </Field>
-              <Field label="Diabetes">
-                <Select value={fields.perioCOEDiabetes || "none"}
-                  onChange={v => setField("perioCOEDiabetes", v)}>
-                  <option value="none">none</option>
-                  <option value="controlled">controlled (HbA1c &lt;7)</option>
-                  <option value="uncontrolled">uncontrolled (HbA1c ≥7)</option>
-                </Select>
-              </Field>
+            <div style={{
+              padding: "12px 14px",
+              background: "white", border: "1px solid var(--rule)",
+              borderRadius: "2px",
+              fontFamily: "'Geist', sans-serif",
+              fontSize: "13px", lineHeight: 1.55, color: "var(--ink)",
+            }}>
+              <div style={{ marginBottom: "6px" }}>
+                <strong>AAP:</strong> {dx.aap}
+              </div>
+              <div>
+                <strong>ADA:</strong> {dx.ada}
+              </div>
             </div>
-          </div>
 
-          {/* ── Extent ── */}
-          <div style={{ marginTop: "12px" }}>
-            <Field label="Disease extent (% of teeth affected)">
-              <Select value={fields.perioCOEExtent || ""}
-                onChange={v => setField("perioCOEExtent", v)}>
-                <option value="">— select —</option>
-                <option value="localized">Localized (&lt;30% of teeth)</option>
-                <option value="generalized">Generalized (≥30% of teeth)</option>
-                <option value="molar-incisor">Molar-incisor pattern</option>
-              </Select>
-            </Field>
-          </div>
-
-          {/* ── Suggestion output ── */}
-          <div style={{ marginTop: "20px", paddingTop: "16px", borderTop: "1px solid var(--rule)" }}>
-            <SubsectionLabel>Suggested</SubsectionLabel>
-            {dx ? (
-              <>
-                <div style={{
-                  display: "inline-flex", alignItems: "center", gap: "10px",
-                  padding: "8px 16px",
-                  background: stageColor, color: "white",
-                  borderRadius: "16px",
-                  fontFamily: "'Fraunces', serif", fontSize: "14px",
-                  fontWeight: 600, fontStyle: "italic",
-                  marginBottom: "10px",
-                }}>
-                  <span style={{
-                    textTransform: "uppercase", letterSpacing: "0.08em",
-                    fontStyle: "normal", fontSize: "11px",
-                    fontFamily: "'Geist', sans-serif",
-                  }}>
-                    Stage {dx.stage} · Grade {dx.grade}
-                  </span>
-                </div>
-                <div style={{
-                  padding: "12px 14px",
-                  background: "white", border: "1px solid var(--rule)",
-                  borderRadius: "2px",
-                  fontFamily: "'Geist', sans-serif",
-                  fontSize: "13px", lineHeight: 1.55, color: "var(--ink)",
-                }}>
-                  <div style={{ marginBottom: "6px" }}>
-                    <strong>AAP:</strong> {dx.aap}
-                  </div>
-                  <div>
-                    <strong>ADA:</strong> {dx.ada}
-                  </div>
-                </div>
-              </>
-            ) : (
+            {/* Rationale panel — collapsible. Shows what triggered each
+                decision, what's ambiguous, and what the engine took on
+                clinical judgment vs. anchored to AAP 2018. */}
+            {rationaleOpen && rationale && (
               <div style={{
-                padding: "12px 14px",
-                border: "1px dashed var(--rule)", borderRadius: "2px",
-                color: "var(--ink-faint)", fontSize: "12px", fontStyle: "italic",
+                marginTop: "10px", padding: "14px 16px",
+                background: "rgba(124,30,32,0.04)",
+                border: "1px solid var(--rule)", borderRadius: "2px",
+                fontFamily: "'Geist', sans-serif", fontSize: "12px",
+                lineHeight: 1.6, color: "var(--ink)",
               }}>
-                Fill in max PD, bone loss, teeth lost, age, and extent.
+                <div style={{ fontWeight: 600, marginBottom: "8px", color: "var(--accent)", fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                  Why Stage {dx.stage}
+                </div>
+                <ul style={{ margin: "0 0 12px 0", paddingLeft: "18px" }}>
+                  {rationale.stageDrivers.map((d, i) => (
+                    <li key={i} style={{ marginBottom: "3px" }}>
+                      <strong>{d.k}:</strong> {d.v} → <em style={{ color: "var(--ink-soft)" }}>{d.says}</em>
+                    </li>
+                  ))}
+                </ul>
+                <div style={{ fontWeight: 600, marginBottom: "8px", color: "var(--accent)", fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                  Why Grade {dx.grade}
+                </div>
+                <ul style={{ margin: "0 0 12px 0", paddingLeft: "18px" }}>
+                  {rationale.gradeDrivers.map((d, i) => (
+                    <li key={i} style={{ marginBottom: "3px" }}>
+                      <strong>{d.k}:</strong> {d.v} → <em style={{ color: "var(--ink-soft)" }}>{d.says}</em>
+                    </li>
+                  ))}
+                </ul>
+                {rationale.ambiguity.length > 0 && (
+                  <>
+                    <div style={{ fontWeight: 600, marginBottom: "8px", color: "var(--accent)", fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                      Ambiguity / borderline
+                    </div>
+                    <ul style={{ margin: "0 0 12px 0", paddingLeft: "18px" }}>
+                      {rationale.ambiguity.map((a, i) => (
+                        <li key={i} style={{ marginBottom: "5px", color: "var(--ink)" }}>{a}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                <div style={{ fontWeight: 600, marginBottom: "8px", color: "var(--accent)", fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                  Engine judgment vs. AAP-anchored
+                </div>
+                <ul style={{ margin: 0, paddingLeft: "18px" }}>
+                  {rationale.judgmentCalls.map((j, i) => (
+                    <li key={i} style={{ marginBottom: "5px", color: "var(--ink-soft)" }}>{j}</li>
+                  ))}
+                </ul>
               </div>
             )}
+
+            {/* Send to note checkbox — blank by default; when checked,
+                writes Stage/Grade/Case Type into the perio-classification
+                dropdowns above (and into the note via the existing
+                substitution path). */}
+            <label style={{
+              marginTop: "12px", display: "flex", alignItems: "center", gap: "10px",
+              padding: "10px 14px",
+              background: fields.perioCOEDxSendToNote ? "rgba(45,90,86,0.10)" : "transparent",
+              border: "1px solid " + (fields.perioCOEDxSendToNote ? "var(--teal)" : "var(--rule)"),
+              borderRadius: "2px",
+              cursor: "pointer",
+              fontSize: "13px", color: "var(--ink)",
+            }}>
+              <input type="checkbox"
+                checked={!!fields.perioCOEDxSendToNote}
+                onChange={e => setField("perioCOEDxSendToNote", e.target.checked)}
+                style={{ width: "16px", height: "16px", accentColor: "var(--teal)", cursor: "pointer" }} />
+              <span style={{ fontWeight: 600 }}>Send to note</span>
+              <span style={{ color: "var(--ink-soft)", fontSize: "12px" }}>
+                fills the AAP/ADA dropdowns above with this Dx
+              </span>
+            </label>
+          </>
+        ) : (
+          <div style={{
+            padding: "12px 14px",
+            border: "1px dashed var(--rule)", borderRadius: "2px",
+            color: "var(--ink-faint)", fontSize: "12px", fontStyle: "italic",
+          }}>
+            {pdParsed.invalid
+              ? "Max PD couldn't be read from the PD Range field — fill that in first."
+              : "Fill in BL %, teeth lost, age, and extent."}
           </div>
+        )}
+      </div>
     </div>
   );
 }
