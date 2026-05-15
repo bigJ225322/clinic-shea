@@ -17220,6 +17220,10 @@ function RPDInputsForm({ caseInput, onUpdate }) {
   // gate the design (arch, opposing, allergy, tori) so users can see at a
   // glance what state the case is in without expanding.
   const [open, setOpen] = useState(false);
+  // Reference panel — explains what each input clinically affects.
+  // Lives below all the controls in the overlay; closed by default so
+  // the inputs themselves stay visually clean.
+  const [refOpen, setRefOpen] = useState(false);
   const archLabel = caseInput.arch === "maxillary" ? "Max" : "Mand";
   const oppLabel = pf.opposingArch === "complete_denture" ? "vs CD"
                  : pf.opposingArch === "existing_partial" ? "vs RPD"
@@ -17368,6 +17372,80 @@ function RPDInputsForm({ caseInput, onUpdate }) {
             <input type="checkbox" checked={!!pf.mandibularTori} onChange={(e) => setFactor("mandibularTori", e.target.checked)} />
             Mandibular tori
           </label>
+        )}
+      </div>
+
+      {/* ─── Input reference ─────────────────────────────────────────────
+          Subordinate disclosure at the bottom of the inputs overlay.
+          Closed by default so the input controls remain visually clean;
+          opens to a one-stop reference for what each input clinically
+          affects and what design decision it gates. */}
+      <div style={{
+        marginTop: "14px", paddingTop: "10px",
+        borderTop: "1px solid var(--rule-soft)",
+      }}>
+        <button
+          type="button"
+          onClick={() => setRefOpen(o => !o)}
+          style={{
+            width: "100%",
+            background: "transparent",
+            color: "var(--ink-soft)",
+            border: "1px dashed var(--rule)",
+            borderRadius: "2px",
+            padding: "6px 10px",
+            fontFamily: "'Geist', sans-serif",
+            fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
+            cursor: "pointer",
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+          }}
+        >
+          <span>What each input affects</span>
+          <span style={{
+            fontSize: "11px", color: "var(--ink-faint)",
+            transform: refOpen ? "rotate(90deg)" : "none",
+            transition: "transform 120ms ease",
+          }}>▸</span>
+        </button>
+        {refOpen && (
+          <div style={{
+            marginTop: "10px",
+            fontSize: "11px", lineHeight: 1.55, color: "var(--ink)",
+            fontFamily: "'Geist', sans-serif",
+          }}>
+            {[
+              { k: "Opposing arch",
+                v: "Affects load distribution and major-connector decisions. A complete denture opposing means lower forces; natural dentition means standard forces; an existing partial opposing may require occlusal coordination." },
+              { k: "Design intent (definitive vs interim)",
+                v: "Definitive RPD = cast metal framework, long-term prosthesis. Interim = acrylic base + wrought-wire C-clasps, transient prosthesis for use during Phase I disease control or while the ridge stabilizes after extractions." },
+              { k: "Ridge resorption",
+                v: "Severity of alveolar bone loss in the edentulous area. Severe resorption favors mesh retention (relinable) over open lattice and signals compromised support overall." },
+              { k: "Interocclusal space",
+                v: "Vertical room between arches for framework + teeth + acrylic. Limited space may force a thinner cast framework; extremely limited can contraindicate certain designs entirely." },
+              { k: "Vestibular depth (mm)",
+                v: "Gates I-bar use. RPI requires ≥4mm of vestibular depth for the I-bar to approach from the gingival vestibule. Insufficient depth contraindicates I-bar — use Akers or Combination instead." },
+              { k: "Lingual sulcus depth (mm) (mandibular only)",
+                v: "Lingual bar requires ≥8mm of sulcus depth (4mm bar + 4mm clearance from gingival margin). <8mm forces a lingual plate instead of a bar." },
+              { k: "Months since most recent extraction",
+                v: "Gates definitive vs interim recommendation. The ridge resorbs unpredictably for the first 3–6 months and stabilizes after. <3 months → interim recommended; 3–6 months → borderline; >6 months → ridge stable enough for definitive. Carr & Brown convention; not anchored to a single paper." },
+              { k: "Metal allergy",
+                v: "Patient-reported allergy to nickel, chrome, or cobalt. Forces NMCD (non-metal clasp denture) consideration — a last-resort hybrid that requires Managing Partner approval and a signed specific consent form. NMCDs are contraindicated for Class I/II (rigidity required)." },
+              { k: "Maxillary tori (maxillary only)",
+                v: "Bony exostoses on the palate that obstruct full palatal coverage. Routes the major connector around them → U-shaped connector or A-P strap instead of a full palate." },
+              { k: "Mandibular tori (mandibular only)",
+                v: "Lingual exostoses near the floor of the mouth. If surgical removal isn't planned, the lingual bar can't pass over them → lingual plate instead." },
+              { k: "Sensitive gag reflex (maxillary only)",
+                v: "Patient cannot tolerate full palatal coverage. Forces strap-style or U-shaped connectors instead of a full palate." },
+            ].map(({ k, v }) => (
+              <div key={k} style={{ marginBottom: "10px" }}>
+                <div style={{
+                  fontWeight: 600, color: "var(--ink)",
+                  fontSize: "11px", marginBottom: "2px",
+                }}>{k}</div>
+                <div style={{ color: "var(--ink-soft)" }}>{v}</div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
       </div>)}
