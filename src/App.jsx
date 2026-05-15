@@ -15583,8 +15583,11 @@ function RPDLabRxForm({ caseInput, result }) {
           width: "100%", display: "flex", justifyContent: "space-between",
           alignItems: "center",
           padding: "14px 20px",
-          background: open ? "var(--accent)" : "white",
-          color: open ? "white" : "var(--accent)",
+          /* Closed = inviting (accent text on white, draws the eye).
+             Open = quiet header (dark ink on cream, doesn't compete for
+             attention with the form content below). */
+          background: open ? "var(--paper)" : "white",
+          color: open ? "var(--ink)" : "var(--accent)",
           border: "none", borderBottom: open ? "1.5px solid var(--ink)" : "none",
           cursor: "pointer",
           fontFamily: "'Fraunces', serif",
