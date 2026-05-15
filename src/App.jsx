@@ -15308,6 +15308,14 @@ function RPDPaperFormArchDrawing({
     const halfShort = 4;
     return (
       <g key={key}>
+        {/* Invisible hit pad — the visible ellipse is only ~16x8 px, far
+            too small a click target on its own. A 28-px radius transparent
+            circle centered on the stop gives a comfortable hit area
+            without affecting the rendered appearance. */}
+        {interactive && (
+          <circle cx={tsX} cy={tsY} r={28}
+            fill="rgba(0,0,0,0)" pointerEvents="all" />
+        )}
         <ellipse cx={tsX} cy={tsY} rx={halfLong} ry={halfShort}
           transform={`rotate(${Math.atan2(mes.y, mes.x) * 180 / Math.PI} ${tsX} ${tsY})`}
           fill={C_WW} stroke={C_WW} strokeWidth={0.8} />
