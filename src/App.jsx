@@ -52,7 +52,7 @@ const TEMPLATES = {
  "5032": " - y/o female patient presents to Chicago Digital clinic for #19-MODB digital e.max onlay prep\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltration #4.\n\n #19-MODB digital e.max onlay prep & scan:\n Completed onlay prep to ideal form. Scanned prep, opposing arch, & occlusion using TRIOS intraoral scanner. Verified margins, occlusal clearance,\n & interproximal contacts on scan.\n\n Selected shade HT-A2 for #19 digital onlay. Pt used hand mirror & confirmed shade verbally.\n\n #19-MODB provisional:\n Fabricated provisional using Integrity shade A2. Adjusted to ideal shape with satisfactory marginal adaptation. Cemented with UltraTemp.\n Removed excess cement & flossed. Occlusal & excursive contacts evaluated with articulating paper & adjusted to ideal. Interproximal contacts\n evaluated with floss & are satisfactory.\n\n NV: #19-MODB digital e.max onlay delivery",
  "5062": " - y/o female patient presents to Chicago Digital clinic for #19 digital e.max crown prep\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltration #4.\n\n #19 digital e.max crown prep & scan:\n Completed crown prep to ideal form. Placed #00 &#0 gingival retraction cord soaked in Hemodent. Scanned prep, opposing arch, & occlusion using\n TRIOS intraoral scanner. Verified margins, occlusal clearance, & interproximal contacts on scan.\n\n Selected shade LT-A2 for #19 digital crown. Pt used hand mirror & confirmed shade verbally.\n\n #19 provisional:\n Fabricated provisional using Integrity shade A2. Adjusted to ideal shape with satisfactory marginal adaptation. Cemented with UltraTemp.\n Removed excess cement & flossed. Occlusal & excursive contacts evaluated with articulating paper & adjusted to ideal. Interproximal contacts\n evaluated with floss & are satisfactory.\n\n NV: #19 digital e.max crown delivery",
  "5305": " - y/o female patient presents to Vivaldi clinic for #19-MODB digital e.max onlay delivery\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltration #4.\n\n #19-MODB digital e.max onlay delivery:\n\n Removed sprue & prepared onlay for pre-crystallization try-in. Placed Isodry (size M). Removed provisional onlay. Removed temporary cement with\n a scaler. Cleaned tooth with pumice & prophy angle\n\n Pre-crystallization try-in:\n - Marginal adaptation satisfactory; verified visually, tactilely, & radiographically (BW taken).\n - Interproximal contacts adjusted with a bur; contacts are satisfactory as evaluated with floss.\n - Occlusal & excursive contacts adjusted with a bur; contacts are satisfactory as evaluated with articulating paper.\n\n Crystallization try-in:\n - [ Stains added? ]. Crystallized using regular glaze and regular firing cycle. [ spray glaze and speed firing cycle ]\n - Crystallized restoration tried in. Adjusted [surfaces].\n - Pt expressed satisfaction with final shade of restoration.\n - Total number of restorations milled: 1 [reason]\n\n Cementation -- Panavia F2.0 resin cement:\n - Restoration intaglio cleaned with Ivoclean 20s, rinsed, dried; etched with 5% HF acid 20s, rinsed, dried; primed with Clearfil ceramic primer 1m,\n dried.\n - Tooth isolated with Isodry. Scrubbed with Consepsis, rinsed, dried; primed with Primer A+B 30s, dried.\n - Mixed Panavia cement pastes A&B (shade TC). Cemented restoration. Removed excess cement. Flossed. Light cured 20s per side.\n - Took BW to verify closed margins. Verified interproximal contacts. Evaluated & adjusted occlusal contacts & excursive contacts to ideal. Polished\n ceramic.\n - Pt is satisfied with bite & esthetics. Gave verbal post-op instructions re: 24 hr set, uneven bite, sore injection site.\n\n NV:",
- "5472": " - y/o female patient presents to UG clinic for #12 RCT -- same day access & fill\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n CC: “My upper left tooth hurts and I was referred here for a root canal”\n\n Re-confirmed findings from endo consult visit 1/1/2021 1 month ago:\n - EOE: WNL -- no lymphadenopathy, no swelling, no erythema, no asymmetries\n - IOE: WNL -- no soft tissue pathology, no sinus tract, no vestibular swelling\n - hard tissue exam: #12 existing DO composite with recurrent decay\n - symptoms: pain on chewing\n - #12 is restorable as confirmed with Dr. ?\n\n Endo tests:\n - #: percussion +++, palpation +++, probing X mm, mobility 1, cold test NR\n - #: percussion -, palpation -, probing X mm, mobility 0, cold test 2/2 s\n\n Radiographic exam:\n - Re-evaluated BW & PA taken 1/1/2021\n - Periapical radiolucency #12\n - #12 large DO composite approaching pulp, recurrent decay\n\n Diagnosis #12:\n - Pulpal dx: necrotic pulp\n - Periapical dx: symptomatic apical periodontitis\n\n Thoroughly reviewed treatment options, timelines, & costs with the pt. Discussed advantages & disadvantages of treatment. Answered pt’s\n questions, pt understood tx options. Pt opts to proceed with RCT #12. Specifically discussed need for pt to return to primary dentist for a crown.\n Verbal & written consent obtained.\n\n #12 RCT:\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltration #12.\n\n Rubber dam placed. Excavated caries completely. Accessed, completely unroofed pulp chamber, & achieved straight-line access. Located 2 canals.\n Pre-flared with Vortex orifice opener #20/.08. Determined WL with electronic apex locator. Confirmed WL with WM radiograph taken straight and\n from distal. Created guide path with #10, #15 SS files. Cleansed & shaped canals with powered rotary files. Reconfirmed patency and copious\n irrigation with 1% NaOCl throughout procedure. Fitted mater cones and took radiograph.\n\n Buccal canal -- WL 18.5 mm (reference point: buccal cusp tip)\n Palatal canal -- WL 18.0 mm (reference point: lingual cusp tip)\n MAF: 35 (buccal & palatal)\n\n Final irrigation with 1% NaOCl, 17% EDTA, 1% NaOCl. Dried canals with needle aspiration and paper points. Obturated with Endoseal MTA sealer and\n master cone. Took post-op radiograph. Placed sponge & Cavit.\n\n POI given verbally. Pt tolerated procedure well and left in stable condition.\n\n - NV:",
+ "5472": " - y/o female patient presents to Chicago clinic for #12 RCT -- same day access & fill\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n CC: “”\n\n Re-confirmed findings from endo consult visit 1/1/2021 1 month ago:\n - EOE: WNL\n - IOE: WNL\n - symptoms: pain on chewing\n - #12 is restorable as confirmed with Dr. ?\n\n Endo tests:\n - #: percussion +++, palpation +++, probing X mm, mobility 1, cold test NR\n - #: percussion -, palpation -, probing X mm, mobility 0, cold test 2/2 s\n\n Radiographic exam:\n - Re-evaluated BW & PA taken 1/1/2021\n - Periapical radiolucency #12\n\n Diagnosis #12:\n - Pulpal dx: necrotic pulp\n - Periapical dx: symptomatic apical periodontitis\n\n Thoroughly reviewed treatment options, timelines, & costs with the pt. Discussed advantages & disadvantages of treatment. Answered pt’s\n questions, pt understood tx options. Pt opts to proceed with RCT #12. Specifically discussed need for pt to return to primary dentist for a crown.\n Verbal & written consent obtained.\n\n #12 RCT:\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltration #12.\n\n Rubber dam placed. Excavated caries completely. Accessed, completely unroofed pulp chamber, & achieved straight-line access. Located 2 canals.\n Pre-flared with Vortex orifice opener #20/.08. Determined WL with electronic apex locator. Confirmed WL with WM radiograph taken straight and\n from distal. Created guide path with #10, #15 SS files. Cleansed & shaped canals with powered rotary files. Reconfirmed patency and copious\n irrigation with 1% NaOCl throughout procedure. Fitted mater cones and took radiograph.\n\n Buccal canal -- WL 18.5 mm (reference point: buccal cusp tip)\n Palatal canal -- WL 18.0 mm (reference point: lingual cusp tip)\n MAF: 35 (buccal & palatal)\n\n Final irrigation with 1% NaOCl, 17% EDTA, 1% NaOCl. Dried canals with needle aspiration and paper points. Obturated with Endoseal MTA sealer and\n master cone. Took post-op radiograph. Placed sponge & Cavit.\n\n POI given verbally. Pt tolerated procedure well and left in stable condition.\n\n - NV:",
  "5985": " - y/o female presents to UG Peds with mother for initial/recall appt.\n - RMH with mother. No changes.\n - , no medications, IUTD\n - dental history: brushes 2x a day, flosses 1x a week, mother helps with brushing & flossing\n - caries risk: HIGH\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology, generalized mild gingivitis, generalized moderate plaque\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n\n Took 4 bitewings & updated odontogram with radiographic & intraoral hard tissue findings:\n - mixed dentition\n -\n - occlusal assessment:\n\n Treatment planned for the following treatments:\n -\n Findings & treatment options, advantages & disadvantages, reviewed with parent. Treatment plan formulated & discussed, all questions were\n answered. Mother signed treatment plan.\n\n Prophy completed.\n - Removed plaque & calculus using hand instruments. Flossed. Polished with prophy paste.\n - Fluoride varnish applied.\n - OHI given; brushing & flossing were demonstrated with mother & pt; advised to brush 2x daily + floss 1x daily\n - Nutritional counseling completed. Advised to limit sugary drinks & snacks, and when consumed, to shorten duration.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr.",
  "6038": " Discussed with parent and patient the disadvantages of SDF, including: staining carious lesions black (showed pictures), possible transient soft\n tissue staining, failure to arrest caries with future need for restoration. Parent understood risks and consented to SDF placement.\n\n Isolated with cotton rolls. Thoroughly dried teeth. Applied SDF to #A in a scrubbing motion. Allowed 60s to air dry. Removed excess SDF & rinsed.",
  "6095": " - y/o female presents to UG Peds with mother for #3, #14, #19, #30 sealants\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Sealants — #3, #14, #19, #30\n Tooth cleaned with pumice & prophy angle. Isodry placed (size P). Etched with 35% phosphoric acid for 30s, rinsed 15s, gently dried. Applied\n Scotchbond Universal 20s, air dried 5s, cured 10s. Applied Ultradent UltraSeal XT Plus to occlusal surface & buccal pit of mandibular molars /\n lingual groove of maxillary molars. Light cured 20s. Repeated for all molars (#2, #3, #14, #15, #18, #19, #30, #31). Occlusion evaluated with\n articulating paper -- occlusion is satisfactory, pt is not occluding on sealant.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Informed mother that pt is still numb, monitor lip & soft\n tissue biting.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr.",
@@ -3063,6 +3063,12 @@ const DEFAULT_FIELDS = {
   // include nitrous by default since it's standard for behavior management).
   // Unchecking strips the "Titrated to 40% nitrous oxide..." sentence.
   nitrous: true,
+  // Removed-existing-restoration — default ON. Applies to any template
+  // whose default body mentions removing an old composite, amalgam, or
+  // RMGI restoration before excavating decay. Unchecking strips the
+  // "Removed existing failing X restoration" portion while leaving the
+  // "Excavated decay…" continuation intact.
+  removedExistingRestoration: true,
   // Exam findings (only used by COE / POE templates that have these stubs).
   // Keyed by the literal stub label as it appears in the template, e.g.
   // "soft tissue conditions" matches "- soft tissue conditions:" in the
@@ -3131,7 +3137,7 @@ const DEFAULT_FIELDS = {
   endoConsultMonthsAgo: "",                  // "consult visit __ X month ago"
   endoEoe: "",                               // "- EOE: __"
   endoIoe: "",                               // "- IOE: __"
-  endoHardTissue: "",                        // "- hard tissue exam: __"
+  // endoHardTissue was removed — see renderTemplate notes (fabricated example in source manual).
   endoSymptoms: "pain on chewing",           // "- symptoms: __"
   endoRestorableBy: "",                      // "as confirmed with Dr. __"
   // Affected-tooth endo tests (the symptomatic tooth)
@@ -3550,6 +3556,30 @@ function renderTemplate(raw, f) {
   // template's defaults in place — visible to the student as a hint).
   // Order matches the standard note's top-to-bottom flow.
 
+  // -------- 6h-pre. Removed-existing-restoration toggle. --------
+  // Affects every template whose body mentions removing a failing existing
+  // restoration (composite, amalgam, RMGI) prior to excavating decay.
+  // Default = true (the standard Swade phrasing). When false, the
+  // restoration-removal phrase is stripped while preserving the decay-
+  // excavation continuation so the note still reads naturally.
+  //
+  // Patterns handled:
+  //   "Removed existing failing X restoration. Excavated decay…"
+  //     → "Excavated decay…"
+  //   "Completely removed failing existing X restoration and excavated decay…"
+  //     → "Excavated decay…"
+  //   "Completely removed failing existing X restoration & excavated D decay…"
+  //     → "Excavated decay…"
+  if (f.removedExistingRestoration === false) {
+    // Pattern A: separate sentence ("Removed existing failing … restoration.")
+    t = t.replace(/Removed existing failing [^.]+? restoration\.\s*/gi, "");
+    // Pattern B: joined with "and excavated decay" or "& excavated [X] decay"
+    t = t.replace(
+      /Completely removed (?:existing )?failing(?: existing)? [^.&]+? restoration\s+(?:and|&)\s+excavated\s+(?:[A-Z]+\s+)?decay/gi,
+      "Excavated decay"
+    );
+  }
+
   // 1. Consult date — appears in both "endo consult visit __" and
   //    "Re-evaluated BW & PA taken __". Single field for both.
   if (f.endoConsultDate && f.endoConsultDate.trim()) {
@@ -3571,9 +3601,9 @@ function renderTemplate(raw, f) {
     t = t.replace(/(- IOE:)\s*[^\n]*/i, `$1 ${f.endoIoe.trim()}`);
   }
   // 5. Hard tissue exam
-  if (f.endoHardTissue && f.endoHardTissue.trim()) {
-    t = t.replace(/(- hard tissue exam:)\s*[^\n]*/i, `$1 ${f.endoHardTissue.trim()}`);
-  }
+  // (endoHardTissue substitution removed — the "- hard tissue exam:" line
+  // was cut from the RCT template because its default content was a
+  // fabricated clinical example.)
   // 6. Symptoms
   if (f.endoSymptoms && f.endoSymptoms.trim()) {
     t = t.replace(/(- symptoms:)\s*[^\n]*/i, `$1 ${f.endoSymptoms.trim()}`);
@@ -4245,6 +4275,54 @@ function Field({ label, children }) {
     <div style={{ marginBottom: "9px" }}>
       <label style={labelStyle}>{label}</label>
       {children}
+    </div>
+  );
+}
+
+// Expandable "EOE / IOE detail" toggle for the RCT template (5472). The
+// template now reads "EOE: WNL" / "IOE: WNL" by default — sufficient for
+// most cases. Students who want to override the WNL stub click to expand
+// and type the actual finding. Closed by default so the form stays clean.
+function EndoEoeIoeDetail({ fields, setField }) {
+  const [open, setOpen] = useState(!!(fields.endoEoe || fields.endoIoe));
+  return (
+    <div style={{ marginBottom: "9px" }}>
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        style={{
+          width: "100%", background: "transparent",
+          color: "var(--ink-soft)",
+          border: "1px dashed var(--rule)", borderRadius: "2px",
+          padding: "6px 10px",
+          fontFamily: "'Geist', sans-serif",
+          fontSize: "10px", letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          cursor: "pointer",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+        }}
+      >
+        <span>EOE / IOE detail <span style={{ textTransform: "none", letterSpacing: "0.02em", opacity: 0.7, marginLeft: "6px", fontStyle: "italic" }}>(default: WNL)</span></span>
+        <span style={{
+          fontSize: "11px", color: "var(--ink-faint)",
+          transform: open ? "rotate(90deg)" : "none",
+          transition: "transform 120ms ease",
+        }}>▸</span>
+      </button>
+      {open && (
+        <div style={{ marginTop: "8px" }}>
+          <Field label="EOE">
+            <TextInput value={fields.endoEoe || ""}
+              onChange={v => setField("endoEoe", v)}
+              placeholder="leave blank for WNL — e.g. no lymphadenopathy, no swelling…" />
+          </Field>
+          <Field label="IOE">
+            <TextInput value={fields.endoIoe || ""}
+              onChange={v => setField("endoIoe", v)}
+              placeholder="leave blank for WNL — e.g. no soft tissue pathology…" />
+          </Field>
+        </div>
+      )}
     </div>
   );
 }
@@ -7520,6 +7598,13 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     () => /(?:CC:|Chief complaint:)\s*“/.test(rawTemplate), [rawTemplate]);
   const needsNitrous = useMemo(
     () => /Titrated to[^.]*nitrous/i.test(rawTemplate), [rawTemplate]);
+  // True when the template's body mentions removing an existing failing
+  // restoration prior to excavating decay. Surfaces a "Removed existing
+  // restoration?" checkbox in the form; unchecking strips the phrase
+  // (see renderTemplate step 6h-pre).
+  const needsRemovedRestoration = useMemo(
+    () => /Removed existing failing|Completely removed (?:existing )?failing/i.test(rawTemplate),
+    [rawTemplate]);
   const needsDentalHistory = useMemo(
     () => /dental history:/i.test(rawTemplate), [rawTemplate]);
   const needsLastDentist = useMemo(
@@ -7848,25 +7933,15 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                 </Field>
               </div>
 
-              {/* 2. EOE / 3. IOE — long free-text strings. Empty means
-                  keep the template's WNL default. */}
-              <Field label="EOE">
-                <TextInput value={fields.endoEoe || ""}
-                  onChange={v => setField("endoEoe", v)}
-                  placeholder="e.g. WNL -- no lymphadenopathy, no swelling…" />
-              </Field>
-              <Field label="IOE">
-                <TextInput value={fields.endoIoe || ""}
-                  onChange={v => setField("endoIoe", v)}
-                  placeholder="e.g. WNL -- no soft tissue pathology…" />
-              </Field>
+              {/* 2/3. EOE & IOE — defaulted to "WNL" in the template.
+                  Wrapped in a small expandable so the form stays clean
+                  when the student is fine with the WNL default (which
+                  is most of the time). Open to override.
+                  (Hard tissue exam field was removed — the line it
+                  substituted into was clinically fabricated in the
+                  source manual and has been cut from the template.) */}
+              <EndoEoeIoeDetail fields={fields} setField={setField} />
 
-              {/* 4. Hard tissue / 5. Symptoms */}
-              <Field label="Hard tissue exam">
-                <TextInput value={fields.endoHardTissue || ""}
-                  onChange={v => setField("endoHardTissue", v)}
-                  placeholder="e.g. existing DO composite with recurrent decay" />
-              </Field>
               <Field label="Symptoms">
                 <TextInput value={fields.endoSymptoms || ""}
                   onChange={v => setField("endoSymptoms", v)}
@@ -8185,6 +8260,29 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   </Field>
                 </div>
               </div>
+            </>
+          )}
+
+          {needsRemovedRestoration && (
+            <>
+              <Hairline />
+              <label style={{
+                display: "flex", alignItems: "center", gap: "10px",
+                fontSize: "13px", color: "var(--ink)",
+                cursor: "pointer", padding: "6px 0",
+              }}>
+                <input type="checkbox"
+                  checked={fields.removedExistingRestoration !== false}
+                  onChange={e => setField("removedExistingRestoration", e.target.checked)}
+                  style={{
+                    width: "16px", height: "16px",
+                    accentColor: "var(--accent)", cursor: "pointer",
+                  }} />
+                <span>Removed existing restoration?</span>
+                <span style={{ color: "var(--ink-soft)", fontSize: "11px", fontStyle: "italic" }}>
+                  uncheck if this is a new prep, no existing restoration
+                </span>
+              </label>
             </>
           )}
 
