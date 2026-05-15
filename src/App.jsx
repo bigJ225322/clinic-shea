@@ -1712,12 +1712,12 @@ const RVU_DATA = [
   { code: "D3220LS", desc: "Theraputic pulpotomy", rvu: 3 },
   { code: "D3230", desc: "Pulpal therapy (resorbable filling) - anterior, primary", rvu: 3 },
   { code: "D3240", desc: "Pulpal therapy (resorbable filling) - posterior, primary", rvu: 3 },
-  { code: "D3310A", desc: "Access", rvu: 5 },
-  { code: "D3310B", desc: "Fill", rvu: 7 },
-  { code: "D3320A", desc: "Access", rvu: 5 },
-  { code: "D3320B", desc: "Fill", rvu: 10 },
-  { code: "D3330A", desc: "Access", rvu: 10 },
-  { code: "D3330B", desc: "Fill", rvu: 10 },
+  { code: "D3310A", desc: "Access — anterior", rvu: 5 },
+  { code: "D3310B", desc: "Fill — anterior", rvu: 7 },
+  { code: "D3320A", desc: "Access — premolar", rvu: 5 },
+  { code: "D3320B", desc: "Fill — premolar", rvu: 10 },
+  { code: "D3330A", desc: "Access — molar", rvu: 10 },
+  { code: "D3330B", desc: "Fill — molar", rvu: 10 },
   { code: "D3346A", desc: "Access", rvu: 8 },
   { code: "D3346B", desc: "Fill", rvu: 7 },
   { code: "D3347A", desc: "Access", rvu: 8 },
@@ -2283,7 +2283,7 @@ const CATEGORIES = [
   ]},
   { id: "endo", label: "Endo", groups: [
     { id: "rct", label: "Root Canal", procedures: [
-      { id: "5472", label: "RCT — 1 Visit" },
+      { id: "5472", label: "RCT" },
     ]},
   ]},
   { id: "peds", label: "Peds", groups: [
@@ -3105,7 +3105,62 @@ const DEFAULT_FIELDS = {
   flossing: "1x a day",
   // intraoralPhotos: when false, strips "- Took intraoral photos." from the note.
   intraoralPhotos: false,
+  // Endo (RCT, procedure 5472) — fill the template's prose lines from a
+  // structured form so the student isn't editing free text for every field.
+  // Ordered top-to-bottom to match the order they appear in the standard
+  // note template. Empty strings mean "don't substitute" — the template's
+  // default value stays in place.
+  endoConsultDate: "",                       // "Re-confirmed findings from endo consult visit __" AND "Re-evaluated BW & PA taken __"
+  endoConsultMonthsAgo: "",                  // "consult visit __ X month ago"
+  endoEoe: "",                               // "- EOE: __"
+  endoIoe: "",                               // "- IOE: __"
+  endoHardTissue: "",                        // "- hard tissue exam: __"
+  endoSymptoms: "pain on chewing",           // "- symptoms: __"
+  endoRestorableBy: "",                      // "as confirmed with Dr. __"
+  // Affected-tooth endo tests (the symptomatic tooth)
+  endoAffPercussion: "+++",
+  endoAffPalpation:  "+++",
+  endoAffProbing:    "X",                    // mm
+  endoAffMobility:   "1",
+  endoAffColdTest:   "NR",
+  // Control-tooth endo tests (the unaffected reference tooth)
+  endoControlTooth:  "",                     // tooth number
+  endoCtlPercussion: "-",
+  endoCtlPalpation:  "-",
+  endoCtlProbing:    "X",
+  endoCtlMobility:   "0",
+  endoCtlColdTest:   "2/2 s",
+  // Radiographic findings
+  endoRadioFinding1: "",                     // "Periapical radiolucency #N"
+  endoRadioFinding2: "",                     // free-text 2nd radiograph line
+  // Diagnoses (AAE terminology)
+  endoPulpalDx: "necrotic pulp",
+  endoPeriapicalDx: "symptomatic apical periodontitis",
+  // Procedure detail
+  endoNumCanals: "2",                        // "Located N canals."
+  endoMaf: "35",                             // "MAF: __"
 };
+
+// AAE pulpal diagnosis terminology
+const ENDO_PULPAL_DX = [
+  "normal pulp",
+  "reversible pulpitis",
+  "symptomatic irreversible pulpitis",
+  "asymptomatic irreversible pulpitis",
+  "necrotic pulp",
+  "previously initiated therapy",
+  "previously treated",
+];
+
+// AAE periapical diagnosis terminology
+const ENDO_PERIAPICAL_DX = [
+  "normal apical tissues",
+  "symptomatic apical periodontitis",
+  "asymptomatic apical periodontitis",
+  "chronic apical abscess",
+  "acute apical abscess",
+  "condensing osteitis",
+];
 
 // Anesthetic options from the manual (Local Anesthesia section).
 const ANESTHETIC_OPTIONS = [
@@ -3330,6 +3385,103 @@ function renderTemplate(raw, f) {
       /has improved — \./,
       `has ${status} — ${detail ? detail + "." : "."}`
     );
+  }
+
+  // -------- 6h. Endo (RCT, template 5472). --------
+  // Substitutes the template's prose placeholders from the structured Endo
+  // fields. Only fires when the template contains the matching anchor
+  // strings, so it's safe to run on every template — non-endo templates
+  // won't have these strings and the replacements become no-ops. Each
+  // substitution checks for a non-empty value (so empty fields leave the
+  // template's defaults in place — visible to the student as a hint).
+  // Order matches the standard note's top-to-bottom flow.
+
+  // 1. Consult date — appears in both "endo consult visit __" and
+  //    "Re-evaluated BW & PA taken __". Single field for both.
+  if (f.endoConsultDate && f.endoConsultDate.trim()) {
+    const d = f.endoConsultDate.trim();
+    t = t.replace(/(consult visit )1\/1\/2021/g, `$1${d}`);
+    t = t.replace(/(Re-evaluated BW & PA taken )1\/1\/2021/g, `$1${d}`);
+  }
+  // 2. Consult timing ("1 month ago")
+  if (f.endoConsultMonthsAgo && f.endoConsultMonthsAgo.trim()) {
+    const v = f.endoConsultMonthsAgo.trim();
+    t = t.replace(/1 month ago/g, v);
+  }
+  // 3. EOE findings — replace text after "- EOE: "
+  if (f.endoEoe && f.endoEoe.trim()) {
+    t = t.replace(/(- EOE:)\s*[^\n]*/i, `$1 ${f.endoEoe.trim()}`);
+  }
+  // 4. IOE findings
+  if (f.endoIoe && f.endoIoe.trim()) {
+    t = t.replace(/(- IOE:)\s*[^\n]*/i, `$1 ${f.endoIoe.trim()}`);
+  }
+  // 5. Hard tissue exam
+  if (f.endoHardTissue && f.endoHardTissue.trim()) {
+    t = t.replace(/(- hard tissue exam:)\s*[^\n]*/i, `$1 ${f.endoHardTissue.trim()}`);
+  }
+  // 6. Symptoms
+  if (f.endoSymptoms && f.endoSymptoms.trim()) {
+    t = t.replace(/(- symptoms:)\s*[^\n]*/i, `$1 ${f.endoSymptoms.trim()}`);
+  }
+  // 7. Restorability confirmer — fills "Dr. ?"
+  if (f.endoRestorableBy && f.endoRestorableBy.trim()) {
+    const name = f.endoRestorableBy.trim();
+    t = t.replace(/(restorable as confirmed with Dr\. )\?/, `$1${name}`);
+  }
+  // 8. Endo tests — two lines (affected then control). Rebuild each line
+  //    from individual field values for fine-grained control. The first
+  //    occurrence of "- #: percussion …" is the affected tooth, the
+  //    second is the control tooth.
+  {
+    const buildLine = (toothNum, perc, palp, prob, mob, cold) => {
+      const tag = toothNum && String(toothNum).trim()
+        ? `#${String(toothNum).trim().replace(/^#/, '')}`
+        : '#';
+      const probingStr = String(prob || 'X').trim() + ' mm';
+      return `- ${tag}: percussion ${perc}, palpation ${palp}, probing ${probingStr}, mobility ${mob}, cold test ${cold}`;
+    };
+    // The affected tooth number comes from f.tooth (the main tooth field
+    // up top). Strip surface notation if present.
+    const affTooth = (f.tooth || '').split(',')[0].trim().replace(/^#/, '').split('-')[0];
+    const ctlTooth = (f.endoControlTooth || '').trim();
+    const affLine = buildLine(affTooth, f.endoAffPercussion, f.endoAffPalpation,
+                              f.endoAffProbing, f.endoAffMobility, f.endoAffColdTest);
+    const ctlLine = buildLine(ctlTooth, f.endoCtlPercussion, f.endoCtlPalpation,
+                              f.endoCtlProbing, f.endoCtlMobility, f.endoCtlColdTest);
+    // Replace the two-line block as a unit so we don't have to worry about
+    // matching the right occurrence of each value separately.
+    t = t.replace(
+      /-[ \t]*#[^:]*:\s*percussion[^\n]*\n-[ \t]*#[^:]*:\s*percussion[^\n]*/i,
+      `${affLine}\n${ctlLine}`
+    );
+  }
+  // 9. Radiographic findings — two free-form lines under "Radiographic exam:"
+  if (f.endoRadioFinding1 && f.endoRadioFinding1.trim()) {
+    t = t.replace(/(- Periapical radiolucency )#[^\n]*/i, `$1${f.endoRadioFinding1.trim()}`);
+  }
+  if (f.endoRadioFinding2 && f.endoRadioFinding2.trim()) {
+    // Match the line: "- #X large DO composite approaching pulp, recurrent decay"
+    // We replace everything after the leading "- " with the user's text.
+    t = t.replace(/(\n- )#?\d*\s*large DO composite[^\n]*/i, `$1${f.endoRadioFinding2.trim()}`);
+  }
+  // 10. Pulpal Dx
+  if (f.endoPulpalDx && f.endoPulpalDx.trim()) {
+    t = t.replace(/(- Pulpal dx:)\s*[^\n]*/i, `$1 ${f.endoPulpalDx.trim()}`);
+  }
+  // 11. Periapical Dx
+  if (f.endoPeriapicalDx && f.endoPeriapicalDx.trim()) {
+    t = t.replace(/(- Periapical dx:)\s*[^\n]*/i, `$1 ${f.endoPeriapicalDx.trim()}`);
+  }
+  // 12. Number of canals
+  if (f.endoNumCanals && String(f.endoNumCanals).trim()) {
+    const n = String(f.endoNumCanals).trim();
+    t = t.replace(/(Located )\d+( canals\.)/, `$1${n}$2`);
+  }
+  // 13. MAF size
+  if (f.endoMaf && String(f.endoMaf).trim()) {
+    const m = String(f.endoMaf).trim();
+    t = t.replace(/(MAF: )\d+/, `$1${m}`);
   }
 
   // -------- 7. Medical history / meds / allergies / BP. --------
@@ -6778,11 +6930,20 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
 
   // When category changes, clear local procedure AND lift that change up
   // so the App-level selection doesn't go stale. Also clear the note since
-  // there's no procedure to generate one for.
+  // there's no procedure to generate one for. If the new category has
+  // exactly ONE procedure (e.g. Endo → RCT), auto-select it — saves the
+  // user a click.
   const handleCategoryChange = (id) => {
     setCategoryId(id);
-    setProcedureId("");
-    onSelectProcedure("");
+    const cat = FLAT_CATEGORIES.find(c => c.id === id);
+    if (cat && cat.procedures.length === 1) {
+      const onlyId = cat.procedures[0].id;
+      setProcedureId(onlyId);
+      onSelectProcedure(onlyId);
+    } else {
+      setProcedureId("");
+      onSelectProcedure("");
+    }
     setNote("");
     setUserEdited(false);
   };
@@ -6977,6 +7138,164 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                 onChange={v => setField("srpDate", v)}
                 placeholder="e.g. 3/15/2025" />
             </Field>
+          )}
+          {/* Endo-specific structured inputs (procedure 5472 only).
+              Substituted into the RCT template by renderTemplate step 6h —
+              diagnosis lines, symptoms / hard-tissue stubs, canal count,
+              and MAF size. Frees the student from editing the template
+              prose by hand for the most-customized fields. */}
+          {procedureId === "5472" && (
+            <>
+              <Hairline />
+              {/* Fields appear in the same order as the placeholders show
+                  up in the standard RCT note template, top to bottom. */}
+
+              {/* 1. Consult date + timing — same field fills both the
+                  "endo consult visit __" and the "Re-evaluated BW & PA
+                  taken __" lines, since they reference the same prior
+                  visit in the standard template. */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+                <Field label="Consult date">
+                  <TextInput value={fields.endoConsultDate || ""}
+                    onChange={v => setField("endoConsultDate", v)}
+                    placeholder="e.g. 3/15/2025" />
+                </Field>
+                <Field label="Consult timing">
+                  <TextInput value={fields.endoConsultMonthsAgo || ""}
+                    onChange={v => setField("endoConsultMonthsAgo", v)}
+                    placeholder="e.g. 2 months ago" />
+                </Field>
+              </div>
+
+              {/* 2. EOE / 3. IOE — long free-text strings. Empty means
+                  keep the template's WNL default. */}
+              <Field label="EOE">
+                <TextInput value={fields.endoEoe || ""}
+                  onChange={v => setField("endoEoe", v)}
+                  placeholder="e.g. WNL -- no lymphadenopathy, no swelling…" />
+              </Field>
+              <Field label="IOE">
+                <TextInput value={fields.endoIoe || ""}
+                  onChange={v => setField("endoIoe", v)}
+                  placeholder="e.g. WNL -- no soft tissue pathology…" />
+              </Field>
+
+              {/* 4. Hard tissue / 5. Symptoms */}
+              <Field label="Hard tissue exam">
+                <TextInput value={fields.endoHardTissue || ""}
+                  onChange={v => setField("endoHardTissue", v)}
+                  placeholder="e.g. existing DO composite with recurrent decay" />
+              </Field>
+              <Field label="Symptoms">
+                <TextInput value={fields.endoSymptoms || ""}
+                  onChange={v => setField("endoSymptoms", v)}
+                  placeholder="e.g. pain on chewing" />
+              </Field>
+
+              {/* 6. Restorability confirmer — fills "Dr. ?" in the
+                  "restorable as confirmed with Dr. __" line. */}
+              <Field label="Restorability confirmed by">
+                <TextInput value={fields.endoRestorableBy || ""}
+                  onChange={v => setField("endoRestorableBy", v)}
+                  placeholder="e.g. Nice" />
+              </Field>
+
+              {/* 7. Endo tests — affected tooth (the symptomatic tooth
+                  identified by the main #tooth field up top). Five values
+                  packed into a single row of narrow inputs for density.
+                  Probing is mm-only (we append "mm" in the substitution).
+                  Mobility: 0–3. Cold test: NR, n/n s formats are common. */}
+              <Field label="Endo tests — affected tooth">
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", gap: "6px" }}>
+                  <TextInput value={fields.endoAffPercussion || ""}
+                    onChange={v => setField("endoAffPercussion", v)}
+                    placeholder="perc" />
+                  <TextInput value={fields.endoAffPalpation || ""}
+                    onChange={v => setField("endoAffPalpation", v)}
+                    placeholder="palp" />
+                  <TextInput value={fields.endoAffProbing || ""}
+                    onChange={v => setField("endoAffProbing", v)}
+                    placeholder="prob (mm)" />
+                  <TextInput value={fields.endoAffMobility || ""}
+                    onChange={v => setField("endoAffMobility", v)}
+                    placeholder="mob" />
+                  <TextInput value={fields.endoAffColdTest || ""}
+                    onChange={v => setField("endoAffColdTest", v)}
+                    placeholder="cold" />
+                </div>
+              </Field>
+
+              {/* 8. Endo tests — control tooth. Tooth number on its own
+                  row so it's clear which tooth the values apply to. */}
+              <Field label="Endo tests — control tooth">
+                <div style={{ display: "grid", gridTemplateColumns: "70px 1fr 1fr 1fr 1fr 1fr", gap: "6px" }}>
+                  <TextInput value={fields.endoControlTooth || ""}
+                    onChange={v => setField("endoControlTooth", v)}
+                    placeholder="#" />
+                  <TextInput value={fields.endoCtlPercussion || ""}
+                    onChange={v => setField("endoCtlPercussion", v)}
+                    placeholder="perc" />
+                  <TextInput value={fields.endoCtlPalpation || ""}
+                    onChange={v => setField("endoCtlPalpation", v)}
+                    placeholder="palp" />
+                  <TextInput value={fields.endoCtlProbing || ""}
+                    onChange={v => setField("endoCtlProbing", v)}
+                    placeholder="prob (mm)" />
+                  <TextInput value={fields.endoCtlMobility || ""}
+                    onChange={v => setField("endoCtlMobility", v)}
+                    placeholder="mob" />
+                  <TextInput value={fields.endoCtlColdTest || ""}
+                    onChange={v => setField("endoCtlColdTest", v)}
+                    placeholder="cold" />
+                </div>
+              </Field>
+
+              {/* 9. Radiographic findings — two prose lines under
+                  "Radiographic exam:". Free text — student types what
+                  the BW/PA actually shows. */}
+              <Field label="Periapical radiolucency (radiograph line 1)">
+                <TextInput value={fields.endoRadioFinding1 || ""}
+                  onChange={v => setField("endoRadioFinding1", v)}
+                  placeholder="e.g. #12" />
+              </Field>
+              <Field label="Other radiograph finding (line 2)">
+                <TextInput value={fields.endoRadioFinding2 || ""}
+                  onChange={v => setField("endoRadioFinding2", v)}
+                  placeholder="e.g. #12 large DO composite approaching pulp" />
+              </Field>
+
+              {/* 10. Diagnoses (AAE terminology) */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+                <Field label="Pulpal Dx">
+                  <Select value={fields.endoPulpalDx || ""}
+                    onChange={v => setField("endoPulpalDx", v)}>
+                    {ENDO_PULPAL_DX.map(d => <option key={d} value={d}>{d}</option>)}
+                  </Select>
+                </Field>
+                <Field label="Periapical Dx">
+                  <Select value={fields.endoPeriapicalDx || ""}
+                    onChange={v => setField("endoPeriapicalDx", v)}>
+                    {ENDO_PERIAPICAL_DX.map(d => <option key={d} value={d}>{d}</option>)}
+                  </Select>
+                </Field>
+              </div>
+
+              {/* 11. Procedure detail — canal count + MAF */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+                <Field label="# canals">
+                  <TextInput value={fields.endoNumCanals || ""}
+                    onChange={v => setField("endoNumCanals", v)}
+                    inputMode="numeric"
+                    placeholder="e.g. 2" />
+                </Field>
+                <Field label="MAF">
+                  <TextInput value={fields.endoMaf || ""}
+                    onChange={v => setField("endoMaf", v)}
+                    inputMode="numeric"
+                    placeholder="e.g. 35" />
+                </Field>
+              </div>
+            </>
           )}
           {needsCC && (
             <>
@@ -7969,7 +8288,6 @@ function Browse({
 function findChunkForProcedure(procedure, chunks, role, opts = {}) {
   if (!procedure) return null;
   const noFallback = opts.noFallback === true;
-  const isPedsCategory = procedure.categoryId === "peds";
   const text = `${procedure.groupLabel} ${procedure.label}`.toLowerCase();
   const keywords = text
     .replace(/[—–-]/g, " ")
@@ -7977,14 +8295,45 @@ function findChunkForProcedure(procedure, chunks, role, opts = {}) {
     .map(w => w.replace(/[():]/g, ""))
     .filter(w => w.length >= 2 && !["the", "and", "for", "of", "in"].includes(w));
 
+  // Swade's source PDF labels procedure write-ups inconsistently: some
+  // chapters call the procedure write-up "steps", others call it
+  // "instructions" (e.g. "crown delivery: instructions"). Treat them as
+  // synonyms so role="steps" matches both — otherwise procedures whose
+  // chunk title says "instructions" silently fall through and match a
+  // less-relevant chunk that happens to have "steps" in its title (the
+  // crown-delivery → implant-crown-delivery confusion was this).
+  const roleSynonyms = role === "steps"
+    ? ["steps", "instructions"]
+    : [role];
+  const matchesRole = (t) => roleSynonyms.some(r => t.includes(r));
+
+  // Category → section hard-filter. Procedures in these categories must
+  // match chunks from the corresponding section, never cross over. Without
+  // this, a "Crown Delivery" procedure in the Fixed category could match
+  // the IMPLANT crown-delivery chunk because the two share the same
+  // keywords ("crown", "delivery") and the implant chunk happens to have
+  // "steps" in its title (the FIXED one says "instructions"). For
+  // categories not in this map (e.g. "restorative", "delivery") any
+  // section is allowed.
+  const SECTION_FOR_CATEGORY = {
+    peds:     "PEDS",
+    fixed:    "FIXED",
+    implant:  "IMPLANT",
+    dentures: "DENTURES",
+    digital:  "DIGITAL",
+  };
+  const expectedSection = SECTION_FOR_CATEGORY[procedure.categoryId];
+
   const search = (requireRole) => {
     let best = null;
     let bestScore = 0;
     for (const c of chunks) {
       const t = c.title.toLowerCase();
-      if (requireRole && !t.includes(role)) continue;
-      const isPedsChunk = c.section === "PEDS";
-      if (isPedsChunk !== isPedsCategory) continue;
+      if (requireRole && !matchesRole(t)) continue;
+      if (expectedSection && c.section !== expectedSection) continue;
+      // For procedures without a pinned section, still keep PEDS-only
+      // chunks out of non-PEDS results (preserves the previous behavior).
+      if (!expectedSection && c.section === "PEDS") continue;
       const overlap = keywords.filter(w => t.includes(w)).length;
       if (overlap > bestScore) { bestScore = overlap; best = c; }
     }
@@ -10691,12 +11040,6348 @@ function PEs({ onShowSteps }) {
 }
 
 
-const TABS = [
-  { id: "note",   label: "Note",  hint: "Generate chart notes" },
-  { id: "browse", label: "Steps", hint: "Read the guide" },
-  { id: "rvus",   label: "Codes", hint: "Progress & code lookup" },
-  { id: "pes",    label: "PEs",   hint: "Performance exam reference" },
+/* ============================================================================
+ * RPD DESIGN ENGINE — UIC predoctoral standards
+ *
+ * Inputs a structured case (arch, per-tooth status, per-abutment attrs,
+ * arch measurements, patient factors) and outputs a complete design:
+ * Kennedy classification, major connector, per-abutment clasp + rest +
+ * guide plane decisions, indirect retainers, base design, framework
+ * material, red-flag warnings, Axium code, and a paste-ready lab script.
+ *
+ * Design philosophy (per UIC):
+ *  - RPI system is the first choice for distal extensions; Combination
+ *    clasp is the fallback only when an ordered list of contraindications
+ *    fires (mesial-rest impossible, vestibular ≤5mm, frenum, soft-tissue
+ *    undercut >1mm, lack of attached gingiva, extreme tilt/short crown,
+ *    or undercut not at mid-buccal/mesio-buccal).
+ *  - Akers (circumferential) is the first choice for tooth-supported areas.
+ *  - I-bar may be used in the esthetic zone on tooth-supported abutments.
+ *  - Interim RPDs use wrought-wire C-clasps and ball clasps in a rigid
+ *    acrylic base; no rest seats, no guide planes, no reciprocation.
+ *
+ * No UI here — see RPDHelper below for the Phase 1 test harness.
+ * ========================================================================= */
+
+// ─── Tooth anatomy (ADA Universal numbering) ──────────────────────────────
+const RPD_TEETH_MAX  = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
+const RPD_TEETH_MAND = [17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32];
+
+const RPD_THIRD_MOLARS     = new Set([1, 16, 17, 32]);
+const RPD_SECOND_MOLARS    = new Set([2, 15, 18, 31]);
+const RPD_FIRST_MOLARS     = new Set([3, 14, 19, 30]);
+const RPD_SECOND_PREMOLARS = new Set([4, 13, 20, 29]);
+const RPD_FIRST_PREMOLARS  = new Set([5, 12, 21, 28]);
+const RPD_CANINES          = new Set([6, 11, 22, 27]);
+const RPD_MAX_INCISORS     = new Set([7, 8, 9, 10]);
+const RPD_MAND_INCISORS    = new Set([23, 24, 25, 26]);
+const RPD_ANTERIOR         = new Set([6,7,8,9,10,11,22,23,24,25,26,27]);
+const RPD_POSTERIOR        = new Set([2,3,4,5,12,13,14,15,18,19,20,21,28,29,30,31]);
+// Maxillary anteriors: UIC "esthetic omission" rule applies here — these
+// teeth, when they bound a modification space (NOT when they are primary DE
+// abutments or Class IV primary abutments), receive rest-only design with
+// long/parallel guide planes, no clasp.
+const RPD_MAX_ANTERIOR     = new Set([6, 7, 8, 9, 10, 11]);
+// Esthetic zone for I-bar (esthetic) clasp choice — includes both arches
+// since lower anteriors are still visible enough to justify an esthetic
+// clasp variant when one is required.
+const RPD_ESTHETIC_ZONE    = new Set([6, 7, 8, 9, 10, 11, 22, 23, 24, 25, 26, 27]);
+
+const rpdArchTeeth = (arch) => arch === "maxillary" ? RPD_TEETH_MAX : RPD_TEETH_MAND;
+const rpdArchOf    = (n) => (n >= 1 && n <= 16) ? "maxillary" : "mandibular";
+
+// Patient's right vs left
+const rpdSideOf = (n) => {
+  if ((n >= 1 && n <= 8) || (n >= 25 && n <= 32)) return "right";
+  return "left";
+};
+
+// "Distal rank" — 1 = central incisor, increases toward distal end of arch.
+// Used to identify "most posterior" teeth (Applegate's Rule 5).
+const rpdDistalRank = (n) => {
+  const m = {
+    8:1,9:1,24:1,25:1, 7:2,10:2,23:2,26:2, 6:3,11:3,22:3,27:3,
+    5:4,12:4,21:4,28:4, 4:5,13:5,20:5,29:5, 3:6,14:6,19:6,30:6,
+    2:7,15:7,18:7,31:7, 1:8,16:8,17:8,32:8,
+  };
+  return m[n] || 0;
+};
+
+// Mirror across the midline (#21 ↔ #28, #8 ↔ #9, etc.) — contralateral, SAME arch
+const rpdMirrorTooth = (n) => {
+  if (n >= 1  && n <= 16) return 17 - n;
+  if (n >= 17 && n <= 32) return 49 - n;
+  return null;
+};
+
+// Opposing antagonist tooth in the OTHER arch (#2 ↔ #31, #15 ↔ #18, etc.).
+// Used for Applegate Rule 4 (2nd molar opposing-arch check).
+const rpdOpposingTooth = (n) => {
+  if (n >= 1 && n <= 32) return 33 - n;
+  return null;
+};
+
+const rpdToothName = (n) => `#${n}`;
+const rpdToothList = (arr) => arr.map(rpdToothName).join(", ");
+
+// Default abutment attributes — student flips only what's abnormal.
+const RPD_ABUTMENT_DEFAULTS = {
+  tilt: "normal",                      // normal | tilted | extreme
+  crownHeight: "normal",               // normal | short
+  perioPrognosis: "good",              // good | fair | poor | hopeless
+  mesialRestPossible: true,
+  distalRestPossible: true,
+  occlusalInterference: false,         // blocks rest seat at mesial
+  existingRestorations: "none",        // none | small | extensive
+  enamelIntegrityAtRestSeat: "sufficient",
+  undercutLocation: "mid-buccal",      // mid-buccal | mesio-buccal | disto-buccal | none
+  undercutDepth: 0.01,                 // inches
+  attachedGingivaAdequate: true,
+  highFrenum: false,                   // in I-bar approach path
+  softTissueUndercut: "none",          // none | leq-1mm | gt-1mm
+};
+
+// Verbatim UIC rationale strings (from NotebookLM-sourced UIC materials).
+const RPD_RATIONALE = {
+  major: {
+    "A-P Strap":            "Rigid major connector of choice for Maxillary Kennedy Class II",
+    "A-P Strap (Class III)":"Rigid major connector for bilateral tooth-supported Maxillary Class III",
+    "Single Palatal Strap": "Rigid major connector of choice for short-span Maxillary Class III",
+    "Full Palatal Plate":   "Connector of choice when few teeth remain; increases retention and stability; rigid",
+    "U-Shaped Connector":   "Used due to large inoperable maxillary tori or sensitive gag reflex",
+    "Lingual Bar":          "Major connector of choice when sufficient space exists (≥8mm sulcus)",
+    "Lingual Plate":        "Connector of choice when sulcus depth is insufficient (<8mm)",
+    "Lingual Plate (Tori)": "Used due to presence of mandibular tori",
+  },
+  clasp: {
+    "Akers":                "Clasp of choice for tooth-supported area",
+    "RPI":                  "Stress-releasing clasp assembly of choice for distal extension",
+    "Combination":          "Stress-releasing clasp assembly when RPI is contraindicated",
+    "I-bar (esthetic)":     "Clasp of choice for the esthetic zone",
+    "Reverse Akers":        "Used when only a distal undercut is available",
+    "Embrasure":            "Clasp of choice for a quadrant with no edentulous space",
+    "WW C-clasp":           "Wrought wire retention for interim RPD",
+    "Ball Clasp":           "Buccal embrasure retention for interim RPD",
+  },
+  guidePlane: {
+    standard:     "Establish path of insertion",
+    longParallel: "Provide secondary retention",
+  },
+  rest: {
+    indirectFulcrum:     "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base",
+    classIVAnterior:     "Posterior rests provide indirect retention and additional support for the anterior edentulous span",
+    additionalSupport:   "Additional rest to distribute occlusal forces away from compromised abutment",
+  },
+  base: {
+    "Open Lattice": "Replace tooth and tissue; provides maximum acrylic retention",
+    "Mesh":         "Used where there is limited inter-occlusal space",
+    "Tube Tooth":   "Used in tooth-supported area with limited vertical space on a well-healed ridge",
+    "Facing":       "Used for anterior single-tooth replacement with extremely limited vertical space",
+  },
+  reciprocation: {
+    plate: "Reciprocation provided by the major connector plating",
+    arm:   "Cast lingual reciprocal arm opposing the retentive arm",
+  },
+  framework: {
+    "Co-Cr": "Standard favorable choice for RPD frameworks",
+    "Gold":  "Used for documented metal allergy with Managing Partner approval",
+  },
+};
+
+const RPD_AXIUM_CODES = {
+  definitive: { maxillary: "D5213", mandibular: "D5214" },
+  interim:    { maxillary: "D5820", mandibular: "D5821" },
+};
+
+const rpdIsPresent  = (caseInput, n) => caseInput.teeth[n]?.status === "present";
+const rpdGetAttrs   = (caseInput, n) => ({ ...RPD_ABUTMENT_DEFAULTS, ...(caseInput.teeth[n]?.attrs || {}) });
+
+// ============================================================================
+// KENNEDY CLASSIFIER — Applegate's Rules 1–6
+// ============================================================================
+
+/**
+ * Filter teeth that are "in play" for classification:
+ *  - Rule 2/3: 3rd molars excluded if missing and not flagged for replacement.
+ *  - Rule 4: 2nd molars excluded if missing AND the contralateral 2nd molar
+ *    is also missing/not-to-be-replaced.
+ */
+function rpdGetInPlayTeeth(caseInput) {
+  return rpdArchTeeth(caseInput.arch).filter(n => {
+    const status  = caseInput.teeth[n]?.status || "present";
+    const replace = caseInput.teeth[n]?.replace || false;
+    // Rule 2: 3rd molar missing + not to be replaced → exclude from classification.
+    if (RPD_THIRD_MOLARS.has(n) && status !== "present" && !replace) return false;
+    // Rule 4 (corrected per NotebookLM/UIC): applies to 2nd molars; the trigger is
+    // the OPPOSING (cross-arch antagonist) 2nd molar being missing — NOT the
+    // contralateral 2nd molar in the same arch.
+    if (RPD_SECOND_MOLARS.has(n) && status !== "present" && !replace) {
+      const opp = rpdOpposingTooth(n);
+      const oppStatus  = caseInput.teeth[opp]?.status  || "present";
+      const oppReplace = caseInput.teeth[opp]?.replace || false;
+      if (oppStatus !== "present" && !oppReplace) return false;
+    }
+    return true;
+  });
+}
+
+/**
+ * Walk in-play teeth in arch order, group runs of missing teeth into spans,
+ * then annotate each span with bounding teeth, sides crossed, and span type
+ * (distal-extension / anterior / tooth-supported).
+ */
+function rpdGetEdentulousSpans(caseInput) {
+  const arch    = caseInput.arch;
+  const inPlay  = rpdGetInPlayTeeth(caseInput);
+  const ordered = rpdArchTeeth(arch);
+  const inPlaySet = new Set(inPlay);
+
+  const spans = [];
+  let current = null;
+  for (const n of inPlay) {
+    if (!rpdIsPresent(caseInput, n)) {
+      if (!current) current = { teeth: [n] };
+      else current.teeth.push(n);
+    } else {
+      if (current) { spans.push(current); current = null; }
+    }
+  }
+  if (current) spans.push(current);
+
+  for (const span of spans) {
+    const sides = new Set(span.teeth.map(rpdSideOf));
+    span.crossesMidline    = sides.size > 1;
+    span.containsAnterior  = span.teeth.some(n => RPD_ANTERIOR.has(n));
+    span.containsPosterior = span.teeth.some(n => RPD_POSTERIOR.has(n));
+
+    const idxFirst = ordered.indexOf(span.teeth[0]);
+    const idxLast  = ordered.indexOf(span.teeth[span.teeth.length - 1]);
+
+    let beforeBound = null;
+    for (let i = idxFirst - 1; i >= 0; i--) {
+      if (inPlaySet.has(ordered[i]) && rpdIsPresent(caseInput, ordered[i])) {
+        beforeBound = ordered[i]; break;
+      }
+    }
+    let afterBound = null;
+    for (let i = idxLast + 1; i < ordered.length; i++) {
+      if (inPlaySet.has(ordered[i]) && rpdIsPresent(caseInput, ordered[i])) {
+        afterBound = ordered[i]; break;
+      }
+    }
+    span.beforeBound = beforeBound;   // toward index 0 of array
+    span.afterBound  = afterBound;    // toward end of array
+
+    // Detect distal extension: span runs off the end of the arch on a side
+    // For max (array order = right→left): beforeBound=null + right teeth = DE right
+    // For mand (array order = left→right): beforeBound=null + left teeth = DE left
+    span.isDistalExtensionRight = false;
+    span.isDistalExtensionLeft  = false;
+    if (arch === "maxillary") {
+      if (beforeBound === null && span.teeth.some(n => rpdSideOf(n) === "right")) span.isDistalExtensionRight = true;
+      if (afterBound  === null && span.teeth.some(n => rpdSideOf(n) === "left"))  span.isDistalExtensionLeft  = true;
+    } else {
+      if (beforeBound === null && span.teeth.some(n => rpdSideOf(n) === "left"))  span.isDistalExtensionLeft  = true;
+      if (afterBound  === null && span.teeth.some(n => rpdSideOf(n) === "right")) span.isDistalExtensionRight = true;
+    }
+
+    if (span.isDistalExtensionRight || span.isDistalExtensionLeft) {
+      span.type = "distal-extension";
+    } else if (span.crossesMidline && span.containsAnterior && !span.containsPosterior) {
+      span.type = "anterior";
+    } else {
+      span.type = "tooth-supported";
+    }
+  }
+  return spans;
+}
+
+function rpdClassifyKennedy(caseInput) {
+  const spans = rpdGetEdentulousSpans(caseInput);
+  if (spans.length === 0) {
+    return { class: null, modifications: 0, description: "Fully dentate — no RPD indicated", spans: [], primarySpans: [], modSpans: [], deSide: null };
+  }
+  const hasRightDE = spans.some(s => s.isDistalExtensionRight);
+  const hasLeftDE  = spans.some(s => s.isDistalExtensionLeft);
+
+  let kennedyClass, deSide = null;
+  if (hasRightDE && hasLeftDE) {
+    kennedyClass = "I";
+  } else if (hasRightDE) {
+    kennedyClass = "II"; deSide = "right";
+  } else if (hasLeftDE) {
+    kennedyClass = "II"; deSide = "left";
+  } else {
+    const isAnteriorOnly = spans.length === 1 && spans[0].type === "anterior";
+    kennedyClass = isAnteriorOnly ? "IV" : "III";
+  }
+
+  let primarySpans;
+  if (kennedyClass === "I" || kennedyClass === "II") {
+    primarySpans = spans.filter(s => s.type === "distal-extension");
+  } else if (kennedyClass === "IV") {
+    primarySpans = [...spans];
+  } else {
+    // Class III: primary = most posterior bounded span
+    primarySpans = [spans.reduce((a, b) => {
+      const ra = Math.max(...a.teeth.map(rpdDistalRank));
+      const rb = Math.max(...b.teeth.map(rpdDistalRank));
+      return rb > ra ? b : a;
+    })];
+  }
+  const modSpans = spans.filter(s => !primarySpans.includes(s));
+
+  return {
+    class: kennedyClass,
+    modifications: modSpans.length,
+    description: modSpans.length === 0 ? `Kennedy Class ${kennedyClass}` : `Kennedy Class ${kennedyClass} Modification ${modSpans.length}`,
+    spans, primarySpans, modSpans, deSide,
+  };
+}
+
+// ============================================================================
+// MAJOR CONNECTOR — maxillary + mandibular decision trees
+// ============================================================================
+
+function rpdSelectMajorConnector(caseInput, kennedy) {
+  const m = caseInput.measurements || {};
+  const pf = caseInput.patientFactors || {};
+  const arch = caseInput.arch;
+
+  if (arch === "mandibular") {
+    if (pf.mandibularTori) {
+      return { type: "Lingual Plate", rationale: RPD_RATIONALE.major["Lingual Plate (Tori)"], width: "8mm contact above gingival third", note: "relief for mandibular tori", tier: "strong" };
+    }
+    if ((m.lingualSulcusDepth ?? 0) < 8) {
+      return {
+        type: "Lingual Plate", rationale: RPD_RATIONALE.major["Lingual Plate"],
+        width: "8mm contact above gingival third",
+        tier: "common",
+        alternative: "Lingual Bar",
+        alternativeRationale: "Lingual Bar is the lighter alternative when lingual sulcus depth ≥8mm. Selected Lingual Plate here because measured sulcus depth is <8mm.",
+      };
+    }
+    return {
+      type: "Lingual Bar", rationale: RPD_RATIONALE.major["Lingual Bar"],
+      width: "4mm + 4mm clearance from gingival margin",
+      tier: "common",
+      alternative: "Lingual Plate",
+      alternativeRationale: "Lingual Plate is indicated if the patient has mandibular tori or if lingual sulcus depth is <8mm. Selected Lingual Bar here because sulcus is adequate and no tori.",
+    };
+  }
+
+  // Maxillary
+  if (pf.maxillaryTori || pf.sensitiveGagReflex) {
+    const reason = pf.maxillaryTori ? "relief for maxillary tori" : "configured around gag reflex";
+    return { type: "U-Shaped Connector", rationale: RPD_RATIONALE.major["U-Shaped Connector"], note: reason, tier: "strong" };
+  }
+  const presentCount = rpdArchTeeth(arch).filter(n => rpdIsPresent(caseInput, n)).length;
+  const severeResorption = (m.ridgeResorption === "severe");
+  // Full Palatal Plate threshold: ≤4 abutments OR severe resorption. UIC's
+  // worked Class II maxillary case with 6 abutments (Design Case I) uses
+  // A-P Strap — confirming the "few teeth" cutoff is lower than 6. Case II
+  // (4 abutments) uses Full Palate. So the threshold sits between 4 and 6;
+  // we pick ≤4 to match both worked cases.
+  if (presentCount <= 4 || severeResorption) {
+    return {
+      type: "Full Palatal Plate", rationale: RPD_RATIONALE.major["Full Palatal Plate"],
+      note: "0.5mm beading on tissue side",
+      tier: "judgment",
+      alternative: "A-P Strap",
+      alternativeRationale: "The cutoff between A-P Strap and Full Palatal Plate (\"few teeth remain\") is qualitative in the curriculum. Engine uses ≤4 abutments OR severe resorption as the threshold based on Design Case II (4 abutments → Full Palate) vs Design Case I (6 abutments → A-P Strap). Some instructors may prefer A-P Strap with 4 abutments if the tooth distribution is favorable.",
+    };
+  }
+  if (kennedy.class === "I" || kennedy.class === "II") {
+    return { type: "A-P Strap", rationale: RPD_RATIONALE.major["A-P Strap"], width: "8mm each strap, 6mm gingival clearance", note: "0.5mm beading on tissue side", tier: "strong" };
+  }
+  if (kennedy.class === "III") {
+    const isShortSpan = kennedy.spans.every(s => s.teeth.length <= 2);
+    if (isShortSpan) {
+      return {
+        type: "Single Palatal Strap", rationale: RPD_RATIONALE.major["Single Palatal Strap"],
+        width: "8mm strap", note: "0.5mm beading on tissue side",
+        tier: "common",
+        alternative: "A-P Strap",
+        alternativeRationale: "A-P Strap is also acceptable for Class III when added rigidity is desired (e.g., bilateral long modification spans). Selected Single Palatal Strap here because all spans are ≤2 teeth.",
+      };
+    }
+    return {
+      type: "A-P Strap", rationale: RPD_RATIONALE.major["A-P Strap (Class III)"],
+      width: "8mm each strap", note: "0.5mm beading on tissue side",
+      tier: "common",
+      alternative: "Single Palatal Strap",
+      alternativeRationale: "Single Palatal Strap is acceptable for short bilateral Class III spans. Selected A-P Strap here because at least one span exceeds 2 teeth.",
+    };
+  }
+  if (kennedy.class === "IV") {
+    return { type: "A-P Strap", rationale: RPD_RATIONALE.major["A-P Strap"], width: "8mm each strap", note: "0.5mm beading on tissue side", tier: "strong" };
+  }
+  return { type: "A-P Strap", rationale: RPD_RATIONALE.major["A-P Strap"], tier: "strong" };
+}
+
+// ============================================================================
+// CLASP DECISION — RPI contraindications, Combination fallback, Akers default
+// ============================================================================
+
+/**
+ * Returns ordered list of triggered RPI contraindications. Empty array = RPI OK.
+ * Order matches UIC's official 6-item list (Retainers lecture, RPI Contraindications
+ * slide). Two engine-only additions surface practical clinical gaps not in the
+ * primary 6 (high frenum and undercut-location accessibility).
+ */
+function rpdCheckRPIContraindications(attrs) {
+  const out = [];
+  // UIC #1 — mesial occlusal rest must be possible (biomechanical primary)
+  if (!attrs.mesialRestPossible || attrs.occlusalInterference) {
+    out.push({ key: "no-mesial-rest", text: "mesial occlusal rest not possible (occlusal interference or decay)" });
+  }
+  // UIC #2 — soft tissue undercut >1mm at 4–5mm below the buccal gingival margin
+  if (attrs.softTissueUndercut === "gt-1mm") {
+    out.push({ key: "soft-tissue-undercut", text: "soft tissue undercut >1mm at 4–5mm below the buccal gingival margin" });
+  }
+  // UIC #3 — vestibular depth ≤5mm (checked at case level, caller adds it; left
+  // here for completeness if attrs override at per-tooth level)
+  // UIC #4 — lack of attached gingiva
+  if (!attrs.attachedGingivaAdequate) {
+    out.push({ key: "no-attached-gingiva", text: "lack of attached gingiva at I-bar crossing" });
+  }
+  // UIC #5 — extremely tilted crowns
+  if (attrs.tilt === "extreme") {
+    out.push({ key: "extreme-tilt", text: "extremely tilted crown" });
+  }
+  // UIC #6 — short clinical crowns
+  if (attrs.crownHeight === "short") {
+    out.push({ key: "short-crown", text: "short clinical crown" });
+  }
+  // Engine additions (not in UIC's primary 6 but clinically necessary):
+  if (attrs.highFrenum) {
+    out.push({ key: "frenum", text: "high frenum in I-bar approach path" });
+  }
+  // I-bar requires undercut on the BUCCAL side (mid-buccal or mesio-buccal).
+  // Distal-buccal or lingual undercuts mean the I-bar cannot engage properly;
+  // those abutments need an Akers-family clasp (potentially Reverse Akers if
+  // the undercut is on the distal surface).
+  if (attrs.undercutLocation === "disto-buccal"
+      || attrs.undercutLocation === "disto-lingual"
+      || attrs.undercutLocation === "mesio-lingual"
+      || attrs.undercutLocation === "none") {
+    out.push({ key: "undercut-location", text: `usable undercut not at mid-buccal/mesio-buccal (${attrs.undercutLocation})` });
+  }
+  return out;
+}
+
+function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularLow }) {
+  const designIntent  = caseInput.patientFactors?.designIntent || "definitive";
+  const inEsthetic    = RPD_ESTHETIC_ZONE.has(tooth);
+  const isMaxAnterior = caseInput.arch === "maxillary" && RPD_MAX_ANTERIOR.has(tooth);
+
+  // ─── Interim branch — no rest seats / guide planes / reciprocation ────
+  if (designIntent === "interim") {
+    return {
+      tooth, claspType: "WW C-clasp",
+      claspRationale: RPD_RATIONALE.clasp["WW C-clasp"],
+      retentiveArm: "18ga wrought wire C-clasp engaging 0.02\" undercut",
+      reciprocation: null, restSeat: null, restRationale: null,
+      guidePlane: null, guidePlaneRationale: null,
+      surveyCrown: null, crownLengthening: null,
+      claspTier: "strong",
+    };
+  }
+
+  // ─── Definitive branch ────────────────────────────────────────────────
+  const isDE = (span.type === "distal-extension");
+  const claspContras = rpdCheckRPIContraindications(attrs);
+  if (vestibularLow) claspContras.unshift({ key: "vestibular", text: "vestibular depth ≤5mm" });
+
+  // Side of this abutment that faces the edentulous space.
+  // For DE terminal abutments: always distal. For tooth-supported: depends
+  // on which array-neighbor is in the span.
+  const sideToward = (() => {
+    if (isDE) return "distal";
+    const teethList = rpdArchTeeth(caseInput.arch);
+    const idx = teethList.indexOf(tooth);
+    const before = teethList[idx - 1];
+    const after  = teethList[idx + 1];
+    const beforeInSpan = before !== undefined && span.teeth.includes(before);
+    const afterInSpan  = after  !== undefined && span.teeth.includes(after);
+    if (beforeInSpan) {
+      if (caseInput.arch === "maxillary") return rpdSideOf(tooth) === "right" ? "distal" : "mesial";
+      return rpdSideOf(tooth) === "left" ? "distal" : "mesial";
+    }
+    if (afterInSpan) {
+      if (caseInput.arch === "maxillary") return rpdSideOf(tooth) === "right" ? "mesial" : "distal";
+      return rpdSideOf(tooth) === "left" ? "mesial" : "distal";
+    }
+    return "mesial";
+  })();
+
+  // Survey crown / crown lengthening (computed once, used in all branches).
+  const needsSurveyCrown = (
+    attrs.enamelIntegrityAtRestSeat === "insufficient" ||
+    attrs.existingRestorations === "extensive" ||
+    attrs.tilt === "extreme"
+  );
+  const needsCrownLengthening = (attrs.crownHeight === "short" && !needsSurveyCrown);
+  const surveyCrown = needsSurveyCrown ? {
+    indicated: true,
+    reason: attrs.enamelIntegrityAtRestSeat === "insufficient" ? "would penetrate dentin (preparations must stay in enamel)" :
+            attrs.existingRestorations === "extensive" ? "extensive existing restorations jeopardize tooth integrity" :
+            "extreme tilt requires axial re-contouring beyond enameloplasty",
+    note: "PFM survey crown required. Total of 2.5–3.0mm occlusal tooth reduction at the rest seat area; 0.5–1mm for metal thickness. Rest seats and guide planes must be completed in METAL, not porcelain. Use surveyor to verify HOC, axial undercuts, and ideal guide planes before cementation.",
+  } : null;
+  const crownLengthening = needsCrownLengthening ? {
+    indicated: true,
+    reason: "short clinical crown — evaluate for Phase II crown lengthening to establish vertical height for RPD components",
+  } : null;
+
+  // ─── UIC esthetic omission: max anteriors bounding modification spaces ──
+  // No clasp; rest + long/parallel guide plane only. Major connector contact
+  // provides bracing. Centrals get a distal ball rest, canines + laterals
+  // get a cingulum rest. Class IV primary abutments are excluded from this
+  // rule — they still need retention because the anterior gap IS the primary
+  // span. But for a tooth-bounded anterior modification (e.g. Case II maxillary
+  // with #7-10 missing between #6 and #11), the canine abutments DO get
+  // esthetic omission — even though the span "crosses midline" and the
+  // engine's span classifier marks it as `type === "anterior"`.
+  const isClassIVPrimary = kennedy.class === "IV" && (kennedy.primarySpans || []).includes(span);
+  const isNonDESpan = span.type !== "distal-extension";
+  if (isMaxAnterior && isNonDESpan && !isClassIVPrimary) {
+    const restType = (tooth === 8 || tooth === 9) ? "ball" : "cingulum";
+    return {
+      tooth, isPrimaryAbutment: false, spanType: span.type,
+      claspType: "Rest Only (esthetic omission)",
+      claspRationale: "For esthetic reasons, no clasp designed on maxillary anterior; long/parallel guide plane provides secondary retention",
+      retentiveArm: "None — major connector contact provides bracing",
+      reciprocation: null,
+      restSeat: { surface: sideToward, type: restType, bur: "inverted cone" },
+      restRationale: RPD_RATIONALE.rest.additionalSupport,
+      guidePlane: { surface: sideToward, length: "long/parallel (full clinical crown height)" },
+      guidePlaneRationale: RPD_RATIONALE.guidePlane.longParallel,
+      surveyCrown, crownLengthening,
+      contraindications: [],
+      claspTier: "judgment",
+      claspAlternative: "I-bar (esthetic)",
+      claspAlternativeRationale: "Worked clinical cases sometimes use I-bar esthetic on a max-anterior abutment that's terminal to a posterior tooth-bounded gap (LabRx Case A example: #6 terminal to #4-5 gap → I-bar esthetic). Consider I-bar esthetic if the case has only 2-3 retentive clasps and additional anterior retention is needed.",
+    };
+  }
+
+  // ─── Normal clasp design ────────────────────────────────────────────────
+  let claspType, claspRationale, retentiveArm, reciprocation;
+  let claspTier = "strong";
+  let claspAlternative = null;
+  let claspAlternativeRationale = null;
+
+  if (isDE) {
+    if (claspContras.length === 0) {
+      claspType = "RPI";
+      claspRationale = RPD_RATIONALE.clasp["RPI"];
+      retentiveArm = "I-bar engaging 0.01\" mid-buccal undercut";
+      reciprocation = { type: "plate", text: "Distal proximal plate + lingual plating", rationale: RPD_RATIONALE.reciprocation.plate };
+      // RPI is the unambiguous default for distal extensions per UIC's
+      // Retainers lecture — deterministic rule, no alternative.
+      claspTier = "strong";
+    } else {
+      claspType = "Combination";
+      claspRationale = `${RPD_RATIONALE.clasp["Combination"]} (${claspContras[0].text})`;
+      retentiveArm = "18ga wrought wire retentive arm engaging 0.02\" MB undercut";
+      reciprocation = { type: "arm", text: "Cast lingual reciprocal arm", rationale: RPD_RATIONALE.reciprocation.arm };
+      // Combination is the deterministic fallback when RPI is contraindicated.
+      claspTier = "strong";
+    }
+  } else {
+    const useEstheticIBar = inEsthetic && claspContras.length === 0 && attrs.undercutLocation !== "disto-buccal" && attrs.undercutLocation !== "none";
+    if (useEstheticIBar) {
+      claspType = "I-bar (esthetic)";
+      claspRationale = RPD_RATIONALE.clasp["I-bar (esthetic)"];
+      retentiveArm = "I-bar engaging 0.01\" mid-buccal undercut";
+      reciprocation = { type: "plate", text: "Lingual plating for reciprocation", rationale: RPD_RATIONALE.reciprocation.plate };
+      // I-bar esthetic on an esthetic-zone abutment is a judgment call —
+      // UIC sometimes prefers Rest Only (esthetic omission) when retention
+      // budget is already adequate from other abutments.
+      claspTier = "judgment";
+      claspAlternative = "Rest Only (esthetic omission)";
+      claspAlternativeRationale = "Design Case II uses Rest Only on max-anterior abutments when the case already has adequate retention from other clasps (e.g., bilateral RPI on premolars). Consider Rest Only if the design has ≥2 strong retentive clasps elsewhere.";
+    } else if (attrs.undercutLocation === "disto-buccal" || attrs.undercutLocation === "disto-lingual") {
+      claspType = "Reverse Akers";
+      claspRationale = RPD_RATIONALE.clasp["Reverse Akers"] + ` (Reverse Akers pattern: retentive arm engages ${attrs.undercutLocation} undercut)`;
+      retentiveArm = `Cast retentive arm engaging 0.01" ${attrs.undercutLocation} undercut`;
+      reciprocation = { type: "arm",
+        text: attrs.undercutLocation === "disto-lingual" ? "Cast buccal reciprocal arm" : "Cast lingual reciprocal arm",
+        rationale: RPD_RATIONALE.reciprocation.arm };
+      // Reverse Akers is the standard for DB/DL undercuts. UIC lecture
+      // materials sometimes label this just "Akers" with notation about the
+      // retentive direction — same design, different name.
+      claspTier = "common";
+      claspAlternative = null;
+      claspAlternativeRationale = "Some clinical nomenclature in some lectures labels this clasp simply as \"Akers\" with notation that the retentive arm engages the DL/DB undercut (rather than calling it \"Reverse Akers\" explicitly). Same physical design.";
+    } else {
+      claspType = "Akers";
+      claspRationale = RPD_RATIONALE.clasp["Akers"];
+      retentiveArm = `Cast circumferential retentive arm engaging 0.01" ${attrs.undercutLocation} undercut`;
+      reciprocation = { type: "arm", text: "Cast lingual reciprocal arm", rationale: RPD_RATIONALE.reciprocation.arm };
+      // Akers is the UIC default for tooth-supported abutments — deterministic.
+      claspTier = "strong";
+    }
+  }
+
+  // Ring clasp alternative — UIC option for tilted molars (Retainers PDF):
+  //   Mandibular molars: mesially tilted with undercut on mesio-lingual
+  //   Maxillary molars: mesially + buccally tilted with undercut on mesio-buccal
+  // The engine doesn't auto-select Ring clasp (Reverse Akers is more common in
+  // UIC actual Rx), but surfaces it as an alternative the dentist can consider.
+  const isMolar = RPD_FIRST_MOLARS.has(tooth) || RPD_SECOND_MOLARS.has(tooth);
+  const isTilted = attrs.tilt === "tilted";
+  const undercutMesial = attrs.undercutLocation === "mesio-lingual" || attrs.undercutLocation === "mesio-buccal";
+  let claspAlternatives = null;
+  if (isMolar && isTilted && undercutMesial && (claspType === "Akers" || claspType === "Reverse Akers")) {
+    claspAlternatives = `Consider Ring clasp as an alternative for this tilted molar — provides ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut, engaging the ${attrs.undercutLocation} undercut.`;
+  }
+
+  // Rest seat type
+  let restSeat;
+  if (isDE) {
+    const burForTooth = (RPD_FIRST_MOLARS.has(tooth) || RPD_SECOND_MOLARS.has(tooth))
+      ? "#8 round (outline) / #6 round (deepening)"
+      : "#6 round (outline) / #4 round (deepening)";
+    restSeat = { surface: "mesial", type: "occlusal", bur: burForTooth };
+  } else {
+    if (RPD_POSTERIOR.has(tooth)) {
+      restSeat = {
+        surface: sideToward, type: "occlusal",
+        bur: (RPD_FIRST_MOLARS.has(tooth) || RPD_SECOND_MOLARS.has(tooth))
+          ? "#8 round (outline) / #6 round (deepening)"
+          : "#6 round (outline) / #4 round (deepening)",
+      };
+    } else if (RPD_CANINES.has(tooth)) {
+      restSeat = { surface: sideToward, type: "cingulum", bur: "inverted cone" };
+    } else {
+      restSeat = { surface: sideToward, type: "cingulum", bur: "inverted cone" };
+    }
+  }
+
+  // Guide plane
+  const gpSurface = isDE ? "distal" : sideToward;
+  const gpLength = (claspType === "I-bar (esthetic)") ? "long/parallel (full clinical crown height)" : "2/3 clinical crown height, 1/3 BL width";
+  const gpRationale = gpLength.startsWith("long") ? RPD_RATIONALE.guidePlane.longParallel : RPD_RATIONALE.guidePlane.standard;
+
+  return {
+    tooth, isPrimaryAbutment: isDE, spanType: span.type,
+    claspType, claspRationale, retentiveArm, reciprocation,
+    claspAlternatives,
+    claspTier, claspAlternative, claspAlternativeRationale,
+    restSeat, restRationale: null,
+    guidePlane: { surface: gpSurface, length: gpLength },
+    guidePlaneRationale: gpRationale,
+    surveyCrown, crownLengthening,
+    contraindications: claspContras,
+  };
+}
+
+// ============================================================================
+// INDIRECT RETAINERS — algorithmic (fulcrum-line projection w/ filters)
+// ============================================================================
+
+function rpdPlaceIndirectRetainers(caseInput, kennedy) {
+  if (kennedy.class === "III" || kennedy.class == null) return [];
+
+  const arch = caseInput.arch;
+  const presentTeeth = rpdArchTeeth(arch).filter(n => rpdIsPresent(caseInput, n));
+
+  // ─── Class IV: posterior rests on terminal abutments serve indirect ───
+  if (kennedy.class === "IV") {
+    const span = kennedy.primarySpans[0];
+    // The bounding teeth (canines if missing 23-26) ARE the primary abutments,
+    // but indirect retention comes from posterior rests on additional teeth
+    // distal to them. Pick the most distal premolar/molar on each side.
+    const right = presentTeeth.filter(n => rpdSideOf(n) === "right" && RPD_POSTERIOR.has(n));
+    const left  = presentTeeth.filter(n => rpdSideOf(n) === "left"  && RPD_POSTERIOR.has(n));
+    const out = [];
+    if (right.length) {
+      const t = right.reduce((a, b) => rpdDistalRank(b) > rpdDistalRank(a) ? b : a);
+      out.push({ tooth: t, restType: "occlusal (additional)", rationale: RPD_RATIONALE.rest.classIVAnterior });
+    }
+    if (left.length) {
+      const t = left.reduce((a, b) => rpdDistalRank(b) > rpdDistalRank(a) ? b : a);
+      out.push({ tooth: t, restType: "occlusal (additional)", rationale: RPD_RATIONALE.rest.classIVAnterior });
+    }
+    return out;
+  }
+
+  // ─── Class I/II: indirect retainer anterior to the primary abutment ───
+  // UIC arch-specific rules:
+  //   - Mandibular: first premolar PREFERRED over canine, with mesial occlusal
+  //     rest. Reason: the mandibular canine cingulum is often insufficient for
+  //     a positive vertical stop, and a premolar occlusal rest provides a
+  //     superior seat. Canine is used only as a fallback (with ML ball rest).
+  //   - Maxillary: canine PREFERRED (max canine cingulum is anatomically
+  //     adequate). Premolar is the fallback.
+  //   - Mand incisors always excluded; max anterior incisors avoided.
+
+  const primaryOnSide = (side) => {
+    const sideTeeth = presentTeeth.filter(n => rpdSideOf(n) === side);
+    if (sideTeeth.length === 0) return null;
+    return sideTeeth.reduce((a, b) => rpdDistalRank(b) > rpdDistalRank(a) ? b : a);
+  };
+
+  const pickIndirectFor = (side) => {
+    const primary = primaryOnSide(side);
+    if (primary == null) return null;
+    const candidates = presentTeeth.filter(n =>
+      rpdSideOf(n) === side && rpdDistalRank(n) < rpdDistalRank(primary)
+    );
+    // Exclude mand incisors always; exclude max incisors (laterals/centrals)
+    // from being indirect retainers (insufficient root surface).
+    const filtered = candidates.filter(n =>
+      !RPD_MAND_INCISORS.has(n) && !RPD_MAX_INCISORS.has(n)
+    );
+    if (filtered.length === 0) return null;
+
+    const firstPremolar  = filtered.find(n => RPD_FIRST_PREMOLARS.has(n));
+    const secondPremolar = filtered.find(n => RPD_SECOND_PREMOLARS.has(n));
+    const canine         = filtered.find(n => RPD_CANINES.has(n));
+
+    if (arch === "mandibular") {
+      if (firstPremolar)  return firstPremolar;
+      if (secondPremolar) return secondPremolar;
+      if (canine)         return canine;
+    } else {
+      if (canine)         return canine;
+      if (firstPremolar)  return firstPremolar;
+      if (secondPremolar) return secondPremolar;
+    }
+    return filtered.reduce((a, b) => rpdDistalRank(b) < rpdDistalRank(a) ? b : a);
+  };
+
+  const out = [];
+  const sidesToPlace = kennedy.class === "I" ? ["right", "left"] : [kennedy.deSide === "right" ? "left" : "right"];
+  // Class I gets bilateral indirect retainers (deterministic rule per UIC).
+  // Class II uses an "opposite side from DE" heuristic which matches UIC in
+  // 3 of 5 documented Class II cases but diverges on 2 (one geometric, one
+  // dual-role with an existing rest-only abutment).
+  const tier = kennedy.class === "I" ? "strong" : "common";
+  const altRationale = kennedy.class === "I" ? null :
+    "Engine places indirect retainer on the opposite side from the distal extension. The textbook clinical rule is geometric — perpendicular to the fulcrum line at its midpoint, on the side opposite the saddle. For most Class II cases these give the same answer, but in some configurations (Class II Mod 1 with diagonal fulcrum line) in practice the indirect is sometimes placed on the SAME side as the DE but at a perpendicular position to the fulcrum. In practice, instructors may also reuse an existing rest-only abutment (max anterior with ball/cingulum rest) as the dual-role indirect retainer rather than adding a separate one.";
+  for (const side of sidesToPlace) {
+    const t = pickIndirectFor(side);
+    if (!t) continue;
+    let restType;
+    if (RPD_CANINES.has(t)) {
+      restType = arch === "mandibular" ? "ML ball rest" : "mesial cingulum rest";
+    } else if (RPD_FIRST_PREMOLARS.has(t) || RPD_SECOND_PREMOLARS.has(t)) {
+      restType = "mesial occlusal rest";
+    } else {
+      restType = "cingulum rest";
+    }
+    out.push({
+      tooth: t, restType, rationale: RPD_RATIONALE.rest.indirectFulcrum,
+      tier, alternativeRationale: altRationale,
+    });
+  }
+  return out;
+}
+
+// ============================================================================
+// BASE DESIGN — open lattice / mesh / tube tooth / facing
+// ============================================================================
+
+function rpdSelectBaseDesign(caseInput, kennedy) {
+  const m = caseInput.measurements || {};
+  const designs = [];
+
+  for (const span of kennedy.spans) {
+    let type, rationale, note;
+    const isDE = span.type === "distal-extension";
+    const isAnterior = span.containsAnterior && !span.containsPosterior;
+    const limitedSpace = m.interocclusalSpace === "limited" || m.interocclusalSpace === "extremely_limited";
+    const extremelyLimited = m.interocclusalSpace === "extremely_limited";
+    const wellHealedRidge = (caseInput.patientFactors?.monthsSinceExtraction ?? 12) >= 6;
+
+    // Per NotebookLM (UIC standards):
+    //  - Mesh (top priority for anteriors): anterior span ≥3 teeth → Mesh
+    //    REGARDLESS of interocclusal space (esthetic-bulk preference; reduces
+    //    acrylic bulk in the visible zone).
+    //  - Facing: very limited space + single anterior tooth + NON-resorbed ridge.
+    //    Rare in practice (definitive RPD typically requires healed ridge ≥6 mo).
+    //  - Tube Tooth: limited space + ≤2 teeth + WELL-HEALED ridge. Preferred over
+    //    Facing for esthetics (Facings show metal hue).
+    //  - Open Lattice: default (and only choice that supports distal tissue stops).
+    let tier = "strong";
+    let alternative = null;
+    let alternativeRationale = null;
+    if (isAnterior && span.teeth.length >= 3) {
+      type = "Mesh";
+      rationale = RPD_RATIONALE.base["Mesh"];
+      tier = "common";
+      alternative = "Open Lattice";
+      alternativeRationale = "Mesh is the preferred choice for anterior spans ≥3 teeth (esthetic-bulk preference reduces acrylic bulk in the visible zone). Open Lattice is also acceptable and provides slightly more acrylic retention.";
+    } else if (extremelyLimited && isAnterior && span.teeth.length === 1 && !wellHealedRidge) {
+      type = "Facing";
+      rationale = RPD_RATIONALE.base["Facing"];
+      tier = "common";
+      alternative = "Tube Tooth";
+      alternativeRationale = "Facing is selected for single-tooth anterior spans with non-resorbed ridges. Tube Tooth is preferred when the ridge has healed (≥6 months) for better esthetics (Facings show metal hue).";
+    } else if (limitedSpace && !isDE && wellHealedRidge && span.teeth.length <= 2) {
+      type = "Tube Tooth";
+      rationale = RPD_RATIONALE.base["Tube Tooth"];
+      tier = "common";
+      alternative = "Open Lattice";
+      alternativeRationale = "Tube Tooth is preferred for limited interocclusal space + healed ridge + ≤2 teeth. Open Lattice is acceptable if interocclusal space is adequate.";
+    } else {
+      type = "Open Lattice";
+      rationale = RPD_RATIONALE.base["Open Lattice"];
+      if (isDE) note = "Distal tissue stop required";
+      tier = "strong";
+    }
+    designs.push({ spanTeeth: span.teeth, type, rationale, note, tier, alternative, alternativeRationale });
+  }
+
+  return designs;
+}
+
+// ============================================================================
+// FRAMEWORK MATERIAL
+// ============================================================================
+
+function rpdSelectFrameworkMaterial(caseInput) {
+  const pf = caseInput.patientFactors || {};
+  if (pf.metalAllergy) {
+    return { material: "Gold", rationale: RPD_RATIONALE.framework["Gold"], requiresApproval: true };
+  }
+  return { material: "Co-Cr", rationale: RPD_RATIONALE.framework["Co-Cr"], requiresApproval: false };
+}
+
+// ============================================================================
+// RED FLAGS — healing period, altered cast, NMCD, perio compromise, hopeless
+// ============================================================================
+
+function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
+  const flags = [];
+  const pf = caseInput.patientFactors || {};
+  const m = caseInput.measurements || {};
+  const designIntent = pf.designIntent || "definitive";
+
+  // Healing period
+  const months = pf.monthsSinceExtraction;
+  if (months != null && months < 6 && designIntent === "definitive") {
+    flags.push({
+      severity: "blocker",
+      type: "healing-period",
+      message: `Only ${months} mo since last extraction. Definitive RPD impressions cannot be taken until extraction sites have healed for at least 6 months. Recommend Interim RPD (IPD) until healing is complete.`,
+    });
+  }
+
+  // Altered cast (auto for Class I/II definitive)
+  if ((kennedy.class === "I" || kennedy.class === "II") && designIntent === "definitive") {
+    flags.push({
+      severity: "info",
+      type: "altered-cast",
+      message: "Altered Cast Technique required: two-stage functional impression to capture compressible soft tissues and prevent framework rotation.",
+    });
+  }
+
+  // Combination Syndrome (Kelly 1972) — maxillary complete denture opposing
+  // mandibular Kennedy Class I RPD. This is a HIGH-RISK scenario
+  // requiring prevention strategies.
+  if (caseInput.arch === "mandibular"
+      && kennedy.class === "I"
+      && pf.opposingArch === "complete_denture") {
+    flags.push({
+      severity: "warning",
+      type: "combination-syndrome",
+      message: "Combination Syndrome risk (Kelly 1972): maxillary complete denture opposing mandibular Class I RPD predisposes to supra-eruption of mandibular anteriors, resorption of maxillary anterior ridge, downward growth of maxillary tuberosities, resorption of mandibular posterior ridge, and papillary hyperplasia of the hard palate. Prevention: clinical remount, periodic recall, reline as needed, bilateral balanced articulation, altered-cast impression technique. Consider maintaining a distal abutment tooth (even if not ideal) or implant-assisted RPD to convert to Class III biomechanics.",
+    });
+  }
+
+  // Hopeless abutments
+  const hopeless = rpdArchTeeth(caseInput.arch).filter(n => rpdIsPresent(caseInput, n) && caseInput.teeth[n]?.attrs?.perioPrognosis === "hopeless");
+  if (hopeless.length) {
+    flags.push({
+      severity: "blocker",
+      type: "hopeless-tooth",
+      message: `Tooth ${rpdToothList(hopeless)} has hopeless prognosis. Per standard practice, extract during Phase I: Active Disease Control. Re-classify arch after extraction (Applegate's Rule 1).`,
+    });
+  }
+
+  // Poor / questionable abutments
+  const poor = rpdArchTeeth(caseInput.arch).filter(n => rpdIsPresent(caseInput, n) && caseInput.teeth[n]?.attrs?.perioPrognosis === "poor");
+  if (poor.length && designIntent === "definitive") {
+    flags.push({
+      severity: "warning",
+      type: "questionable-abutment",
+      message: `Tooth ${rpdToothList(poor)} has questionable periodontal prognosis. Consider Interim RPD (IPD) for transient reassessment phase before committing to definitive framework.`,
+    });
+  }
+
+  // NMCD
+  if (pf.metalAllergy) {
+    flags.push({
+      severity: "warning",
+      type: "nmcd",
+      message: "Metal allergy documented. Non-Metal Clasp Denture (NMCD) is a last resort — requires signed specific consent form and Managing Partner approval. NMCDs are contraindicated for Class I/II (rigidity required).",
+    });
+  }
+
+  // Short crown / crown lengthening recommended
+  const shortCrownTeeth = abutmentDesigns.filter(a => a.crownLengthening?.indicated).map(a => a.tooth);
+  if (shortCrownTeeth.length) {
+    flags.push({
+      severity: "info",
+      type: "crown-lengthening",
+      message: `Crown lengthening (Phase II) recommended for ${rpdToothList(shortCrownTeeth)} before definitive RPD components are prepared.`,
+    });
+  }
+
+  // Survey crown recommended
+  const surveyCrownTeeth = abutmentDesigns.filter(a => a.surveyCrown?.indicated).map(a => a.tooth);
+  if (surveyCrownTeeth.length) {
+    flags.push({
+      severity: "info",
+      type: "survey-crown",
+      message: `Survey crown required for ${rpdToothList(surveyCrownTeeth)} — minor enameloplasty cannot achieve required contours safely.`,
+    });
+  }
+
+  // Vestibular depth — flagged here only; per-abutment effect was already
+  // applied during clasp design.
+  if ((m.vestibularDepth ?? 99) <= 5 && designIntent === "definitive") {
+    flags.push({
+      severity: "info",
+      type: "vestibular-depth",
+      message: "Vestibular depth ≤5mm: I-bar approach is contraindicated arch-wide. RPI assemblies have been switched to Combination Clasp.",
+    });
+  }
+
+  return flags;
+}
+
+// ============================================================================
+// LAB SCRIPT — verbatim UIC Axium Instructions block
+// ============================================================================
+
+// ─── Lab Rx format helpers (standard convention from primary-source Axium Rx examples) ──
+
+// Format a span of teeth as "#5", "#4-5", or "#23, 26" (handles consecutive vs. mixed)
+function rpdFormatToothSpan(teeth) {
+  if (!teeth || teeth.length === 0) return "";
+  const sorted = [...teeth].sort((a, b) => a - b);
+  if (sorted.length === 1) return `#${sorted[0]}`;
+  // Consecutive?
+  let consecutive = true;
+  for (let i = 1; i < sorted.length; i++) {
+    if (sorted[i] !== sorted[i - 1] + 1) { consecutive = false; break; }
+  }
+  if (consecutive) return `#${sorted[0]}-${sorted[sorted.length - 1]}`;
+  return `#${sorted.map(n => String(n)).join(", #")}`;
+}
+
+// Describe rest seat per UIC lab Rx convention.
+//   Premolar/molar mesial occlusal → "Mesial rest"
+//   Distal occlusal → "Distal rest"
+//   Cingulum (any surface) → "Cingulum rest" (UIC drops the surface qualifier)
+//   Ball (central incisor distal) → "Distal ball rest"
+function rpdDescribeRestSeat(restSeat) {
+  if (!restSeat) return null;
+  const { surface, type } = restSeat;
+  if (type === "cingulum") return "Cingulum rest";
+  if (type === "ball") return `${surface.charAt(0).toUpperCase()}${surface.slice(1)} ball rest`;
+  // occlusal default
+  return `${surface.charAt(0).toUpperCase()}${surface.slice(1)} rest`;
+}
+
+// Proximal plate sits on the guide plane; UIC lists it by surface (capitalized).
+function rpdDescribeProximalPlate(guidePlane) {
+  if (!guidePlane) return null;
+  const s = guidePlane.surface;
+  return `${s.charAt(0).toUpperCase()}${s.slice(1)} proximal plate`;
+}
+
+// UIC abbreviation for undercut locations in lab Rx
+const RPD_UNDERCUT_SHORT = {
+  "mid-buccal":   "mid-buccal",
+  "mesio-buccal": "MB",
+  "disto-buccal": "DB",
+  "disto-lingual": "DL",
+  "mesio-lingual": "ML",
+};
+
+// Determine whether the retentive arm engages on the BUCCAL or LINGUAL side
+// based on the undercut location. Reciprocation goes on the opposite side.
+function rpdUndercutSide(undercutLocation) {
+  if (!undercutLocation) return "buccal";
+  if (undercutLocation.endsWith("buccal")) return "buccal";
+  if (undercutLocation.endsWith("lingual")) return "lingual";
+  return "buccal";
+}
+
+// Clasp + undercut description per standard convention (matches UIC actual lab Rx examples).
+function rpdDescribeClasp(a, abutmentAttrs) {
+  const t = a.claspType;
+  const arm = a.retentiveArm || "";
+  const undercutMatch = arm.match(/engaging[^,;]+/);
+  const undercutPhrase = undercutMatch ? undercutMatch[0] : arm;
+  if (t === "RPI" || t === "I-bar (esthetic)") {
+    return undercutPhrase.startsWith("I-bar") ? undercutPhrase : `I-bar ${undercutPhrase}`;
+  }
+  if (t === "Akers" || t === "Reverse Akers") {
+    // If the abutment's clinical undercut is on a non-default surface (DL/DB/ML/MB
+    // — typically a tilted molar), express the Akers with the abbreviated surface
+    // per UIC's actual Reverse-Akers Rx form (Design Case II #31, framework Case 1).
+    const loc = abutmentAttrs?.undercutLocation;
+    const abbr = RPD_UNDERCUT_SHORT[loc];
+    if (abbr && loc !== "mid-buccal") {
+      return `Akers clasp engaging 0.01" ${abbr} undercut`;
+    }
+    return `Akers clasp ${undercutPhrase}`;
+  }
+  if (t === "Embrasure") {
+    return `Embrasure clasp ${undercutPhrase}`;
+  }
+  if (t === "Combination") {
+    return `Combination clasp ${undercutPhrase}`;
+  }
+  if (t === "WW C-clasp") {
+    return `18ga wrought wire C-clasp engaging 0.02" undercut`;
+  }
+  return arm;
+}
+
+// Reciprocation per standard convention (from UIC actual lab Rx examples):
+//   RPI / I-bar esthetic: omit (proximal plate / minor connector handles it)
+//   Akers (standard): retentive on buccal → reciprocal on Palatal/Lingual
+//   Akers with DL/DB undercut (Reverse Akers pattern): retentive on lingual
+//     side → reciprocal on Buccal
+//   Combination: "Palatal/Lingual reciprocal plate" (the metal plating, not arm)
+//   Embrasure: same arch-opposite reciprocal arm as Akers
+function rpdDescribeReciprocation(claspType, arch, abutmentAttrs) {
+  if (claspType === "RPI" || claspType === "I-bar (esthetic)") return null;
+  if (claspType === "Combination") {
+    const side = arch === "maxillary" ? "Palatal" : "Lingual";
+    return `${side} reciprocal plate`;
+  }
+  if (["Akers", "Reverse Akers", "Embrasure"].includes(claspType)) {
+    const undercutSide = rpdUndercutSide(abutmentAttrs?.undercutLocation);
+    // Reciprocation goes on the OPPOSITE side from the retentive arm.
+    // Standard Akers: undercut on buccal → reciprocal on Palatal (max) or Lingual (mand).
+    // Reverse Akers: undercut on lingual → reciprocal on Buccal.
+    if (undercutSide === "lingual") {
+      return "Buccal reciprocal clasp";
+    }
+    return `${arch === "maxillary" ? "Palatal" : "Lingual"} reciprocal clasp`;
+  }
+  return null;
+}
+
+function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns, indirectRetainers, baseDesigns, designIntent, axiumCode, kennedy }) {
+  const archLc = arch === "maxillary" ? "maxillary" : "mandibular";
+  const isInterim = designIntent === "interim";
+  const lines = [];
+
+  // ── Interim RPD lab Rx ─────────────────────────────────────────────────
+  if (isInterim) {
+    lines.push(`Please fabricate ${archLc} interim partial denture (acrylic base with wrought wire retention).`);
+    lines.push("");
+    abutmentDesigns.forEach(a => {
+      lines.push(`${rpdToothName(a.tooth)}: 18ga wrought wire C-clasp engaging 0.02" undercut.`);
+    });
+    lines.push("");
+    lines.push("Base: rigid acrylic.");
+    lines.push("");
+    lines.push("Thank you.");
+    return lines.join("\n");
+  }
+
+  // ── Definitive RPD lab Rx (UIC Axium format, per primary-source examples) ──
+  const material = framework.material === "Co-Cr" ? "Co-Cr" : framework.material;
+  lines.push(`Please fabricate ${material} metal framework for ${archLc} RPD.`);
+  lines.push("");
+
+  // Major connector (no Kennedy line — that's on the Preliminary Design Form)
+  const mcModifier = majorConnector.note ? ` with ${majorConnector.note.replace("on tissue side", "on the tissue side")}` : "";
+  lines.push(`Major connector: ${majorConnector.type}${mcModifier}.`);
+  lines.push("");
+  // standard convention: standard notice about undercut color-coding on the surveyed cast
+  lines.push("* Exact undercuts to engage are marked in red. *");
+  lines.push("");
+
+  // Combine abutments and standalone indirect retainers into a single per-tooth
+  // list, sorted by tooth number (standard convention). Dual-role teeth (abutment +
+  // indirect retainer) are represented in the abutment list — UIC doesn't
+  // separately annotate them in the lab Rx.
+  const abutmentTeethSet = new Set(abutmentDesigns.map(a => a.tooth));
+  const standaloneIndirect = (indirectRetainers || []).filter(r => !abutmentTeethSet.has(r.tooth));
+
+  // Build per-tooth Rx entries with their effective tooth-order rank for sorting.
+  const perToothEntries = [];
+
+  abutmentDesigns.forEach(a => {
+    const isEsthetic = a.claspType === "Rest Only (esthetic omission)";
+    const parts = [];
+    // UIC actual lab Rx convention: Proximal plate FIRST, then Rest, then Clasp, then Reciprocation.
+    // Per UIC primary-source examples (Design Case II, framework Design Case 1), the
+    // proximal plate IS included even for esthetic omission when the major connector
+    // contacts that abutment surface.
+    const pp = rpdDescribeProximalPlate(a.guidePlane);
+    if (pp) parts.push(pp);
+    const rest = rpdDescribeRestSeat(a.restSeat);
+    if (rest) parts.push(rest);
+    if (!isEsthetic) {
+      const clasp = rpdDescribeClasp(a, a.attrs);
+      if (clasp) parts.push(clasp);
+      const recip = rpdDescribeReciprocation(a.claspType, arch, a.attrs);
+      if (recip) parts.push(recip);
+    }
+    perToothEntries.push({ tooth: a.tooth, text: `${rpdToothName(a.tooth)}: ${parts.join(", ")}.` });
+  });
+
+  standaloneIndirect.forEach(r => {
+    let desc;
+    if (/cingulum/i.test(r.restType)) desc = "Cingulum rest";
+    else if (/ball/i.test(r.restType)) desc = "Distal ball rest";
+    else if (/additional/i.test(r.restType)) desc = "Occlusal rest (additional, for indirect retention)";
+    else if (/mesial/i.test(r.restType)) desc = "Mesial rest";
+    else if (/distal/i.test(r.restType)) desc = "Distal rest";
+    else desc = r.restType.charAt(0).toUpperCase() + r.restType.slice(1);
+    perToothEntries.push({ tooth: r.tooth, text: `${rpdToothName(r.tooth)}: ${desc}.` });
+  });
+
+  // standard convention: sort by tooth number.
+  perToothEntries.sort((a, b) => a.tooth - b.tooth);
+  perToothEntries.forEach(e => lines.push(e.text));
+
+  // Retention webbing — one line per span, no "Retention webbing:" prefix
+  if (baseDesigns && baseDesigns.length) {
+    lines.push("");
+    baseDesigns.forEach(b => {
+      const span = rpdFormatToothSpan(b.spanTeeth);
+      const hasDistalStop = b.note && /distal tissue stop/i.test(b.note);
+      const suffix = hasDistalStop ? " with distal tissue stop" : "";
+      const typeText = b.type === "Open Lattice" ? "Open lattice" : b.type;
+      lines.push(`${span}: ${typeText}${suffix}.`);
+    });
+  }
+
+  lines.push("");
+  lines.push("Please return for try-in. Thank you.");
+  return lines.join("\n");
+}
+
+// ============================================================================
+// PHASE 2: MECHANICAL DATA BACKFILL
+// ============================================================================
+
+// ─── NMCD Design (Non-Metal Clasp Denture) ────────────────────────────────
+/**
+ * Per UIC primary sources (Fall 2022 Non-metal Clasps lecture + Summer 2023
+ * Interim RPD lecture), there are TWO distinct NMCD variants:
+ *
+ *   1. NMCD WITH metal major connector (rigid hybrid):
+ *      - Indications: high esthetic demand, DEFINITIVE prosthesis, Class III
+ *        or short-span Class IV
+ *      - Cast metal major connector + thermoplastic / non-metal clasps
+ *
+ *   2. NMCD WITHOUT metal major connector (pure flexible / Valplast-type):
+ *      - Indications: metal allergy, few missing anteriors with stable
+ *        bilateral posterior occlusion, Class III or short-span IV, limited
+ *        mouth opening
+ *      - CONTRAINDICATED for definitive use (this is interim-priority);
+ *        exception per Fueki 2016: definitive permitted for metal allergy patients
+ *
+ * Both variants share: Class I/II contraindicated (no rigidity for DE);
+ * informed consent required; anti-caries protocol; frequent recalls.
+ *
+ * Short-span IV: "only few missing anterior teeth" — engine uses ≤4 (the four
+ * incisors) as the cutoff. Class IV with canines also missing = too wide.
+ */
+function rpdDesignNMCD(caseInput, kennedy) {
+  if (kennedy.class !== "III" && kennedy.class !== "IV") {
+    return null; // Class I/II contraindicated regardless of patient factors
+  }
+  if (!caseInput.patientFactors?.metalAllergy) {
+    return null; // Trigger is metal allergy
+  }
+
+  // Short-span IV check
+  if (kennedy.class === "IV") {
+    const primarySpan = kennedy.primarySpans?.[0];
+    if (!primarySpan || primarySpan.teeth.length > 4) {
+      return {
+        applicable: false,
+        contraindicated: true,
+        reason: `Class IV span of ${primarySpan?.teeth.length || "more than 4"} teeth is too wide for NMCD. Only short-span Class IV (≤4 incisor teeth) is appropriate; the patient's wider anterior span requires definitive cast metal RPD despite the metal allergy (consider Gold framework with MP approval) or implant-supported alternative.`,
+      };
+    }
+  }
+
+  // Compute bounding abutments
+  const spans = kennedy.spans;
+  const abutments = new Set();
+  for (const span of spans) {
+    const bounding = [span.beforeBound, span.afterBound].filter(Boolean);
+    bounding.forEach(t => abutments.add(t));
+  }
+  const claspTeeth = Array.from(abutments);
+
+  return {
+    applicable: true,
+    designIntent: caseInput.patientFactors?.designIntent || "definitive",
+    classQualifier: kennedy.class === "IV" ? "short-span Class IV" : "Class III",
+
+    // Option A: hybrid (metal major connector + non-metal clasps)
+    hybrid: {
+      label: "NMCD with metal major connector (hybrid — definitive option)",
+      indication: "High esthetic demand patient who refuses visible cast clasps; definitive prosthesis.",
+      material: "Cast metal major connector (Co-Cr or Gold per allergy status) + acetyl resin / PEEK thermoplastic clasps",
+      majorConnector: "Metal (cast) — see primary design above",
+      claspTeeth,
+      claspDescription: "Thermoplastic clasps on each abutment, engaging undercuts (no rest seats / guide planes — adhesive retention)",
+    },
+
+    // Option B: pure non-metal (Valplast-type)
+    pure: {
+      label: "Pure NMCD / Valplast (no metal anywhere)",
+      indication: "Metal allergy + interim-priority restoration. Definitive use contraindicated except as a Fueki-2016 exception for documented metal allergy patients who refuse the hybrid option.",
+      material: "Thermoplastic (acetyl resin, PEEK, or Valplast) throughout — no metal",
+      majorConnector: "Thermoplastic / acetyl (no metal connector)",
+      claspTeeth,
+      claspDescription: "Flexible thermoplastic clasps; no rest seats / guide planes",
+      interimPreferred: true,
+    },
+
+    // Shared
+    consent: "Signed informed consent required; Managing Partner approval mandatory.",
+    additionalContraindications: [
+      "Strong mastication forces / parafunctional habit (e.g., clenching)",
+      "Severely resorbed residual ridge",
+      "Clinically short crowns",
+      "Severe tissue undercut",
+      "Poor periodontal support",
+      "High caries risk",
+      "Limited restorative space (<6mm hybrid; <5mm pure)",
+      "Poor oral hygiene / compliance / manual dexterity",
+    ],
+    careProtocol: "Anti-caries products (Prevident, fluoride varnish); more frequent periodic oral evaluations; oral hygiene instructions; caries risk assessment.",
+  };
+}
+
+// ─── Axium Clinic Steps Sequencer ────────────────────────────────────────
+/**
+ * UIC clinic workflow for RPD design and treatment planning.
+ * Maps design decisions to Axium steps and documentation points.
+ */
+// UIC RPD clinical sequencing, per the Sequencing of RPD Treatment lecture.
+// Steps are organized into: (A) Diagnostic & Treatment Planning, (B) Phase I
+// Active Disease Control, (C) Phase II Surgical, (D) Phase III Prosthetic.
+const RPD_AXIUM_STEPS = [
+  // ── (A) Diagnostic & Treatment Planning ───────────────────────────────
+  {
+    step: 1,
+    phase: "Diagnostic & Treatment Planning",
+    clinic: "Comprehensive Oral Examination",
+    action: "Medical/dental history (meds, allergies — esp. metal allergy; CC). Full mouth series + panoramic radiographs. EOE (cancer screening, TMD). IOE (cancer screening, hard/soft tissue, perio exam, examination of current prosthesis). Diagnostic impressions + occlusal records.",
+    axiumEntry: "PMH/PDH; CC; radiograph notes; EOE/IOE findings; perio chart with BOP/furcation/mobility; prior prosthesis history",
+    design: "Confirm metal allergy status (gates NMCD). Assess per-abutment perio prognosis (good/fair/poor/hopeless — gates definitive vs interim vs Phase I extraction). Document 3rd molar status (Applegate Rules 2/3).",
+  },
+  {
+    step: 2,
+    phase: "Diagnostic & Treatment Planning",
+    clinic: "Mounting Diagnostic Casts",
+    action: "Mount maxillary + mandibular alginate casts on articulator (Denar 320). Evaluate inter-arch relationship, static + dynamic occlusion. Assess VDO, supra-erupted teeth, RCT / crown-lengthening needs. Mounting is absolutely necessary for proper diagnosis.",
+    axiumEntry: "Mounting note; VDO assessment; supra-eruption / occlusal plane findings",
+    design: "Confirm interocclusal space (gates Open Lattice vs Mesh vs Tube Tooth vs Facing). Note supra-erupted teeth (may need crown lengthening or restoration).",
+  },
+  {
+    step: 3,
+    phase: "Diagnostic & Treatment Planning",
+    clinic: "Survey Diagnostic Casts + Preliminary Partial Denture Design Form",
+    action: "Propose RPD design per standard prosthodontic concepts. Survey potential abutments. Identify tooth modifications needed; survey-crown decisions. Duplicate diagnostic casts; practice tooth modifications. Fill out Preliminary Partial Denture Design Form (guide planes, rest seats with reduction amounts, undercuts with location and depth, HOC adjustments, clasp types, minor + major connectors).",
+    axiumEntry: "Preliminary Partial Denture Design Form (separate from lab Rx); design rationales documented",
+    design: "Finalize Kennedy classification. Run engine: major connector, per-abutment clasp + rest + guide plane, indirect retainers, base design, framework material. Surface red flags for clinician review.",
+  },
+  // ── (B) Phase I: Active Disease Control ────────────────────────────────
+  {
+    step: 4,
+    phase: "Phase I: Active Disease Control",
+    clinic: "Necessary Extractions, Periodontal Therapy, Caries Control",
+    action: "Extract teeth flagged as hopeless. Periodontal therapy (SRP, re-evaluation 4-6 weeks). Caries control. Re-classify arch per Applegate's Rule 1 if extractions alter the classification.",
+    axiumEntry: "Extraction notes; perio re-eval results; caries treatment completion",
+    design: "After extractions, re-input case to engine to update Kennedy classification.",
+  },
+  // ── (C) Phase II: Surgical Phase ──────────────────────────────────────
+  {
+    step: 5,
+    phase: "Phase II: Surgical",
+    clinic: "Pre-Prosthetic Surgery + Implant Placement (if indicated)",
+    action: "Remove tori (if obstructing major connector path). Remove hyperplastic tissue or enlarged tuberosities. Place implants (if part of treatment plan). 6-month healing period before definitive impressions.",
+    axiumEntry: "Surgical procedure notes; healing timeline (≥6 months before definitive impressions)",
+    design: "Note: if mandibular tori NOT surgically removed, switch major connector to Lingual Plate. If healing <6mo: BLOCKER → recommend Interim RPD.",
+  },
+  // ── (D) Phase III: Prosthetic Phase ────────────────────────────────────
+  {
+    step: 6,
+    phase: "Phase III: Prosthetic",
+    clinic: "Abutment Tooth Preparation",
+    action: "PREP SEQUENCE (standard sequence):\n  1. GUIDE PLANES first — proximal surfaces, parallel to path of insertion (cylindrical diamond bur)\n  2. AXIAL TOOTH CONTOURS — modify if HOC unfavorable for selected direct retainer\n  3. CREATE UNDERCUTS if necessary\n  4. Take alginate impression, pour fast-setting stone cast, CHECK axial wall modifications\n  5. Repeat 1-4 if needed\n  6. REST SEATS prepared LAST (premolars: #4 + #6 round burs; molars: #4, #6, #8 round burs; cingulum rests: inverted cone)\nMinor modifications: sound enamel cases. Significant modifications: extensive restorations / occlusal plane / metal rest seats — proceed to SURVEY CROWN pathway.",
+    axiumEntry: "Tooth modification sequence completed (per abutment, in order); rest seat verification",
+    design: "For survey-crown candidates: 2.5-3.0mm occlusal tooth reduction at rest seat area; 0.5-1mm metal thickness; PFM with rest seats + guide planes IN METAL.",
+  },
+  {
+    step: 7,
+    phase: "Phase III: Prosthetic",
+    clinic: "Final Impression + Lab Rx + Framework Fabrication",
+    action: "Diagnostic alginate impression → custom tray. Border molding + final impression (single-step selective). Send to lab: Axium Lab Rx (this engine's output), RPD design on duplicate cast, master cast. Framework try-in. Altered cast impression if Class I/II (two-stage functional impression to capture compressible mucosa). Wax-rim occlusal records. Wax teeth try-in. Processing + delivery.",
+    axiumEntry: "Lab Rx submitted (D5213/D5214 definitive; D5820/D5821 interim); framework try-in note; altered cast impression note (Class I/II); final delivery note",
+    design: "This engine's lab script section becomes the Rx text. Procedure code in metadata.",
+  },
 ];
+
+function rpdGenerateAxiumSteps(caseInput, kennedy, designIntent) {
+  const steps = [];
+  let lastPhase = null;
+  for (const s of RPD_AXIUM_STEPS) {
+    if (s.phase && s.phase !== lastPhase) {
+      if (lastPhase !== null) steps.push("");
+      steps.push(`══ ${s.phase} ══`);
+      lastPhase = s.phase;
+    }
+    steps.push(`Step ${s.step}: ${s.clinic} — ${s.action}`);
+    steps.push(`  Axium entry: ${s.axiumEntry}`);
+    if (designIntent && s.design) {
+      steps.push(`  Design note: ${s.design}`);
+    }
+    steps.push("");
+  }
+  return steps.join("\n");
+}
+
+// ─── Enhanced Rationale Strings (Phase 2 expansion) ──────────────────────
+/**
+ * Additional rationale strings for edge cases and special scenarios.
+ * Sourced from NotebookLM UIC materials.
+ */
+const RPD_RATIONALE_PHASE2 = {
+  thirdMolar: {
+    "Replace — posterior support": "Replacing 3rd molars adds vertical support and reduces risk of distal extension base fracture",
+    "Omit — Rule 2": "3rd molar missing and not to be replaced per Applegate Rule 2",
+    "Omit — impacted/ectopic": "Impacted, ectopic, or severely tilted 3rd molars should NOT be replaced in RPD design; extraction may be indicated",
+  },
+  alteredCast: {
+    "Class I definitive": "Altered Cast Technique (two-stage functional impression) required to capture compressible mucosa and limit framework rotation during insertion",
+    "Class II definitive": "Altered Cast Technique ensures distal extension base seats passively when mucosa is at rest; prevents framework tipping",
+  },
+  surveyMarks: {
+    "Survey-crown candidate": "Minor tooth contours prevent safe enameloplasty to establish path of insertion; survey crown required (minor restoration with guide planes pre-cut)",
+    "Enameloplasty safe": "Natural tooth contours permit safe enameloplasty (≤0.5mm) to establish path of insertion; survey crown NOT required",
+  },
+  crownLengthening: {
+    indication: "Crown height <7mm or pulpal proximity prevents adequate rest-seat depth; Phase II crown lengthening recommended before definitive RPD prep",
+    timing: "Complete crown lengthening and 6-month remodeling BEFORE taking definitive impressions for RPD fabrication",
+  },
+  tubeTooth: {
+    indication: "Limited interocclusal space (≤5mm) in well-healed tooth-supported areas; artificial tooth anchors in buccal tube only (no ridge contact)",
+    advantage: "Reduces acrylic mass; improves cleansing access vs. Open Lattice",
+  },
+  facing: {
+    indication: "Anterior single-tooth replacement with EXTREMELY limited vertical space (<4mm) and high esthetic demand",
+    material: "Tooth-colored acrylic or porcelain labial facing; denture base color buccal surface only",
+  },
+};
+
+// ─── 3rd Molar Replacement Logic (Applegate Rules 2 & 3 ONLY) ────────────
+// Per NotebookLM (UIC standards): Rule 4 is a 2nd-molar rule and does NOT
+// apply to 3rd molars. For 3rd molars, only Rule 2 (omit if missing + not
+// replacing) and Rule 3 (include if present or to-be-replaced) apply.
+function rpdEvaluate3rdMolarReplacement(caseInput, arch) {
+  const third = RPD_THIRD_MOLARS;
+  const firstMolar = RPD_FIRST_MOLARS;
+
+  const teeth3 = Array.from(third).filter(n => rpdArchOf(n) === arch);
+  const teeth1 = Array.from(firstMolar).filter(n => rpdArchOf(n) === arch);
+
+  const replacement = {
+    applicableTeeth: teeth3,
+    decisions: [],
+  };
+
+  for (const tooth of teeth3) {
+    const status = caseInput.teeth[tooth]?.status || "present";
+    const toReplace = caseInput.teeth[tooth]?.replace;
+
+    // Applegate Rule 2: 3rd molar missing + not to be replaced → omit
+    if (status !== "present" && !toReplace) {
+      replacement.decisions.push({
+        tooth,
+        rule: "Applegate Rule 2",
+        decision: "Omit (missing, not to be replaced)",
+        rationale: RPD_RATIONALE_PHASE2.thirdMolar["Omit — Rule 2"],
+      });
+      continue;
+    }
+
+    // Distinguish PRESENT (Rule 3 — abutment) vs MISSING-TO-BE-REPLACED
+    // (Rule 2 inverse + Rule 5 — replaced tooth creates/extends the span,
+    // which then becomes the most-posterior edentulous area driving the
+    // classification).
+    if (status === "present") {
+      const firstMolarPresent = teeth1.some(n => rpdIsPresent(caseInput, n));
+      if (!firstMolarPresent && !teeth1.some(n => caseInput.teeth[n]?.replace)) {
+        replacement.decisions.push({
+          tooth,
+          rule: "Posterior support assessment",
+          decision: "Replace (adds rigidity to distal extension)",
+          rationale: RPD_RATIONALE_PHASE2.thirdMolar["Replace — posterior support"],
+        });
+      } else {
+        replacement.decisions.push({
+          tooth,
+          rule: "Applegate Rule 3",
+          decision: "Include in class determination (present + used as abutment)",
+          rationale: `Tooth #${tooth} is present and used as an abutment; included in classification per Applegate Rule 3.`,
+        });
+      }
+    } else if (toReplace) {
+      // Missing tooth flagged for replacement — Rule 2 exclusion no longer
+      // triggers, so the edentulous space is included per Rule 5.
+      replacement.decisions.push({
+        tooth,
+        rule: "Applegate Rule 2 (inverse) + Rule 5",
+        decision: "Include (missing but flagged for replacement)",
+        rationale: `Missing tooth #${tooth} is flagged for replacement; included in classification per Applegate Rules 2 and 5 — the edentulous space becomes the most-posterior area driving the class.`,
+      });
+    }
+  }
+
+  return replacement;
+}
+
+// ─── 2nd Molar Evaluation (Applegate Rule 4) ─────────────────────────────
+// Per NotebookLM/UIC: Rule 4 says a missing 2nd molar is omitted from the
+// classification if the OPPOSING (cross-arch antagonist) 2nd molar is also
+// missing and not to be replaced. Surfacing these decisions in the UI helps
+// the student write rationales for the Preliminary Partial Denture Design
+// Form and reconciles manual counting with the engine output.
+function rpdEvaluate2ndMolarRule4(caseInput, arch) {
+  const archTeeth = Array.from(RPD_SECOND_MOLARS).filter(n => rpdArchOf(n) === arch);
+  const decisions = [];
+
+  for (const tooth of archTeeth) {
+    const status = caseInput.teeth[tooth]?.status || "present";
+    const toReplace = caseInput.teeth[tooth]?.replace;
+    const opp = rpdOpposingTooth(tooth);
+    const oppStatus = caseInput.teeth[opp]?.status || "present";
+    const oppReplace = caseInput.teeth[opp]?.replace || false;
+
+    if (status === "present") {
+      decisions.push({
+        tooth,
+        rule: "Applegate Rule 4 (n/a)",
+        decision: "Include (present)",
+        rationale: `Tooth #${tooth} is present and included in classification.`,
+      });
+    } else if (toReplace) {
+      decisions.push({
+        tooth,
+        rule: "Applegate Rule 4 (n/a)",
+        decision: "Include (flagged for replacement)",
+        rationale: `Missing tooth #${tooth} is flagged for replacement; included in classification.`,
+      });
+    } else if (oppStatus !== "present" && !oppReplace) {
+      // Both 2nd molars missing-and-not-being-replaced → Rule 4 fires
+      decisions.push({
+        tooth,
+        rule: "Applegate Rule 4",
+        decision: `Omit (opposing #${opp} also missing, not being replaced)`,
+        rationale: `Per Applegate Rule 4, missing 2nd molar #${tooth} is excluded from classification because the opposing-arch 2nd molar #${opp} is also missing and not being replaced.`,
+      });
+    } else {
+      decisions.push({
+        tooth,
+        rule: "Applegate Rule 4",
+        decision: `Include (opposing #${opp} present or being replaced)`,
+        rationale: `Missing 2nd molar #${tooth} remains in classification because the opposing-arch 2nd molar #${opp} is present or being replaced.`,
+      });
+    }
+  }
+
+  return { applicableTeeth: archTeeth, decisions };
+}
+
+// ============================================================================
+// ACP PRODSTHODONTIC DIAGNOSTIC INDEX (PDI) for partially edentulous patients
+// ----------------------------------------------------------------------------
+// Source: McGarry et al. 1998 / 2002; UIC Lecture 2 (Sabbagh 2024 Diagnosis &
+// Treatment Planning). Four criteria, "worst single criterion sets the class":
+//
+//   1. Location & extent of edentulous area
+//   2. Condition of abutment teeth
+//   3. Occlusal characteristics
+//   4. Residual ridge characteristics
+//
+// PDI gives a parallel complexity rating (I=ideal / IV=most complex) that
+// supplements Kennedy classification and helps gate referral vs in-house care.
+//
+// Inference strategy: derive from existing case inputs — no separate UI yet.
+//   - Location: from Kennedy class + missing-tooth count + arch
+//   - Abutment: from worst perio prognosis among bounding abutments
+//   - Occlusion: default to Class I unless opposing-arch flag suggests issues
+//   - Residual ridge: from measurements.ridgeResorption
+// ============================================================================
+
+function rpdComputePDI(caseInput, kennedy, abutmentDesigns) {
+  const arch = caseInput.arch;
+  const m = caseInput.measurements || {};
+  const pf = caseInput.patientFactors || {};
+
+  // ----- Criterion 1: Location & extent -----
+  // Class I: ideal — single edentulous area in any quadrant, ≤3 teeth missing
+  // Class II: moderately compromised — edentulous area in 2 sextants, ≤3 teeth each
+  // Class III: substantially compromised — any edentulous area requiring tooth-tissue support
+  //            (Kennedy I, II, IV) OR long span (>3 teeth) tooth-supported
+  // Class IV: severely compromised — anterior span crossing midline (Class IV) AND
+  //            long-span distal extension, OR acquired defects
+  const missingInArch = rpdArchTeeth(arch).filter(n => !rpdIsPresent(caseInput, n) && caseInput.teeth[n]?.replace !== false).length;
+  const isToothSupported = kennedy.class === "III";
+  const isAnteriorCrossing = kennedy.class === "IV";
+  const isDistalExtension = kennedy.class === "I" || kennedy.class === "II";
+
+  let locationClass = 1;
+  let locationRationale = "";
+  if (kennedy.class === null) {
+    locationClass = 1;
+    locationRationale = "Fully dentate or no qualifying edentulous span.";
+  } else if (isAnteriorCrossing && missingInArch > 4) {
+    locationClass = 4;
+    locationRationale = `Kennedy Class IV (anterior span crossing midline) with ${missingInArch} teeth missing — severely compromised location.`;
+  } else if (isAnteriorCrossing) {
+    locationClass = 3;
+    locationRationale = "Kennedy Class IV (anterior span crossing midline) — substantially compromised; esthetics + biomechanics demand careful planning.";
+  } else if (isDistalExtension) {
+    locationClass = 3;
+    locationRationale = `Kennedy Class ${kennedy.class} (distal extension) — substantially compromised; requires tooth-tissue support.`;
+  } else if (isToothSupported && missingInArch <= 3) {
+    locationClass = (kennedy.modifications || 0) > 0 ? 2 : 1;
+    locationRationale = `Kennedy Class III, ≤3 teeth missing${(kennedy.modifications || 0) > 0 ? " with modification space" : ""} — tooth-supported in ${(kennedy.modifications || 0) > 0 ? "2 sextants" : "single sextant"}.`;
+  } else if (isToothSupported) {
+    locationClass = 3;
+    locationRationale = `Kennedy Class III with long span (${missingInArch} teeth missing) — substantially compromised.`;
+  } else {
+    locationClass = 2;
+    locationRationale = "Moderate edentulous extent.";
+  }
+
+  // ----- Criterion 2: Abutment condition -----
+  // Class I: all abutments ideal — no preprosthetic therapy needed
+  // Class II: abutments in 1-2 sextants need localized adjunctive therapy
+  // Class III: abutments in 3 sextants need substantial therapy
+  // Class IV: abutments have guarded prognosis; extensive preprosthetic therapy
+  let worstPerio = "good";
+  const perioRank = { good: 0, fair: 1, poor: 2, hopeless: 3 };
+  const compromisedAbutments = [];
+  for (const a of abutmentDesigns) {
+    const attrs = a.attrs || {};
+    const p = attrs.perioPrognosis || "good";
+    if (perioRank[p] > perioRank[worstPerio]) worstPerio = p;
+    if (p === "fair" || p === "poor" || p === "hopeless") {
+      compromisedAbutments.push({ tooth: a.tooth, prognosis: p });
+    }
+  }
+  let abutmentClass = 1;
+  let abutmentRationale = "";
+  if (worstPerio === "hopeless") {
+    abutmentClass = 4;
+    abutmentRationale = `One or more abutments hopeless (${compromisedAbutments.map(a => `#${a.tooth}`).join(", ")}) — guarded prognosis until extraction + reclassification.`;
+  } else if (worstPerio === "poor") {
+    abutmentClass = 4;
+    abutmentRationale = `One or more abutments with poor periodontal prognosis (${compromisedAbutments.filter(a => a.prognosis === "poor").map(a => `#${a.tooth}`).join(", ")}) — extensive preprosthetic therapy required.`;
+  } else if (worstPerio === "fair") {
+    abutmentClass = compromisedAbutments.length >= 3 ? 3 : 2;
+    abutmentRationale = `${compromisedAbutments.length} abutment(s) with fair periodontal prognosis (${compromisedAbutments.map(a => `#${a.tooth}`).join(", ")}) — ${abutmentClass === 3 ? "substantial" : "localized"} adjunctive therapy indicated.`;
+  } else {
+    abutmentClass = 1;
+    abutmentRationale = "All bounding abutments have good periodontal prognosis — no preprosthetic therapy required on abutments.";
+  }
+
+  // ----- Criterion 3: Occlusal characteristics -----
+  // Class I: ideal — occlusion does not require reestablishment / Angle Class I
+  // Class II: occlusion requires localized adjustment
+  // Class III: occlusion requires reestablishment without VDO change
+  // Class IV: occlusion requires reestablishment WITH VDO change (e.g., severe wear)
+  // Inference: opposing complete denture, severe interocclusal space issues, or
+  // severe ridge resorption with opposing dentate arch suggest occlusal complexity.
+  let occlusionClass = 1;
+  let occlusionRationale = "Angle Class I occlusion assumed; no VDO change anticipated.";
+  if (pf.opposingArch === "complete_denture" && arch === "mandibular" && kennedy.class === "I") {
+    occlusionClass = 4;
+    occlusionRationale = "Combination Syndrome risk (mandibular bilateral distal extension opposing complete maxillary denture) — VDO reestablishment + careful occlusal scheme required.";
+  } else if (pf.opposingArch === "complete_denture") {
+    occlusionClass = 3;
+    occlusionRationale = "Opposing complete denture — occlusal scheme must be reestablished against artificial teeth.";
+  } else if (m.interocclusalSpace === "excessive" || m.interocclusalSpace === "insufficient") {
+    occlusionClass = 2;
+    occlusionRationale = `${m.interocclusalSpace === "excessive" ? "Excessive" : "Insufficient"} interocclusal space — localized occlusal adjustment likely required.`;
+  }
+
+  // ----- Criterion 4: Residual ridge characteristics -----
+  // Class I: ideal — Atwood Class I-II (minimal resorption)
+  // Class II: minimally compromised — Atwood Class III
+  // Class III: moderately compromised — Atwood Class IV
+  // Class IV: severely compromised — Atwood Class V-VI (extreme resorption)
+  let ridgeClass = 1;
+  let ridgeRationale = "Ridge resorption minimal — adequate denture-bearing support.";
+  if (m.ridgeResorption === "severe") {
+    ridgeClass = 4;
+    ridgeRationale = "Severe ridge resorption — severely compromised support; consider implant-assisted RPD or altered cast technique.";
+  } else if (m.ridgeResorption === "moderate") {
+    ridgeClass = 3;
+    ridgeRationale = "Moderate ridge resorption — moderately compromised support; altered cast technique strongly indicated for distal extension.";
+  } else if (m.ridgeResorption === "mild") {
+    ridgeClass = 1;
+    ridgeRationale = "Mild ridge resorption — adequate residual ridge support.";
+  }
+
+  // ----- Worst single criterion sets the class -----
+  const overallNum = Math.max(locationClass, abutmentClass, occlusionClass, ridgeClass);
+  const romanByNum = { 1: "I", 2: "II", 3: "III", 4: "IV" };
+  const overallClass = romanByNum[overallNum];
+
+  // Driver: which criterion(s) drove the worst class
+  const drivers = [];
+  if (locationClass === overallNum) drivers.push("location");
+  if (abutmentClass === overallNum) drivers.push("abutment condition");
+  if (occlusionClass === overallNum) drivers.push("occlusion");
+  if (ridgeClass === overallNum) drivers.push("residual ridge");
+
+  // Care-setting recommendation per ACP guidelines
+  let careRecommendation = "";
+  if (overallNum === 1) careRecommendation = "PDI Class I — appropriate for predoctoral / general dentistry care.";
+  else if (overallNum === 2) careRecommendation = "PDI Class II — appropriate for predoctoral with faculty oversight; straightforward case.";
+  else if (overallNum === 3) careRecommendation = "PDI Class III — substantially complex; consider postgraduate prosthodontic input.";
+  else careRecommendation = "PDI Class IV — severely compromised; prosthodontic specialty referral recommended.";
+
+  return {
+    class: overallClass,
+    classNum: overallNum,
+    drivers,
+    careRecommendation,
+    breakdown: {
+      location:        { class: romanByNum[locationClass], rationale: locationRationale },
+      abutmentCondition: { class: romanByNum[abutmentClass], rationale: abutmentRationale },
+      occlusion:       { class: romanByNum[occlusionClass], rationale: occlusionRationale },
+      residualRidge:   { class: romanByNum[ridgeClass], rationale: ridgeRationale },
+    },
+  };
+}
+
+// ============================================================================
+// MASTER ORCHESTRATOR
+// ============================================================================
+
+function rpdRunEngine(caseInput) {
+  // Defensive defaults
+  const safeCase = {
+    arch: caseInput.arch || "mandibular",
+    teeth: caseInput.teeth || {},
+    measurements: caseInput.measurements || {},
+    patientFactors: caseInput.patientFactors || {},
+  };
+  const designIntent = safeCase.patientFactors.designIntent || "definitive";
+
+  const kennedy = rpdClassifyKennedy(safeCase);
+  const majorConnector = rpdSelectMajorConnector(safeCase, kennedy);
+  const framework = rpdSelectFrameworkMaterial(safeCase);
+
+  // Per-abutment design
+  const vestibularLow = (safeCase.measurements.vestibularDepth ?? 99) <= 5;
+  const abutmentDesigns = [];
+  for (const span of kennedy.spans) {
+    const teethList = rpdArchTeeth(safeCase.arch);
+    const bounding = [span.beforeBound, span.afterBound].filter(Boolean);
+    for (const tooth of bounding) {
+      if (abutmentDesigns.some(a => a.tooth === tooth)) continue; // dedupe across spans
+      const attrs = rpdGetAttrs(safeCase, tooth);
+      const design = rpdDesignAbutment({ tooth, span, caseInput: safeCase, kennedy, attrs, vestibularLow });
+      // Embed attrs so lab Rx + overlay rendering can read undercut location etc.
+      design.attrs = attrs;
+      abutmentDesigns.push(design);
+    }
+  }
+  // Sort abutments in arch order
+  const teethList = rpdArchTeeth(safeCase.arch);
+  abutmentDesigns.sort((a, b) => teethList.indexOf(a.tooth) - teethList.indexOf(b.tooth));
+
+  // Embrasure clasp detection — two adjacent posterior abutments with no
+  // edentulous space between them (typical of Kennedy II Mod 1 or III Mod 1
+  // where modification space and distal extension/main span sit on opposite
+  // sides of the same dentate run). UIC: embrasure clasp is one continuous
+  // clasp engaging both teeth's facing undercuts via a single occlusal embrasure
+  // rest assembly. Recommended only when both teeth are posterior (premolar+)
+  // and both are tooth-supported abutments.
+  const RPD_POSTERIOR = new Set([
+    1,2,3,4,5,12,13,14,15,16,           // maxillary 1st premolar–3rd molar
+    17,18,19,20,21,28,29,30,31,32,      // mandibular 1st premolar–3rd molar
+  ]);
+  for (let i = 0; i < abutmentDesigns.length - 1; i++) {
+    const a1 = abutmentDesigns[i];
+    const a2 = abutmentDesigns[i + 1];
+    const i1 = teethList.indexOf(a1.tooth);
+    const i2 = teethList.indexOf(a2.tooth);
+    if (i2 !== i1 + 1) continue; // not arch-adjacent
+    if (!RPD_POSTERIOR.has(a1.tooth) || !RPD_POSTERIOR.has(a2.tooth)) continue;
+    // Skip if either is esthetic-rest-only or already RPI/Combination (those have
+    // a defined retention scheme that shouldn't be overridden by embrasure).
+    const skipClasps = new Set(["Rest Only (esthetic omission)", "RPI", "Combination"]);
+    if (skipClasps.has(a1.claspType) || skipClasps.has(a2.claspType)) continue;
+    const note = `Consider Embrasure clasp spanning ${rpdToothName(a1.tooth)} and ${rpdToothName(a2.tooth)} — one continuous clasp with a shared occlusal embrasure rest assembly, engaging facing undercuts on both teeth. Indicated when adjacent posterior teeth both serve as abutments on a tooth-supported (modification) side with no edentulous space between them.`;
+    a1.claspAlternatives = a1.claspAlternatives ? `${a1.claspAlternatives}\n\n${note}` : note;
+    a2.claspAlternatives = a2.claspAlternatives ? `${a2.claspAlternatives}\n\n${note}` : note;
+  }
+
+  const indirectRetainers = rpdPlaceIndirectRetainers(safeCase, kennedy);
+  const baseDesigns = rpdSelectBaseDesign(safeCase, kennedy);
+  const redFlags = rpdCheckRedFlags(safeCase, kennedy, abutmentDesigns);
+  const axiumCode = RPD_AXIUM_CODES[designIntent === "interim" ? "interim" : "definitive"][safeCase.arch];
+
+  const labScript = rpdGenerateLabScript({
+    arch: safeCase.arch,
+    framework, majorConnector, abutmentDesigns, indirectRetainers, baseDesigns,
+    designIntent, axiumCode, kennedy,
+  });
+
+  // Phase 2: Mechanical data backfill
+  const nmcdDesign = rpdDesignNMCD(safeCase, kennedy);
+  const axiumSteps = rpdGenerateAxiumSteps(safeCase, kennedy, designIntent);
+  const thirdMolarEval = rpdEvaluate3rdMolarReplacement(safeCase, safeCase.arch);
+  const secondMolarEval = rpdEvaluate2ndMolarRule4(safeCase, safeCase.arch);
+  const pdi = rpdComputePDI(safeCase, kennedy, abutmentDesigns);
+
+  return {
+    kennedy, majorConnector, framework, abutmentDesigns, indirectRetainers,
+    baseDesigns, redFlags, axiumCode, labScript, designIntent,
+    nmcdDesign, axiumSteps, thirdMolarEval, secondMolarEval, pdi,
+  };
+}
+
+// ============================================================================
+// TEST CASES — representative scenarios for Phase 1 validation
+// ============================================================================
+
+function rpdBuildTeeth(arch, presetMissing = [], abutmentAttrs = {}) {
+  const teeth = {};
+  for (const n of rpdArchTeeth(arch)) {
+    teeth[n] = { status: presetMissing.includes(n) ? "missing" : "present" };
+    if (abutmentAttrs[n]) teeth[n].attrs = abutmentAttrs[n];
+  }
+  return teeth;
+}
+
+const RPD_TEST_CASES = [
+  {
+    id: "mand-class-i",
+    label: "Mandibular Class I — bilateral distal extension",
+    description: "Missing #17-19 and #30-32 (3rd molars ignored). Anteriors and premolars intact. Classic bilateral distal extension.",
+    expectedClass: "Kennedy Class I",
+    caseInput: {
+      arch: "mandibular",
+      teeth: rpdBuildTeeth("mandibular", [17, 18, 19, 30, 31, 32]),
+      measurements: { lingualSulcusDepth: 9, vestibularDepth: 8, ridgeResorption: "mild", interocclusalSpace: "normal" },
+      patientFactors: { designIntent: "definitive", monthsSinceExtraction: 8 },
+    },
+  },
+  {
+    id: "max-class-ii-mod-1",
+    label: "Maxillary Class II Mod 1",
+    description: "Missing #14-16 (left DE) and #5-6 (modification space, tooth-supported). Tests Mod 1 logic + Akers on modification abutments.",
+    expectedClass: "Kennedy Class II Modification 1",
+    caseInput: {
+      arch: "maxillary",
+      teeth: rpdBuildTeeth("maxillary", [5, 6, 14, 15, 16]),
+      measurements: { vestibularDepth: 8, ridgeResorption: "mild", interocclusalSpace: "normal" },
+      patientFactors: { designIntent: "definitive", monthsSinceExtraction: 12 },
+    },
+  },
+  {
+    id: "max-class-iii-short",
+    label: "Maxillary Class III — short tooth-supported span",
+    description: "Missing #4-5 only. Single bounded tooth-supported space. Tests Single Palatal Strap selection.",
+    expectedClass: "Kennedy Class III",
+    caseInput: {
+      arch: "maxillary",
+      teeth: rpdBuildTeeth("maxillary", [4, 5]),
+      measurements: { vestibularDepth: 8, interocclusalSpace: "normal" },
+      patientFactors: { designIntent: "definitive", monthsSinceExtraction: 12 },
+    },
+  },
+  {
+    id: "mand-class-iv",
+    label: "Mandibular Class IV — anterior span crossing midline",
+    description: "Missing #23-26 (all four mandibular incisors). Bounded by canines. Tests Class IV + indirect retainers on posteriors.",
+    expectedClass: "Kennedy Class IV",
+    caseInput: {
+      arch: "mandibular",
+      teeth: rpdBuildTeeth("mandibular", [23, 24, 25, 26]),
+      measurements: { lingualSulcusDepth: 9, vestibularDepth: 8, interocclusalSpace: "normal" },
+      patientFactors: { designIntent: "definitive", monthsSinceExtraction: 10 },
+    },
+  },
+  {
+    id: "mand-class-i-frenum",
+    label: "Mandibular Class I — high frenum forces Combination clasp on #20",
+    description: "Same as Class I above, but #20 (left terminal abutment) has a high frenum in the I-bar approach. Tests RPI→Combination fallback on that abutment only; #29 should still get RPI.",
+    expectedClass: "Kennedy Class I",
+    caseInput: {
+      arch: "mandibular",
+      teeth: rpdBuildTeeth("mandibular", [17, 18, 19, 30, 31, 32], { 20: { highFrenum: true } }),
+      measurements: { lingualSulcusDepth: 9, vestibularDepth: 8, interocclusalSpace: "normal" },
+      patientFactors: { designIntent: "definitive", monthsSinceExtraction: 8 },
+    },
+  },
+  {
+    id: "mand-class-i-poor-prognosis",
+    label: "Mandibular Class I — questionable abutment #21",
+    description: "Same as Class I above, but #21 has poor periodontal prognosis. Tests interim-RPD recommendation flag.",
+    expectedClass: "Kennedy Class I",
+    caseInput: {
+      arch: "mandibular",
+      teeth: rpdBuildTeeth("mandibular", [17, 18, 19, 30, 31, 32], { 21: { perioPrognosis: "poor" } }),
+      measurements: { lingualSulcusDepth: 9, vestibularDepth: 8, interocclusalSpace: "normal" },
+      patientFactors: { designIntent: "definitive", monthsSinceExtraction: 8 },
+    },
+  },
+  {
+    id: "max-class-i-few-teeth",
+    label: "Maxillary Class I — few teeth remain (full palate)",
+    description: "Missing most posteriors and laterals. Only 6 teeth remain (canines, centrals, premolars). Tests Full Palatal Plate trigger.",
+    expectedClass: "Kennedy Class I",
+    caseInput: {
+      arch: "maxillary",
+      teeth: rpdBuildTeeth("maxillary", [1, 2, 3, 4, 7, 10, 13, 14, 15, 16]),
+      measurements: { vestibularDepth: 8, ridgeResorption: "moderate", interocclusalSpace: "normal" },
+      patientFactors: { designIntent: "definitive", monthsSinceExtraction: 12 },
+    },
+  },
+  {
+    id: "mand-class-i-recent-extraction",
+    label: "Mandibular Class I — 3 months post-extraction (forces interim)",
+    description: "Same case as the basic Class I, but only 3 months since last extraction. Tests the healing-period blocker.",
+    expectedClass: "Kennedy Class I",
+    caseInput: {
+      arch: "mandibular",
+      teeth: rpdBuildTeeth("mandibular", [17, 18, 19, 30, 31, 32]),
+      measurements: { lingualSulcusDepth: 9, vestibularDepth: 8, interocclusalSpace: "normal" },
+      patientFactors: { designIntent: "definitive", monthsSinceExtraction: 3 },
+    },
+  },
+  {
+    id: "mand-class-i-interim",
+    label: "Mandibular Class I — INTERIM design",
+    description: "Same anatomy as basic Class I, but design intent set to interim. Tests the interim branch (WW C-clasps, no rest seats / guide planes).",
+    expectedClass: "Kennedy Class I",
+    caseInput: {
+      arch: "mandibular",
+      teeth: rpdBuildTeeth("mandibular", [17, 18, 19, 30, 31, 32]),
+      measurements: { lingualSulcusDepth: 9, vestibularDepth: 8, interocclusalSpace: "normal" },
+      patientFactors: { designIntent: "interim", monthsSinceExtraction: 3 },
+    },
+  },
+  {
+    id: "max-class-iii-metal-allergy",
+    label: "Maxillary Class III — metal allergy (NMCD pathway)",
+    description: "Missing #4-5 (single bounded span). Documented metal allergy triggers NMCD design (thermoplastic, no rest seats/guide planes). Requires informed consent and MP approval.",
+    expectedClass: "Kennedy Class III",
+    caseInput: {
+      arch: "maxillary",
+      teeth: rpdBuildTeeth("maxillary", [4, 5]),
+      measurements: { vestibularDepth: 8, interocclusalSpace: "normal" },
+      patientFactors: { designIntent: "definitive", monthsSinceExtraction: 12, metalAllergy: true },
+    },
+  },
+];
+
+// ============================================================================
+// PHASE 3: INTERACTIVE TOOTH CHART + INPUT FORMS
+// ============================================================================
+
+// Deep clone a case input so a preset doesn't get mutated when the user
+// then edits the chart or forms.
+const rpdCloneCase = (c) => JSON.parse(JSON.stringify(c));
+
+// Blank-slate case: all teeth present, sensible measurement defaults.
+// The dentist clicks teeth to mark missing and edits attributes from there.
+function rpdMakeBlankCase(arch = "mandibular") {
+  const teeth = {};
+  for (const n of [...RPD_TEETH_MAX, ...RPD_TEETH_MAND]) {
+    teeth[n] = { status: "present" };
+  }
+  return {
+    arch,
+    teeth,
+    measurements: {
+      vestibularDepth: 8,
+      lingualSulcusDepth: 9,
+      ridgeResorption: "mild",
+      interocclusalSpace: "normal",
+    },
+    patientFactors: {
+      designIntent: "definitive",
+      monthsSinceExtraction: 12,
+    },
+  };
+}
+
+// Build a complete teeth object (all 32 positions) from a partial one, so
+// the chart can render every tooth even if a preset only listed missing
+// teeth. Defaults: all present, no abnormal attrs.
+function rpdNormalizeTeeth(caseInput) {
+  const teeth = { ...(caseInput.teeth || {}) };
+  for (const n of [...RPD_TEETH_MAX, ...RPD_TEETH_MAND]) {
+    if (!teeth[n]) teeth[n] = { status: "present" };
+  }
+  return teeth;
+}
+
+// ─── Interactive Tooth Chart ──────────────────────────────────────────────
+// UIC design overlay color conventions (per NotebookLM-sourced UIC materials):
+//   Blue   = cast metal (major connectors, rests, proximal plates, cast clasps,
+//            guide planes, retention webbing, tube tooth / facing outlines)
+//   Red    = adjustable/non-cast (wrought-wire clasps, tissue stops, retentive
+//            undercut engagement points, acrylic extensions)
+//   Black  = anatomical landmarks (survey line / height of contour, tripod marks)
+// Design overlay ink — official UIC color convention from the Performance
+// Exam grading instructions:
+//   BLUE  → all cast metal framework (rests, plates, clasps, reciprocals,
+//           connectors, minor connectors)
+//   RED   → wrought wire retentive arms, retentive clasp terminal undercuts,
+//           tripod-mark circles, pre-prosthetic surgery outlines, tissue
+//           stops, acrylic resin denture base (cast-only, not on form)
+//   BLACK → survey lines, tooth bodies, internal occlusal anatomy
+const RPD_OL_BLUE  = "#1E47A6";   // cobalt blue — cast metal
+const RPD_OL_RED   = "#C9342E";   // fire-engine red — undercut/wrought/HOC tripod/acrylic/tissue stop
+const RPD_OL_BLACK = "var(--ink)";
+
+function RPDToothChart({
+  caseInput,
+  result,
+  selectedTooth,
+  onSelectTooth,
+  onToggleTooth,
+  selectedDesignEl,
+  onSelectDesignEl,
+  showOverlay = true,
+}) {
+  // ── Unified renderer ──
+  // The interactive chart and the static lab-prescription drawing now share
+  // the SAME rendering pipeline (RPDPaperFormArchDrawing). This component
+  // simply delegates with interactive props on, then renders the legend +
+  // help text below the SVG. Previously two separate visual languages
+  // existed; the schematic was retired in favor of the form-faithful
+  // rendering used in clinic.
+  if (!result) return null;
+  return (
+    <div style={{ width: "100%", overflowX: "auto" }}>
+      <RPDPaperFormArchDrawing
+        caseInput={caseInput}
+        result={result}
+        interactive
+        selectedTooth={selectedTooth}
+        onSelectTooth={onSelectTooth}
+        onToggleTooth={onToggleTooth}
+        selectedDesignEl={selectedDesignEl}
+        onSelectDesignEl={onSelectDesignEl}
+      />
+      <div className="rpd-print-hide" style={{
+        fontSize: "11px", color: "var(--ink-faint)", textAlign: "center",
+        marginTop: "10px", fontStyle: "italic",
+      }}>
+        Click a tooth to inspect / edit attributes. Double-click (or Shift+click) to toggle present ↔ missing.
+      </div>
+    </div>
+  );
+}
+function RPDLegendDot({ label, fill, stroke, dashed, strokeWidth = 1.2, tick, ring }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "11px", color: "var(--ink-soft)" }}>
+      <svg width="20" height="20" viewBox="0 0 20 20">
+        {ring && <circle cx="10" cy="10" r="9" fill="none" stroke={stroke} strokeWidth={0.8} />}
+        <circle cx="10" cy="10" r="7" fill={fill} stroke={stroke} strokeWidth={strokeWidth}
+          strokeDasharray={dashed ? "2,2" : undefined} />
+        {tick && <line x1="10" y1="17" x2="10" y2="20" stroke="var(--ink)" strokeWidth={2} />}
+      </svg>
+      <span>{label}</span>
+    </div>
+  );
+}
+
+// Small "ⓘ" hover-popover. Title shows on the icon's aria-label; children
+// render inside the popover that appears when the icon is hovered.
+function RPDInfoIcon({ title, children }) {
+  return (
+    <span className="rpd-info-icon" style={{
+      position: "relative",
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      width: "16px", height: "16px",
+      border: "1px solid var(--ink-soft)",
+      borderRadius: "50%",
+      fontSize: "10px",
+      fontFamily: "'Fraunces', serif",
+      fontStyle: "italic",
+      color: "var(--ink-soft)",
+      cursor: "help",
+      alignSelf: "center",
+      userSelect: "none",
+    }} aria-label={title}>
+      i
+      <span className="rpd-info-popover" role="tooltip" style={{
+        position: "absolute",
+        // Flush to top of icon (no visual gap) so :hover survives cursor
+        // travel into the popover area. A small marginBottom keeps a
+        // visible-looking gap without breaking hover continuity.
+        bottom: "100%",
+        marginBottom: "6px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        background: "var(--paper)",
+        border: "1px solid var(--rule)",
+        borderRadius: "2px",
+        padding: "10px 12px",
+        fontSize: "11px",
+        color: "var(--ink)",
+        fontStyle: "normal",
+        whiteSpace: "nowrap",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+        opacity: 0,
+        visibility: "hidden",
+        // pointerEvents must be auto when shown so cursor can traverse
+        // onto the popover and keep :hover alive. We rely on
+        // visibility:hidden to keep it from intercepting clicks.
+        pointerEvents: "auto",
+        transition: "opacity 120ms ease, visibility 120ms ease",
+        zIndex: 10,
+      }}>
+        {title && (
+          <div style={{
+            fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase",
+            color: "var(--ink-faint)", marginBottom: "6px",
+          }}>
+            {title}
+          </div>
+        )}
+        {children}
+      </span>
+    </span>
+  );
+}
+
+// ─── Axium clinic-workflow concept glossary ──────────────────────────────
+// Maps technical terms appearing in the workflow steps to short, friendly
+// explanations. Each step pulls a subset of these to render as info-icon
+// chips so students can hover over jargon they don't recognize.
+const RPD_AXIUM_GLOSSARY = {
+  "Metal allergy": "Patient-reported allergy to nickel, chrome, or cobalt. Gates the choice of NMCD (non-metal clasp denture) vs Co-Cr framework. Confirm with the patient at history-taking — don't assume.",
+  "EOE / IOE": "Extra-Oral Exam / Intra-Oral Exam. Cancer screening, TMD palpation, perio probing, soft-tissue inspection, evaluation of any existing prosthesis. Done at the comprehensive oral exam.",
+  "Diagnostic casts": "Stone casts poured from alginate impressions, mounted on a Denar 320 articulator. They let you survey potential abutments, plan tooth modifications, and design the RPD before touching the patient's mouth.",
+  "Articulator (Denar 320)": "A mechanical jaw simulator used in dental clinics. Cast pairs are mounted with facebow + bite registration so static and dynamic occlusion can be evaluated outside the mouth.",
+  "VDO": "Vertical Dimension of Occlusion — the distance between two anatomical points (typically nose-tip to chin-tip) with the teeth in maximum intercuspation. Changes in VDO are a Class IV PDI complexity flag.",
+  "Surveying": "Using a dental surveyor to identify undercuts and find a path of insertion. The undercut location + depth are then transferred to the lab Rx (the red marks on the cast). Done on the diagnostic cast first, repeated on the master cast.",
+  "Survey crown": "A PFM crown specifically designed for an RPD abutment: 2.5–3 mm occlusal reduction at the rest seat, with rest seats and guide planes prepared IN METAL (not porcelain). Used when the abutment can't be modified by enameloplasty alone.",
+  "HOC (Height of contour)": "The widest mesio-distal circumference of the tooth, drawn in black by the surveyor. Clasps cross the HOC to engage undercuts; reciprocal arms stay above it.",
+  "Applegate's Rule 1": "If a tooth is to be extracted, the Kennedy classification is determined AFTER the extraction. Apply this rule whenever Phase I active disease control creates new edentulous areas.",
+  "Applegate's Rules 2 & 3": "Rule 2: a 3rd molar is included only if it's present, healthy, AND being used as an abutment. Rule 3: the most posterior edentulous area governs the classification.",
+  "Phase I active disease control": "Period for extractions of hopeless teeth, periodontal scaling/root-planing, caries control. Re-evaluate 4–6 weeks after Phase I before moving to Phase II surgical / Phase III prosthetic.",
+  "Tori": "Bony exostoses — palatal tori (mid-palate) or mandibular tori (lingual side of mandible). If not surgically removed, the major connector design must avoid them (e.g., U-shaped maxillary connector, lingual plate mandibular).",
+  "Healing period (≥6 months)": "Standard wait time after extractions or surgical removal of tori/tuberosities before taking definitive impressions. Bone remodels significantly during this window; an interim RPD is delivered if a prosthesis is needed sooner.",
+  "Prep sequence (standard sequence)": "Strict order: (1) guide planes → (2) axial contours → (3) undercuts (if needed) → (4) verification impression → (5) rest seats LAST. Reversing this risks damaging the rest seat shape during subsequent prep steps.",
+  "Altered cast technique": "Two-stage functional impression done in Class I/II distal extension cases. The terminal saddle area is re-impressed under finger pressure to capture the compressible ridge mucosa in a loaded state, so the framework distributes occlusal load to both teeth and tissue.",
+  "Border molding": "Functional moulding of the impression tray's periphery using stick compound or PVS, performed in the patient's mouth. Captures the vestibular sulcus and frenum attachments for an accurate denture flange.",
+  "Wax rim / occlusal records": "After framework try-in, wax occlusal rims are added to the framework and used to record VDO + centric relation. The lab then mounts the casts and sets the artificial teeth to the recorded position.",
+  "D5213 / D5214": "ADA / Axium procedure codes for DEFINITIVE cast-metal RPDs. D5213 = maxillary, D5214 = mandibular.",
+  "D5820 / D5821": "ADA / Axium procedure codes for INTERIM (acrylic-base) RPDs. D5820 = maxillary, D5821 = mandibular.",
+};
+
+// Per-step term lists — which glossary entries are relevant for each Axium
+// workflow step. The keys correspond to step numbers in RPD_AXIUM_STEPS.
+const RPD_AXIUM_STEP_TERMS = {
+  1: ["Metal allergy", "EOE / IOE"],
+  2: ["Diagnostic casts", "Articulator (Denar 320)", "VDO"],
+  3: ["Surveying", "Survey crown", "HOC (Height of contour)", "Applegate's Rules 2 & 3"],
+  4: ["Applegate's Rule 1", "Phase I active disease control"],
+  5: ["Tori", "Healing period (≥6 months)"],
+  6: ["Prep sequence (standard sequence)", "Survey crown", "HOC (Height of contour)"],
+  7: ["Altered cast technique", "Border molding", "Wax rim / occlusal records", "D5213 / D5214", "D5820 / D5821"],
+};
+
+// Phase-level "what this phase is for" blurbs.
+const RPD_AXIUM_PHASE_INTROS = {
+  "Diagnostic & Treatment Planning": "Build the case file. History, exam, radiographs, mounted casts, surveying — everything needed to commit to a design before the patient is treated.",
+  "Phase I: Active Disease Control": "Get the mouth healthy first. Extractions, perio, caries control. The Kennedy classification often changes after Phase I — re-run the engine.",
+  "Phase II: Surgical": "Pre-prosthetic surgery: tori, tuberosities, implants. Then wait 6 months for bone remodelling before any definitive impressions.",
+  "Phase III: Prosthetic": "Build the prosthesis. Abutment preps in standard order, final impressions, framework, try-in, delivery.",
+};
+
+// ─── Axium Clinic Workflow ────────────────────────────────────────────────
+// Friendlier presentation of the 7-step UIC RPD workflow. Each step is a
+// card with a short clinical action description, expandable for Axium entry
+// details + design implications, plus info-icon chips for technical jargon.
+function RPDAxiumWorkflow({ result, caseInput }) {
+  const [expanded, setExpanded] = useState({});
+  const toggle = (n) => setExpanded(s => ({ ...s, [n]: !s[n] }));
+  const designIntent = caseInput.patientFactors?.designIntent || "definitive";
+
+  // Group steps by phase, preserving order
+  const phaseGroups = [];
+  let currentPhase = null;
+  for (const s of RPD_AXIUM_STEPS) {
+    if (s.phase !== currentPhase) {
+      phaseGroups.push({ phase: s.phase, steps: [] });
+      currentPhase = s.phase;
+    }
+    phaseGroups[phaseGroups.length - 1].steps.push(s);
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+      {phaseGroups.map(({ phase, steps }) => (
+        <div key={phase}>
+          {/* Phase header */}
+          <div style={{
+            display: "flex", alignItems: "baseline", gap: "12px",
+            marginBottom: "8px", paddingBottom: "6px",
+            borderBottom: "1.5px solid var(--accent)",
+          }}>
+            <div className="serif" style={{
+              fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase",
+              color: "var(--accent)", fontWeight: 600,
+            }}>
+              Phase
+            </div>
+            <div className="serif" style={{
+              fontSize: "16px", color: "var(--ink)", fontStyle: "italic",
+            }}>
+              {phase}
+            </div>
+          </div>
+          {RPD_AXIUM_PHASE_INTROS[phase] && (
+            <div style={{
+              fontSize: "12px", color: "var(--ink-soft)", fontStyle: "italic",
+              lineHeight: 1.55, marginBottom: "14px",
+              fontFamily: "'Fraunces', serif",
+            }}>
+              {RPD_AXIUM_PHASE_INTROS[phase]}
+            </div>
+          )}
+
+          {/* Step cards */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            {steps.map(s => {
+              const isOpen = !!expanded[s.step];
+              const terms = RPD_AXIUM_STEP_TERMS[s.step] || [];
+              // Brief = first sentence / clause of action
+              const brief = (s.action.split(/\.\s/)[0]) + (s.action.match(/^[^.]+\.\s/) ? "." : "");
+              return (
+                <div key={s.step} style={{
+                  border: "1px solid var(--rule)", borderRadius: "3px",
+                  background: "var(--paper)",
+                  transition: "border-color 140ms ease",
+                  borderColor: isOpen ? "var(--accent)" : "var(--rule)",
+                }}>
+                  {/* Step header */}
+                  <button
+                    onClick={() => toggle(s.step)}
+                    style={{
+                      width: "100%", background: "transparent", border: "none",
+                      padding: "14px 16px", cursor: "pointer", textAlign: "left",
+                      display: "flex", alignItems: "flex-start", gap: "14px",
+                      color: "var(--ink)",
+                    }}>
+                    <div style={{
+                      flex: "0 0 32px", width: 32, height: 32, borderRadius: "50%",
+                      background: isOpen ? "var(--accent)" : "var(--paper)",
+                      border: `1.5px solid var(--accent)`,
+                      color: isOpen ? "white" : "var(--accent)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      fontFamily: "'Fraunces', serif", fontSize: "15px", fontWeight: 600,
+                      transition: "background 120ms ease, color 120ms ease",
+                    }}>
+                      {s.step}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{
+                        fontFamily: "'Fraunces', serif", fontSize: "15px",
+                        fontWeight: 500, color: "var(--ink)", marginBottom: "4px",
+                        lineHeight: 1.3,
+                      }}>
+                        {s.clinic}
+                      </div>
+                      <div style={{
+                        fontSize: "13px", color: "var(--ink-soft)",
+                        lineHeight: 1.55, marginBottom: terms.length || isOpen ? "0" : "0",
+                      }}>
+                        {brief}
+                      </div>
+                    </div>
+                    <div style={{
+                      flex: "0 0 18px", fontSize: "13px",
+                      color: "var(--ink-soft)",
+                      transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                      transition: "transform 140ms ease",
+                      lineHeight: 1, marginTop: "9px",
+                    }}>
+                      ⌄
+                    </div>
+                  </button>
+
+                  {/* Expanded content */}
+                  {isOpen && (
+                    <div style={{
+                      padding: "0 18px 16px 62px",
+                      display: "flex", flexDirection: "column", gap: "12px",
+                    }}>
+                      {/* Full action text */}
+                      <div>
+                        <div style={{
+                          fontSize: "10px", letterSpacing: "0.14em",
+                          textTransform: "uppercase", color: "var(--ink-faint)",
+                          marginBottom: "4px",
+                        }}>
+                          Clinical action
+                        </div>
+                        <div style={{
+                          fontSize: "13px", color: "var(--ink)", lineHeight: 1.65,
+                          whiteSpace: "pre-wrap",
+                        }}>
+                          {s.action}
+                        </div>
+                      </div>
+
+                      {/* Axium entry */}
+                      <div>
+                        <div style={{
+                          fontSize: "10px", letterSpacing: "0.14em",
+                          textTransform: "uppercase", color: "var(--ink-faint)",
+                          marginBottom: "4px",
+                        }}>
+                          Axium entry
+                        </div>
+                        <div style={{
+                          fontSize: "12px", color: "var(--ink-soft)", lineHeight: 1.6,
+                          fontStyle: "italic", padding: "8px 12px",
+                          background: "var(--mono-bg)", borderRadius: "2px",
+                          fontFamily: "'JetBrains Mono', monospace",
+                        }}>
+                          {s.axiumEntry}
+                        </div>
+                      </div>
+
+                      {/* Design implications */}
+                      {s.design && (
+                        <div>
+                          <div style={{
+                            fontSize: "10px", letterSpacing: "0.14em",
+                            textTransform: "uppercase", color: "var(--ink-faint)",
+                            marginBottom: "4px",
+                          }}>
+                            How it informs the design
+                          </div>
+                          <div style={{
+                            fontSize: "12px", color: "var(--ink)", lineHeight: 1.65,
+                          }}>
+                            {s.design}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Key concepts (info-icon chips) */}
+                      {terms.length > 0 && (
+                        <div>
+                          <div style={{
+                            fontSize: "10px", letterSpacing: "0.14em",
+                            textTransform: "uppercase", color: "var(--ink-faint)",
+                            marginBottom: "6px",
+                          }}>
+                            Key concepts — hover for details
+                          </div>
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 10px" }}>
+                            {terms.map(term => (
+                              <span key={term} style={{
+                                display: "inline-flex", alignItems: "center", gap: "6px",
+                                padding: "4px 10px", border: "1px solid var(--rule)",
+                                borderRadius: "12px",
+                                fontSize: "11px", color: "var(--ink-soft)",
+                                background: "var(--paper)",
+                              }}>
+                                {term}
+                                <RPDInfoIcon title={term}>
+                                  <div style={{ maxWidth: "320px", whiteSpace: "normal", lineHeight: 1.5 }}>
+                                    {RPD_AXIUM_GLOSSARY[term]}
+                                  </div>
+                                </RPDInfoIcon>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── Engine Decision Tree (text illustration) ────────────────────────────
+// Renders the engine's branching logic as a monospace ASCII tree with the
+// chosen path highlighted in oxblood. Each option that was REJECTED for
+// this specific case is shown faded so the student can see the alternatives
+// the engine considered.
+function RPDDecisionTree({ caseInput, result }) {
+  if (!result || result.kennedy.class === null) return null;
+  const arch = caseInput.arch || "mandibular";
+  const m = caseInput.measurements || {};
+  const pf = caseInput.patientFactors || {};
+  const intent = pf.designIntent || "definitive";
+
+  // ── Helpers ──
+  const NodeRow = ({ prefix, chosen, label, note }) => (
+    <div style={{
+      display: "flex", gap: "8px", alignItems: "flex-start",
+      fontFamily: "'JetBrains Mono', monospace", fontSize: "12px", lineHeight: 1.7,
+      color: chosen ? "var(--accent)" : "var(--ink-faint)",
+      fontWeight: chosen ? 600 : 400,
+    }}>
+      <span style={{ color: "var(--ink-soft)", whiteSpace: "pre" }}>{prefix}</span>
+      <span style={{ flex: 1 }}>
+        <span style={{ marginRight: "8px" }}>
+          {chosen ? "●" : "○"}
+        </span>
+        {label}
+        {note && (
+          <span style={{
+            marginLeft: "10px",
+            color: chosen ? "var(--accent)" : "var(--ink-faint)",
+            fontFamily: "'Geist', sans-serif", fontSize: "11px",
+            fontStyle: "italic", opacity: chosen ? 0.85 : 0.6,
+          }}>
+            — {note}
+          </span>
+        )}
+      </span>
+    </div>
+  );
+
+  // ── Branches ──
+  // 1. Design intent
+  const intentBranches = [
+    { id: "definitive", label: "Definitive RPD (cast metal framework)", note: "long-term prosthesis" },
+    { id: "interim",    label: "Interim RPD (acrylic + WW C-clasp)", note: "transient / Phase I disease control" },
+  ];
+
+  // 2. Kennedy classification (what the engine measured)
+  const kCls = result.kennedy.class;
+  const kClassBranches = [
+    { id: "I",   label: "Class I",   note: "bilateral distal extension" },
+    { id: "II",  label: "Class II",  note: "unilateral distal extension" },
+    { id: "III", label: "Class III", note: "tooth-supported (bounded)" },
+    { id: "IV",  label: "Class IV",  note: "anterior crossing midline" },
+  ];
+
+  // 3. Framework material
+  const fwBranches = [
+    { id: "Co-Cr",         label: "Co-Cr",         note: "Standard default (no metal allergy)" },
+    { id: "Gold",          label: "Gold (Type IV)", note: "metal allergy + esthetic budget" },
+    { id: "Titanium",      label: "Titanium",      note: "metal allergy" },
+    { id: "Acetyl resin",  label: "Acetyl resin / PEEK", note: "NMCD hybrid (metal allergy)" },
+  ];
+
+  // 4. Major connector — different options per arch
+  const mcChoice = result.majorConnector.type;
+  const mcMaxillary = [
+    { id: "A-P Strap",            note: "Kennedy II / large palatal coverage" },
+    { id: "A-P Strap (Class III)", note: "bilateral tooth-supported Class III" },
+    { id: "Single Palatal Strap", note: "short-span Class III (tooth-supported)" },
+    { id: "Full Palatal Plate",   note: "few teeth remaining / max retention" },
+    { id: "U-Shaped Connector",   note: "maxillary tori obstruct mid-palate" },
+  ];
+  const mcMandibular = [
+    { id: "Lingual Bar",          note: "sulcus depth >8mm — preferred" },
+    { id: "Lingual Plate",        note: "sulcus <8mm — alternative" },
+    { id: "Lingual Plate (Tori)", note: "mandibular tori not surgically removed" },
+  ];
+  const mcBranches = arch === "maxillary" ? mcMaxillary : mcMandibular;
+
+  // 5. Per-abutment clasp choices
+  const claspBranches = [
+    { id: "RPI",                  note: "distal extension; all 8 RPI gates passed" },
+    { id: "Combination",          note: "distal extension; ≥1 RPI gate fired" },
+    { id: "I-bar (esthetic)",     note: "tooth-supported anterior in esthetic zone" },
+    { id: "Akers",                note: "tooth-supported; standard cast circumferential" },
+    { id: "Reverse Akers",        note: "tooth-supported; undercut on distal aspect" },
+    { id: "Embrasure",            note: "two adjacent posterior abutments, no edentulous space between" },
+    { id: "WW C-clasp",           note: "interim RPD only" },
+  ];
+
+  return (
+    <div style={{
+      padding: "20px 22px", marginBottom: "20px",
+      background: "var(--paper)", border: "1px solid var(--rule)",
+      borderRadius: "2px",
+    }}>
+      <div style={{ fontSize: "12px", color: "var(--ink-soft)", fontStyle: "italic", marginBottom: "12px" }}>
+        ● = chosen branch; ○ = alternatives the engine considered and rejected.
+      </div>
+
+      {/* Root */}
+      <div style={{
+        fontFamily: "'JetBrains Mono', monospace", fontSize: "12px",
+        fontWeight: 600, color: "var(--ink)", marginBottom: "4px",
+      }}>
+        Case
+        <span style={{ color: "var(--ink-soft)", marginLeft: "8px", fontWeight: 400 }}>
+          — {arch === "maxillary" ? "Maxillary" : "Mandibular"} arch, {result.kennedy.description}
+        </span>
+      </div>
+
+      {/* 1. Design intent */}
+      <NodeRow prefix="├─" chosen={false} label="Design intent" />
+      {intentBranches.map((b, i) => (
+        <NodeRow key={b.id}
+          prefix={`│   ${i === intentBranches.length - 1 ? "└─" : "├─"}`}
+          chosen={intent === b.id}
+          label={b.label}
+          note={b.note} />
+      ))}
+
+      {/* 2. Kennedy classification */}
+      <NodeRow prefix="├─" chosen={false} label="Kennedy classification (Applegate's rules applied)" />
+      {kClassBranches.map((b, i) => (
+        <NodeRow key={b.id}
+          prefix={`│   ${i === kClassBranches.length - 1 ? "└─" : "├─"}`}
+          chosen={kCls === b.id}
+          label={`${b.label}${kCls === b.id && result.kennedy.modifications ? ` Mod ${result.kennedy.modifications}` : ""}`}
+          note={b.note} />
+      ))}
+
+      {/* 3. Framework material */}
+      <NodeRow prefix="├─" chosen={false} label="Framework material" />
+      {fwBranches.map((b, i) => (
+        <NodeRow key={b.id}
+          prefix={`│   ${i === fwBranches.length - 1 ? "└─" : "├─"}`}
+          chosen={result.framework.material?.includes(b.id)}
+          label={b.label}
+          note={b.note} />
+      ))}
+
+      {/* 4. Major connector */}
+      <NodeRow prefix="├─" chosen={false}
+        label={`Major connector (${arch === "maxillary" ? "maxillary palate" : "mandibular lingual"})`} />
+      {mcBranches.map((b, i) => (
+        <NodeRow key={b.id}
+          prefix={`│   ${i === mcBranches.length - 1 ? "└─" : "├─"}`}
+          chosen={mcChoice === b.id}
+          label={b.id}
+          note={b.note} />
+      ))}
+
+      {/* 5. Clasps per abutment */}
+      <NodeRow prefix="└─" chosen={false} label="Clasps (one decision per direct retainer abutment)" />
+      {(result.abutmentDesigns || []).map((a, ai) => {
+        const isLastAb = ai === result.abutmentDesigns.length - 1;
+        return (
+          <div key={a.tooth}>
+            <NodeRow prefix={`    ${isLastAb ? "└─" : "├─"}`}
+              chosen={false}
+              label={`#${a.tooth} — ${a.spanType === "distal-extension" ? "DE terminal" : "tooth-supported abutment"}`} />
+            {claspBranches.map((b, i) => (
+              <NodeRow key={b.id}
+                prefix={`    ${isLastAb ? "    " : "│   "}${i === claspBranches.length - 1 ? "└─" : "├─"}`}
+                chosen={a.claspType === b.id}
+                label={b.id}
+                note={b.note} />
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── Paper-form arch drawing ──────────────────────────────────────────────
+// Renders the engine's RPD design as it would be drawn ON the printed UIC
+// paper preliminary design form: schematic horseshoe arch with light printed
+// teeth, design overlaid in saturated ink colors using standard prosthodontic
+// drawing conventions (McCracken / Carr & Brown / standard convention):
+//
+//   BLUE  — every cast metal component: rest seats, minor connectors,
+//           major connector, retentive arms of cast clasps (Akers, RPI,
+//           reverse Akers), reciprocal arms / lingual plates, guide planes,
+//           denture base mesh / lattice
+//   RED   — wrought wire (non-cast) retentive arms; undercut tick marks
+//   BLACK — survey line (height of contour) drawn on the buccal aspect of
+//           each abutment
+//
+// Drawing geometry conventions (paper-form school):
+//   • Occlusal rest:  filled wedge on the occlusal surface, base at the
+//                     marginal ridge (mesial OR distal), apex toward the
+//                     central fossa.
+//   • Cingulum rest:  filled V on the lingual cingulum of an anterior tooth.
+//   • Ball rest:      small filled circle at the lingual cingulum (centrals).
+//   • I-bar:          vertical bar approaching from the gingival vestibule,
+//                     tip in the gingival third of the buccal surface, below
+//                     the survey line.
+//   • Circumferential
+//     arm (Akers):    curved line wrapping the buccal surface; terminal
+//                     third drops below the survey line into the undercut.
+//                     Reverse Akers is the same curve but originates from the
+//                     opposite proximal corner.
+//   • Wrought wire:   same shape as Akers but drawn in RED (signals non-cast).
+//   • Reciprocal arm: curved line on the LINGUAL surface, stays above HOC.
+//   • Lingual plate:  filled crescent covering the lingual surfaces of
+//                     anterior teeth up to the cingula.
+//   • Lingual bar
+//     (mandibular):   wide blue band running along the lingual gingival
+//                     border, inside the arch curve, between the floor of
+//                     the mouth and the gingival margins.
+//   • Palatal strap   wide blue band crossing the palate (single = one
+//     (maxillary):    band, AP = two parallel bands joined by lateral struts).
+//   • Saddle / base:  cross-hatched blue area spanning the edentulous region
+//                     between abutments (or distal from terminal abutment).
+//   • Indirect
+//     retainer:       rest seat (occlusal or cingulum) on a tooth FAR from
+//                     the distal extension, often opposite the saddle.
+//
+// Tooth numbers are shown peripheral to each tooth. Missing teeth are dashed.
+function RPDPaperFormArchDrawing({
+  caseInput,
+  result,
+  // ── Interactive-mode props (optional) ──
+  // When `interactive` is true, teeth + design elements become clickable,
+  // selection rings appear, missing-tooth X overlays render, and perio
+  // prognosis tints apply. When false (default), this is a static
+  // print/preview rendering for the Lab Prescription section.
+  interactive = false,
+  selectedTooth = null,
+  onSelectTooth,
+  onToggleTooth,
+  selectedDesignEl = null,
+  onSelectDesignEl,
+}) {
+  // Static mode (Lab Prescription panel) requires a usable design output.
+  // Interactive mode renders the empty arch so users can mark teeth and
+  // build up a case — even before any teeth are missing.
+  if (!result) return null;
+  if (!interactive && result.kennedy.class === null) return null;
+  const arch = caseInput.arch;
+  const isMax = arch === "maxillary";
+  const teethState = rpdNormalizeTeeth(caseInput);
+  const isPresent = (n) => teethState[n]?.status === "present";
+
+  // ── Design-element selection helpers (interactive mode only) ──
+  const isElSelected = (kind, ctx = {}) => {
+    if (!selectedDesignEl || selectedDesignEl.kind !== kind) return false;
+    if (ctx.tooth !== undefined && selectedDesignEl.tooth !== ctx.tooth) return false;
+    if (ctx.spanIndex !== undefined && selectedDesignEl.spanIndex !== ctx.spanIndex) return false;
+    return true;
+  };
+  const handleElClick = (kind, ctx = {}) => (e) => {
+    e.stopPropagation();
+    if (!onSelectDesignEl) return;
+    const sameAsCurrent =
+      selectedDesignEl?.kind === kind &&
+      (ctx.tooth === undefined || selectedDesignEl.tooth === ctx.tooth) &&
+      (ctx.spanIndex === undefined || selectedDesignEl.spanIndex === ctx.spanIndex);
+    onSelectDesignEl(sameAsCurrent ? null : { kind, ...ctx });
+  };
+  // Wrap a static design-element render in a clickable group + selection ring.
+  // Returns the original content unchanged when not in interactive mode.
+  const selectable = (content, kind, ctx, key) => {
+    if (!interactive) return content;
+    const sel = isElSelected(kind, ctx);
+    const tooltip = ctx.tooltip || kind;
+    return (
+      <g key={key}
+         className={`rpd-elem ${sel ? "is-selected" : ""}`}
+         style={{ cursor: 'pointer' }}
+         onClick={handleElClick(kind, ctx)}>
+        <title>{tooltip}</title>
+        {sel && (
+          <g style={{ filter: "drop-shadow(0 0 4px var(--accent))" }} opacity={0.5}>
+            {content}
+          </g>
+        )}
+        {content}
+      </g>
+    );
+  };
+
+  // ── Ink colors (UIC Performance Exam convention) ──
+  // Aligned with the module-level RPD_OL_* constants used by the interactive
+  // chart so both renderings stay in lockstep.
+  const C_CAST   = RPD_OL_BLUE;     // cobalt blue — all cast metal framework
+  const C_WW     = RPD_OL_RED;      // fire-engine red — wrought wire, undercut, HOC, tissue stop, acrylic outline
+  const C_SURVEY = "#1A1A1A";       // black/carbon — survey line, tooth bodies, occlusal anatomy
+  const C_TOOTH_FILL = "#FCFAF4";
+  const C_TOOTH_LINE = "#3A332A";   // darker than before — black-ink tooth bodies match the form
+  const C_MISSING    = "#C9C2B3";
+  const C_LABEL  = "#3A332A";
+  const C_FIXED  = "#2C5F5D";       // deep teal — indicated fixed restoration (FPD pontic / implant crown). Per project's color semantics, teal = good / preferred.
+
+  // ── Single-arch geometry ──
+  // Matches UIC lab-script form orientation:
+  //   Max → ∩ shape (anteriors at TOP, posteriors curving down to corners)
+  //   Mand → ∪ shape (anteriors at BOTTOM, posteriors curving up to corners)
+  // Both: cy increases downward in standard SVG coordinates.
+  // Arch dimensions sized to nearly fill the canvas (small fixed margins
+  // for the peripheral annotations — "Akers", "0.01" mid-B", etc.).
+  const W = 1400, H = 740;
+  const midlineX = W / 2;
+  const archHalfWidth = 560;
+  const archDepth = 480;
+  // Midline gap sized so anterior centrals have a clean visible separation
+  // at the midline (was 64, which had the centrals' mesial edges meet
+  // exactly at x=midline and their strokes visibly overlap into a single
+  // mass). 72 leaves a ~4 px visible gap between the two central crown
+  // outlines while still reading as proximal contact.
+  const midGap = 72;
+  // postY = y-coordinate of the most posterior (back) teeth.
+  //   Max: posteriors at BOTTOM corners → high y
+  //   Mand: posteriors at TOP corners → low y
+  const postY = isMax ? H - 110 : 110;
+  // archCurveDir controls which direction the parabola curves to reach the
+  // anteriors. Max: curve goes UP (negative y direction) → anteriors at top.
+  // Mand: curve goes DOWN (positive y direction) → anteriors at bottom.
+  const archCurveDir = isMax ? -1 : +1;
+  // Arch centroid (used for radial-direction math) sits roughly mid-arch.
+  const archCenterY = isMax ? postY - archDepth * 0.5 : postY + archDepth * 0.5;
+
+  const archTeeth = isMax
+    ? Array.from({ length: 16 }, (_, i) => i + 1)
+    : Array.from({ length: 16 }, (_, i) => i + 17);
+
+  const positionOf = (n) => {
+    let sign, ord;
+    if (isMax) {
+      if (n <= 8) { sign = -1; ord = 8 - n; }
+      else        { sign = +1; ord = n - 9; }
+    } else {
+      if (n <= 24) { sign = +1; ord = 24 - n; }
+      else         { sign = -1; ord = n - 25; }
+    }
+    const halfGap = midGap / 2;
+    const absX = halfGap + (ord / 7) * (archHalfWidth - halfGap);
+    const cx = midlineX + sign * absX;
+    const t = absX / archHalfWidth;
+    const cy = postY + archCurveDir * archDepth * (1 - t * t);
+    return { cx, cy };
+  };
+
+  // ── Per-tooth ord lookup (used by mesialUnit to compute the true arch
+  // tangent at a tooth's position). ──
+  const ordOf = (n) => {
+    if (isMax) {
+      return n <= 8 ? 8 - n : n - 9;
+    }
+    return n <= 24 ? 24 - n : n - 25;
+  };
+  const signOf = (n) => {
+    if (isMax) {
+      return n <= 8 ? -1 : +1;
+    }
+    return n <= 24 ? +1 : -1;
+  };
+
+  // ── Mesial direction = TRUE tangent to the parabolic arch at the tooth's
+  // position, pointing TOWARD the midline.
+  // cy(absX) = postY + archCurveDir * archDepth * (1 - (absX/archHalfWidth)²)
+  // dcy/d(absX) = -archCurveDir * archDepth * 2 * absX / archHalfWidth²
+  // For the side with sign>0 (chart-right), increasing cx ⇔ increasing absX,
+  // and "toward midline" means decreasing absX. Mesial direction in (cx, cy)
+  // space is (-sign, +archCurveDir * 2 * archDepth * absX / archHalfWidth²)
+  // for the right side, mirrored on the left.
+  //
+  // The previous implementation used perpendicular-to-radial-from-centroid,
+  // which is only correct for a CIRCULAR arch. For a parabolic arch with
+  // posteriors near a flat horizontal tangent, the perpendicular has
+  // ambiguous y-sign and picked the wrong one. ──
+  const mesialUnit = (n) => {
+    const sign = signOf(n);
+    const ord = ordOf(n);
+    const halfGap = midGap / 2;
+    const absX = halfGap + (ord / 7) * (archHalfWidth - halfGap);
+    // Slope dcy/d(absX) of the parabola at this absX
+    const slope = -archCurveDir * archDepth * 2 * absX / (archHalfWidth * archHalfWidth);
+    // Tangent in direction of decreasing absX (mesial direction):
+    //   (-sign in cx, -slope in cy)
+    // For sign=+1 (right side): mesial cx-component is negative (toward midline)
+    // For sign=-1 (left side): mesial cx-component is positive (toward midline)
+    const dx = -sign;
+    const dy = -slope * (-sign) * sign;  // simplifies to: -slope if sign=+1, +slope if sign=-1 → multiply by -sign
+    // Above is confusing — clearer:
+    //   d(cx)/d(absX) = sign
+    //   d(cy)/d(absX) = slope
+    //   moving toward mesial means d(absX) < 0, so mesial direction is
+    //   (-sign, -slope) in cx-cy space.
+    const mx = -sign;
+    const my = -slope;
+    const len = Math.sqrt(mx * mx + my * my) || 1;
+    return { x: mx / len, y: my / len };
+  };
+
+  // ── Radial direction = perpendicular to the arch tangent, pointing
+  // OUTWARD (buccal side, away from arch interior). For ∩ max the outward
+  // direction is UP-and-outward at posteriors; for ∪ mand it's DOWN-and-
+  // outward.
+  // The mesial unit vector is m = (mx, my). Rotating 90° gives two
+  // perpendiculars: (-my, mx) and (my, -mx). The buccal direction is the
+  // one pointing AWAY from archCenterY (the centroid). ──
+  const radialUnit = (n) => {
+    const { cx, cy } = positionOf(n);
+    const m = mesialUnit(n);
+    // Two perpendicular candidates
+    const c1 = { x: -m.y, y: m.x };
+    const c2 = { x: m.y, y: -m.x };
+    // Pick the one pointing AWAY from arch centroid
+    const dx = cx - midlineX;
+    const dy = cy - archCenterY;
+    const dot1 = c1.x * dx + c1.y * dy;
+    const dot2 = c2.x * dx + c2.y * dy;
+    return dot1 >= dot2 ? c1 : c2;
+  };
+
+  // Per-tooth half-widths along M-D and B-L axes. Proportions loosely
+  // anatomic (incisors wider M-D than B-L, premolars wider B-L, molars
+  // roughly square), but anteriors are exaggerated above true anatomic
+  // ratio so they're readable and clickable at the chart's display size.
+  // Mandibular incisors in particular: true anatomic is ~5×6 mm; on a
+  // chart that renders ~600 px wide, that's a postage stamp.
+  const isMaxCentralPF = (n) => n === 8 || n === 9;
+  const isMaxLateralPF = (n) => n === 7 || n === 10;
+  const isMandCentralPF = (n) => n === 24 || n === 25;
+  const isMandLateralPF = (n) => n === 23 || n === 26;
+  // Tooth half-widths bumped ~1.4-1.7× from baseline so individual teeth
+  // are clearly visible and clickable at the chart's typical display size.
+  // M-D constrained by arch spacing (~72 px per ord) — molars at halfMD=36
+  // have total width 72, just touching neighbors at proximal contacts.
+  // B-L unconstrained by neighbors, scaled more aggressively for readability.
+  // Tooth half-widths bumped up to use the wider chart real estate. MD
+  // (mesiodistal) is constrained by arch spacing (~75 px between adjacent
+  // ord positions) so it gets a smaller bump; BL (buccolingual) is
+  // perpendicular to the arch and unconstrained by neighbors, so it gets
+  // a larger bump for better visibility of internal anatomy and clasp
+  // arms.
+  const toothHalfMD = (n) => {
+    if (RPD_FIRST_MOLARS.has(n) || RPD_SECOND_MOLARS.has(n) || RPD_THIRD_MOLARS.has(n)) return 37;
+    if ([4,5,12,13,20,21,28,29].includes(n)) return 32;   // premolars
+    if (RPD_CANINES.has(n)) return 31;                     // canines
+    if (isMaxCentralPF(n)) return 32;
+    if (isMaxLateralPF(n)) return 28;
+    if (isMandCentralPF(n)) return 28;
+    if (isMandLateralPF(n)) return 30;
+    return 28;
+  };
+  const toothHalfBL = (n) => {
+    if (RPD_FIRST_MOLARS.has(n) || RPD_SECOND_MOLARS.has(n) || RPD_THIRD_MOLARS.has(n)) return 62;
+    if ([4,5,12,13,20,21,28,29].includes(n)) return 54;
+    if (RPD_CANINES.has(n)) return 50;
+    if (isMaxCentralPF(n)) return 42;
+    if (isMaxLateralPF(n)) return 38;
+    if (isMandCentralPF(n)) return 36;
+    if (isMandLateralPF(n)) return 38;
+    return 34;
+  };
+  const toothRadius = (n) => Math.max(toothHalfMD(n), toothHalfBL(n));
+
+  // Tooth-body path: rounded shape with modest cusp bulges at the corners
+  // (matches the printed UIC form's tooth illustrations — not pure circles).
+  const toothPath = (cx, cy, halfMD, halfBL, rad, mes, r, cuspBulge = 0) => {
+    const cb = cuspBulge;
+    const MB = { x: cx + mes.x * halfMD + rad.x * halfBL, y: cy + mes.y * halfMD + rad.y * halfBL };
+    const DB = { x: cx - mes.x * halfMD + rad.x * halfBL, y: cy - mes.y * halfMD + rad.y * halfBL };
+    const DL = { x: cx - mes.x * halfMD - rad.x * halfBL, y: cy - mes.y * halfMD - rad.y * halfBL };
+    const ML = { x: cx + mes.x * halfMD - rad.x * halfBL, y: cy + mes.y * halfMD - rad.y * halfBL };
+    const bulge = (c, mdS, blS) => ({
+      x: c.x + (mes.x * mdS + rad.x * blS) * halfMD * cb,
+      y: c.y + (mes.y * mdS + rad.y * blS) * halfMD * cb,
+    });
+    const cMB = bulge(MB, +1, +1), cDB = bulge(DB, -1, +1), cDL = bulge(DL, -1, -1), cML = bulge(ML, +1, -1);
+    // Each corner contributes TWO edge-endpoints: one on each of the two
+    // edges meeting at the corner. The endpoint on a given edge is the
+    // corner displaced ALONG that edge (toward the adjacent corner) by r.
+    //   Mesial edge runs along the radial axis (varying rad-coord at
+    //     fixed mes-coord = ±halfMD). To move along the mesial edge,
+    //     change rad.
+    //   Buccal/lingual edges run along the mesial axis (varying mes-coord
+    //     at fixed rad-coord = ±halfBL). To move along these edges,
+    //     change mes.
+    //   Distal edge runs along the radial axis (varying rad-coord at
+    //     mes-coord = -halfMD). To move along the distal edge, change rad.
+    // BUG FIX: DL's two endpoints were swapped (DL_D used mes-shift when
+    // it should have used rad-shift, and vice versa for DL_L), which made
+    // the path's L-lines after the DL corner cut diagonally across the
+    // tooth instead of running along the lingual + distal edges. This
+    // showed up as visible "wings" sticking out at the DL corner of every
+    // tooth once the cusp bulge was reduced.
+    const MB_M = { x: MB.x - rad.x * r, y: MB.y - rad.y * r };  // mesial edge near MB
+    const MB_B = { x: MB.x - mes.x * r, y: MB.y - mes.y * r };  // buccal edge near MB
+    const DB_B = { x: DB.x + mes.x * r, y: DB.y + mes.y * r };  // buccal edge near DB
+    const DB_D = { x: DB.x - rad.x * r, y: DB.y - rad.y * r };  // distal edge near DB
+    const DL_D = { x: DL.x + rad.x * r, y: DL.y + rad.y * r };  // distal edge near DL  (was using mes — BUG)
+    const DL_L = { x: DL.x + mes.x * r, y: DL.y + mes.y * r };  // lingual edge near DL (was using rad — BUG)
+    const ML_L = { x: ML.x - mes.x * r, y: ML.y - mes.y * r };  // lingual edge near ML
+    const ML_M = { x: ML.x + rad.x * r, y: ML.y + rad.y * r };  // mesial edge near ML
+    return `M ${MB_B.x} ${MB_B.y} `
+         + `Q ${cMB.x} ${cMB.y} ${MB_M.x} ${MB_M.y} L ${ML_M.x} ${ML_M.y} `
+         + `Q ${cML.x} ${cML.y} ${ML_L.x} ${ML_L.y} L ${DL_L.x} ${DL_L.y} `
+         + `Q ${cDL.x} ${cDL.y} ${DL_D.x} ${DL_D.y} L ${DB_D.x} ${DB_D.y} `
+         + `Q ${cDB.x} ${cDB.y} ${DB_B.x} ${DB_B.y} Z`;
+  };
+
+  // ── Tooth body with internal occlusal anatomy ──
+  // Replaces the simple circle with an anatomic shape matching the UIC form's
+  // printed teeth: rounded with modest cusp bulges, internal grooves drawn
+  // in to differentiate class. In interactive mode, wraps in a click target
+  // and adds selection ring, missing-tooth X overlay, perio tint, frenum tick.
+  // NOTE: This is a regular function returning JSX — NOT a React component.
+  // Defining it as a component inside the parent's render (`const Tooth =`
+  // arrow component) gave it a fresh function identity on every render,
+  // causing React to fully unmount + remount the tooth `<g>` between
+  // clicks. That broke `onDoubleClick` because both clicks need the same
+  // DOM target. Calling it directly avoids the component remount.
+  const renderTooth = (n) => {
+    const { cx, cy } = positionOf(n);
+    const halfMD = toothHalfMD(n);
+    const halfBL = toothHalfBL(n);
+    const present = isPresent(n);
+    const rad = radialUnit(n);
+    const mes = mesialUnit(n);
+    const isMolar = RPD_FIRST_MOLARS.has(n) || RPD_SECOND_MOLARS.has(n) || RPD_THIRD_MOLARS.has(n);
+    const isPM = [4,5,12,13,20,21,28,29].includes(n);
+    const isCanine = RPD_CANINES.has(n);
+
+    // Interactive state
+    const isSelected = interactive && selectedTooth === n;
+    const attrs = teethState[n]?.attrs || {};
+    const hasFrenum = !!attrs.highFrenum;
+    const isPerioPoor = attrs.perioPrognosis === "poor" || attrs.perioPrognosis === "hopeless";
+    const isPerioHopeless = attrs.perioPrognosis === "hopeless";
+
+    const cornerR = Math.min(halfMD, halfBL) * 0.28;
+    // Cusp bulges sized to match the UIC form's printed teeth: visible
+    // anatomic character at each corner without protruding so far that
+    // proximal contacts become ambiguous. Molars get the most pronounced
+    // 4-cusp shape; premolars are intermediate; canines have a slight
+    // labial bulge only (real cusp tip is internal); incisors stay flat.
+    const cuspBulge = isMolar ? 0.18 : isPM ? 0.11 : isCanine ? 0.07 : 0;
+    const d = toothPath(cx, cy, halfMD, halfBL, rad, mes, cornerR, cuspBulge);
+    const innerStroke = isSelected ? "var(--accent)"
+                      : present ? "#7A6F5C"
+                      : C_MISSING;
+    const innerStrokeW = isSelected ? 2.2 : 1.4;
+
+    // Tooth-number label placement — same rule for every tooth: centered on
+    // the OUTER (buccal/labial) wall, offset radially outward by halfBL + 20.
+    // Earlier we put anterior numbers on the lingual side with per-tooth
+    // offsets, but the inconsistency between posterior (centered on buccal)
+    // and anterior (lingual, shifted) was visually jarring. Using +rad
+    // throughout puts every label on the same anatomic axis — buccal for
+    // posteriors, labial for anteriors — centered across the tooth's M-D.
+    const numX = cx + rad.x * (halfBL + 20);
+    const numY = cy + rad.y * (halfBL + 20) + 4;
+
+    // Internal occlusal anatomy markings (only on present teeth).
+    // Aimed at matching the level of detail printed on the UIC form:
+    //   - Molars: 4 cusp-tip dots (MB/DB/DL/ML) + central fossa + 3 grooves
+    //   - Premolars: 2 cusp-tip dots (B/L) + central B-L groove
+    //   - Canines: cusp tip + cingulum mark
+    //   - Incisors: incisal edge tangent + cingulum mark
+    const anatomyStroke = "#7A6F5C";
+    let anatomyMarks = null;
+    if (present) {
+      if (isMolar) {
+        const fMD = halfMD * 0.6, fBL = halfBL * 0.55;
+        // Cusp tip positions: ~70% of half-axes from center toward each corner.
+        const cTip = 0.7;
+        const tipMB = { x: cx + (mes.x + rad.x) * 0,  y: cy + 0 }; // placeholder unused
+        // Use sum of axes for each corner (avoiding direct corner = avoid overlap with bulge)
+        const mbX = cx + mes.x * halfMD * cTip + rad.x * halfBL * cTip;
+        const mbY = cy + mes.y * halfMD * cTip + rad.y * halfBL * cTip;
+        const dbX = cx - mes.x * halfMD * cTip + rad.x * halfBL * cTip;
+        const dbY = cy - mes.y * halfMD * cTip + rad.y * halfBL * cTip;
+        const dlX = cx - mes.x * halfMD * cTip - rad.x * halfBL * cTip;
+        const dlY = cy - mes.y * halfMD * cTip - rad.y * halfBL * cTip;
+        const mlX = cx + mes.x * halfMD * cTip - rad.x * halfBL * cTip;
+        const mlY = cy + mes.y * halfMD * cTip - rad.y * halfBL * cTip;
+        anatomyMarks = (
+          <g pointerEvents="none">
+            {/* Central fossa */}
+            <circle cx={cx} cy={cy} r={1.6} fill={anatomyStroke} />
+            {/* Central M-D groove */}
+            <line x1={cx + mes.x * fMD} y1={cy + mes.y * fMD}
+                  x2={cx - mes.x * fMD} y2={cy - mes.y * fMD}
+                  stroke={anatomyStroke} strokeWidth={0.9} strokeLinecap="round" />
+            {/* Buccal groove */}
+            <line x1={cx} y1={cy} x2={cx + rad.x * fBL} y2={cy + rad.y * fBL}
+                  stroke={anatomyStroke} strokeWidth={0.9} strokeLinecap="round" />
+            {/* Lingual groove */}
+            <line x1={cx} y1={cy} x2={cx - rad.x * fBL} y2={cy - rad.y * fBL}
+                  stroke={anatomyStroke} strokeWidth={0.9} strokeLinecap="round" />
+            {/* 4 cusp tips — small dots at each corner area */}
+            <circle cx={mbX} cy={mbY} r={1.6} fill={anatomyStroke} opacity={0.75} />
+            <circle cx={dbX} cy={dbY} r={1.6} fill={anatomyStroke} opacity={0.75} />
+            <circle cx={dlX} cy={dlY} r={1.6} fill={anatomyStroke} opacity={0.75} />
+            <circle cx={mlX} cy={mlY} r={1.6} fill={anatomyStroke} opacity={0.75} />
+          </g>
+        );
+      } else if (isPM) {
+        const grLen = halfBL * 0.6;
+        // Cusp tips at buccal + lingual midpoints (premolars are bicuspid)
+        const bX = cx + rad.x * halfBL * 0.62, bY = cy + rad.y * halfBL * 0.62;
+        const lX = cx - rad.x * halfBL * 0.62, lY = cy - rad.y * halfBL * 0.62;
+        anatomyMarks = (
+          <g pointerEvents="none">
+            <line x1={cx + rad.x * grLen} y1={cy + rad.y * grLen}
+                  x2={cx - rad.x * grLen} y2={cy - rad.y * grLen}
+                  stroke={anatomyStroke} strokeWidth={0.9} strokeLinecap="round" />
+            <circle cx={bX} cy={bY} r={1.5} fill={anatomyStroke} opacity={0.75} />
+            <circle cx={lX} cy={lY} r={1.5} fill={anatomyStroke} opacity={0.75} />
+          </g>
+        );
+      } else if (isCanine) {
+        // Cusp tip (labial) + cingulum mark (lingual)
+        const tipX = cx + rad.x * halfBL * 0.68, tipY = cy + rad.y * halfBL * 0.68;
+        const cingX = cx - rad.x * halfBL * 0.50, cingY = cy - rad.y * halfBL * 0.50;
+        const cingW = halfMD * 0.35;
+        anatomyMarks = (
+          <g pointerEvents="none">
+            <circle cx={tipX} cy={tipY} r={1.6} fill={anatomyStroke} />
+            {/* Cingulum — short arc/line on the lingual surface */}
+            <line x1={cingX + mes.x * cingW} y1={cingY + mes.y * cingW}
+                  x2={cingX - mes.x * cingW} y2={cingY - mes.y * cingW}
+                  stroke={anatomyStroke} strokeWidth={0.9} strokeLinecap="round" opacity={0.6} />
+          </g>
+        );
+      } else {
+        // Incisor — incisal edge tangent line on labial side + cingulum
+        const o = halfBL * 0.7;
+        const tipX = cx + rad.x * o, tipY = cy + rad.y * o;
+        const tx = -rad.y, ty = rad.x;
+        const edgeLen = halfMD * 0.7;
+        const cingX = cx - rad.x * halfBL * 0.45, cingY = cy - rad.y * halfBL * 0.45;
+        const cingW = halfMD * 0.45;
+        anatomyMarks = (
+          <g pointerEvents="none">
+            {/* Incisal edge */}
+            <line x1={tipX + tx * edgeLen} y1={tipY + ty * edgeLen}
+                  x2={tipX - tx * edgeLen} y2={tipY - ty * edgeLen}
+                  stroke={anatomyStroke} strokeWidth={1.1} strokeLinecap="round" />
+            {/* Cingulum hint on lingual */}
+            <line x1={cingX + mes.x * cingW} y1={cingY + mes.y * cingW}
+                  x2={cingX - mes.x * cingW} y2={cingY - mes.y * cingW}
+                  stroke={anatomyStroke} strokeWidth={0.8} strokeLinecap="round" opacity={0.55} />
+          </g>
+        );
+      }
+    }
+
+    // Perio prognosis tint (interactive mode only — internal UI signal,
+    // not a form convention)
+    const tintFill = !interactive ? null
+                   : isPerioHopeless ? "rgba(122,30,30,0.20)"
+                   : isPerioPoor      ? "rgba(212,165,116,0.28)"
+                   : null;
+
+    // Frenum tick — short red mark on the buccal/labial side
+    const frenumLen = 10;
+    const frX1 = cx + rad.x * (halfBL + 2);
+    const frY1 = cy + rad.y * (halfBL + 2);
+    const frX2 = cx + rad.x * (halfBL + frenumLen);
+    const frY2 = cy + rad.y * (halfBL + frenumLen);
+
+    // Missing-tooth X overlay (interactive mode only)
+    const Xsize = Math.min(halfMD, halfBL) * 0.75;
+
+    const handleClick = interactive ? (e) => {
+      if (e.shiftKey && onToggleTooth) onToggleTooth(n);
+      else if (onSelectTooth) onSelectTooth(n);
+    } : undefined;
+    const handleDoubleClick = interactive && onToggleTooth ? () => onToggleTooth(n) : undefined;
+
+    return (
+      <g key={`t-${n}`}
+        className={interactive ? "rpd-tooth-active" : undefined}
+        style={interactive ? { cursor: "pointer" } : undefined}
+        onClick={handleClick}
+        onDoubleClick={handleDoubleClick}>
+        {/* Invisible hit-target — covers the tooth's full bounding box so
+            missing teeth (dashed outlines) still catch clicks. */}
+        {interactive && (
+          <circle cx={cx} cy={cy} r={Math.max(halfMD, halfBL) + 2}
+            fill="rgba(0,0,0,0)" pointerEvents="all" />
+        )}
+        {/* Tooth body */}
+        <path d={d}
+          fill={present ? C_TOOTH_FILL : "transparent"}
+          stroke={innerStroke} strokeWidth={innerStrokeW}
+          strokeDasharray={present ? undefined : "5,5"}
+          strokeLinejoin="round" pointerEvents="none" />
+        {/* Perio prognosis tint over the printed tooth */}
+        {tintFill && present && (
+          <path d={d} fill={tintFill} pointerEvents="none" />
+        )}
+        {/* Missing tooth X overlay */}
+        {interactive && !present && (
+          <g pointerEvents="none">
+            <line x1={cx - Xsize} y1={cy - Xsize} x2={cx + Xsize} y2={cy + Xsize}
+              stroke="var(--accent)" strokeWidth={3} strokeLinecap="round" opacity={0.7} />
+            <line x1={cx - Xsize} y1={cy + Xsize} x2={cx + Xsize} y2={cy - Xsize}
+              stroke="var(--accent)" strokeWidth={3} strokeLinecap="round" opacity={0.7} />
+          </g>
+        )}
+        {anatomyMarks}
+        {/* Frenum tick */}
+        {interactive && hasFrenum && present && (
+          <line x1={frX1} y1={frY1} x2={frX2} y2={frY2}
+            stroke="var(--accent)" strokeWidth={2.4}
+            pointerEvents="none" />
+        )}
+        <text x={numX} y={numY} fontSize="20"
+          fontFamily="'JetBrains Mono', monospace"
+          fill={present ? C_LABEL : C_MISSING}
+          textAnchor="middle" opacity={0.7} fontWeight="500"
+          pointerEvents="none">
+          {n}
+        </text>
+      </g>
+    );
+  };
+
+  // ── Helpers to render every element type ──
+
+  // Smooth-path helper: midpoint quadratic Bezier smoothing for tooth-tracking
+  // polylines (used by every major-connector and saddle outline).
+  const buildSmoothPath = (pts) => {
+    if (pts.length === 0) return "";
+    let d = `M ${pts[0].x} ${pts[0].y}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const midX = (pts[i].x + pts[i + 1].x) / 2;
+      const midY = (pts[i].y + pts[i + 1].y) / 2;
+      d += ` Q ${pts[i].x} ${pts[i].y} ${midX} ${midY}`;
+    }
+    d += ` L ${pts[pts.length - 1].x} ${pts[pts.length - 1].y}`;
+    return d;
+  };
+
+  // HOC / survey-line marker — per Lab 4 + Performance Exam convention,
+  // drawn as a small RED OVAL at the tripod/HOC point on the buccal or
+  // lingual surface where the undercut sits. Replaces the prior 3-dash
+  // row which didn't match the form convention.
+  const drawSurveyLine = (n, key) => {
+    const { cx, cy } = positionOf(n);
+    const halfMD = toothHalfMD(n);
+    const halfBL = toothHalfBL(n);
+    const rad = radialUnit(n);
+    const mes = mesialUnit(n);
+    const attrs = teethState[n]?.attrs || {};
+    const ucLoc = attrs.undercutLocation || "mid-buccal";
+    const radSgn = (ucLoc === "mesio-lingual" || ucLoc === "disto-lingual") ? -1 : +1;
+    const mdSgn = (ucLoc === "mesio-buccal" || ucLoc === "mesio-lingual") ? +1
+                : (ucLoc === "disto-buccal" || ucLoc === "disto-lingual") ? -1
+                : 0;
+    const ox = cx + mes.x * mdSgn * (halfMD * 0.45) + rad.x * radSgn * (halfBL * 0.92);
+    const oy = cy + mes.y * mdSgn * (halfMD * 0.45) + rad.y * radSgn * (halfBL * 0.92);
+    const angle = Math.atan2(mes.y, mes.x) * 180 / Math.PI;
+    return (
+      <ellipse key={key} cx={ox} cy={oy} rx={5} ry={3}
+        transform={`rotate(${angle} ${ox} ${oy})`}
+        fill="none" stroke={C_WW} strokeWidth={1.3} />
+    );
+  };
+
+  // Occlusal rest — anatomic spoon drawn INSIDE the tooth at the marginal
+  // ridge area. Per Lab 3 spec: rounded triangular outline, base at the
+  // marginal ridge, apex toward central fossa. B-L width ≈ 1/3 of B-L
+  // dimension; M-D depth ≈ 1/4 (molars) or 1/3 (PMs) of M-D.
+  const drawOcclusalRest = (n, surface, key) => {
+    const { cx, cy } = positionOf(n);
+    const halfMD = toothHalfMD(n);
+    const halfBL = toothHalfBL(n);
+    const mes = mesialUnit(n);
+    const rad = radialUnit(n);
+    const sgn = surface === "mesial" ? +1 : -1;
+    const isMolar = RPD_FIRST_MOLARS.has(n) || RPD_SECOND_MOLARS.has(n) || RPD_THIRD_MOLARS.has(n);
+    const mdDepthFrac = isMolar ? 0.50 : 0.60;
+    const blHalf = halfBL * 0.33;
+    const baseDist = halfMD * 0.85;
+    const baseCx = cx + sgn * mes.x * baseDist;
+    const baseCy = cy + sgn * mes.y * baseDist;
+    const b1 = { x: baseCx + rad.x * blHalf, y: baseCy + rad.y * blHalf };
+    const b2 = { x: baseCx - rad.x * blHalf, y: baseCy - rad.y * blHalf };
+    const apexDist = halfMD * (0.85 - mdDepthFrac);
+    const apex = { x: cx + sgn * mes.x * apexDist, y: cy + sgn * mes.y * apexDist };
+    // Mid-side control points for the spoon curve
+    const midSideX = cx + sgn * mes.x * (baseDist - mdDepthFrac * halfMD * 0.5);
+    const midSideY = cy + sgn * mes.y * (baseDist - mdDepthFrac * halfMD * 0.5);
+    const ms1 = { x: midSideX + rad.x * blHalf * 0.6, y: midSideY + rad.y * blHalf * 0.6 };
+    const ms2 = { x: midSideX - rad.x * blHalf * 0.6, y: midSideY - rad.y * blHalf * 0.6 };
+    const d = `M ${b1.x} ${b1.y} Q ${ms1.x} ${ms1.y} ${apex.x} ${apex.y} Q ${ms2.x} ${ms2.y} ${b2.x} ${b2.y} Z`;
+    return <path key={key} d={d} fill={C_CAST} stroke={C_CAST} strokeWidth={0.5} />;
+  };
+
+  // Cingulum rest — V/U notch on the lingual surface, peaked toward the
+  // labial. M-D extent ridge-to-ridge per Lab 3 spec.
+  const drawCingulumRest = (n, key) => {
+    const { cx, cy } = positionOf(n);
+    const halfMD = toothHalfMD(n);
+    const halfBL = toothHalfBL(n);
+    const rad = radialUnit(n);
+    const mes = mesialUnit(n);
+    const baseR = halfBL * 0.85;            // depth from center toward lingual edge
+    const tipR = halfBL * 0.30;             // peak depth toward labial
+    const lipHalf = halfMD * 0.7;
+    const lipM = { x: cx + mes.x * lipHalf - rad.x * baseR, y: cy + mes.y * lipHalf - rad.y * baseR };
+    const lipD = { x: cx - mes.x * lipHalf - rad.x * baseR, y: cy - mes.y * lipHalf - rad.y * baseR };
+    const peak = { x: cx - rad.x * tipR, y: cy - rad.y * tipR };
+    return (
+      <path key={key}
+        d={`M ${lipM.x} ${lipM.y} Q ${peak.x} ${peak.y} ${lipD.x} ${lipD.y} Z`}
+        fill={C_CAST} stroke={C_CAST} strokeWidth={0.5} />
+    );
+  };
+
+  // Ball rest: small filled blue circle on the lingual cingulum.
+  const drawBallRest = (n, key) => {
+    const { cx, cy } = positionOf(n);
+    const halfBL = toothHalfBL(n);
+    const rad = radialUnit(n);
+    return (
+      <circle key={key}
+        cx={cx - rad.x * halfBL * 0.6} cy={cy - rad.y * halfBL * 0.6}
+        r={halfBL * 0.28} fill={C_CAST} />
+    );
+  };
+
+  // I-bar: standard convention from the filled-in paper forms shows TWO elements
+  // for the I-bar drawing:
+  //   (1) BLUE solid bar from the major connector area up to the buccal
+  //       gingival third — this is the actual I-bar metal.
+  //   (2) RED DASHED CURVE arcing through the buccal vestibule, showing the
+  //       exact undercut path the tip engages (the "create 0.01 mid-buccal
+  //       undercut" instruction, marked in red per standard convention).
+  // I-bar with explicit connection to the framework. The bar has an "L" shape:
+  //   - tip touches the buccal surface in the gingival third
+  //   - vertical segment runs gingivally (radially outward) to the vestibule
+  //   - horizontal segment bends toward the saddle direction so the tail
+  //     visibly enters the saddle's lattice pattern (connecting to framework)
+  const drawIBar = (n, ucLocation, saddleSurface, key) => {
+    const { cx, cy } = positionOf(n);
+    // Use halfBL for the radial-outward distance (the tooth's buccal edge
+    // is at halfBL along rad), and halfMD for the mesial/distal direction
+    // (saddle direction). Previously used R = max(halfMD, halfBL) which
+    // pushed the I-bar too far outward when halfBL < halfMD.
+    const halfMD = toothHalfMD(n);
+    const halfBL = toothHalfBL(n);
+    const rad = radialUnit(n);
+    const mes = mesialUnit(n);
+    const mdBias = ucLocation === "mesio-buccal" ? +0.28 : 0;
+    const saddleSgn = saddleSurface === "mesial" ? +1 : -1; // direction toward saddle
+    // Tip sits at the buccal surface (just inside halfBL).
+    const tip = {
+      x: cx + rad.x * halfBL * 0.95 + mes.x * mdBias * halfMD,
+      y: cy + rad.y * halfBL * 0.95 + mes.y * mdBias * halfMD,
+    };
+    // Bend point — vestibule level, just outside the buccal edge.
+    const bend = {
+      x: cx + rad.x * (halfBL + 16),
+      y: cy + rad.y * (halfBL + 16),
+    };
+    // Tail extends toward the saddle so it merges with the lattice pattern.
+    const tail = {
+      x: cx + rad.x * (halfBL + 18) + saddleSgn * mes.x * (halfMD + 16),
+      y: cy + rad.y * (halfBL + 18) + saddleSgn * mes.y * (halfMD + 16),
+    };
+    // Red dashed undercut curve in the vestibule, just outside buccal edge.
+    const curveStart = {
+      x: cx + (rad.x * (halfBL + 14)) - (mes.x * 0.5 * halfMD),
+      y: cy + (rad.y * (halfBL + 14)) - (mes.y * 0.5 * halfMD),
+    };
+    const curveEnd = {
+      x: cx + (rad.x * (halfBL + 14)) + (mes.x * 0.5 * halfMD),
+      y: cy + (rad.y * (halfBL + 14)) + (mes.y * 0.5 * halfMD),
+    };
+    const curveCtrl = {
+      x: cx + rad.x * (halfBL + 24),
+      y: cy + rad.y * (halfBL + 24),
+    };
+    return (
+      <g key={key}>
+        {/* Red dashed undercut curve (drawn first, so I-bar sits on top) */}
+        <path d={`M ${curveStart.x} ${curveStart.y} Q ${curveCtrl.x} ${curveCtrl.y} ${curveEnd.x} ${curveEnd.y}`}
+          stroke={C_WW} strokeWidth={1.8} fill="none"
+          strokeDasharray="4,3" strokeLinecap="round" opacity={0.85} />
+        {/* Solid blue I-bar — L-shape: tip → bend → tail-into-saddle */}
+        <path d={`M ${tip.x} ${tip.y} L ${bend.x} ${bend.y} L ${tail.x} ${tail.y}`}
+          stroke={C_CAST} strokeWidth={5.5} fill="none"
+          strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx={tip.x} cy={tip.y} r={3.5} fill={C_CAST} />
+      </g>
+    );
+  };
+
+  // Circumferential arm (Akers retentive). Per McCracken / UIC convention:
+  //   - Proximal 1/3 (rigid): emerges from the proximal plate AT or just
+  //     above the HOC, on the same side as the rest.
+  //   - Middle 1/3 (limited flex): hugs along the buccal (or lingual) surface
+  //     just ABOVE the height of contour.
+  //   - Terminal 1/3 (flexible): dips BELOW the HOC to engage the undercut.
+  // `plateSide` is the side of the rest/plate (where the arm originates).
+  // `undercutSide` is the opposite side where the arm tip engages.
+  // `onBuccal` toggles between buccal Akers and lingual Reverse Akers.
+  const drawCircumferentialArm = (n, opts, key) => {
+    const { color = C_CAST, plateSide = "mesial", onBuccal = true,
+            tapered = false, undercutDepthFactor = 1.0 } = opts;
+    const { cx, cy } = positionOf(n);
+    const halfMD = toothHalfMD(n);
+    const halfBL = toothHalfBL(n);
+    const rad = radialUnit(n);
+    const mes = mesialUnit(n);
+    const radSign = onBuccal ? +1 : -1;
+    const plateSgn = plateSide === "mesial" ? +1 : -1;
+    // ── Origin: at the proximal plate's buccal (or lingual) corner ──
+    // Arm emerges from where the plate sits against the proximal surface,
+    // at HOC height (~halfBL from center along radial, just inside the
+    // tooth perimeter).
+    const halfThick = 4;
+    const originDist = halfMD + halfThick - 1;
+    const originRad = halfBL * 0.85;          // at HOC height
+    const start = {
+      x: cx + plateSgn * mes.x * originDist + radSign * rad.x * originRad,
+      y: cy + plateSgn * mes.y * originDist + radSign * rad.y * originRad,
+    };
+    // ── Middle-third anchor: at the middle of the buccal/lingual surface,
+    // slightly above the HOC line (so the arm hugs above HOC). ──
+    const middleAnchorRad = halfBL * 0.95;    // slightly outside HOC
+    const middle = {
+      x: cx + radSign * rad.x * middleAnchorRad,
+      y: cy + radSign * rad.y * middleAnchorRad,
+    };
+    // ── Terminal 1/3: dips BELOW HOC at the distal-of-undercut end.
+    // The undercut is on the opposite proximal side from the rest. Arm tip
+    // crosses HOC and sits below it (deeper into undercut as depth factor
+    // increases — 0.02" wrought wire gets deeper than 0.01" cast). ──
+    const undercutSgn = -plateSgn;              // opposite proximal side
+    const tipMD = halfMD * 0.55;
+    const tipBL = halfBL * (1.10 + 0.08 * undercutDepthFactor); // dips past tooth contour
+    const tip = {
+      x: cx + undercutSgn * mes.x * tipMD + radSign * rad.x * tipBL,
+      y: cy + undercutSgn * mes.y * tipMD + radSign * rad.y * tipBL,
+    };
+    // Smooth path: start → middle (just-above-HOC) → tip (below-HOC at undercut)
+    // Use cubic Bezier so the curve transitions smoothly from above to below HOC.
+    const ctrl1 = {
+      x: start.x + (middle.x - start.x) * 0.5 + radSign * rad.x * 2,
+      y: start.y + (middle.y - start.y) * 0.5 + radSign * rad.y * 2,
+    };
+    const ctrl2 = {
+      x: middle.x + (tip.x - middle.x) * 0.4 + radSign * rad.x * 3,
+      y: middle.y + (tip.y - middle.y) * 0.4 + radSign * rad.y * 3,
+    };
+    const armWidth = tapered ? 4.2 : 3.8;
+    const tipWidth = tapered ? 2.0 : 2.8;
+    // Render arm with tapering by drawing 3 segments of decreasing width.
+    return (
+      <g key={key}>
+        {/* Proximal 1/3 — thickest, rigid */}
+        <path d={`M ${start.x} ${start.y} Q ${ctrl1.x} ${ctrl1.y} ${middle.x} ${middle.y}`}
+          stroke={color} strokeWidth={armWidth} fill="none" strokeLinecap="round" />
+        {/* Middle 1/3 — slightly thinner */}
+        <path d={`M ${middle.x} ${middle.y} Q ${ctrl2.x} ${ctrl2.y} ${tip.x} ${tip.y}`}
+          stroke={color} strokeWidth={(armWidth + tipWidth) / 2} fill="none" strokeLinecap="round" />
+      </g>
+    );
+  };
+
+  // Reciprocal arm — STAYS ABOVE HOC throughout (never engages an undercut).
+  // Drawn so the arm HUGS the lingual surface from proximal corner to
+  // proximal corner. Per McCracken, the arm tapers in thickness but not
+  // width to maintain rigidity. McCracken / UIC form illustrations show a
+  // rounded arc that follows the convex lingual contour — start, midpoint,
+  // and end all sit AT or just inside the lingual surface (never bulging
+  // past it, never cutting diagonally across the proximal corners).
+  const drawReciprocalArm = (n, plateSide, key) => {
+    const { cx, cy } = positionOf(n);
+    const halfMD = toothHalfMD(n);
+    const halfBL = toothHalfBL(n);
+    const rad = radialUnit(n);
+    const mes = mesialUnit(n);
+    const radSign = -1;  // lingual side (opposite the retentive arm)
+    const plateSgn = plateSide === "mesial" ? +1 : -1;
+    // Start/end at the lingual PROXIMAL CORNERS — proximally just inside
+    // the proximal face (so the arm doesn't float in space off the corner)
+    // and lingually just inside the lingual contour (so the arm sits ON the
+    // surface, not floating in the palate).
+    const proxDist = halfMD * 0.82;
+    const cornerDepth = halfBL * 0.93;
+    const start = {
+      x: cx + plateSgn * mes.x * proxDist + radSign * rad.x * cornerDepth,
+      y: cy + plateSgn * mes.y * proxDist + radSign * rad.y * cornerDepth,
+    };
+    const end = {
+      x: cx - plateSgn * mes.x * proxDist + radSign * rad.x * cornerDepth,
+      y: cy - plateSgn * mes.y * proxDist + radSign * rad.y * cornerDepth,
+    };
+    // Control points pulled to the lingual surface (right at halfBL) and
+    // symmetric about the mid-mesiodistal line. With cubic Bezier midpoint
+    // = (S + 3·C1 + 3·C2 + E) / 8, this gives a midpoint depth of
+    // (0.93 + 3·1.0 + 3·1.0 + 0.93)/8 ≈ 0.98 halfBL — right on the lingual
+    // surface, never past it. The result is a gentle convex arc that
+    // visually hugs the lingual contour from corner to corner.
+    const surfaceDepth = halfBL * 1.0;
+    const ctrl1 = {
+      x: cx + plateSgn * mes.x * (halfMD * 0.45) + radSign * rad.x * surfaceDepth,
+      y: cy + plateSgn * mes.y * (halfMD * 0.45) + radSign * rad.y * surfaceDepth,
+    };
+    const ctrl2 = {
+      x: cx - plateSgn * mes.x * (halfMD * 0.45) + radSign * rad.x * surfaceDepth,
+      y: cy - plateSgn * mes.y * (halfMD * 0.45) + radSign * rad.y * surfaceDepth,
+    };
+    return (
+      <path key={key}
+        d={`M ${start.x} ${start.y} C ${ctrl1.x} ${ctrl1.y} ${ctrl2.x} ${ctrl2.y} ${end.x} ${end.y}`}
+        stroke={C_CAST} strokeWidth={3.5} fill="none" strokeLinecap="round" />
+    );
+  };
+
+  // Lingual / palatal reciprocal PLATE: drawn when reciprocation.type === "plate"
+  // (e.g. RPI's distal proximal plate continues lingually as a reciprocal
+  // plate, or a free-standing lingual plate on a tooth-supported abutment).
+  // In the UIC paper form this appears as a SOLID FILLED BLUE crescent
+  // hugging the lingual surface of the abutment, contacting the cingulum
+  // height and connecting laterally to the major connector.
+  const drawReciprocalPlate = (n, key) => {
+    const { cx, cy } = positionOf(n);
+    const R = toothRadius(n);
+    const rad = radialUnit(n);
+    const mes = mesialUnit(n);
+    // Inner edge: sits just inside the lingual contour of the tooth (the
+    // cingulum height). Outer edge: extends radially inward into the palate
+    // / floor of mouth toward the major connector.
+    const innerHalf = R * 0.85;
+    const outerHalf = R * 0.7;
+    const innerDepth = R * 0.45;
+    const outerDepth = R * 1.05;
+    const i1 = { x: cx + mes.x * innerHalf - rad.x * innerDepth,
+                 y: cy + mes.y * innerHalf - rad.y * innerDepth };
+    const i2 = { x: cx - mes.x * innerHalf - rad.x * innerDepth,
+                 y: cy - mes.y * innerHalf - rad.y * innerDepth };
+    const o2 = { x: cx - mes.x * outerHalf - rad.x * outerDepth,
+                 y: cy - mes.y * outerHalf - rad.y * outerDepth };
+    const o1 = { x: cx + mes.x * outerHalf - rad.x * outerDepth,
+                 y: cy + mes.y * outerHalf - rad.y * outerDepth };
+    return (
+      <path key={key}
+        d={`M ${i1.x} ${i1.y} L ${i2.x} ${i2.y} L ${o2.x} ${o2.y} L ${o1.x} ${o1.y} Z`}
+        fill={C_CAST} stroke={C_CAST} strokeWidth={0.8} fillOpacity={0.85} />
+    );
+  };
+
+  // Proximal plate / minor connector: SOLID FILLED BLUE RECTANGLE sitting
+  // FLUSH against the proximal surface. Inner edge pulled slightly inside
+  // the tooth's perimeter so the plate visually attaches to (is prepared
+  // on) the abutment rather than floating outside it.
+  // Uses halfMD for the mesial-direction offset (not max(halfMD,halfBL))
+  // since the mesial edge of the tooth is at halfMD along that axis. Uses
+  // halfBL for the bucco-lingual extent of the plate (covers ~1/2 of B-L).
+  const drawGuidePlane = (n, surface, key) => {
+    const { cx, cy } = positionOf(n);
+    const halfMD = toothHalfMD(n);
+    const halfBL = toothHalfBL(n);
+    const mes = mesialUnit(n);
+    const rad = radialUnit(n);
+    const sgn = surface === "mesial" ? +1 : -1;
+    const halfLen = halfBL * 0.55;        // B-L coverage of the plate
+    const halfThick = 5;
+    // Plate center sits at (halfMD + halfThick - 1.5) along the mesial
+    // direction: inner edge ~1.5 px inside the tooth perimeter, outer edge
+    // ~3.5 px outside. This makes the plate visually "attached to" the
+    // tooth's proximal surface rather than floating away.
+    const px = cx + sgn * mes.x * (halfMD + halfThick - 1.5);
+    const py = cy + sgn * mes.y * (halfMD + halfThick - 1.5);
+    const c1 = { x: px + rad.x * halfLen + sgn * mes.x * halfThick, y: py + rad.y * halfLen + sgn * mes.y * halfThick };
+    const c2 = { x: px - rad.x * halfLen + sgn * mes.x * halfThick, y: py - rad.y * halfLen + sgn * mes.y * halfThick };
+    const c3 = { x: px - rad.x * halfLen - sgn * mes.x * halfThick, y: py - rad.y * halfLen - sgn * mes.y * halfThick };
+    const c4 = { x: px + rad.x * halfLen - sgn * mes.x * halfThick, y: py + rad.y * halfLen - sgn * mes.y * halfThick };
+    return (
+      <polygon key={key}
+        points={`${c1.x},${c1.y} ${c2.x},${c2.y} ${c3.x},${c3.y} ${c4.x},${c4.y}`}
+        fill={C_CAST} stroke={C_CAST} strokeWidth={0.8} />
+    );
+  };
+
+  // Saddle / denture base — pattern depends on base type:
+  //   "Open Lattice" → LADDER pattern (two parallel rails + perpendicular
+  //                     rungs). Used at distal-extension saddles.
+  //   "Mesh"          → tight GRID pattern. Used at shorter anterior saddles.
+  //   Default         → mesh.
+  // Matches UIC paper-form convention where the student draws either a
+  // ladder or a tight grid depending on what's specified.
+  const drawSaddleSpan = (spanTeeth, baseType, key) => {
+    if (!spanTeeth || spanTeeth.length === 0) return null;
+    const archSpan = spanTeeth.filter(n => archTeeth.includes(n));
+    if (archSpan.length === 0) return null;
+    const isOpenLattice = (baseType || "").toLowerCase().includes("open lattice")
+                       || (baseType || "").toLowerCase().includes("lattice");
+    const buccalPts = archSpan.map(n => {
+      const { cx, cy } = positionOf(n);
+      const r = radialUnit(n);
+      const R = toothRadius(n);
+      return { x: cx + r.x * (R + 6), y: cy + r.y * (R + 6) };
+    });
+    const lingualPts = [...archSpan].reverse().map(n => {
+      const { cx, cy } = positionOf(n);
+      const r = radialUnit(n);
+      const R = toothRadius(n);
+      return { x: cx - r.x * (R + 8), y: cy - r.y * (R + 8) };
+    });
+    // Smooth the buccal sweep and the lingual return sweep separately so the
+    // saddle outline matches the soft curves of the alveolar ridge instead of
+    // a polyline with kinks.
+    const buccalSmooth = buildSmoothPath(buccalPts);
+    const lingualSmooth = buildSmoothPath(lingualPts);
+    const pathD = `${buccalSmooth} L ${lingualPts[0].x} ${lingualPts[0].y} ${lingualSmooth.replace(/^M [^ ]+ [^ ]+/, '')} Z`;
+
+    // Interior pattern: ladder for open lattice, tight grid for mesh
+    let interior;
+    if (isOpenLattice) {
+      // Draw 2 rails along the saddle long axis + perpendicular rungs
+      // Take the tooth positions and offset slightly buccal/lingual
+      const rail1 = archSpan.map(n => {
+        const { cx, cy } = positionOf(n);
+        const r = radialUnit(n);
+        const R = toothRadius(n);
+        return { x: cx + r.x * (R * 0.35), y: cy + r.y * (R * 0.35) };
+      });
+      const rail2 = archSpan.map(n => {
+        const { cx, cy } = positionOf(n);
+        const r = radialUnit(n);
+        const R = toothRadius(n);
+        return { x: cx - r.x * (R * 0.35), y: cy - r.y * (R * 0.35) };
+      });
+      const rail1D = rail1.map((p, i) => i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`).join(" ");
+      const rail2D = rail2.map((p, i) => i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`).join(" ");
+      interior = (
+        <g>
+          <path d={rail1D} stroke={C_CAST} strokeWidth={1.8} fill="none" strokeLinecap="round" />
+          <path d={rail2D} stroke={C_CAST} strokeWidth={1.8} fill="none" strokeLinecap="round" />
+          {rail1.map((p, i) => (
+            <line key={`rung-${i}`} x1={p.x} y1={p.y} x2={rail2[i].x} y2={rail2[i].y}
+              stroke={C_CAST} strokeWidth={1.4} strokeLinecap="round" />
+          ))}
+        </g>
+      );
+    } else {
+      const patternId = `pf-mesh-${key}`;
+      interior = (
+        <>
+          <defs>
+            <pattern id={patternId} patternUnits="userSpaceOnUse" width="6" height="6">
+              <line x1="0" y1="0" x2="6" y2="0" stroke={C_CAST} strokeWidth="0.7" />
+              <line x1="0" y1="0" x2="0" y2="6" stroke={C_CAST} strokeWidth="0.7" />
+            </pattern>
+          </defs>
+          <path d={pathD} fill={`url(#${patternId})`} stroke="none" />
+        </>
+      );
+    }
+
+    return (
+      <g key={key}>
+        {/* Invisible hit-target — covers the entire saddle bounding area so
+            clicks register anywhere on the saddle, including the empty
+            space between lattice rungs. Sits underneath the visible
+            interior + outline so it doesn't visually obscure them. */}
+        <path d={pathD} fill="rgba(0,0,0,0)" pointerEvents="all" />
+        {interior}
+        <path d={pathD} fill="none"
+          stroke={C_CAST} strokeWidth={2.2}
+          strokeLinejoin="round" />
+        {/* Denture teeth — dashed circle outlines floating on the saddle */}
+        {archSpan.map(n => {
+          const { cx, cy } = positionOf(n);
+          const R = toothRadius(n);
+          return (
+            <circle key={`pf-base-tooth-${n}`} cx={cx} cy={cy} r={R}
+              fill="rgba(255,255,255,0.75)" stroke={C_CAST} strokeWidth={1.4}
+              strokeDasharray="3,3" />
+          );
+        })}
+      </g>
+    );
+  };
+
+  // Tissue stop — small red marker at the DISTAL END of a distal-extension
+  // saddle. Per UIC Performance Exam color code: drawn in RED. Per the 2025
+  // Connectors lecture: mandatory on all Class I/II distal-extension cases;
+  // stabilizes the framework during acrylic processing.
+  // Drawn as a separate selectable element so the student can click it to
+  // see its purpose/location in the detail panel.
+  const drawTissueStop = (spanTeeth, key) => {
+    if (!spanTeeth || spanTeeth.length === 0) return null;
+    const archSpan = spanTeeth.filter(n => archTeeth.includes(n));
+    if (archSpan.length === 0) return null;
+    // The distal-most tooth in the span is the one furthest from midline
+    // (highest ord). Find it by comparing ord values.
+    let distalN = archSpan[0];
+    let distalOrd = ordOf(distalN);
+    for (const n of archSpan) {
+      const o = ordOf(n);
+      if (o > distalOrd) { distalOrd = o; distalN = n; }
+    }
+    const { cx, cy } = positionOf(distalN);
+    const rad = radialUnit(distalN);
+    const mes = mesialUnit(distalN);
+    // Tissue stop sits at the DISTAL end of the tooth, slightly outward
+    // along the radial (so it visually projects past the saddle outline).
+    const halfMD = toothHalfMD(distalN);
+    const halfBL = toothHalfBL(distalN);
+    // Distal direction is -mes (toward edentulous distal end of arch).
+    const tsX = cx - mes.x * (halfMD + 8) + rad.x * (halfBL * 0.3);
+    const tsY = cy - mes.y * (halfMD + 8) + rad.y * (halfBL * 0.3);
+    // Small red oval, ~10 px long along mesial axis, 5 px tall radially.
+    const halfLong = 8;
+    const halfShort = 4;
+    return (
+      <g key={key}>
+        <ellipse cx={tsX} cy={tsY} rx={halfLong} ry={halfShort}
+          transform={`rotate(${Math.atan2(mes.y, mes.x) * 180 / Math.PI} ${tsX} ${tsY})`}
+          fill={C_WW} stroke={C_WW} strokeWidth={0.8} />
+        <text className="rpd-elem-label"
+          x={tsX + rad.x * 18} y={tsY + rad.y * 18 + 4}>
+          Tissue stop
+        </text>
+      </g>
+    );
+  };
+
+  // Per-abutment annotation: handwritten-style note placed near the tooth,
+  // showing clasp shorthand + undercut depth & location.
+  // Examples: "RPI / 0.01" MB", "Akers / 0.01" MB", "WW C / 0.02" MB"
+  const drawAbutmentAnnotation = (a, key) => {
+    const tooth = a.tooth;
+    const { cx, cy } = positionOf(tooth);
+    const R = toothRadius(tooth);
+    const rad = radialUnit(tooth);
+    const attrs = teethState[tooth]?.attrs || {};
+    const ucLoc = attrs.undercutLocation || "mid-buccal";
+    const ucDepth = attrs.undercutDepth || "0.01\"";
+    const ucShort = ucLoc === "mesio-buccal" ? "MB"
+                   : ucLoc === "disto-buccal" ? "DB"
+                   : ucLoc === "mesio-lingual" ? "ML"
+                   : ucLoc === "disto-lingual" ? "DL" : "mid-B";
+    const ct = a.claspType || "";
+    const claspShort = ct.includes("RPI") ? "RPI"
+                     : ct.includes("I-bar") ? "I-bar"
+                     : ct === "Akers" ? "Akers"
+                     : ct === "Reverse Akers" ? "R.Akers"
+                     : ct === "Combination" ? "Comb"
+                     : ct === "Embrasure" ? "Embr"
+                     : ct === "WW C-clasp" ? "WW C"
+                     : ct === "Ball Clasp" ? "Ball"
+                     : ct.includes("Rest Only") ? "Rest only"
+                     : ct;
+    const hasClasp = !ct.includes("Rest Only");
+    // Annotation placed radially OUT from the tooth (buccal), past the
+    // tooth-number label so the two never visually collide. Tooth number
+    // sits at halfBL + 20 along radial; annotation starts further out at
+    // R + 58 to clear it with breathing room. The undercut-spec line is
+    // placed an additional 22 px FURTHER OUT along the radial direction
+    // (not just below in screen-Y) — this keeps the second line away from
+    // the tooth on both arches rather than collapsing inward on maxillary
+    // teeth where rad.y is negative.
+    const ax = cx + rad.x * (R + 58);
+    const ay = cy + rad.y * (R + 58);
+    const ax2 = ax + rad.x * 22;
+    const ay2 = ay + rad.y * 22;
+    // Clasp name text → selects the clasp element. Undercut spec text →
+    // selects the undercut. For Rest-only abutments (no clasp), the
+    // single label selects the rest seat instead.
+    const claspKind = hasClasp ? 'clasp' : 'rest';
+    return (
+      <g key={key}>
+        <text x={ax} y={ay} fontSize="22"
+          fontFamily="'Geist', sans-serif" fontWeight="700"
+          fill={C_LABEL} textAnchor="middle"
+          style={interactive ? { cursor: 'pointer' } : undefined}
+          onClick={interactive ? handleElClick(claspKind, { tooth }) : undefined}>
+          {claspShort}
+        </text>
+        {hasClasp && (
+          <text x={ax2} y={ay2} fontSize="17"
+            fontFamily="'Geist', sans-serif" fontStyle="italic"
+            fill={C_WW} textAnchor="middle"
+            style={interactive ? { cursor: 'pointer' } : undefined}
+            onClick={interactive ? handleElClick('undercut', { tooth }) : undefined}>
+            {ucDepth} {ucShort}
+          </text>
+        )}
+      </g>
+    );
+  };
+
+  // Minor connector — thin blue strut linking a rest seat / proximal plate
+  // to the major connector. Per the 2025 Major/Minor Connectors lecture:
+  //   - Joins clasp assembly + rest to the major connector
+  //   - Generally forms a RIGHT ANGLE with the major connector
+  //   - Drawn as a thin (~2px) blue line from the rest/plate lingually
+  //     inward to where the major connector outline sits.
+  // For each abutment, drop a short strut from the tooth's lingual edge
+  // straight inward (radially negative) until it meets the major connector.
+  const drawMinorConnectorStrut = (n, key) => {
+    const { cx, cy } = positionOf(n);
+    const halfBL = toothHalfBL(n);
+    const R = toothRadius(n);
+    const rad = radialUnit(n);
+    // Start at the lingual edge of the tooth (where rest/plate meets the
+    // tooth on the lingual side) and run radially inward to R + 28. That
+    // lands INSIDE every major-connector variant we draw — lingual bar
+    // (R+14→R+30), single palatal strap (R+22→R+36), U-shape (R+14→R+34),
+    // AP strap (R+19→R+41), full palatal plate (R+24→inward) — without
+    // poking out past any of them. The connector is drawn first; the strut
+    // is drawn after, so the strut visibly bridges the tooth-to-connector
+    // gap, then blends into the connector's fill once it crosses the inner
+    // edge. Stroke thickened to 3.2 px for visibility against the bigger
+    // chart sizes.
+    const start = {
+      x: cx - rad.x * halfBL,
+      y: cy - rad.y * halfBL,
+    };
+    const end = {
+      x: cx - rad.x * (R + 28),
+      y: cy - rad.y * (R + 28),
+    };
+    return (
+      <line key={key} x1={start.x} y1={start.y} x2={end.x} y2={end.y}
+        stroke={C_CAST} strokeWidth={3.2} strokeLinecap="round" />
+    );
+  };
+
+  // Lingual bar (mandibular): drawn as a smooth OUTLINE pair of curves
+  // following the lingual gingival border — matches UIC paper-form
+  // convention where the student draws the upper and lower edges of the
+  // bar in blue ink.
+  const drawLingualBar = (key) => {
+    // UIC paper-form convention: lingual bar drawn as a SOLID BLUE FILLED
+    // crescent band sitting in the lingual sulcus, NOT touching the teeth.
+    // Upper edge ~14 px lingual of the teeth; lower edge ~30 px further in.
+    const upperEdge = archTeeth.map(n => {
+      const { cx, cy } = positionOf(n);
+      const r = radialUnit(n);
+      const R = toothRadius(n);
+      return { x: cx - r.x * (R + 14), y: cy - r.y * (R + 14) };
+    });
+    const lowerEdge = archTeeth.map(n => {
+      const { cx, cy } = positionOf(n);
+      const r = radialUnit(n);
+      const R = toothRadius(n);
+      return { x: cx - r.x * (R + 30), y: cy - r.y * (R + 30) };
+    });
+    const upperD = buildSmoothPath(upperEdge);
+    const reverseLowerD = buildSmoothPath([...lowerEdge].reverse());
+    const closedD = `${upperD} L ${lowerEdge[lowerEdge.length - 1].x} ${lowerEdge[lowerEdge.length - 1].y} ${reverseLowerD.replace(/^M [^ ]+ [^ ]+/, '')} Z`;
+    return (
+      <g key={key}>
+        <path d={closedD} fill={C_CAST} fillOpacity={0.7}
+          stroke={C_CAST} strokeWidth={1.6}
+          strokeLinejoin="round" strokeLinecap="round" />
+      </g>
+    );
+  };
+
+  // Lingual plate (mandibular): SOLID BLUE FILLED region covering the
+  // lingual surfaces of mand anteriors up to the cingula AND extending
+  // inferiorly into the lingual sulcus. Matches the UIC paper-form colored-
+  // pencil rendering — a contiguous solid-blue shape from one terminal
+  // abutment's lingual surface across the anteriors to the opposite
+  // terminal abutment.
+  const drawLingualPlate = (key) => {
+    // Plate spans from PM-to-PM (or wherever present teeth start/end in the
+    // anterior-premolar region) — covers the lingual surfaces of all present
+    // anteriors and premolars from one side to the other. Extended to also
+    // include any abutments outside that range so the plate reaches the
+    // terminal abutments instead of stopping short.
+    const abutTeethSet = new Set((result.abutmentDesigns || []).map(a => a.tooth));
+    const inDefaultPlateRange = (n) => n >= 20 && n <= 29;
+    const plateRange = archTeeth.filter(n =>
+      (inDefaultPlateRange(n) || abutTeethSet.has(n)) && isPresent(n));
+    if (plateRange.length === 0) return drawLingualBar(key);
+    // Top edge: rides along the cingula of each tooth (just past the
+    // lingual surface, where the plate makes contact).
+    const topEdge = plateRange.map(n => {
+      const { cx, cy } = positionOf(n);
+      const r = radialUnit(n);
+      const R = toothRadius(n);
+      return { x: cx - r.x * R * 0.55, y: cy - r.y * R * 0.55 };
+    });
+    // Bottom edge: ~30 px past the lingual surface of the SAME range of
+    // teeth, so the plate has consistent width along its whole span and
+    // doesn't fan out laterally into the molar sulcus.
+    const bottomEdge = plateRange.map(n => {
+      const { cx, cy } = positionOf(n);
+      const r = radialUnit(n);
+      const R = toothRadius(n);
+      return { x: cx - r.x * (R + 30), y: cy - r.y * (R + 30) };
+    });
+    const topSmooth = buildSmoothPath(topEdge);
+    const reverseBottomSmooth = buildSmoothPath([...bottomEdge].reverse());
+    const pathD = `${topSmooth} L ${bottomEdge[bottomEdge.length - 1].x} ${bottomEdge[bottomEdge.length - 1].y} ${reverseBottomSmooth.replace(/^M [^ ]+ [^ ]+/, '')} Z`;
+    return (
+      <g key={key}>
+        <path d={pathD} fill={C_CAST} fillOpacity={0.7}
+          stroke={C_CAST} strokeWidth={1.6}
+          strokeLinejoin="round" strokeLinecap="round" />
+      </g>
+    );
+  };
+
+  // Palatal strap (maxillary): blue band crossing the palate.
+  // Engine emits: "Full Palatal Plate", "A-P Strap", "U-Shaped Connector",
+  // "Single Palatal Strap". Each gets a distinct visual.
+  const drawPalatalConnector = (type, key) => {
+    const t = (type || "").toLowerCase();
+    // Match "a-p" (the engine's actual hyphenated form) plus the legacy
+    // forms. Check AP BEFORE isComplete since "A-P Strap" doesn't contain
+    // "plate" anyway — but defensive ordering avoids future regressions.
+    const isAP = t.includes("a-p") || t.includes("ap strap") || t.includes("anterior-posterior") || t.includes("ap palatal");
+    const isHorseshoe = t.includes("horseshoe") || t.includes("u-shaped");
+    const isComplete = !isAP && (t.includes("complete") || t.includes("full palat") || t.includes("palatal plate"));
+    // Reference points: where the band crosses the palate near each abutment
+    const palatalAt = (n, depthMul = 1.0) => {
+      const { cx, cy } = positionOf(n);
+      const r = radialUnit(n);
+      const R = toothRadius(n);
+      return { x: cx - r.x * (R + 24 * depthMul), y: cy - r.y * (R + 24 * depthMul) };
+    };
+    // Strap helper: connect lingual points across teeth from #X to #Y with a thick band
+    const strap = (toothRange, strokeWidth, opacityVal, depthMul = 1.0, fillIt = false) => {
+      const pts = toothRange.map(n => palatalAt(n, depthMul));
+      const pathD = pts.map((p, i) => i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`).join(" ");
+      return (
+        <path d={pathD}
+          stroke={C_CAST} strokeWidth={strokeWidth} fill={fillIt ? C_CAST : "none"}
+          fillOpacity={fillIt ? 0.4 : undefined}
+          strokeLinecap="round" strokeLinejoin="round" opacity={opacityVal} />
+      );
+    };
+    // Helper: build a SOLID BLUE FILLED band between an upper edge curve
+    // and a lower edge curve, closed at both ends — matches UIC form's
+    // colored-pencil rendering of palatal connectors.
+    const filledBand = (upper, lower) => {
+      const upperSmooth = buildSmoothPath(upper);
+      const reverseLowerSmooth = buildSmoothPath([...lower].reverse());
+      const closedD = `${upperSmooth} L ${lower[lower.length - 1].x} ${lower[lower.length - 1].y} ${reverseLowerSmooth.replace(/^M [^ ]+ [^ ]+/, '')} Z`;
+      return (
+        <path d={closedD} fill={C_CAST} fillOpacity={0.7}
+          stroke={C_CAST} strokeWidth={1.6}
+          strokeLinejoin="round" strokeLinecap="round" />
+      );
+    };
+    if (isComplete) {
+      // Full / complete palatal plate: SOLID BLUE FILLED shape covering the
+      // posterior palate, hugging the lingual contour of present teeth.
+      const linguals = archTeeth.filter(n => isPresent(n)).map(n => palatalAt(n));
+      if (linguals.length < 2) return null;
+      const smoothLingualD = buildSmoothPath(linguals);
+      const closedD = `${smoothLingualD} L ${linguals[linguals.length - 1].x} ${(isMax ? archCenterY * 0.55 : archCenterY * 1.3)} L ${linguals[0].x} ${(isMax ? archCenterY * 0.55 : archCenterY * 1.3)} Z`;
+      return (
+        <g key={key}>
+          <path d={closedD} fill={C_CAST} fillOpacity={0.7}
+            stroke={C_CAST} strokeWidth={1.6}
+            strokeLinejoin="round" strokeLinecap="round" />
+        </g>
+      );
+    }
+    // Abutment teeth in the active arch. Strap paths must include these
+    // so the major connector visually reaches the minor connector strut
+    // from each abutment, even when abutments sit outside the standard
+    // strap range (e.g. terminal molar at #2 with a single palatal
+    // strap whose default range is #4–#13).
+    const abutTeethSet = new Set((result.abutmentDesigns || []).map(a => a.tooth));
+    const inActiveArch = (n) => isMax ? (n >= 1 && n <= 16) : (n >= 17 && n <= 32);
+    const archAbutments = [...abutTeethSet].filter(inActiveArch);
+
+    if (isAP) {
+      // AP: anterior solid band + posterior solid band, both with depth so
+      // they read as filled straps rather than thin lines. The posterior
+      // band extends to include any abutments outside the standard
+      // premolar/molar range so it reaches them.
+      const ant = archTeeth.filter(n => (isMax ? (n >= 6 && n <= 11) : (n >= 22 && n <= 27)) || abutTeethSet.has(n));
+      const inPostDefault = (n) => isMax
+        ? (n === 3 || n === 14 || n === 4 || n === 13)
+        : (n === 19 || n === 30);
+      const post = archTeeth.filter(n => inPostDefault(n) || abutTeethSet.has(n));
+      const antUpper = ant.map(n => palatalAt(n, 1.0));
+      const antLower = ant.map(n => palatalAt(n, 1.7));
+      const postUpper = post.map(n => palatalAt(n, 0.8));
+      const postLower = post.map(n => palatalAt(n, 1.6));
+      return (
+        <g key={key}>
+          {filledBand(antUpper, antLower)}
+          {filledBand(postUpper, postLower)}
+        </g>
+      );
+    }
+    if (isHorseshoe) {
+      // Horseshoe: solid U-shape following lingual surfaces of every
+      // present tooth, with depth into the palate.
+      const present = archTeeth.filter(n => isPresent(n));
+      const upper = present.map(n => palatalAt(n, 0.6));
+      const lower = present.map(n => palatalAt(n, 1.4));
+      return (
+        <g key={key}>
+          {filledBand(upper, lower)}
+        </g>
+      );
+    }
+    // Default: single palatal strap drawn as a SOLID BLUE FILLED band —
+    // matches UIC paper-form colored-pencil convention. Range starts at
+    // the standard premolar-to-premolar span and extends to include any
+    // abutments outside that range, so the strap actually reaches every
+    // minor-connector strut instead of stopping short of the terminal
+    // abutments.
+    const inDefaultRange = (n) => isMax ? (n >= 4 && n <= 13) : (n >= 20 && n <= 29);
+    const midTeeth = archTeeth.filter(n => inDefaultRange(n) || abutTeethSet.has(n));
+    const upper = midTeeth.map(n => palatalAt(n, 0.9));
+    const lower = midTeeth.map(n => palatalAt(n, 1.5));
+    return (
+      <g key={key}>
+        {filledBand(upper, lower)}
+      </g>
+    );
+  };
+
+  // ── Assemble layers (back to front) ──
+  const abutments = result.abutmentDesigns || [];
+  const baseDesigns = result.baseDesigns || [];
+  const indirects = result.indirectRetainers || [];
+  // hasDesign — only render the framework overlay (major connector, saddles,
+  // clasps, etc.) when there's an actual case. When no teeth are missing,
+  // result.kennedy.class is null and we should show just the empty arch so
+  // the user can mark teeth missing — no phantom lingual bar / palatal strap.
+  const hasDesign = result.kennedy.class !== null;
+
+  // ── Single-tooth case — recommended treatment is fixed, not removable ──
+  // When only one tooth is missing in a definitive plan, the textbook first
+  // choice is an implant-supported crown (Class II — no distal abutment
+  // available for a bridge) or an implant / FPD (Class III — bounded on
+  // both sides). We render the fixed replacement instead of the RPD
+  // framework so the chart shows the model's actual recommendation rather
+  // than an "outrageous RPD" for a tooth that shouldn't get one.
+  const designIntentLocal = caseInput.patientFactors?.designIntent || "definitive";
+  const missingArchTeeth = archTeeth.filter(n => caseInput.teeth?.[n]?.status === "missing");
+  const isSingleToothCase = missingArchTeeth.length === 1
+    && (result.kennedy.class === "II" || result.kennedy.class === "III")
+    && designIntentLocal === "definitive";
+  const singleToothId = isSingleToothCase ? missingArchTeeth[0] : null;
+  const isFPD = isSingleToothCase && result.kennedy.class === "III";
+
+  // FPD bridge or implant crown — rendered IN PLACE OF the RPD framework
+  // when isSingleToothCase. The pontic (FPD) / crown (implant) sits at the
+  // missing tooth's position; FPD also tints the two abutment teeth to
+  // indicate they get full-coverage crowns as part of the bridge.
+  const drawFixedReplacement = () => {
+    if (!isSingleToothCase) return null;
+    const n = singleToothId;
+    const { cx, cy } = positionOf(n);
+    const halfMD = toothHalfMD(n);
+    const halfBL = toothHalfBL(n);
+    const rad = radialUnit(n);
+    const mes = mesialUnit(n);
+    const cornerR = Math.min(halfMD, halfBL) * 0.28;
+    const isMolar = (an) => RPD_FIRST_MOLARS.has(an) || RPD_SECOND_MOLARS.has(an) || RPD_THIRD_MOLARS.has(an);
+    const isPM = (an) => [4,5,12,13,20,21,28,29].includes(an);
+    const isCanine = (an) => RPD_CANINES.has(an);
+    const cuspBulgeFor = (an) => isMolar(an) ? 0.18 : isPM(an) ? 0.11 : isCanine(an) ? 0.07 : 0;
+    const ponticD = toothPath(cx, cy, halfMD, halfBL, rad, mes, cornerR, cuspBulgeFor(n));
+
+    // Adjacent present teeth — the FPD abutments. For Class II only the
+    // mesial neighbor is present; for Class III both are.
+    const idx = archTeeth.indexOf(n);
+    const neighbors = [archTeeth[idx - 1], archTeeth[idx + 1]]
+      .filter(x => x != null && isPresent(x));
+
+    // Label sits LINGUAL of the pontic so it doesn't collide with the
+    // buccal-side tooth-number label. labelOffset large enough to clear
+    // the pontic outline plus the bold text height.
+    const labelOffset = halfBL + 28;
+    const labelX = cx - rad.x * labelOffset;
+    const labelY = cy - rad.y * labelOffset + 5;
+
+    // pointerEvents="none" on every overlay element so clicks pass THROUGH
+    // the FPD/implant rendering to the tooth <g>'s click handler underneath.
+    // Otherwise the teal pontic and crown overlays would steal clicks and
+    // the user couldn't double-click adjacent teeth to mark them missing.
+    return (
+      <g key="fixed-replacement" pointerEvents="none">
+        {/* FPD only — tint abutment teeth to show full-coverage crowns */}
+        {isFPD && neighbors.map(an => {
+          const { cx: ax, cy: ay } = positionOf(an);
+          const aHalfMD = toothHalfMD(an);
+          const aHalfBL = toothHalfBL(an);
+          const aRad = radialUnit(an);
+          const aMes = mesialUnit(an);
+          const aCornerR = Math.min(aHalfMD, aHalfBL) * 0.28;
+          const crownD = toothPath(ax, ay, aHalfMD, aHalfBL, aRad, aMes, aCornerR, cuspBulgeFor(an));
+          return (
+            <path key={`crown-${an}`} d={crownD}
+              fill={C_FIXED} fillOpacity={0.22}
+              stroke={C_FIXED} strokeWidth={2.4} strokeLinejoin="round"
+              pointerEvents="none" />
+          );
+        })}
+        {/* Pontic (FPD) or implant crown — solid teal-filled tooth shape */}
+        <path d={ponticD}
+          fill={C_FIXED} fillOpacity={0.7}
+          stroke={C_FIXED} strokeWidth={2.6} strokeLinejoin="round"
+          pointerEvents="none" />
+        {/* Implant fixture marker — small bullseye on the crown so the
+            implant case visually differs from the FPD case (an implant
+            crown sits on a fixture; the FPD pontic doesn't). */}
+        {!isFPD && (
+          <g pointerEvents="none">
+            <circle cx={cx} cy={cy} r={Math.min(halfMD, halfBL) * 0.32}
+              fill="none" stroke="white" strokeWidth={2.4}
+              pointerEvents="none" />
+            <circle cx={cx} cy={cy} r={Math.min(halfMD, halfBL) * 0.14}
+              fill="white" pointerEvents="none" />
+          </g>
+        )}
+        {/* Treatment label — lingual side, in teal, distinct from RPD blue */}
+        <text x={labelX} y={labelY} fontSize="18"
+          fontFamily="'Geist', sans-serif" fontWeight="700"
+          fill={C_FIXED} textAnchor="middle"
+          letterSpacing="0.08em" style={{ textTransform: "uppercase" }}
+          pointerEvents="none">
+          {isFPD ? "FPD" : "Implant"}
+        </text>
+      </g>
+    );
+  };
+
+  return (
+    <div style={{ position: "relative" }}>
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", display: "block", background: "#FDFCF7" }}>
+        {/* Midline guide */}
+        <line x1={midlineX} y1={12} x2={midlineX} y2={H - 12}
+          stroke={C_MISSING} strokeDasharray="4,5" strokeWidth={0.6} />
+
+        {/* RPD framework overlay — suppressed for single-tooth cases where
+            the recommended treatment is an FPD or implant, not an RPD. */}
+        {!isSingleToothCase && (
+          <>
+            {/* 1. Major connector (background) — only when there's a case */}
+            {hasDesign && selectable(
+              isMax
+                ? drawPalatalConnector(result.majorConnector?.type, "mc")
+                : (result.majorConnector?.type || "").toLowerCase().includes("plate")
+                  ? drawLingualPlate("mc")
+                  : drawLingualBar("mc"),
+              'connector', { tooltip: `Major connector — ${result.majorConnector?.type || "unspecified"}` },
+              "mc-w"
+            )}
+
+            {/* 2. Saddles / denture bases (between abutments) */}
+            {baseDesigns.map((b, i) => selectable(
+              drawSaddleSpan(b.spanTeeth, b.type, `saddle-${i}`),
+              'base', { spanIndex: i, tooltip: `Denture base / saddle — ${b.type}` },
+              `saddle-w-${i}`
+            ))}
+
+            {/* 2b. Tissue stops — mandatory on distal-extension saddles. */}
+            {baseDesigns.map((b, i) => {
+              const hasTissueStop = (b.note || "").toLowerCase().includes("tissue stop")
+                                  || b.distalExtension === true;
+              if (!hasTissueStop) return null;
+              return selectable(
+                drawTissueStop(b.spanTeeth, `ts-${i}`),
+                'tissueStop', { spanIndex: i, tooltip: `Tissue stop — stabilizes framework during acrylic processing of distal extension` },
+                `ts-w-${i}`
+              );
+            })}
+          </>
+        )}
+
+        {/* 3. Schematic teeth — always rendered, both case types need them */}
+        {archTeeth.map(n => renderTooth(n))}
+
+        {/* Fixed replacement overlay — only when isSingleToothCase. Drawn
+            after teeth so it sits on top of the missing-tooth outline. */}
+        {drawFixedReplacement()}
+
+        {!isSingleToothCase && (
+          <>
+            {/* 4. Survey lines / HOC ovals on abutments */}
+            {abutments.map((a, i) => selectable(
+              drawSurveyLine(a.tooth, `sl-${i}`),
+              'surveyLine', { tooth: a.tooth, tooltip: `Survey line / HOC on ${rpdToothName(a.tooth)}` },
+              `sl-w-${i}`
+            ))}
+
+            {/* 5a. Minor connector struts */}
+            {abutments.map((a, i) => selectable(
+              drawMinorConnectorStrut(a.tooth, `mc-${i}`),
+              'minorConnector', { tooth: a.tooth, tooltip: `Minor connector — links rest assembly on ${rpdToothName(a.tooth)} to major connector` },
+              `mc-w-${i}`
+            ))}
+            {(result.indirectRetainers || []).map((r, i) => selectable(
+              drawMinorConnectorStrut(r.tooth, `mc-ir-${i}`),
+              'minorConnector', { tooth: r.tooth, tooltip: `Minor connector — links indirect retainer on ${rpdToothName(r.tooth)} to major connector` },
+              `mc-ir-w-${i}`
+            ))}
+
+            {/* 5b. Guide planes / proximal plates */}
+            {abutments.flatMap((a, i) => a.guidePlane
+              ? [selectable(
+                  drawGuidePlane(a.tooth, a.guidePlane.surface, `gp-${i}`),
+                  'guidePlane', { tooth: a.tooth, tooltip: `Guide plane / proximal plate on ${rpdToothName(a.tooth)} — ${a.guidePlane.surface} surface` },
+                  `gp-w-${i}`
+                )]
+              : [])}
+
+            {/* 6. Rest seats */}
+            {abutments.flatMap((a, i) => {
+              if (!a.restSeat) return [];
+              const tip = `Rest seat on ${rpdToothName(a.tooth)} — ${a.restSeat.surface} ${a.restSeat.type}`;
+              let el;
+              if (a.restSeat.type === "occlusal") el = drawOcclusalRest(a.tooth, a.restSeat.surface, `rs-${i}`);
+              else if (a.restSeat.type === "cingulum") el = drawCingulumRest(a.tooth, `rs-${i}`);
+              else if (a.restSeat.type === "ball")     el = drawBallRest(a.tooth, `rs-${i}`);
+              else el = drawOcclusalRest(a.tooth, a.restSeat.surface || "mesial", `rs-${i}`);
+              return [selectable(el, 'rest', { tooth: a.tooth, tooltip: tip }, `rs-w-${i}`)];
+            })}
+
+            {/* 7. Reciprocation */}
+            {abutments.flatMap((a, i) => {
+              if (!a.reciprocation) return [];
+              const plateSide = a.guidePlane?.surface || (a.restSeat?.surface === "mesial" ? "distal" : "mesial");
+              let el;
+              if (a.reciprocation.type === "plate") {
+                el = drawReciprocalPlate(a.tooth, `recip-${i}`);
+              } else if (a.reciprocation.type === "arm") {
+                el = drawReciprocalArm(a.tooth, plateSide, `recip-${i}`);
+              } else {
+                return [];
+              }
+              return [selectable(el, 'reciprocal', { tooth: a.tooth, tooltip: `Reciprocal arm on ${rpdToothName(a.tooth)}` }, `recip-w-${i}`)];
+            })}
+
+            {/* 8. Retentive arms / I-bars */}
+            {abutments.flatMap((a, i) => {
+              const ct = a.claspType || "";
+              const attrs = teethState[a.tooth]?.attrs || {};
+              const ucLoc = attrs.undercutLocation || "mid-buccal";
+              const plateSide = a.guidePlane?.surface || (a.restSeat?.surface === "mesial" ? "distal" : "mesial");
+              if (ct.includes("Rest Only")) return [];
+              let el;
+              if (ct === "RPI" || ct === "I-bar (esthetic)") {
+                el = drawIBar(a.tooth, ucLoc, plateSide, `clasp-${i}`);
+              } else if (ct === "Combination" || ct === "WW C-clasp" || ct === "Ball Clasp") {
+                el = drawCircumferentialArm(a.tooth, { color: C_WW, plateSide, onBuccal: true }, `clasp-${i}`);
+              } else if (ct === "Reverse Akers") {
+                const onBuccal = !(ucLoc === "disto-lingual" || ucLoc === "mesio-lingual");
+                el = drawCircumferentialArm(a.tooth, { color: C_CAST, plateSide, onBuccal }, `clasp-${i}`);
+              } else {
+                el = drawCircumferentialArm(a.tooth, { color: C_CAST, plateSide, onBuccal: true }, `clasp-${i}`);
+              }
+              return [selectable(el, 'clasp', { tooth: a.tooth, tooltip: `${ct} on ${rpdToothName(a.tooth)} — engages ${ucLoc} undercut` }, `clasp-w-${i}`)];
+            })}
+
+            {/* 9. Indirect retainers */}
+            {indirects.flatMap((r, i) => {
+              const isCing = (r.restType || "").toLowerCase().includes("cingulum")
+                           || RPD_CANINES.has(r.tooth)
+                           || (r.tooth >= 6 && r.tooth <= 11) || (r.tooth >= 22 && r.tooth <= 27);
+              const el = isCing
+                ? drawCingulumRest(r.tooth, `ir-${i}`)
+                : drawOcclusalRest(r.tooth, "mesial", `ir-${i}`);
+              return [selectable(el, 'indirect', { tooth: r.tooth, tooltip: `Indirect retainer on ${rpdToothName(r.tooth)}` }, `ir-w-${i}`)];
+            })}
+
+            {/* 10. Per-abutment annotations */}
+            {abutments.map((a, i) => drawAbutmentAnnotation(a, `ann-${i}`))}
+          </>
+        )}
+
+        {/* Arch label was redundant with the Mx/Mn toggle above the chart;
+            removed. */}
+        {/* "*or implant" footnote — only when FPD is shown (Class III single
+            tooth, where implant is a valid alternative). For Class II we
+            already show "Implant" as the only option, so no footnote needed.
+            Bottom-left of SVG, in the verdict italic-Fraunces accent style. */}
+        {isSingleToothCase && isFPD && (
+          <text x={28} y={isMax ? 38 : H - 22} fontSize="28"
+            fontFamily="'Fraunces', serif" fontStyle="italic"
+            fill="var(--accent)" textAnchor="start">
+            *or implant
+          </text>
+        )}
+      </svg>
+    </div>
+  );
+}
+
+// ─── UIC Preliminary Partial Denture Design Form ──────────────────────────
+// Recreates the UIC Preliminary [Maxillary/Mandibular] Partial Denture
+// Design form layout, pre-filled from the engine output. Designed to be
+// printable / screenshot-able so it can be copied directly to the paper
+// form.
+function RPDPreliminaryDesignForm({ caseInput, result, showArchDrawing = true, compact = false }) {
+  if (!result || result.kennedy.class === null) return null;
+  const arch = caseInput.arch === "maxillary" ? "MAXILLARY" : "MANDIBULAR";
+  const pf = caseInput.patientFactors || {};
+
+  // ─── Direct retainers table data ──
+  const directRetainers = (result.abutmentDesigns || []).map(a => {
+    const attrs = a.attrs || {};
+    const restCell = a.restSeat
+      ? `${a.restSeat.surface?.[0]?.toUpperCase() || ""}${a.restSeat.type === "cingulum" ? "O cingulum" : "O"}`
+      : "—";
+    // Examples: "MO", "DO" (mesio-occlusal, disto-occlusal)
+    const retention = a.claspType?.includes("Rest Only")
+      ? "—"
+      : `${attrs.undercutDepth || "0.01\""} ${(() => {
+          const u = attrs.undercutLocation || "mid-buccal";
+          return u === "mesio-buccal" ? "MB" : u === "disto-buccal" ? "DB"
+               : u === "mesio-lingual" ? "ML" : u === "disto-lingual" ? "DL" : "mid-B";
+        })()}`;
+    const bracing = a.reciprocation
+      ? (a.reciprocation.type === "plate" ? `${caseInput.arch === "maxillary" ? "Palatal" : "Lingual"} plate`
+        : a.reciprocation.type === "arm" ? `${caseInput.arch === "maxillary" ? "Palatal" : "Lingual"} arm`
+        : a.reciprocation.text || "—")
+      : "—";
+    return {
+      tooth: a.tooth,
+      clasp: a.claspType,
+      rest: restCell,
+      retention,
+      bracing,
+    };
+  });
+
+  // ─── Indirect retainers ──
+  const indirectList = (result.indirectRetainers || [])
+    .map(r => `#${r.tooth} ${r.restType || "rest"}`)
+    .join(", ");
+
+  // ─── Facings / metal pontics / tube teeth ──
+  const facingsList = (result.baseDesigns || [])
+    .filter(b => b.type === "Tube Tooth" || b.type === "Facing")
+    .flatMap(b => (b.spanTeeth || []).map(t => `#${t} ${b.type}`))
+    .join(", ");
+
+  // ─── Retention webbing ──
+  const webbingList = (result.baseDesigns || [])
+    .filter(b => b.type === "Open Lattice" || b.type === "Mesh")
+    .map(b => {
+      const teeth = (b.spanTeeth || []).map(t => `#${t}`).join(", ");
+      const tStop = b.note && /distal tissue stop/i.test(b.note) ? " with distal tissue stop" : "";
+      return `${teeth} ${b.type}${tStop}`;
+    })
+    .join("; ");
+
+  // ─── Abutment preparations ──
+  const abutmentPrepLines = (result.abutmentDesigns || [])
+    .map(a => {
+      const parts = [];
+      if (a.guidePlane) parts.push(`${a.guidePlane.surface[0].toUpperCase()} guide plane`);
+      if (a.surveyCrown?.indicated) parts.push("survey crown");
+      if (a.crownLengthening?.indicated) parts.push("crown lengthening");
+      const attrs = a.attrs || {};
+      if (attrs.recontour) parts.push(`axial recontouring (${attrs.recontour})`);
+      return parts.length ? `#${a.tooth} ${parts.join(", ")}` : null;
+    })
+    .filter(Boolean)
+    .join("; ");
+
+  // ─── Rationale lines (per major decision) ──
+  const rationaleLines = [];
+  rationaleLines.push(`Framework: ${result.framework.material} — ${result.framework.rationale}`);
+  rationaleLines.push(`Major connector: ${result.majorConnector.rationale}`);
+  if (abutmentPrepLines) {
+    rationaleLines.push("Guide planes establish path of insertion; axial recontouring lowers HOC where needed for favorable clasp placement.");
+  }
+  result.abutmentDesigns?.forEach(a => {
+    if (a.claspRationale) rationaleLines.push(`#${a.tooth} (${a.claspType}): ${a.claspRationale}`);
+  });
+  result.indirectRetainers?.forEach(r => {
+    if (r.rationale) rationaleLines.push(`#${r.tooth} indirect: ${r.rationale}`);
+  });
+  result.baseDesigns?.forEach(b => {
+    if (b.rationale) rationaleLines.push(`${b.type}: ${b.rationale}`);
+  });
+
+  const fieldRow = (label, value) => (
+    <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "8px" }}>
+      <span style={{ fontWeight: 600, fontSize: "11px", whiteSpace: "nowrap" }}>{label}:</span>
+      <span style={{
+        flex: 1, fontSize: "12px", borderBottom: "1px solid var(--ink)",
+        paddingBottom: "2px", minHeight: "16px", color: "var(--ink)",
+        fontFamily: "'Geist', sans-serif",
+      }}>
+        {value || " "}
+      </span>
+    </div>
+  );
+
+  const checkboxRow = (label, checked) => (
+    <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "3px", fontSize: "11px" }}>
+      <span style={{
+        display: "inline-block", width: "10px", height: "10px",
+        border: "1px solid var(--ink)", boxSizing: "border-box",
+        background: "var(--paper)", position: "relative",
+      }}>
+        {checked && (
+          <span style={{
+            position: "absolute", inset: 0, display: "flex",
+            alignItems: "center", justifyContent: "center",
+            fontSize: "9px", lineHeight: 1, color: "var(--ink)",
+          }}>✓</span>
+        )}
+      </span>
+      <span>{label}</span>
+    </div>
+  );
+
+  return (
+    <div className="rpd-uic-form" style={{
+      background: "white",
+      border: "1.5px solid var(--ink)",
+      padding: "24px",
+      marginBottom: "20px",
+      fontFamily: "'Geist', sans-serif",
+      color: "var(--ink)",
+      fontSize: "12px",
+      lineHeight: 1.5,
+    }}>
+      {/* Header */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "16px", alignItems: "start", marginBottom: "16px", paddingBottom: "12px", borderBottom: "1.5px solid var(--ink)" }}>
+        <div>
+          <div style={{ fontSize: "13px", fontWeight: 600, letterSpacing: "0.04em", lineHeight: 1.3 }}>
+            PRELIMINARY {arch}<br/>
+            PARTIAL DENTURE DESIGN
+          </div>
+        </div>
+      </div>
+
+      {/* Student / Patient / Date */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 140px", gap: "20px", marginBottom: "20px" }}>
+        {fieldRow("Student", "")}
+        {fieldRow("Patient", "")}
+        {fieldRow("Date", new Date().toISOString().slice(0,10))}
+      </div>
+
+      {/* Opposing / mold / shade row */}
+      <div style={{
+        display: "grid", gridTemplateColumns: "1fr 1fr",
+        gap: "20px", marginBottom: "20px", padding: "12px 14px",
+        border: "1px solid var(--rule)",
+      }}>
+        <div>
+          <div style={{ fontSize: "10px", fontWeight: 600, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.06em" }}>Opposing:</div>
+          {checkboxRow("Natural dentition", pf.opposingArch === "natural" || !pf.opposingArch)}
+          {checkboxRow("Existing partial denture", pf.opposingArch === "partial_denture")}
+          {checkboxRow("Existing complete denture", pf.opposingArch === "complete_denture")}
+          {checkboxRow("New prosthesis/restoration to be made", pf.opposingArch === "new_prosthesis")}
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", alignItems: "end" }}>
+          <div>
+            <div style={{ fontSize: "10px", fontWeight: 600, marginBottom: "4px" }}>Anterior mold</div>
+            <div style={{ border: "1px solid var(--ink)", height: "20px" }} />
+          </div>
+          <div>
+            <div style={{ fontSize: "10px", fontWeight: 600, marginBottom: "4px" }}>Posterior mold</div>
+            <div style={{ border: "1px solid var(--ink)", height: "20px" }} />
+          </div>
+          <div>
+            <div style={{ fontSize: "10px", fontWeight: 600, marginBottom: "4px" }}>Shade</div>
+            <div style={{ border: "1px solid var(--ink)", height: "20px" }} />
+          </div>
+        </div>
+      </div>
+
+      {/* Arch drawing — paper-form rendering of the design with ink colors.
+          Skipped when showArchDrawing=false (e.g. when this form is rendered
+          directly below the interactive chart; no need to redraw). */}
+      {showArchDrawing && (
+        <div style={{ marginBottom: "20px", padding: "18px 20px", border: "1.5px solid var(--ink)", background: "#FDFCF7" }}>
+          <div style={{
+            fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em",
+            textTransform: "uppercase", color: "var(--ink-soft)",
+            marginBottom: "10px",
+            display: "flex", justifyContent: "space-between", alignItems: "baseline",
+          }}>
+            <span>Design drawing — {arch === "MAXILLARY" ? "Maxillary" : "Mandibular"} arch (occlusal view)</span>
+          </div>
+          <RPDPaperFormArchDrawing caseInput={caseInput} result={result} />
+        </div>
+      )}
+
+      {/* Body: 2-column layout — Design on left, Rationale on right */}
+      <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "24px" }}>
+        {/* Design column */}
+        <div>
+          <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "12px", paddingBottom: "4px", borderBottom: "1.5px solid var(--ink)" }}>
+            Partial Denture Design
+          </div>
+
+          {fieldRow("Framework metal", result.framework.material)}
+          {fieldRow("Major connector", `${result.majorConnector.type}${result.majorConnector.width ? ` (${result.majorConnector.width})` : ""}`)}
+          {fieldRow("Abutment teeth", (result.abutmentDesigns || []).map(a => `#${a.tooth}`).join(", "))}
+
+          <div style={{ marginBottom: "12px" }}>
+            <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px" }}>Abutment preparations, guide planes, recontouring, restorations:</div>
+            <div style={{
+              border: "1px solid var(--ink)", padding: "6px 8px",
+              minHeight: "36px", fontSize: "11px", whiteSpace: "pre-wrap",
+            }}>
+              {abutmentPrepLines || ""}
+            </div>
+          </div>
+
+          {/* Direct retainers table */}
+          <div style={{ marginBottom: "12px" }}>
+            <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px" }}>Direct retainers:</div>
+            <table style={{
+              width: "100%", borderCollapse: "collapse", fontSize: "11px",
+              border: "1px solid var(--ink)",
+            }}>
+              <thead>
+                <tr>
+                  {["Tooth #", "Clasp", "Rest", "Retention", "Bracing"].map(h => (
+                    <th key={h} style={{
+                      padding: "4px 6px",
+                      borderBottom: "1px solid var(--ink)",
+                      borderRight: "1px solid var(--rule)",
+                      fontWeight: 600, textAlign: "left",
+                      background: "var(--paper)",
+                      fontSize: "10px",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.04em",
+                    }}>
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {directRetainers.length === 0 ? (
+                  <tr><td colSpan={5} style={{ padding: "8px", fontStyle: "italic", color: "var(--ink-soft)" }}>No abutments</td></tr>
+                ) : directRetainers.map((r, i) => (
+                  <tr key={i}>
+                    <td style={{ padding: "4px 6px", borderRight: "1px solid var(--rule)", borderBottom: i === directRetainers.length - 1 ? "none" : "1px solid var(--rule)" }}>#{r.tooth}</td>
+                    <td style={{ padding: "4px 6px", borderRight: "1px solid var(--rule)", borderBottom: i === directRetainers.length - 1 ? "none" : "1px solid var(--rule)" }}>{r.clasp}</td>
+                    <td style={{ padding: "4px 6px", borderRight: "1px solid var(--rule)", borderBottom: i === directRetainers.length - 1 ? "none" : "1px solid var(--rule)" }}>{r.rest}</td>
+                    <td style={{ padding: "4px 6px", borderRight: "1px solid var(--rule)", borderBottom: i === directRetainers.length - 1 ? "none" : "1px solid var(--rule)" }}>{r.retention}</td>
+                    <td style={{ padding: "4px 6px", borderBottom: i === directRetainers.length - 1 ? "none" : "1px solid var(--rule)" }}>{r.bracing}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {fieldRow("Indirect retainers, additional rests", indirectList)}
+          {fieldRow("Facings, metal pontics, tube teeth", facingsList)}
+          {fieldRow("Retention webbing", webbingList)}
+        </div>
+
+        {/* Rationale column */}
+        <div>
+          <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "12px", paddingBottom: "4px", borderBottom: "1.5px solid var(--ink)" }}>
+            Rationale / Comments
+          </div>
+          <div style={{ fontSize: "11px", lineHeight: 1.55 }}>
+            {rationaleLines.map((line, i) => (
+              <div key={i} style={{
+                marginBottom: "8px",
+                paddingBottom: "6px",
+                borderBottom: i === rationaleLines.length - 1 ? "none" : "1px dotted var(--rule)",
+              }}>
+                {line}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div style={{ marginTop: "24px", paddingTop: "12px", borderTop: "1px solid var(--ink)", display: "grid", gridTemplateColumns: "2fr 1fr", gap: "20px" }}>
+        {fieldRow("Preliminary design approved by", "")}
+        {fieldRow("Date", "")}
+      </div>
+    </div>
+  );
+}
+
+// ─── UIC Laboratory Prescription Form ─────────────────────────────────────
+// Recreates the UIC lab Rx form layout with the engine's lab script filled
+// into the Instructions box.
+function RPDLabRxForm({ caseInput, result }) {
+  if (!result || result.kennedy.class === null) return null;
+  const arch = caseInput.arch === "maxillary" ? "maxillary" : "mandibular";
+
+  // Build the per-tooth prescription lines + base design lines
+  const txLines = [];
+  txLines.push(`Please fabricate ${result.framework.material} metal framework for ${arch} RPD.`);
+  txLines.push(`Major Connector: ${result.majorConnector.type}${result.majorConnector.width ? ` (${result.majorConnector.width})` : ""}. 0.5mm beading on tissue surface.`);
+  txLines.push("");
+  txLines.push("* Undercuts to engage are marked in red.*");
+  txLines.push("");
+  (result.abutmentDesigns || []).forEach(a => {
+    const attrs = a.attrs || {};
+    const parts = [];
+    if (a.guidePlane) {
+      parts.push(`${a.guidePlane.surface === "mesial" ? "Mesial" : "Distal"} proximal plate`);
+    }
+    if (a.restSeat) {
+      const surfaceCap = a.restSeat.surface[0].toUpperCase() + a.restSeat.surface.slice(1);
+      parts.push(`${surfaceCap} ${a.restSeat.type === "cingulum" ? "cingulum rest" : a.restSeat.type === "ball" ? "ball rest" : "rest"}`);
+    }
+    if (!a.claspType?.includes("Rest Only")) {
+      const ucShort = (attrs.undercutLocation === "mesio-buccal") ? "MB"
+                    : (attrs.undercutLocation === "disto-buccal") ? "DB"
+                    : (attrs.undercutLocation === "mesio-lingual") ? "ML"
+                    : (attrs.undercutLocation === "disto-lingual") ? "DL" : "mid-buccal";
+      parts.push(`${a.claspType} clasp engaging ${attrs.undercutDepth || "0.01\""} ${ucShort} undercut`);
+      const recip = a.reciprocation;
+      if (recip) {
+        const archSide = arch === "maxillary" ? "Palatal" : "Lingual";
+        const recipText = recip.type === "plate" ? `${archSide} reciprocal plate`
+                        : recip.type === "arm" ? `${archSide} reciprocal clasp`
+                        : recip.text || "";
+        if (recipText) parts.push(recipText);
+      }
+    }
+    txLines.push(`${a.tooth}: ${parts.join(", ")}`);
+  });
+  txLines.push("");
+  (result.baseDesigns || []).forEach(b => {
+    const teeth = (b.spanTeeth || []).map(t => `#${t}`).join(", ");
+    const tStop = b.note && /distal tissue stop/i.test(b.note) ? " with distal tissue stop" : "";
+    txLines.push(`${teeth} ${b.type}${tStop}`);
+  });
+  txLines.push("");
+  txLines.push("Please return for try-in. Thank you.");
+
+  const today = new Date().toISOString().slice(0,10);
+
+  return (
+    <div className="rpd-uic-form" style={{
+      background: "white",
+      border: "1.5px solid var(--ink)",
+      padding: "20px",
+      marginBottom: "20px",
+      fontFamily: "'Geist', sans-serif",
+      color: "var(--ink)",
+      fontSize: "12px",
+      lineHeight: 1.45,
+    }}>
+      {/* Header */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "16px", alignItems: "start", marginBottom: "12px" }}>
+        <div style={{ fontFamily: "'Fraunces', serif", fontSize: "14px", fontWeight: 700, lineHeight: 1.2 }}>
+          RPD Laboratory Prescription
+        </div>
+        <div style={{ fontSize: "10px" }}>
+          {[
+            { lbl: "Under Graduate", on: true },
+            { lbl: "Post Graduate", on: false },
+            { lbl: "Faculty Practice", on: false },
+          ].map(opt => (
+            <div key={opt.lbl} style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "3px" }}>
+              <span style={{
+                display: "inline-block", width: "10px", height: "10px",
+                border: "1px solid var(--ink)", boxSizing: "border-box",
+                position: "relative",
+              }}>
+                {opt.on && <span style={{ position: "absolute", inset: 0, textAlign: "center", lineHeight: "8px", fontSize: "9px" }}>✕</span>}
+              </span>
+              <span>{opt.lbl}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Info grid */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0", marginBottom: "12px" }}>
+        <div style={{ border: "1px solid var(--ink)", padding: "8px 10px", borderRight: "none" }}>
+          <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px" }}>General Information</div>
+          <div style={{ fontSize: "11px" }}>Student/Dr.: ___________________</div>
+          <div style={{ fontSize: "11px" }}>Patient: ___________________</div>
+        </div>
+        <div style={{ border: "1px solid var(--ink)", padding: "8px 10px" }}>
+          <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px" }}>For Department Use Only</div>
+          <div style={{ fontSize: "11px" }}>Laboratory: ___________________</div>
+          <div style={{ fontSize: "11px" }}>Date ordered: {today}</div>
+          <div style={{ fontSize: "11px" }}>Date Sent Out: __________   Date Due Back: __________</div>
+          <div style={{ fontSize: "11px" }}>Order # – Case #: ______________</div>
+        </div>
+      </div>
+
+      <div style={{ border: "1px solid var(--ink)", padding: "6px 10px", marginBottom: "12px", fontSize: "11px" }}>
+        Procedure Code: <strong>{result.axiumCode || "—"}</strong> &nbsp; Site: __________ &nbsp; Lab Code: __________
+      </div>
+
+      {/* Instructions box */}
+      <div style={{ border: "1px solid var(--ink)", padding: "12px 14px", marginBottom: "12px" }}>
+        <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "8px" }}>Instructions:</div>
+        <pre style={{
+          margin: 0, fontFamily: "'JetBrains Mono', monospace",
+          fontSize: "11px", lineHeight: 1.55, whiteSpace: "pre-wrap",
+          color: "var(--ink)",
+        }}>
+          {txLines.join("\n")}
+        </pre>
+      </div>
+
+      {/* Footer: instructor + signature */}
+      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "0" }}>
+        <div style={{ border: "1px solid var(--ink)", padding: "8px 10px", borderRight: "none" }}>
+          <div style={{ fontWeight: 600, fontSize: "11px" }}>Instructor</div>
+          <div style={{ fontSize: "11px" }}>Name: __________________________</div>
+          <div style={{ fontSize: "11px" }}>License: ________________ Signature: __________________</div>
+        </div>
+        <div style={{ border: "1px solid var(--ink)", padding: "8px 10px" }}>
+          <div style={{ fontSize: "11px" }}>Administrator's Approval ____________   Date ____________</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Design Element Detail Panel ──────────────────────────────────────────
+// Shows specifics of whatever overlay element the user just clicked on:
+// rest seat / guide plane / clasp / reciprocal / I-bar / undercut / survey
+// line / pontic / indirect retainer / major connector / base design.
+function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
+  if (!element || !result) return null;
+  const { kind, tooth, spanIndex } = element;
+  const abutment = tooth != null ? result.abutmentDesigns?.find(a => a.tooth === tooth) : null;
+  const indirect = tooth != null ? result.indirectRetainers?.find(r => r.tooth === tooth) : null;
+  const base = spanIndex != null ? result.baseDesigns?.[spanIndex] : null;
+  const mc = result.majorConnector;
+
+  // ── Build the engine's per-tooth decision narrative for the clasp branch.
+  // Restructured as a true DECISION TREE with explicit branch points so the
+  // student can see not just what the engine picked but ALSO the alternatives
+  // that were evaluated and rejected. Each node has a `kind` field:
+  //   "step"          — Major decision header (a fork in the tree)
+  //   "branch-taken"  — The branch the engine chose at the previous step (●)
+  //   "branch-skipped"— The branch NOT taken (○ — shown dimmed for context)
+  //   "gate"          — Sub-criterion evaluated with pass/fail (✓/✕)
+  //   "result"        — Conclusion of the previous group of gates (→)
+  //   "leaf"          — Final clasp selection with rationale
+  let decisionTree = null;
+  // Show the decision tree for any clickable element on an abutment.
+  // The tree explains WHY this abutment got the design it got — applies
+  // whether you click the clasp, rest seat, guide plane, or undercut tick.
+  // Critical for "Rest Only (esthetic omission)" abutments which have no
+  // clasp arm to click — without this expansion the decision tree would
+  // be unreachable for those teeth.
+  if (abutment && ['clasp', 'reciprocal', 'iBar', 'undercut', 'rest', 'guidePlane'].includes(kind)) {
+    const attrs = { ...(RPD_ABUTMENT_DEFAULTS || {}), ...(caseInput.teeth?.[tooth]?.attrs || {}) };
+    const m = caseInput.measurements || {};
+    const isDE = abutment.spanType === "distal-extension";
+    const cl = abutment.claspType;
+    const nodes = [];
+
+    // ─── Branch point 1: Span type ───
+    nodes.push({ kind: "step", text: "Step 1 — What kind of span does this abutment bound?" });
+    nodes.push({
+      kind: isDE ? "branch-taken" : "branch-skipped",
+      text: "Distal extension (tooth-tissue support)",
+      detail: isDE ? `This case: Kennedy ${result.kennedy.class || "?"}${result.kennedy.deSide ? ", " + result.kennedy.deSide + " side" : ""} — biomechanics call for a stress-releasing clasp assembly.` : null,
+    });
+    nodes.push({
+      kind: !isDE ? "branch-taken" : "branch-skipped",
+      text: "Tooth-supported (modification space)",
+      detail: !isDE ? "Rigid clasp acceptable — no tissue movement under load. Proceed to clasp-type selection." : null,
+    });
+
+    if (isDE) {
+      // ─── Branch point 2: RPI gate evaluation ───
+      const gates = [
+        { key: "vestibular", text: "Vestibular depth >5mm",
+          ok: (m.vestibularDepth ?? 99) > 5,
+          failText: `vestibular depth ${m.vestibularDepth ?? "?"}mm ≤5mm — I-bar cannot approach` },
+        { key: "no-mesial-rest", text: "Mesial occlusal rest possible (no interference)",
+          ok: attrs.mesialRestPossible && !attrs.occlusalInterference,
+          failText: "occlusal interference / decay blocks mesial rest" },
+        { key: "soft-tissue-undercut", text: "Soft tissue undercut ≤1mm at 4–5mm below buccal gingiva",
+          ok: attrs.softTissueUndercut !== "gt-1mm",
+          failText: "soft tissue undercut >1mm at 4–5mm below buccal gingival margin" },
+        { key: "no-attached-gingiva", text: "Adequate attached gingiva at I-bar crossing",
+          ok: attrs.attachedGingivaAdequate !== false,
+          failText: "insufficient attached gingiva" },
+        { key: "extreme-tilt", text: "Crown not extremely tilted",
+          ok: attrs.tilt !== "extreme",
+          failText: "extremely tilted crown" },
+        { key: "short-crown", text: "Adequate clinical crown length",
+          ok: attrs.crownHeight !== "short",
+          failText: "short clinical crown" },
+        { key: "frenum", text: "No high frenum in I-bar approach path",
+          ok: !attrs.highFrenum,
+          failText: "high frenum in I-bar approach path" },
+        { key: "undercut-location", text: "Usable undercut at mid-/mesio-buccal for I-bar",
+          ok: !(attrs.undercutLocation === "disto-buccal" || attrs.undercutLocation === "disto-lingual"
+              || attrs.undercutLocation === "mesio-lingual" || attrs.undercutLocation === "none"),
+          failText: `usable undercut not at mid-buccal/mesio-buccal (${attrs.undercutLocation})` },
+      ];
+      const failed = gates.filter(g => !g.ok);
+      const allPass = failed.length === 0;
+      nodes.push({
+        kind: "step",
+        text: "Step 2 — Evaluate the 8 standard RPI contraindications",
+        detail: "All 8 must pass for RPI; any single failure triggers fallback to Combination clasp.",
+      });
+      gates.forEach(g => nodes.push({
+        kind: "gate", ok: g.ok,
+        text: g.text,
+        detail: g.ok ? null : g.failText,
+      }));
+      nodes.push({
+        kind: "result", ok: allPass,
+        text: allPass
+          ? "All 8 gates passed → RPI selected"
+          : `${failed.length} contraindication${failed.length === 1 ? "" : "s"} fired → Combination fallback`,
+      });
+
+      // ─── Final clasp ───
+      nodes.push({
+        kind: "leaf",
+        text: allPass ? "RPI (Rest + Proximal plate + I-bar)" : "Combination clasp",
+        detail: allPass
+          ? "Stress-releasing assembly: mesial occlusal rest, distal proximal plate, I-bar engaging 0.01\" mid-buccal undercut. Under occlusal load the I-bar rotates AWAY from the abutment, sparing it from torque — this is what makes RPI the first choice for DE cases."
+          : "Wrought-wire retentive arm (18ga) engages 0.02\" MB undercut; cast lingual reciprocal arm. The flexibility of the wrought wire releases stress when the DE base seats into tissue. Used when any RPI contraindication is present.",
+      });
+    } else {
+      // ─── Branch point 2: Esthetic zone? ───
+      const inEsthetic = RPD_ESTHETIC_ZONE.has(tooth);
+      const isMaxAnterior = RPD_MAX_ANTERIOR.has(tooth);
+      const uc = attrs.undercutLocation || "mid-buccal";
+
+      nodes.push({
+        kind: "step",
+        text: "Step 2 — Is the tooth in the esthetic zone?",
+        detail: "Esthetic zone: max anteriors #6-11 and mand anteriors #22-27. Cast metal clasps on these teeth are visible during smile.",
+      });
+      nodes.push({
+        kind: inEsthetic ? "branch-taken" : "branch-skipped",
+        text: "In esthetic zone — evaluate esthetic alternatives",
+        detail: inEsthetic ? "Continue to esthetic clasp selection." : null,
+      });
+      nodes.push({
+        kind: !inEsthetic ? "branch-taken" : "branch-skipped",
+        text: "Posterior abutment — standard clasp selection by undercut location",
+        detail: !inEsthetic ? `Proceed to Step 3 to evaluate undercut location (${uc}).` : null,
+      });
+
+      if (inEsthetic && cl === "Rest Only (esthetic omission)") {
+        // Max-anterior in tooth-bounded span → Rest Only path
+        nodes.push({
+          kind: "step",
+          text: "Step 3 — Max anterior abutment in non-DE span?",
+          detail: "standard convention for max anteriors in tooth-supported spans: esthetic omission (rest only, no visible clasp). The major connector contact provides bracing; long parallel guide plane provides secondary retention.",
+        });
+        nodes.push({
+          kind: "branch-taken", text: "Yes — apply esthetic omission",
+          detail: "No clasp on this abutment. Place rest seat (cingulum/ball) and a long parallel guide plane for path-of-insertion retention.",
+        });
+        nodes.push({
+          kind: "branch-skipped", text: "Class IV primary abutment — needs real retention (not this case)",
+          detail: null,
+        });
+        nodes.push({
+          kind: "leaf",
+          text: "Rest Only (esthetic omission) with " + (tooth === 8 || tooth === 9 ? "distal ball rest" : "cingulum rest"),
+          detail: "Zero visible clasp. Retention comes from path-of-insertion friction along long parallel guide planes and major connector contact against lingual cingula. Used when the case has adequate retention elsewhere.",
+        });
+      } else if (inEsthetic && cl === "I-bar (esthetic)") {
+        nodes.push({
+          kind: "step",
+          text: "Step 3 — Engine selected I-bar esthetic over Rest Only",
+          detail: "Tooth is in esthetic zone with no RPI contraindications and usable buccal undercut. I-bar approaches from the gingival vestibule (less visible than supra-bulge Akers).",
+        });
+        nodes.push({
+          kind: "branch-taken", text: "I-bar esthetic (retentive cast bar)",
+          detail: "Gingival approach hides cast metal from labial view; engages 0.01\" mid-buccal undercut.",
+        });
+        nodes.push({
+          kind: "branch-skipped", text: "Rest Only (esthetic omission) — alternative for cases with adequate retention elsewhere",
+          detail: null,
+        });
+        nodes.push({
+          kind: "leaf",
+          text: "I-bar (esthetic) — cast retentive bar approaching from gingival",
+          detail: "More esthetic than Akers because the cast metal sits below the gingival margin rather than wrapping over the buccal contour. Engages mid-buccal undercut.",
+        });
+      } else if (cl === "Reverse Akers") {
+        nodes.push({
+          kind: "step",
+          text: "Step 3 — Where is the surveyed undercut?",
+          detail: `Cast clasp arm engagement depends on undercut location. standard convention: name varies by direction.`,
+        });
+        nodes.push({
+          kind: "branch-taken",
+          text: `Distal-side undercut (${uc})`,
+          detail: "Retentive arm engages the distal aspect; reciprocal arm sits on the opposite (lingual or buccal) surface. Sometimes called \"Reverse Akers\" or just \"Akers with DL/DB undercut\" in clinical notation.",
+        });
+        nodes.push({ kind: "branch-skipped", text: "Mid-/mesio-buccal undercut → standard Akers", detail: null });
+        nodes.push({
+          kind: "leaf",
+          text: "Reverse Akers (cast circumferential, retentive arm from distal-side)",
+          detail: `Cast retentive arm engages the ${uc} undercut; reciprocal arm on the opposite surface. Same biomechanics as Akers — just the entry direction differs.`,
+        });
+      } else if (cl === "Akers") {
+        nodes.push({
+          kind: "step",
+          text: "Step 3 — Where is the surveyed undercut?",
+          detail: `Cast clasp arm engagement depends on undercut location. Standard Akers requires a buccal undercut.`,
+        });
+        nodes.push({
+          kind: "branch-taken",
+          text: `Mid-/mesio-buccal undercut (${uc})`,
+          detail: "Engages with a cast circumferential retentive arm wrapping the buccal surface; reciprocal arm on the lingual.",
+        });
+        nodes.push({ kind: "branch-skipped", text: "Distal-side undercut → Reverse Akers", detail: null });
+        nodes.push({
+          kind: "leaf",
+          text: "Akers (cast circumferential clasp)",
+          detail: "First choice for tooth-supported abutments. Cast retentive arm with 0.01\" undercut engagement; reciprocal arm above survey line for bracing.",
+        });
+      } else if (cl === "Embrasure") {
+        nodes.push({
+          kind: "step",
+          text: "Step 3 — Two adjacent posterior abutments with no edentulous space between them",
+          detail: "Embrasure clasp configuration: one continuous clasp engages both teeth via a shared occlusal embrasure rest assembly.",
+        });
+        nodes.push({
+          kind: "branch-taken",
+          text: "Embrasure clasp (continuous, two teeth)",
+          detail: "Provides cross-arch stabilization without adding a separate clasp.",
+        });
+        nodes.push({
+          kind: "leaf",
+          text: "Embrasure clasp with shared rest assembly",
+          detail: "Used when adjacent posteriors are both abutments and there's no edentulous space between them.",
+        });
+      } else if (cl === "WW C-clasp") {
+        nodes.push({
+          kind: "step",
+          text: "Step 3 — Interim RPD design",
+          detail: "Interim RPDs use wrought-wire C-clasps for retention; no rest seats, guide planes, or reciprocation in the framework.",
+        });
+        nodes.push({
+          kind: "leaf",
+          text: "WW C-clasp (18ga wrought wire)",
+          detail: "Engages 0.02\" undercut. Flexible, easy to adjust, designed for a transitional prosthesis.",
+        });
+      }
+    }
+    decisionTree = nodes;
+  }
+
+  // Resolve title + body lines for each kind
+  let title = "";
+  let lines = [];
+  let rationale = "";
+  if (kind === 'rest' && abutment?.restSeat) {
+    title = `Rest seat — ${rpdToothName(tooth)}`;
+    lines = [
+      ["Surface", abutment.restSeat.surface],
+      ["Type",    abutment.restSeat.type],
+      abutment.restSeat.bur && ["Bur(s)", abutment.restSeat.bur],
+      abutment.restSeat.depth && ["Depth", abutment.restSeat.depth],
+    ].filter(Boolean);
+    rationale = abutment.restSeat.rationale ||
+      "Rest seat preserves vertical support and prevents soft-tissue impingement. Standard: round bur (#4 for premolars; #4+#6+#8 for molars; inverted cone for cingulum), prepared LAST in the modification sequence after guide planes.";
+  } else if (kind === 'guidePlane' && abutment?.guidePlane) {
+    title = `Guide plane / Proximal plate — ${rpdToothName(tooth)}`;
+    lines = [
+      ["Surface", abutment.guidePlane.surface],
+      ["Length",  abutment.guidePlane.length || "long & parallel"],
+      abutment.guidePlane.bur && ["Bur", abutment.guidePlane.bur],
+    ].filter(Boolean);
+    rationale = abutment.guidePlane.rationale ||
+      "Guide planes establish path of insertion and provide secondary retention. Standard: cylindrical diamond bur, prepared FIRST in the modification sequence.";
+  } else if (kind === 'clasp' && abutment) {
+    const attrs = { ...(RPD_ABUTMENT_DEFAULTS || {}), ...(caseInput.teeth?.[tooth]?.attrs || {}) };
+    title = `${abutment.claspType} retentive arm — ${rpdToothName(tooth)}`;
+    lines = [
+      ["Type",      abutment.claspType],
+      ["Engages",   attrs.undercutLocation || "mid-buccal"],
+      ["Depth",     attrs.undercutDepth || "0.01\""],
+      ["Span",      abutment.spanType === "distal-extension" ? "Distal extension (tooth-tissue support)" : "Tooth-supported"],
+      ["Material",  abutment.retentiveArm || "—"],
+    ];
+    rationale = abutment.claspRationale || "";
+  } else if (kind === 'reciprocal' && abutment?.reciprocation) {
+    title = `Reciprocal arm — ${rpdToothName(tooth)}`;
+    lines = [
+      ["Type",  abutment.reciprocation.type],
+      ["Path",  abutment.reciprocation.text],
+    ];
+    rationale = abutment.reciprocation.rationale || "Reciprocation neutralizes the lateral force of the retentive arm and stays above the survey line so it does not engage an undercut.";
+  } else if (kind === 'iBar' && abutment) {
+    title = `I-bar — ${rpdToothName(tooth)}`;
+    lines = [
+      ["Type",      "Cast metal vertical bar"],
+      ["Approach",  "Gingival → buccal cervical"],
+      ["Engages",   `${caseInput.teeth?.[tooth]?.attrs?.undercutLocation || "mid-buccal"} undercut`],
+    ];
+    rationale = "I-bar component of RPI: cast vertical retentive bar approaching from the gingival sulcus. Stress-releasing under occlusal load — rotates away from the abutment, sparing it from torque.";
+  } else if (kind === 'undercut' && tooth != null) {
+    const attrs = caseInput.teeth?.[tooth]?.attrs || {};
+    title = `Undercut — ${rpdToothName(tooth)}`;
+    lines = [
+      ["Location", attrs.undercutLocation || "mid-buccal"],
+      ["Depth",    attrs.undercutDepth || "0.01\""],
+    ];
+    rationale = "Red marking indicates the surveyed undercut where the clasp engages for retention. Standard: cast clasps engage 0.01\" undercuts; wrought-wire engages 0.02\".";
+  } else if (kind === 'surveyLine' && tooth != null) {
+    title = `Survey line (HOC) — ${rpdToothName(tooth)}`;
+    lines = [["Function", "Marks height-of-contour around the tooth"]];
+    rationale = "The survey line (height of contour) separates retentive areas (below) from suprabulge areas (above). Drawn in black on the cast. Clasp arms cross the survey line to engage undercuts; reciprocal arms stay above.";
+  } else if (kind === 'connector' && mc) {
+    title = `Major connector — ${mc.type}`;
+    lines = [
+      mc.width && ["Width", mc.width],
+      mc.note && ["Note", mc.note],
+    ].filter(Boolean);
+    rationale = mc.rationale || "";
+  } else if (kind === 'base' && base) {
+    title = `${base.type} — span ${(base.spanTeeth || []).map(t => `#${t}`).join(", ")}`;
+    lines = [
+      ["Type",   base.type],
+      ["Span",   (base.spanTeeth || []).map(t => `#${t}`).join(", ")],
+      base.note && ["Note", base.note],
+    ].filter(Boolean);
+    rationale = base.rationale || "";
+  } else if (kind === 'tissueStop' && base) {
+    title = `Distal tissue stop — ${base.type} (${(base.spanTeeth || []).map(t => `#${t}`).join(", ")})`;
+    lines = [
+      ["Location", "Distal to terminal abutment of this distal-extension saddle"],
+      ["On span",  (base.spanTeeth || []).map(t => `#${t}`).join(", ")],
+      ["Made of",  "Cast metal, integral to framework"],
+    ];
+    rationale = "Distal tissue stops are small bilateral metal extensions cast at the distal end of an open-lattice or mesh retentive base on a distal-extension RPD. They contact the residual ridge directly (no acrylic between metal and tissue) to prevent the framework from rocking distally during processing and seating. standard convention: required on every Open Lattice base in a distal-extension case (Kennedy Class I, II, II-mod). Not used on Mesh bases in tooth-supported (Class III/IV) cases.";
+  } else if (kind === 'pontic' && tooth != null) {
+    title = `Pontic — ${rpdToothName(tooth)}`;
+    lines = [
+      ["Replaces", rpdToothName(tooth)],
+      ["Status",   "Missing, flagged for replacement"],
+    ];
+    rationale = "Red dashed outline marks the location of an artificial replacement tooth. Pontic form (denture tooth / tube tooth / facing) is governed by the base design over this slot.";
+  } else if (kind === 'indirect' && indirect) {
+    title = `Indirect retainer — ${rpdToothName(tooth)}`;
+    lines = [
+      ["Rest type", indirect.restType],
+      ["Function",  "Counteracts tissue-ward rotation of distal extension"],
+    ];
+    rationale = indirect.rationale || "Indirect retainer prevents the distal extension base from rotating away from the residual ridge. Located on the opposite side of the fulcrum line from the distal extension.";
+  } else if (kind === 'minorConnector' && tooth != null) {
+    title = `Minor connector — ${rpdToothName(tooth)}`;
+    lines = [
+      ["Links",   `Rest assembly on ${rpdToothName(tooth)} → major connector`],
+      ["Form",    "Generally a right-angle strut perpendicular to the major connector"],
+      ["Made of", "Cast metal, integral to framework"],
+    ];
+    rationale = "Minor connectors join the clasp assembly (rest + retentive arm + reciprocal element + proximal plate) and any indirect retainers to the major connector. They are rigid by design — flex here would defeat the major connector's function of distributing forces across the arch. The right-angle geometry gives the framework its characteristic blocky appearance at each abutment.";
+  } else {
+    title = "Design element";
+    lines = [];
+    rationale = "Click an overlay element on the chart to inspect its specifications.";
+  }
+
+  // ─── Categorical confidence tier ────────────────────────────────────────
+  // Some engine decisions are deterministic (Akers default, RPI on a clean
+  // DE, A-P Strap for Class II maxillary) — for these we show no tier
+  // signal. Others are heuristic with a documented UIC alternative
+  // (Lingual Bar vs Plate based on sulcus depth) — these get a small note.
+  // Others are judgment calls (Rest Only vs I-bar esthetic on max anteriors,
+  // Full Palate threshold) — these get a prominent callout.
+  // The CLASP tier is the abutment-level decision, so we surface it from
+  // any element clicked on that abutment (rest seat, guide plane, undercut,
+  // clasp arm, I-bar, reciprocal). This matters because "Rest Only" teeth
+  // have NO clasp arm to click — without this, the judgment callout would
+  // be unreachable for those teeth.
+  let tier = null;
+  let alternative = null;
+  let alternativeRationale = null;
+  const isAbutmentElement = ['clasp', 'iBar', 'reciprocal', 'rest', 'guidePlane', 'undercut'].includes(kind);
+  if (isAbutmentElement && abutment) {
+    tier = abutment.claspTier;
+    alternative = abutment.claspAlternative;
+    alternativeRationale = abutment.claspAlternativeRationale;
+  } else if (kind === 'connector' && mc) {
+    tier = mc.tier;
+    alternative = mc.alternative;
+    alternativeRationale = mc.alternativeRationale;
+  } else if (kind === 'base' && base) {
+    tier = base.tier;
+    alternative = base.alternative;
+    alternativeRationale = base.alternativeRationale;
+  } else if (kind === 'indirect' && indirect) {
+    tier = indirect.tier;
+    alternative = null;
+    alternativeRationale = indirect.alternativeRationale;
+  }
+
+  return (
+    <div style={{
+      padding: "16px 18px", marginBottom: "20px",
+      background: "var(--paper)", border: "1px solid var(--accent)",
+      borderRadius: "2px",
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "10px" }}>
+        <strong style={{ fontSize: "14px" }}>{title}</strong>
+        <button onClick={onClose} className="rpd-print-hide" style={{
+          background: "none", border: "none", cursor: "pointer",
+          color: "var(--ink-soft)", fontSize: "16px", lineHeight: 1, padding: "2px 6px",
+        }} aria-label="Close">×</button>
+      </div>
+      {lines.length > 0 && (
+        <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "4px 12px", fontSize: "12px", marginBottom: "10px" }}>
+          {lines.map(([k, v], i) => (
+            <Fragment key={i}>
+              <div style={{ color: "var(--ink-soft)", textTransform: "uppercase", fontSize: "10px", letterSpacing: "0.1em", alignSelf: "center" }}>{k}</div>
+              <div>{v}</div>
+            </Fragment>
+          ))}
+        </div>
+      )}
+
+      {/* ─── Categorical confidence callout ─────────────────────────────
+          Surfaces when the engine's decision is a "common default" (mild
+          inline note) or "judgment call" (prominent oxblood-bordered box).
+          "Strong" tier shows nothing — the answer is the answer. */}
+      {tier === "common" && alternativeRationale && (
+        <div style={{
+          fontSize: "11px", color: "var(--ink-soft)", fontStyle: "italic",
+          lineHeight: 1.5, padding: "6px 10px",
+          marginBottom: "10px",
+          background: "rgba(0,0,0,0.025)",
+          borderLeft: "2px solid var(--ink-faint)",
+          borderRadius: "2px",
+        }}>
+          <span style={{
+            fontStyle: "normal", fontWeight: 600, fontSize: "9px",
+            letterSpacing: "0.14em", textTransform: "uppercase",
+            color: "var(--ink-soft)", marginRight: "6px",
+          }}>Common default ·</span>
+          {alternative ? <>Engine selected <strong>{lines[0]?.[1] || title}</strong>; alternative: <strong>{alternative}</strong>. </> : null}
+          {alternativeRationale}
+        </div>
+      )}
+      {tier === "judgment" && alternativeRationale && (
+        <div style={{
+          fontSize: "11.5px", color: "var(--ink)", lineHeight: 1.5,
+          padding: "10px 12px", marginBottom: "12px",
+          background: "rgba(122, 30, 30, 0.04)",
+          border: "1.5px solid var(--accent)",
+          borderRadius: "2px",
+        }}>
+          <div style={{
+            fontWeight: 700, fontSize: "9px", letterSpacing: "0.16em",
+            textTransform: "uppercase", color: "var(--accent)", marginBottom: "5px",
+          }}>
+            ⚠ Clinical judgment call
+          </div>
+          {alternative && (
+            <div style={{ marginBottom: "6px", fontSize: "12px" }}>
+              Engine selected <strong>{lines[0]?.[1] || title}</strong>.
+              {" "}UIC alternative: <strong>{alternative}</strong>.
+            </div>
+          )}
+          <div style={{ fontStyle: "italic", color: "var(--ink-soft)" }}>
+            {alternativeRationale}
+          </div>
+        </div>
+      )}
+
+      {/* Engine decision narrative — restructured as a true decision TREE
+          with explicit branch points. Each "step" is a fork; branches show
+          BOTH the chosen path (●) and the rejected path (○) so the student
+          can see what was evaluated, not just what was picked. Gates within
+          a step show ✓/✕. Results and leaves show the final consequence. */}
+      {decisionTree && decisionTree.length > 0 && (
+        <div style={{
+          marginTop: "10px", paddingTop: "10px",
+          borderTop: "1px solid var(--rule-soft)",
+        }}>
+          <div style={{
+            fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase",
+            color: "var(--ink-soft)", marginBottom: "10px",
+          }}>
+            Engine decision tree — why this clasp on #{tooth}
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+            {decisionTree.map((node, i) => {
+              const isStep = node.kind === "step";
+              const isBranchTaken = node.kind === "branch-taken";
+              const isBranchSkipped = node.kind === "branch-skipped";
+              const isGate = node.kind === "gate";
+              const isResult = node.kind === "result";
+              const isLeaf = node.kind === "leaf";
+
+              // Step headers — bold, no indent, top spacing
+              if (isStep) {
+                return (
+                  <div key={i} style={{
+                    marginTop: i === 0 ? 0 : "12px",
+                    marginBottom: "4px",
+                    fontSize: "12px", fontWeight: 600, color: "var(--ink)",
+                    lineHeight: 1.4,
+                  }}>
+                    {node.text}
+                    {node.detail && (
+                      <div style={{
+                        fontSize: "11px", fontWeight: 400, color: "var(--ink-soft)",
+                        fontStyle: "italic", marginTop: "3px",
+                      }}>
+                        {node.detail}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              // Branches — indented with ●/○ marker
+              if (isBranchTaken || isBranchSkipped) {
+                return (
+                  <div key={i} style={{
+                    display: "flex", gap: "8px", alignItems: "flex-start",
+                    paddingLeft: "8px", marginLeft: "4px",
+                    borderLeft: "1.5px solid var(--rule-soft)",
+                    paddingTop: "4px", paddingBottom: "4px",
+                  }}>
+                    <span style={{
+                      flex: "0 0 14px", marginTop: "3px",
+                      fontSize: "13px", lineHeight: 1,
+                      color: isBranchTaken ? "var(--accent)" : "var(--ink-faint)",
+                    }}>
+                      {isBranchTaken ? "●" : "○"}
+                    </span>
+                    <div style={{ flex: 1, fontSize: "12px", lineHeight: 1.45 }}>
+                      <span style={{
+                        color: isBranchTaken ? "var(--ink)" : "var(--ink-faint)",
+                        fontWeight: isBranchTaken ? 600 : 400,
+                        textDecoration: isBranchSkipped ? "line-through" : "none",
+                        textDecorationColor: "var(--ink-faint)",
+                      }}>
+                        {node.text}
+                      </span>
+                      {node.detail && (
+                        <div style={{
+                          fontSize: "11px", color: "var(--ink-soft)",
+                          fontStyle: "italic", marginTop: "2px",
+                        }}>
+                          {node.detail}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              }
+
+              // Gates — deeply indented checklist with ✓/✕
+              if (isGate) {
+                return (
+                  <div key={i} style={{
+                    display: "flex", gap: "8px", alignItems: "flex-start",
+                    paddingLeft: "20px", marginLeft: "4px",
+                    borderLeft: "1.5px solid var(--rule-soft)",
+                    paddingTop: "3px", paddingBottom: "3px",
+                  }}>
+                    <span style={{
+                      flex: "0 0 14px", width: 14, height: 14, borderRadius: "50%",
+                      display: "inline-flex", alignItems: "center", justifyContent: "center",
+                      fontSize: "10px", lineHeight: 1, marginTop: "1px",
+                      color: node.ok ? "var(--teal, #4a847a)" : "var(--accent)",
+                      border: `1.4px solid ${node.ok ? "var(--teal, #4a847a)" : "var(--accent)"}`,
+                      fontWeight: 700,
+                    }}>
+                      {node.ok ? "✓" : "✕"}
+                    </span>
+                    <div style={{ flex: 1, fontSize: "12px", lineHeight: 1.45,
+                      color: node.ok ? "var(--ink)" : "var(--accent)" }}>
+                      {node.text}
+                      {node.detail && !node.ok && (
+                        <div style={{
+                          fontSize: "11px", color: "var(--accent)",
+                          marginTop: "2px",
+                        }}>
+                          → {node.detail}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              }
+
+              // Result — arrow with conclusion of the gate group
+              if (isResult) {
+                return (
+                  <div key={i} style={{
+                    display: "flex", gap: "8px", alignItems: "flex-start",
+                    paddingLeft: "20px", marginLeft: "4px",
+                    borderLeft: "1.5px solid var(--rule-soft)",
+                    marginTop: "4px", paddingTop: "4px",
+                    fontSize: "12px", fontWeight: 600,
+                    color: node.ok ? "var(--ink)" : "var(--accent)",
+                  }}>
+                    <span style={{ flex: "0 0 14px" }}>→</span>
+                    <div style={{ flex: 1 }}>{node.text}</div>
+                  </div>
+                );
+              }
+
+              // Leaf — final answer in a highlighted box
+              if (isLeaf) {
+                return (
+                  <div key={i} style={{
+                    marginTop: "10px",
+                    padding: "10px 12px",
+                    background: "rgba(74, 132, 122, 0.08)",
+                    border: "1.5px solid var(--teal, #4a847a)",
+                    borderRadius: "2px",
+                  }}>
+                    <div style={{
+                      fontSize: "9px", letterSpacing: "0.18em",
+                      textTransform: "uppercase", fontWeight: 700,
+                      color: "var(--teal, #4a847a)", marginBottom: "4px",
+                    }}>
+                      Engine selection
+                    </div>
+                    <div style={{ fontSize: "13px", fontWeight: 600, color: "var(--ink)" }}>
+                      {node.text}
+                    </div>
+                    {node.detail && (
+                      <div style={{
+                        fontSize: "11.5px", color: "var(--ink-soft)",
+                        fontStyle: "italic", marginTop: "5px", lineHeight: 1.5,
+                      }}>
+                        {node.detail}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              return null;
+            })}
+          </div>
+        </div>
+      )}
+      {rationale && (
+        <div style={{
+          fontSize: "12px", color: "var(--ink-soft)", fontStyle: "italic",
+          lineHeight: 1.5, paddingTop: "8px", marginTop: "8px",
+          borderTop: "1px solid var(--rule-soft)",
+        }}>
+          {rationale}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Per-Tooth Attribute Editor ───────────────────────────────────────────
+function RPDToothEditor({ tooth, caseInput, onUpdateTooth, onClose, horizontal = false }) {
+  if (!tooth) return null;
+  const t = caseInput.teeth?.[tooth] || { status: "present" };
+  const attrs = { ...RPD_ABUTMENT_DEFAULTS, ...(t.attrs || {}) };
+  const arch = rpdArchOf(tooth);
+  const inActiveArch = arch === (caseInput.arch || "mandibular");
+  const isMissing = t.status !== "present";
+  const isThirdMolar = RPD_THIRD_MOLARS.has(tooth);
+
+  const setStatus = (status) => onUpdateTooth(tooth, { ...t, status });
+  const setReplace = (v) => onUpdateTooth(tooth, { ...t, replace: v });
+  const setAttr = (k, v) => onUpdateTooth(tooth, { ...t, attrs: { ...attrs, [k]: v } });
+
+  // Each row stacks label above control. When horizontal=true (inspector
+  // sits below the chart at full width), wrap the rows in a CSS grid so
+  // they lay out in multiple columns side-by-side; when false, single
+  // column (legacy narrow-sidebar layout).
+  const rowStyle = { display: "flex", flexDirection: "column", padding: "5px 0", fontSize: "11px", gap: "2px" };
+  const selectStyle = { ...inputStyle, padding: "3px 6px", fontSize: "11px", minWidth: "0", width: "100%" };
+  const bodyStyle = horizontal
+    ? { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "4px 14px" }
+    : {};
+
+  return (
+    <div style={{
+      padding: horizontal ? "12px 16px" : "10px 11px", marginBottom: "12px",
+      background: "var(--paper)", border: "1px solid var(--accent)",
+      borderRadius: "2px",
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "10px" }}>
+        <div>
+          <strong style={{ fontSize: "16px" }}>{rpdToothName(tooth)}</strong>
+          <span style={{ marginLeft: "10px", fontSize: "11px", color: "var(--ink-soft)", textTransform: "uppercase", letterSpacing: "0.12em" }}>
+            {arch}{!inActiveArch ? " (not active)" : ""}
+            {isThirdMolar ? " · 3rd molar" : ""}
+          </span>
+        </div>
+        <button onClick={onClose} style={{ background: "transparent", border: "none", cursor: "pointer", color: "var(--ink-faint)", fontSize: "16px" }}>×</button>
+      </div>
+
+      <div style={bodyStyle}>
+      <div style={rowStyle}>
+        <span>Status</span>
+        <div style={{ display: "flex", gap: "6px" }}>
+          <button onClick={() => setStatus("present")}
+            style={{ ...selectStyle, minWidth: "auto", padding: "4px 12px", cursor: "pointer",
+              background: !isMissing ? "var(--accent)" : "transparent",
+              color: !isMissing ? "var(--paper)" : "var(--ink-soft)",
+              border: `1px solid ${!isMissing ? "var(--accent)" : "var(--rule)"}` }}>
+            Present
+          </button>
+          <button onClick={() => setStatus("missing")}
+            style={{ ...selectStyle, minWidth: "auto", padding: "4px 12px", cursor: "pointer",
+              background: isMissing ? "var(--accent)" : "transparent",
+              color: isMissing ? "var(--paper)" : "var(--ink-soft)",
+              border: `1px solid ${isMissing ? "var(--accent)" : "var(--rule)"}` }}>
+            Missing
+          </button>
+        </div>
+      </div>
+
+      {isMissing && isThirdMolar && (
+        <div style={rowStyle}>
+          <span>Replace this 3rd molar?</span>
+          <input type="checkbox" checked={!!t.replace} onChange={(e) => setReplace(e.target.checked)} />
+        </div>
+      )}
+
+      {!isMissing && inActiveArch && (
+        <>
+          <div style={rowStyle}>
+            <span>Perio prognosis</span>
+            <select style={selectStyle} value={attrs.perioPrognosis} onChange={(e) => setAttr("perioPrognosis", e.target.value)}>
+              <option value="good">Good</option>
+              <option value="fair">Fair</option>
+              <option value="poor">Poor (questionable)</option>
+              <option value="hopeless">Hopeless</option>
+            </select>
+          </div>
+          <div style={rowStyle}>
+            <span>Tilt</span>
+            <select style={selectStyle} value={attrs.tilt} onChange={(e) => setAttr("tilt", e.target.value)}>
+              <option value="normal">Normal</option>
+              <option value="tilted">Tilted</option>
+              <option value="extreme">Extreme</option>
+            </select>
+          </div>
+          <div style={rowStyle}>
+            <span>Crown height</span>
+            <select style={selectStyle} value={attrs.crownHeight} onChange={(e) => setAttr("crownHeight", e.target.value)}>
+              <option value="normal">Normal</option>
+              <option value="short">Short</option>
+            </select>
+          </div>
+          <div style={rowStyle}>
+            <span>Undercut location</span>
+            <select style={selectStyle} value={attrs.undercutLocation} onChange={(e) => setAttr("undercutLocation", e.target.value)}>
+              <option value="mid-buccal">Mid-buccal</option>
+              <option value="mesio-buccal">Mesio-buccal (MB)</option>
+              <option value="disto-buccal">Disto-buccal (DB)</option>
+              <option value="disto-lingual">Disto-lingual (DL — Reverse Akers)</option>
+              <option value="mesio-lingual">Mesio-lingual (ML — Reverse Akers / Ring)</option>
+              <option value="none">None available</option>
+            </select>
+          </div>
+          <div style={rowStyle}>
+            <span>High frenum (I-bar path)</span>
+            <input type="checkbox" checked={!!attrs.highFrenum} onChange={(e) => setAttr("highFrenum", e.target.checked)} />
+          </div>
+          <div style={rowStyle}>
+            <span>Mesial rest not possible</span>
+            <input type="checkbox" checked={!attrs.mesialRestPossible} onChange={(e) => setAttr("mesialRestPossible", !e.target.checked)} />
+          </div>
+          <div style={rowStyle}>
+            <span>Soft-tissue undercut</span>
+            <select style={selectStyle} value={attrs.softTissueUndercut} onChange={(e) => setAttr("softTissueUndercut", e.target.value)}>
+              <option value="none">None</option>
+              <option value="leq-1mm">≤1mm</option>
+              <option value="gt-1mm">&gt;1mm</option>
+            </select>
+          </div>
+          <div style={rowStyle}>
+            <span>Attached gingiva adequate</span>
+            <input type="checkbox" checked={!!attrs.attachedGingivaAdequate} onChange={(e) => setAttr("attachedGingivaAdequate", e.target.checked)} />
+          </div>
+        </>
+      )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Patient Factors + Measurements form ─────────────────────────────────
+function RPDInputsForm({ caseInput, onUpdate }) {
+  const m = caseInput.measurements || {};
+  const pf = caseInput.patientFactors || {};
+  const setMeasurement = (k, v) => onUpdate({ ...caseInput, measurements: { ...m, [k]: v } });
+  const setFactor = (k, v) => onUpdate({ ...caseInput, patientFactors: { ...pf, [k]: v } });
+  const setArch = (arch) => onUpdate({ ...caseInput, arch });
+
+  // Collapsed by default. Summary line shows the high-impact inputs that
+  // gate the design (arch, opposing, allergy, tori) so users can see at a
+  // glance what state the case is in without expanding.
+  const [open, setOpen] = useState(false);
+  const archLabel = caseInput.arch === "maxillary" ? "Max" : "Mand";
+  const oppLabel = pf.opposingArch === "complete_denture" ? "vs CD"
+                 : pf.opposingArch === "existing_partial" ? "vs RPD"
+                 : pf.opposingArch === "new_prosthesis" ? "vs new prosth"
+                 : "vs natural";
+  const flagLabels = [
+    pf.metalAllergy && "metal allergy",
+    pf.maxillaryTori && caseInput.arch === "maxillary" && "max tori",
+    pf.mandibularTori && caseInput.arch === "mandibular" && "mand tori",
+    pf.sensitiveGagReflex && caseInput.arch === "maxillary" && "gag reflex",
+    pf.designIntent === "interim" && "interim",
+  ].filter(Boolean);
+  const summary = `${archLabel} · ${oppLabel}${flagLabels.length ? " · " + flagLabels.join(", ") : ""}`;
+
+  const grid = {
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    gap: "8px",
+    marginBottom: "10px",
+  };
+  const field = { display: "flex", flexDirection: "column", gap: "2px" };
+  const labelText = { fontSize: "9px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ink-soft)" };
+  const ctrl = { ...inputStyle, padding: "5px 6px", fontSize: "11px" };
+
+  // Lives in the top header bar next to "Clear all". The button is the
+  // visible control; the form body opens as an absolute-positioned overlay
+  // anchored to the button's right edge, so expanding the form floats over
+  // the chart below instead of pushing it down.
+  return (
+    <div style={{ position: "relative", display: "inline-block" }}>
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        style={{
+          background: "transparent", color: "var(--ink-soft)",
+          border: "1px solid var(--rule)", borderRadius: "2px",
+          padding: "6px 14px", cursor: "pointer",
+          fontFamily: "'Geist', sans-serif", fontSize: "10px",
+          letterSpacing: "0.16em", textTransform: "uppercase",
+          display: "inline-flex", alignItems: "center", gap: "10px",
+        }}
+        aria-expanded={open}>
+        <span>Case inputs</span>
+        <span style={{
+          fontSize: "11px", color: "var(--ink-faint)",
+          transform: open ? "rotate(90deg)" : "none",
+          transition: "transform 120ms ease",
+        }}>▸</span>
+      </button>
+
+      {open && (<div style={{
+        position: "absolute", top: "calc(100% + 6px)", right: 0,
+        width: "340px", maxHeight: "70vh", overflowY: "auto",
+        background: "var(--paper)", border: "1px solid var(--rule)",
+        borderRadius: "2px", padding: "14px 16px",
+        boxShadow: "0 12px 28px rgba(0,0,0,0.12)",
+        zIndex: 100,
+      }}>
+      {/* Reordered by clinical priority — what gates what:
+          1. Arch (defines what's being designed)
+          2. Opposing arch (gates major connector decisions)
+          3. Design intent (definitive vs interim — timing constraint)
+          4. Metal allergy (gates framework material — NMCD pathway)
+          5. Arch-specific tori (gates major connector type)
+          6. Ridge resorption (gates indirect retainer + base type)
+          7. Interocclusal space (gates base design — lattice vs mesh)
+          8. Vestibular depth (gates I-bar use — RPI contraindication)
+          9. Lingual sulcus depth (mand-only — lingual bar vs plate)
+          10. Sensitive gag (max-only — minor)
+          11. Months since extraction (interim vs definitive timing — niche) */}
+      <div style={grid}>
+        {/* Arch lives in the Mx/Mn toggle above the chart, not here. */}
+        <div style={field}>
+          <label style={labelText}>Opposing arch</label>
+          <select style={ctrl} value={pf.opposingArch || "natural"} onChange={(e) => setFactor("opposingArch", e.target.value)}>
+            <option value="natural">Natural dentition</option>
+            <option value="complete_denture">Complete denture</option>
+            <option value="existing_partial">Existing partial denture</option>
+            <option value="new_prosthesis">New prosthesis to be made</option>
+          </select>
+        </div>
+        <div style={field}>
+          <label style={labelText}>Design intent</label>
+          <select style={ctrl} value={pf.designIntent || "definitive"} onChange={(e) => setFactor("designIntent", e.target.value)}>
+            <option value="definitive">Definitive RPD</option>
+            <option value="interim">Interim (IPD)</option>
+          </select>
+        </div>
+        <div style={field}>
+          <label style={labelText}>Ridge resorption</label>
+          <select style={ctrl} value={m.ridgeResorption || "mild"} onChange={(e) => setMeasurement("ridgeResorption", e.target.value)}>
+            <option value="mild">Mild</option>
+            <option value="moderate">Moderate</option>
+            <option value="severe">Severe</option>
+          </select>
+        </div>
+        <div style={field}>
+          <label style={labelText}>Interocclusal space</label>
+          <select style={ctrl} value={m.interocclusalSpace || "normal"} onChange={(e) => setMeasurement("interocclusalSpace", e.target.value)}>
+            <option value="normal">Normal</option>
+            <option value="limited">Limited</option>
+            <option value="extremely_limited">Extremely limited</option>
+          </select>
+        </div>
+        <div style={field}>
+          <label style={labelText}>Vestibular depth (mm)</label>
+          <input type="number" style={ctrl} value={m.vestibularDepth ?? ""}
+            onChange={(e) => setMeasurement("vestibularDepth", e.target.value === "" ? undefined : Number(e.target.value))} />
+        </div>
+        {caseInput.arch === "mandibular" && (
+          <div style={field}>
+            <label style={labelText}>Lingual sulcus depth (mm)</label>
+            <input type="number" style={ctrl} value={m.lingualSulcusDepth ?? ""}
+              onChange={(e) => setMeasurement("lingualSulcusDepth", e.target.value === "" ? undefined : Number(e.target.value))} />
+          </div>
+        )}
+        <div style={field}>
+          <label style={labelText}>Months since most recent extraction</label>
+          <input type="number" style={ctrl} value={pf.monthsSinceExtraction ?? ""}
+            placeholder="leave blank if none"
+            onChange={(e) => setFactor("monthsSinceExtraction", e.target.value === "" ? undefined : Number(e.target.value))} />
+        </div>
+      </div>
+
+      {/* Boolean patient factors — moved to bottom; metal allergy first
+          (highest design impact). */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px 20px", paddingTop: "8px", borderTop: "1px solid var(--rule-soft)" }}>
+        <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--ink)" }}>
+          <input type="checkbox" checked={!!pf.metalAllergy} onChange={(e) => setFactor("metalAllergy", e.target.checked)} />
+          Metal allergy
+        </label>
+        {caseInput.arch === "maxillary" && (
+          <>
+            <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--ink)" }}>
+              <input type="checkbox" checked={!!pf.maxillaryTori} onChange={(e) => setFactor("maxillaryTori", e.target.checked)} />
+              Maxillary tori
+            </label>
+            <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--ink)" }}>
+              <input type="checkbox" checked={!!pf.sensitiveGagReflex} onChange={(e) => setFactor("sensitiveGagReflex", e.target.checked)} />
+              Sensitive gag reflex
+            </label>
+          </>
+        )}
+        {caseInput.arch === "mandibular" && (
+          <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--ink)" }}>
+            <input type="checkbox" checked={!!pf.mandibularTori} onChange={(e) => setFactor("mandibularTori", e.target.checked)} />
+            Mandibular tori
+          </label>
+        )}
+      </div>
+      </div>)}
+    </div>
+  );
+}
+
+// ============================================================================
+// RPDHelper — Phase 3 interactive harness (chart + forms + live engine output)
+// ============================================================================
+
+// ─── Collapsible section ─────────────────────────────────────────────────
+// Used to pack the RPD design output into a tidier vertical flow. Sections
+// that are reference-heavy (Axium workflow, lab script, paper forms,
+// case-level decision tree, PDI classification) default to CLOSED so the
+// at-a-glance design summary stays compact. Each header is keyboard- and
+// click-accessible, and shows an optional one-line `summary` when closed
+// so the user can scan without expanding.
+function RPDCollapsibleSection({ title, summary, defaultOpen = false, children }) {
+  // `summary` prop is accepted for backward compat but no longer displayed —
+  // titles render alone, centered, so the row of collapsibles reads as a
+  // clean uniform list rather than a ragged tree of italic descriptions.
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <section style={{ marginBottom: "20px" }}>
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        className="rpd-collapsible-header"
+        style={{
+          all: "unset",
+          cursor: "pointer",
+          display: "grid",
+          gridTemplateColumns: "1fr auto 1fr",
+          width: "100%",
+          alignItems: "baseline",
+          padding: "8px 0",
+          borderBottom: open ? "1px solid var(--rule)" : "1px solid var(--rule-soft)",
+          marginBottom: open ? "14px" : "0",
+          transition: "border-color 160ms ease",
+        }}
+      >
+        {/* Left spacer keeps the title centered within the row. */}
+        <span aria-hidden="true" />
+        <span style={{
+          fontFamily: "'Fraunces', serif",
+          fontSize: "13px",
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          color: open ? "var(--ink)" : "var(--ink-soft)",
+          fontWeight: 500,
+          textAlign: "center",
+        }}>
+          {title}
+        </span>
+        {/* Right cell holds the +/× indicator, right-aligned. */}
+        <span style={{
+          display: "flex",
+          alignItems: "baseline",
+          justifyContent: "flex-end",
+        }}>
+          <span style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: "13px",
+            color: "var(--ink-soft)",
+            display: "inline-block",
+            width: "12px",
+            textAlign: "center",
+            transition: "transform 160ms ease",
+            transform: open ? "rotate(45deg)" : "rotate(0deg)",
+          }}>
+            +
+          </span>
+        </span>
+      </button>
+      {open && <div>{children}</div>}
+    </section>
+  );
+}
+
+function RPDHelper() {
+  const [caseInput, setCaseInput] = useState(() => rpdMakeBlankCase("maxillary"));
+  const [selectedTooth, setSelectedTooth] = useState(null);
+  const [selectedDesignEl, setSelectedDesignEl] = useState(null);
+  const [copied, setCopied] = useState(false);
+  const result = useMemo(() => rpdRunEngine(caseInput), [caseInput]);
+
+  const clearAll = () => {
+    setCaseInput(rpdMakeBlankCase(caseInput.arch || "maxillary"));
+    setSelectedTooth(null);
+    setSelectedDesignEl(null);
+  };
+
+  const toggleTooth = (n) => {
+    setCaseInput(prev => {
+      const t = prev.teeth?.[n] || { status: "present" };
+      const next = t.status === "present" ? "missing" : "present";
+      return { ...prev, teeth: { ...prev.teeth, [n]: { ...t, status: next } } };
+    });
+  };
+
+  const updateTooth = (n, newToothObj) => {
+    setCaseInput(prev => ({ ...prev, teeth: { ...prev.teeth, [n]: newToothObj } }));
+  };
+
+  // True when the user has built any case content (missing teeth, etc.).
+  const hasContent = result.kennedy.class !== null;
+
+  // Single-tooth definitive case → the chart shows an FPD/implant instead
+  // of the RPD framework, and the verdict reads as a fixed-restoration
+  // indication. We also suppress the downstream RPD-design content
+  // (Applegate justifications, lab Rx fields, design rationale, lab
+  // script, etc.) because none of it applies — the indicated treatment
+  // isn't an RPD. To force the RPD content back (e.g. patient cannot
+  // get an implant), the user can change design intent to "interim".
+  const singleToothMissing = Object.entries(caseInput.teeth || {})
+    .filter(([n, t]) => t?.status === "missing" && (
+      caseInput.arch === "maxillary" ? +n >= 1 && +n <= 16 : +n >= 17 && +n <= 32
+    ))
+    .map(([n]) => +n);
+  const isSingleToothFixedCase = hasContent
+    && singleToothMissing.length === 1
+    && (result.kennedy.class === "II" || result.kennedy.class === "III")
+    && result.designIntent === "definitive";
+
+  const sectionTitle = {
+    fontFamily: "'Fraunces', serif", fontSize: "13px",
+    letterSpacing: "0.18em", textTransform: "uppercase",
+    color: "var(--ink-soft)", fontWeight: 500, marginBottom: "10px",
+  };
+  const verdict = {
+    fontFamily: "'Fraunces', serif", fontStyle: "italic",
+    fontSize: "16px", color: "var(--accent)", lineHeight: 1.5,
+    marginBottom: "16px",
+  };
+  const flagStyle = (sev) => ({
+    padding: "10px 14px",
+    background: sev === "blocker" ? "rgba(122,30,30,0.08)" : sev === "warning" ? "rgba(212,165,116,0.12)" : "rgba(216,206,186,0.25)",
+    border: `1px solid ${sev === "blocker" ? "var(--accent)" : sev === "warning" ? "var(--mono-accent)" : "var(--rule)"}`,
+    borderRadius: "2px",
+    fontSize: "13px",
+    marginBottom: "8px",
+    color: "var(--ink)",
+  });
+
+  return (
+    <div style={{ ...cardStyle, padding: "26px 28px" }}>
+      <div style={{ marginBottom: "20px" }}>
+        <h2 className="serif" style={{
+          fontSize: "24px", fontWeight: 400, color: "var(--ink)",
+          margin: "0 0 6px",
+        }}>
+          RPD Design <span style={{ color: "var(--accent)", fontStyle: "italic" }}>Helper</span>
+        </h2>
+      </div>
+
+      {/* Top action bar: Clear all on the left, Case inputs on the right.
+          Case inputs is a button that opens an absolute-positioned overlay
+          panel (anchored to the button) so expanding it floats over the
+          chart rather than pushing it down. */}
+      <div className="rpd-print-hide" style={{
+        marginBottom: "16px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: "12px",
+        position: "relative",
+        zIndex: 5,
+      }}>
+        <button
+          onClick={clearAll}
+          style={{ background: "transparent", color: "var(--ink-soft)", border: "1px solid var(--rule)", padding: "6px 14px",
+            fontFamily: "'Geist', sans-serif", fontSize: "10px", letterSpacing: "0.16em",
+            textTransform: "uppercase", cursor: "pointer", borderRadius: "2px" }}
+          title="Reset all teeth to present, default measurements and patient factors">
+          Clear all
+        </button>
+        <RPDInputsForm caseInput={caseInput} onUpdate={setCaseInput} />
+      </div>
+
+      {/* Tooth chart + element-detail panel. Inputs panel was previously the
+          LEFT column here — moved to the top header bar above so the chart
+          gets that horizontal space and renders at larger tooth/component
+          sizes. Stacks on narrow viewports (see CSS @media block). */}
+      <div style={{ margin: "20px 0 24px" }}>
+        {/* Arch toggle sits ABOVE the chart, centered. Mx/Mn segmented
+            button — the arch field was removed from Case inputs so users
+            can flip arch with one click without opening the inputs panel. */}
+        <div className="rpd-print-hide" style={{
+          display: "flex", justifyContent: "center", marginBottom: "10px",
+        }}>
+          <div style={{ display: "inline-flex", border: "1px solid var(--rule)", borderRadius: "2px", overflow: "hidden" }}>
+            {[
+              { v: "maxillary",  label: "Mx" },
+              { v: "mandibular", label: "Mn" },
+            ].map(opt => {
+              const active = (caseInput.arch || "mandibular") === opt.v;
+              return (
+                <button key={opt.v} type="button"
+                  onClick={() => setCaseInput({ ...caseInput, arch: opt.v })}
+                  title={opt.v === "maxillary" ? "Maxillary arch" : "Mandibular arch"}
+                  style={{
+                    background: active ? "var(--accent)" : "transparent",
+                    color: active ? "var(--paper)" : "var(--ink-soft)",
+                    border: "none", padding: "6px 18px",
+                    fontFamily: "'Geist', sans-serif", fontSize: "13px",
+                    letterSpacing: "0.04em",
+                    cursor: "pointer", fontWeight: active ? 600 : 400,
+                  }}>
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        {/* CHART — full width. Inspector was previously a right-side
+            column; moved BELOW the chart so the chart can use the entire
+            row width and render teeth + components at a larger size. */}
+        <RPDToothChart
+          caseInput={caseInput}
+          result={result}
+          showOverlay={hasContent}
+          selectedTooth={selectedTooth}
+          onSelectTooth={(n) => { setSelectedDesignEl(null); setSelectedTooth(n === selectedTooth ? null : n); }}
+          onToggleTooth={toggleTooth}
+          selectedDesignEl={selectedDesignEl}
+          onSelectDesignEl={(el) => { setSelectedTooth(null); setSelectedDesignEl(el); }}
+        />
+
+        {/* Horizontal inspector — sits below the chart, full-width.
+            Renders the design-element detail or tooth editor inline; when
+            nothing is selected, shows a single-line placeholder so the
+            section is just a thin strip and doesn't waste vertical space. */}
+        <div className="rpd-print-hide" style={{ marginTop: "14px" }}>
+          {selectedDesignEl ? (
+            <RPDDesignElementDetail
+              element={selectedDesignEl}
+              result={result}
+              caseInput={caseInput}
+              onClose={() => setSelectedDesignEl(null)}
+            />
+          ) : selectedTooth ? (
+            <RPDToothEditor
+              tooth={selectedTooth}
+              caseInput={caseInput}
+              onUpdateTooth={updateTooth}
+              onClose={() => setSelectedTooth(null)}
+              horizontal
+            />
+          ) : (
+            <div style={{
+              padding: "12px 18px", border: "1px dashed var(--rule)", borderRadius: "2px",
+              color: "var(--ink-faint)", fontSize: "12px", fontStyle: "italic", textAlign: "center",
+            }}>
+              Click a tooth or any design element to inspect details.
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ─── Classification verdict (only when a case is built and it's
+          an actual RPD, not a single-tooth fixed-replacement case). The
+          "no teeth marked yet" prompt was removed — the empty chart is
+          self-explanatory. */}
+      {hasContent && !isSingleToothFixedCase && (
+        <div style={{ ...verdict, marginTop: "14px", marginBottom: "12px" }}>
+          {result.kennedy.description}
+          {result.kennedy.deSide ? ` (distal extension on patient's ${result.kennedy.deSide})` : ""}.
+          {" "}Designed as {result.designIntent} RPD with {result.majorConnector.type} major connector and {result.framework.material} framework.
+        </div>
+      )}
+
+      {/* Applegate justifications now live at the END of the collapsible
+          list (after Paper forms). They're useful reference, not
+          gating decisions a student needs to see first. */}
+
+      {/* ─── Lab Prescription text fields (PRIMARY visible content) ───────
+          The structured text portion of the UIC Preliminary Partial Denture
+          Design form, pre-filled from the engine. Displayed directly below
+          the classification + Applegate dropdown because this is what the
+          student is filling out in clinic. The arch drawing is omitted —
+          it's already at the top of this page. */}
+      {hasContent && !isSingleToothFixedCase && (
+        <div style={{ marginTop: "12px", marginBottom: "20px" }}>
+          <RPDPreliminaryDesignForm caseInput={caseInput} result={result} showArchDrawing={false} />
+        </div>
+      )}
+
+      {hasContent && !isSingleToothFixedCase && <>
+
+      {/* Red Flags */}
+      {result.redFlags.length > 0 && (
+        <div style={{ marginBottom: "24px" }}>
+          <div style={sectionTitle}>Red Flags</div>
+          {result.redFlags.map((f, i) => (
+            <div key={i} style={flagStyle(f.severity)}>
+              <strong style={{ textTransform: "uppercase", fontSize: "10px", letterSpacing: "0.14em", marginRight: "6px" }}>{f.severity}</strong>
+              {f.message}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* (Applegate-rule evaluations for 3rd and 2nd molars are part of
+          CLASSIFICATION reasoning, not design recommendation — they're
+          rendered upstream of the "Design Recommendation" divider when
+          non-trivial. Trivial cases — e.g. Class I with both 3rd molars
+          omitted by Rule 2 and all 2nd molars present — are folded into
+          the verdict line itself.) */}
+
+      {/* PDI Classification — ACP Prosthodontic Diagnostic Index */}
+      {result.pdi && (
+        <RPDCollapsibleSection
+          title="PDI Classification (ACP)"
+          summary={`Class ${result.pdi.class}`}
+          defaultOpen={false}
+        >
+          <div style={{
+            ...verdict, fontSize: "15px", marginBottom: "12px",
+          }}>
+            PDI Class {result.pdi.class} — driven by {result.pdi.drivers.join(", ")}.
+          </div>
+          <div style={{
+            fontSize: "12px", color: "var(--ink-soft)", marginBottom: "12px",
+            padding: "8px 10px", background: "rgba(216,206,186,0.18)",
+            borderLeft: "2px solid var(--rule)",
+          }}>
+            {result.pdi.careRecommendation}
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", fontSize: "12px" }}>
+            {[
+              { key: "location",          label: "Location & extent",     data: result.pdi.breakdown.location },
+              { key: "abutmentCondition", label: "Abutment condition",    data: result.pdi.breakdown.abutmentCondition },
+              { key: "occlusion",         label: "Occlusion",             data: result.pdi.breakdown.occlusion },
+              { key: "residualRidge",     label: "Residual ridge",        data: result.pdi.breakdown.residualRidge },
+            ].map(({ key, label, data }) => (
+              <div key={key} style={{
+                padding: "10px 12px", background: "var(--paper)",
+                border: "1px solid var(--rule)", borderRadius: "2px",
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                  <strong style={{ fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)" }}>{label}</strong>
+                  <span style={{
+                    fontSize: "11px", letterSpacing: "0.12em", fontWeight: 500,
+                    color: data.class === result.pdi.class ? "var(--accent)" : "var(--ink-soft)",
+                  }}>
+                    Class {data.class}
+                  </span>
+                </div>
+                <div style={{ fontSize: "12px", color: "var(--ink)", fontStyle: "italic", lineHeight: 1.5 }}>
+                  {data.rationale}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ fontSize: "11px", color: "var(--ink-faint)", marginTop: "8px", fontStyle: "italic" }}>
+            Worst single criterion sets the overall class. PDI complements Kennedy classification by rating complexity (I=ideal → IV=severely compromised). Inferred from existing inputs; refine by adjusting perio prognosis, ridge resorption, and opposing-arch flags above.
+          </div>
+        </RPDCollapsibleSection>
+      )}
+
+      {/* ─── Design rationale (collapsible) ───────────────────────────────
+          Per-component WHY (engine rationale) for the values shown in the
+          lab prescription text fields above. Closed by default — the lab
+          fields are the primary content; this expands to surface reasoning
+          per component. Contains the design summary grid + per-abutment
+          cards + NMCD contraindication block. */}
+      <RPDCollapsibleSection
+        title="Design rationale"
+        summary="Why each component was chosen"
+        defaultOpen={false}
+      >
+      {/* ─── Design summary grid ──────────────────────────────────────────
+          Four short framework-level decisions packed into a responsive 2x2
+          grid (auto-fit to single column at narrow widths). */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+        gap: "12px",
+        marginBottom: "24px",
+      }}>
+        {/* Card 1 — Major Connector */}
+        <div style={{
+          padding: "14px 16px",
+          background: "var(--paper)",
+          border: "1px solid var(--rule)",
+          borderRadius: "2px",
+        }}>
+          <div style={{
+            fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
+            color: "var(--ink-soft)", fontWeight: 500, fontFamily: "'Fraunces', serif",
+            marginBottom: "8px",
+          }}>
+            Major Connector
+          </div>
+          <div style={{ fontSize: "14px", marginBottom: "5px", color: "var(--ink)" }}>
+            <strong>{result.majorConnector.type}</strong>
+            {result.majorConnector.width && (
+              <span style={{ fontSize: "12px", color: "var(--ink-soft)" }}> — {result.majorConnector.width}</span>
+            )}
+          </div>
+          <div style={{ fontSize: "12px", color: "var(--ink-soft)", fontStyle: "italic", lineHeight: 1.5 }}>
+            {result.majorConnector.rationale}
+          </div>
+          {result.majorConnector.note && (
+            <div style={{ fontSize: "11px", color: "var(--ink-faint)", marginTop: "5px" }}>{result.majorConnector.note}</div>
+          )}
+        </div>
+
+        {/* Card 2 — Framework Material */}
+        <div style={{
+          padding: "14px 16px",
+          background: "var(--paper)",
+          border: "1px solid var(--rule)",
+          borderRadius: "2px",
+        }}>
+          <div style={{
+            fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
+            color: "var(--ink-soft)", fontWeight: 500, fontFamily: "'Fraunces', serif",
+            marginBottom: "8px",
+          }}>
+            Framework Material
+          </div>
+          <div style={{ fontSize: "14px", marginBottom: "5px", color: "var(--ink)" }}>
+            <strong>{result.framework.material}</strong>
+            {result.framework.requiresApproval && (
+              <span style={{ marginLeft: "8px", fontSize: "10px", color: "var(--accent)", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                approval needed
+              </span>
+            )}
+          </div>
+          <div style={{ fontSize: "12px", color: "var(--ink-soft)", fontStyle: "italic", lineHeight: 1.5 }}>
+            {result.framework.rationale}
+          </div>
+        </div>
+
+        {/* Card 3 — Base Design (saddles) */}
+        {result.baseDesigns.length > 0 && (
+          <div style={{
+            padding: "14px 16px",
+            background: "var(--paper)",
+            border: "1px solid var(--rule)",
+            borderRadius: "2px",
+          }}>
+            <div style={{
+              fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
+              color: "var(--ink-soft)", fontWeight: 500, fontFamily: "'Fraunces', serif",
+              marginBottom: "8px",
+            }}>
+              Base Design <span style={{ color: "var(--ink-faint)" }}>({result.baseDesigns.length})</span>
+            </div>
+            {result.baseDesigns.map((b, i) => (
+              <div key={i} style={{
+                fontSize: "13px",
+                marginBottom: i === result.baseDesigns.length - 1 ? 0 : "8px",
+                paddingBottom: i === result.baseDesigns.length - 1 ? 0 : "6px",
+                borderBottom: i === result.baseDesigns.length - 1 ? "none" : "1px dotted var(--rule-soft)",
+              }}>
+                <div style={{ color: "var(--ink)" }}>
+                  <strong>{b.type}</strong> · {rpdToothList(b.spanTeeth)}
+                  {b.note && <span style={{ fontSize: "11px", color: "var(--accent)", marginLeft: "6px" }}>{b.note}</span>}
+                </div>
+                <div style={{ fontSize: "11px", color: "var(--ink-soft)", fontStyle: "italic", marginTop: "2px", lineHeight: 1.4 }}>
+                  {b.rationale}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Card 4 — Indirect Retainers */}
+        {result.indirectRetainers.length > 0 && (
+          <div style={{
+            padding: "14px 16px",
+            background: "var(--paper)",
+            border: "1px solid var(--rule)",
+            borderRadius: "2px",
+          }}>
+            <div style={{
+              fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
+              color: "var(--ink-soft)", fontWeight: 500, fontFamily: "'Fraunces', serif",
+              marginBottom: "8px",
+            }}>
+              Indirect Retainers <span style={{ color: "var(--ink-faint)" }}>({result.indirectRetainers.length})</span>
+            </div>
+            {result.indirectRetainers.map((r, i) => (
+              <div key={i} style={{
+                fontSize: "13px",
+                marginBottom: i === result.indirectRetainers.length - 1 ? 0 : "8px",
+                paddingBottom: i === result.indirectRetainers.length - 1 ? 0 : "6px",
+                borderBottom: i === result.indirectRetainers.length - 1 ? "none" : "1px dotted var(--rule-soft)",
+              }}>
+                <div style={{ color: "var(--ink)" }}>
+                  <strong>{rpdToothName(r.tooth)}</strong> · {r.restType}
+                </div>
+                <div style={{ fontSize: "11px", color: "var(--ink-soft)", fontStyle: "italic", marginTop: "2px", lineHeight: 1.4 }}>
+                  {r.rationale}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* ─── Direct Retainers (per-abutment cards in a 2-column grid) ─────
+          Replaces the previous full-width-stacked list. Each card has a
+          tight key-value spec block at top (Clasp · Rest · Plate · Undercut)
+          and the rationale + any alternatives below. Auto-fits to 2 columns
+          on wide screens, single column on narrow. */}
+      {result.abutmentDesigns.length > 0 && (
+        <div style={{ marginBottom: "24px" }}>
+          <div style={sectionTitle}>
+            Direct Retainers <span style={{ color: "var(--ink-faint)", fontSize: "12px", letterSpacing: "0.06em", textTransform: "none" }}>({result.abutmentDesigns.length})</span>
+          </div>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+            gap: "12px",
+          }}>
+            {result.abutmentDesigns.map((a, i) => {
+              const attrs = a.attrs || {};
+              const ucDepth = attrs.undercutDepth || "0.01\"";
+              const ucLoc = attrs.undercutLocation || "mid-buccal";
+              const ucShort = ucLoc === "mesio-buccal" ? "MB"
+                            : ucLoc === "disto-buccal" ? "DB"
+                            : ucLoc === "mesio-lingual" ? "ML"
+                            : ucLoc === "disto-lingual" ? "DL"
+                            : "mid-B";
+              const isRestOnly = (a.claspType || "").includes("Rest Only");
+              return (
+                <div key={i} style={{
+                  padding: "12px 14px",
+                  background: "var(--paper)", border: "1px solid var(--rule)",
+                  borderRadius: "2px", fontSize: "13px",
+                }}>
+                  {/* Header — tooth + span type pill */}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "10px", gap: "8px" }}>
+                    <strong style={{ fontSize: "14px", color: "var(--ink)" }}>{rpdToothName(a.tooth)}</strong>
+                    <span style={{
+                      fontSize: "9px", color: "var(--ink-soft)",
+                      textTransform: "uppercase", letterSpacing: "0.14em",
+                      padding: "2px 6px",
+                      border: `1px solid ${a.isPrimaryAbutment ? "var(--accent)" : "var(--rule-soft)"}`,
+                      borderRadius: "2px",
+                      color: a.isPrimaryAbutment ? "var(--accent)" : "var(--ink-soft)",
+                    }}>
+                      {a.spanType === "distal-extension" ? "DE" : "Tooth-supp"}
+                      {a.isPrimaryAbutment ? " · primary" : ""}
+                    </span>
+                  </div>
+
+                  {/* Key-value spec block */}
+                  <div style={{
+                    display: "grid",
+                    gridTemplateColumns: "auto 1fr",
+                    gap: "3px 10px",
+                    fontSize: "12px",
+                    marginBottom: "8px",
+                    padding: "8px 10px",
+                    background: "rgba(0,0,0,0.02)",
+                    borderRadius: "2px",
+                  }}>
+                    <span style={{ color: "var(--ink-soft)", textTransform: "uppercase", fontSize: "9px", letterSpacing: "0.12em", alignSelf: "center" }}>Clasp</span>
+                    <span style={{ color: "var(--ink)" }}><strong>{a.claspType}</strong></span>
+
+                    {a.restSeat && <>
+                      <span style={{ color: "var(--ink-soft)", textTransform: "uppercase", fontSize: "9px", letterSpacing: "0.12em", alignSelf: "center" }}>Rest</span>
+                      <span style={{ color: "var(--ink)" }}>
+                        {a.restSeat.surface} {a.restSeat.type}
+                        {a.restSeat.bur && <span style={{ color: "var(--ink-faint)", fontSize: "11px" }}> · {a.restSeat.bur}</span>}
+                      </span>
+                    </>}
+
+                    {a.guidePlane && <>
+                      <span style={{ color: "var(--ink-soft)", textTransform: "uppercase", fontSize: "9px", letterSpacing: "0.12em", alignSelf: "center" }}>Plate</span>
+                      <span style={{ color: "var(--ink)" }}>
+                        {a.guidePlane.surface}
+                        <span style={{ color: "var(--ink-faint)", fontSize: "11px" }}> · {a.guidePlane.length}</span>
+                      </span>
+                    </>}
+
+                    {!isRestOnly && <>
+                      <span style={{ color: "var(--ink-soft)", textTransform: "uppercase", fontSize: "9px", letterSpacing: "0.12em", alignSelf: "center" }}>Undercut</span>
+                      <span style={{ color: "var(--accent)", fontFamily: "'JetBrains Mono', monospace" }}>{ucDepth} {ucShort}</span>
+                    </>}
+
+                    {a.reciprocation && <>
+                      <span style={{ color: "var(--ink-soft)", textTransform: "uppercase", fontSize: "9px", letterSpacing: "0.12em", alignSelf: "center" }}>Recip</span>
+                      <span style={{ color: "var(--ink)", fontSize: "12px" }}>{a.reciprocation.text}</span>
+                    </>}
+                  </div>
+
+                  {/* Flags */}
+                  {a.surveyCrown?.indicated && (
+                    <div style={{ fontSize: "11px", color: "var(--accent)", marginBottom: "4px" }}>
+                      <strong style={{ textTransform: "uppercase", fontSize: "9px", letterSpacing: "0.12em", marginRight: "4px" }}>Survey crown:</strong>
+                      {a.surveyCrown.reason}
+                    </div>
+                  )}
+                  {a.crownLengthening?.indicated && (
+                    <div style={{ fontSize: "11px", color: "var(--accent)", marginBottom: "4px" }}>
+                      <strong style={{ textTransform: "uppercase", fontSize: "9px", letterSpacing: "0.12em", marginRight: "4px" }}>Crown lengthening:</strong>
+                      {a.crownLengthening.reason}
+                    </div>
+                  )}
+                  {a.contraindications?.length > 0 && (
+                    <div style={{ fontSize: "11px", color: "var(--ink-soft)", fontStyle: "italic", marginBottom: "4px" }}>
+                      RPI contras: {a.contraindications.map(c => c.text).join("; ")}
+                    </div>
+                  )}
+
+                  {/* Rationale */}
+                  <div style={{ fontSize: "11.5px", color: "var(--ink-soft)", fontStyle: "italic", lineHeight: 1.5, marginTop: "4px" }}>
+                    {a.claspRationale}
+                  </div>
+
+                  {/* Alternative callout */}
+                  {a.claspAlternatives && (
+                    <div style={{
+                      fontSize: "11px", color: "var(--accent)", marginTop: "8px",
+                      padding: "6px 8px", background: "rgba(212,165,116,0.08)",
+                      borderLeft: "2px solid var(--accent)",
+                      whiteSpace: "pre-line", lineHeight: 1.5,
+                    }}>
+                      <strong style={{ textTransform: "uppercase", fontSize: "9px", letterSpacing: "0.12em", marginRight: "4px" }}>Alternative:</strong>
+                      {a.claspAlternatives}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* (Indirect Retainers, Base Design, Framework Material now live in
+          the Design Summary grid above the Abutments section.) */}
+      </RPDCollapsibleSection>
+
+      {/* Phase 2: NMCD options (two variants per UIC primary sources) */}
+      {result.nmcdDesign?.applicable && (
+        <RPDCollapsibleSection
+          title={`Non-Metal Clasp Denture Alternatives (${result.nmcdDesign.classQualifier}, Metal Allergy)`}
+          summary="2 options"
+          defaultOpen={false}
+        >
+          <div style={{ fontSize: "13px", lineHeight: 1.6, padding: "16px 18px", background: "rgba(212,165,116,0.08)", border: "1px solid rgba(212,165,116,0.3)", borderRadius: "2px" }}>
+
+            {/* Option A: Hybrid (rigid metal connector + non-metal clasps) */}
+            <div style={{ marginBottom: "16px", padding: "10px 12px", background: "var(--paper)", border: "1px solid var(--rule)", borderRadius: "2px" }}>
+              <div style={{ fontWeight: 500, marginBottom: "6px", color: "var(--ink)" }}>
+                Option A · {result.nmcdDesign.hybrid.label}
+              </div>
+              <div style={{ fontSize: "12px", color: "var(--ink-soft)", marginBottom: "6px" }}>
+                <em>{result.nmcdDesign.hybrid.indication}</em>
+              </div>
+              <div style={{ fontSize: "12px" }}>
+                <strong>Material:</strong> {result.nmcdDesign.hybrid.material}
+              </div>
+              <div style={{ fontSize: "12px" }}>
+                <strong>Clasps on:</strong> {result.nmcdDesign.hybrid.claspTeeth.map(t => rpdToothName(t)).join(", ")}
+              </div>
+              <div style={{ fontSize: "12px", color: "var(--ink-soft)", marginTop: "4px" }}>
+                {result.nmcdDesign.hybrid.claspDescription}
+              </div>
+            </div>
+
+            {/* Option B: Pure (no metal anywhere) */}
+            <div style={{ marginBottom: "12px", padding: "10px 12px", background: "var(--paper)", border: "1px solid var(--rule)", borderRadius: "2px" }}>
+              <div style={{ fontWeight: 500, marginBottom: "6px", color: "var(--ink)" }}>
+                Option B · {result.nmcdDesign.pure.label}
+              </div>
+              <div style={{ fontSize: "12px", color: "var(--ink-soft)", marginBottom: "6px" }}>
+                <em>{result.nmcdDesign.pure.indication}</em>
+              </div>
+              <div style={{ fontSize: "12px" }}>
+                <strong>Material:</strong> {result.nmcdDesign.pure.material}
+              </div>
+              <div style={{ fontSize: "12px" }}>
+                <strong>Clasps on:</strong> {result.nmcdDesign.pure.claspTeeth.map(t => rpdToothName(t)).join(", ")}
+              </div>
+              <div style={{ fontSize: "12px", color: "var(--ink-soft)", marginTop: "4px" }}>
+                {result.nmcdDesign.pure.claspDescription}
+              </div>
+            </div>
+
+            {/* Shared contraindications and care */}
+            <div style={{ fontSize: "12px", color: "var(--ink-soft)", marginTop: "12px", paddingTop: "10px", borderTop: "1px solid rgba(212,165,116,0.2)" }}>
+              <strong>Both variants contraindicated if:</strong> {result.nmcdDesign.additionalContraindications.join(" · ")}
+            </div>
+            <div style={{ fontSize: "12px", color: "var(--ink-soft)", marginTop: "8px" }}>
+              <strong>Care protocol:</strong> {result.nmcdDesign.careProtocol}
+            </div>
+            <div style={{ fontSize: "11px", color: "var(--accent)", fontWeight: 500, marginTop: "10px", textTransform: "uppercase", letterSpacing: "0.12em" }}>
+              ⚠ {result.nmcdDesign.consent}
+            </div>
+          </div>
+        </RPDCollapsibleSection>
+      )}
+
+      {/* Show wide-Class-IV contraindication message when NMCD doesn't apply due to span */}
+      {result.nmcdDesign?.contraindicated && (
+        <div style={{ marginBottom: "24px", padding: "12px 14px", background: "rgba(122,30,30,0.06)", border: "1px solid var(--accent)", borderRadius: "2px" }}>
+          <div style={sectionTitle}>NMCD Contraindicated</div>
+          <div style={{ fontSize: "13px", color: "var(--ink)", fontStyle: "italic" }}>
+            {result.nmcdDesign.reason}
+          </div>
+        </div>
+      )}
+
+      <Hairline />
+
+      {/* Axium Clinic Workflow — friendly expandable steps with concept icons */}
+      <RPDCollapsibleSection
+        title="Axium Clinic Workflow"
+        summary="7-step clinical pathway"
+        defaultOpen={false}
+      >
+        <div style={{ fontSize: "11px", color: "var(--ink-soft)", fontStyle: "italic", marginBottom: "14px" }}>
+          The seven-step clinical pathway from comprehensive exam to delivery. Click any step to see clinical detail, the exact Axium entry, how the step constrains the design, and hover the chips for definitions of clinical terms.
+        </div>
+        <RPDAxiumWorkflow result={result} caseInput={caseInput} />
+      </RPDCollapsibleSection>
+
+      <Hairline />
+
+      {/* Lab Script — paste-ready Axium output (final artifact) */}
+      <RPDCollapsibleSection
+        title={`Axium Lab Script — ${result.axiumCode}`}
+        summary="Paste-ready text"
+        defaultOpen={false}
+      >
+        <div className="rpd-lab-script-block">
+          <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", marginBottom: "10px" }} className="rpd-print-hide">
+            <button
+              onClick={() => {
+                navigator.clipboard?.writeText(result.labScript).then(() => {
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 1600);
+                });
+              }}
+              style={{
+                background: copied ? "var(--accent)" : "transparent",
+                color: copied ? "var(--paper)" : "var(--ink-soft)",
+                border: `1px solid ${copied ? "var(--accent)" : "var(--rule)"}`,
+                padding: "5px 12px", fontFamily: "'Geist', sans-serif",
+                fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
+                cursor: "pointer", borderRadius: "2px",
+                transition: "background 140ms ease, color 140ms ease, border-color 140ms ease",
+              }}>
+              {copied ? "Copied ✓" : "Copy"}
+            </button>
+            <button
+              onClick={() => window.print()}
+              style={{
+                background: "transparent", color: "var(--ink-soft)",
+                border: "1px solid var(--rule)", padding: "5px 12px",
+                fontFamily: "'Geist', sans-serif", fontSize: "10px",
+                letterSpacing: "0.16em", textTransform: "uppercase",
+                cursor: "pointer", borderRadius: "2px",
+              }}>
+              Print
+            </button>
+          </div>
+          <pre style={{
+            fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+            fontSize: "12px", lineHeight: 1.65,
+            background: "var(--mono-bg)", color: "var(--mono-fg)",
+            padding: "18px 20px", borderRadius: "3px",
+            whiteSpace: "pre-wrap", margin: 0,
+          }}>
+{result.labScript}
+          </pre>
+        </div>
+      </RPDCollapsibleSection>
+
+      {/* Decision tree — text illustration of the chosen engine path */}
+      <RPDCollapsibleSection
+        title="Engine Logic — Decision Tree"
+        summary="Case-level reasoning"
+        defaultOpen={false}
+      >
+        <RPDDecisionTree caseInput={caseInput} result={result} />
+      </RPDCollapsibleSection>
+
+      {/* Paper forms — full UIC form recreations (with arch drawing) for
+          printing or hand-copying. The text fields portion of the
+          preliminary form is already shown inline above; this section
+          contains the full layout with the arch drawing embedded plus
+          the Lab Rx form. */}
+      <RPDCollapsibleSection
+        title="Paper forms"
+        summary="Preliminary Design (with drawing) + Lab Rx"
+        defaultOpen={false}
+      >
+        <RPDPreliminaryDesignForm caseInput={caseInput} result={result} />
+        <RPDLabRxForm caseInput={caseInput} result={result} />
+      </RPDCollapsibleSection>
+
+      {/* ─── Applegate justifications (LAST in the list).
+          Surfaces ONLY when the engine made non-trivial decisions about
+          3rd/2nd molar inclusion. Detail-oriented, not gating — students
+          rarely need this on first look, so it's at the bottom. */}
+      {(() => {
+        const t3 = result.thirdMolarEval?.decisions || [];
+        const t2 = result.secondMolarEval?.decisions || [];
+        const trivialT3 = (d) => d.rule === "Applegate Rule 2"
+          && /omit/i.test(d.decision);
+        const trivialT2 = (d) => /\(n\/a\)/i.test(d.rule)
+          && /include \(present\)/i.test(d.decision);
+        const nonTrivialT3 = t3.filter(d => !trivialT3(d));
+        const nonTrivialT2 = t2.filter(d => !trivialT2(d));
+        if (nonTrivialT3.length === 0 && nonTrivialT2.length === 0) return null;
+        const renderRow = (d, i, isLast) => (
+          <div key={`${d.tooth}-${i}`} style={{
+            fontSize: "13px", marginBottom: isLast ? 0 : "10px",
+            paddingBottom: isLast ? 0 : "8px",
+            borderBottom: isLast ? "none" : "1px solid var(--rule-soft)",
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "3px" }}>
+              <strong>{rpdToothName(d.tooth)}</strong>
+              <span style={{ fontSize: "11px", color: "var(--ink-soft)", textTransform: "uppercase" }}>{d.rule}</span>
+            </div>
+            <div style={{ fontSize: "13px", color: "var(--ink)", marginBottom: "3px" }}>
+              <strong>Decision:</strong> {d.decision}
+            </div>
+            <div style={{ fontSize: "12px", color: "var(--ink-soft)", fontStyle: "italic" }}>
+              {d.rationale}
+            </div>
+          </div>
+        );
+        return (
+          <RPDCollapsibleSection
+            title="Applegate justifications"
+            summary={`${nonTrivialT3.length + nonTrivialT2.length} rule call(s)`}
+            defaultOpen={false}
+          >
+            {nonTrivialT3.length > 0 && (
+              <div style={{ marginBottom: nonTrivialT2.length > 0 ? "14px" : 0 }}>
+                <div style={{ fontSize: "11px", color: "var(--ink-soft)", marginBottom: "8px", fontStyle: "italic" }}>
+                  3rd molars (Rules 2 &amp; 3)
+                </div>
+                {nonTrivialT3.map((d, i) => renderRow(d, i, i === nonTrivialT3.length - 1))}
+              </div>
+            )}
+            {nonTrivialT2.length > 0 && (
+              <div>
+                <div style={{ fontSize: "11px", color: "var(--ink-soft)", marginBottom: "8px", fontStyle: "italic" }}>
+                  2nd molars (Rule 4)
+                </div>
+                {nonTrivialT2.map((d, i) => renderRow(d, i, i === nonTrivialT2.length - 1))}
+              </div>
+            )}
+          </RPDCollapsibleSection>
+        );
+      })()}
+
+      </>}
+    </div>
+  );
+}
+
+
+const TABS = [
+  { id: "note",    label: "Note",    hint: "Generate chart notes" },
+  { id: "browse",  label: "Steps",   hint: "Read the guide" },
+  { id: "rvus",    label: "Codes",   hint: "Progress & code lookup" },
+  { id: "pes",     label: "PEs",     hint: "Performance exam reference" },
+  { id: "helpers", label: "Helpers", hint: "Design helpers (RPD, more coming)" },
+];
+
+// Named exports for engine verification tests. These are pure-JS functions
+// (no React/JSX), safe to import from a test harness that doesn't render UI.
+export {
+  rpdRunEngine,
+  rpdMakeBlankCase,
+  rpdClassifyKennedy,
+  rpdSelectMajorConnector,
+  rpdDesignAbutment,
+  rpdPlaceIndirectRetainers,
+  rpdSelectBaseDesign,
+  rpdCheckRPIContraindications,
+  rpdGetEdentulousSpans,
+  RPD_TEETH_MAX,
+  RPD_TEETH_MAND,
+  RPD_MAX_ANTERIOR,
+  RPD_ESTHETIC_ZONE,
+  RPD_CANINES,
+  RPD_FIRST_PREMOLARS,
+  RPD_SECOND_PREMOLARS,
+  RPD_FIRST_MOLARS,
+  RPD_SECOND_MOLARS,
+  RPD_THIRD_MOLARS,
+};
 
 export default function App() {
   const [tab, setTab] = useState("note");
@@ -10880,6 +17565,97 @@ export default function App() {
           .note-pane { position: static !important; }
           .rvu-controls { grid-template-columns: 1fr !important; }
         }
+        /* RPD chart row collapses to 1-col only at narrow embedded-preview
+           widths. The 3-col layout (case inputs · chart · element detail) is
+           the canonical workflow view, so we want it to survive sub-980px
+           viewports — otherwise the Claude preview pane never matches what
+           the user sees in a real browser. */
+        @media (max-width: 560px) {
+          .rpd-chart-row { grid-template-columns: 1fr !important; }
+        }
+
+        /* RPD tooth chart hover + side-by-side layout */
+        .rpd-tooth-active .rpd-circle { transition: stroke 140ms ease, stroke-width 140ms ease, fill 140ms ease; }
+        .rpd-tooth-active:hover .rpd-circle { stroke: var(--accent); stroke-width: 1.8; }
+
+        /* Design-element annotation labels — hidden by default, revealed on
+           hover, when the element is selected, or when its tooth is selected. */
+        .rpd-elem .rpd-elem-label {
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 120ms ease;
+          font-family: 'Geist', sans-serif;
+          font-size: 18px;
+          fill: var(--ink);
+          text-anchor: middle;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          font-weight: 600;
+          paint-order: stroke fill;
+          stroke: var(--paper);
+          stroke-width: 3.5;
+          stroke-linejoin: round;
+        }
+        .rpd-elem:hover .rpd-elem-label,
+        .rpd-elem.is-selected .rpd-elem-label,
+        .rpd-elem.is-tooth-selected .rpd-elem-label {
+          opacity: 0.95;
+        }
+        .rpd-elem.is-selected .rpd-elem-label,
+        .rpd-elem:hover .rpd-elem-label { fill: var(--accent); }
+        /* Hover-highlight on the entire element group — visible accent-colored
+           glow on the path/circle so the user can SEE which element their
+           cursor is over before clicking. */
+        .rpd-elem {
+          transition: filter 120ms ease;
+        }
+        .rpd-elem:hover {
+          filter: drop-shadow(0 0 4px var(--accent));
+        }
+        .rpd-elem .rpd-elem-leader {
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 120ms ease;
+          stroke: var(--ink-soft);
+          stroke-width: 0.6;
+        }
+        .rpd-elem:hover .rpd-elem-leader,
+        .rpd-elem.is-selected .rpd-elem-leader,
+        .rpd-elem.is-tooth-selected .rpd-elem-leader { opacity: 0.5; }
+
+        /* Info-icon popover */
+        .rpd-info-icon:hover .rpd-info-popover,
+        .rpd-info-icon:focus-within .rpd-info-popover {
+          opacity: 1;
+          visibility: visible;
+        }
+        /* Transparent bridge connecting the popover to the icon so the
+           cursor can traverse the visual gap without losing :hover. */
+        .rpd-info-popover::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 100%;
+          height: 8px;
+        }
+
+        /* .rpd-chart-row is no longer used — the inspector moved below
+           the chart, so the chart gets the full row width. The class is
+           harmless if any code still references it. */
+
+        /* Print: deliver a clean one-page chart-note view of the design recommendation */
+        @media print {
+          @page { margin: 0.4in 0.5in; }
+          body { background: white !important; }
+          nav, header, .tab-button, .rpd-print-hide { display: none !important; }
+          .app-root { background: white !important; background-image: none !important; }
+          main { padding: 0 !important; max-width: 100% !important; }
+          /* Print only the engine output of the Helpers tab — hide inputs */
+          .rpd-print-inputs { display: none !important; }
+          /* Keep the lab script visible and readable on paper */
+          pre { page-break-inside: avoid; }
+        }
 
         /* First-paint fade — small but noticeable; signals "this is a
            crafted thing" rather than a default-styled web page. Runs once. */
@@ -10957,6 +17733,7 @@ export default function App() {
         )}
         {tab === "rvus" && <RVUs />}
         {tab === "pes" && <PEs onShowSteps={handleShowSteps} />}
+        {tab === "helpers" && <RPDHelper />}
       </main>
     </div>
   );
