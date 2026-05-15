@@ -15804,12 +15804,27 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
   let rationale = "";
   if (kind === 'rest' && abutment?.restSeat) {
     title = `Rest seat — ${rpdToothName(tooth)}`;
-    lines = [
-      ["Surface", abutment.restSeat.surface],
-      ["Type",    abutment.restSeat.type],
-      abutment.restSeat.bur && ["Bur(s)", abutment.restSeat.bur],
-      abutment.restSeat.depth && ["Depth", abutment.restSeat.depth],
-    ].filter(Boolean);
+    // For occlusal rests, "surface" is anatomically meaningful (mesial vs
+    // distal fossa on the occlusal table). For cingulum/ball rests, the
+    // seat is always on the LINGUAL surface; the "mesial/distal" value
+    // describes the position along the cingulum, not a tooth surface. So
+    // we render those as "Position" + a "Surface: lingual" row to avoid
+    // implying the rest sits on the proximal surface.
+    const isLingualRest = abutment.restSeat.type === "cingulum" || abutment.restSeat.type === "ball";
+    lines = isLingualRest
+      ? [
+          ["Type",     abutment.restSeat.type],
+          ["Surface",  "lingual"],
+          ["Position", abutment.restSeat.surface],
+          abutment.restSeat.bur && ["Bur(s)", abutment.restSeat.bur],
+          abutment.restSeat.depth && ["Depth", abutment.restSeat.depth],
+        ].filter(Boolean)
+      : [
+          ["Surface", abutment.restSeat.surface],
+          ["Type",    abutment.restSeat.type],
+          abutment.restSeat.bur && ["Bur(s)", abutment.restSeat.bur],
+          abutment.restSeat.depth && ["Depth", abutment.restSeat.depth],
+        ].filter(Boolean);
     rationale = abutment.restSeat.rationale ||
       "Rest seat preserves vertical support and prevents soft-tissue impingement. Standard: round bur (#4 for premolars; #4+#6+#8 for molars; inverted cone for cingulum), prepared LAST in the modification sequence after guide planes.";
   } else if (kind === 'guidePlane' && abutment?.guidePlane) {
