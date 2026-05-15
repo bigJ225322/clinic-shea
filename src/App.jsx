@@ -4212,9 +4212,10 @@ const ROOT_TOKENS = {
  * SMALL PRESENTATIONAL HELPERS
  * ==========================================================================*/
 const labelStyle = {
-  fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase",
+  fontSize: "9px", letterSpacing: "0.12em", textTransform: "uppercase",
   color: "var(--ink-soft)", fontWeight: 500, marginBottom: "3px",
   display: "block", fontFamily: "'Geist', sans-serif",
+  whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
 };
 const inputStyle = {
   width: "100%", padding: "7px 10px", fontSize: "13px",
