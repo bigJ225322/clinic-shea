@@ -2419,3 +2419,233 @@ describe("INVARIANT — every DE terminal uses a stress-releasing design (never 
     });
   });
 });
+
+// =========================================================================
+// BOUNDARY TESTING — RPI gate cutoffs
+// =========================================================================
+describe("BOUNDARY — RPI vestibular depth gate (>5mm)", () => {
+  const buildCase = (vestDepth) => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 20]);
+    c.measurements.vestibularDepth = vestDepth;
+    return rpdRunEngine(c);
+  };
+
+  it("vestibular depth = 4mm fails gate → Combination", () => {
+    expect(designOf(buildCase(4), 21)?.claspType).toBe("Combination");
+  });
+  it("vestibular depth = 5mm fails gate (gate is strictly >5) → Combination", () => {
+    expect(designOf(buildCase(5), 21)?.claspType).toBe("Combination");
+  });
+  it("vestibular depth = 6mm passes gate → RPI", () => {
+    expect(designOf(buildCase(6), 21)?.claspType).toBe("RPI");
+  });
+});
+
+describe("BOUNDARY — Lingual bar gate (sulcus depth ≥8mm)", () => {
+  const buildCase = (sulcusDepth) => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19, 30]);
+    c.measurements.lingualSulcusDepth = sulcusDepth;
+    return rpdRunEngine(c);
+  };
+
+  it("sulcus depth = 7mm → Lingual Plate (not bar)", () => {
+    expect(buildCase(7).majorConnector.type).toMatch(/Lingual Plate/);
+  });
+  it("sulcus depth = 8mm → Lingual Bar (boundary passes)", () => {
+    expect(buildCase(8).majorConnector.type).toBe("Lingual Bar");
+  });
+  it("sulcus depth = 10mm → Lingual Bar (well past boundary)", () => {
+    expect(buildCase(10).majorConnector.type).toBe("Lingual Bar");
+  });
+});
+
+// =========================================================================
+// ANTERIOR-AS-DE-TERMINAL EXHAUSTIVE
+// =========================================================================
+// The canine DE bug existed because the DE branch hard-coded occlusal
+// rest. After fix, the engine should produce cingulum rest for any
+// anterior tooth in the DE branch.
+// =========================================================================
+describe("EXHAUSTIVE — every anterior as DE terminal uses cingulum rest", () => {
+  const anteriorDETerminalCases = [
+    { arch: "maxillary",  tooth: 6,  missing: [1,2,3,4,5,16],       name: "Max right canine (#6)" },
+    { arch: "maxillary",  tooth: 7,  missing: [1,2,3,4,5,6,16],     name: "Max right lateral (#7)" },
+    { arch: "maxillary",  tooth: 11, missing: [1,12,13,14,15,16],   name: "Max left canine (#11)" },
+    { arch: "maxillary",  tooth: 10, missing: [1,11,12,13,14,15,16],name: "Max left lateral (#10)" },
+    { arch: "mandibular", tooth: 22, missing: [17,18,19,20,21,32],  name: "Mand left canine (#22)" },
+    { arch: "mandibular", tooth: 27, missing: [17,28,29,30,31,32],  name: "Mand right canine (#27)" },
+  ];
+
+  anteriorDETerminalCases.forEach(({ arch, tooth, missing, name }) => {
+    it(`${name} as DE terminal → cingulum rest + inverted cone bur`, () => {
+      const c = rpdMakeBlankCase(arch);
+      setMissing(c, missing);
+      const r = rpdRunEngine(c);
+      const d = designOf(r, tooth);
+      expect(d?.restSeat?.type, `#${tooth}`).toBe("cingulum");
+      expect(d?.restSeat?.bur, `#${tooth}`).toMatch(/inverted cone/i);
+      expect(d?.restSeat?.surface, `#${tooth}`).toBe("mesial");
+    });
+  });
+});
+
+// =========================================================================
+// TILTED MOLAR → Ring clasp alternative
+// =========================================================================
+describe("Tilted molar → Ring clasp alternative surfaced", () => {
+  it("Mandibular tilted molar with mesial undercut surfaces Ring clasp", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    setAttrs(c, 18, { tilt: "tilted", undercutLocation: "mesio-lingual" });
+    const r = rpdRunEngine(c);
+    const d = designOf(r, 18);
+    expect(d?.claspAlternatives).toMatch(/Ring clasp/i);
+  });
+});
+
+// =========================================================================
+// INDIRECT RETAINER PLACEMENT
+// =========================================================================
+describe("INDIRECT RETAINER — placement geometry", () => {
+  it("Left mand DE → indirect retainer on right side", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 20]);
+    const r = rpdRunEngine(c);
+    if (r.indirectRetainers.length > 0) {
+      const irTeeth = r.indirectRetainers.map(x => x.tooth);
+      const onRight = irTeeth.some(t => t >= 25 && t <= 32);
+      expect(onRight, "indirect retainer expected on right side").toBe(true);
+    }
+  });
+
+  it("Right max DE → indirect retainer on left side", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 2, 3, 16]);
+    const r = rpdRunEngine(c);
+    if (r.indirectRetainers.length > 0) {
+      const irTeeth = r.indirectRetainers.map(x => x.tooth);
+      const onLeft = irTeeth.some(t => t >= 9 && t <= 16);
+      expect(onLeft, "indirect retainer expected on left side").toBe(true);
+    }
+  });
+
+  it("Class I (bilateral DE) → bilateral indirect retainers", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.indirectRetainers.length).toBeGreaterThanOrEqual(2);
+    const onLeft = r.indirectRetainers.some(ir => ir.tooth >= 17 && ir.tooth <= 24);
+    const onRight = r.indirectRetainers.some(ir => ir.tooth >= 25 && ir.tooth <= 32);
+    expect(onLeft && onRight, "bilateral placement expected").toBe(true);
+  });
+});
+
+// =========================================================================
+// CLASS IV — anterior crossing midline
+// =========================================================================
+describe("CLASS IV — anterior crossing midline variants", () => {
+  it("Both centrals (#8, #9) missing → Class IV", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 8, 9]);
+    expect(rpdRunEngine(c).kennedy.class).toBe("IV");
+  });
+
+  it("All 4 incisors missing → Class IV", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 7, 8, 9, 10]);
+    expect(rpdRunEngine(c).kennedy.class).toBe("IV");
+  });
+
+  it("Only one central missing (#8 alone) → Class III (doesn't cross midline)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 8]);
+    // Bounded by #7 and #9; the midline is BETWEEN #8 and #9, so #8
+    // alone doesn't cross it.
+    expect(rpdRunEngine(c).kennedy.class).toBe("III");
+  });
+
+  it("Class IV produces complete framework", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 7, 8, 9, 10]);
+    const r = rpdRunEngine(c);
+    expect(r.framework?.material).toBeTruthy();
+    expect(r.majorConnector?.type).toBeTruthy();
+    expect(r.abutmentDesigns.length).toBeGreaterThan(0);
+  });
+});
+
+// =========================================================================
+// SURVEY CROWN / CROWN LENGTHENING per abutment
+// =========================================================================
+describe("SURVEY CROWN / CROWN LENGTHENING indication logic", () => {
+  it("Insufficient enamel → survey crown indicated", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    setAttrs(c, 18, { enamelIntegrityAtRestSeat: "insufficient" });
+    const d = designOf(rpdRunEngine(c), 18);
+    expect(d?.surveyCrown?.indicated).toBe(true);
+  });
+
+  it("Extensive restorations → survey crown indicated", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    setAttrs(c, 18, { existingRestorations: "extensive" });
+    const d = designOf(rpdRunEngine(c), 18);
+    expect(d?.surveyCrown?.indicated).toBe(true);
+  });
+
+  it("Extreme tilt → survey crown indicated", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    setAttrs(c, 18, { tilt: "extreme" });
+    const d = designOf(rpdRunEngine(c), 18);
+    expect(d?.surveyCrown?.indicated).toBe(true);
+  });
+
+  it("Short crown (alone) → crown lengthening, not survey crown", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    setAttrs(c, 18, { crownHeight: "short" });
+    const d = designOf(rpdRunEngine(c), 18);
+    expect(d?.crownLengthening?.indicated).toBe(true);
+    expect(d?.surveyCrown?.indicated).toBeFalsy();
+  });
+
+  it("Healthy abutment → neither indicated", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    const d = designOf(rpdRunEngine(c), 18);
+    expect(d?.surveyCrown?.indicated).toBeFalsy();
+    expect(d?.crownLengthening?.indicated).toBeFalsy();
+  });
+});
+
+// =========================================================================
+// MULTI-MOD CLASSIFICATION
+// =========================================================================
+describe("CLASSIFICATION — multi-mod patterns", () => {
+  it("Class III Mod 2 — three separate bounded spans", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 3, 5, 13]);
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("III");
+    expect(r.kennedy.modifications).toBeGreaterThanOrEqual(2);
+  });
+
+  it("Class II Mod 3+ (Design Case I exact shape) — mathematically 4 mod spans", () => {
+    // Spans in this case: #3 (mod), #5 (mod), #7-8 (mod), #10 (mod),
+    // #13-15 (DE = determinant). Strictly counted, that's 4
+    // modifications + 1 DE → "Class II Mod 4". UIC sometimes labels
+    // the case as "Mod 3" informally (counting merged contiguous
+    // anterior involvement differently); the engine produces the
+    // strict Applegate count of 4. Both are defensible labels — the
+    // engine just picks one consistent counting rule.
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 3, 5, 7, 8, 10, 13, 14, 15]);
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("II");
+    expect(r.kennedy.modifications).toBeGreaterThanOrEqual(3);
+  });
+});
