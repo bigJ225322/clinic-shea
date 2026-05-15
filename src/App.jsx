@@ -17076,7 +17076,7 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
 }
 
 // ─── Per-Tooth Attribute Editor ───────────────────────────────────────────
-function RPDToothEditor({ tooth, caseInput, onUpdateTooth, onClose, horizontal = false }) {
+function RPDToothEditor({ tooth, caseInput, result, onUpdateTooth, onClose, horizontal = false }) {
   if (!tooth) return null;
   const t = caseInput.teeth?.[tooth] || { status: "present" };
   const attrs = { ...RPD_ABUTMENT_DEFAULTS, ...(t.attrs || {}) };
@@ -17084,6 +17084,13 @@ function RPDToothEditor({ tooth, caseInput, onUpdateTooth, onClose, horizontal =
   const inActiveArch = arch === (caseInput.arch || "mandibular");
   const isMissing = t.status !== "present";
   const isThirdMolar = RPD_THIRD_MOLARS.has(tooth);
+
+  // If the tooth is missing and the engine has put a base/saddle over it,
+  // then a pontic replaces it in the design. Look it up in result.baseDesigns
+  // so the editor can name the replacement (e.g. "Pontic over Open Lattice").
+  const ponticBase = (isMissing && result?.baseDesigns)
+    ? result.baseDesigns.find(b => (b.spanTeeth || []).includes(tooth))
+    : null;
 
   const setStatus = (status) => onUpdateTooth(tooth, { ...t, status });
   const setReplace = (v) => onUpdateTooth(tooth, { ...t, replace: v });
@@ -17141,6 +17148,30 @@ function RPDToothEditor({ tooth, caseInput, onUpdateTooth, onClose, horizontal =
         <div style={rowStyle}>
           <span>Replace this 3rd molar?</span>
           <input type="checkbox" checked={!!t.replace} onChange={(e) => setReplace(e.target.checked)} />
+        </div>
+      )}
+
+      {/* When a missing tooth is being replaced in the design, surface the
+          pontic + base type so the inspector isn't just "Status: Missing"
+          with no design context. Engine writes a saddle/base over the
+          edentulous span; the pontic lives over that base. */}
+      {isMissing && ponticBase && (
+        <div style={rowStyle}>
+          <span>In the design</span>
+          <div style={{
+            padding: "5px 10px", fontSize: "11px",
+            background: "var(--paper-soft)",
+            border: "1px solid var(--rule)", borderRadius: "2px",
+            color: "var(--ink)",
+            fontFamily: "'Geist', sans-serif",
+          }}>
+            Pontic over {ponticBase.type}
+            {ponticBase.spanTeeth && ponticBase.spanTeeth.length > 1 && (
+              <span style={{ color: "var(--ink-soft)", marginLeft: "6px", fontSize: "10px" }}>
+                · span {ponticBase.spanTeeth.map(n => `#${n}`).join("–")}
+              </span>
+            )}
+          </div>
         </div>
       )}
 
@@ -17691,6 +17722,7 @@ function RPDHelper() {
             <RPDToothEditor
               tooth={selectedTooth}
               caseInput={caseInput}
+              result={result}
               onUpdateTooth={updateTooth}
               onClose={() => setSelectedTooth(null)}
               horizontal
