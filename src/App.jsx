@@ -13501,62 +13501,85 @@ function RPDDecisionTree({ caseInput, result }) {
       <Decision index={3} label="Framework material"       options={fwOpts} />
       <Decision index={4} label={`Major connector (${arch === "maxillary" ? "palate" : "lingual"})`} options={mcOpts} />
 
-      {/* 5. Per-abutment clasps. The header row has subdued styling; each
-          abutment is its own labeled sub-row showing clasp options. */}
-      <Decision
-        index={5}
-        label="Clasps · one decision per direct retainer abutment"
-        options={[]}
-        isLast={(result.abutmentDesigns || []).length === 0}
-        subdued
-      />
-      {(result.abutmentDesigns || []).map((a, ai) => {
-        const isLast = ai === result.abutmentDesigns.length - 1;
-        return (
-          <div key={a.tooth} style={{
-            position: "relative",
-            paddingLeft: "84px",
-            paddingBottom: "16px",
-          }}>
-            {/* parent-tree vertical spine (continues from above through this row) */}
-            {!isLast && (
+      {/* 5. Per-abutment clasps — this decision branches: one clasp choice
+          per abutment. Rendered as a numbered Decision row (consistent with
+          1–4) whose "options" area holds sub-rows, one per abutment. The
+          sub-rows share an inner dashed spine so they read as children of
+          decision 5, not as sibling decisions of 1–4. */}
+      <div style={{ position: "relative", paddingLeft: "44px", paddingBottom: "4px" }}>
+        {/* horizontal stub from main spine */}
+        <div style={{
+          position: "absolute", left: "14px", top: "12px",
+          width: "20px", height: "1px", background: "var(--rule)",
+        }} />
+        {/* main spine ends at decision 5 (last numbered row), so no bottom continuation */}
+        <div style={{
+          position: "absolute", left: "14px", top: 0,
+          width: "1px", height: "12px", background: "var(--rule)",
+        }} />
+        {/* numbered marker — consistent ink fill, same as 1–4 */}
+        <div style={{
+          position: "absolute", left: "6px", top: "4px",
+          width: "18px", height: "18px", borderRadius: "50%",
+          background: "var(--ink)", color: "white",
+          border: "1px solid var(--ink)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: "10px", fontWeight: 600, fontFamily: "'Geist', sans-serif",
+        }}>5</div>
+        {/* decision label */}
+        <div style={{
+          fontFamily: "'Geist', sans-serif", fontSize: "11px",
+          textTransform: "uppercase", letterSpacing: "0.09em",
+          color: "var(--ink-soft)", fontWeight: 600,
+          marginBottom: "10px", marginTop: "2px",
+        }}>
+          Clasps · one decision per direct retainer abutment
+        </div>
+        {/* Per-abutment sub-rows. Each sits inside decision 5's content area
+            with a dashed left border indicating sub-branch. */}
+        {(result.abutmentDesigns || []).map((a, ai) => {
+          const isLastAb = ai === (result.abutmentDesigns.length - 1);
+          return (
+            <div key={a.tooth} style={{
+              position: "relative",
+              paddingLeft: "20px",
+              paddingTop: "6px",
+              paddingBottom: isLastAb ? "0" : "16px",
+              borderLeft: "1px dashed var(--rule)",
+              marginBottom: isLastAb ? 0 : "2px",
+            }}>
+              {/* abutment header */}
               <div style={{
-                position: "absolute", left: "14px", top: 0,
-                width: "1px", bottom: 0,
-                background: "var(--rule)",
-              }} />
-            )}
-            {/* horizontal stub from the parent spine across to the abutment marker */}
-            <div style={{
-              position: "absolute", left: "14px", top: "14px",
-              width: "40px", height: "1px",
-              background: "var(--rule)",
-            }} />
-            {/* abutment label as a small node on the sub-spine */}
-            <div style={{
-              position: "absolute", left: "54px", top: "8px",
-              padding: "2px 10px", borderRadius: "12px",
-              background: "white", border: "1px solid var(--ink-soft)",
-              fontFamily: "'Geist', sans-serif", fontSize: "11px", fontWeight: 600,
-              color: "var(--ink)",
-            }}>
-              #{a.tooth}
-              <span style={{ color: "var(--ink-faint)", fontWeight: 400, marginLeft: "6px" }}>
-                {a.spanType === "distal-extension" ? "DE" : "TS"}
-              </span>
+                display: "inline-flex", alignItems: "baseline", gap: "8px",
+                marginBottom: "8px",
+              }}>
+                <span style={{
+                  fontFamily: "'Geist', sans-serif",
+                  fontSize: "12px", fontWeight: 700,
+                  color: "var(--ink)",
+                }}>
+                  #{a.tooth}
+                </span>
+                <span style={{
+                  fontFamily: "'Geist', sans-serif",
+                  fontSize: "11px", fontStyle: "italic",
+                  color: "var(--ink-soft)",
+                }}>
+                  {a.spanType === "distal-extension"
+                    ? "distal-extension terminal"
+                    : "tooth-supported abutment"}
+                </span>
+              </div>
+              {/* clasp chips for this abutment */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                {claspChoices.map(c => (
+                  <Chip key={c.id} chosen={a.claspType === c.id} label={c.id} note={c.note} />
+                ))}
+              </div>
             </div>
-            {/* clasp chips, indented past the abutment label */}
-            <div style={{
-              display: "flex", flexWrap: "wrap", gap: "8px",
-              marginTop: "36px",
-            }}>
-              {claspChoices.map(c => (
-                <Chip key={c.id} chosen={a.claspType === c.id} label={c.id} note={c.note} />
-              ))}
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }
