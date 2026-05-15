@@ -15135,7 +15135,8 @@ function RPDPaperFormArchDrawing({
 // Design form layout, pre-filled from the engine output. Designed to be
 // printable / screenshot-able so it can be copied directly to the paper
 // form.
-function RPDPreliminaryDesignForm({ caseInput, result, showArchDrawing = true, compact = false }) {
+function RPDPreliminaryDesignForm({ caseInput, result, compact = false }) {
+  const [drawingOpen, setDrawingOpen] = React.useState(false);
   if (!result || result.kennedy.class === null) return null;
   const arch = caseInput.arch === "maxillary" ? "MAXILLARY" : "MANDIBULAR";
   const pf = caseInput.patientFactors || {};
@@ -15312,19 +15313,27 @@ function RPDPreliminaryDesignForm({ caseInput, result, showArchDrawing = true, c
       {/* Arch drawing — paper-form rendering of the design with ink colors.
           Skipped when showArchDrawing=false (e.g. when this form is rendered
           directly below the interactive chart; no need to redraw). */}
-      {showArchDrawing && (
-        <div style={{ marginBottom: "20px", padding: "18px 20px", border: "1.5px solid var(--ink)", background: "#FDFCF7" }}>
-          <div style={{
+      {/* Arch drawing — collapsible toggle */}
+      <div style={{ marginBottom: "20px" }}>
+        <button
+          onClick={() => setDrawingOpen(o => !o)}
+          style={{
+            display: "flex", alignItems: "center", gap: "8px",
+            background: "none", border: "none", padding: "6px 0",
+            cursor: "pointer", color: "var(--ink-soft)",
             fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em",
-            textTransform: "uppercase", color: "var(--ink-soft)",
-            marginBottom: "10px",
-            display: "flex", justifyContent: "space-between", alignItems: "baseline",
-          }}>
-            <span>Design drawing — {arch === "MAXILLARY" ? "Maxillary" : "Mandibular"} arch (occlusal view)</span>
+            textTransform: "uppercase",
+          }}
+        >
+          <span style={{ fontSize: "10px" }}>{drawingOpen ? "▾" : "▸"}</span>
+          Design drawing — {arch === "MAXILLARY" ? "Maxillary" : "Mandibular"} arch (occlusal view)
+        </button>
+        {drawingOpen && (
+          <div style={{ marginTop: "8px", padding: "18px 20px", border: "1.5px solid var(--ink)", background: "#FDFCF7" }}>
+            <RPDPaperFormArchDrawing caseInput={caseInput} result={result} />
           </div>
-          <RPDPaperFormArchDrawing caseInput={caseInput} result={result} />
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Body: 2-column layout — Design on left, Rationale on right */}
       <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "24px" }}>
@@ -16772,7 +16781,7 @@ function RPDHelper() {
           it's already at the top of this page. */}
       {hasContent && !isSingleToothFixedCase && (
         <div style={{ marginTop: "12px", marginBottom: "20px" }}>
-          <RPDPreliminaryDesignForm caseInput={caseInput} result={result} showArchDrawing={false} />
+          <RPDPreliminaryDesignForm caseInput={caseInput} result={result} />
         </div>
       )}
 
@@ -17271,20 +17280,6 @@ function RPDHelper() {
         defaultOpen={false}
       >
         <RPDDecisionTree caseInput={caseInput} result={result} />
-      </RPDCollapsibleSection>
-
-      {/* Paper forms — full UIC form recreations (with arch drawing) for
-          printing or hand-copying. The text fields portion of the
-          preliminary form is already shown inline above; this section
-          contains the full layout with the arch drawing embedded plus
-          the Lab Rx form. */}
-      <RPDCollapsibleSection
-        title="Paper forms"
-        summary="Preliminary Design (with drawing) + Lab Rx"
-        defaultOpen={false}
-      >
-        <RPDPreliminaryDesignForm caseInput={caseInput} result={result} />
-        <RPDLabRxForm caseInput={caseInput} result={result} />
       </RPDCollapsibleSection>
 
       {/* ─── Applegate justifications (LAST in the list).
