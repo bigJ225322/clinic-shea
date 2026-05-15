@@ -13670,7 +13670,7 @@ function RPDToothChart({
         fontSize: "11px", color: "var(--ink-faint)", textAlign: "center",
         marginTop: "10px", fontStyle: "italic",
       }}>
-        Double-click (or Shift+click) to toggle present ↔ missing.
+        Double-click to toggle present ↔ missing.
       </div>
     </div>
   );
