@@ -7,7 +7,7 @@
 //   - Huddle Week 6 Case 1 — mandibular Class II Mod 1
 //   - Huddle Week 6 Case 2 — maxillary Class II Mod 2
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { rpdRunEngine, rpdMakeBlankCase } from "./App.jsx";
 
 const setMissing = (c, teeth) => {
@@ -1950,5 +1950,399 @@ describe("removedExistingRestoration flag is note-only, doesn't affect engine ou
     expect(r1.abutmentDesigns.map(a => a.claspType))
       .toEqual(r2.abutmentDesigns.map(a => a.claspType));
     expect(r1.majorConnector.type).toBe(r2.majorConnector.type);
+  });
+});
+
+// =========================================================================
+// SNAPSHOT TESTS — full engine output for known cases
+// =========================================================================
+// Capture the entire engine output as a snapshot. Any future change in
+// ANY field — even ones not explicitly asserted — surfaces as a diff.
+// This catches the silent-regression failure mode of test suites that
+// only assert select fields.
+//
+// IMPORTANT: snapshots are NOT clinical truth — they're "what the
+// engine currently produces, frozen." A diff means "something changed,
+// you should look." Review carefully on update.
+// =========================================================================
+const snapshotInputs = () => [
+  {
+    name: "Maxillary Class II Mod 3 (Design Case I)",
+    factory: () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16, 3, 5, 7, 8, 10, 13, 14, 15]);
+      c.measurements.vestibularDepth = 4;
+      setAttrs(c, 12, { highFrenum: true });
+      return c;
+    },
+  },
+  {
+    name: "Mandibular Class II Mod 1 (Design Case I lower)",
+    factory: () => {
+      const c = rpdMakeBlankCase("mandibular");
+      setMissing(c, [17, 32, 18, 19, 20, 30]);
+      setAttrs(c, 21, { softTissueUndercut: "gt-1mm" });
+      setAttrs(c, 31, { undercutLocation: "disto-lingual", tilt: "tilted" });
+      return c;
+    },
+  },
+  {
+    name: "Maxillary few teeth (Full Palate case)",
+    factory: () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 2, 3, 5, 7, 8, 9, 10, 13, 14, 15, 16]);
+      return c;
+    },
+  },
+  {
+    name: "Mandibular Class I bilateral DE",
+    factory: () => {
+      const c = rpdMakeBlankCase("mandibular");
+      setMissing(c, [17, 32, 18, 19, 30, 31]);
+      return c;
+    },
+  },
+  {
+    name: "Mandibular Class III single tooth (#19)",
+    factory: () => {
+      const c = rpdMakeBlankCase("mandibular");
+      setMissing(c, [17, 32, 19]);
+      return c;
+    },
+  },
+];
+
+describe("SNAPSHOTS — full engine output for canonical cases", () => {
+  snapshotInputs().forEach(({ name, factory }) => {
+    it(`snapshot: ${name}`, () => {
+      const r = rpdRunEngine(factory());
+      // Strip attrs from abutmentDesigns to keep snapshot focused on
+      // engine OUTPUT, not the input data echoed back.
+      const sanitized = {
+        kennedy: r.kennedy,
+        designIntent: r.designIntent,
+        framework: r.framework,
+        majorConnector: r.majorConnector,
+        abutmentDesigns: r.abutmentDesigns?.map(a => {
+          const { attrs, ...rest } = a;
+          return rest;
+        }),
+        indirectRetainers: r.indirectRetainers,
+        baseDesigns: r.baseDesigns,
+        redFlags: r.redFlags,
+        axiumCode: r.axiumCode,
+        labScript: r.labScript,
+        pdi: r.pdi,
+      };
+      expect(sanitized).toMatchSnapshot();
+    });
+  });
+});
+
+// =========================================================================
+// SYSTEMATIC ENUMERATION — single tooth missing across every position
+// =========================================================================
+// Loops over every non-third-molar tooth in both arches. For each,
+// asserts core invariants: Class III, complete design, Akers undercut
+// convention. Replaces ad-hoc case picking with exhaustive coverage of
+// the "single tooth missing" pattern space.
+// =========================================================================
+describe("ENUMERATION — single tooth missing × every tooth × every arch", () => {
+  const archTeethToTest = {
+    maxillary:  [2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+    mandibular: [18,19,20,21,22,23,24,25,26,27,28,29,30,31],
+  };
+
+  Object.entries(archTeethToTest).forEach(([arch, teeth]) => {
+    teeth.forEach(t => {
+      const setupCase = () => {
+        const c = rpdMakeBlankCase(arch);
+        setMissing(c, arch === "maxillary" ? [1, 16] : [17, 32]);
+        setMissing(c, [t]);
+        return rpdRunEngine(c);
+      };
+
+      // Determine the expected Kennedy class for a single tooth missing:
+      // • 2nd molar alone missing (opposing 2nd molar present): no
+      //   posterior tooth distal to the missing one → unilateral DE →
+      //   Class II. The classification ISN'T Class III because the
+      //   span isn't bounded distally by a present tooth.
+      // • Any other tooth (1st molar / premolar / canine / incisor):
+      //   bounded on both sides by present teeth → tooth-supported →
+      //   Class III.
+      const isSecondMolar = (n) => n === 2 || n === 15 || n === 18 || n === 31;
+      const expectedClass = isSecondMolar(t) ? "II" : "III";
+
+      describe(`${arch} #${t} missing`, () => {
+        let r;
+        beforeEach(() => { r = setupCase(); });
+
+        it(`Kennedy class is ${expectedClass}`, () => {
+          expect(r.kennedy.class).toBe(expectedClass);
+        });
+        it("Engine produces framework + major connector", () => {
+          expect(r.framework?.material).toBeTruthy();
+          expect(r.majorConnector?.type).toBeTruthy();
+        });
+        it("Abutment designs are present and well-formed", () => {
+          expect(Array.isArray(r.abutmentDesigns)).toBe(true);
+          expect(r.abutmentDesigns.length).toBeGreaterThan(0);
+          r.abutmentDesigns.forEach(a => {
+            expect(a.claspType).toBeTruthy();
+            expect(a.tooth).toBeGreaterThanOrEqual(1);
+            expect(a.tooth).toBeLessThanOrEqual(32);
+          });
+        });
+        it("No Akers abutment engages mid-buccal (regression pattern)", () => {
+          r.abutmentDesigns
+            .filter(a => a.claspType === "Akers")
+            .forEach(a => {
+              expect(a.effectiveUndercutLocation, `#${a.tooth}`).not.toBe("mid-buccal");
+              expect(a.retentiveArm, `#${a.tooth}`).not.toMatch(/mid-buccal/);
+            });
+        });
+        it("Bur sizes match tooth type for every abutment", () => {
+          r.abutmentDesigns.filter(a => a.restSeat?.bur).forEach(a => {
+            const bur = a.restSeat.bur;
+            if (RPD_MOLAR_SET.has(a.tooth))
+              expect(bur, `#${a.tooth}`).toMatch(/#8 round|inverted cone/);
+            else if (RPD_PREMOLAR_SET.has(a.tooth))
+              expect(bur, `#${a.tooth}`).toMatch(/#6 round/);
+            else if (RPD_ANTERIOR_SET.has(a.tooth))
+              expect(bur, `#${a.tooth}`).toMatch(/inverted cone/);
+          });
+        });
+        it("Esthetic-zone abutments never get cast Akers", () => {
+          r.abutmentDesigns
+            .filter(a => RPD_ANTERIOR_SET.has(a.tooth))
+            .forEach(a => {
+              expect(a.claspType, `#${a.tooth}`).not.toBe("Akers");
+            });
+        });
+      });
+    });
+  });
+});
+
+// =========================================================================
+// SYSTEMATIC ENUMERATION — RPI gate firing × Combination fallback
+// =========================================================================
+// Each of the 8 RPI gates should, when violated independently, trigger
+// the Combination fallback. This catches partial gate-logic bugs.
+// =========================================================================
+describe("ENUMERATION — RPI gates: each violation triggers Combination fallback", () => {
+  // Baseline: Class II DE with #21 terminal, all gates pass → expect RPI
+  const setupBaseline = () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 20]);
+    return c;
+  };
+
+  it("Baseline (all gates pass) → #21 is RPI", () => {
+    expect(designOf(rpdRunEngine(setupBaseline()), 21)?.claspType).toBe("RPI");
+  });
+
+  // Each gate violation should kick to Combination.
+  const gateViolations = [
+    { name: "vestibular depth ≤5mm",         apply: (c) => { c.measurements.vestibularDepth = 4; } },
+    { name: "occlusal interference (mesial rest blocked)",
+                                              apply: (c) => { setAttrs(c, 21, { mesialRestPossible: false }); } },
+    { name: "soft tissue undercut >1mm",      apply: (c) => { setAttrs(c, 21, { softTissueUndercut: "gt-1mm" }); } },
+    { name: "inadequate attached gingiva",    apply: (c) => { setAttrs(c, 21, { attachedGingivaAdequate: false }); } },
+    { name: "extreme tilt",                   apply: (c) => { setAttrs(c, 21, { tilt: "extreme" }); } },
+    { name: "short clinical crown",           apply: (c) => { setAttrs(c, 21, { crownHeight: "short" }); } },
+    { name: "high frenum in I-bar path",      apply: (c) => { setAttrs(c, 21, { highFrenum: true }); } },
+    { name: "undercut not at mid/mesio-B",    apply: (c) => { setAttrs(c, 21, { undercutLocation: "disto-buccal" }); } },
+  ];
+
+  gateViolations.forEach(g => {
+    it(`Violation "${g.name}" → #21 falls back to Combination`, () => {
+      const c = setupBaseline();
+      g.apply(c);
+      const r = rpdRunEngine(c);
+      expect(designOf(r, 21)?.claspType).toBe("Combination");
+    });
+  });
+});
+
+// =========================================================================
+// CROSS-ARCH CONSISTENCY — mirrored inputs produce mirrored outputs
+// =========================================================================
+// Many engine rules apply identically across maxillary and mandibular
+// arches (e.g., bur sizes, RPI signature). Asserting cross-arch
+// equivalence on mirrored cases catches arch-specific bugs.
+// =========================================================================
+describe("CROSS-ARCH — bilaterally equivalent inputs produce equivalent outputs", () => {
+  it("Single-tooth Class III: bur sizes match across arches for equivalent tooth types", () => {
+    // #14 maxillary (1st molar) vs #19 mandibular (1st molar) — both
+    // molars, should use #8/#6 burs.
+    const c1 = rpdMakeBlankCase("maxillary");
+    setMissing(c1, [1, 16, 14]);
+    const c2 = rpdMakeBlankCase("mandibular");
+    setMissing(c2, [17, 32, 19]);
+    const r1 = rpdRunEngine(c1);
+    const r2 = rpdRunEngine(c2);
+    const m1 = r1.abutmentDesigns.find(a => RPD_MOLAR_SET.has(a.tooth));
+    const m2 = r2.abutmentDesigns.find(a => RPD_MOLAR_SET.has(a.tooth));
+    if (m1 && m2) {
+      expect(m1.restSeat?.bur).toMatch(/#8 round/);
+      expect(m2.restSeat?.bur).toMatch(/#8 round/);
+    }
+  });
+
+  it("Bilateral DE RPI: signature is identical (mesial rest, distal GP, mid-buccal undercut)", () => {
+    // Mand bilateral DE: missing #18, #19, #30, #31. Terminals #20 & #29.
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 30, 31]);
+    const r = rpdRunEngine(c);
+    const left = designOf(r, 20);
+    const right = designOf(r, 29);
+    // Both terminals should have the SAME RPI signature.
+    expect(left?.claspType).toBe(right?.claspType);
+    expect(left?.restSeat?.surface).toBe(right?.restSeat?.surface);
+    expect(left?.guidePlane?.surface).toBe(right?.guidePlane?.surface);
+    expect(left?.effectiveUndercutLocation).toBe(right?.effectiveUndercutLocation);
+  });
+
+  it("Mirrored single-tooth-missing cases: clasp type matches by tooth-type", () => {
+    // Right premolar (#5 max) vs left premolar (#12 max) — should
+    // produce the same claspType.
+    const c1 = rpdMakeBlankCase("maxillary");
+    setMissing(c1, [1, 16, 4]);    // adjacent abutments: #3, #5
+    const c2 = rpdMakeBlankCase("maxillary");
+    setMissing(c2, [1, 16, 13]);   // adjacent abutments: #12, #14
+    const r1 = rpdRunEngine(c1);
+    const r2 = rpdRunEngine(c2);
+    // #5 and #12 are both 1st premolars on respective sides.
+    expect(designOf(r1, 5)?.claspType).toBe(designOf(r2, 12)?.claspType);
+  });
+});
+
+// =========================================================================
+// MORE EDGE CASES — situations that weren't covered before
+// =========================================================================
+
+// Edge case: 3rd molar flagged for replacement — changes classification.
+describe("EDGE: 3rd molar flagged for replacement converts Rule 2 omission to inclusion", () => {
+  it("Without replacement flag: #16 omitted, Class III if other teeth missing", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 14]);
+    expect(rpdRunEngine(c).kennedy.class).toBe("III");
+  });
+
+  it("With #16 replacement flag set: classification reflects DE pattern", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    c.teeth[16].replace = true;
+    const r = rpdRunEngine(c);
+    // #16 now counts as a missing-to-be-replaced tooth — distal-most
+    // missing tooth on the left side → unilateral DE → Class II.
+    expect(["I", "II"]).toContain(r.kennedy.class);
+  });
+});
+
+// Edge case: All four 2nd molars missing (Rule 4 applies bilaterally).
+describe("EDGE: All four 2nd molars missing → Rule 4 omits all", () => {
+  it("Maxillary all-2nd-molars-missing alone → Kennedy null", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 2, 15, 17, 32, 18, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBeNull();
+  });
+});
+
+// Edge case: Single remaining tooth in the arch (extreme).
+describe("EDGE: Single remaining tooth — extreme few-teeth scenario", () => {
+  it("Engine produces output without crashing", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    // Missing all teeth except #8.
+    const allMax = [1,2,3,4,5,6,7,9,10,11,12,13,14,15,16];
+    setMissing(c, allMax);
+    const r = rpdRunEngine(c);
+    expect(r.framework?.material).toBeTruthy();
+    // Engine likely falls back to interim or a CD-adjacent recommendation
+    // — the exact classification is judgment-dependent. We just assert
+    // robustness here, not a specific design.
+  });
+});
+
+// Edge case: Tilted abutment with adverse undercut location.
+describe("EDGE: Tilted molar abutment", () => {
+  it("Tilted abutment surfaces a clasp alternative or contraindication", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    setAttrs(c, 18, { tilt: "tilted", undercutLocation: "mesio-lingual" });
+    const r = rpdRunEngine(c);
+    const d = designOf(r, 18);
+    // Engine should at minimum note the alternative or contraindication
+    expect(d?.claspAlternatives || d?.contraindications?.length || d?.claspAlternativeRationale).toBeTruthy();
+  });
+});
+
+// Edge case: Class I + anterior teeth missing (mixed DE + Class IV-ish).
+// This tests how the engine prioritizes anterior crossing vs DE.
+describe("EDGE: Mixed pattern — bilateral DE + anterior crossing", () => {
+  it("Engine produces output and identifies a primary classification", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    // Bilateral DE
+    setMissing(c, [2, 3, 14, 15]);
+    // Anterior crossing midline
+    setMissing(c, [7, 8, 9, 10]);
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBeTruthy();
+    expect(r.framework?.material).toBeTruthy();
+    expect(r.majorConnector?.type).toBeTruthy();
+  });
+});
+
+// =========================================================================
+// INPUT VALIDATION / ROBUSTNESS
+// =========================================================================
+// The engine should handle missing or malformed input gracefully — not
+// crash. These tests document expected fallback behavior.
+// =========================================================================
+describe("ROBUSTNESS — malformed input handling", () => {
+  it("Engine doesn't crash on a fully-dentate case (no missing teeth)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    expect(() => rpdRunEngine(c)).not.toThrow();
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBeNull();
+  });
+
+  it("Engine doesn't crash when only 3rd molars are flagged missing", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    expect(() => rpdRunEngine(c)).not.toThrow();
+  });
+
+  it("Engine handles a tooth with empty attrs", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.teeth[18].attrs = {}; // empty attrs object
+    expect(() => rpdRunEngine(c)).not.toThrow();
+  });
+
+  it("Engine returns deterministic output (same input → same output)", () => {
+    const factory = () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16, 14]);
+      return c;
+    };
+    const r1 = rpdRunEngine(factory());
+    const r2 = rpdRunEngine(factory());
+    expect(r1.kennedy).toEqual(r2.kennedy);
+    expect(r1.framework).toEqual(r2.framework);
+    expect(r1.majorConnector).toEqual(r2.majorConnector);
+    expect(r1.abutmentDesigns.length).toBe(r2.abutmentDesigns.length);
+    expect(r1.labScript).toBe(r2.labScript);
+  });
+
+  it("Engine produces a labScript string for every valid case", () => {
+    snapshotInputs().forEach(({ name, factory }) => {
+      const r = rpdRunEngine(factory());
+      expect(typeof r.labScript, name).toBe("string");
+      expect(r.labScript.length, name).toBeGreaterThan(0);
+    });
   });
 });
