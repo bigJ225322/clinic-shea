@@ -3200,3 +3200,298 @@ describe("INVARIANT — every clasped abutment has a guide plane", () => {
     });
   });
 });
+
+// =========================================================================
+// NMCD DETAILED OUTPUT — rpdDesignNMCD sub-engine
+// =========================================================================
+// result.nmcdDesign is null when not applicable, an object with full
+// hybrid + pure variants when it is.
+// =========================================================================
+describe("NMCD — detailed output for metal allergy + Class III/IV", () => {
+  it("No metal allergy → nmcdDesign is null", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    expect(rpdRunEngine(c).nmcdDesign).toBeNull();
+  });
+
+  it("Metal allergy + Class I → nmcdDesign is null (contraindicated, rigidity required)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 30, 31]);
+    c.patientFactors.metalAllergy = true;
+    expect(rpdRunEngine(c).nmcdDesign).toBeNull();
+  });
+
+  it("Metal allergy + Class III → nmcdDesign applicable with hybrid + pure options", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.patientFactors.metalAllergy = true;
+    const nmcd = rpdRunEngine(c).nmcdDesign;
+    expect(nmcd?.applicable).toBe(true);
+    expect(nmcd?.classQualifier).toBe("Class III");
+    expect(nmcd?.hybrid).toBeTruthy();
+    expect(nmcd?.hybrid.material).toMatch(/acetyl resin|PEEK/i);
+    expect(nmcd?.pure).toBeTruthy();
+    expect(nmcd?.pure.material).toMatch(/thermoplastic|acetyl|PEEK|Valplast/i);
+  });
+
+  it("Metal allergy + short-span Class IV (≤4 anteriors) → NMCD applicable", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 8, 9]);          // both centrals → 2 teeth
+    c.patientFactors.metalAllergy = true;
+    const nmcd = rpdRunEngine(c).nmcdDesign;
+    expect(nmcd?.applicable).toBe(true);
+    expect(nmcd?.classQualifier).toBe("short-span Class IV");
+  });
+
+  it("Metal allergy + long-span Class IV (>4 teeth) → NMCD contraindicated with reason", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 6, 7, 8, 9, 10, 11]);  // 6 anterior teeth
+    c.patientFactors.metalAllergy = true;
+    const nmcd = rpdRunEngine(c).nmcdDesign;
+    expect(nmcd?.applicable).toBe(false);
+    expect(nmcd?.contraindicated).toBe(true);
+    expect(nmcd?.reason).toMatch(/wide|short-span|too|implant|Gold framework/i);
+  });
+
+  it("NMCD applicable case lists abutment teeth for both hybrid + pure", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.patientFactors.metalAllergy = true;
+    const nmcd = rpdRunEngine(c).nmcdDesign;
+    expect(Array.isArray(nmcd.hybrid.claspTeeth)).toBe(true);
+    expect(nmcd.hybrid.claspTeeth.length).toBeGreaterThan(0);
+    expect(nmcd.pure.claspTeeth).toEqual(nmcd.hybrid.claspTeeth);
+  });
+
+  it("NMCD applicable case has consent + careProtocol", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.patientFactors.metalAllergy = true;
+    const nmcd = rpdRunEngine(c).nmcdDesign;
+    expect(nmcd.consent).toMatch(/consent|Managing Partner|approval/i);
+    expect(nmcd.careProtocol).toBeTruthy();
+    expect(Array.isArray(nmcd.additionalContraindications)).toBe(true);
+  });
+});
+
+// =========================================================================
+// NEGATIVE INVARIANTS — engine must NEVER produce these outputs
+// =========================================================================
+// These are bug-pattern detectors. If a future change accidentally produces
+// one of these forbidden outputs, the test fires immediately.
+// =========================================================================
+describe("NEGATIVE INVARIANTS — engine must NEVER produce these", () => {
+  const cases = allInvariantCases();
+
+  // No anterior abutment should ever have an occlusal rest seat.
+  // Canines/incisors have no occlusal table — only cingulum or ball.
+  describe("Anteriors never have occlusal rest seats", () => {
+    cases.forEach(({ name, result }) => {
+      const anteriorRests = (result.abutmentDesigns || []).filter(a =>
+        RPD_ANTERIOR_SET.has(a.tooth) && a.restSeat?.type === "occlusal");
+      it(`${name}: no anterior abutment has occlusal rest`, () => {
+        expect(anteriorRests.map(a => `#${a.tooth}`)).toEqual([]);
+      });
+    });
+  });
+
+  // Indirect retainers on anterior teeth use cingulum or ball, NOT
+  // occlusal.
+  describe("Anterior indirect retainers never use occlusal rest type", () => {
+    cases.forEach(({ name, result }) => {
+      const anteriorIRs = (result.indirectRetainers || []).filter(r =>
+        RPD_ANTERIOR_SET.has(r.tooth));
+      if (anteriorIRs.length === 0) return;
+      it(`${name}: anterior indirect retainers use cingulum/ball rests`, () => {
+        anteriorIRs.forEach(r => {
+          expect(r.restType, `#${r.tooth}`).toMatch(/cingulum|ball/i);
+          expect(r.restType, `#${r.tooth}`).not.toMatch(/occlusal/i);
+        });
+      });
+    });
+  });
+
+  // No abutment with a clasp should be missing a guide plane.
+  describe("Clasped abutments never lack a guide plane", () => {
+    cases.forEach(({ name, result }) => {
+      const claspedNoGP = (result.abutmentDesigns || []).filter(a =>
+        a.claspType && !a.claspType.includes("Rest Only") && !a.guidePlane?.surface);
+      it(`${name}: no clasped abutment lacks a guide plane`, () => {
+        expect(claspedNoGP.map(a => `#${a.tooth}`)).toEqual([]);
+      });
+    });
+  });
+
+  // Class III never has indirect retainers (no rotation axis).
+  describe("Class III never has indirect retainers", () => {
+    cases.forEach(({ name, result }) => {
+      if (result.kennedy.class !== "III") return;
+      it(`${name}: Class III case has 0 indirect retainers`, () => {
+        expect((result.indirectRetainers || []).length).toBe(0);
+      });
+    });
+  });
+
+  // Class I/II should not produce NMCD (rigidity required).
+  describe("Class I and Class II never produce applicable NMCD", () => {
+    cases.forEach(({ name, result }) => {
+      if (result.kennedy.class !== "I" && result.kennedy.class !== "II") return;
+      it(`${name}: ${result.kennedy.class} does not get applicable NMCD`, () => {
+        // nmcdDesign should either be null OR contraindicated.
+        const nmcd = result.nmcdDesign;
+        if (nmcd) {
+          expect(nmcd.applicable).toBeFalsy();
+        }
+      });
+    });
+  });
+
+  // Every abutment must have a tooth number in 1-32.
+  describe("Abutments always have valid tooth numbers", () => {
+    cases.forEach(({ name, result }) => {
+      it(`${name}: every abutment tooth is in [1, 32]`, () => {
+        (result.abutmentDesigns || []).forEach(a => {
+          expect(a.tooth).toBeGreaterThanOrEqual(1);
+          expect(a.tooth).toBeLessThanOrEqual(32);
+        });
+      });
+    });
+  });
+
+  // Every abutment with a rest seat has a bur defined.
+  describe("Rest seats always specify a bur", () => {
+    cases.forEach(({ name, result }) => {
+      const restsNoBur = (result.abutmentDesigns || []).filter(a =>
+        a.restSeat && !a.restSeat.bur);
+      it(`${name}: every rest seat has a bur defined`, () => {
+        expect(restsNoBur.map(a => `#${a.tooth}`)).toEqual([]);
+      });
+    });
+  });
+});
+
+// =========================================================================
+// INDIRECT RETAINER — specific rest types per tooth anatomy
+// =========================================================================
+describe("INDIRECT RETAINER — rest type matches tooth anatomy", () => {
+  it("Mand Class I → indirect retainer on canines uses cingulum/ball, not occlusal", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 30, 31]);
+    const r = rpdRunEngine(c);
+    const canineIRs = r.indirectRetainers.filter(ir => RPD_CANINES.has?.(ir.tooth) ||
+      ir.tooth === 22 || ir.tooth === 27);
+    if (canineIRs.length > 0) {
+      canineIRs.forEach(ir => {
+        expect(ir.restType).toMatch(/cingulum|ball/i);
+        expect(ir.restType).not.toMatch(/^occlusal/i);
+      });
+    }
+  });
+
+  it("Max Class II → indirect retainer on canine uses cingulum (max convention)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 2, 3, 16]);
+    const r = rpdRunEngine(c);
+    const ir11 = r.indirectRetainers.find(ir => ir.tooth === 11);
+    if (ir11) {
+      expect(ir11.restType).toMatch(/cingulum/i);
+    }
+  });
+});
+
+// Helper constant for canine set (used by tests above)
+const RPD_CANINES = new Set([6, 11, 22, 27]);
+
+// =========================================================================
+// MULTI-FACTOR COMBINATIONS — realistic complex cases
+// =========================================================================
+describe("COMBINATIONS — multiple complicating factors interact", () => {
+  it("Mand Class I + tori + severe ridge + opposing CD → all flags fire", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 18, 19, 30, 31]);
+    c.patientFactors.mandibularTori = true;
+    c.patientFactors.opposingArch = "complete_denture";
+    c.measurements.ridgeResorption = "severe";
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("I");
+    expect(r.majorConnector.type).toMatch(/Lingual Plate/);
+    expect(r.framework.material).toBe("Co-Cr");
+    expect((r.baseDesigns || []).length).toBeGreaterThan(0);
+  });
+
+  it("Max Class III + metal allergy + tori → NMCD applicable + U-shaped/A-P connector", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 14]);
+    c.patientFactors.metalAllergy = true;
+    c.patientFactors.maxillaryTori = true;
+    const r = rpdRunEngine(c);
+    expect(r.framework.material).toBe("Gold");
+    expect(r.majorConnector.type).not.toBe("Full Palatal Plate");
+    expect(r.nmcdDesign?.applicable).toBe(true);
+  });
+
+  it("Interim + metal allergy + recent extraction → multiple red flags", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    c.patientFactors.designIntent = "interim";
+    c.patientFactors.metalAllergy = true;
+    c.patientFactors.monthsSinceExtraction = 2;
+    const r = rpdRunEngine(c);
+    expect(r.designIntent).toBe("interim");
+    expect((r.redFlags || []).length).toBeGreaterThan(0);
+  });
+});
+
+// =========================================================================
+// AXIUM CLINIC STEPS — sequencer outputs
+// =========================================================================
+describe("AXIUM STEPS — sequencer produces ordered steps text", () => {
+  it("Engine produces axiumSteps as a non-empty string", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    const r = rpdRunEngine(c);
+    expect(typeof r.axiumSteps).toBe("string");
+    expect(r.axiumSteps.length).toBeGreaterThan(0);
+  });
+
+  it("axiumSteps contains 'Step ' numbering and 'Axium entry' annotations", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/Step \d+:/);
+    expect(r.axiumSteps).toMatch(/Axium entry:/);
+  });
+});
+
+// =========================================================================
+// PDI careRecommendation — non-empty text guidance
+// =========================================================================
+describe("PDI careRecommendation — non-empty for all cases with a class", () => {
+  const cases = allInvariantCases();
+  cases.forEach(({ name, result }) => {
+    if (!result.pdi) return;
+    it(`${name}: PDI careRecommendation is a non-empty string`, () => {
+      expect(typeof result.pdi.careRecommendation).toBe("string");
+      expect(result.pdi.careRecommendation.length).toBeGreaterThan(0);
+    });
+  });
+});
+
+// =========================================================================
+// EVERY CLASP TYPE THE ENGINE PRODUCES IS IN THE EXPECTED VOCABULARY
+// =========================================================================
+describe("INVARIANT — every clasp type is in the known vocabulary", () => {
+  const cases = allInvariantCases();
+  const knownClaspTypes = new Set([
+    "RPI", "Combination", "Akers", "Reverse Akers", "Embrasure",
+    "I-bar (esthetic)", "WW C-clasp", "Ball Clasp",
+    "Rest Only (esthetic omission)",
+  ]);
+  cases.forEach(({ name, result }) => {
+    it(`${name}: every claspType is in the known vocabulary`, () => {
+      (result.abutmentDesigns || []).forEach(a => {
+        expect(knownClaspTypes.has(a.claspType), `#${a.tooth} claspType=${a.claspType}`).toBe(true);
+      });
+    });
+  });
+});
