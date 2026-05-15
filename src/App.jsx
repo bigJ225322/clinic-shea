@@ -15762,17 +15762,10 @@ function RPDPaperFormArchDrawing({
               `saddle-w-${i}`
             ))}
 
-            {/* 2b. Tissue stops — mandatory on distal-extension saddles. */}
-            {baseDesigns.map((b, i) => {
-              const hasTissueStop = (b.note || "").toLowerCase().includes("tissue stop")
-                                  || b.distalExtension === true;
-              if (!hasTissueStop) return null;
-              return selectable(
-                drawTissueStop(b.spanTeeth, `ts-${i}`),
-                'tissueStop', { spanIndex: i, tooltip: `Tissue stop — stabilizes framework during acrylic processing of distal extension` },
-                `ts-w-${i}`
-              );
-            })}
+            {/* (Tissue stops moved later in the render order so their hit
+                pads sit on top of the teeth's invisible 64-px hit circles
+                — otherwise clicks land on the adjacent tooth instead of
+                the stop.) */}
           </>
         )}
 
@@ -15874,6 +15867,21 @@ function RPDPaperFormArchDrawing({
 
             {/* 10. Per-abutment annotations */}
             {abutments.map((a, i) => drawAbutmentAnnotation(a, `ann-${i}`))}
+
+            {/* 11. Tissue stops — rendered LAST so their 28-px hit pads
+                sit on top of every other element (teeth hit circles, in
+                particular). Visually they're small red ovals near the
+                distal end of the distal-extension saddle. */}
+            {baseDesigns.map((b, i) => {
+              const hasTissueStop = (b.note || "").toLowerCase().includes("tissue stop")
+                                  || b.distalExtension === true;
+              if (!hasTissueStop) return null;
+              return selectable(
+                drawTissueStop(b.spanTeeth, `ts-${i}`),
+                'tissueStop', { spanIndex: i, tooltip: `Tissue stop — stabilizes framework during acrylic processing of distal extension` },
+                `ts-w-${i}`
+              );
+            })}
           </>
         )}
 
