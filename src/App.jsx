@@ -17491,7 +17491,7 @@ const TABS = [
   { id: "browse",  label: "Steps",   hint: "Read the guide" },
   { id: "rvus",    label: "Codes",   hint: "Progress & code lookup" },
   { id: "pes",     label: "PEs",     hint: "Performance exam reference" },
-  { id: "helpers", label: "Helpers", hint: "Design helpers (RPD, more coming)" },
+  { id: "helpers", label: "RPD",     hint: "Design helper for removable partial dentures" },
 ];
 
 // Named exports for engine verification tests. These are pure-JS functions
