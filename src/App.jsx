@@ -17453,7 +17453,6 @@ function RPDHelper() {
   const [caseInput, setCaseInput] = useState(() => rpdMakeBlankCase("maxillary"));
   const [selectedTooth, setSelectedTooth] = useState(null);
   const [selectedDesignEl, setSelectedDesignEl] = useState(null);
-  const [copied, setCopied] = useState(false);
   const result = useMemo(() => rpdRunEngine(caseInput), [caseInput]);
 
   const clearAll = () => {
@@ -18094,57 +18093,10 @@ function RPDHelper() {
         <RPDAxiumWorkflow result={result} caseInput={caseInput} />
       </RPDCollapsibleSection>
 
-      <Hairline />
-
-      {/* Lab Script — paste-ready Axium output (final artifact) */}
-      <RPDCollapsibleSection
-        title={`Axium Lab Script — ${result.axiumCode}`}
-        summary="Paste-ready text"
-        defaultOpen={false}
-      >
-        <div className="rpd-lab-script-block">
-          <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", marginBottom: "10px" }} className="rpd-print-hide">
-            <button
-              onClick={() => {
-                navigator.clipboard?.writeText(result.labScript).then(() => {
-                  setCopied(true);
-                  setTimeout(() => setCopied(false), 1600);
-                });
-              }}
-              style={{
-                background: copied ? "var(--accent)" : "transparent",
-                color: copied ? "var(--paper)" : "var(--ink-soft)",
-                border: `1px solid ${copied ? "var(--accent)" : "var(--rule)"}`,
-                padding: "5px 12px", fontFamily: "'Geist', sans-serif",
-                fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
-                cursor: "pointer", borderRadius: "2px",
-                transition: "background 140ms ease, color 140ms ease, border-color 140ms ease",
-              }}>
-              {copied ? "Copied ✓" : "Copy"}
-            </button>
-            <button
-              onClick={() => window.print()}
-              style={{
-                background: "transparent", color: "var(--ink-soft)",
-                border: "1px solid var(--rule)", padding: "5px 12px",
-                fontFamily: "'Geist', sans-serif", fontSize: "10px",
-                letterSpacing: "0.16em", textTransform: "uppercase",
-                cursor: "pointer", borderRadius: "2px",
-              }}>
-              Print
-            </button>
-          </div>
-          <pre style={{
-            fontFamily: "'JetBrains Mono', ui-monospace, monospace",
-            fontSize: "12px", lineHeight: 1.65,
-            background: "var(--mono-bg)", color: "var(--mono-fg)",
-            padding: "18px 20px", borderRadius: "3px",
-            whiteSpace: "pre-wrap", margin: 0,
-          }}>
-{result.labScript}
-          </pre>
-        </div>
-      </RPDCollapsibleSection>
+      {/* (The standalone "Axium Lab Script" collapsible was removed —
+          the same prescription text is available with a COPY button on
+          the Lab Rx Instructions block above, which is contextually
+          adjacent to the design that produced it.) */}
 
       {/* Decision tree — text illustration of the chosen engine path */}
       <RPDCollapsibleSection
