@@ -6443,11 +6443,10 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
                   type="button"
                   onClick={() => setDxOpen(o => !o)}
                   style={{
-                    /* Match height of the AAP/ADA selects to its left and
-                       borrow the same visual language as the "G/L/M/H"
+                    /* Square button, same visual language as the "G/L/M/H"
                        buttons elsewhere in the perio panel. Active state
                        (dxOpen) uses accent fill so it reads as engaged. */
-                    width: "56px", height: "32px",
+                    width: "32px", height: "32px",
                     background: dxOpen ? "var(--accent)" : "var(--paper-soft)",
                     color: dxOpen ? "white" : "var(--ink-soft)",
                     border: "1px solid " + (dxOpen ? "var(--accent)" : "var(--rule)"),
@@ -7199,13 +7198,15 @@ function PerioReEvalDxBlock({ fields, setField }) {
  * ==========================================================================*/
 // Parse max PD from the perio chart's "probing depths" field. The field is
 // typically "2-5mm" (range mode) or free text like "generalized 3-6mm;
-// localized 9mm #14-MB" (manual mode). Returns { value, source } where
-// source describes where the number came from, or { invalid: true } if
-// the string yields no usable mm value.
+// localized 9mm #14-MB" (manual mode). Returns { value } when a number
+// can be extracted, or { invalid: true } only when the user has entered
+// non-empty free text that yields no usable mm value (i.e. they chose 8+
+// and typed something unparseable). Empty input falls back to the
+// dropdown's displayed defaults (2-5mm → 5mm), since that's what the
+// student sees on the form before any interaction.
 function parseMaxPDFromString(s) {
-  if (!s || typeof s !== "string") return { invalid: true };
-  // Find all numbers followed by "mm" or part of a range like "X-Ymm".
-  // Prefer the highest mm number found (the worst site).
+  if (s == null || s === "") return { value: 5, fallback: true };
+  if (typeof s !== "string") return { invalid: true };
   const matches = [...s.matchAll(/(\d+)\s*(?:-\s*(\d+))?\s*mm/gi)];
   if (matches.length === 0) return { invalid: true };
   let max = 0;
@@ -7250,7 +7251,7 @@ function buildPerioCOERationale(dx, inputs) {
   // Ambiguity flags
   const ambiguity = [];
   if (cal === 4 || cal === 5) ambiguity.push("CAL sits at the Stage II / III boundary. AAP 2018 anchors II at 3–4mm and III at ≥5mm; rounding or measurement variance can shift the call.");
-  if (boneLossPct === "15-33" && cal >= 5) ambiguity.push("Bone loss in the 15–33% bracket combined with CAL ≥5mm is unusual — typically severe CAL is accompanied by more radiographic bone loss. Worth double-checking the radiograph.");
+  if (boneLossPct === "15-33" && cal >= 5) ambiguity.push("Bone loss in the 15–33% bracket combined with CAL ≥5mm is unusual — typically severe CAL is accompanied by more radiographic bone loss.");
   const hasStageIVElevator = (complexityFactors || []).some(f => ["mobility-2plus", "ridge-severe", "lt20-teeth"].includes(f));
   const stageIIIComplex = (complexityFactors || []).some(f => ["vertical-3mm", "furcation-23", "ridge-moderate"].includes(f));
   if (dx.stage === "III" && hasStageIVElevator && teethLostFromPerio !== "≥5") {
@@ -7316,7 +7317,16 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
   ];
   const toggleFactor = (id) => {
     const current = fields.perioCOEComplexityFactors || [];
-    const next = current.includes(id) ? current.filter(f => f !== id) : [...current, id];
+    let next;
+    if (current.includes(id)) {
+      next = current.filter(f => f !== id);
+    } else {
+      // Ridge defect severity is mutually exclusive: a ridge is either
+      // moderate OR severe, never both. Adding one removes the other.
+      next = [...current, id];
+      if (id === "ridge-moderate") next = next.filter(f => f !== "ridge-severe");
+      else if (id === "ridge-severe") next = next.filter(f => f !== "ridge-moderate");
+    }
     setField("perioCOEComplexityFactors", next);
   };
   const selectedFactors = COMPLEXITY_OPTIONS.filter(o => (fields.perioCOEComplexityFactors || []).includes(o.id));
@@ -7666,9 +7676,6 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
                 onChange={e => setField("perioCOEDxSendToNote", e.target.checked)}
                 style={{ width: "16px", height: "16px", accentColor: "var(--teal)", cursor: "pointer" }} />
               <span style={{ fontWeight: 600 }}>Send to note</span>
-              <span style={{ color: "var(--ink-soft)", fontSize: "12px" }}>
-                fills the AAP/ADA dropdowns above with this Dx
-              </span>
             </label>
           </>
         ) : (
