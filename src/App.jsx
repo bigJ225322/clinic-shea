@@ -13340,167 +13340,220 @@ function RPDAxiumWorkflow({ result, caseInput }) {
 function RPDDecisionTree({ caseInput, result }) {
   if (!result || result.kennedy.class === null) return null;
   const arch = caseInput.arch || "mandibular";
-  const m = caseInput.measurements || {};
   const pf = caseInput.patientFactors || {};
   const intent = pf.designIntent || "definitive";
 
-  // ── Helpers ──
-  const NodeRow = ({ prefix, chosen, label, note }) => (
+  // ── Visual chip — a pill showing one option. Filled accent = chosen by the
+  //     engine; outlined faded = alternative considered & rejected. ──
+  const Chip = ({ chosen, label, note }) => (
     <div style={{
-      display: "flex", gap: "8px", alignItems: "flex-start",
-      fontFamily: "'JetBrains Mono', monospace", fontSize: "12px", lineHeight: 1.7,
-      color: chosen ? "var(--accent)" : "var(--ink-faint)",
-      fontWeight: chosen ? 600 : 400,
+      display: "inline-flex", flexDirection: "column", gap: "2px",
+      padding: "6px 12px",
+      background: chosen ? "var(--accent)" : "white",
+      color: chosen ? "white" : "var(--ink-soft)",
+      border: chosen ? "1px solid var(--accent)" : "1px solid var(--rule)",
+      borderRadius: "14px",
+      fontSize: "12px",
+      lineHeight: 1.25,
+      opacity: chosen ? 1 : 0.65,
+      maxWidth: "280px",
     }}>
-      <span style={{ color: "var(--ink-soft)", whiteSpace: "pre" }}>{prefix}</span>
-      <span style={{ flex: 1 }}>
-        <span style={{ marginRight: "8px" }}>
-          {chosen ? "●" : "○"}
+      <span style={{ fontWeight: chosen ? 600 : 500 }}>{label}</span>
+      {note && (
+        <span style={{
+          fontSize: "10px", fontStyle: "italic",
+          color: chosen ? "rgba(255,255,255,0.85)" : "var(--ink-faint)",
+        }}>
+          {note}
         </span>
-        {label}
-        {note && (
-          <span style={{
-            marginLeft: "10px",
-            color: chosen ? "var(--accent)" : "var(--ink-faint)",
-            fontFamily: "'Geist', sans-serif", fontSize: "11px",
-            fontStyle: "italic", opacity: chosen ? 0.85 : 0.6,
-          }}>
-            — {note}
-          </span>
-        )}
-      </span>
+      )}
     </div>
   );
 
-  // ── Branches ──
-  // 1. Design intent
-  const intentBranches = [
-    { id: "definitive", label: "Definitive RPD (cast metal framework)", note: "long-term prosthesis" },
-    { id: "interim",    label: "Interim RPD (acrylic + WW C-clasp)", note: "transient / Phase I disease control" },
+  // ── Decision row — one level of the tree. The vertical spine on the left
+  //     connects all rows; a horizontal stub joins each row to the spine.
+  //     The `isLast` flag stops the spine after the bottom row. ──
+  const Decision = ({ index, label, options, isLast = false, subdued = false }) => (
+    <div style={{
+      position: "relative",
+      paddingLeft: "44px",
+      paddingBottom: "18px",
+    }}>
+      {/* horizontal stub from spine into the row */}
+      <div style={{
+        position: "absolute", left: "14px", top: "12px",
+        width: "20px", height: "1px",
+        background: "var(--rule)",
+      }} />
+      {/* vertical spine — continues unless this is the final row */}
+      <div style={{
+        position: "absolute", left: "14px", top: 0,
+        width: "1px", bottom: isLast ? "calc(100% - 12px)" : 0,
+        background: "var(--rule)",
+      }} />
+      {/* numbered marker on the spine */}
+      <div style={{
+        position: "absolute", left: "6px", top: "4px",
+        width: "18px", height: "18px", borderRadius: "50%",
+        background: subdued ? "var(--paper)" : "var(--ink)",
+        color: subdued ? "var(--ink-soft)" : "white",
+        border: "1px solid " + (subdued ? "var(--rule)" : "var(--ink)"),
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: "10px", fontWeight: 600, fontFamily: "'Geist', sans-serif",
+      }}>
+        {index}
+      </div>
+      {/* decision label */}
+      <div style={{
+        fontFamily: "'Geist', sans-serif", fontSize: "11px",
+        textTransform: "uppercase", letterSpacing: "0.09em",
+        color: "var(--ink-soft)", fontWeight: 600,
+        marginBottom: "8px", marginTop: "2px",
+      }}>{label}</div>
+      {/* option chips */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+        {options.map(opt => (
+          <Chip key={opt.id} chosen={opt.chosen} label={opt.label} note={opt.note} />
+        ))}
+      </div>
+    </div>
+  );
+
+  // ── Option lists ─────────────────────────────────────────────────────────
+  const intentOpts = [
+    { id: "definitive", label: "Definitive RPD",  note: "cast metal · long-term", chosen: intent === "definitive" },
+    { id: "interim",    label: "Interim RPD",     note: "acrylic + WW · transient", chosen: intent === "interim" },
   ];
 
-  // 2. Kennedy classification (what the engine measured)
   const kCls = result.kennedy.class;
-  const kClassBranches = [
-    { id: "I",   label: "Class I",   note: "bilateral distal extension" },
-    { id: "II",  label: "Class II",  note: "unilateral distal extension" },
-    { id: "III", label: "Class III", note: "tooth-supported (bounded)" },
-    { id: "IV",  label: "Class IV",  note: "anterior crossing midline" },
-  ];
+  const kennedyOpts = ["I", "II", "III", "IV"].map(c => ({
+    id: c,
+    label: `Class ${c}${kCls === c && result.kennedy.modifications ? ` Mod ${result.kennedy.modifications}` : ""}`,
+    note: c === "I" ? "bilateral distal extension"
+        : c === "II" ? "unilateral distal extension"
+        : c === "III" ? "tooth-supported (bounded)"
+        : "anterior crossing midline",
+    chosen: kCls === c,
+  }));
 
-  // 3. Framework material
-  const fwBranches = [
-    { id: "Co-Cr",         label: "Co-Cr",         note: "Standard default (no metal allergy)" },
-    { id: "Gold",          label: "Gold (Type IV)", note: "metal allergy + esthetic budget" },
-    { id: "Titanium",      label: "Titanium",      note: "metal allergy" },
-    { id: "Acetyl resin",  label: "Acetyl resin / PEEK", note: "NMCD hybrid (metal allergy)" },
-  ];
+  const fwOpts = [
+    { id: "Co-Cr",        label: "Co-Cr",        note: "default · no allergy" },
+    { id: "Gold",         label: "Gold (Type IV)", note: "allergy + budget" },
+    { id: "Titanium",     label: "Titanium",     note: "metal allergy" },
+    { id: "Acetyl resin", label: "Acetyl / PEEK", note: "NMCD hybrid" },
+  ].map(o => ({ ...o, chosen: result.framework.material?.includes(o.id) }));
 
-  // 4. Major connector — different options per arch
   const mcChoice = result.majorConnector.type;
-  const mcMaxillary = [
-    { id: "A-P Strap",            note: "Kennedy II / large palatal coverage" },
-    { id: "A-P Strap (Class III)", note: "bilateral tooth-supported Class III" },
-    { id: "Single Palatal Strap", note: "short-span Class III (tooth-supported)" },
-    { id: "Full Palatal Plate",   note: "few teeth remaining / max retention" },
-    { id: "U-Shaped Connector",   note: "maxillary tori obstruct mid-palate" },
-  ];
-  const mcMandibular = [
-    { id: "Lingual Bar",          note: "sulcus depth >8mm — preferred" },
-    { id: "Lingual Plate",        note: "sulcus <8mm — alternative" },
-    { id: "Lingual Plate (Tori)", note: "mandibular tori not surgically removed" },
-  ];
-  const mcBranches = arch === "maxillary" ? mcMaxillary : mcMandibular;
+  const mcOpts = (arch === "maxillary" ? [
+    { id: "A-P Strap",             note: "Class II / wide coverage" },
+    { id: "A-P Strap (Class III)", note: "bilateral Class III" },
+    { id: "Single Palatal Strap",  note: "short-span Class III" },
+    { id: "Full Palatal Plate",    note: "few teeth · max retention" },
+    { id: "U-Shaped Connector",    note: "tori obstruct palate" },
+  ] : [
+    { id: "Lingual Bar",          note: "sulcus >8mm · preferred" },
+    { id: "Lingual Plate",        note: "sulcus <8mm" },
+    { id: "Lingual Plate (Tori)", note: "tori not removed" },
+  ]).map(o => ({ ...o, label: o.id, chosen: mcChoice === o.id }));
 
-  // 5. Per-abutment clasp choices
-  const claspBranches = [
-    { id: "RPI",                  note: "distal extension; all 8 RPI gates passed" },
-    { id: "Combination",          note: "distal extension; ≥1 RPI gate fired" },
-    { id: "I-bar (esthetic)",     note: "tooth-supported anterior in esthetic zone" },
-    { id: "Akers",                note: "tooth-supported; standard cast circumferential" },
-    { id: "Reverse Akers",        note: "tooth-supported; undercut on distal aspect" },
-    { id: "Embrasure",            note: "two adjacent posterior abutments, no edentulous space between" },
-    { id: "WW C-clasp",           note: "interim RPD only" },
+  const claspChoices = [
+    { id: "RPI",              note: "DE · all 8 gates pass" },
+    { id: "Combination",      note: "DE · ≥1 gate fired" },
+    { id: "I-bar (esthetic)", note: "TS · anterior esthetic zone" },
+    { id: "Akers",            note: "TS · standard cast" },
+    { id: "Reverse Akers",    note: "TS · distal undercut" },
+    { id: "Embrasure",        note: "two adjacent posteriors" },
+    { id: "WW C-clasp",       note: "interim RPD only" },
   ];
 
   return (
     <div style={{
-      padding: "20px 22px", marginBottom: "20px",
+      padding: "20px 24px", marginBottom: "20px",
       background: "var(--paper)", border: "1px solid var(--rule)",
       borderRadius: "2px",
     }}>
-      <div style={{ fontSize: "12px", color: "var(--ink-soft)", fontStyle: "italic", marginBottom: "12px" }}>
-        ● = chosen branch; ○ = alternatives the engine considered and rejected.
-      </div>
-
-      {/* Root */}
       <div style={{
-        fontFamily: "'JetBrains Mono', monospace", fontSize: "12px",
-        fontWeight: 600, color: "var(--ink)", marginBottom: "4px",
+        fontSize: "11px", color: "var(--ink-faint)",
+        fontStyle: "italic", marginBottom: "16px",
       }}>
-        Case
-        <span style={{ color: "var(--ink-soft)", marginLeft: "8px", fontWeight: 400 }}>
-          — {arch === "maxillary" ? "Maxillary" : "Mandibular"} arch, {result.kennedy.description}
-        </span>
+        Filled pill = chosen by the engine. Outlined = alternatives ruled out for this case.
       </div>
 
-      {/* 1. Design intent */}
-      <NodeRow prefix="├─" chosen={false} label="Design intent" />
-      {intentBranches.map((b, i) => (
-        <NodeRow key={b.id}
-          prefix={`│   ${i === intentBranches.length - 1 ? "└─" : "├─"}`}
-          chosen={intent === b.id}
-          label={b.label}
-          note={b.note} />
-      ))}
+      {/* Root: the case summary in a flag-style header. Visually anchored
+          at the top of the tree spine. */}
+      <div style={{
+        display: "inline-flex", alignItems: "center", gap: "10px",
+        padding: "8px 16px", marginBottom: "4px", marginLeft: "0",
+        background: "var(--ink)", color: "white", borderRadius: "16px",
+        fontFamily: "'Fraunces', serif", fontStyle: "italic", fontSize: "13px",
+      }}>
+        <span style={{
+          width: "8px", height: "8px", borderRadius: "50%",
+          background: "var(--accent)",
+        }} />
+        {arch === "maxillary" ? "Maxillary" : "Mandibular"} arch · {result.kennedy.description}
+      </div>
 
-      {/* 2. Kennedy classification */}
-      <NodeRow prefix="├─" chosen={false} label="Kennedy classification (Applegate's rules applied)" />
-      {kClassBranches.map((b, i) => (
-        <NodeRow key={b.id}
-          prefix={`│   ${i === kClassBranches.length - 1 ? "└─" : "├─"}`}
-          chosen={kCls === b.id}
-          label={`${b.label}${kCls === b.id && result.kennedy.modifications ? ` Mod ${result.kennedy.modifications}` : ""}`}
-          note={b.note} />
-      ))}
+      {/* Decisions — numbered rows with chip options. The vertical spine on
+          the left visually threads all decisions together. */}
+      <Decision index={1} label="Design intent"            options={intentOpts} />
+      <Decision index={2} label="Kennedy classification"   options={kennedyOpts} />
+      <Decision index={3} label="Framework material"       options={fwOpts} />
+      <Decision index={4} label={`Major connector (${arch === "maxillary" ? "palate" : "lingual"})`} options={mcOpts} />
 
-      {/* 3. Framework material */}
-      <NodeRow prefix="├─" chosen={false} label="Framework material" />
-      {fwBranches.map((b, i) => (
-        <NodeRow key={b.id}
-          prefix={`│   ${i === fwBranches.length - 1 ? "└─" : "├─"}`}
-          chosen={result.framework.material?.includes(b.id)}
-          label={b.label}
-          note={b.note} />
-      ))}
-
-      {/* 4. Major connector */}
-      <NodeRow prefix="├─" chosen={false}
-        label={`Major connector (${arch === "maxillary" ? "maxillary palate" : "mandibular lingual"})`} />
-      {mcBranches.map((b, i) => (
-        <NodeRow key={b.id}
-          prefix={`│   ${i === mcBranches.length - 1 ? "└─" : "├─"}`}
-          chosen={mcChoice === b.id}
-          label={b.id}
-          note={b.note} />
-      ))}
-
-      {/* 5. Clasps per abutment */}
-      <NodeRow prefix="└─" chosen={false} label="Clasps (one decision per direct retainer abutment)" />
+      {/* 5. Per-abutment clasps. The header row has subdued styling; each
+          abutment is its own labeled sub-row showing clasp options. */}
+      <Decision
+        index={5}
+        label="Clasps · one decision per direct retainer abutment"
+        options={[]}
+        isLast={(result.abutmentDesigns || []).length === 0}
+        subdued
+      />
       {(result.abutmentDesigns || []).map((a, ai) => {
-        const isLastAb = ai === result.abutmentDesigns.length - 1;
+        const isLast = ai === result.abutmentDesigns.length - 1;
         return (
-          <div key={a.tooth}>
-            <NodeRow prefix={`    ${isLastAb ? "└─" : "├─"}`}
-              chosen={false}
-              label={`#${a.tooth} — ${a.spanType === "distal-extension" ? "DE terminal" : "tooth-supported abutment"}`} />
-            {claspBranches.map((b, i) => (
-              <NodeRow key={b.id}
-                prefix={`    ${isLastAb ? "    " : "│   "}${i === claspBranches.length - 1 ? "└─" : "├─"}`}
-                chosen={a.claspType === b.id}
-                label={b.id}
-                note={b.note} />
-            ))}
+          <div key={a.tooth} style={{
+            position: "relative",
+            paddingLeft: "84px",
+            paddingBottom: "16px",
+          }}>
+            {/* parent-tree vertical spine (continues from above through this row) */}
+            {!isLast && (
+              <div style={{
+                position: "absolute", left: "14px", top: 0,
+                width: "1px", bottom: 0,
+                background: "var(--rule)",
+              }} />
+            )}
+            {/* horizontal stub from the parent spine across to the abutment marker */}
+            <div style={{
+              position: "absolute", left: "14px", top: "14px",
+              width: "40px", height: "1px",
+              background: "var(--rule)",
+            }} />
+            {/* abutment label as a small node on the sub-spine */}
+            <div style={{
+              position: "absolute", left: "54px", top: "8px",
+              padding: "2px 10px", borderRadius: "12px",
+              background: "white", border: "1px solid var(--ink-soft)",
+              fontFamily: "'Geist', sans-serif", fontSize: "11px", fontWeight: 600,
+              color: "var(--ink)",
+            }}>
+              #{a.tooth}
+              <span style={{ color: "var(--ink-faint)", fontWeight: 400, marginLeft: "6px" }}>
+                {a.spanType === "distal-extension" ? "DE" : "TS"}
+              </span>
+            </div>
+            {/* clasp chips, indented past the abutment label */}
+            <div style={{
+              display: "flex", flexWrap: "wrap", gap: "8px",
+              marginTop: "36px",
+            }}>
+              {claspChoices.map(c => (
+                <Chip key={c.id} chosen={a.claspType === c.id} label={c.id} note={c.note} />
+              ))}
+            </div>
           </div>
         );
       })}
@@ -15435,6 +15488,7 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false }) {
 // Recreates the UIC lab Rx form layout with the engine's lab script filled
 // into the Instructions box.
 function RPDLabRxForm({ caseInput, result }) {
+  const [open, setOpen] = useState(false);
   if (!result || result.kennedy.class === null) return null;
   const arch = caseInput.arch === "maxillary" ? "maxillary" : "mandibular";
 
@@ -15484,17 +15538,62 @@ function RPDLabRxForm({ caseInput, result }) {
   const today = new Date().toISOString().slice(0,10);
 
   return (
-    <div className="rpd-uic-form" style={{
+    <div className="rpd-uic-form rpd-print-keep" style={{
       background: "white",
       border: "1.5px solid var(--ink)",
-      padding: "20px",
+      borderTop: open ? "1.5px solid var(--ink)" : "1.5px solid var(--ink)",
+      marginTop: "-1.5px",   /* fuse border with preliminary form above */
       marginBottom: "20px",
       fontFamily: "'Geist', sans-serif",
       color: "var(--ink)",
       fontSize: "12px",
       lineHeight: 1.45,
     }}>
-      {/* Header */}
+      {/* Header — clickable strip that visually attaches to the preliminary
+          form above. Closed state: inviting accent-colored prompt with a +
+          icon. Open state: filled accent bar so it reads as a section header. */}
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className="rpd-print-hide"
+        style={{
+          width: "100%", display: "flex", justifyContent: "space-between",
+          alignItems: "center",
+          padding: "14px 20px",
+          background: open ? "var(--accent)" : "white",
+          color: open ? "white" : "var(--accent)",
+          border: "none", borderBottom: open ? "1.5px solid var(--ink)" : "none",
+          cursor: "pointer",
+          fontFamily: "'Fraunces', serif",
+          fontSize: "14px", fontWeight: 700, letterSpacing: "0.01em",
+          textAlign: "left",
+        }}
+        onMouseEnter={e => { if (!open) e.currentTarget.style.background = "rgba(124,30,32,0.06)"; }}
+        onMouseLeave={e => { if (!open) e.currentTarget.style.background = "white"; }}
+      >
+        <span style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "16px", lineHeight: 1, fontWeight: 400 }}>
+            {open ? "−" : "+"}
+          </span>
+          <span>RPD Laboratory Prescription</span>
+          <span style={{
+            fontFamily: "'Geist', sans-serif", fontWeight: 400,
+            fontSize: "11px", letterSpacing: "0.06em", textTransform: "uppercase",
+            opacity: 0.7,
+          }}>
+            D5213 · auto-filled
+          </span>
+        </span>
+        <span style={{ fontFamily: "'Geist', sans-serif", fontSize: "11px", fontWeight: 500, opacity: 0.8 }}>
+          {open ? "hide" : "open lab Rx"}
+        </span>
+      </button>
+
+      {/* Form body — collapsed by default. Indent everything inside a wrapper
+          with the original 20px padding so existing children layout unchanged. */}
+      {open && (
+      <div style={{ padding: "20px" }}>
+      {/* Original header row (still useful when printed; hidden when closed) */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "16px", alignItems: "start", marginBottom: "12px" }}>
         <div style={{ fontFamily: "'Fraunces', serif", fontSize: "14px", fontWeight: 700, lineHeight: 1.2 }}>
           RPD Laboratory Prescription
@@ -15562,6 +15661,8 @@ function RPDLabRxForm({ caseInput, result }) {
           <div style={{ fontSize: "11px" }}>Administrator's Approval ____________   Date ____________</div>
         </div>
       </div>
+      </div>
+      )}
     </div>
   );
 }
