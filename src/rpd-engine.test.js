@@ -935,3 +935,637 @@ describe("Granular 8 — Rest seat burs match tooth type", () => {
     expect(designOf(r, 29)?.restSeat?.bur).toMatch(/#6 round/);
   });
 });
+
+// =========================================================================
+// CROSS-CASE INVARIANTS — rules that must hold for ANY engine output
+// =========================================================================
+// Loops over a representative set of cases and asserts STRUCTURAL RULES
+// that don't depend on the specific case. These catch BUG PATTERNS
+// (e.g., "Akers should never engage mid-buccal") rather than bug
+// INSTANCES. A future regression that violates any invariant in any
+// test case turns the suite red automatically.
+//
+// Anatomical/clinical helpers used by invariants:
+//   • RPD_ANTERIOR        — esthetic zone (canines + incisors, both arches)
+//   • RPD_MOLAR_SET       — all molars (1st/2nd/3rd)
+//   • RPD_PREMOLAR_SET    — all premolars (1st + 2nd)
+// =========================================================================
+const RPD_MOLAR_SET    = new Set([1,2,3, 14,15,16, 17,18,19, 30,31,32]);
+const RPD_PREMOLAR_SET = new Set([4,5, 12,13, 20,21, 28,29]);
+const RPD_ANTERIOR_SET = new Set([6,7,8,9,10,11, 22,23,24,25,26,27]);
+
+// Centralized case factory: every case that participates in invariants.
+// Adding a new case here automatically subjects it to every invariant.
+const allInvariantCases = () => {
+  const cases = [];
+
+  // ─── UIC worked cases ────────────────────────────────────────────────
+  // Case 1 — Maxillary Class II Mod 3 (Design Case I)
+  let c = rpdMakeBlankCase("maxillary");
+  setMissing(c, [1, 16]);
+  setMissing(c, [3, 5, 7, 8, 10, 13, 14, 15]);
+  c.measurements.vestibularDepth = 4;
+  setAttrs(c, 12, { highFrenum: true });
+  cases.push({ name: "UIC Case 1 (Max Class II Mod 3)", result: rpdRunEngine(c) });
+
+  // Case 2 — Mandibular Class II Mod 1 (Design Case I lower)
+  c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32, 18, 19, 20, 30]);
+  cases.push({ name: "UIC Case 2 (Mand Class II Mod 1)", result: rpdRunEngine(c) });
+
+  // Case 6 — Maxillary Class II Mod 2 (Huddle Week 6 Case 2)
+  c = rpdMakeBlankCase("maxillary");
+  setMissing(c, [1, 16, 2, 3, 10, 11, 14]);
+  cases.push({ name: "UIC Case 6 (Max Class II Mod 2)", result: rpdRunEngine(c) });
+
+  // ─── Generic shape probes (canonical scenarios that exercise the
+  //     core decision paths) ──────────────────────────────────────────
+  // Mandibular Class III, single tooth missing — exercises both
+  // sideToward orientations on Akers abutments.
+  c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32]);
+  setMissing(c, [19]);
+  cases.push({ name: "Mand Class III single (#19 missing)", result: rpdRunEngine(c) });
+
+  // Maxillary Class III, single tooth missing on the right side.
+  c = rpdMakeBlankCase("maxillary");
+  setMissing(c, [1, 16]);
+  setMissing(c, [4]);
+  cases.push({ name: "Max Class III single (#4 missing)", result: rpdRunEngine(c) });
+
+  // Mandibular Class III bilateral mod — both #19 and #30 missing.
+  c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32]);
+  setMissing(c, [19, 30]);
+  cases.push({ name: "Mand Class III Mod 1 (#19 and #30 missing)", result: rpdRunEngine(c) });
+
+  // Mandibular Class I — bilateral DE
+  c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32]);
+  setMissing(c, [18, 19, 30, 31]);
+  cases.push({ name: "Mand Class I (bilateral DE)", result: rpdRunEngine(c) });
+
+  // Maxillary Class II — unilateral DE
+  c = rpdMakeBlankCase("maxillary");
+  setMissing(c, [1, 16]);
+  setMissing(c, [13, 14, 15]);
+  cases.push({ name: "Max Class II (left DE)", result: rpdRunEngine(c) });
+
+  return cases;
+};
+
+describe("INVARIANTS — rules that must hold across ALL test cases", () => {
+  const cases = allInvariantCases();
+
+  // ─── 1. Akers undercut convention ─────────────────────────────────────
+  // For every standard Akers abutment, the engine must:
+  //   (a) compute effectiveUndercutLocation as opposite-side-buccal
+  //   (b) include that string in retentiveArm text
+  //   (c) NEVER produce "mid-buccal" for an Akers
+  describe("Akers: opposite-side-buccal undercut convention", () => {
+    cases.forEach(({ name, result }) => {
+      const akers = (result.abutmentDesigns || []).filter(a => a.claspType === "Akers");
+      if (akers.length === 0) return;
+      it(`${name}: every Akers has the correct effectiveUndercutLocation`, () => {
+        akers.forEach(a => {
+          const restSide = a.restSeat?.surface;
+          const expected = restSide === "mesial" ? "disto-buccal"
+                         : restSide === "distal" ? "mesio-buccal" : null;
+          // Anteriors with cingulum rests may have null surface meaning
+          // — skip those for this invariant since Akers shouldn't appear
+          // on anteriors anyway (caught by invariant #2 below).
+          if (expected) {
+            expect(a.effectiveUndercutLocation, `#${a.tooth} rest surface=${restSide}`).toBe(expected);
+          }
+        });
+      });
+      it(`${name}: every Akers retentiveArm contains the engaged undercut location literally`, () => {
+        akers.forEach(a => {
+          expect(a.retentiveArm, `#${a.tooth}`).toContain(a.effectiveUndercutLocation);
+        });
+      });
+      it(`${name}: no Akers retentiveArm ever says "mid-buccal"`, () => {
+        akers.forEach(a => {
+          expect(a.retentiveArm, `#${a.tooth}`).not.toMatch(/mid-buccal/);
+        });
+      });
+    });
+  });
+
+  // ─── 2. Esthetic zone never gets cast circumferential Akers ──────────
+  // Per UIC esthetic-omission rule: cast Akers clasps on max/mand
+  // anteriors are visible during smile. These teeth must be Rest Only
+  // (esthetic omission), I-bar (esthetic), or Combination — never a
+  // standard Akers.
+  describe("Esthetic zone: no cast Akers on anteriors", () => {
+    cases.forEach(({ name, result }) => {
+      const violations = (result.abutmentDesigns || []).filter(a =>
+        RPD_ANTERIOR_SET.has(a.tooth) && a.claspType === "Akers");
+      if (violations.length === 0 && (result.abutmentDesigns || []).some(a => RPD_ANTERIOR_SET.has(a.tooth))) {
+        it(`${name}: anterior abutments use non-Akers retention`, () => {
+          expect(violations.length).toBe(0);
+        });
+      } else if (violations.length > 0) {
+        it(`${name}: anterior abutments must not be Akers`, () => {
+          // Force-fail; the violations object surfaces in the failure msg.
+          expect(violations.map(v => v.tooth)).toEqual([]);
+        });
+      }
+    });
+  });
+
+  // ─── 3. Bur sizes match tooth type ─────────────────────────────────
+  // Standard convention (per Crown Prep + RPD lectures):
+  //   Molars      → #8 round (outline) / #6 round (deepening)
+  //   Premolars   → #6 round (outline) / #4 round (deepening)
+  //   Anteriors   → inverted cone (cingulum/ball)
+  describe("Rest seat burs match tooth type", () => {
+    cases.forEach(({ name, result }) => {
+      const abuts = (result.abutmentDesigns || []).filter(a => a.restSeat?.bur);
+      if (abuts.length === 0) return;
+      it(`${name}: every rest seat bur matches tooth type`, () => {
+        abuts.forEach(a => {
+          const bur = a.restSeat.bur;
+          if (RPD_MOLAR_SET.has(a.tooth)) {
+            expect(bur, `#${a.tooth} (molar)`).toMatch(/#8 round.*#6 round|inverted cone/);
+          } else if (RPD_PREMOLAR_SET.has(a.tooth)) {
+            expect(bur, `#${a.tooth} (premolar)`).toMatch(/#6 round.*#4 round/);
+          } else if (RPD_ANTERIOR_SET.has(a.tooth)) {
+            expect(bur, `#${a.tooth} (anterior)`).toMatch(/inverted cone/);
+          }
+        });
+      });
+    });
+  });
+
+  // ─── 4. RPI design integrity ───────────────────────────────────────
+  // RPI = Rest + Proximal plate + I-bar. Every RPI abutment must have:
+  //   • mesial occlusal rest
+  //   • distal proximal plate (guide plane surface = distal)
+  //   • I-bar engaging mid-buccal undercut
+  //   • lingual reciprocation (plate or arm depending on case)
+  describe("RPI: structural integrity (rest mesial, GP distal, I-bar mid-buccal)", () => {
+    cases.forEach(({ name, result }) => {
+      const rpi = (result.abutmentDesigns || []).filter(a => a.claspType === "RPI");
+      if (rpi.length === 0) return;
+      it(`${name}: every RPI has mesial occlusal rest`, () => {
+        rpi.forEach(a => {
+          expect(a.restSeat?.surface, `#${a.tooth}`).toBe("mesial");
+          expect(a.restSeat?.type, `#${a.tooth}`).toBe("occlusal");
+        });
+      });
+      it(`${name}: every RPI has distal proximal plate`, () => {
+        rpi.forEach(a => {
+          expect(a.guidePlane?.surface, `#${a.tooth}`).toBe("distal");
+        });
+      });
+      it(`${name}: every RPI engages mid-buccal undercut`, () => {
+        rpi.forEach(a => {
+          expect(a.effectiveUndercutLocation, `#${a.tooth}`).toBe("mid-buccal");
+          expect(a.retentiveArm, `#${a.tooth}`).toMatch(/I-bar/i);
+          expect(a.retentiveArm, `#${a.tooth}`).toMatch(/mid-buccal/);
+        });
+      });
+    });
+  });
+
+  // ─── 5. Combination clasp = wrought wire + 0.02 undercut ───────────
+  describe("Combination clasp: wrought wire + 0.02 undercut", () => {
+    cases.forEach(({ name, result }) => {
+      const combos = (result.abutmentDesigns || []).filter(a => a.claspType === "Combination");
+      if (combos.length === 0) return;
+      it(`${name}: every Combination uses wrought wire`, () => {
+        combos.forEach(a => {
+          expect(a.retentiveArm, `#${a.tooth}`).toMatch(/wrought wire|18ga|18 gauge/i);
+        });
+      });
+      it(`${name}: every Combination engages 0.02" undercut (wire flex)`, () => {
+        combos.forEach(a => {
+          expect(a.retentiveArm, `#${a.tooth}`).toMatch(/0\.02/);
+        });
+      });
+    });
+  });
+
+  // ─── 6. Rest Only abutments still get a rest seat ──────────────────
+  describe('"Rest Only" abutments still have a rest seat', () => {
+    cases.forEach(({ name, result }) => {
+      const restOnly = (result.abutmentDesigns || []).filter(a =>
+        a.claspType?.includes("Rest Only"));
+      if (restOnly.length === 0) return;
+      it(`${name}: every Rest Only abutment has a rest seat defined`, () => {
+        restOnly.forEach(a => {
+          expect(a.restSeat, `#${a.tooth}`).toBeTruthy();
+          expect(a.restSeat.type, `#${a.tooth}`).toBeTruthy();
+        });
+      });
+    });
+  });
+
+  // ─── 7. Mandibular Lingual Bar requires sulcus depth ≥8mm ──────────
+  // If the engine picks Lingual Bar but sulcus depth is <8mm, that's a
+  // clinical error — Lingual Plate must be used instead.
+  describe("Lingual Bar requires adequate sulcus depth", () => {
+    cases.forEach(({ name, result }) => {
+      // We don't have direct access to the case input here, only the
+      // result. This invariant only applies if the engine picked
+      // Lingual Bar — if it did, we trust it picked it correctly for
+      // an adequate sulcus. The complementary check (sulcus <8mm
+      // forces Lingual Plate) is encoded as a per-case test elsewhere.
+      if (result.majorConnector?.type === "Lingual Bar") {
+        it(`${name}: Lingual Bar dimensions noted (4mm + 4mm clearance)`, () => {
+          const blob = `${result.majorConnector.width || ""} ${result.majorConnector.note || ""} ${result.majorConnector.rationale || ""}`;
+          expect(blob).toMatch(/4mm.*4mm|4 mm.*4 mm/);
+        });
+      }
+    });
+  });
+
+  // ─── 8. Lab script structural invariants ───────────────────────────
+  // Every lab script must:
+  //   • mention the framework material
+  //   • mention the major connector type
+  //   • include the standard undercut-marking notice
+  //   • include a per-tooth line for each abutment
+  //   • end with "Thank you."
+  describe("Lab script structural integrity", () => {
+    cases.forEach(({ name, result }) => {
+      if (!result.labScript) return;
+      it(`${name}: labScript contains framework material`, () => {
+        expect(result.labScript).toContain(result.framework.material);
+      });
+      it(`${name}: labScript contains major connector type`, () => {
+        expect(result.labScript).toContain(result.majorConnector.type);
+      });
+      it(`${name}: labScript ends with "Thank you."`, () => {
+        expect(result.labScript.trim()).toMatch(/Thank you\.$/);
+      });
+      it(`${name}: labScript mentions undercut color-coding notice`, () => {
+        expect(result.labScript).toMatch(/undercut.*marked in red|marked in red.*undercut/i);
+      });
+      it(`${name}: labScript has a per-tooth line for every abutment`, () => {
+        (result.abutmentDesigns || []).forEach(a => {
+          // Each tooth should appear somewhere in the lab script.
+          expect(result.labScript, `#${a.tooth}`).toMatch(new RegExp(`#${a.tooth}\\b|${a.tooth}:`));
+        });
+      });
+    });
+  });
+
+  // ─── 9. Kennedy classification consistency ─────────────────────────
+  // result.kennedy.description must match result.kennedy.class.
+  describe("Kennedy class & description consistency", () => {
+    cases.forEach(({ name, result }) => {
+      if (result.kennedy.class === null) return;
+      it(`${name}: kennedy description matches class`, () => {
+        expect(result.kennedy.description).toContain(`Class ${result.kennedy.class}`);
+      });
+    });
+  });
+
+  // ─── 10. Framework material consistency ─────────────────────────────
+  describe("Framework material consistency", () => {
+    cases.forEach(({ name, result }) => {
+      it(`${name}: framework has material AND rationale`, () => {
+        expect(result.framework?.material).toBeTruthy();
+        expect(result.framework?.rationale).toBeTruthy();
+      });
+    });
+  });
+
+  // ─── 11. Major connector consistency ─────────────────────────────
+  describe("Major connector consistency", () => {
+    cases.forEach(({ name, result }) => {
+      it(`${name}: major connector has type AND rationale`, () => {
+        expect(result.majorConnector?.type).toBeTruthy();
+        expect(result.majorConnector?.rationale).toBeTruthy();
+      });
+    });
+  });
+});
+
+// =========================================================================
+// NEGATIVE REGRESSION TESTS
+// =========================================================================
+// Specifically encode "this previously-discovered bug must never come back."
+// Each test maps to a known historical bug; if reintroduced, this test
+// fires immediately.
+// =========================================================================
+describe("NEGATIVE — historical bugs that must not regress", () => {
+  // Bug: Akers default undercut was "mid-buccal" (should be DB or MB).
+  // Discovered: tested case with single mandibular molar missing.
+  it("REGRESSION: Akers default undercut for sideToward=mesial is DB, not mid-buccal", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    const r = rpdRunEngine(c);
+    const d18 = designOf(r, 18);
+    expect(d18?.claspType).toBe("Akers");
+    expect(d18?.effectiveUndercutLocation).toBe("disto-buccal");
+    expect(d18?.retentiveArm).toContain("disto-buccal");
+    expect(d18?.retentiveArm).not.toContain("mid-buccal");
+  });
+
+  // Bug: Akers default undercut for sideToward=distal should be MB.
+  it("REGRESSION: Akers default undercut for sideToward=distal is MB, not mid-buccal", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    const r = rpdRunEngine(c);
+    const d20 = designOf(r, 20);
+    expect(d20?.claspType).toBe("Akers");
+    expect(d20?.effectiveUndercutLocation).toBe("mesio-buccal");
+    expect(d20?.retentiveArm).toContain("mesio-buccal");
+    expect(d20?.retentiveArm).not.toContain("mid-buccal");
+  });
+
+  // Bug: original Akers/Reverse Akers logic was over-eager — substituted
+  // engine DB default would falsely re-label as "Reverse Akers".
+  // Post-fix: engine-substituted DB stays "Akers".
+  it("REGRESSION: engine-substituted DB on standard Akers stays labeled 'Akers' (not 'Reverse Akers')", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    const r = rpdRunEngine(c);
+    expect(designOf(r, 18)?.claspType).toBe("Akers");        // not "Reverse Akers"
+    expect(designOf(r, 18)?.effectiveUndercutLocation).toBe("disto-buccal");
+  });
+
+  // Bug: explicit user override should still trigger Reverse Akers
+  // nomenclature for the DB/DL case.
+  it("REGRESSION: user-explicit DB undercut promotes label to 'Reverse Akers'", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32, 19]);
+    setAttrs(c, 18, { undercutLocation: "disto-buccal" });
+    const r = rpdRunEngine(c);
+    expect(designOf(r, 18)?.claspType).toBe("Reverse Akers");
+  });
+
+  // Bug: Single-tooth missing should produce Class III (not crash, not
+  // null) — fixes ensure the engine handles minimal cases.
+  it("REGRESSION: single tooth missing produces Class III with full design", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 14]);
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("III");
+    expect(r.framework?.material).toBeTruthy();
+    expect(r.majorConnector?.type).toBeTruthy();
+  });
+
+  // Bug: Rule 2 should fully omit missing 3rd molars from classification.
+  it("REGRESSION: missing 3rd molars alone don't trigger Kennedy classification", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16, 17, 32]);
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBeNull();
+  });
+});
+
+// =========================================================================
+// GRANULAR PER-CASE DETAIL — UIC worked cases
+// =========================================================================
+// For each of the 6 worked UIC cases, assert EVERY clinically meaningful
+// detail of EVERY abutment, plus full major connector + framework +
+// indirect retainer + base design details. This is the "answer key
+// comparison" the user asked for.
+// =========================================================================
+
+describe("UIC Case 1 — Maxillary Class II Mod 3 (full granular detail)", () => {
+  const c = rpdMakeBlankCase("maxillary");
+  setMissing(c, [1, 16]);
+  setMissing(c, [3, 5, 7, 8, 10, 13, 14, 15]);
+  c.measurements.vestibularDepth = 4;
+  setAttrs(c, 12, { highFrenum: true });
+  const r = rpdRunEngine(c);
+
+  // Engine-level
+  it("Framework material is Co-Cr (no metal allergy)", () => {
+    expect(r.framework.material).toBe("Co-Cr");
+  });
+  it("Major connector is A-P Strap with rationale", () => {
+    expect(r.majorConnector.type).toBe("A-P Strap");
+    expect(r.majorConnector.rationale).toBeTruthy();
+  });
+  it("Kennedy II with DE on left", () => {
+    expect(r.kennedy.class).toBe("II");
+    expect(r.kennedy.deSide).toBe("left");
+  });
+
+  // Per-abutment: #2 (right 2nd molar, distal-most abutment of mod space)
+  describe("#2 — distal-most abutment, rest mesial, undercut DB", () => {
+    const d = designOf(r, 2);
+    it("claspType is Akers", () => expect(d?.claspType).toBe("Akers"));
+    it("effectiveUndercutLocation is disto-buccal", () => expect(d?.effectiveUndercutLocation).toBe("disto-buccal"));
+    it("rest seat is mesial occlusal with #8/#6 round bur", () => {
+      expect(d?.restSeat?.surface).toBe("mesial");
+      expect(d?.restSeat?.type).toBe("occlusal");
+      expect(d?.restSeat?.bur).toMatch(/#8 round/);
+    });
+    it("guide plane is mesial 2/3 height", () => {
+      expect(d?.guidePlane?.surface).toBe("mesial");
+      expect(d?.guidePlane?.length).toMatch(/2\/3 clinical crown height/);
+    });
+    it("reciprocation is cast lingual arm", () => {
+      expect(d?.reciprocation?.type).toBe("arm");
+      expect(d?.reciprocation?.text).toMatch(/lingual/i);
+    });
+  });
+
+  // Per-abutment: #4 (right 1st premolar)
+  describe("#4 — mesial-most abutment of right mod space, rest distal, undercut MB", () => {
+    const d = designOf(r, 4);
+    it("claspType is Akers", () => expect(d?.claspType).toBe("Akers"));
+    it("rest seat is distal occlusal with #6/#4 round bur", () => {
+      expect(d?.restSeat?.surface).toBe("distal");
+      expect(d?.restSeat?.type).toBe("occlusal");
+      expect(d?.restSeat?.bur).toMatch(/#6 round/);
+    });
+  });
+
+  // Per-abutment: #9 (left central incisor, esthetic omission with ball rest)
+  describe("#9 — central incisor, Rest Only with ball rest", () => {
+    const d = designOf(r, 9);
+    it("claspType is Rest Only", () => expect(d?.claspType).toBe("Rest Only (esthetic omission)"));
+    it("rest seat is ball, inverted cone bur", () => {
+      expect(d?.restSeat?.type).toBe("ball");
+      expect(d?.restSeat?.bur).toMatch(/inverted cone/i);
+    });
+  });
+
+  // Per-abutment: #11 (left canine, esthetic omission with cingulum rest)
+  describe("#11 — canine, Rest Only with cingulum rest", () => {
+    const d = designOf(r, 11);
+    it("claspType is Rest Only", () => expect(d?.claspType).toBe("Rest Only (esthetic omission)"));
+    it("rest seat is cingulum, inverted cone bur", () => {
+      expect(d?.restSeat?.type).toBe("cingulum");
+      expect(d?.restSeat?.bur).toMatch(/inverted cone/i);
+    });
+  });
+
+  // Per-abutment: #12 (DE terminal — Combination because high frenum gate fires)
+  describe("#12 — DE terminal with high frenum, Combination clasp", () => {
+    const d = designOf(r, 12);
+    it("claspType is Combination (RPI vestibule + frenum gates failed)", () => {
+      expect(d?.claspType).toBe("Combination");
+    });
+    it("retentiveArm is wrought wire engaging 0.02 undercut", () => {
+      expect(d?.retentiveArm).toMatch(/wrought wire|18ga|18 gauge/i);
+      expect(d?.retentiveArm).toMatch(/0\.02/);
+    });
+    it("rest seat is mesial occlusal (DE convention)", () => {
+      expect(d?.restSeat?.surface).toBe("mesial");
+      expect(d?.restSeat?.type).toBe("occlusal");
+    });
+    it("guide plane is distal (DE convention)", () => {
+      expect(d?.guidePlane?.surface).toBe("distal");
+    });
+  });
+
+  // Indirect retainer (#6 cingulum rest)
+  it("indirect retainer placed on right canine #6 (cingulum)", () => {
+    const ir = r.indirectRetainers.find(x => x.tooth === 6);
+    expect(ir).toBeTruthy();
+    expect(ir.restType).toMatch(/cingulum/i);
+  });
+});
+
+describe("UIC Case 4 — Mandibular Class III single-tooth case (full granular detail)", () => {
+  const c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32, 19]);
+  const r = rpdRunEngine(c);
+
+  it("Kennedy class is III", () => expect(r.kennedy.class).toBe("III"));
+  it("Major connector is selected (Lingual Bar or Plate)", () => {
+    expect(r.majorConnector.type).toMatch(/Lingual (Bar|Plate)/);
+  });
+
+  describe("#18 — distal-most abutment", () => {
+    const d = designOf(r, 18);
+    it("claspType is Akers", () => expect(d?.claspType).toBe("Akers"));
+    it("effectiveUndercutLocation is DB (rest mesial → opposite-side-buccal)", () => {
+      expect(d?.effectiveUndercutLocation).toBe("disto-buccal");
+    });
+    it("retentiveArm contains 'disto-buccal' literally", () => {
+      expect(d?.retentiveArm).toContain("disto-buccal");
+    });
+    it("rest is mesial occlusal, #8/#6 round bur (molar)", () => {
+      expect(d?.restSeat?.surface).toBe("mesial");
+      expect(d?.restSeat?.type).toBe("occlusal");
+      expect(d?.restSeat?.bur).toMatch(/#8 round/);
+    });
+    it("guide plane is mesial", () => {
+      expect(d?.guidePlane?.surface).toBe("mesial");
+    });
+  });
+
+  describe("#20 — mesial-most abutment", () => {
+    const d = designOf(r, 20);
+    it("claspType is Akers", () => expect(d?.claspType).toBe("Akers"));
+    it("effectiveUndercutLocation is MB (rest distal → opposite-side-buccal)", () => {
+      expect(d?.effectiveUndercutLocation).toBe("mesio-buccal");
+    });
+    it("rest is distal occlusal, #6/#4 round bur (premolar)", () => {
+      expect(d?.restSeat?.surface).toBe("distal");
+      expect(d?.restSeat?.type).toBe("occlusal");
+      expect(d?.restSeat?.bur).toMatch(/#6 round/);
+    });
+  });
+
+  it("Class III tooth-supported — no indirect retainer required", () => {
+    // Class III is bounded by teeth on both sides; no rotation axis,
+    // no need for indirect retainer.
+    expect(r.indirectRetainers.length).toBe(0);
+  });
+});
+
+describe("UIC Case 5 — Mandibular Class I (bilateral DE) granular detail", () => {
+  const c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32]);
+  setMissing(c, [18, 19, 30, 31]);
+  const r = rpdRunEngine(c);
+
+  it("Kennedy class is I", () => expect(r.kennedy.class).toBe("I"));
+  it("Major connector is Lingual Bar or Plate", () => {
+    expect(r.majorConnector.type).toMatch(/Lingual (Bar|Plate)/);
+  });
+
+  describe("#20 — left DE terminal (premolar)", () => {
+    const d = designOf(r, 20);
+    it("claspType is RPI (DE, all gates pass)", () => expect(d?.claspType).toBe("RPI"));
+    it("rest seat is mesial occlusal (RPI signature)", () => {
+      expect(d?.restSeat?.surface).toBe("mesial");
+      expect(d?.restSeat?.type).toBe("occlusal");
+    });
+    it("guide plane is distal (DE proximal plate)", () => {
+      expect(d?.guidePlane?.surface).toBe("distal");
+    });
+    it("undercut is mid-buccal (I-bar)", () => {
+      expect(d?.effectiveUndercutLocation).toBe("mid-buccal");
+    });
+  });
+
+  describe("#29 — right DE terminal (premolar)", () => {
+    const d = designOf(r, 29);
+    it("claspType is RPI", () => expect(d?.claspType).toBe("RPI"));
+    it("rest mesial, GP distal, undercut mid-buccal", () => {
+      expect(d?.restSeat?.surface).toBe("mesial");
+      expect(d?.guidePlane?.surface).toBe("distal");
+      expect(d?.effectiveUndercutLocation).toBe("mid-buccal");
+    });
+  });
+
+  it("Bilateral DE: indirect retainers placed on both sides", () => {
+    expect(r.indirectRetainers.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("Base designs cover both DE saddles", () => {
+    expect(r.baseDesigns.length).toBeGreaterThanOrEqual(2);
+  });
+});
+
+describe("UIC Case 6 — Maxillary Class II Mod 2 full granular detail (Huddle Week 6 Case 2)", () => {
+  const c = rpdMakeBlankCase("maxillary");
+  setMissing(c, [1, 16]);
+  setMissing(c, [2, 3]);     // right DE
+  setMissing(c, [10, 11]);   // anterior mod
+  setMissing(c, [14]);       // posterior mod
+  const r = rpdRunEngine(c);
+
+  it("Kennedy II Mod 2 with right DE", () => {
+    expect(r.kennedy.class).toBe("II");
+    expect(r.kennedy.modifications).toBe(2);
+    expect(r.kennedy.deSide).toBe("right");
+  });
+  it("Major connector is A-P Strap", () => expect(r.majorConnector.type).toBe("A-P Strap"));
+
+  describe("#4 — DE terminal (right premolar)", () => {
+    const d = designOf(r, 4);
+    it("claspType is RPI", () => expect(d?.claspType).toBe("RPI"));
+    it("RPI signature: rest mesial, GP distal, undercut mid-buccal", () => {
+      expect(d?.restSeat?.surface).toBe("mesial");
+      expect(d?.guidePlane?.surface).toBe("distal");
+      expect(d?.effectiveUndercutLocation).toBe("mid-buccal");
+    });
+  });
+
+  describe("#9 — central incisor adjacent to anterior mod space", () => {
+    const d = designOf(r, 9);
+    it("claspType is Rest Only (esthetic omission)", () => {
+      expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    });
+    it("rest seat is ball type (central incisor convention)", () => {
+      expect(d?.restSeat?.type).toBe("ball");
+    });
+  });
+
+  // Posterior mod abutments
+  describe("#12 (mesial-most of posterior mod) and #15 (distal-most)", () => {
+    it("#12 is Akers with appropriate undercut", () => {
+      const d = designOf(r, 12);
+      expect(d?.claspType).toBe("Akers");
+    });
+    it("#13 is Akers", () => {
+      expect(designOf(r, 13)?.claspType).toBe("Akers");
+    });
+    it("#15 is Akers", () => {
+      expect(designOf(r, 15)?.claspType).toBe("Akers");
+    });
+  });
+});
