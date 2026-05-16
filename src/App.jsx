@@ -16490,9 +16490,18 @@ function RPDPaperFormArchDrawing({
     // teeth where rad.y is negative. 30 px (vs 22 previously) accounts
     // for the 22 px clasp glyph height + 17 px undercut glyph height so
     // the two labels don't overlap.
-    const ax = cx + rad.x * (R + 58);
-    const ay = cy + rad.y * (R + 58);
-    const ax2 = ax + rad.x * 30;
+    // Annotation position with viewport clamp so labels on teeth at the
+    // far ends of the arch (#1/#16/#17/#32 area) don't get cut off the
+    // right or left edge of the SVG. viewBox is 1400 wide; reserve ~50
+    // px on each edge so the label text (with text-anchor middle and
+    // ~50–70 px width) stays fully visible.
+    const VIEW_W = 1400;
+    const LABEL_PAD = 50;
+    const rawAx = cx + rad.x * (R + 58);
+    const rawAy = cy + rad.y * (R + 58);
+    const ax = Math.max(LABEL_PAD, Math.min(VIEW_W - LABEL_PAD, rawAx));
+    const ay = rawAy;
+    const ax2 = Math.max(LABEL_PAD, Math.min(VIEW_W - LABEL_PAD, ax + rad.x * 30));
     const ay2 = ay + rad.y * 30;
     // Clasp name text → selects the clasp element. Undercut spec text →
     // selects the undercut. For Rest-only abutments (no clasp), the
@@ -16838,9 +16847,43 @@ function RPDPaperFormArchDrawing({
       const lAi = innerCorner(lA);
       const rPi = innerCorner(rP);
       const lPi = innerCorner(lP);
+      // Inner perimeter (the open palate window): the user asked for the
+      // internal angles to be slightly curved instead of sharp 90° L
+      // segments. We trim each inner corner by a small offset toward
+      // each neighbor and bridge the two trim points with a quadratic
+      // Bezier whose control point IS the original corner — gives a
+      // gentle radius at each inside angle. Outer perimeter stays sharp
+      // (anchored to the abutments, which are themselves discrete).
+      const cornerEase = 0.18; // fraction of edge length to trim per corner
+      // Build the inner perimeter walking rAi → rPi → lPi → lAi → back.
+      const innerPts = [rAi, rPi, lPi, lAi];
+      // For each corner, compute the two trim points (one toward the
+      // previous neighbor, one toward the next neighbor).
+      const trims = innerPts.map((c, i) => {
+        const prev = innerPts[(i + innerPts.length - 1) % innerPts.length];
+        const next = innerPts[(i + 1) % innerPts.length];
+        return {
+          fromPrev: { x: c.x + (prev.x - c.x) * cornerEase, y: c.y + (prev.y - c.y) * cornerEase },
+          toNext:   { x: c.x + (next.x - c.x) * cornerEase, y: c.y + (next.y - c.y) * cornerEase },
+        };
+      });
+      // Stitch the inner path: start at the first corner's "fromPrev"
+      // trim point, then for each corner: line to the corner's "toNext"
+      // trim point (across that edge), then Q-curve through the next
+      // corner to its "fromPrev" trim point.
+      let innerD = `M ${trims[0].fromPrev.x} ${trims[0].fromPrev.y}`;
+      for (let i = 0; i < innerPts.length; i++) {
+        const cur = trims[i];
+        const nextIdx = (i + 1) % innerPts.length;
+        const nextCorner = innerPts[nextIdx];
+        const nextTrim = trims[nextIdx];
+        innerD += ` L ${cur.toNext.x} ${cur.toNext.y}` +
+                  ` Q ${nextCorner.x} ${nextCorner.y} ${nextTrim.fromPrev.x} ${nextTrim.fromPrev.y}`;
+      }
+      innerD += " Z";
       const d =
-        `M ${rA.x} ${rA.y} L ${lA.x} ${lA.y} L ${lP.x} ${lP.y} L ${rP.x} ${rP.y} Z` +
-        ` M ${rAi.x} ${rAi.y} L ${rPi.x} ${rPi.y} L ${lPi.x} ${lPi.y} L ${lAi.x} ${lAi.y} Z`;
+        `M ${rA.x} ${rA.y} L ${lA.x} ${lA.y} L ${lP.x} ${lP.y} L ${rP.x} ${rP.y} Z ` +
+        innerD;
       return (
         <g key={key}>
           <path d={d} fillRule="evenodd"
