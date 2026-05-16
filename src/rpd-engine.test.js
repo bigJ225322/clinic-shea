@@ -3913,3 +3913,64 @@ describe("UIC-AUDIT — Phase IV step 10 long-term recall + maintenance decision
     expect(r.axiumSteps).toMatch(/3-month recall/);
   });
 });
+
+describe("UIC-AUDIT — VDO loss promotes PDI to Class IV", () => {
+  it("VDO loss alone forces PDI Class IV regardless of Kennedy class", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3]); // Healthy Class III otherwise
+    c.patientFactors.vdoLoss = true;
+    const r = rpdRunEngine(c);
+    expect(r.pdi.class).toBe("IV");
+    expect(r.pdi.drivers).toContain("occlusion");
+  });
+  it("Opposing new prosthesis upgrades PDI occlusion to Class III", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3]);
+    c.patientFactors.opposingArch = "new_prosthesis";
+    const r = rpdRunEngine(c);
+    expect(["III", "IV"]).toContain(r.pdi.class);
+  });
+});
+
+describe("UIC-AUDIT — Lab Rx includes major connector boundary specs", () => {
+  it("Maxillary single palatal strap: lab Rx includes 6mm clearance specs", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3, 14]); // bilateral tooth-supported → Single Palatal Strap likely
+    const r = rpdRunEngine(c);
+    if (/Single Palatal Strap/i.test(r.majorConnector.type)) {
+      expect(r.labScript).toMatch(/6 mm anterior to the vibrating line/i);
+      expect(r.labScript).toMatch(/8 mm/); // strap width
+    }
+  });
+  it("Maxillary lab Rx includes framework thickness spec", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3]);
+    const r = rpdRunEngine(c);
+    expect(r.labScript).toMatch(/0\.5-1\.0 mm Co-Cr/);
+  });
+  it("Mandibular Lingual Bar: lab Rx includes 3mm gingival clearance + 8mm sulcus requirement", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    c.measurements.lingualSulcusDepth = 9; // sulcus ≥8mm enables Lingual Bar
+    const r = rpdRunEngine(c);
+    if (/Lingual Bar/i.test(r.majorConnector.type)) {
+      expect(r.labScript).toMatch(/≥3 mm below gingival/);
+      expect(r.labScript).toMatch(/≥8 mm/); // sulcus depth requirement
+    }
+  });
+  it("Maxillary Full Palatal Plate: posterior boundary AT vibrating line, not 6mm anterior", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    // Bilateral distal extension with limited abutments → Full Palatal Plate
+    setMissing(c, [2, 3, 14, 15]);
+    const r = rpdRunEngine(c);
+    if (/Full Palatal Plate/i.test(r.majorConnector.type)) {
+      expect(r.labScript).toMatch(/AT the vibrating line/i);
+    }
+  });
+});

@@ -14017,6 +14017,54 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
   if (arch === "maxillary") {
     lines.push("");
     lines.push("Relief: 0.5 mm relief over the incisive papilla and median palatal raphe (mandatory per UIC).");
+    // Posterior boundary per UIC Major Connectors lecture (Fall 2025 Lecture 6
+    // p. 8-12 + Lecture 7 design cases): posterior border at the vibrating
+    // line (junction of hard and soft palate), 1-2 mm anterior to the
+    // junction for tissue-stop coverage. The exact landmark varies by
+    // connector type:
+    //   • Single Palatal Strap: posterior boundary 6 mm anterior of vibrating line
+    //   • A-P Strap: anterior strap 6 mm posterior to gingival margins
+    //     of anterior teeth; posterior strap 6 mm anterior of vibrating line
+    //   • Full Palatal Plate: posterior boundary AT the vibrating line
+    //   • U-Shaped: anterior boundary 6 mm posterior to gingival margins
+    const mcType = majorConnector.type || "";
+    if (/Single Palatal Strap/i.test(mcType)) {
+      lines.push("Posterior boundary: 6 mm anterior to the vibrating line. Strap width: 8 mm minimum.");
+      lines.push("Anterior boundary: 6 mm posterior to the gingival margins of remaining maxillary teeth.");
+    } else if (/A-P Strap|Anterior[- ]Posterior Strap/i.test(mcType)) {
+      lines.push("Anterior strap: 6 mm posterior to gingival margins of anterior teeth, 8 mm wide.");
+      lines.push("Posterior strap: 6 mm anterior to vibrating line, 6-8 mm wide.");
+      lines.push("Lateral straps: ≥4 mm wide; cross the palate at oblique angle for tongue comfort.");
+    } else if (/Full Palatal Plate/i.test(mcType)) {
+      lines.push("Posterior boundary: AT the vibrating line (junction of hard and soft palate); confirm with T-burnisher or 'ah' line marking.");
+      lines.push("Anterior boundary: extends to lingual surfaces of anterior teeth (NOT covering gingival margin — finish on tooth surface above gingival third).");
+    } else if (/U-Shaped|Horseshoe/i.test(mcType)) {
+      lines.push("Anterior boundary: 6 mm posterior to gingival margins of remaining maxillary teeth (avoid gingival impingement).");
+      lines.push("Posterior boundary: 6 mm anterior of vibrating line.");
+    } else if (/Single Palatal Bar/i.test(mcType)) {
+      lines.push("Central palate position: midline of palate, 4-6 mm wide (bar profile, not strap).");
+    }
+    // Framework material thickness — UIC house spec from Lecture 6 + 7
+    // design cases.
+    lines.push("Framework metal thickness: 0.5-1.0 mm Co-Cr at major connector; smooth, polished tongue-facing surface.");
+  }
+
+  // Mandibular major connector spec (Lecture 6 p. 13-19 + Lecture 7 design
+  // cases): vertical clearance from gingival margin and superior-border
+  // position are critical for periodontal health.
+  if (arch === "mandibular") {
+    const mcType = majorConnector.type || "";
+    lines.push("");
+    if (/Lingual Bar/i.test(mcType)) {
+      lines.push("Lingual bar: superior border ≥3 mm below gingival margins of remaining mandibular teeth (UIC spec). Inferior border at functional vestibular depth (do not impinge on lingual frenum). Half-pear cross-section, 4 mm vertical height minimum.");
+      lines.push("Lingual sulcus depth requirement: ≥8 mm (verify clinically before approving design).");
+    } else if (/Lingual Plate/i.test(mcType)) {
+      lines.push("Lingual plate: extends from superior border ≥3 mm below gingival margins onto cingula of remaining anterior teeth. Finish on tooth surface at cingulum (not gingival margin).");
+      lines.push("Rests at terminal abutments are mandatory to prevent plate from acting as orthodontic force on anterior teeth.");
+    } else if (/Sublingual Bar/i.test(mcType)) {
+      lines.push("Sublingual bar: positioned in floor of mouth, parallel to lingual mucosa, horizontal orientation. Use when high lingual frenum or shallow lingual sulcus prevents standard lingual bar.");
+    }
+    lines.push("Framework metal thickness: 0.5-1.0 mm Co-Cr at major connector.");
   }
 
   lines.push("");
@@ -14513,12 +14561,18 @@ function rpdComputePDI(caseInput, kennedy, abutmentDesigns) {
   // severe ridge resorption with opposing dentate arch suggest occlusal complexity.
   let occlusionClass = 1;
   let occlusionRationale = "Angle Class I occlusion assumed; no VDO change anticipated.";
-  if (pf.opposingArch === "complete_denture" && arch === "mandibular" && kennedy.class === "I") {
+  if (pf.vdoLoss === true) {
+    occlusionClass = 4;
+    occlusionRationale = "Loss of vertical dimension of occlusion documented — full reestablishment with VDO change required (PDI Class IV by definition).";
+  } else if (pf.opposingArch === "complete_denture" && arch === "mandibular" && kennedy.class === "I") {
     occlusionClass = 4;
     occlusionRationale = "Combination Syndrome risk (mandibular bilateral distal extension opposing complete maxillary denture) — VDO reestablishment + careful occlusal scheme required.";
   } else if (pf.opposingArch === "complete_denture") {
     occlusionClass = 3;
     occlusionRationale = "Opposing complete denture — occlusal scheme must be reestablished against artificial teeth.";
+  } else if (pf.opposingArch === "new_prosthesis") {
+    occlusionClass = 3;
+    occlusionRationale = "New prosthesis to be fabricated on opposing arch — bilateral arch reconstruction with simultaneous occlusal scheme establishment required.";
   } else if (m.interocclusalSpace === "excessive" || m.interocclusalSpace === "insufficient") {
     occlusionClass = 2;
     occlusionRationale = `${m.interocclusalSpace === "excessive" ? "Excessive" : "Insufficient"} interocclusal space — localized occlusal adjustment likely required.`;
