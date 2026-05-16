@@ -12489,6 +12489,7 @@ const RPD_RATIONALE = {
     "Lingual Bar":          "Major connector of choice when sufficient space exists (≥8mm sulcus)",
     "Lingual Plate":        "Connector of choice when sulcus depth is insufficient (<8mm)",
     "Lingual Plate (Tori)": "Used due to presence of mandibular tori",
+    "Sublingual Bar":       "Alternative to Lingual Bar when a high lingual frenum / shallow lingual sulcus prevents standard Lingual Bar placement, but Lingual Plate is contraindicated (healthy mobile anteriors, periodontal concerns with lingual plate contact). The bar sits in the sublingual space (floor of mouth) below the standard Lingual Bar position.",
   },
   clasp: {
     "Akers":                "Clasp of choice for tooth-supported area",
@@ -12689,7 +12690,24 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
     if (pf.mandibularTori) {
       return { type: "Lingual Plate", rationale: RPD_RATIONALE.major["Lingual Plate (Tori)"], width: "8mm contact above gingival third", note: "relief for mandibular tori", tier: "strong" };
     }
-    if ((m.lingualSulcusDepth ?? 0) < 8) {
+    // Sublingual Bar indication: high lingual frenum AND sulcus too
+    // shallow for a standard Lingual Bar (≥8mm). The Sublingual Bar sits
+    // in the floor of mouth below where the Lingual Bar would normally
+    // sit — used when Lingual Plate is contraindicated (e.g., healthy
+    // mobile anteriors that shouldn't be braced by a plate).
+    const highFrenum = !!pf.highLingualFrenum;
+    const shallowSulcus = (m.lingualSulcusDepth ?? 0) < 8;
+    if (highFrenum && shallowSulcus) {
+      return {
+        type: "Sublingual Bar", rationale: RPD_RATIONALE.major["Sublingual Bar"],
+        width: "4mm bar in floor of mouth",
+        note: "patient must tolerate sublingual contact during function",
+        tier: "judgment",
+        alternative: "Lingual Plate",
+        alternativeRationale: "Lingual Plate is the safer choice when sulcus depth is <8mm. Selected Sublingual Bar here only because the high lingual frenum prevents standard Lingual Bar placement AND there's a reason to avoid Lingual Plate (e.g., healthy mobile anteriors, periodontal concerns).",
+      };
+    }
+    if (shallowSulcus) {
       return {
         type: "Lingual Plate", rationale: RPD_RATIONALE.major["Lingual Plate"],
         width: "8mm contact above gingival third",
@@ -16521,6 +16539,42 @@ function RPDPaperFormArchDrawing({
     );
   };
 
+  // Sublingual bar (mandibular): alternative to standard Lingual Bar
+  // when a high lingual frenum prevents normal placement. Sits in the
+  // sublingual space (floor of mouth) — inferior to and slightly wider
+  // than the Lingual Bar position. Drawn as a SOLID BLUE FILLED crescent
+  // band sitting deeper in the floor of mouth than the standard Lingual
+  // Bar would sit. Width is similar but the band is shifted inferiorly
+  // by ~10 px and is slightly wider.
+  const drawSublingualBar = (key) => {
+    const upperEdge = archTeeth.map(n => {
+      const { cx, cy } = positionOf(n);
+      const r = radialUnit(n);
+      const R = toothRadius(n);
+      // Upper edge sits ~24 px lingual (vs Lingual Bar's 14 px) —
+      // visibly below the standard Lingual Bar position.
+      return { x: cx - r.x * (R + 24), y: cy - r.y * (R + 24) };
+    });
+    const lowerEdge = archTeeth.map(n => {
+      const { cx, cy } = positionOf(n);
+      const r = radialUnit(n);
+      const R = toothRadius(n);
+      // Lower edge ~44 px lingual — slightly wider band than Lingual
+      // Bar (44-24 = 20 px, vs Lingual Bar's 30-14 = 16 px).
+      return { x: cx - r.x * (R + 44), y: cy - r.y * (R + 44) };
+    });
+    const upperD = buildSmoothPath(upperEdge);
+    const reverseLowerD = buildSmoothPath([...lowerEdge].reverse());
+    const closedD = `${upperD} L ${lowerEdge[lowerEdge.length - 1].x} ${lowerEdge[lowerEdge.length - 1].y} ${reverseLowerD.replace(/^M [^ ]+ [^ ]+/, '')} Z`;
+    return (
+      <g key={key}>
+        <path d={closedD} fill={C_CAST} fillOpacity={0.7}
+          stroke={C_CAST} strokeWidth={1.6}
+          strokeLinejoin="round" strokeLinecap="round" />
+      </g>
+    );
+  };
+
   // Lingual plate (mandibular): SOLID BLUE FILLED region covering the
   // lingual surfaces of mand anteriors up to the cingula AND extending
   // inferiorly into the lingual sulcus. Matches the UIC paper-form colored-
@@ -16878,9 +16932,11 @@ function RPDPaperFormArchDrawing({
             {hasDesign && selectable(
               isMax
                 ? drawPalatalConnector(result.majorConnector?.type, "mc")
-                : (result.majorConnector?.type || "").toLowerCase().includes("plate")
-                  ? drawLingualPlate("mc")
-                  : drawLingualBar("mc"),
+                : (result.majorConnector?.type || "").toLowerCase().includes("sublingual")
+                  ? drawSublingualBar("mc")
+                  : (result.majorConnector?.type || "").toLowerCase().includes("plate")
+                    ? drawLingualPlate("mc")
+                    : drawLingualBar("mc"),
               'connector', { tooltip: `Major connector — ${result.majorConnector?.type || "unspecified"}` },
               "mc-w"
             )}
@@ -18059,7 +18115,18 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
           </div>
           {alternative && (
             <div style={{ marginBottom: "6px", fontSize: "12px" }}>
-              Engine selected <strong>{lines[0]?.[1] || title}</strong>.
+              {/* For abutment-level elements (rest, clasp, undercut, etc.)
+                  the judgment call is about CLASP CONFIGURATION, not the
+                  rest type. Showing the rest type ("cingulum") as the
+                  engine's choice next to a clasp type ("I-bar") as the
+                  alternative was misleading — students read it as
+                  comparing "cingulum vs I-bar" when really both options
+                  use a cingulum rest and differ only on whether there's
+                  a clasp arm. Use the abutment's claspType when
+                  available so both sides describe the same category. */}
+              Engine selected <strong>{
+                (isAbutmentElement && abutment?.claspType) || lines[0]?.[1] || title
+              }</strong>.
               {" "}Alternative: <strong>{alternative}</strong>.
             </div>
           )}
@@ -18591,10 +18658,16 @@ function RPDInputsForm({ caseInput, onUpdate }) {
           </>
         )}
         {caseInput.arch === "mandibular" && (
-          <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--ink)" }}>
-            <input type="checkbox" checked={!!pf.mandibularTori} onChange={(e) => setFactor("mandibularTori", e.target.checked)} />
-            Mandibular tori
-          </label>
+          <>
+            <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--ink)" }}>
+              <input type="checkbox" checked={!!pf.mandibularTori} onChange={(e) => setFactor("mandibularTori", e.target.checked)} />
+              Mandibular tori
+            </label>
+            <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--ink)" }}>
+              <input type="checkbox" checked={!!pf.highLingualFrenum} onChange={(e) => setFactor("highLingualFrenum", e.target.checked)} />
+              High lingual frenum
+            </label>
+          </>
         )}
       </div>
 
