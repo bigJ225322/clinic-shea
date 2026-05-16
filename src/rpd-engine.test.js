@@ -3944,28 +3944,28 @@ describe("UIC-AUDIT — Survey crown multi-appointment workflow in Step 6", () =
 });
 
 describe("UIC-AUDIT — Rest seat dimensions (Lab 3 EXCELLENT panel)", () => {
-  it("Molar rest seat carries 2.5-3mm M-D × 1/3-1/2 B-L × 1.5mm dimensions", () => {
+  it("Molar rest seat carries Lab 5 dimensions (1/4 M-D × 1/3 B-L × 1.5mm MR reduction)", () => {
     const c = rpdMakeBlankCase("mandibular");
     setMissing(c, [17, 32]);
     setMissing(c, [29]); // #30 1M becomes abutment
     const r = rpdRunEngine(c);
     const d30 = r.abutmentDesigns.find(a => a.tooth === 30);
     if (d30?.restSeat) {
-      expect(d30.restSeat.dimensions).toMatch(/2\.5-3 mm M-D/);
-      expect(d30.restSeat.dimensions).toMatch(/1\/3-1\/2 B-L/);
-      expect(d30.restSeat.dimensions).toMatch(/1\.5 mm deep/);
+      expect(d30.restSeat.dimensions).toMatch(/1\/4 M-D/);
+      expect(d30.restSeat.dimensions).toMatch(/1\/3 B-L/);
+      expect(d30.restSeat.dimensions).toMatch(/1\.5 mm marginal-ridge reduction/);
       expect(d30.restSeat.dimensions).toMatch(/spoon-shaped/);
     }
   });
-  it("Premolar rest seat carries 2.5-3mm M-D × 2/3 B-L dimensions", () => {
+  it("Premolar rest seat carries Lab 5 dimensions (1/3 M-D × 1/3 B-L)", () => {
     const c = rpdMakeBlankCase("mandibular");
     setMissing(c, [17, 32]);
     setMissing(c, [30, 31]); // #29 2PM becomes terminal RPI abutment
     const r = rpdRunEngine(c);
     const d29 = r.abutmentDesigns.find(a => a.tooth === 29);
     if (d29?.restSeat) {
-      expect(d29.restSeat.dimensions).toMatch(/2\.5-3 mm M-D/);
-      expect(d29.restSeat.dimensions).toMatch(/2\/3 B-L/);
+      expect(d29.restSeat.dimensions).toMatch(/1\/3 M-D/);
+      expect(d29.restSeat.dimensions).toMatch(/1\/3 B-L/);
     }
   });
   it("Maxillary canine cingulum rest carries V-shaped teardrop dimensions", () => {
@@ -4011,6 +4011,70 @@ describe("UIC-AUDIT — Clasp 1/3 rule in lab Rx", () => {
     c.patientFactors.designIntent = "interim";
     const r = rpdRunEngine(c);
     expect(r.labScript).not.toMatch(/terminal 1\/3 in undercut/i);
+  });
+});
+
+describe("UIC-AUDIT — Combination Syndrome + Denture Base + IPD deep-mine", () => {
+  it("Combination Syndrome flag includes all 5 classic Kelly 1972 consequences + mechanism", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [18, 19, 30, 31]);
+    c.patientFactors.opposingArch = "complete_denture";
+    const r = rpdRunEngine(c);
+    const combFlag = r.redFlags.find(f => f.type === "combination-syndrome");
+    expect(combFlag).toBeDefined();
+    expect(combFlag.message).toMatch(/MECHANISM/);
+    expect(combFlag.message).toMatch(/protrusive relationship to feel mastication/);
+    expect(combFlag.message).toMatch(/FIVE CLASSIC CONSEQUENCES/);
+    expect(combFlag.message).toMatch(/Supra-eruption of mandibular anterior/);
+    expect(combFlag.message).toMatch(/Papillary hyperplasia/);
+  });
+  it("Combination Syndrome flag includes implant-assisted RPD ≥10 mm requirement", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [18, 19, 30, 31]);
+    c.patientFactors.opposingArch = "complete_denture";
+    const r = rpdRunEngine(c);
+    const combFlag = r.redFlags.find(f => f.type === "combination-syndrome");
+    expect(combFlag.message).toMatch(/≥10 mm vertical space/);
+    expect(combFlag.message).toMatch(/parallel to the RPD path of insertion in 3D/);
+  });
+  it("Combination Syndrome flag includes additional consequences (epulis fissuratum, VDO loss)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [18, 19, 30, 31]);
+    c.patientFactors.opposingArch = "complete_denture";
+    const r = rpdRunEngine(c);
+    const combFlag = r.redFlags.find(f => f.type === "combination-syndrome");
+    expect(combFlag.message).toMatch(/epulis fissuratum/);
+    expect(combFlag.message).toMatch(/loss of VDO/);
+    expect(combFlag.message).toMatch(/flabby anterior maxillary tissue/);
+  });
+  it("Hopeless tooth flag includes UIC Lab 6 definition (probing ≥8 mm + Miller III)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setAttrs(c, 31, { perioPrognosis: "hopeless" });
+    const r = rpdRunEngine(c);
+    const hopelessFlag = r.redFlags.find(f => f.type === "hopeless-tooth");
+    expect(hopelessFlag).toBeDefined();
+    expect(hopelessFlag.message).toMatch(/probing depth ≥8 mm.*Miller class III mobility/);
+  });
+  it("IPD lab Rx includes 'Avoid if possible' goal statement", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    c.patientFactors.designIntent = "interim";
+    const r = rpdRunEngine(c);
+    expect(r.labScript).toMatch(/Avoid IPD if possible/);
+    expect(r.labScript).toMatch(/Aimed for short period only/);
+  });
+  it("IPD lab Rx warns about acrylic clasps (impinge gingiva)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    c.patientFactors.designIntent = "interim";
+    const r = rpdRunEngine(c);
+    expect(r.labScript).toMatch(/Acrylic clasps.*impinge gingiva/);
   });
 });
 

@@ -12516,10 +12516,11 @@ const RPD_RATIONALE = {
     additionalSupport:   "Additional rest to distribute occlusal forces away from compromised abutment (Lecture 4A p. 16). Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
   },
   base: {
-    "Open Lattice": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
-    "Mesh":         "Used where there is limited inter-occlusal space (Denture Base Considerations p. 13). Fine metal mesh provides acrylic retention with thinner profile than Open Lattice. Preferred for anterior spans ≥3 teeth (esthetic-bulk reduction).",
+    "Open Lattice": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
+    "Mesh":         "Used where there is limited inter-occlusal space (Denture Base Considerations p. 13). Fine metal mesh provides acrylic retention with thinner profile than Open Lattice. Preferred for anterior spans ≥3 teeth (esthetic-bulk reduction). UIC rule of thumb: mesh anterior / lattice posterior in mixed cases (Design Case II p. 8).",
     "Tube Tooth":   "Used in tooth-supported area with limited vertical space on a well-healed ridge (≥6 mo post-extraction) (Denture Base Considerations p. 14). Metal sleeve cast into the framework; prosthetic tooth slides into sleeve. UIC RED-TEXT rule: denture tooth must be sent to lab AT framework fabrication, set in ideal position.",
     "Facing":       "Used for anterior single-tooth replacement with extremely limited vertical space + non-resorbed ridge (Denture Base Considerations p. 15). Metal backing supports a prosthetic tooth facing; ridge surface exposed. UIC RED-TEXT rule: denture tooth must be sent to lab AT framework fabrication.",
+    "_stressBearing": "STRESS-BEARING ANATOMY (Denture Base Considerations pp. 17-19):\n  • MAXILLARY primary: lateral hard palate (cover for support) + posterior ridge (main distal-extension support). Secondary: buccal/lingual slopes (horizontal counters). RELIEF REQUIRED over incisive papilla + median palatal raphe.\n  • MANDIBULAR primary: BUCCAL SHELF + RETROMOLAR PAD (dense cortical bone, perpendicular to occlusal forces, non-resorbing). Secondary: lingual slope. CREST NEEDS RELIEF (cancellous bone, continuous resorption — direct framework contact accelerates loss).\n  • Ideal residual ridge: non-resorbing stress-bearing surface (cortical over dense cancellous), broad flat crest, increased height, saddle-shape, firm dense fibrous CT cover.\nDENTURE TOOTH MATERIAL: porcelain teeth are NO LONGER USED (p. 11) — they increase ridge resorption (rigid impact on bone), rely on fragile diatoric mechanical retention, fracture easily, and accelerate opposing dentition wear. UIC default = acrylic teeth.\nOCCLUSAL LOAD FACTORS (pp. 24-25):\n  • Patient sex: women generate ~20 lbs less occlusal force than men.\n  • FMA (Frankfort-mandibular plane angle) classification: NORMAL 25° ± 5°; HIGH (long-face, weaker masseter pull) >30°; LOW (short-face, stronger masseter pull) <20°. High-FMA patients tolerate higher occlusal loads less well; consider narrower occlusal table + non-anatomic teeth to reduce load.\n  • Narrow occlusal table reduces force on residual ridge — preferred for distal extension cases with severe resorption.",
   },
   reciprocation: {
     plate: "Reciprocation provided by the major connector plating opposite the retentive arm (Lecture 5 reciprocation p. 4). When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
@@ -13208,10 +13209,10 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
         : "#6 round (outline) / #4 round (axial inclination)";
       restSeat = {
         surface: "mesial", type: "occlusal", bur: burForTooth,
-        // UIC Lab 3 EXCELLENT panel dimensions (mesial rest = RPI signature).
+        // UIC Lab 5 p. 8 dimensions (mesial rest = RPI signature for DE).
         dimensions: isMolar
-          ? "2.5-3 mm M-D × 1/3-1/2 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin"
-          : "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+          ? "1/4 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #8 round bur outline + #6 axial (Lab 5 p. 8)"
+          : "1/3 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #6 round bur outline + #4 axial (Lab 5 p. 8)",
       };
     }
   } else {
@@ -13232,14 +13233,15 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
         bur: isMolar
           ? "#8 round (outline) / #6 round (axial inclination) / #4 round (refinement)"
           : "#6 round (outline) / #4 round (axial inclination)",
-        // UIC Lab 3 EXCELLENT panel dimensions:
-        // Molar: 2.5-3 mm M-D × 1/3-1/2 B-L width × 1.5 mm deep, spoon-shaped
-        // Premolar: 2.5-3 mm M-D × 2/3 B-L width × 1.5 mm deep, spoon-shaped
-        // Inclination: 20° toward center of tooth (axial). Marginal ridges
-        // reduced 0.5-1 mm at rest seat margin to prevent occlusal interference.
+        // UIC Lab 3 + Lab 5 p. 8 EXCELLENT panel dimensions:
+        // Molar: 1/4 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction, spoon-shaped
+        // Premolar: 1/3 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction, spoon-shaped
+        // Inclination: floor inclines 20° toward center of tooth (axial). Marginal
+        // ridge reduced 1.5 mm to seat rest below the original cusp tips and prevent
+        // occlusal interference.
         dimensions: isMolar
-          ? "2.5-3 mm M-D × 1/3-1/2 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin"
-          : "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+          ? "1/4 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #8 round bur outline + #6 axial (Lab 5 p. 8)"
+          : "1/3 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #6 round bur outline + #4 axial (Lab 5 p. 8)",
       };
     } else if (RPD_CANINES.has(tooth)) {
       // Mandibular canines: UIC Design Case II uses ML BALL REST (mesio-
@@ -13259,7 +13261,7 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
           // Max canine cingulum rest (Lab 3 + Lecture 4A): V-shaped (teardrop)
           // depression on the cingulum, 1.5 mm deep, perpendicular to long
           // axis of tooth. NOT used on mand canines (cingulum too flat).
-          dimensions: "V-shaped (teardrop) depression on cingulum; 1.5 mm deep × 2.5 mm M-D × 2 mm I-G; perpendicular to long axis of tooth",
+          dimensions: "V-shaped (teardrop) depression on cingulum; 1.5 mm deep × 2.5 mm M-D × 2 mm I-G; perpendicular to long axis of tooth; floor-to-axial-wall angle <90° (Lab 5 p. 9 — sharp inner angle for positive seating, prevents lateral displacement)",
         };
       }
     } else {
@@ -13614,7 +13616,7 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
     flags.push({
       severity: "warning",
       type: "combination-syndrome",
-      message: "Combination Syndrome risk (Kelly 1972): maxillary complete denture opposing mandibular Class I RPD predisposes to supra-eruption of mandibular anteriors, resorption of maxillary anterior ridge, downward growth of maxillary tuberosities, resorption of mandibular posterior ridge, and papillary hyperplasia of the hard palate. Prevention: clinical remount, periodic recall, reline as needed, bilateral balanced articulation, altered-cast impression technique. Consider maintaining a distal abutment tooth (even if not ideal) or implant-assisted RPD to convert to Class III biomechanics.",
+      message: "Combination Syndrome risk (Kelly 1972; Fall RPD 22 Combination Syndrome lecture pp. 2-11): maxillary complete denture opposing mandibular Class I RPD.\nMECHANISM (lecture p. 2, 4): patient functions in protrusive relationship to feel mastication sensation; this tilts the maxillary CD upward, creating negative pressure that drives papillary hyperplasia of the hard palate.\nFIVE CLASSIC CONSEQUENCES (Kelly 1972):\n  1. Supra-eruption of mandibular anterior teeth\n  2. Resorption of maxillary anterior ridge\n  3. Downward growth of maxillary tuberosities\n  4. Resorption of mandibular posterior ridge\n  5. Papillary hyperplasia of the hard palate\nADDITIONAL CONSEQUENCES (lecture pp. 5-7): epulis fissuratum (flange irritation), occlusal plane discrepancy, anterior repositioning of mandible, loss of VDO, flabby anterior maxillary tissue, shallow anterior maxillary vestibule but deep posterior vestibule, worsening prosthesis fit, periodontal changes around remaining mandibular teeth.\nPREVENTION: clinical remount at 1 year, 3-month perio recall, reline as needed, bilateral balanced articulation (Lecture 3 p. 4), altered-cast impression technique (selective pressure), 24-hr post-delivery + 1-week + 3-month follow-up.\nAVOIDANCE PRINCIPLE (lecture p. 9): maintain a distal abutment tooth even when it's not ideal — converting to Class III biomechanics is preferable to Class I + CD opposing.\nIMPLANT-ASSISTED RPD (lecture p. 10) — definitive prevention strategy:\n  • Requires ≥10 mm vertical space (locator + implant + framework + acrylic + denture tooth).\n  • Implants must be parallel to the RPD path of insertion in 3D.\n  • Anteriorly placed implants allow removal of the retentive clasp for esthetics (locator engages the implant abutment, eliminating the need for tooth-engaging metal in the smile zone).\nWORKFLOW (lecture p. 11): diagnostic tooth setup → IPD + surgical guide → implant placement → pick-up locators on the IPD → definitive RPD after osseointegration.",
     });
   }
 
@@ -13723,13 +13725,16 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
     });
   }
 
-  // Hopeless abutments
+  // Hopeless abutments — UIC Lab 6 p. 2 definition: probing depth ≥8 mm
+  // PLUS Miller class III mobility = hopeless. These teeth must be removed
+  // from the cast BEFORE design begins (engine treats them as already-
+  // extracted for classification purposes per Applegate Rule 1).
   const hopeless = rpdArchTeeth(caseInput.arch).filter(n => rpdIsPresent(caseInput, n) && caseInput.teeth[n]?.attrs?.perioPrognosis === "hopeless");
   if (hopeless.length) {
     flags.push({
       severity: "blocker",
       type: "hopeless-tooth",
-      message: `Tooth ${rpdToothList(hopeless)} has hopeless prognosis. Per standard practice, extract during Phase I: Active Disease Control. Re-classify arch after extraction (Applegate's Rule 1).`,
+      message: `Tooth ${rpdToothList(hopeless)} has hopeless prognosis. UIC Lab 6 p. 2 hopeless definition: probing depth ≥8 mm + Miller class III mobility. Per standard practice, extract during Phase I: Active Disease Control. Re-classify arch after extraction (Applegate's Rule 1). Mark these teeth as "to be extracted" in the engine so the Kennedy classifier produces the post-extraction class — designing around a hopeless tooth wastes lab work when the tooth fails 6-12 months post-delivery.`,
     });
   }
 
@@ -14034,10 +14039,13 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
   if (isInterim) {
     lines.push(`Please fabricate ${archLc} interim immediate acrylic removable partial denture.`);
     lines.push("");
+    lines.push("UIC IPD lecture goal statement (Summer 2023 IPD-BS p. 20): \"Avoid IPD if possible. Aimed for short period only.\" Document specific transitional purpose in chart note (esthetic, space maintenance, trial occlusal change, patient conditioning, or bridge-to-implant interval).");
+    lines.push("");
     lines.push("Base: rigid acrylic — Red Pattern resin OR Ortho Resin Denture material.");
     lines.push("(Triad NOT advisable — does not bond reliably to denture teeth per UIC IPD lecture.)");
+    lines.push("(Acrylic clasps are an option per p. 13 but impinge gingiva and cause irritation — UIC discourages routine use.)");
     lines.push("");
-    lines.push("Set posterior teeth over the residual ridge. Do NOT increase VDO.");
+    lines.push("Set posterior teeth over the residual ridge. Do NOT increase VDO (unless this is a deliberate trial-VDO IPD).");
     lines.push("");
     abutmentDesigns.forEach(a => {
       const claspLine = a.claspType === "Ball Clasp"

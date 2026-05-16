@@ -27,7 +27,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
-        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+        "dimensions": "1/3 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #6 round bur outline + #4 axial (Lab 5 p. 8)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -60,7 +60,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
-        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+        "dimensions": "1/3 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #6 round bur outline + #4 axial (Lab 5 p. 8)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -76,7 +76,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "alternative": null,
       "alternativeRationale": null,
       "note": "Distal tissue stop required",
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
       "spanTeeth": [
         18,
         19,
@@ -88,7 +88,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "alternative": null,
       "alternativeRationale": null,
       "note": "Distal tissue stop required",
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
       "spanTeeth": [
         30,
         31,
@@ -298,7 +298,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
-        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+        "dimensions": "1/3 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #6 round bur outline + #4 axial (Lab 5 p. 8)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -331,7 +331,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
-        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+        "dimensions": "1/3 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #6 round bur outline + #4 axial (Lab 5 p. 8)",
         "surface": "distal",
         "type": "occlusal",
       },
@@ -369,7 +369,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "restRationale": null,
       "restSeat": {
         "bur": "#8 round (outline) / #6 round (axial inclination) / #4 round (refinement)",
-        "dimensions": "2.5-3 mm M-D × 1/3-1/2 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+        "dimensions": "1/4 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #8 round bur outline + #6 axial (Lab 5 p. 8)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -385,7 +385,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "alternative": null,
       "alternativeRationale": null,
       "note": "Distal tissue stop required",
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
       "spanTeeth": [
         18,
         19,
@@ -398,7 +398,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "alternative": null,
       "alternativeRationale": null,
       "note": undefined,
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
       "spanTeeth": [
         30,
       ],
@@ -596,7 +596,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "restRationale": null,
       "restSeat": {
         "bur": "#8 round (outline) / #6 round (axial inclination) / #4 round (refinement)",
-        "dimensions": "2.5-3 mm M-D × 1/3-1/2 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+        "dimensions": "1/4 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #8 round bur outline + #6 axial (Lab 5 p. 8)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -629,7 +629,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
-        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+        "dimensions": "1/3 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #6 round bur outline + #4 axial (Lab 5 p. 8)",
         "surface": "distal",
         "type": "occlusal",
       },
@@ -645,7 +645,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "alternative": null,
       "alternativeRationale": null,
       "note": undefined,
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
       "spanTeeth": [
         19,
       ],
@@ -807,7 +807,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": null,
       "restSeat": {
         "bur": "#8 round (outline) / #6 round (axial inclination) / #4 round (refinement)",
-        "dimensions": "2.5-3 mm M-D × 1/3-1/2 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+        "dimensions": "1/4 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #8 round bur outline + #6 axial (Lab 5 p. 8)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -845,7 +845,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
-        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+        "dimensions": "1/3 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #6 round bur outline + #4 axial (Lab 5 p. 8)",
         "surface": "distal",
         "type": "occlusal",
       },
@@ -968,7 +968,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
-        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+        "dimensions": "1/3 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #6 round bur outline + #4 axial (Lab 5 p. 8)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -984,7 +984,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": null,
       "alternativeRationale": null,
       "note": undefined,
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
       "spanTeeth": [
         3,
       ],
@@ -995,7 +995,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": null,
       "alternativeRationale": null,
       "note": undefined,
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
       "spanTeeth": [
         5,
       ],
@@ -1006,7 +1006,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": null,
       "alternativeRationale": null,
       "note": undefined,
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
       "spanTeeth": [
         7,
         8,
@@ -1018,7 +1018,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": null,
       "alternativeRationale": null,
       "note": undefined,
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
       "spanTeeth": [
         10,
       ],
@@ -1029,7 +1029,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": null,
       "alternativeRationale": null,
       "note": "Distal tissue stop required",
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
       "spanTeeth": [
         13,
         14,
@@ -1325,7 +1325,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
-        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+        "dimensions": "1/3 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #6 round bur outline + #4 axial (Lab 5 p. 8)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -1412,7 +1412,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
-        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+        "dimensions": "1/3 M-D × 1/3 B-L × 1.5 mm marginal-ridge reduction; spoon-shaped; floor inclines 20° axially toward tooth center; #6 round bur outline + #4 axial (Lab 5 p. 8)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -1428,7 +1428,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": null,
       "alternativeRationale": null,
       "note": "Distal tissue stop required",
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
       "spanTeeth": [
         2,
         3,
@@ -1440,7 +1440,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": null,
       "alternativeRationale": null,
       "note": undefined,
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
       "spanTeeth": [
         5,
       ],
@@ -1451,7 +1451,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": "Open Lattice",
       "alternativeRationale": "Mesh is the preferred choice for anterior spans ≥3 teeth (esthetic-bulk preference reduces acrylic bulk in the visible zone). Open Lattice is also acceptable and provides slightly more acrylic retention.",
       "note": undefined,
-      "rationale": "Used where there is limited inter-occlusal space (Denture Base Considerations p. 13). Fine metal mesh provides acrylic retention with thinner profile than Open Lattice. Preferred for anterior spans ≥3 teeth (esthetic-bulk reduction).",
+      "rationale": "Used where there is limited inter-occlusal space (Denture Base Considerations p. 13). Fine metal mesh provides acrylic retention with thinner profile than Open Lattice. Preferred for anterior spans ≥3 teeth (esthetic-bulk reduction). UIC rule of thumb: mesh anterior / lattice posterior in mixed cases (Design Case II p. 8).",
       "spanTeeth": [
         7,
         8,
@@ -1465,7 +1465,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": null,
       "alternativeRationale": null,
       "note": "Distal tissue stop required",
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
       "spanTeeth": [
         13,
         14,
