@@ -4014,6 +4014,107 @@ describe("UIC-AUDIT — Clasp 1/3 rule in lab Rx", () => {
   });
 });
 
+describe("UIC-AUDIT — Retainers PDF deep-mine: encirclement + taxonomy + variants", () => {
+  it("Step 3 includes encirclement rule (>180° or 3 contact points)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/ENCIRCLEMENT RULE/);
+    expect(r.axiumSteps).toMatch(/>180/);
+    expect(r.axiumSteps).toMatch(/3 widely separated contact points/);
+  });
+  it("Step 3 includes clasp arm taper rule (retentive both / reciprocal thickness only)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/CLASP ARM TAPER/);
+    expect(r.axiumSteps).toMatch(/retentive arm tapers in BOTH thickness AND width/);
+    expect(r.axiumSteps).toMatch(/reciprocal arm tapers in thickness ONLY/);
+  });
+  it("Step 3 includes flexibility rank: WW > cast gold > Cr-Co", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/wrought wire.*cast gold.*Cr-Co/);
+  });
+  it("Step 3 includes suprabulge vs infrabulge taxonomy", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/SUPRABULGE/);
+    expect(r.axiumSteps).toMatch(/INFRABULGE/);
+    expect(r.axiumSteps).toMatch(/Akers.*Embrasure.*Ring/);
+  });
+  it("Step 3 enumerates I-bar, T-bar, modified T-bar, Y-bar variants", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/I-bar/);
+    expect(r.axiumSteps).toMatch(/T-bar/);
+    expect(r.axiumSteps).toMatch(/Modified T-bar/);
+    expect(r.axiumSteps).toMatch(/Y-bar/);
+  });
+  it("RPI rationale uses 1/2 to 2/3 OG height (not ≥1/3) for proximal plate", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    const d29 = r.abutmentDesigns.find(a => a.tooth === 29);
+    if (d29?.claspType === "RPI") {
+      expect(d29.claspRationale).toMatch(/1\/2 to 2\/3/);
+      expect(d29.claspRationale).toMatch(/Kratochvil/);
+      expect(d29.claspRationale).toMatch(/Krol/);
+    }
+  });
+  it("Step 3 includes intracoronal retainer contraindication for DE", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/INTRACORONAL RETAINERS.*CONTRAINDICATED for distal extension/);
+  });
+  it("A-P Strap lab Rx includes 0.5 mm beading", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3, 14]); // bilateral tooth-supported
+    const r = rpdRunEngine(c);
+    if (/A-P Strap/i.test(r.majorConnector.type)) {
+      expect(r.labScript).toMatch(/0\.5 mm.*beading/);
+    }
+  });
+  it("Step 11 includes reline diagnostic tests (rotation + alginate)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/CLASSIC ROTATION TEST/);
+    expect(r.axiumSteps).toMatch(/ALGINATE TEST/);
+  });
+  it("Step 11 includes closed-mouth vs open-mouth impression rule", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/CLOSED-MOUTH technique.*tooth-supported/);
+    expect(r.axiumSteps).toMatch(/OPEN-MOUTH technique.*distal extension/);
+  });
+  it("Step 7 includes 6-point framework try-in failure checklist", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/6-POINT FAILURE CHECKLIST/);
+    expect(r.axiumSteps).toMatch(/ROCKING/);
+    expect(r.axiumSteps).toMatch(/LATTICE-TO-TISSUE DISTANCE/);
+    expect(r.axiumSteps).toMatch(/BROAD AND EVEN contacts/);
+  });
+});
+
 describe("UIC-AUDIT — Lecture 3 MI primary / CR fallback + Class I balanced strived", () => {
   it("Step 8 specifies MI as primary reference and CR as fallback (Lecture 3 p. 4-9)", () => {
     const c = rpdMakeBlankCase("mandibular");

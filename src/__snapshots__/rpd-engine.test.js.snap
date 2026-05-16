@@ -7,7 +7,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 35). Rest mesial + Proximal plate distal (covers ≥1/3 of distal surface) + I-bar engaging 0.01" mid-buccal undercut. Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
+      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (UIC house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
       "claspTier": "strong",
       "claspType": "RPI",
       "contraindications": [],
@@ -40,7 +40,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 35). Rest mesial + Proximal plate distal (covers ≥1/3 of distal surface) + I-bar engaging 0.01" mid-buccal undercut. Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
+      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (UIC house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
       "claspTier": "strong",
       "claspType": "RPI",
       "contraindications": [],
@@ -1230,6 +1230,7 @@ Relief: 0.5 mm relief over the incisive papilla and median palatal raphe (mandat
 Anterior strap: 6 mm posterior to gingival margins of anterior teeth, 8 mm wide.
 Posterior strap: 6 mm anterior to vibrating line, 6-8 mm wide.
 Lateral straps: ≥4 mm wide; cross the palate at oblique angle for tongue comfort.
+Beading: 0.5 mm finish-line beading on the tissue side of both anterior and posterior straps (per LabRx Example p. 2 — improves border seal and prevents food impaction).
 Framework metal thickness: 0.5-1.0 mm Co-Cr at major connector; smooth, polished tongue-facing surface.
 
 Cast clasp arm position: terminal 1/3 in undercut (0.01" engagement); middle 1/3 at survey line; origin 1/3 rigid above survey line. Clasp tip in gingival 1/3 of clinical crown — NOT on gingival margin.
@@ -1309,7 +1310,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 35). Rest mesial + Proximal plate distal (covers ≥1/3 of distal surface) + I-bar engaging 0.01" mid-buccal undercut. Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
+      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (UIC house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
       "claspTier": "strong",
       "claspType": "RPI",
       "contraindications": [],
@@ -1396,7 +1397,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 35). Rest mesial + Proximal plate distal (covers ≥1/3 of distal surface) + I-bar engaging 0.01" mid-buccal undercut. Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
+      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (UIC house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
       "claspTier": "strong",
       "claspType": "RPI",
       "contraindications": [],
