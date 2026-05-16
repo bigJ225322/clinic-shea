@@ -2339,13 +2339,13 @@ const CATEGORIES = [
       { id: "lab-rpd",        label: "Partial Dentures (RPD)" },
       { id: "lab-ii-rpd",     label: "Interim Immediate Partial" },
     ]},
+    { id: "lab-workflow", label: "Workflow", procedures: [
+      { id: "lab-howto",     label: "How to Submit a Lab Script" },
+      { id: "lab-tooth-req", label: "Tooth Requisition" },
+      { id: "lab-turnaround", label: "Lab Turn-Around Time" },
+    ]},
   ]},
   { id: "misc", label: "Misc.", groups: [
-    { id: "misc-lab", label: "Lab", procedures: [
-      { id: "misc-lab-script",     label: "Lab Script" },
-      { id: "misc-tooth-req",      label: "Tooth Requisition" },
-      { id: "misc-lab-turnaround", label: "Lab Turn-Around Time" },
-    ]},
     { id: "misc-orders", label: "Patient Orders & Forms", procedures: [
       { id: "misc-prescriptions", label: "Prescriptions" },
       { id: "misc-prevident",     label: "PreviDent / Chlorhexidine / MI Paste" },
@@ -3291,10 +3291,12 @@ const REF_DATA = {
   },
 
   /* ──────────────────────────────────────────────────────────────────────
-   * MISC → LAB — supporting reference pages.
+   * LAB SCRIPTS → WORKFLOW — supporting reference pages that explain how
+   * to submit a script through Axium, request denture teeth, and plan
+   * around the lab's turnaround times.
    * ────────────────────────────────────────────────────────────────── */
 
-  "misc-lab-script": {
+  "lab-howto": {
     verdict: "A lab script is submitted in Axium under the Labs tab; the printed form goes with the case to the 5th-floor lab. For RPDs you draw the design on the printed form before sending.",
     blocks: [
       { type: "prose", heading: "Filling out a lab script in Axium", lines: [
@@ -3314,7 +3316,7 @@ const REF_DATA = {
     ],
   },
 
-  "misc-lab-turnaround": {
+  "lab-turnaround": {
     verdict: "Plan delivery appointments around the Swade turnaround table. Most prosthetic cases need 9 – 12 business days; reline and model work are quick at 5 days.",
     blocks: [
       { type: "table", caption: "Swade lab turnaround times",
@@ -3336,7 +3338,7 @@ const REF_DATA = {
     ],
   },
 
-  "misc-tooth-req": {
+  "lab-tooth-req": {
     verdict: "Tooth requisition (TOOREQ) is a separate Axium form from the lab script — it tells the 5th-floor lab which denture teeth to give you for set-up.",
     blocks: [
       { type: "prose", heading: "Filling out the form", lines: [
