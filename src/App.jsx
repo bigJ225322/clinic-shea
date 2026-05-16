@@ -17759,7 +17759,7 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
               fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase",
               color: "var(--ink-soft)", marginBottom: "12px",
             }}>
-              Engine decision tree — why this clasp on #{tooth}
+              Engine decision tree
             </div>
             {groups.map((g, gi) => {
               const isLast = gi === groups.length - 1 && !leafNode;
@@ -18627,16 +18627,24 @@ function RPDHelper() {
 
       {hasContent && !isSingleToothFixedCase && <>
 
-      {/* Red Flags */}
+      {/* Notices — inline severity-tinted call-outs without a section header.
+          The prior "RED FLAGS" heading + uppercase severity badge over-
+          dramatized info-level items (which are the majority); now the
+          severity word ("Notice:", "Warning:", "Important:") leads the
+          message itself, and the background tint still distinguishes
+          severity levels. */}
       {result.redFlags.length > 0 && (
         <div style={{ marginBottom: "24px" }}>
-          <div style={sectionTitle}>Red Flags</div>
-          {result.redFlags.map((f, i) => (
-            <div key={i} style={flagStyle(f.severity)}>
-              <strong style={{ textTransform: "uppercase", fontSize: "10px", letterSpacing: "0.14em", marginRight: "6px" }}>{f.severity}</strong>
-              {f.message}
-            </div>
-          ))}
+          {result.redFlags.map((f, i) => {
+            const label = f.severity === "blocker" ? "Important"
+                        : f.severity === "warning" ? "Warning"
+                        : "Notice";
+            return (
+              <div key={i} style={flagStyle(f.severity)}>
+                <strong>{label}:</strong> {f.message}
+              </div>
+            );
+          })}
         </div>
       )}
 
