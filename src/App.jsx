@@ -13177,7 +13177,17 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
           : "#6 round (outline) / #4 round (axial inclination)",
       };
     } else if (RPD_CANINES.has(tooth)) {
-      restSeat = { surface: sideToward, type: "cingulum", bur: "inverted cone" };
+      // Mandibular canines: UIC Design Case II uses ML BALL REST (mesio-
+      // lingual ball) when the canine is a bounding abutment of an anterior
+      // edentulous span. The mand canine cingulum is anatomically inadequate
+      // for a positive vertical stop, so a ball rest is preferred on the
+      // mesio-lingual line angle. Max canines retain the cingulum-rest
+      // convention (max canine cingulum is anatomically prominent enough).
+      if (caseInput.arch === "mandibular") {
+        restSeat = { surface: "mesio-lingual", type: "ball", bur: "inverted cone" };
+      } else {
+        restSeat = { surface: sideToward, type: "cingulum", bur: "inverted cone" };
+      }
     } else {
       restSeat = { surface: sideToward, type: "cingulum", bur: "inverted cone" };
     }
