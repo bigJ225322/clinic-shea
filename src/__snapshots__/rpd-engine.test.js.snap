@@ -190,10 +190,10 @@ Major connector: Lingual Bar.
 
 * Exact undercuts to engage are marked in red. *
 
-#20: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut, Lingual reciprocal plate.
+#20: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut.
 #21: Mesial rest.
 #28: Mesial rest.
-#29: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut, Lingual reciprocal plate.
+#29: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut.
 
 #18-19: Open lattice with distal tissue stop.
 #30-31: Open lattice with distal tissue stop.
@@ -235,7 +235,7 @@ Please return for try-in. Thank you.",
   },
   "redFlags": [
     {
-      "message": "Altered Cast Technique required: two-stage functional impression to capture compressible soft tissues and prevent framework rotation.",
+      "message": "Class I/II distal extension: altered cast technique MAY be needed at framework try-in. UIC default is single-step PVS. Indication for altered cast: (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby/compressible. If indicated: heat framework saddle, add Triad spacer, border-mold the saddle, light-body PVS impression — press on REST SEATS ONLY, never on the distal extension framework. Lab sections the master cast and pours new distal extensions.",
       "severity": "info",
       "type": "altered-cast",
     },
@@ -514,7 +514,7 @@ Please return for try-in. Thank you.",
   },
   "redFlags": [
     {
-      "message": "Altered Cast Technique required: two-stage functional impression to capture compressible soft tissues and prevent framework rotation.",
+      "message": "Class I/II distal extension: altered cast technique MAY be needed at framework try-in. UIC default is single-step PVS. Indication for altered cast: (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby/compressible. If indicated: heat framework saddle, add Triad spacer, border-mold the saddle, light-body PVS impression — press on REST SEATS ONLY, never on the distal extension framework. Lab sections the master cast and pours new distal extensions.",
       "severity": "info",
       "type": "altered-cast",
     },
@@ -1147,6 +1147,8 @@ Major connector: A-P Strap with 0.5mm beading on the tissue side.
 #10: Open lattice.
 #13-15: Open lattice with distal tissue stop.
 
+Relief: 0.5 mm relief over the incisive papilla and median palatal raphe (mandatory per UIC).
+
 Please return for try-in. Thank you.",
   "majorConnector": {
     "note": "0.5mm beading on tissue side",
@@ -1183,7 +1185,7 @@ Please return for try-in. Thank you.",
   },
   "redFlags": [
     {
-      "message": "Altered Cast Technique required: two-stage functional impression to capture compressible soft tissues and prevent framework rotation.",
+      "message": "Class I/II distal extension: altered cast technique MAY be needed at framework try-in. UIC default is single-step PVS. Indication for altered cast: (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby/compressible. If indicated: heat framework saddle, add Triad spacer, border-mold the saddle, light-body PVS impression — press on REST SEATS ONLY, never on the distal extension framework. Lab sections the master cast and pours new distal extensions.",
       "severity": "info",
       "type": "altered-cast",
     },
@@ -1530,15 +1532,17 @@ Major connector: Full Palatal Plate with 0.5mm beading on the tissue side.
 
 * Exact undercuts to engage are marked in red. *
 
-#4: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut, Palatal reciprocal plate.
+#4: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut.
 #6: Distal proximal plate, Cingulum rest.
 #11: Mesial proximal plate, Cingulum rest.
-#12: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut, Palatal reciprocal plate.
+#12: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut.
 
 #2-3: Open lattice with distal tissue stop.
 #5: Open lattice.
 #7-10: Mesh.
 #13-15: Open lattice with distal tissue stop.
+
+Relief: 0.5 mm relief over the incisive papilla and median palatal raphe (mandatory per UIC).
 
 Please return for try-in. Thank you.",
   "majorConnector": {
@@ -1577,7 +1581,7 @@ Please return for try-in. Thank you.",
   },
   "redFlags": [
     {
-      "message": "Altered Cast Technique required: two-stage functional impression to capture compressible soft tissues and prevent framework rotation.",
+      "message": "Class I/II distal extension: altered cast technique MAY be needed at framework try-in. UIC default is single-step PVS. Indication for altered cast: (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby/compressible. If indicated: heat framework saddle, add Triad spacer, border-mold the saddle, light-body PVS impression — press on REST SEATS ONLY, never on the distal extension framework. Lab sections the master cast and pours new distal extensions.",
       "severity": "info",
       "type": "altered-cast",
     },

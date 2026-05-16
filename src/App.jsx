@@ -12970,18 +12970,40 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
   })();
 
   // Survey crown / crown lengthening (computed once, used in all branches).
+  // Per UIC Lecture 4A p.9, four criteria — ANY ONE triggers a survey crown:
+  //   (1) Teeth with extensive direct restorations
+  //   (2) Need to re-establish plane of occlusion (e.g., supra-erupted tooth)
+  //   (3) Need ideal rests + undercuts + guide planes + HOC simultaneously
+  //       (the rest-seat enamel would be insufficient or all four features
+  //       can't be safely created in enamel)
+  //   (4) Rest seats / guide planes need to be in METAL (e.g., the tooth is
+  //       already crowned in a way that obstructs preparation)
+  //
+  // The engine maps these to the abutment attrs:
+  //   (1) attrs.existingRestorations === "extensive"
+  //   (2) attrs.tilt === "extreme" (also satisfies #2: extreme tilt usually
+  //       requires occlusal-plane reorientation via crown)
+  //   (3) attrs.enamelIntegrityAtRestSeat === "insufficient" — captures both
+  //       "would penetrate dentin" and "can't create ideal features in enamel"
+  //   (4) attrs.existingCrown === "obstructing" — new attr; when the tooth
+  //       has an existing crown that interferes with rest-seat preparation.
   const needsSurveyCrown = (
     attrs.enamelIntegrityAtRestSeat === "insufficient" ||
     attrs.existingRestorations === "extensive" ||
-    attrs.tilt === "extreme"
+    attrs.tilt === "extreme" ||
+    attrs.existingCrown === "obstructing"
   );
   const needsCrownLengthening = (attrs.crownHeight === "short" && !needsSurveyCrown);
   const surveyCrown = needsSurveyCrown ? {
     indicated: true,
-    reason: attrs.enamelIntegrityAtRestSeat === "insufficient" ? "would penetrate dentin (preparations must stay in enamel)" :
-            attrs.existingRestorations === "extensive" ? "extensive existing restorations jeopardize tooth integrity" :
-            "extreme tilt requires axial re-contouring beyond enameloplasty",
-    note: "PFM survey crown required. Total of 2.5–3.0mm occlusal tooth reduction at the rest seat area; 0.5–1mm for metal thickness. Rest seats and guide planes must be completed in METAL, not porcelain. Use surveyor to verify HOC, axial undercuts, and ideal guide planes before cementation.",
+    reason: attrs.existingCrown === "obstructing"
+              ? "existing crown obstructs rest-seat/guide-plane prep — survey crown needed to put these features in metal"
+            : attrs.enamelIntegrityAtRestSeat === "insufficient"
+              ? "cannot safely create ideal rests + undercuts + guide planes + HOC in enamel (preparations would penetrate dentin)"
+            : attrs.existingRestorations === "extensive"
+              ? "extensive existing restorations jeopardize tooth integrity if further modified"
+            : "extreme tilt — axial re-contouring beyond enameloplasty (would also need to re-establish plane of occlusion)",
+    note: "PFM survey crown required. Total of 2.5–3.0mm occlusal tooth reduction at the rest seat area; 0.5–1mm for metal thickness. Rest seats and guide planes must be completed in METAL, not porcelain. Use surveyor BEFORE CEMENTATION to verify HOC, axial undercuts, ideal guide planes, and positive rest seats (UIC Lecture 4A p.14).",
   } : null;
   const crownLengthening = needsCrownLengthening ? {
     indicated: true,
@@ -13501,7 +13523,14 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
     flags.push({
       severity: "info",
       type: "altered-cast",
-      message: "Altered Cast Technique required: two-stage functional impression to capture compressible soft tissues and prevent framework rotation.",
+      // UIC's actual stance (Final Impressions lecture pp.32-34): default
+      // is SINGLE-STEP impression for all Kennedy classes. Altered cast is
+      // invoked specifically when disclosing-wax framework try-in reveals
+      // a discrepancy between master-cast seating and intraoral seating, OR
+      // when the distal-extension ridge tissue is visibly flabby/compressible.
+      // The engine flags Class I/II at info-tier (not blocker) as a heads-up
+      // that the case MAY need altered cast at try-in — not a guarantee.
+      message: "Class I/II distal extension: altered cast technique MAY be needed at framework try-in. UIC default is single-step PVS. Indication for altered cast: (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby/compressible. If indicated: heat framework saddle, add Triad spacer, border-mold the saddle, light-body PVS impression — press on REST SEATS ONLY, never on the distal extension framework. Lab sections the master cast and pours new distal extensions.",
     });
   }
 
@@ -13726,30 +13755,24 @@ function rpdDescribeClasp(a, abutmentAttrs) {
   return a.retentiveArm || "";
 }
 
-// Reciprocation per UIC actual lab Rx examples (Design Case I, II, framework
-// Case 1, LabRx Example A, B verbatim):
+// Reciprocation per UIC actual lab Rx examples. UIC is inconsistent on
+// whether to explicitly mention the reciprocal plate for RPI / I-bar
+// esthetic clasps:
+//   - Design Case I max #6 + #14 (I-bar): OMITS "Palatal reciprocal plate"
+//   - Design Case I mand #21 (Combination): includes "Lingual reciprocal plate"
+//   - Design Case II max #4 + #12 (RPI): includes "Palatal reciprocal plate"
+//   - Framework Case 1 #14 (I-bar RPI): OMITS reciprocal notation
+//   - LabRx Example B #29 (RPI): OMITS reciprocal notation
 //
-//   RPI: "Palatal reciprocal plate" (max) or "Lingual reciprocal plate"
-//        (mand) — the proximal-plate-plus-lingual-plating IS the reciprocation
-//        and UIC explicitly mentions it in the lab Rx, not implicit.
-//        (Design Case II Maxillary #4 + #12 verbatim: "Palatal reciprocal plate")
-//   I-bar (esthetic): same convention as RPI — "Palatal/Lingual reciprocal plate"
-//        (the I-bar esthetic on a tooth-supported abutment uses the same
-//        plating reciprocation).
-//   Akers (standard): retentive on buccal → reciprocal "Palatal/Lingual
-//        reciprocal clasp" (cast arm on opposite side).
-//   Akers with DL/DB undercut (Reverse Akers pattern): retentive on lingual
-//        side → "Buccal reciprocal clasp".
-//   Combination: "Palatal/Lingual reciprocal plate" (the metal plating, not arm).
-//   Embrasure: same arch-opposite reciprocal arm as Akers.
+// 4 of 5 RPI/I-bar examples omit the reciprocal plate (it's implicit in
+// the proximal-plate + lingual-plating). Combination always includes it
+// (different clasp scheme — wrought wire arm needs explicit plating
+// counterpart). Engine adopts the majority convention: omit for RPI /
+// I-bar esthetic, include for Combination + arm reciprocation for
+// Akers / Reverse Akers / Embrasure.
 function rpdDescribeReciprocation(claspType, arch, abutmentAttrs) {
   const side = arch === "maxillary" ? "Palatal" : "Lingual";
-  if (claspType === "RPI" || claspType === "I-bar (esthetic)") {
-    // UIC explicitly writes the reciprocal plate in the lab Rx — the
-    // proximal-plate + lingual-plating combination provides reciprocation
-    // for the I-bar / RPI retentive arm.
-    return `${side} reciprocal plate`;
-  }
+  if (claspType === "RPI" || claspType === "I-bar (esthetic)") return null;
   if (claspType === "Combination") {
     return `${side} reciprocal plate`;
   }
@@ -13865,6 +13888,30 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
       const typeText = b.type === "Open Lattice" ? "Open lattice" : b.type;
       lines.push(`${span}: ${typeText}${suffix}.`);
     });
+  }
+
+  // UIC red-text rule for Facing / Tube Tooth base designs (Denture Base
+  // Considerations pp.14-15 — repeated in red, both lectures): the denture
+  // tooth MUST be sent to the lab AT THE TIME OF FRAMEWORK FABRICATION,
+  // preferably set in its ideal location. The framework is built around
+  // the pre-positioned tooth (vs the standard workflow where teeth are
+  // set after framework try-in).
+  const hasFacingOrTube = (baseDesigns || []).some(b =>
+    b.type === "Facing" || b.type === "Tube Tooth");
+  if (hasFacingOrTube) {
+    const types = (baseDesigns || [])
+      .filter(b => b.type === "Facing" || b.type === "Tube Tooth")
+      .map(b => `${b.type} #${rpdFormatToothSpan(b.spanTeeth).replace(/^#/, "")}`)
+      .join(", ");
+    lines.push("");
+    lines.push(`** ${types}: denture tooth MUST be provided to the lab at the time of framework fabrication, set in its ideal location. The framework is cast around the pre-positioned tooth. **`);
+  }
+
+  // Maxillary major connector relief callouts (UIC Final Impressions p.21):
+  // Mandatory relief over the incisive papilla and median palatal raphe.
+  if (arch === "maxillary") {
+    lines.push("");
+    lines.push("Relief: 0.5 mm relief over the incisive papilla and median palatal raphe (mandatory per UIC).");
   }
 
   lines.push("");
@@ -14055,9 +14102,9 @@ const RPD_AXIUM_STEPS = [
     step: 7,
     phase: "Phase III: Prosthetic",
     clinic: "Final Impression + Lab Rx + Framework Fabrication",
-    action: "Diagnostic alginate impression → custom tray. Border molding + final impression (single-step selective). Send to lab: Axium Lab Rx (this engine's output), RPD design on duplicate cast, master cast. Framework try-in. Altered cast impression if Class I/II (two-stage functional impression to capture compressible mucosa). Wax-rim occlusal records. Wax teeth try-in. Processing + delivery.",
-    axiumEntry: "Lab Rx submitted (D5213/D5214 definitive; D5820/D5821 interim); framework try-in note; altered cast impression note (Class I/II); final delivery note",
-    design: "This engine's lab script section becomes the Rx text. Procedure code in metadata.",
+    action: "CUSTOM TRAY (UIC FI protocol):\n  • Material: Triad LC (light-cured resin). Pattern resin is fallback if Triad doesn't bond securely.\n  • Spacer asymmetry: 2 sheets baseplate wax over teeth + tooth-supported edentulous areas; 1 sheet over distal extension areas (this is UIC's selective-pressure technique).\n  • Vestibular extension: 2 mm short of full vestibular depth.\n  • Border wax relief: remove 2 mm wax from intaglio borders on impression day to allow border-mold compound.\n  • Cure cycle: 2 min top, 1 min intaglio. WAX MUST NOT MELT.\n  • Relief hole: maxillary tray YES, mandibular tray NO.\n  • Handles: finger rests at 1st molar region; anterior handle so it doesn't interfere with impression.\nBORDER MOLDING:\n  • Maxillary: distal extension areas only.\n  • Mandibular: distal extension areas AND entire lingual vestibule.\n  • Material: green-stick compound, Hanau torch.\n  • Reduce border thickness 0.5 mm before final impression.\nFINAL IMPRESSION:\n  • PVS adhesive applied to tray, 10-minute dry time before loading.\n  • Light body PVS on teeth; medium or heavy body in tray.\n  • Single-step selective-pressure technique (the 2/1 spacer asymmetry + viscosity split IS the selective pressure).\nMASTER CAST POUR:\n  • Type III stone (Coe-Cal or Microstone).\n  • Wait 24-48 hours; soak cast in warm water before separating impression to soften compound.\nMARKING CONVENTION FOR LAB CAST:\n  • Master cast: tripod marks, exact undercut points (RED), HOC of abutments.\n  • Design cast: full framework design.\n  • Metal components: BLUE ink (framework outline, rests, clasps, major connector).\n  • RED ink: tissue stops, wrought wire, acrylic base extensions, undercut points, relief over palatal raphe/incisive papilla.\nSEND TO LAB: Axium Lab Rx (this engine's output), master cast, design cast.\nFRAMEWORK TRY-IN (in order):\n  1. On master cast first: verify rest seats flush, clasps engage correct undercuts, major connector adapted.\n  2. Intraorally with disclosing wax thinly painted on metal-tooth contact areas.\n  3. DO NOT FORCE the framework — adjust binding spots with high-speed coarse diamond bur.\n  4. Repeat until passive seating intraorally matches cast seating.\nALTERED CAST: only if framework-try-in disclosing wax reveals discrepancy between cast and mouth, OR flabby distal-extension tissue. UIC default is single-step.\nDuring altered-cast impression: PRESS ON REST SEATS ONLY — do NOT press on distal extension framework.\nWAX RIM / TEETH SET-UP / PROCESSING / DELIVERY.",
+    axiumEntry: "Lab Rx submitted (D5213/D5214 definitive; D5820/D5821 interim); framework try-in note (disclosing-wax check); altered cast impression note if indicated; final delivery note",
+    design: "This engine's lab script section becomes the Rx text. Procedure code in metadata. Maxillary lab Rx must include 0.5 mm relief over incisive papilla and median palatal raphe.",
   },
   // ── (E) Phase IV: Post-Delivery Follow-up (per UIC Delivery RPD lecture) ──
   {
