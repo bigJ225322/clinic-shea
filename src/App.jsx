@@ -13047,9 +13047,12 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
     } else {
       claspType = "Combination";
       claspRationale = `${RPD_RATIONALE.clasp["Combination"]} (${claspContras[0].text})`;
-      retentiveArm = "18ga wrought wire retentive arm engaging 0.02\" MB undercut";
+      retentiveArm = "18ga wrought wire retentive arm engaging 0.02\" mesio-buccal undercut";
       reciprocation = { type: "arm", text: "Cast lingual reciprocal arm", rationale: RPD_RATIONALE.reciprocation.arm };
       // Combination is the deterministic fallback when RPI is contraindicated.
+      // Per UIC Retainers slide 37: WW retentive arm engages a MESIO-BUCCAL
+      // undercut at 0.02" depth. The wrought wire's all-plane flexibility
+      // is what provides the stress release.
       claspTier = "strong";
     }
   } else {
@@ -13188,12 +13191,21 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
   // Compute the effective undercut location for chart annotation / inspector
   // display. For Akers on tooth-supported abutments, this differs from the
   // user's attrs.undercutLocation when the user has the default mid-buccal
-  // (the engine substitutes the context-appropriate DB or MB). For all
-  // other clasp types, this equals attrs.undercutLocation.
+  // (the engine substitutes the context-appropriate DB or MB). For
+  // Combination clasps, the WW retentive arm engages the mesio-buccal
+  // undercut by UIC convention (Retainers slide 37) regardless of the
+  // user's default. RPI and I-bar esthetic engage mid-buccal.
   const isAkersStandard = claspType === "Akers";
-  const effectiveUndercutLocation = isAkersStandard && attrs.undercutLocation === "mid-buccal"
-    ? (sideToward === "mesial" ? "disto-buccal" : "mesio-buccal")
-    : attrs.undercutLocation;
+  const isCombination = claspType === "Combination";
+  let effectiveUndercutLocation;
+  if (isAkersStandard && attrs.undercutLocation === "mid-buccal") {
+    effectiveUndercutLocation = sideToward === "mesial" ? "disto-buccal" : "mesio-buccal";
+  } else if (isCombination) {
+    // Combination always engages mesio-buccal (MB) per UIC.
+    effectiveUndercutLocation = "mesio-buccal";
+  } else {
+    effectiveUndercutLocation = attrs.undercutLocation;
+  }
   return {
     tooth, isPrimaryAbutment: isDE, spanType: span.type,
     claspType, claspRationale, retentiveArm, reciprocation,
@@ -17589,15 +17601,34 @@ function RPDPaperFormArchDrawing({
               return [selectable(el, 'clasp', { tooth: a.tooth, tooltip: `${ct} on ${rpdToothName(a.tooth)} — engages ${ucLoc} undercut` }, `clasp-w-${i}`)];
             })}
 
-            {/* 9. Indirect retainers */}
+            {/* 9. Indirect retainers — pick the right rest glyph by restType:
+                  - ball rest (max centrals #8/#9 with distal ball; or mand
+                    canine with ML ball) → small filled circle on the rest
+                    surface (drawCingulumRest is the closest existing glyph;
+                    we use it for both ball and cingulum since visually they
+                    both sit on the lingual/incisal aspect)
+                  - cingulum rest (max canines/laterals or anteriors generally)
+                    → V-shaped cingulum glyph
+                  - occlusal rest (premolars) → spoon-shaped occlusal glyph
+                                                on the mesial/distal surface */}
             {indirects.flatMap((r, i) => {
-              const isCing = (r.restType || "").toLowerCase().includes("cingulum")
-                           || RPD_CANINES.has(r.tooth)
-                           || (r.tooth >= 6 && r.tooth <= 11) || (r.tooth >= 22 && r.tooth <= 27);
-              const el = isCing
-                ? drawCingulumRest(r.tooth, `ir-${i}`)
-                : drawOcclusalRest(r.tooth, "mesial", `ir-${i}`);
-              return [selectable(el, 'indirect', { tooth: r.tooth, tooltip: `Indirect retainer on ${rpdToothName(r.tooth)}` }, `ir-w-${i}`)];
+              const restTypeLc = (r.restType || "").toLowerCase();
+              const isBall = restTypeLc.includes("ball");
+              const isCing = restTypeLc.includes("cingulum")
+                           || (!isBall && (RPD_CANINES.has(r.tooth)
+                              || (r.tooth >= 7 && r.tooth <= 10) || (r.tooth >= 23 && r.tooth <= 26)));
+              const isOccl = restTypeLc.includes("occlusal") || restTypeLc.includes("mesial");
+              let el;
+              if (isCing || isBall) {
+                // Cingulum glyph covers both cingulum and ball visually
+                // (both sit on lingual/incisal at the cingulum landmark)
+                el = drawCingulumRest(r.tooth, `ir-${i}`);
+              } else if (isOccl || RPD_FIRST_PREMOLARS.has(r.tooth) || RPD_SECOND_PREMOLARS.has(r.tooth)) {
+                el = drawOcclusalRest(r.tooth, "mesial", `ir-${i}`);
+              } else {
+                el = drawCingulumRest(r.tooth, `ir-${i}`);
+              }
+              return [selectable(el, 'indirect', { tooth: r.tooth, tooltip: `Indirect retainer on ${rpdToothName(r.tooth)} — ${r.restType || "rest"}` }, `ir-w-${i}`)];
             })}
 
             {/* 10. Per-abutment annotations */}
