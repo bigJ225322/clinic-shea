@@ -2431,12 +2431,15 @@ function flattenCategory(cat) {
 }
 
 // All categories with .procedures available (for NoteBuilder).
-// Exclude misc (Axium workflows / lookup references — no note codes) and lab.
+// Exclude misc (Axium workflows / lookup references — no note codes) and
+// lab (lab Rx text goes to Axium's Labs > Details field, not the chart note).
 const FLAT_CATEGORIES = CATEGORIES.filter(c => c.id !== "misc" && c.id !== "lab").map(flattenCategory);
 
-// Steps tab only: exclude note-only categories (lab scripts have templates
-// but no CHUNKS steps content, so they don't belong in Browse).
-const BROWSE_CATEGORIES = CATEGORIES.filter(c => c.id !== "lab");
+// Browse tab: every category. Lab Scripts used to be filtered out because the
+// per-procedure pages had no CHUNKS content; each lab Rx now has a REF_DATA
+// entry with the Rx body + supplements + Swade turnaround, so they belong
+// here too.
+const BROWSE_CATEGORIES = CATEGORIES;
 
 /* ============================================================================
  * REF_DATA — structured rendering for Misc. > Lookup procedures.
@@ -9156,7 +9159,9 @@ function Browse({
       .map(procId => {
         const proc = findProcedure(procId);
         if (!proc) return null;
-        if (proc.categoryId === "misc") return null;
+        // Misc (Axium / lookup) and Lab Scripts (paperwork sent to lab)
+        // aren't chair-time procedures, so they contribute no equipment.
+        if (proc.categoryId === "misc" || proc.categoryId === "lab") return null;
         const eq = findChunkForProcedure(proc, chunks, "equipment", { noFallback: true });
         return { label: proc.label, procId, groups: parseEquipment(eq) };
       })
@@ -9187,11 +9192,15 @@ function Browse({
   }, [jumpToId, onJumped, chunks]);
 
   // ── Search ───────────────────────────────────────────────────────────
+  // Match labels first (breadcrumb), then step-chunk bodies. Lab scripts
+  // have no step chunks, but their REF_DATA verdict/Rx body is searchable
+  // via the breadcrumb path (e.g. "Lab Scripts → Removable → Complete
+  // Dentures") so they still surface for relevant queries.
   const searchResults = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return null;
     const results = [];
-    for (const p of ALL_PROCEDURES.filter(p => p.categoryId !== "lab")) {
+    for (const p of ALL_PROCEDURES) {
       const inLabel = p.breadcrumb.toLowerCase().includes(q);
       const stepChunk = findChunkForProcedure(p, chunks, "steps");
       const inSteps = stepChunk && stepChunk.body.toLowerCase().includes(q);
