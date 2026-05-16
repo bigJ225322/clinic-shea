@@ -15532,14 +15532,21 @@ function RPDPaperFormArchDrawing({
   // drawn as a small RED OVAL at the tripod/HOC point on the buccal or
   // lingual surface where the undercut sits. Replaces the prior 3-dash
   // row which didn't match the form convention.
-  const drawSurveyLine = (n, key) => {
+  //
+  // `effectiveUcLoc` overrides the user's attrs.undercutLocation when
+  // provided — for Akers on tooth-supported abutments, the engine
+  // translates the default mid-buccal into the textbook-correct DB or MB
+  // based on sideToward, and the survey-line oval should sit where the
+  // ACTUAL undercut is engaged (DB or MB) rather than at the user's
+  // un-overridden default position.
+  const drawSurveyLine = (n, key, effectiveUcLoc) => {
     const { cx, cy } = positionOf(n);
     const halfMD = toothHalfMD(n);
     const halfBL = toothHalfBL(n);
     const rad = radialUnit(n);
     const mes = mesialUnit(n);
     const attrs = teethState[n]?.attrs || {};
-    const ucLoc = attrs.undercutLocation || "mid-buccal";
+    const ucLoc = effectiveUcLoc || attrs.undercutLocation || "mid-buccal";
     const radSgn = (ucLoc === "mesio-lingual" || ucLoc === "disto-lingual") ? -1 : +1;
     const mdSgn = (ucLoc === "mesio-buccal" || ucLoc === "mesio-lingual") ? +1
                 : (ucLoc === "disto-buccal" || ucLoc === "disto-lingual") ? -1
@@ -16589,9 +16596,12 @@ function RPDPaperFormArchDrawing({
 
         {!isSingleToothCase && (
           <>
-            {/* 4. Survey lines / HOC ovals on abutments */}
+            {/* 4. Survey lines / HOC ovals on abutments — positioned at
+                the engine's EFFECTIVE undercut (DB / MB for Akers) rather
+                than the user's raw attrs default, so the marker sits where
+                the clasp actually engages. */}
             {abutments.map((a, i) => selectable(
-              drawSurveyLine(a.tooth, `sl-${i}`),
+              drawSurveyLine(a.tooth, `sl-${i}`, a.effectiveUndercutLocation),
               'surveyLine', { tooth: a.tooth, tooltip: `Survey line / HOC on ${rpdToothName(a.tooth)}` },
               `sl-w-${i}`
             ))}
@@ -18048,7 +18058,7 @@ function RPDToothEditor({ tooth, caseInput, result, onUpdateTooth, onClose, hori
           <div style={rowStyle}>
             <span>Undercut location</span>
             <select style={selectStyle} value={attrs.undercutLocation} onChange={(e) => setAttr("undercutLocation", e.target.value)}>
-              <option value="mid-buccal">Mid-buccal</option>
+              <option value="mid-buccal">Mid-buccal (auto DB/MB for Akers)</option>
               <option value="mesio-buccal">Mesio-buccal (MB)</option>
               <option value="disto-buccal">Disto-buccal (DB)</option>
               <option value="disto-lingual">Disto-lingual (DL — Reverse Akers)</option>
