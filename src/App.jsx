@@ -12913,15 +12913,32 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
   const isMaxAnterior = caseInput.arch === "maxillary" && RPD_MAX_ANTERIOR.has(tooth);
 
   // ─── Interim branch — no rest seats / guide planes / reciprocation ────
+  // Per UIC's Summer 2023 Interim RPD lecture (BS): the standard hard-acrylic
+  // IPD uses wrought-wire C-clasps as the default clasp option, with ball
+  // clasps as a buccal-embrasure alternative. UIC explicitly notes:
+  //   - Survey to determine undercut; if none present, recontour the abutment.
+  //   - Ensure occlusal clearance for clasps.
+  //   - Acrylic clasps are POSSIBLE (esthetic) but impinge on soft tissue —
+  //     not recommended for routine use.
+  // The engine picks WW C-clasp as the default; ball clasp is flagged as
+  // an alternative on posterior teeth where a usable buccal embrasure exists.
   if (designIntent === "interim") {
+    const isPosterior = RPD_FIRST_PREMOLARS.has(tooth) || RPD_SECOND_PREMOLARS.has(tooth)
+                     || RPD_FIRST_MOLARS.has(tooth) || RPD_SECOND_MOLARS.has(tooth)
+                     || RPD_THIRD_MOLARS.has(tooth);
     return {
       tooth, claspType: "WW C-clasp",
-      claspRationale: RPD_RATIONALE.clasp["WW C-clasp"],
-      retentiveArm: "18ga wrought wire C-clasp engaging 0.02\" undercut",
+      claspRationale: RPD_RATIONALE.clasp["WW C-clasp"] +
+        " (UIC Summer 2023 IPD lecture: wrought wire clasps are mostly used; lab can fabricate cast clasps when indicated).",
+      retentiveArm: "18ga wrought wire C-clasp engaging 0.02\" undercut (re-contour abutment if no usable undercut surveyed)",
       reciprocation: null, restSeat: null, restRationale: null,
       guidePlane: null, guidePlaneRationale: null,
       surveyCrown: null, crownLengthening: null,
       claspTier: "strong",
+      claspAlternative: isPosterior ? "Ball clasp (engages buccal embrasure)" : null,
+      claspAlternativeRationale: isPosterior
+        ? "Ball clasp is a UIC-taught alternative for posterior interim cases — engages the buccal embrasure between adjacent teeth rather than a circumferential undercut. Useful when the abutment lacks a survey-able buccal undercut and recontouring is contraindicated."
+        : null,
     };
   }
 
@@ -13654,14 +13671,26 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
   const lines = [];
 
   // ── Interim RPD lab Rx ─────────────────────────────────────────────────
+  // Per UIC Summer 2023 IPD lecture: standard hard-acrylic IPD uses Red
+  // Pattern resin or Ortho Resin Denture material for the acrylic base
+  // (Triad is NOT advisable — doesn't bond to denture teeth). Clasps are
+  // 18ga wrought wire C-clasps with 0.02" undercut engagement, or ball
+  // clasps for buccal embrasure retention on posterior teeth.
   if (isInterim) {
-    lines.push(`Please fabricate ${archLc} interim partial denture (acrylic base with wrought wire retention).`);
+    lines.push(`Please fabricate ${archLc} interim partial denture.`);
+    lines.push("");
+    lines.push("Base: rigid acrylic — Red Pattern resin OR Ortho Resin Denture material.");
+    lines.push("(Triad NOT advisable — does not bond reliably to denture teeth per UIC IPD lecture.)");
     lines.push("");
     abutmentDesigns.forEach(a => {
-      lines.push(`${rpdToothName(a.tooth)}: 18ga wrought wire C-clasp engaging 0.02" undercut.`);
+      const claspLine = a.claspType === "Ball Clasp"
+        ? `${rpdToothName(a.tooth)}: 18ga wrought wire ball clasp engaging buccal embrasure.`
+        : `${rpdToothName(a.tooth)}: 18ga wrought wire C-clasp engaging 0.02" undercut.`;
+      lines.push(claspLine);
     });
     lines.push("");
-    lines.push("Base: rigid acrylic.");
+    lines.push("Survey cast to identify undercuts; recontour abutments if no usable undercut present.");
+    lines.push("Ensure occlusal clearance for clasps.");
     lines.push("");
     lines.push("Thank you.");
     return lines.join("\n");
