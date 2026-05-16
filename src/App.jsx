@@ -16634,93 +16634,95 @@ function RPDPaperFormArchDrawing({
     const archAbutments = [...abutTeethSet].filter(inActiveArch);
 
     if (isAP) {
-      // A-P (Anterior-Posterior) Strap: TWO distinct straight bands
-      // perpendicular to the mid-sagittal axis, connected by short
-      // lateral longitudinal connectors on each side. Creates an open
-      // rectangular window in the middle of the palate. This is the
-      // textbook shape (McCracken Fig 5-16, UIC Major Connectors
-      // lecture) and NOT a curved crescent following the teeth.
+      // A-P (Anterior-Posterior) Strap: TWO distinct curved bands across
+      // the palate (anterior band posterior to the rugae, posterior band
+      // just anterior to the posterior palatal seal) joined by short
+      // lateral longitudinal connectors on each side, creating an open
+      // window in the middle of the palate.
       //
-      // Geometry: pick anchor teeth that define the two band positions
-      // and the lateral extent.
+      // The bands curve gently with the palate shape — they're NOT
+      // straight rectangles. Each band is built as a filledBand (the
+      // same helper used for other palatal connectors), with a strict
+      // tooth range that excludes abutments. This keeps the anterior
+      // and posterior bands in separate palate regions instead of both
+      // spanning the entire arch.
       //
-      //   Anterior band Y:   lingual of the canines (#6 / #11 max,
-      //                      #22 / #27 mand) — just posterior to the
-      //                      rugae.
-      //   Posterior band Y:  lingual of the posteriormost abutments
-      //                      (typically 1st/2nd molars) — just anterior
-      //                      to the posterior palatal seal area.
-      //   Lateral extent:    bounded by the leftmost and rightmost
-      //                      abutments on each side.
-      const canineSet = isMax ? [6, 11] : [22, 27];
-      const presentAnchors = canineSet.filter(n => isPresent(n));
-      // Anterior anchors: present canines, or anterior abutments as
-      // fallback if canines are missing.
-      const antAnchors = presentAnchors.length >= 2
-        ? presentAnchors
-        : archAbutments.filter(n => isMax ? (n <= 11) : (n >= 22)).slice(0, 2);
-      // Posterior anchors: the most distal abutment on each side.
-      const isLeftSide = (n) => isMax ? (n >= 9) : (n <= 24);
-      const leftAbutments = archAbutments.filter(isLeftSide).sort((a, b) => isMax ? b - a : a - b);
-      const rightAbutments = archAbutments.filter(n => !isLeftSide(n)).sort((a, b) => isMax ? a - b : b - a);
-      const postLeft = leftAbutments[0];
-      const postRight = rightAbutments[0];
-      if (antAnchors.length < 2 || postLeft == null || postRight == null) {
-        // Fallback to the curve-following render if the case doesn't
-        // have enough anchors — better than rendering nothing.
-        const ant = archTeeth.filter(n => (isMax ? (n >= 6 && n <= 11) : (n >= 22 && n <= 27)) || abutTeethSet.has(n));
-        const post = archTeeth.filter(n => isMax ? (n === 3 || n === 14 || abutTeethSet.has(n)) : (n === 19 || n === 30 || abutTeethSet.has(n)));
-        const antUpper = ant.map(n => palatalAt(n, 1.0));
-        const antLower = ant.map(n => palatalAt(n, 1.7));
-        const postUpper = post.map(n => palatalAt(n, 0.8));
-        const postLower = post.map(n => palatalAt(n, 1.6));
+      //   Anterior band: anterior teeth only (#6–#11 max / #22–#27 mand).
+      //                  Curve follows the lingual contour of the canines
+      //                  and incisors, posterior to the rugae.
+      //   Posterior band: posteriormost present teeth in the molar zone
+      //                   (#3 and #14 max / #19 and #30 mand) and any
+      //                   posterior abutments outside that range.
+      //   Lateral connectors: small filled struts joining the two bands
+      //                       on each side, anchored to the abutment
+      //                       teeth that bridge anterior to posterior.
+      const inAnt = (n) => isMax ? (n >= 6 && n <= 11) : (n >= 22 && n <= 27);
+      const inPostMolar = (n) => isMax
+        ? (n === 3 || n === 14 || n === 2 || n === 15)
+        : (n === 19 || n === 30 || n === 18 || n === 31);
+      // Strict ranges — no abutments, so the bands don't span the
+      // entire arch.
+      const ant = archTeeth.filter(n => inAnt(n) && isPresent(n));
+      // Posterior band tracks the molar zone PLUS any posterior
+      // abutments outside it (e.g. a 2nd premolar abutment at #4 or
+      // #13). Stays in the posterior palate region.
+      const post = archTeeth.filter(n =>
+        (inPostMolar(n) && isPresent(n))
+        || (abutTeethSet.has(n) && !inAnt(n) && n !== (isMax ? 4 : 21) && n !== (isMax ? 13 : 28))
+      );
+      if (ant.length < 2 || post.length < 2) {
+        // Fallback to the full-arch render if anchor selection fails.
+        const antFull = archTeeth.filter(n => inAnt(n) || abutTeethSet.has(n));
+        const postFull = archTeeth.filter(n => inPostMolar(n) || abutTeethSet.has(n));
         return (
           <g key={key}>
-            {filledBand(antUpper, antLower)}
-            {filledBand(postUpper, postLower)}
+            {filledBand(antFull.map(n => palatalAt(n, 1.0)), antFull.map(n => palatalAt(n, 1.7)))}
+            {filledBand(postFull.map(n => palatalAt(n, 0.8)), postFull.map(n => palatalAt(n, 1.6)))}
           </g>
         );
       }
-      // Compute the Y positions for the two bands.
-      // Anterior band: midpoint of the lingual-anchor points of the canines.
-      const antLeft = palatalAt(antAnchors[0], 1.2);
-      const antRight = palatalAt(antAnchors[1], 1.2);
-      const antY = (antLeft.y + antRight.y) / 2;
-      // Posterior band: midpoint of the lingual-anchor points of the
-      // posteriormost abutments.
-      const postLeftPt = palatalAt(postLeft, 0.8);
-      const postRightPt = palatalAt(postRight, 0.8);
-      const postY = (postLeftPt.y + postRightPt.y) / 2;
-      // Lateral X extents: span between the abutments at each Y.
-      const minX = Math.min(antLeft.x, antRight.x, postLeftPt.x, postRightPt.x);
-      const maxX = Math.max(antLeft.x, antRight.x, postLeftPt.x, postRightPt.x);
-      // Band thickness ~8mm at chart scale.
-      const bandHalfThick = 8;
-      const latThick = 7; // lateral connector width
-      // Render two straight bands + two lateral connectors as a single
-      // composite shape so the assembly reads as one cohesive frame.
+      // Build the two curved bands using the same depth-multiplier
+      // approach as other palatal connectors. Different depth values
+      // for anterior vs posterior bands keep them in their respective
+      // palate regions and prevent visual overlap.
+      const antUpper = ant.map(n => palatalAt(n, 1.0));
+      const antLower = ant.map(n => palatalAt(n, 1.7));
+      const postUpper = post.map(n => palatalAt(n, 0.8));
+      const postLower = post.map(n => palatalAt(n, 1.6));
+      // Lateral connectors: short polygon struts joining the band ends
+      // on each side. End points come from the band edges themselves
+      // so the connectors visibly merge into the bands.
+      const lateralStrut = (antEnd1, antEnd2, postEnd1, postEnd2, k) => {
+        // antEnd1/antEnd2 are the upper/lower band-edge points at one
+        // end of the anterior band. Same for the posterior end. Build
+        // a quadrilateral connecting them.
+        const d = `M ${antEnd1.x} ${antEnd1.y} L ${antEnd2.x} ${antEnd2.y}` +
+                  ` L ${postEnd2.x} ${postEnd2.y} L ${postEnd1.x} ${postEnd1.y} Z`;
+        return (
+          <path key={k} d={d}
+            fill={C_CAST} fillOpacity={0.7}
+            stroke={C_CAST} strokeWidth={1.4} strokeLinejoin="round" />
+        );
+      };
+      // Ends of the bands (first/last points of upper and lower edges).
+      const antL = { upper: antUpper[0], lower: antLower[0] };
+      const antR = { upper: antUpper[antUpper.length - 1], lower: antLower[antLower.length - 1] };
+      const postL = { upper: postUpper[0], lower: postLower[0] };
+      const postR = { upper: postUpper[postUpper.length - 1], lower: postLower[postLower.length - 1] };
+      // For maxillary, ant array is ordered #6 → #11 (right-to-left),
+      // post array is ordered #3 → #14 (right-to-left in numbering but
+      // visually left-to-right). The "right side" of the anterior band
+      // (lowest tooth number = #6) corresponds to the "right side" of
+      // the posterior band (#3 area). Both arrays are ordered the same
+      // way because archTeeth iterates in numerical order, so the
+      // FIRST element of each band is on the right and the LAST is on
+      // the left.
       return (
         <g key={key}>
-          {/* Anterior band */}
-          <rect x={minX} y={antY - bandHalfThick}
-            width={maxX - minX} height={bandHalfThick * 2}
-            fill={C_CAST} fillOpacity={0.75}
-            stroke={C_CAST} strokeWidth={1.4} />
-          {/* Posterior band */}
-          <rect x={minX} y={postY - bandHalfThick}
-            width={maxX - minX} height={bandHalfThick * 2}
-            fill={C_CAST} fillOpacity={0.75}
-            stroke={C_CAST} strokeWidth={1.4} />
-          {/* Left lateral connector */}
-          <rect x={minX} y={Math.min(antY, postY) - bandHalfThick}
-            width={latThick} height={Math.abs(postY - antY) + bandHalfThick * 2}
-            fill={C_CAST} fillOpacity={0.75}
-            stroke={C_CAST} strokeWidth={1.4} />
-          {/* Right lateral connector */}
-          <rect x={maxX - latThick} y={Math.min(antY, postY) - bandHalfThick}
-            width={latThick} height={Math.abs(postY - antY) + bandHalfThick * 2}
-            fill={C_CAST} fillOpacity={0.75}
-            stroke={C_CAST} strokeWidth={1.4} />
+          {filledBand(antUpper, antLower)}
+          {filledBand(postUpper, postLower)}
+          {lateralStrut(antL.upper, antL.lower, postL.upper, postL.lower, "lat-r")}
+          {lateralStrut(antR.upper, antR.lower, postR.upper, postR.lower, "lat-l")}
         </g>
       );
     }
