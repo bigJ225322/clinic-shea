@@ -13328,25 +13328,31 @@ function rpdAddCrossArchAkersClasps(caseInput, kennedy, existingAbutments, indir
 
   const baseRationale =
     "Cross-arch direct retainer for Class II — UIC double-Akers / back-action " +
-    "pair. Two adjacent Akers clasps on non-working-side posteriors share an " +
-    "embrasure rest; retentive tips face AWAY from each other (DB distal, MB " +
-    "mesial). The non-collinear retention opposes vertical displacement of the " +
-    "distal-extension saddle around the fulcrum line through the working-side " +
-    "terminal abutment and the indirect retainer.";
+    "pair. Two adjacent clasps on non-working-side posteriors share an " +
+    "embrasure rest; retentive tips face AWAY from each other (DB on the " +
+    "distal tooth, MB on the mesial tooth). The non-collinear retention " +
+    "opposes vertical displacement of the distal-extension saddle around the " +
+    "fulcrum line through the working-side terminal abutment and the " +
+    "indirect retainer. The distal component is a Reverse Akers (engages a " +
+    "DB undercut); the mesial component is a standard Akers (engages MB).";
 
   const out = [];
 
+  // Distal component: Reverse Akers — rest mesial, retentive tip engages DB
+  // undercut. UIC nomenclature: an Akers engaging a DISTAL undercut is a
+  // Reverse Akers regardless of why the distal undercut was chosen (survey-
+  // driven for tooth-supported, design-driven for back-action here).
   out.push({
     tooth: distalTooth,
     isPrimaryAbutment: false,
     isCrossArch: true,
     spanType: null,
-    claspType: "Akers",
-    claspRationale: baseRationale + " — Distal component: mesial rest with disto-buccal retentive tip.",
+    claspType: "Reverse Akers",
+    claspRationale: baseRationale + " — Distal component: mesial rest with disto-buccal retentive tip (Reverse Akers).",
     retentiveArm: "Cast circumferential retentive arm engaging 0.01\" disto-buccal undercut",
     reciprocation: { type: "arm", text: "Cast lingual reciprocal arm", rationale: RPD_RATIONALE.reciprocation.arm },
     restSeat: { surface: "mesial", type: "occlusal", bur: burFor(distalTooth) },
-    restRationale: "Embrasure rest shared with the mesial Akers component on the adjacent tooth. Mesial rest position places the retentive arm origin on the distal side, terminating in a DB undercut engagement.",
+    restRationale: "Embrasure rest shared with the mesial Akers on the adjacent tooth. Mesial rest position places the retentive arm origin on the distal side, terminating in a DB undercut engagement.",
     guidePlane: { surface: "distal", length: "2/3 clinical crown height, 1/3 BL width" },
     guidePlaneRationale: RPD_RATIONALE.guidePlane.standard,
     surveyCrown: null, crownLengthening: null,
@@ -13355,22 +13361,27 @@ function rpdAddCrossArchAkersClasps(caseInput, kennedy, existingAbutments, indir
     claspTier: "common",
     claspAlternative: mesialTooth ? null : "Single Akers (lone non-working posterior available)",
     claspAlternativeRationale: mesialTooth ? null :
-      "Only one eligible non-working-side posterior is present, so the back-action pair degrades to a single Akers. Cross-arch retention is reduced but still better than rest-only on a contralateral premolar.",
+      "Only one eligible non-working-side posterior is present, so the back-action pair degrades to a single clasp. Cross-arch retention is reduced but still better than rest-only on a contralateral premolar.",
     attrs: rpdGetAttrs(caseInput, distalTooth),
   });
 
   if (mesialTooth) {
+    // Mesial component: standard Akers — rest distal, retentive tip engages
+    // MB undercut. The arm originates at the distal corner (in the embrasure)
+    // and sweeps mesially across the buccal to engage the MB undercut. By the
+    // engine's standard convention this is a regular Akers (distal rest →
+    // mesial undercut is the textbook geometry).
     out.push({
       tooth: mesialTooth,
       isPrimaryAbutment: false,
       isCrossArch: true,
       spanType: null,
       claspType: "Akers",
-      claspRationale: baseRationale + " — Mesial component: distal rest with mesio-buccal retentive tip.",
+      claspRationale: baseRationale + " — Mesial component: distal rest with mesio-buccal retentive tip (standard Akers).",
       retentiveArm: "Cast circumferential retentive arm engaging 0.01\" mesio-buccal undercut",
       reciprocation: { type: "arm", text: "Cast lingual reciprocal arm", rationale: RPD_RATIONALE.reciprocation.arm },
       restSeat: { surface: "distal", type: "occlusal", bur: burFor(mesialTooth) },
-      restRationale: "Embrasure rest shared with the distal Akers component on the adjacent tooth. Distal rest position places the retentive arm origin on the mesial side, terminating in an MB undercut engagement.",
+      restRationale: "Embrasure rest shared with the Reverse Akers on the adjacent tooth. Distal rest position places the retentive arm origin on the mesial side, terminating in an MB undercut engagement.",
       guidePlane: { surface: "mesial", length: "2/3 clinical crown height, 1/3 BL width" },
       guidePlaneRationale: RPD_RATIONALE.guidePlane.standard,
       surveyCrown: null, crownLengthening: null,
