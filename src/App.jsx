@@ -16776,11 +16776,40 @@ function RPDPaperFormArchDrawing({
     };
     if (isComplete) {
       // Full / complete palatal plate: SOLID BLUE FILLED shape covering the
-      // posterior palate, hugging the lingual contour of present teeth.
-      const linguals = archTeeth.filter(n => isPresent(n)).map(n => palatalAt(n));
+      // ENTIRE palate from the lingual surfaces of every tooth position
+      // (whether present or missing) back to the junction of hard and soft
+      // palates.
+      //
+      // Geometry: the lingual surfaces of all 16 tooth POSITIONS trace a ∩
+      // (max) curve. The PALATE sits INSIDE that arch — between the lingual
+      // U-shape and the back of the mouth. We close the lingual curve back
+      // on itself ALONG the INSIDE of the arch, not the outside. For
+      // maxillary, "inside" = HIGHER Y (toward chart bottom, where the
+      // throat/soft palate would be in this view); for mandibular (which
+      // doesn't actually use this rendering — mand gets a Lingual Plate —
+      // but defensive), "inside" = LOWER Y.
+      //
+      // We use ALL tooth positions, not just present ones, so the plate
+      // outline covers the whole palate even when most posteriors are
+      // missing. The plate covers the missing-tooth area with a saddle
+      // anyway — drawing the plate to the back of the arch matches the
+      // clinical full-coverage extent and the textbook drawing.
+      //
+      // Previously this closed to `archCenterY * 0.55` (Y≈214 for max),
+      // which is on the LABIAL side of the lingual curve, filling the area
+      // OUTSIDE the arch (where the lips would be) — a giant rectangle
+      // covering most of the chart.
+      const linguals = archTeeth.map(n => palatalAt(n));
       if (linguals.length < 2) return null;
       const smoothLingualD = buildSmoothPath(linguals);
-      const closedD = `${smoothLingualD} L ${linguals[linguals.length - 1].x} ${(isMax ? archCenterY * 0.55 : archCenterY * 1.3)} L ${linguals[0].x} ${(isMax ? archCenterY * 0.55 : archCenterY * 1.3)} Z`;
+      // Back boundary: ~30 px past the most posterior tooth center, on the
+      // palate side of the lingual curve. postY is the y-coordinate of the
+      // most posterior teeth — see the geometry setup near line 15193.
+      const backY = isMax ? postY + 30 : postY - 30;
+      const closedD =
+        `${smoothLingualD} ` +
+        `L ${linguals[linguals.length - 1].x} ${backY} ` +
+        `L ${linguals[0].x} ${backY} Z`;
       return (
         <g key={key}>
           <path d={closedD} fill={C_CAST} fillOpacity={0.7}
