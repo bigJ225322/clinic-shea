@@ -3985,6 +3985,29 @@ describe("UIC-AUDIT — Clasp 1/3 rule in lab Rx", () => {
   });
 });
 
+describe("UIC-AUDIT — Denture tooth mold + shade specs in lab Rx", () => {
+  it("Definitive RPD with denture teeth includes Trubyte mold + Vita shade TBD fields", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]); // distal extension → Open Lattice base with denture teeth
+    const r = rpdRunEngine(c);
+    expect(r.labScript).toMatch(/Trubyte Classic/);
+    expect(r.labScript).toMatch(/Vita shade guide/);
+    expect(r.labScript).toMatch(/gingival shade/);
+    expect(r.labScript).toMatch(/TBD/);
+  });
+  it("IPD lab Rx includes UIC standard acrylic gingival shade mix (50% OR + 50% DK)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    c.patientFactors.designIntent = "interim";
+    const r = rpdRunEngine(c);
+    expect(r.labScript).toMatch(/50% OR.*50% DK/);
+    expect(r.labScript).toMatch(/Do NOT increase VDO/);
+    expect(r.labScript).toMatch(/festoon, process & polish/);
+  });
+});
+
 describe("UIC-AUDIT — Mandibular relief callouts in lab Rx", () => {
   it("Mandibular lab Rx includes genial tubercles, mylohyoid ridge, external oblique relief", () => {
     const c = rpdMakeBlankCase("mandibular");

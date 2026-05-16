@@ -13939,16 +13939,21 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
   const lines = [];
 
   // ── Interim RPD lab Rx ─────────────────────────────────────────────────
-  // Per UIC Summer 2023 IPD lecture: standard hard-acrylic IPD uses Red
-  // Pattern resin or Ortho Resin Denture material for the acrylic base
-  // (Triad is NOT advisable — doesn't bond to denture teeth). Clasps are
-  // 18ga wrought wire C-clasps with 0.02" undercut engagement, or ball
-  // clasps for buccal embrasure retention on posterior teeth.
+  // Per UIC Summer 2023 IPD lecture + UIC IPD lab Rx template (lab-ii-rpd):
+  // Standard hard-acrylic IPD uses Red Pattern resin or Ortho Resin Denture
+  // material for the acrylic base (Triad is NOT advisable — doesn't bond
+  // to denture teeth). Clasps are 18ga wrought wire C-clasps with 0.02"
+  // undercut engagement, or ball clasps for buccal embrasure retention on
+  // posterior teeth. The lab Rx must specify denture tooth mold + shade
+  // + acrylic gingival shade — these are chairside selections matched to
+  // the patient's existing teeth at the wax-rim try-in.
   if (isInterim) {
-    lines.push(`Please fabricate ${archLc} interim partial denture.`);
+    lines.push(`Please fabricate ${archLc} interim immediate acrylic removable partial denture.`);
     lines.push("");
     lines.push("Base: rigid acrylic — Red Pattern resin OR Ortho Resin Denture material.");
     lines.push("(Triad NOT advisable — does not bond reliably to denture teeth per UIC IPD lecture.)");
+    lines.push("");
+    lines.push("Set posterior teeth over the residual ridge. Do NOT increase VDO.");
     lines.push("");
     abutmentDesigns.forEach(a => {
       const claspLine = a.claspType === "Ball Clasp"
@@ -13957,9 +13962,15 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
       lines.push(claspLine);
     });
     lines.push("");
+    lines.push("Denture tooth mold (anterior): [Trubyte Classic mold — TBD at wax-rim try-in].");
+    lines.push("Denture tooth mold (posterior): [Trubyte Classic posterior, e.g. F30 10° — TBD at wax-rim try-in].");
+    lines.push("Tooth shade: [TBD chairside via Vita shade guide — matched to patient's existing teeth].");
+    lines.push("Acrylic gingival shade: 50% OR (original) + 50% DK (dark) per UIC standard mix, or as adjusted at try-in.");
+    lines.push("");
     lines.push("Survey cast to identify undercuts; recontour abutments if no usable undercut present.");
     lines.push("Ensure occlusal clearance for clasps.");
     lines.push("");
+    lines.push("Please set teeth, festoon, process & polish, and return for delivery.");
     lines.push("Thank you.");
     return lines.join("\n");
   }
@@ -14127,6 +14138,19 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
   if (hasCastClasps) {
     lines.push("");
     lines.push("Cast clasp arm position: terminal 1/3 in undercut (0.01\" engagement); middle 1/3 at survey line; origin 1/3 rigid above survey line. Clasp tip in gingival 1/3 of clinical crown — NOT on gingival margin.");
+  }
+
+  // Denture tooth mold + shade callouts (per UIC lab Rx convention — these
+  // are chairside selections completed at wax-rim try-in; the engine
+  // surfaces them as TBD fields so the lab knows to wait for the data).
+  const hasDentureTeeth = (baseDesigns || []).some(b =>
+    b.type === "Open Lattice" || b.type === "Mesh" || b.type === "Tube Tooth" || b.type === "Facing");
+  if (hasDentureTeeth) {
+    lines.push("");
+    lines.push("Denture tooth mold (anterior): [Trubyte Classic — TBD at wax-rim try-in based on intercanine distance + high-smile line].");
+    lines.push("Denture tooth mold (posterior): [Trubyte Classic posterior, e.g. F30 10° — TBD at wax-rim try-in].");
+    lines.push("Tooth shade: [TBD chairside via Vita shade guide — matched to existing natural teeth].");
+    lines.push("Acrylic gingival shade: [TBD via UIC gingival shade guide — typically L199-OR or 50% OR + 50% DK mix].");
   }
 
   lines.push("");
