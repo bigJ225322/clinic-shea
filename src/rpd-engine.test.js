@@ -4014,6 +4014,41 @@ describe("UIC-AUDIT — Clasp 1/3 rule in lab Rx", () => {
   });
 });
 
+describe("UIC-AUDIT — Step 11 adjustment/repair codes + stomatitis protocol", () => {
+  it("Step 11 enumerates UIC adjustment/repair codes D5410-D5660", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/D5410/); // chairside adjust max
+    expect(r.axiumSteps).toMatch(/D5411/); // chairside adjust mand
+    expect(r.axiumSteps).toMatch(/D5640/); // replace broken clasp
+    expect(r.axiumSteps).toMatch(/D5650/); // add tooth
+    expect(r.axiumSteps).toMatch(/D5660/); // add clasp
+    expect(r.axiumSteps).toMatch(/D5630/); // repair acrylic
+  });
+  it("Step 11 includes denture stomatitis nystatin protocol", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/DENTURE STOMATITIS PROTOCOL/);
+    expect(r.axiumSteps).toMatch(/nystatin/i);
+    expect(r.axiumSteps).toMatch(/clotrimazole/i);
+    expect(r.axiumSteps).toMatch(/fluconazole/i);
+    expect(r.axiumSteps).toMatch(/HbA1c/);
+  });
+  it("Step 11 ranks intervention severity from chairside adjustment to remake", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/SORE SPOT only.*CHAIRSIDE ADJUSTMENT/);
+    expect(r.axiumSteps).toMatch(/CLASP ARM FRACTURED.*REPAIR/);
+    expect(r.axiumSteps).toMatch(/Cast Co-Cr cannot be welded but CAN be soldered/);
+  });
+});
+
 describe("UIC-AUDIT — Step 9 delivery day comprehensive instructions", () => {
   it("Delivery step includes full UIC patient instruction handout", () => {
     const c = rpdMakeBlankCase("mandibular");
