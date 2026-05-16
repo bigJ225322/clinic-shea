@@ -15821,10 +15821,19 @@ function RPDPaperFormArchDrawing({
     const p2 = bezPt(0.50);
     const p3 = bezPt(0.75);
     const p4 = tip;
-    // Stroke widths: dramatic taper from rigid proximal to flexible tip.
-    // tapered=true (the default for Akers) ≈ 2.4× ratio across length.
-    const wMax = tapered ? 6.0 : 5.0;
-    const wMin = tapered ? 2.5 : 2.5;
+    // Stroke widths follow the alloy type:
+    //   - Cast clasps (half-round cross-section, flex in one plane only):
+    //     dramatic taper proximal → tip ~2.4× ratio. Matches McCracken's
+    //     "uniform taper in BOTH thickness AND width" for cast retentive
+    //     arms (page 14 of Retainers slide deck).
+    //   - Wrought wire clasps (round cross-section, flex in all planes):
+    //     UNIFORM width along the length. Per McCracken: "Wrought wire
+    //     clasps are round and flex in all spatial planes" — they don't
+    //     taper. Used for Combination clasp's retentive arm, WW C-clasp,
+    //     Ball clasp.
+    const isWroughtWire = color === C_WW;
+    const wMax = isWroughtWire ? 3.2 : (tapered ? 6.0 : 5.5);
+    const wMin = isWroughtWire ? 3.2 : 2.5;
     // Linear interpolation across 4 segments.
     const w = (i) => wMax - (wMax - wMin) * (i / 4);
     return (
