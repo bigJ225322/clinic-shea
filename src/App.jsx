@@ -16903,38 +16903,38 @@ function RPDPaperFormArchDrawing({
     }
     // Default: single palatal strap.
     //
-    // Textbook Single Palatal Strap (McCracken + UIC Major Connectors
-    // lecture): ONE wide (~8 mm) band crossing the palate at a fixed
-    // Y position, perpendicular to the mid-sagittal axis. It sits
-    // MID-PALATE (between rugae and posterior palatal seal), NOT
-    // following the lingual contour of every tooth and NOT directly
-    // connecting two abutments at different Y positions. Minor-
-    // connector struts from each abutment extend lingually to meet
-    // the strap.
+    // Anchor the strap to the ABUTMENTS only, not to every present
+    // tooth. Prior versions averaged Y across all present teeth, which
+    // pulled the strap anterior whenever anteriors were present (their
+    // lingual anchors sit at low Y in the chart) — the band ended up
+    // crossing through anterior teeth instead of sitting where the
+    // abutments are.
     //
-    // V1 connected the two extremest-X abutment lingual anchors with
-    // a straight line — when both anchors were posterior (e.g. case
-    // with abutments at #2 and #16), the line ended up at the back of
-    // the palate at a steep diagonal because their Y values differed.
-    //
-    // V2 geometry: compute mid-palate Y as the AVERAGE Y of every
-    // present-or-abutment tooth's lingual anchor (anchors all sit at
-    // depth 1.0). Compute X extent from min/max X of those same
-    // anchors. Render a HORIZONTAL band at avgY spanning [minX, maxX]
-    // with thickness ~22 px. The strap is always mid-palate; minor
-    // connector struts handle reaching each abutment from there.
-    const presentInArch = archTeeth.filter(n => isPresent(n) || abutTeethSet.has(n));
-    if (presentInArch.length < 2) return null;
-    const anchors = presentInArch.map(n => palatalAt(n, 1.0));
-    const avgY = anchors.reduce((s, p) => s + p.y, 0) / anchors.length;
-    const minX = Math.min(...anchors.map(p => p.x));
-    const maxX = Math.max(...anchors.map(p => p.x));
+    // V3 geometry:
+    //   Y position = average Y of ABUTMENT lingual anchors
+    //   X extent   = min/max X of ABUTMENT lingual anchors
+    // The strap sits at the level of the abutments and extends just
+    // far enough to reach them. Minor connector struts already handle
+    // the short bridge from each abutment's lingual edge to the strap.
+    const abutAnchors = [...abutTeethSet]
+      .filter(n => inActiveArch(n))
+      .map(n => palatalAt(n, 1.0));
+    if (abutAnchors.length < 2) {
+      // Single abutment or none — fall back to a tooth-tracking band so
+      // the user sees SOMETHING while still inputting the case.
+      const inDefaultRange = (n) => isMax ? (n >= 4 && n <= 13) : (n >= 20 && n <= 29);
+      const midTeeth = archTeeth.filter(n => inDefaultRange(n) || abutTeethSet.has(n));
+      const upper = midTeeth.map(n => palatalAt(n, 0.9));
+      const lower = midTeeth.map(n => palatalAt(n, 1.5));
+      return <g key={key}>{filledBand(upper, lower)}</g>;
+    }
+    const xs = abutAnchors.map(p => p.x);
+    const ys = abutAnchors.map(p => p.y);
+    const avgY = ys.reduce((s, y) => s + y, 0) / ys.length;
+    const minX = Math.min(...xs);
+    const maxX = Math.max(...xs);
     const strapThick = 22;
     const h = strapThick / 2;
-    // Horizontal rectangle at mid-palate Y. Slight rounding via
-    // strokeLinejoin (corners aren't critical here — the strap meets
-    // the palate walls implicitly via minor connector struts, not via
-    // sharp visible angles).
     const d = `M ${minX} ${avgY - h} L ${maxX} ${avgY - h}` +
               ` L ${maxX} ${avgY + h} L ${minX} ${avgY + h} Z`;
     return (
