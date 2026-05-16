@@ -5793,16 +5793,14 @@ function RefScript({ caption, body, note }) {
           marginBottom: "10px",
           fontFamily: "'Geist', sans-serif",
         }}>
-          <label htmlFor="lab-rx-tooth" style={labelStyle}>Tooth</label>
-          <select id="lab-rx-tooth"
-            value={selectedTooth}
-            onChange={e => setSelectedTooth(e.target.value)}
-            style={pickerStyle}>
-            <option value="">— pick a tooth —</option>
-            {toothOptions.map(n => (
-              <option key={n} value={n}>#{n}</option>
-            ))}
-          </select>
+          <label style={labelStyle}>Tooth</label>
+          <div style={{ flex: "0 1 240px", minWidth: "180px" }}>
+            <ToothSurfaceInput
+              value={selectedTooth}
+              onChange={setSelectedTooth}
+              withSurfaces={false}
+            />
+          </div>
           {selectedTooth && (
             <button onClick={() => setSelectedTooth("")} style={clearLinkStyle}>clear</button>
           )}
