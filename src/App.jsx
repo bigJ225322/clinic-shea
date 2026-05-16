@@ -13726,17 +13726,31 @@ function rpdDescribeClasp(a, abutmentAttrs) {
   return a.retentiveArm || "";
 }
 
-// Reciprocation per standard convention (from UIC actual lab Rx examples):
-//   RPI / I-bar esthetic: omit (proximal plate / minor connector handles it)
-//   Akers (standard): retentive on buccal → reciprocal on Palatal/Lingual
+// Reciprocation per UIC actual lab Rx examples (Design Case I, II, framework
+// Case 1, LabRx Example A, B verbatim):
+//
+//   RPI: "Palatal reciprocal plate" (max) or "Lingual reciprocal plate"
+//        (mand) — the proximal-plate-plus-lingual-plating IS the reciprocation
+//        and UIC explicitly mentions it in the lab Rx, not implicit.
+//        (Design Case II Maxillary #4 + #12 verbatim: "Palatal reciprocal plate")
+//   I-bar (esthetic): same convention as RPI — "Palatal/Lingual reciprocal plate"
+//        (the I-bar esthetic on a tooth-supported abutment uses the same
+//        plating reciprocation).
+//   Akers (standard): retentive on buccal → reciprocal "Palatal/Lingual
+//        reciprocal clasp" (cast arm on opposite side).
 //   Akers with DL/DB undercut (Reverse Akers pattern): retentive on lingual
-//     side → reciprocal on Buccal
-//   Combination: "Palatal/Lingual reciprocal plate" (the metal plating, not arm)
-//   Embrasure: same arch-opposite reciprocal arm as Akers
+//        side → "Buccal reciprocal clasp".
+//   Combination: "Palatal/Lingual reciprocal plate" (the metal plating, not arm).
+//   Embrasure: same arch-opposite reciprocal arm as Akers.
 function rpdDescribeReciprocation(claspType, arch, abutmentAttrs) {
-  if (claspType === "RPI" || claspType === "I-bar (esthetic)") return null;
+  const side = arch === "maxillary" ? "Palatal" : "Lingual";
+  if (claspType === "RPI" || claspType === "I-bar (esthetic)") {
+    // UIC explicitly writes the reciprocal plate in the lab Rx — the
+    // proximal-plate + lingual-plating combination provides reciprocation
+    // for the I-bar / RPI retentive arm.
+    return `${side} reciprocal plate`;
+  }
   if (claspType === "Combination") {
-    const side = arch === "maxillary" ? "Palatal" : "Lingual";
     return `${side} reciprocal plate`;
   }
   if (["Akers", "Reverse Akers", "Embrasure"].includes(claspType)) {
@@ -13747,7 +13761,7 @@ function rpdDescribeReciprocation(claspType, arch, abutmentAttrs) {
     if (undercutSide === "lingual") {
       return "Buccal reciprocal clasp";
     }
-    return `${arch === "maxillary" ? "Palatal" : "Lingual"} reciprocal clasp`;
+    return `${side} reciprocal clasp`;
   }
   return null;
 }
