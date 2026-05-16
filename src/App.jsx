@@ -16804,8 +16804,11 @@ function RPDPaperFormArchDrawing({
             stroke={C_CAST} strokeWidth={1.4} strokeLinejoin="round" />
         );
       };
-      const bandThick = 14;
-      const lateralThick = 11;
+      // Bands ~8 mm at clinical scale; chart renders at ~2.8 px/mm, so
+      // 22 px reads as ~8 mm. Lateral connectors slightly thinner (~6 mm)
+      // since their structural role is bridging, not bracing.
+      const bandThick = 22;
+      const lateralThick = 17;
       return (
         <g key={key}>
           {edge(rA, lA, bandThick, "ap-ant-band")}
