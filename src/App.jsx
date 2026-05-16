@@ -16904,19 +16904,58 @@ function RPDPaperFormArchDrawing({
         </g>
       );
     }
-    // Default: single palatal strap drawn as a SOLID BLUE FILLED band —
-    // matches UIC paper-form colored-pencil convention. Range starts at
-    // the standard premolar-to-premolar span and extends to include any
-    // abutments outside that range, so the strap actually reaches every
-    // minor-connector strut instead of stopping short of the terminal
-    // abutments.
-    const inDefaultRange = (n) => isMax ? (n >= 4 && n <= 13) : (n >= 20 && n <= 29);
-    const midTeeth = archTeeth.filter(n => inDefaultRange(n) || abutTeethSet.has(n));
-    const upper = midTeeth.map(n => palatalAt(n, 0.9));
-    const lower = midTeeth.map(n => palatalAt(n, 1.5));
+    // Default: single palatal strap.
+    //
+    // Textbook Single Palatal Strap (McCracken + UIC Major Connectors
+    // lecture): ONE wide (~8 mm) band crossing the palate at a fixed
+    // Y position, perpendicular to the mid-sagittal axis. It does NOT
+    // follow the lingual contour of every tooth — it goes STRAIGHT
+    // across, mid-palate, between the rugae and the posterior palatal
+    // seal. Minor-connector struts from each abutment extend lingually
+    // to meet the strap.
+    //
+    // Prior render tracked palatalAt(n) for every tooth in #4-#13,
+    // which made the band arc dramatically upward in the middle to
+    // follow the arch — that's the arch shape, not a strap shape.
+    //
+    // New geometry: find the leftmost and rightmost abutment lingual
+    // anchors, compute their mean Y, and render a straight rectangular
+    // band of thickness ~22 px (8 mm at chart scale) connecting them.
+    const archAnchors = [...abutTeethSet]
+      .filter(n => inActiveArch(n))
+      .map(n => palatalAt(n, 1.0));
+    if (archAnchors.length < 2) {
+      // Not enough abutments yet — fall back to the curve-following
+      // render so we render something during input.
+      const inDefaultRange = (n) => isMax ? (n >= 4 && n <= 13) : (n >= 20 && n <= 29);
+      const midTeeth = archTeeth.filter(n => inDefaultRange(n) || abutTeethSet.has(n));
+      const upper = midTeeth.map(n => palatalAt(n, 0.9));
+      const lower = midTeeth.map(n => palatalAt(n, 1.5));
+      return <g key={key}>{filledBand(upper, lower)}</g>;
+    }
+    // Find leftmost and rightmost X-position anchors.
+    const sortedByX = [...archAnchors].sort((a, b) => a.x - b.x);
+    const leftPt = sortedByX[0];
+    const rightPt = sortedByX[sortedByX.length - 1];
+    // Strap thickness ~22 px (~8 mm at chart scale, per UIC rationale).
+    const strapThick = 22;
+    // Build a straight rectangle perpendicular to the leftPt-rightPt
+    // line, of thickness strapThick. Same edge-polygon construction
+    // used by the AP strap's lateral connectors.
+    const dx = rightPt.x - leftPt.x, dy = rightPt.y - leftPt.y;
+    const len = Math.hypot(dx, dy);
+    if (len < 1) return null;
+    const px = -dy / len, py = dx / len; // perpendicular unit vector
+    const h = strapThick / 2;
+    const d = `M ${leftPt.x + px * h} ${leftPt.y + py * h}` +
+              ` L ${rightPt.x + px * h} ${rightPt.y + py * h}` +
+              ` L ${rightPt.x - px * h} ${rightPt.y - py * h}` +
+              ` L ${leftPt.x - px * h} ${leftPt.y - py * h} Z`;
     return (
       <g key={key}>
-        {filledBand(upper, lower)}
+        <path d={d}
+          fill={C_CAST} fillOpacity={0.75}
+          stroke={C_CAST} strokeWidth={1.4} strokeLinejoin="round" />
       </g>
     );
   };
