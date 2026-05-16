@@ -17602,15 +17602,13 @@ function RPDPaperFormArchDrawing({
             })}
 
             {/* 9. Indirect retainers — pick the right rest glyph by restType:
-                  - ball rest (max centrals #8/#9 with distal ball; or mand
-                    canine with ML ball) → small filled circle on the rest
-                    surface (drawCingulumRest is the closest existing glyph;
-                    we use it for both ball and cingulum since visually they
-                    both sit on the lingual/incisal aspect)
-                  - cingulum rest (max canines/laterals or anteriors generally)
-                    → V-shaped cingulum glyph
+                  - ball rest (max centrals #8/#9 with distal ball; mand
+                    canine with ML ball; Class IV bounding canines) → use
+                    drawBallRest (small filled circle on incisal/lingual)
+                  - cingulum rest (max canines/laterals or anteriors) →
+                    V-shaped cingulum glyph via drawCingulumRest
                   - occlusal rest (premolars) → spoon-shaped occlusal glyph
-                                                on the mesial/distal surface */}
+                    via drawOcclusalRest on the appropriate surface */}
             {indirects.flatMap((r, i) => {
               const restTypeLc = (r.restType || "").toLowerCase();
               const isBall = restTypeLc.includes("ball");
@@ -17619,11 +17617,14 @@ function RPDPaperFormArchDrawing({
                               || (r.tooth >= 7 && r.tooth <= 10) || (r.tooth >= 23 && r.tooth <= 26)));
               const isOccl = restTypeLc.includes("occlusal") || restTypeLc.includes("mesial");
               let el;
-              if (isCing || isBall) {
-                // Cingulum glyph covers both cingulum and ball visually
-                // (both sit on lingual/incisal at the cingulum landmark)
+              if (isBall) {
+                el = drawBallRest(r.tooth, `ir-${i}`);
+              } else if (isCing) {
                 el = drawCingulumRest(r.tooth, `ir-${i}`);
               } else if (isOccl || RPD_FIRST_PREMOLARS.has(r.tooth) || RPD_SECOND_PREMOLARS.has(r.tooth)) {
+                // Default surface for indirect occlusal rest: mesial (toward
+                // fulcrum line). Engine doesn't carry the surface on indirect
+                // retainer objects; UIC's standard is mesial on premolars.
                 el = drawOcclusalRest(r.tooth, "mesial", `ir-${i}`);
               } else {
                 el = drawCingulumRest(r.tooth, `ir-${i}`);
