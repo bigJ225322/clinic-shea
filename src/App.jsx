@@ -3030,7 +3030,7 @@ const REF_DATA = {
       { type: "script",
         caption: "Lab Rx",
         body: "Please pour impression & fabricate PFM crown for #[tooth] using high-noble alloy.\nOcclusal and interproximal contacts should be in porcelain.\n1-2 mm metal collar on the lingual margin, no metal collar on the buccal margin.\nShade [A2].\nThank you.",
-        note: "Fill [tooth] with the prepared tooth number and [A2] with the verified shade." },
+        note: "Pick the tooth above; replace [A2] with the verified shade before sending." },
       { type: "cards", caption: "What to send with this Rx", cards: [
         { title: "Supplements", rows: [
           ["Final impression", "heavy + light body PVS"],
@@ -5689,12 +5689,24 @@ function RefProse({ heading, lines }) {
 
 // Renders a copy-able lab Rx body in a monospace block. Bracket placeholders
 // like [shade] or [##-##] are visually distinct so students know what to fill
-// in before sending. Used by the lab-script REF_DATA entries.
+// in before sending. If the body contains a [tooth] placeholder, also renders
+// a tooth picker above the Rx — picking a tooth substitutes the number into
+// the displayed body and the copy output. Used by the lab-script REF_DATA
+// entries.
 function RefScript({ caption, body, note }) {
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied]             = useState(false);
+  const [selectedTooth, setSelectedTooth] = useState("");
+
+  // Substitute the picked tooth into the body. If no tooth is picked yet,
+  // leave [tooth] in place so the Rx still reads as a template.
+  const hasToothPlaceholder = body.includes("[tooth]");
+  const filledBody = hasToothPlaceholder && selectedTooth
+    ? body.replaceAll("[tooth]", selectedTooth)
+    : body;
+
   const onCopy = async () => {
     try {
-      await navigator.clipboard.writeText(body);
+      await navigator.clipboard.writeText(filledBody);
       setCopied(true);
       setTimeout(() => setCopied(false), 1400);
     } catch { /* clipboard unavailable */ }
@@ -5702,7 +5714,7 @@ function RefScript({ caption, body, note }) {
 
   // Highlight [bracket] placeholders. Split on a capturing group so the
   // brackets land in odd-indexed positions.
-  const segments = body.split(/(\[[^\]]+\])/g);
+  const segments = filledBody.split(/(\[[^\]]+\])/g);
 
   return (
     <div style={{ marginBottom: "26px" }}>
@@ -5726,6 +5738,47 @@ function RefScript({ caption, body, note }) {
             cursor: "pointer", transition: "background 120ms, color 120ms",
             whiteSpace: "nowrap",
           }}>{copied ? "Copied" : "Copy"}</button>
+        </div>
+      )}
+      {hasToothPlaceholder && (
+        <div style={{
+          display: "flex", alignItems: "center", gap: "10px",
+          marginBottom: "10px",
+          fontFamily: "'Geist', sans-serif",
+        }}>
+          <label htmlFor="lab-rx-tooth" style={{
+            fontWeight: 600, fontSize: "10.5px",
+            letterSpacing: "0.07em", textTransform: "uppercase",
+            color: "var(--ink-soft)",
+          }}>Tooth</label>
+          <select id="lab-rx-tooth"
+            value={selectedTooth}
+            onChange={e => setSelectedTooth(e.target.value)}
+            style={{
+              background: "var(--paper)",
+              border: "1px solid var(--rule)",
+              borderRadius: "3px",
+              padding: "4px 8px",
+              fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+              fontSize: "13px",
+              color: "var(--ink)",
+              cursor: "pointer",
+            }}>
+            <option value="">— pick a tooth —</option>
+            {Array.from({ length: 32 }, (_, i) => i + 1).map(n => (
+              <option key={n} value={n}>#{n}</option>
+            ))}
+          </select>
+          {selectedTooth && (
+            <button onClick={() => setSelectedTooth("")} style={{
+              background: "transparent",
+              color: "var(--ink-faint)",
+              border: "none", padding: 0,
+              fontFamily: "'Geist', sans-serif",
+              fontSize: "11px", cursor: "pointer",
+              textDecoration: "underline",
+            }}>clear</button>
+          )}
         </div>
       )}
       <pre style={{
