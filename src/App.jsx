@@ -13108,7 +13108,7 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
       restSeat = { surface: "mesial", type: "cingulum", bur: "inverted cone" };
     } else {
       const burForTooth = (RPD_FIRST_MOLARS.has(tooth) || RPD_SECOND_MOLARS.has(tooth))
-        ? "#8 round (outline) / #6 round (deepening)"
+        ? "#8 round (outline) / #6 round (deepening) / #4 round (spoon point)"
         : "#6 round (outline) / #4 round (deepening)";
       restSeat = { surface: "mesial", type: "occlusal", bur: burForTooth };
     }
@@ -13128,7 +13128,7 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
       restSeat = {
         surface: sideToward, type: "occlusal",
         bur: isMolar
-          ? "#8 round (outline) / #6 round (deepening)"
+          ? "#8 round (outline) / #6 round (deepening) / #4 round (spoon point)"
           : "#6 round (outline) / #4 round (deepening)",
       };
     } else if (RPD_CANINES.has(tooth)) {
@@ -13177,22 +13177,39 @@ function rpdPlaceIndirectRetainers(caseInput, kennedy) {
   const arch = caseInput.arch;
   const presentTeeth = rpdArchTeeth(arch).filter(n => rpdIsPresent(caseInput, n));
 
-  // ─── Class IV: posterior rests on terminal abutments serve indirect ───
+  // ─── Class IV: bounding canine rests serve as indirect retainers ───
+  // Per UIC Design Case II logic: the bounding canine abutments themselves
+  // act as both primary abutments AND indirect retainers via their ML ball
+  // rest (mandibular) or mesial cingulum rest (maxillary). The rest seat on
+  // the canine perpendicular to the fulcrum line through the anterior span
+  // provides the indirect retention; no separate posterior rests are needed.
+  //
+  // Previous behavior placed indirect retainers on the most-distal posterior
+  // premolars/molars on each side, which doesn't match UIC's actual Class IV
+  // design. The bounding canines' rests already cover the indirect retention
+  // role; the lab Rx generator dedupes these against the abutment list so
+  // they're reported as dual-role rather than added as separate rests.
   if (kennedy.class === "IV") {
     const span = kennedy.primarySpans[0];
-    // The bounding teeth (canines if missing 23-26) ARE the primary abutments,
-    // but indirect retention comes from posterior rests on additional teeth
-    // distal to them. Pick the most distal premolar/molar on each side.
-    const right = presentTeeth.filter(n => rpdSideOf(n) === "right" && RPD_POSTERIOR.has(n));
-    const left  = presentTeeth.filter(n => rpdSideOf(n) === "left"  && RPD_POSTERIOR.has(n));
+    // Identify the bounding canines (or whatever bounds the anterior span).
+    const bounding = [span.beforeBound, span.afterBound].filter(Boolean);
     const out = [];
-    if (right.length) {
-      const t = right.reduce((a, b) => rpdDistalRank(b) > rpdDistalRank(a) ? b : a);
-      out.push({ tooth: t, restType: "occlusal (additional)", rationale: RPD_RATIONALE.rest.classIVAnterior });
-    }
-    if (left.length) {
-      const t = left.reduce((a, b) => rpdDistalRank(b) > rpdDistalRank(a) ? b : a);
-      out.push({ tooth: t, restType: "occlusal (additional)", rationale: RPD_RATIONALE.rest.classIVAnterior });
+    for (const t of bounding) {
+      // Pick the rest type appropriate for the bounding tooth.
+      let restType;
+      if (RPD_CANINES.has(t)) {
+        restType = arch === "mandibular" ? "ML ball rest" : "mesial cingulum rest";
+      } else if (RPD_FIRST_PREMOLARS.has(t) || RPD_SECOND_PREMOLARS.has(t)) {
+        // Canine missing — premolar bounds the span instead.
+        restType = "mesial occlusal rest";
+      } else {
+        restType = "cingulum rest";
+      }
+      out.push({
+        tooth: t, restType,
+        rationale: RPD_RATIONALE.rest.classIVAnterior,
+        dualRole: true,  // flags that this tooth is BOTH a primary abutment AND indirect retainer
+      });
     }
     return out;
   }
@@ -13213,22 +13230,32 @@ function rpdPlaceIndirectRetainers(caseInput, kennedy) {
     return sideTeeth.reduce((a, b) => rpdDistalRank(b) > rpdDistalRank(a) ? b : a);
   };
 
+  // UIC's exclusion list for indirect retainer placement (Retainers PDF p.45):
+  // "Avoid mandibular incisors and maxillary LATERAL incisors." Maxillary
+  // CENTRALS (#8, #9) are permitted — Final Huddle Week 6 Case 2 explicitly
+  // uses #9 distal ball rest as an indirect retainer. Engine previously
+  // excluded all 4 max incisors via RPD_MAX_INCISORS, which was over-broad.
+  const RPD_MAX_LATERALS = new Set([7, 10]);
+
   const pickIndirectFor = (side) => {
     const primary = primaryOnSide(side);
     if (primary == null) return null;
     const candidates = presentTeeth.filter(n =>
       rpdSideOf(n) === side && rpdDistalRank(n) < rpdDistalRank(primary)
     );
-    // Exclude mand incisors always; exclude max incisors (laterals/centrals)
-    // from being indirect retainers (insufficient root surface).
+    // Exclude mand incisors always; exclude max LATERAL incisors (centrals
+    // are permitted per UIC's Retainers PDF and Final Huddle Week 6 Case 2).
     const filtered = candidates.filter(n =>
-      !RPD_MAND_INCISORS.has(n) && !RPD_MAX_INCISORS.has(n)
+      !RPD_MAND_INCISORS.has(n) && !RPD_MAX_LATERALS.has(n)
     );
     if (filtered.length === 0) return null;
 
     const firstPremolar  = filtered.find(n => RPD_FIRST_PREMOLARS.has(n));
     const secondPremolar = filtered.find(n => RPD_SECOND_PREMOLARS.has(n));
     const canine         = filtered.find(n => RPD_CANINES.has(n));
+    // Max central incisors (#8, #9) — permitted as fallback after PMs/canines
+    // when nothing better is available. Distal ball rest convention per UIC.
+    const maxCentral = filtered.find(n => n === 8 || n === 9);
 
     if (arch === "mandibular") {
       if (firstPremolar)  return firstPremolar;
@@ -13238,6 +13265,7 @@ function rpdPlaceIndirectRetainers(caseInput, kennedy) {
       if (canine)         return canine;
       if (firstPremolar)  return firstPremolar;
       if (secondPremolar) return secondPremolar;
+      if (maxCentral)     return maxCentral;
     }
     return filtered.reduce((a, b) => rpdDistalRank(b) < rpdDistalRank(a) ? b : a);
   };
@@ -13259,6 +13287,10 @@ function rpdPlaceIndirectRetainers(caseInput, kennedy) {
       restType = arch === "mandibular" ? "ML ball rest" : "mesial cingulum rest";
     } else if (RPD_FIRST_PREMOLARS.has(t) || RPD_SECOND_PREMOLARS.has(t)) {
       restType = "mesial occlusal rest";
+    } else if (t === 8 || t === 9) {
+      // Max central as indirect retainer — UIC convention is distal ball rest
+      // (Final Huddle Week 6 Case 2: #9 distal ball rest).
+      restType = "distal ball rest";
     } else {
       restType = "cingulum rest";
     }
@@ -14198,13 +14230,23 @@ function rpdRunEngine(caseInput) {
   const teethList = rpdArchTeeth(safeCase.arch);
   abutmentDesigns.sort((a, b) => teethList.indexOf(a.tooth) - teethList.indexOf(b.tooth));
 
-  // Embrasure clasp detection — two adjacent posterior abutments with no
-  // edentulous space between them (typical of Kennedy II Mod 1 or III Mod 1
-  // where modification space and distal extension/main span sit on opposite
-  // sides of the same dentate run). UIC: embrasure clasp is one continuous
-  // clasp engaging both teeth's facing undercuts via a single occlusal embrasure
-  // rest assembly. Recommended only when both teeth are posterior (premolar+)
-  // and both are tooth-supported abutments.
+  // Embrasure clasp — UIC's Lab Rx Example B (Mand Class II Mod 1) demonstrates
+  // an Embrasure pair (#18 + #19) used as the PRIMARY direct retainer when the
+  // distal-most clasp's neighbor is a present "spare" posterior tooth. BUT
+  // LabRx Example A (Max Class II Mod 1) has an identical-shape configuration
+  // (#3 adjacent to a present #2 with #4-5 mod) and UIC does NOT pair them —
+  // instead, the design uses I-bar esthetic on #6 for extra retention.
+  //
+  // The distinguishing factor between LabRx A and B isn't a universal rule
+  // derivable from the materials available. Mandibular vs maxillary geometry,
+  // overall retention budget, and case-specific clinical judgment all play a
+  // role. Auto-promoting to Embrasure caused multiple test regressions
+  // (Case 11, Case 7, Case 4, granular tests) because the rule isn't truly
+  // universal.
+  //
+  // Conservative behavior: keep Embrasure as a SURFACED ALTERNATIVE when two
+  // adjacent posterior abutments exist with no edentulous space between them.
+  // The student / clinician can make the final call based on retention budget.
   const RPD_POSTERIOR = new Set([
     1,2,3,4,5,12,13,14,15,16,           // maxillary 1st premolar–3rd molar
     17,18,19,20,21,28,29,30,31,32,      // mandibular 1st premolar–3rd molar
@@ -14220,7 +14262,7 @@ function rpdRunEngine(caseInput) {
     // a defined retention scheme that shouldn't be overridden by embrasure).
     const skipClasps = new Set(["Rest Only (no clasp)", "RPI", "Combination"]);
     if (skipClasps.has(a1.claspType) || skipClasps.has(a2.claspType)) continue;
-    const note = `Consider Embrasure clasp spanning ${rpdToothName(a1.tooth)} and ${rpdToothName(a2.tooth)} — one continuous clasp with a shared occlusal embrasure rest assembly, engaging facing undercuts on both teeth. Indicated when adjacent posterior teeth both serve as abutments on a tooth-supported (modification) side with no edentulous space between them.`;
+    const note = `Consider Embrasure clasp spanning ${rpdToothName(a1.tooth)} and ${rpdToothName(a2.tooth)} — one continuous clasp with a shared occlusal embrasure rest assembly, engaging facing undercuts on both teeth. UIC uses Embrasure as the PRIMARY direct retainer in some Class II Mod 1 cases (Lab Rx Example B, Mand) but keeps separate Akers in others (Lab Rx Example A, Max). Choice depends on overall retention budget; instructor judgment call.`;
     a1.claspAlternatives = a1.claspAlternatives ? `${a1.claspAlternatives}\n\n${note}` : note;
     a2.claspAlternatives = a2.claspAlternatives ? `${a2.claspAlternatives}\n\n${note}` : note;
   }

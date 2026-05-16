@@ -343,7 +343,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#8 round (outline) / #6 round (deepening)",
+        "bur": "#8 round (outline) / #6 round (deepening) / #4 round (spoon point)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -548,7 +548,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#8 round (outline) / #6 round (deepening)",
+        "bur": "#8 round (outline) / #6 round (deepening) / #4 round (spoon point)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -732,7 +732,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#8 round (outline) / #6 round (deepening)",
+        "bur": "#8 round (outline) / #6 round (deepening) / #4 round (spoon point)",
         "surface": "mesial",
         "type": "occlusal",
       },
