@@ -13652,35 +13652,56 @@ function rpdUndercutSide(undercutLocation) {
 }
 
 // Clasp + undercut description per standard convention (matches UIC actual lab Rx examples).
+// UIC-format clasp descriptor for lab Rx (matches Design Case I/II, framework
+// Case 1, Lab Rx Example A/B verbatim):
+//   "Akers clasp engaging 0.01\" DB undercut"
+//   "I-bar engaging 0.01\" mid-buccal undercut"
+//   "Combination clasp engaging 0.02\" MB undercut"
+//   "Embrasure clasp engaging 0.01\" MB undercut"
+//   "18ga wrought wire C-clasp engaging 0.02\" undercut"
+// Undercut surfaces are abbreviated to UIC's lab Rx convention (DB/MB/DL/ML)
+// EXCEPT mid-buccal which UIC writes out as "mid-buccal" or "Mid-B".
 function rpdDescribeClasp(a, abutmentAttrs) {
   const t = a.claspType;
-  const arm = a.retentiveArm || "";
-  const undercutMatch = arm.match(/engaging[^,;]+/);
-  const undercutPhrase = undercutMatch ? undercutMatch[0] : arm;
+  // Determine the effective undercut surface. Engine fields are layered:
+  //   1. a.effectiveUndercutLocation (engine-computed, e.g. DB for Akers
+  //      with sideToward=mesial — UIC's textbook default).
+  //   2. abutmentAttrs.undercutLocation (user-set, e.g. when the surveyed
+  //      cast shows a non-default surface).
+  //   3. fall back to "mid-buccal" if nothing else is set.
+  const loc = a.effectiveUndercutLocation
+            || abutmentAttrs?.undercutLocation
+            || "mid-buccal";
+  // Map to UIC's lab-Rx surface abbreviation. mid-buccal is written out;
+  // others abbreviated to 2 letters (DB/MB/DL/ML).
+  const surface = (loc === "mid-buccal") ? "mid-buccal" : (RPD_UNDERCUT_SHORT[loc] || loc);
   if (t === "RPI" || t === "I-bar (esthetic)") {
-    return undercutPhrase.startsWith("I-bar") ? undercutPhrase : `I-bar ${undercutPhrase}`;
+    return `I-bar engaging 0.01" ${surface} undercut`;
   }
   if (t === "Akers" || t === "Reverse Akers") {
-    // If the abutment's clinical undercut is on a non-default surface (DL/DB/ML/MB
-    // — typically a tilted molar), express the Akers with the abbreviated surface
-    // per UIC's actual Reverse-Akers Rx form (Design Case II #31, framework Case 1).
-    const loc = abutmentAttrs?.undercutLocation;
-    const abbr = RPD_UNDERCUT_SHORT[loc];
-    if (abbr && loc !== "mid-buccal") {
-      return `Akers clasp engaging 0.01" ${abbr} undercut`;
-    }
-    return `Akers clasp ${undercutPhrase}`;
+    return `Akers clasp engaging 0.01" ${surface} undercut`;
   }
   if (t === "Embrasure") {
-    return `Embrasure clasp ${undercutPhrase}`;
+    return `Embrasure clasp engaging 0.01" ${surface} undercut`;
   }
   if (t === "Combination") {
-    return `Combination clasp ${undercutPhrase}`;
+    // Combination clasps use 18ga WW + 0.02" undercut per UIC.
+    // UIC's actual lab Rx writes the short form: "Combination clasp
+    // engaging 0.02\" MB undercut" — the wrought-wire gauge is shown on
+    // the Preliminary Design Form, not in the Rx text.
+    return `Combination clasp engaging 0.02" ${surface} undercut`;
   }
   if (t === "WW C-clasp") {
     return `18ga wrought wire C-clasp engaging 0.02" undercut`;
   }
-  return arm;
+  if (t === "Ball Clasp") {
+    return `18ga wrought wire ball clasp engaging buccal embrasure`;
+  }
+  if (t === "Ring" || t === "Ring Clasp") {
+    return `Ring clasp engaging 0.01" ${surface} undercut`;
+  }
+  // Fallback: emit the raw retentive arm description.
+  return a.retentiveArm || "";
 }
 
 // Reciprocation per standard convention (from UIC actual lab Rx examples):
