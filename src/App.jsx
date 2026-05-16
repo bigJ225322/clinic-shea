@@ -12756,6 +12756,58 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
     return { type: "A-P Strap", rationale: RPD_RATIONALE.major["A-P Strap"], width: "8mm each strap, 6mm gingival clearance", note: "0.5mm beading on tissue side", tier: "strong" };
   }
   if (kennedy.class === "III") {
+    // Bilateral abutment check: a Single Palatal Strap (and an A-P
+    // Strap, for that matter) requires abutments on BOTH sides of the
+    // midline so the connector can span the palate to provide
+    // bilateral retention/bracing. If all the edentulous spaces are
+    // on ONE side of the arch, abutments are unilateral — a
+    // palatal-strap design has no contralateral support and would
+    // tip under load. Clinically, this scenario is almost always
+    // treated with a fixed partial denture (bridge), not an RPD.
+    //
+    // Compute abutments by taking each span's bounding teeth.
+    const archMin = arch === "maxillary" ? 1 : 17;
+    const archMax = arch === "maxillary" ? 16 : 32;
+    const isPresentInCase = (n) =>
+      n >= archMin && n <= archMax && caseInput.teeth?.[n]?.status !== "missing";
+    const abutSet = new Set();
+    for (const span of kennedy.spans || []) {
+      const teeth = span.teeth || [];
+      if (teeth.length === 0) continue;
+      const minT = Math.min(...teeth);
+      const maxT = Math.max(...teeth);
+      // Walk mesially / distally until we find a present tooth — that's
+      // an abutment for this span.
+      for (let t = minT - 1; t >= archMin; t--) {
+        if (isPresentInCase(t)) { abutSet.add(t); break; }
+      }
+      for (let t = maxT + 1; t <= archMax; t++) {
+        if (isPresentInCase(t)) { abutSet.add(t); break; }
+      }
+    }
+    const isMaxArch = arch === "maxillary";
+    const rightAbuts = [...abutSet].filter(n => isMaxArch ? n <= 8 : n >= 25);
+    const leftAbuts = [...abutSet].filter(n => isMaxArch ? n >= 9 : n <= 24);
+    const isBilateral = rightAbuts.length > 0 && leftAbuts.length > 0;
+
+    if (!isBilateral) {
+      // Unilateral abutments: no contralateral support for any
+      // palatal-strap design. Clinically this is an FPD case (small
+      // tooth-bounded space, healthy abutments on one side). Emit a
+      // Full Palatal Plate as the LEAST-WRONG removable option (it's
+      // the only connector that doesn't strictly require bilateral
+      // anchoring — it covers the whole palate via tissue contact),
+      // and flag the case via the tier so the verdict makes the FPD
+      // recommendation visible.
+      return {
+        type: "Full Palatal Plate", rationale: "Unilateral abutments — palatal-strap designs (Single Palatal Strap, A-P Strap) require bilateral support that this case lacks. The typical treatment for a small unilateral tooth-bounded edentulous space is a fixed partial denture (bridge). If an RPD is unavoidable, a Full Palatal Plate provides the most bilateral coverage by using the contralateral palate tissue itself rather than relying on contralateral abutments.",
+        note: "Consider FPD (bridge) as the preferred definitive treatment.",
+        tier: "judgment",
+        alternative: "FPD (fixed partial denture)",
+        alternativeRationale: "A single tooth-bounded edentulous space with healthy abutments on one side is almost always treated with a 3-unit (or longer) bridge. RPD is reserved for cases where the patient can't pursue FPD (cost, surgical contraindication, abutment limitations).",
+      };
+    }
+
     const isShortSpan = kennedy.spans.every(s => s.teeth.length <= 2);
     if (isShortSpan) {
       return {
