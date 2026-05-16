@@ -3754,3 +3754,162 @@ describe("UIC-AUDIT — Bur naming matches Lab 3 EXCELLENT panel", () => {
     }
   });
 });
+
+describe("UIC-AUDIT — CAMBRA prescription block fires on high/extreme caries risk", () => {
+  it("High caries risk emits CAMBRA flag with all six protective items", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3]); // Mod 0 tooth-supported
+    c.patientFactors.cariesRisk = "high";
+    const r = rpdRunEngine(c);
+    const cambraFlag = r.redFlags.find(f => f.type === "cambra-prescription");
+    expect(cambraFlag).toBeDefined();
+    expect(cambraFlag.message).toMatch(/PreviDent 5000/);
+    expect(cambraFlag.message).toMatch(/Peridex/);
+    expect(cambraFlag.message).toMatch(/Fluoride varnish/);
+    expect(cambraFlag.message).toMatch(/Xylitol/);
+    expect(cambraFlag.message).toMatch(/3-month/);
+  });
+  it("Extreme caries risk upgrades severity to warning", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3]);
+    c.patientFactors.cariesRisk = "extreme";
+    const r = rpdRunEngine(c);
+    const cambraFlag = r.redFlags.find(f => f.type === "cambra-prescription");
+    expect(cambraFlag.severity).toBe("warning");
+    expect(cambraFlag.message).toMatch(/EXTREME risk/);
+  });
+  it("Moderate or low caries risk does NOT fire CAMBRA flag", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3]);
+    c.patientFactors.cariesRisk = "moderate";
+    const r = rpdRunEngine(c);
+    expect(r.redFlags.find(f => f.type === "cambra-prescription")).toBeUndefined();
+  });
+});
+
+describe("UIC-AUDIT — Perio risk Phase I prerequisite (Lecture 2 p.14)", () => {
+  it("High perio risk + definitive blocks impressions until Phase I complete", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]); // Class II
+    c.patientFactors.perioRisk = "high";
+    const r = rpdRunEngine(c);
+    const perioFlag = r.redFlags.find(f => f.type === "perio-risk");
+    expect(perioFlag).toBeDefined();
+    expect(perioFlag.severity).toBe("warning");
+    expect(perioFlag.message).toMatch(/Phase I/);
+    expect(perioFlag.message).toMatch(/SRP/);
+  });
+  it("Low perio risk does NOT fire perio flag", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    c.patientFactors.perioRisk = "low";
+    const r = rpdRunEngine(c);
+    expect(r.redFlags.find(f => f.type === "perio-risk")).toBeUndefined();
+  });
+});
+
+describe("UIC-AUDIT — Refer-to-prosthodontist triggers", () => {
+  it("VDO loss triggers referral", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    c.patientFactors.vdoLoss = true;
+    const r = rpdRunEngine(c);
+    const referFlag = r.redFlags.find(f => f.type === "refer-prosthodontist");
+    expect(referFlag).toBeDefined();
+    expect(referFlag.message).toMatch(/vertical dimension/);
+  });
+  it("Severe ridge + Class I + high perio risk triggers referral", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [18, 19, 30, 31]); // Class I distal extension bilaterally
+    c.patientFactors.perioRisk = "high";
+    c.measurements.ridgeResorption = "severe";
+    const r = rpdRunEngine(c);
+    const referFlag = r.redFlags.find(f => f.type === "refer-prosthodontist");
+    expect(referFlag).toBeDefined();
+    expect(referFlag.message).toMatch(/severe ridge/);
+  });
+  it("Class IV + high esthetic demand triggers referral", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [8, 9]); // Class IV anterior
+    c.patientFactors.estheticDemand = "high";
+    const r = rpdRunEngine(c);
+    const referFlag = r.redFlags.find(f => f.type === "refer-prosthodontist");
+    expect(referFlag).toBeDefined();
+    expect(referFlag.message).toMatch(/esthetic/);
+  });
+  it("Healthy Class III with no complicating factors does NOT trigger referral", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3]);
+    const r = rpdRunEngine(c);
+    expect(r.redFlags.find(f => f.type === "refer-prosthodontist")).toBeUndefined();
+  });
+});
+
+describe("UIC-AUDIT — Existing RPD decision tree (reline/rebase/remake)", () => {
+  it("Existing RPD + ridge resorption only → RELINE recommendation", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    c.patientFactors.existingRpdSameArch = true;
+    c.patientFactors.existingRpdCondition = "fits-ridge-resorption-only";
+    const r = rpdRunEngine(c);
+    const decisionFlag = r.redFlags.find(f => f.type === "existing-rpd-decision");
+    expect(decisionFlag).toBeDefined();
+    expect(decisionFlag.message).toMatch(/RELINE/);
+    expect(decisionFlag.message).toMatch(/D5751/); // mandibular reline code
+  });
+  it("Existing RPD + framework broken → REMAKE recommendation", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3]);
+    c.patientFactors.existingRpdSameArch = true;
+    c.patientFactors.existingRpdCondition = "framework-broken";
+    const r = rpdRunEngine(c);
+    const decisionFlag = r.redFlags.find(f => f.type === "existing-rpd-decision");
+    expect(decisionFlag.message).toMatch(/REMAKE/);
+    expect(decisionFlag.message).toMatch(/D5213/); // maxillary remake code
+  });
+  it("Existing RPD + denture teeth worn → REBASE recommendation", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    c.patientFactors.existingRpdSameArch = true;
+    c.patientFactors.existingRpdCondition = "teeth-worn";
+    const r = rpdRunEngine(c);
+    const decisionFlag = r.redFlags.find(f => f.type === "existing-rpd-decision");
+    expect(decisionFlag.message).toMatch(/REBASE/);
+    expect(decisionFlag.message).toMatch(/D5711/); // mandibular rebase code
+  });
+  it("No existing RPD → no decision flag", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3]);
+    const r = rpdRunEngine(c);
+    expect(r.redFlags.find(f => f.type === "existing-rpd-decision")).toBeUndefined();
+  });
+});
+
+describe("UIC-AUDIT — Phase IV step 10 long-term recall + maintenance decision tree", () => {
+  it("Step 10 appears in Axium output with reline/rebase/remake decision tree", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/Step 10/);
+    expect(r.axiumSteps).toMatch(/RELINE/);
+    expect(r.axiumSteps).toMatch(/REBASE/);
+    expect(r.axiumSteps).toMatch(/REMAKE/);
+    expect(r.axiumSteps).toMatch(/D5750/);
+    expect(r.axiumSteps).toMatch(/D5710/);
+    expect(r.axiumSteps).toMatch(/3-month recall/);
+  });
+});

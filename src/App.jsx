@@ -13579,6 +13579,35 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
     });
   }
 
+  // Existing RPD on the SAME arch — UIC requires reline-vs-rebase-vs-remake
+  // decision before automatically scheduling a new framework. The new
+  // framework is the last resort; if the existing one can be salvaged,
+  // it's faster + cheaper + better-adapted to the patient's adapted
+  // proprioception. Per UIC Removable Partial Denture Maintenance lecture
+  // and procedure-code conventions (D5750 reline, D5710 rebase, D5213
+  // remake).
+  const existingRpd = pf.existingRpdSameArch;
+  if (existingRpd) {
+    const cond = pf.existingRpdCondition || "unspecified";
+    let recommendation;
+    if (cond === "fits-ridge-resorption-only") {
+      recommendation = "LAB RELINE (D5750 max / D5751 mand). Take pickup impression with RPD seated, bite registration, ship to lab. Framework and denture teeth retained. Turnaround: ~1 week.";
+    } else if (cond === "teeth-worn") {
+      recommendation = "REBASE (D5710 max / D5711 mand). Lab strips old acrylic base + replaces denture teeth on existing framework. Use only if framework is structurally intact and well-designed.";
+    } else if (cond === "framework-broken" || cond === "design-inadequate") {
+      recommendation = "REMAKE (D5213 max / D5214 mand). Cast Co-Cr cannot be reliably welded; broken rests / clasps / connectors are NOT repairable to clinical standard. A poorly-designed framework (no rests, no indirect retainers, no path of insertion) is a doomed substrate — don't reline it.";
+    } else if (cond === "fits-good") {
+      recommendation = "NO INTERVENTION required at this visit. Document fit + retention + occlusion in Axium. Continue maintenance recall schedule. Reassess at next recall.";
+    } else {
+      recommendation = "Evaluate fit (PIP paste intaglio), retention (clasp tension test), occlusion (AccuFilm), denture-tooth wear, and framework integrity (palpate clasps, rest seats, major connector). Decision tree: ridge-resorption only → RELINE; denture teeth worn → REBASE; framework broken or design inadequate → REMAKE.";
+    }
+    flags.push({
+      severity: "info",
+      type: "existing-rpd-decision",
+      message: `Existing RPD on this arch documented (condition: ${cond.replaceAll('-', ' ')}). UIC maintenance decision tree: ${recommendation} Note: do NOT routinely remake a serviceable RPD — patients adapt proprioceptively to existing prostheses, and remake risks rejection of the new framework.`,
+    });
+  }
+
   // Refer-to-prosthodontist triggers (Lecture 1 — scope of practice for
   // predoctoral student vs specialist referral; PDI Classification for
   // Partial Edentulism — ACP). The predoctoral student handles PDI Class
@@ -14198,6 +14227,14 @@ const RPD_AXIUM_STEPS = [
     action: "24-hour follow-up: identify and adjust soft tissue irritation, verify intaglio comfort, re-check occlusion. 1-week follow-up: re-evaluate patient adaptation, check for sore spots, re-evaluate occlusion under function, reinforce home-care + nightly removal + water storage. Subsequent recall every 6 months (or 3-4 months for high-perio-risk patients).",
     axiumEntry: "D9445 (Office visit — follow-up); adjustment notes; sore spot relief notes; recall schedule",
     design: "If Class I distal extension RPD begins rotating around the fulcrum line at follow-up (alginate test: thick alginate on intaglio = reline indicated), schedule lab reline.",
+  },
+  {
+    step: 10,
+    phase: "Phase IV: Post-Delivery Follow-Up",
+    clinic: "Long-Term Recall + Maintenance Decision Tree",
+    action: "RECALL SCHEDULE:\n  • Low/moderate caries + low perio risk: 6-month recall.\n  • High/extreme caries OR moderate/high perio risk: 3-month recall.\n  • Combination Syndrome at risk (mand Class I vs maxillary CD): 3-month recall + clinical remount at 1 yr.\nAT EACH RECALL:\n  • Re-prob abutments + monitor mobility (Miller class).\n  • PIP-paste fit check intaglio.\n  • Alginate-on-intaglio test (Class I/II): thick alginate film at distal extension area = lab reline indicated.\n  • Verify clasp retention (adjust with Bird Beak or Three Prong pliers if loose).\n  • Re-take radiographs of abutments yearly.\n  • Verify occlusion (AccuFilm); refine premature contacts on denture teeth, never on natural teeth.\n  • Caries risk reassessment + CAMBRA prescription renewal.\nDECISION TREE WHEN RPD FAILS:\n  • Ridge resorption only, framework still fits + denture teeth intact → LAB RELINE (D5750/D5751). Take pickup impression with the RPD seated; ship to lab with bite reg.\n  • Framework fits + denture teeth worn or chipped → REBASE (D5710/D5711). Lab strips old base resin and re-processes new base + new teeth on existing framework.\n  • Framework fractured (rest seat broken, clasp arm broken) OR design inadequate (no rests, no indirect retainers, no path of insertion) → REMAKE (D5213/D5214). Cast Co-Cr cannot be reliably welded; trying to repair is throwing good labor after a bad framework.\n  • If 2+ failure modes present, lean REMAKE (don't reline a poorly-designed framework — you're investing in a doomed prosthesis).",
+    axiumEntry: "Recall note (D0120 periodic exam, D1110 prophy); D5750/D5751 reline; D5710/D5711 rebase; D5213/D5214 remake; risk reassessment",
+    design: "Document each maintenance decision with rationale. Reline ≠ rebase ≠ remake — these are distinct procedure codes and have different lab times.",
   },
 ];
 
@@ -19426,7 +19463,31 @@ function RPDInputsForm({ caseInput, onUpdate }) {
           <input type="checkbox" checked={!!pf.vdoLoss} onChange={(e) => setFactor("vdoLoss", e.target.checked)} />
           Loss of VDO
         </label>
+        {/* Existing RPD on same arch — triggers reline/rebase/remake
+            decision tree red flag. UIC requires the maintenance decision
+            BEFORE planning a new framework. */}
+        <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--ink)" }}>
+          <input type="checkbox" checked={!!pf.existingRpdSameArch} onChange={(e) => setFactor("existingRpdSameArch", e.target.checked)} />
+          Existing RPD on this arch
+        </label>
       </div>
+      {/* If existing RPD on same arch is checked, show the condition selector
+          so the decision-tree flag has data to work with. */}
+      {pf.existingRpdSameArch && (
+        <div style={{ display: "flex", justifyContent: "center", paddingTop: "8px", borderTop: "1px solid var(--rule-soft)" }}>
+          <div style={{ ...field, maxWidth: "320px" }}>
+            <label style={labelText}>Existing RPD condition</label>
+            <select style={ctrl} value={pf.existingRpdCondition || "unspecified"} onChange={(e) => setFactor("existingRpdCondition", e.target.value)}>
+              <option value="unspecified">Not yet evaluated</option>
+              <option value="fits-good">Fits well; teeth + framework intact</option>
+              <option value="fits-ridge-resorption-only">Fits but ridge resorbed → reline</option>
+              <option value="teeth-worn">Framework fits but denture teeth worn → rebase</option>
+              <option value="framework-broken">Framework fractured (rest/clasp/connector broken) → remake</option>
+              <option value="design-inadequate">Design inadequate (no rests/IRs/POI) → remake</option>
+            </select>
+          </div>
+        </div>
+      )}
 
       {/* Toggle for the input-reference panel. The reference itself is
           rendered as a SEPARATE absolute-positioned overlay (below) that
