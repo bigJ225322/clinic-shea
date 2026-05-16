@@ -16804,11 +16804,12 @@ function RPDPaperFormArchDrawing({
             stroke={C_CAST} strokeWidth={1.4} strokeLinejoin="round" />
         );
       };
-      // Bands ~8 mm at clinical scale; chart renders at ~2.8 px/mm, so
-      // 22 px reads as ~8 mm. Lateral connectors slightly thinner (~6 mm)
-      // since their structural role is bridging, not bracing.
-      const bandThick = 22;
-      const lateralThick = 17;
+      // Thick bands match how UIC draws the A-P strap on paper forms —
+      // visually substantial bracing, not a thin line. Bands slightly
+      // thicker than the lateral connectors so the bracing role reads
+      // as more prominent than the bridging role.
+      const bandThick = 32;
+      const lateralThick = 24;
       return (
         <g key={key}>
           {edge(rA, lA, bandThick, "ap-ant-band")}
