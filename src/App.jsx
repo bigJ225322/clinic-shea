@@ -3004,6 +3004,351 @@ const REF_DATA = {
       },
     ],
   },
+
+  /* ──────────────────────────────────────────────────────────────────────
+   * LAB SCRIPTS — one entry per Swade lab script type.
+   *
+   * Each page shows: the verdict (one line on when to use this script),
+   * the copy-able Rx body with [bracket] placeholders highlighted, the
+   * supplements that must accompany it to the 5th-floor lab, and the
+   * Swade turnaround time. Each was previously buried as a TEMPLATES
+   * entry that students could only see via "Generate Note"; surfacing
+   * them as RefBlocks makes the lab Rx itself the headline content.
+   *
+   * Sources: Swade chunks c099.0 (workflow + complete dentures + interim
+   * immediate dentures), c099.1 (reline + RPD + interim partial + PFM
+   * crown + implant cast + abutment + implant crown + bridge cast +
+   * bridge + porcelain + occlusal guard + abutment), c126 (turnaround).
+   * ────────────────────────────────────────────────────────────────── */
+
+  "lab-pfm": {
+    verdict: "PFM crown — the workhorse posterior crown. The Rx is sent after final impression; lab returns the crown for delivery.",
+    blocks: [
+      { type: "script",
+        caption: "Lab Rx",
+        body: "Please pour impression & fabricate PFM crown for #[tooth] using high-noble alloy.\nOcclusal and interproximal contacts should be in porcelain.\n1-2 mm metal collar on the lingual margin, no metal collar on the buccal margin.\nShade [A2].\nThank you.",
+        note: "Fill [tooth] with the prepared tooth number and [A2] with the verified shade." },
+      { type: "cards", caption: "What to send with this Rx", cards: [
+        { title: "Supplements", rows: [
+          ["Final impression", "heavy + light body PVS"],
+          ["Opposing impression", "alginate"],
+          ["Bite registration", "Regisil (unless patient can hand-articulate)"],
+          ["Facebow record", "if mounted casts needed"],
+          ["Shade tab photo", "optional — clip to script"],
+        ]},
+      ]},
+      { type: "prose", heading: "Turnaround", lines: [
+        "Lab turnaround per Swade is 12 business days for PFM crowns. Book the delivery appointment accordingly.",
+      ]},
+    ],
+  },
+
+  "lab-implant-cast": {
+    verdict: "Implant working cast — the lab pours your impression around the implant replica so the abutment can be designed against the soft tissue.",
+    blocks: [
+      { type: "script",
+        caption: "Lab Rx",
+        body: "Please pour final impression & create soft tissue cast for implant-supported crown, #[tooth].\nImplant replica is provided for [Straumann / Nobel / Dentsply EV] Implant diameter [4.8] mm.\nPlease return working cast for mount.\nThank you.",
+        note: "Pick one brand from the bracket and confirm the diameter from your implant chart." },
+      { type: "cards", caption: "What to send with this Rx", cards: [
+        { title: "Supplements", rows: [
+          ["Final impression", "with impression coping seated"],
+          ["Implant replica", "matches placed implant's brand & diameter"],
+          ["Opposing impression", "alginate"],
+          ["Bite registration", "Regisil"],
+        ]},
+      ]},
+      { type: "prose", heading: "Turnaround", lines: [
+        "Working-cast pour falls under \"model work\" — 5 business days per Swade.",
+      ]},
+    ],
+  },
+
+  "lab-abutment": {
+    verdict: "Custom abutment — milled to the soft-tissue profile of the returned working cast so the planned crown emerges naturally.",
+    blocks: [
+      { type: "script",
+        caption: "Lab Rx",
+        body: "Please fabricate an Atlantis custom abutment for [Straumann / Nobel / Dentsply EV] Implant diameter [4.8] mm for #[tooth].\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown]\nThank you.",
+        note: "Titanium is the default for most cases; gold-hue or zirconia is selected for esthetic anteriors." },
+      { type: "cards", caption: "What to send with this Rx", cards: [
+        { title: "Supplements", rows: [
+          ["Working cast", "with implant replica and soft-tissue model"],
+          ["Opposing cast", "mounted"],
+          ["Diagnostic wax-up", "if anterior or esthetic case"],
+        ]},
+      ]},
+      { type: "prose", heading: "Turnaround", lines: [
+        "Atlantis sends abutments through their own pipeline; allow 12 business days as a conservative book.",
+      ]},
+    ],
+  },
+
+  "lab-implant-crown": {
+    verdict: "Implant crown — typically an all-ceramic e.max CAD/CAM crown cemented onto the custom abutment.",
+    blocks: [
+      { type: "script",
+        caption: "Lab Rx",
+        body: "Please fabricate all-ceramic emax CAD/CAM crown (lithium disilicate) for site #[tooth] ([Straumann / Nobel / Dentsply EV] [4.8] mm): Shade LT [A2]. Please crystalize and return it for delivery. Thank you.",
+        note: "LT (low translucency) is the default for posterior cement-retained crowns; HT is selected for esthetic anteriors." },
+      { type: "cards", caption: "What to send with this Rx", cards: [
+        { title: "Supplements", rows: [
+          ["Custom abutment", "returned from prior lab step (or, if screw-retained, the implant analog)"],
+          ["Working cast", "with abutment seated"],
+          ["Opposing cast", "mounted"],
+          ["Shade tab photo", "highly recommended for anterior cases"],
+        ]},
+      ]},
+      { type: "prose", heading: "Turnaround", lines: [
+        "Implant crowns are 12 business days per Swade.",
+      ]},
+    ],
+  },
+
+  "lab-bridge-cast": {
+    verdict: "Bridge working cast — lab sections the dies before mounting so each prep can be evaluated individually.",
+    blocks: [
+      { type: "script",
+        caption: "Lab Rx",
+        body: "Please pour impression for PFM bridge from [##-##].\nPlease section dies & return working cast for mounting.\nThank you.",
+        note: "Replace [##-##] with the bridge span (e.g. 28-30 for a 3-unit posterior bridge)." },
+      { type: "cards", caption: "What to send with this Rx", cards: [
+        { title: "Supplements", rows: [
+          ["Final impression", "heavy + light body PVS, full arch"],
+          ["Opposing impression", "alginate"],
+          ["Bite registration", "Regisil"],
+          ["Facebow record", "for mounting maxillary cast"],
+        ]},
+      ]},
+      { type: "prose", heading: "Turnaround", lines: [
+        "Model work with sectioned dies is 5 business days.",
+      ]},
+    ],
+  },
+
+  "lab-bridge": {
+    verdict: "PFM bridge — fabricated as a metal framework first, returned for try-in, then porcelain applied at a follow-up lab step.",
+    blocks: [
+      { type: "script",
+        caption: "Lab Rx",
+        body: "Please fabricate PFM bridge from [##-##] using high-noble alloy.\nOcclusal and interproximal contacts should be in porcelain.\n2-3 mm metal collar on the lingual margins, no metal collar on the buccal margins.\nModified ridge lap pontic design.\nPlease return metal framework for try-in.\nThank you.",
+        note: "Bridge fabrication is a two-step lab process: framework try-in first, then porcelain (use the \"Add Porcelain to Framework\" Rx)." },
+      { type: "cards", caption: "What to send with this Rx", cards: [
+        { title: "Supplements", rows: [
+          ["Mounted working cast", "from prior bridge-cast lab step"],
+          ["Opposing cast", "mounted"],
+          ["Diagnostic wax-up", "if esthetic case"],
+        ]},
+      ]},
+      { type: "prose", heading: "Turnaround", lines: [
+        "Metal framework try-in is 9 business days. Total time to finished bridge runs ~3 weeks once porcelain step is added.",
+      ]},
+    ],
+  },
+
+  "lab-porcelain": {
+    verdict: "Porcelain application — second-step Rx, sent after metal-framework try-in confirms passive fit.",
+    blocks: [
+      { type: "script",
+        caption: "Lab Rx",
+        body: "Please apply porcelain to metal framework for PFM bridge from [##-##].\nShade [A2].\nThank you.",
+        note: "Send back with the same working cast. Shade should be re-verified intraorally at the framework try-in appointment." },
+      { type: "cards", caption: "What to send with this Rx", cards: [
+        { title: "Supplements", rows: [
+          ["Metal framework", "tried in, confirmed passive fit"],
+          ["Working cast", "the same one used for framework fabrication"],
+          ["Shade tab photo", "recommended"],
+        ]},
+      ]},
+      { type: "prose", heading: "Turnaround", lines: [
+        "Porcelain application onto metal try-in: 9 business days.",
+      ]},
+    ],
+  },
+
+  "lab-og": {
+    verdict: "Occlusal guard — full-arch flat-plane night guard processed in dual-layer acrylic; pin opening +3 mm.",
+    blocks: [
+      { type: "script",
+        caption: "Lab Rx",
+        body: "Please fabricate [maxillary / mandibular] full arch flat plane occlusal guard. Please process in dual layer acrylic with VDO raised to create at least 1 mm space measured between the tips of the canines & all posterior teeth during eccentric movements (pin +3 mm). Please achieve all of the following:\n(a) point-to-flat-plane contact in centric (buccal cusps & incisal edges of mandibular teeth)\n(b) 1-2 mm of freedom in centric\n(c) minimal incisal guidance, but enough to disclude posterior teeth in protrusion\n(d) canine guidance during lateral excursion\nPlease return for delivery. Thank you.",
+        note: "Maxillary is the default arch unless the patient has a prognathic occlusion or severely worn lower anteriors." },
+      { type: "cards", caption: "What to send with this Rx", cards: [
+        { title: "Supplements", rows: [
+          ["Mounted casts", "facebow + bite registration required"],
+          ["Bite registration", "Regisil, taken at +3 mm pin"],
+        ]},
+      ]},
+      { type: "prose", heading: "Turnaround", lines: [
+        "Night guards are 9 business days per Swade.",
+      ]},
+    ],
+  },
+
+  "lab-ff": {
+    verdict: "Complete dentures (F/F) — festoon, pack, and process appointment Rx, after wax try-in approval.",
+    blocks: [
+      { type: "script",
+        caption: "Lab Rx",
+        body: "F/F: Please festoon, pack, and process maxillary & mandibular complete dentures. Gingival shade: [gingival shade]. Please return for delivery. Thank you.",
+        note: "Send only after anterior + posterior try-ins have been faculty-approved. Gingival shade should be selected from the Trubyte chart." },
+      { type: "cards", caption: "What to send with this Rx", cards: [
+        { title: "Supplements", rows: [
+          ["Approved wax try-in", "both arches"],
+          ["Mounted master casts", "facebow + bite registration"],
+          ["Tooth-mold record", "anterior + posterior mold and shade noted"],
+        ]},
+      ]},
+      { type: "prose", heading: "Turnaround", lines: [
+        "Acrylic processing for denture or partial: 9 business days. Book the delivery appointment ~2 weeks out.",
+      ]},
+    ],
+  },
+
+  "lab-ii-denture": {
+    verdict: "Interim immediate denture — fabricated before extractions; the lab uses remaining anterior teeth as reference and sets posteriors over the residual ridge.",
+    blocks: [
+      { type: "script",
+        caption: "Lab Rx",
+        body: "F/F: Please fabricate maxillary and mandibular interim complete dentures. Use existing teeth [6, 11, 22, 27] as reference. [6, 11, 22, 27] will be extracted. Please set posterior teeth over the residual ridge and do not increase VDO. Please use Trubyte Classic anterior tooth mold [4H] and posterior teeth mold [F30] 10°. Please use tooth shade [81] for all teeth. Please use acrylic shade: 50% OR (original) + 50% DK (dark). Please set teeth, festoon, process & polish, and return for delivery. Thank you.",
+        note: "Update the tooth lists to your patient's actual remaining + planned-extraction teeth. Tooth-mold and shade are selected from the Trubyte catalog." },
+      { type: "cards", caption: "What to send with this Rx", cards: [
+        { title: "Supplements", rows: [
+          ["Master impressions", "both arches"],
+          ["Bite registration", "at existing VDO"],
+          ["Trubyte mold record", "anterior mold (e.g. 4H), posterior mold (e.g. F30 10°), shade (e.g. 81)"],
+          ["Tooth requisition", "TOOREQ form for denture teeth — submitted separately"],
+        ]},
+      ]},
+      { type: "prose", heading: "Turnaround", lines: [
+        "Interim acrylic dentures are processed in 9 business days. Schedule the surgical extraction + delivery appointment accordingly.",
+      ]},
+    ],
+  },
+
+  "lab-reline": {
+    verdict: "Lab reline — heat-cured acrylic reline of an existing denture after intraoral impression is taken inside the denture.",
+    blocks: [
+      { type: "script",
+        caption: "Lab Rx",
+        body: "F/[M or D]: Please reline the denture with heat-cured acrylic resin, shade L199-OR. Please add the posterior palatal seal as indicated on the impression. Please polish and return for delivery. Thank you.",
+        note: "F/M = maxillary, F/D = mandibular. The patient is dentureless during the turnaround — provide an interim immediate denture or schedule chairside reline." },
+      { type: "cards", caption: "What to send with this Rx", cards: [
+        { title: "Supplements", rows: [
+          ["Denture with reline impression", "intaglio relieved 0.5 mm, light-body PVS impression taken in CR"],
+          ["Relief marking", "posterior palatal seal marked on the impression"],
+        ]},
+      ]},
+      { type: "prose", heading: "Turnaround", lines: [
+        "Reline is 5 business days per Swade — among the fastest turnarounds. Still plan for patient to be without their denture for ~1 week.",
+      ]},
+    ],
+  },
+
+  "lab-rpd": {
+    verdict: "RPD framework — Vitallium cast framework sent after final design is drawn on the lab Rx. Returns for framework try-in before tooth set-up.",
+    blocks: [
+      { type: "script",
+        caption: "Lab Rx",
+        body: "Please fabricate [mandibular / maxillary] RPD framework using Vitallium alloy.\nMajor connector: [lingual bar / palatal plate].\nRest seats: [21-MO, 28-DO].\nGuide planes: [21-D, 28-D].\nClasps:\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [21]\n- 18 gauge wrought wire reciprocal arm on lingual of [21]\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [28]\n- 18 gauge wrought wire reciprocal arm on lingual of [28]\nTissue stops marked on cast.\nRetentive loops on areas: [18, 19, 20, 29, 30].\nReturn framework for try-in.\nThank you.",
+        note: "This is the manual fallback. For a case-specific Rx generated from your survey + design, use the RPD Design Helper — it produces a script with your exact rest seats, clasp types, and undercut measurements." },
+      { type: "cards", caption: "What to send with this Rx", cards: [
+        { title: "Supplements", rows: [
+          ["Surveyed master cast", "with tripod marks and path-of-insertion lines"],
+          ["Designed RPD drawing", "drawn directly on the printed lab Rx (Swade c099.0 step 20)"],
+          ["Opposing cast", "mounted"],
+          ["Bite registration", "if not hand-articulable"],
+        ]},
+      ]},
+      { type: "prose", heading: "Turnaround", lines: [
+        "Partial framework: 9 business days. After framework try-in, the lab needs another 9 days for tooth set-up + acrylic processing — total ~3 weeks from final impression to delivery.",
+      ]},
+    ],
+  },
+
+  "lab-ii-rpd": {
+    verdict: "Interim immediate partial — acrylic-only RPD with wrought-wire clasps, fabricated before extractions for immediate insertion.",
+    blocks: [
+      { type: "script",
+        caption: "Lab Rx",
+        body: "Please fabricate [mandibular / maxillary] interim immediate acrylic removable partial denture. Use existing teeth [22-28] as a reference for occlusal plane. [18 and 28] will be extracted. Please set posterior teeth over the residual ridge and do not increase VDO. Please place wrought wire clasps on [22 and 27]. Please use Trubyte classic posterior tooth mold F30 10°, tooth shade 81. Please use acrylic shade: 50% OR (original) + 50% DK (dark). Please set teeth, festoon, process & polish, and return for delivery.\nThank you.",
+        note: "Update tooth lists to your patient's remaining + planned-extraction + clasp-bearing teeth. Wrought-wire clasps are placed on the most mesial and distal remaining teeth on each side." },
+      { type: "cards", caption: "What to send with this Rx", cards: [
+        { title: "Supplements", rows: [
+          ["Master impressions", "both arches"],
+          ["Bite registration", "at existing VDO"],
+          ["Trubyte mold record", "F30 10° posterior, shade 81"],
+          ["Tooth requisition", "TOOREQ form, submitted separately"],
+        ]},
+      ]},
+      { type: "prose", heading: "Turnaround", lines: [
+        "Interim acrylic partial: 9 business days. Schedule the extraction + delivery appointment accordingly.",
+      ]},
+    ],
+  },
+
+  /* ──────────────────────────────────────────────────────────────────────
+   * MISC → LAB — supporting reference pages.
+   * ────────────────────────────────────────────────────────────────── */
+
+  "misc-lab-script": {
+    verdict: "A lab script is submitted in Axium under the Labs tab; the printed form goes with the case to the 5th-floor lab. For RPDs you draw the design on the printed form before sending.",
+    blocks: [
+      { type: "prose", heading: "Filling out a lab script in Axium", lines: [
+        "Select patient → open EHR → click the \"Labs\" tab → click the plus on the right.",
+        "Set Discipline (your clinic), then click \"…\" next to Treatment and select the appropriate treatments.",
+        "Click \"…\" next to Lab Proc and select the procedure; click Add, then OK.",
+        "Write your lab script next to \"Details\" (use the corresponding Lab Scripts page in this app to copy the Rx body).",
+        "Click the plus in the center, then \"…\" next to Supplements; move every material you're sending from the left column to the right.",
+        "Click Close → click the pencil-checkmark (\"Modify Record\") to save.",
+        "Instructor swipes the form → print → instructor signs the printed form.",
+        "For an RPD: draw the partial design directly on the printed form before walking it to the 5th-floor lab.",
+        "Bring the lab script + supplements to the 5th-floor lab. You'll get an Axium message when the case has been received, and another when it's back from the lab ready for pickup.",
+      ]},
+      { type: "prose", heading: "What \"supplements\" means", lines: [
+        "Supplements are the physical items you're sending with the script — final impressions, opposing impressions, bite registration, facebow record, working cast, framework, denture for reline, etc. Each Lab Scripts page in this app lists the expected supplements for that script.",
+      ]},
+    ],
+  },
+
+  "misc-lab-turnaround": {
+    verdict: "Plan delivery appointments around the Swade turnaround table. Most prosthetic cases need 9 – 12 business days; reline and model work are quick at 5 days.",
+    blocks: [
+      { type: "table", caption: "Swade lab turnaround times",
+        headers: ["Time", "Case types"],
+        rows: [
+          ["5 business days",
+            "Model work; reline; acrylic-only denture or partial repair; cast pattern for post & core"],
+          ["9 business days",
+            "Rebase denture or partial; partial framework; denture teeth set-up; acrylic processing for denture or partial; PFM bridge metal try-in; porcelain application to metal try-in; metal crown, inlay, onlay; night guard; wax and cast post & core; partial repair with soldering; solder PFM bridge"],
+          ["12 business days",
+            "PFM crown; ceramic crown, inlay, onlay, veneers; implant crown"],
+        ],
+        footnote: "Business days — weekends and UIC holidays don't count. Add a buffer if a holiday falls in the window.",
+      },
+      { type: "prose", heading: "When to send what", lines: [
+        "For a multi-step case (bridge, RPD, complete denture), add up the turnarounds for each lab step. A PFM bridge runs metal try-in (9 days) → framework approved → porcelain application (9 days) = ~3.5 weeks lab time total.",
+        "Patients are without their existing prosthesis during a lab reline. Either deliver an interim immediate denture or schedule a chairside reline if the patient cannot be without it for a week.",
+      ]},
+    ],
+  },
+
+  "misc-tooth-req": {
+    verdict: "Tooth requisition (TOOREQ) is a separate Axium form from the lab script — it tells the 5th-floor lab which denture teeth to give you for set-up.",
+    blocks: [
+      { type: "prose", heading: "Filling out the form", lines: [
+        "Select patient → open EHR → click the \"Forms\" tab → click the plus on the right.",
+        "Choose \"Tooth Requisition\" (TOOREQ) → click OK.",
+        "Under Teeth: write \"1x6\" for all anteriors (1 set of 6); write \"1x8\" for all posteriors (1 set of 8). Both sets if you need both.",
+        "Specify mold and shade — match what's on your interim-denture or complete-denture lab script (e.g. Trubyte Classic 4H anterior, F30 10° posterior, shade 81).",
+        "Instructor swipes the form → print → instructor signs the printed form.",
+        "Take the signed form to the 5th-floor lab. They'll give you the teeth from stock; if not in stock, they'll order them — plan extra time.",
+      ]},
+      { type: "prose", heading: "When to submit", lines: [
+        "Submit at the same time as the complete-denture or interim-denture lab script (or earlier, if you anticipate the lab needs to order). The TOOREQ form is submitted separately from the lab Rx and gets walked over independently.",
+      ]},
+    ],
+  },
 };
 
 // Default values for a single anesthetic injection. Multiple injections live
@@ -5185,9 +5530,10 @@ function RefBlock({ data }) {
         }}>{data.verdict}</p>
       )}
       {(data.blocks || []).map((b, i) => {
-        if (b.type === "table") return <RefTable key={i} {...b} />;
-        if (b.type === "cards") return <RefCards key={i} {...b} />;
-        if (b.type === "prose") return <RefProse key={i} {...b} />;
+        if (b.type === "table")  return <RefTable  key={i} {...b} />;
+        if (b.type === "cards")  return <RefCards  key={i} {...b} />;
+        if (b.type === "prose")  return <RefProse  key={i} {...b} />;
+        if (b.type === "script") return <RefScript key={i} {...b} />;
         return null;
       })}
     </div>
@@ -5332,6 +5678,76 @@ function RefProse({ heading, lines }) {
           margin: i < lines.length - 1 ? "0 0 8px" : 0,
         }}>{line}</p>
       ))}
+    </div>
+  );
+}
+
+// Renders a copy-able lab Rx body in a monospace block. Bracket placeholders
+// like [shade] or [##-##] are visually distinct so students know what to fill
+// in before sending. Used by the lab-script REF_DATA entries.
+function RefScript({ caption, body, note }) {
+  const [copied, setCopied] = useState(false);
+  const onCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(body);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1400);
+    } catch { /* clipboard unavailable */ }
+  };
+
+  // Highlight [bracket] placeholders. Split on a capturing group so the
+  // brackets land in odd-indexed positions.
+  const segments = body.split(/(\[[^\]]+\])/g);
+
+  return (
+    <div style={{ marginBottom: "26px" }}>
+      {caption && (
+        <div style={{
+          display: "flex", alignItems: "baseline", justifyContent: "space-between",
+          gap: "12px", marginBottom: "10px",
+        }}>
+          <h3 className="serif" style={{
+            fontWeight: 400, fontSize: "18px", color: "var(--accent)",
+            margin: 0, letterSpacing: "-0.005em",
+          }}>{caption}</h3>
+          <button onClick={onCopy} style={{
+            background: copied ? "var(--accent)" : "transparent",
+            color: copied ? "var(--paper)" : "var(--accent)",
+            border: `1px solid var(--accent)`,
+            padding: "4px 10px", borderRadius: "3px",
+            fontFamily: "'Geist', sans-serif",
+            fontSize: "11px", letterSpacing: "0.04em",
+            textTransform: "uppercase", fontWeight: 600,
+            cursor: "pointer", transition: "background 120ms, color 120ms",
+            whiteSpace: "nowrap",
+          }}>{copied ? "Copied" : "Copy"}</button>
+        </div>
+      )}
+      <pre style={{
+        background: "var(--card)",
+        border: "1px solid var(--rule-soft)",
+        borderRadius: "4px", padding: "14px 18px",
+        fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+        fontSize: "12.5px", lineHeight: 1.65,
+        color: "var(--ink)",
+        whiteSpace: "pre-wrap", wordBreak: "break-word",
+        margin: 0,
+      }}>{segments.map((seg, i) => (
+        i % 2 === 1 ? (
+          <span key={i} style={{
+            color: "var(--accent)", fontWeight: 600,
+            background: "var(--accent-soft, rgba(124, 35, 35, 0.08))",
+            padding: "0 3px", borderRadius: "2px",
+          }}>{seg}</span>
+        ) : seg
+      ))}</pre>
+      {note && (
+        <p style={{
+          fontSize: "11.5px", color: "var(--ink-faint)",
+          marginTop: "8px", fontStyle: "italic",
+          lineHeight: 1.5,
+        }}>{note}</p>
+      )}
     </div>
   );
 }
