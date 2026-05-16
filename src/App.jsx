@@ -12791,20 +12791,39 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
     const isBilateral = rightAbuts.length > 0 && leftAbuts.length > 0;
 
     if (!isBilateral) {
-      // Unilateral abutments: no contralateral support for any
-      // palatal-strap design. Clinically this is an FPD case (small
-      // tooth-bounded space, healthy abutments on one side). Emit a
-      // Full Palatal Plate as the LEAST-WRONG removable option (it's
-      // the only connector that doesn't strictly require bilateral
-      // anchoring — it covers the whole palate via tissue contact),
-      // and flag the case via the tier so the verdict makes the FPD
-      // recommendation visible.
+      // Unilateral abutments: no palatal-strap design works (those need
+      // bilateral support). Clinical reality splits by span length:
+      //
+      //  - Short span (≤3 missing teeth): a 3-to-5-unit FPD spanning the
+      //    edentulous gap is the treatment of choice. An RPD is genuine
+      //    overtreatment — the user is not getting a giant palatal plate
+      //    for a 2-tooth gap that a bridge handles cleanly.
+      //
+      //  - Long span (>3 missing teeth): the bridge becomes unreasonable
+      //    under Ante's law and the patient may genuinely need a removable
+      //    appliance. Full Palatal Plate is the least-wrong RPD option
+      //    here — it's the only connector that doesn't strictly require
+      //    contralateral abutments, covering the palate via tissue contact.
+      const totalMissing = (kennedy.spans || []).reduce((s, sp) => s + (sp.teeth?.length || 0), 0);
+      if (totalMissing <= 3) {
+        return {
+          type: "FPD",
+          recommendsFixed: true,
+          rationale: `Short unilateral tooth-bounded space (${totalMissing} missing teeth in one span on one side). The clinical treatment of choice is a ${totalMissing + 2}-unit fixed partial denture (bridge) — RPD is not indicated for this configuration. The unilateral abutment geometry would force a Full Palatal Plate, which is overtreatment for a gap a bridge handles cleanly.`,
+          tier: "strong",
+          alternative: "Implant-supported crowns",
+          alternativeRationale: "If the patient declines bridging (preserving contralateral abutments, esthetics, or cost), individual implant crowns at each missing-tooth site are the alternative fixed solution. Definitive RPD is not appropriate.",
+        };
+      }
+      // Long unilateral span — fall back to Full Palatal Plate as the
+      // least-wrong RPD option, but flag the case for review.
       return {
-        type: "Full Palatal Plate", rationale: "Unilateral abutments — palatal-strap designs (Single Palatal Strap, A-P Strap) require bilateral support that this case lacks. The typical treatment for a small unilateral tooth-bounded edentulous space is a fixed partial denture (bridge). If an RPD is unavoidable, a Full Palatal Plate provides the most bilateral coverage by using the contralateral palate tissue itself rather than relying on contralateral abutments.",
-        note: "Consider FPD (bridge) as the preferred definitive treatment.",
+        type: "Full Palatal Plate",
+        rationale: `Long unilateral edentulous span (${totalMissing} missing teeth) without contralateral abutments. Palatal-strap designs (Single Palatal Strap, A-P Strap) require bilateral support that this case lacks. Full Palatal Plate provides the most bilateral coverage by tissue contact across the contralateral palate.`,
+        note: "Consider implant-supported FPD spanning the gap as the preferred definitive treatment.",
         tier: "judgment",
-        alternative: "FPD (fixed partial denture)",
-        alternativeRationale: "A single tooth-bounded edentulous space with healthy abutments on one side is almost always treated with a 3-unit (or longer) bridge. RPD is reserved for cases where the patient can't pursue FPD (cost, surgical contraindication, abutment limitations).",
+        alternative: "Implant-supported FPD",
+        alternativeRationale: "A long unilateral edentulous space is usually treated with multiple implants and an implant-supported FPD rather than a tissue-borne RPD. Definitive RPD is reserved for cases where the patient can't pursue implants (cost, anatomic, or medical contraindications).",
       };
     }
 
@@ -17197,91 +17216,137 @@ function RPDPaperFormArchDrawing({
     && (result.kennedy.class === "II" || result.kennedy.class === "III")
     && designIntentLocal === "definitive";
   const singleToothId = isSingleToothCase ? missingArchTeeth[0] : null;
+  // Engine signals "fixed treatment recommended" via majorConnector.recommendsFixed
+  // for cases where an RPD is overtreatment — currently a short unilateral
+  // Class III (≤3 missing teeth bounded by abutments on one side). For these
+  // cases we render the multi-unit FPD overlay instead of the RPD framework,
+  // matching the single-tooth FPD treatment but spanning multiple pontics.
+  const engineRecommendsFixed = !!result.majorConnector?.recommendsFixed;
+  const isFixedTreatmentCase = (isSingleToothCase || engineRecommendsFixed)
+    && designIntentLocal === "definitive";
+  // The list of teeth that need replacement — for a single-tooth case this is
+  // the one missing tooth; for a multi-tooth FPD case this is all the missing
+  // teeth in the affected span(s).
+  const fixedTreatmentTeeth = isFixedTreatmentCase ? missingArchTeeth : [];
   // Bridge only when the tooth being replaced has present abutments on
   // BOTH sides (Kennedy Class III = tooth-bounded space). For Class II
   // — terminal tooth missing, no distal abutment — a bridge would be
   // a cantilever (clinically contraindicated in the posterior). Engine
-  // implies implant instead in that case.
-  const isFPD = isSingleToothCase && result.kennedy.class === "III";
+  // implies implant instead in that case. For multi-tooth FPD cases the
+  // engine signals FPD via recommendsFixed; for single-tooth cases we
+  // derive from Kennedy class.
+  const isFPD = (isSingleToothCase && result.kennedy.class === "III")
+    || engineRecommendsFixed;
 
   // FPD bridge or implant crown — rendered IN PLACE OF the RPD framework
-  // when isSingleToothCase. The pontic (FPD) / crown (implant) sits at the
-  // missing tooth's position; FPD also tints the two abutment teeth to
-  // indicate they get full-coverage crowns as part of the bridge.
+  // when isFixedTreatmentCase. Pontics (FPD) or crowns (implant) sit at each
+  // missing-tooth position; FPD tints the BOUNDING abutment teeth to indicate
+  // they get full-coverage crowns. Handles both:
+  //   - Single-tooth case (1 pontic, 2 abutment crowns for Class III)
+  //   - Multi-tooth FPD case (engine recommends fixed — 2-3 pontics for a
+  //     short unilateral tooth-bounded span)
   const drawFixedReplacement = () => {
-    if (!isSingleToothCase) return null;
-    const n = singleToothId;
-    const { cx, cy } = positionOf(n);
-    const halfMD = toothHalfMD(n);
-    const halfBL = toothHalfBL(n);
-    const rad = radialUnit(n);
-    const mes = mesialUnit(n);
-    const cornerR = Math.min(halfMD, halfBL) * 0.28;
+    if (!isFixedTreatmentCase) return null;
+    const teeth = fixedTreatmentTeeth;
+    if (teeth.length === 0) return null;
+
     const isMolar = (an) => RPD_FIRST_MOLARS.has(an) || RPD_SECOND_MOLARS.has(an) || RPD_THIRD_MOLARS.has(an);
     const isPM = (an) => [4,5,12,13,20,21,28,29].includes(an);
     const isCanine = (an) => RPD_CANINES.has(an);
     const cuspBulgeFor = (an) => isMolar(an) ? 0.18 : isPM(an) ? 0.11 : isCanine(an) ? 0.07 : 0;
-    const ponticD = toothPath(cx, cy, halfMD, halfBL, rad, mes, cornerR, cuspBulgeFor(n));
 
-    // Adjacent present teeth — the FPD abutments. For Class II only the
-    // mesial neighbor is present; for Class III both are.
-    const idx = archTeeth.indexOf(n);
-    const neighbors = [archTeeth[idx - 1], archTeeth[idx + 1]]
-      .filter(x => x != null && isPresent(x));
+    // Build a tooth path for any tooth index — used for both pontics and
+    // abutment-crown overlays.
+    const pathFor = (n) => {
+      const { cx, cy } = positionOf(n);
+      const halfMD = toothHalfMD(n);
+      const halfBL = toothHalfBL(n);
+      const rad = radialUnit(n);
+      const mes = mesialUnit(n);
+      const cornerR = Math.min(halfMD, halfBL) * 0.28;
+      return toothPath(cx, cy, halfMD, halfBL, rad, mes, cornerR, cuspBulgeFor(n));
+    };
 
-    // Label sits LINGUAL of the pontic so it doesn't collide with the
-    // buccal-side tooth-number label. labelOffset large enough to clear
-    // the pontic outline plus the bold text height.
-    const labelOffset = halfBL + 28;
-    const labelX = cx - rad.x * labelOffset;
-    const labelY = cy - rad.y * labelOffset + 5;
+    // Identify the abutment teeth — the present teeth that bound the
+    // missing run(s). For a single-tooth Class III those are the two
+    // immediate neighbors. For a multi-tooth FPD span those are the
+    // closest present teeth on each side of the contiguous missing run.
+    const sortedTeeth = [...teeth].sort((a, b) => archTeeth.indexOf(a) - archTeeth.indexOf(b));
+    const firstIdx = archTeeth.indexOf(sortedTeeth[0]);
+    const lastIdx = archTeeth.indexOf(sortedTeeth[sortedTeeth.length - 1]);
+    const mesialAbutment = (() => {
+      for (let i = firstIdx - 1; i >= 0; i--) {
+        const t = archTeeth[i];
+        if (isPresent(t)) return t;
+      }
+      return null;
+    })();
+    const distalAbutment = (() => {
+      for (let i = lastIdx + 1; i < archTeeth.length; i++) {
+        const t = archTeeth[i];
+        if (isPresent(t)) return t;
+      }
+      return null;
+    })();
+    const abutments = isFPD ? [mesialAbutment, distalAbutment].filter(Boolean) : [];
+
+    // Label position — centered on the missing run, lingual to avoid the
+    // tooth-number label on the buccal side.
+    const labelTooth = sortedTeeth[Math.floor(sortedTeeth.length / 2)];
+    const { cx: lcx, cy: lcy } = positionOf(labelTooth);
+    const lrad = radialUnit(labelTooth);
+    const lhalfBL = toothHalfBL(labelTooth);
+    const labelOffset = lhalfBL + 28;
+    const labelX = lcx - lrad.x * labelOffset;
+    const labelY = lcy - lrad.y * labelOffset + 5;
+    // For multi-pontic FPDs we also label the bridge units, e.g. "4-unit FPD".
+    const labelText = isFPD
+      ? (teeth.length > 1 ? `${teeth.length + 2}-unit FPD` : "FPD")
+      : "Implant";
 
     // pointerEvents="none" on every overlay element so clicks pass THROUGH
     // the FPD/implant rendering to the tooth <g>'s click handler underneath.
-    // Otherwise the teal pontic and crown overlays would steal clicks and
-    // the user couldn't double-click adjacent teeth to mark them missing.
     return (
       <g key="fixed-replacement" pointerEvents="none">
         {/* FPD only — tint abutment teeth to show full-coverage crowns */}
-        {isFPD && neighbors.map(an => {
-          const { cx: ax, cy: ay } = positionOf(an);
-          const aHalfMD = toothHalfMD(an);
-          const aHalfBL = toothHalfBL(an);
-          const aRad = radialUnit(an);
-          const aMes = mesialUnit(an);
-          const aCornerR = Math.min(aHalfMD, aHalfBL) * 0.28;
-          const crownD = toothPath(ax, ay, aHalfMD, aHalfBL, aRad, aMes, aCornerR, cuspBulgeFor(an));
+        {abutments.map(an => (
+          <path key={`crown-${an}`} d={pathFor(an)}
+            fill={C_FIXED} fillOpacity={0.22}
+            stroke={C_FIXED} strokeWidth={2.4} strokeLinejoin="round"
+            pointerEvents="none" />
+        ))}
+        {/* Pontic(s) (FPD) or implant crown(s) — solid teal tooth shapes */}
+        {sortedTeeth.map(n => {
+          const { cx, cy } = positionOf(n);
+          const halfMD = toothHalfMD(n);
+          const halfBL = toothHalfBL(n);
           return (
-            <path key={`crown-${an}`} d={crownD}
-              fill={C_FIXED} fillOpacity={0.22}
-              stroke={C_FIXED} strokeWidth={2.4} strokeLinejoin="round"
-              pointerEvents="none" />
+            <g key={`pontic-${n}`} pointerEvents="none">
+              <path d={pathFor(n)}
+                fill={C_FIXED} fillOpacity={0.7}
+                stroke={C_FIXED} strokeWidth={2.6} strokeLinejoin="round"
+                pointerEvents="none" />
+              {/* Implant fixture marker — small bullseye on each crown
+                  to distinguish implant cases from FPD pontics. */}
+              {!isFPD && (
+                <g pointerEvents="none">
+                  <circle cx={cx} cy={cy} r={Math.min(halfMD, halfBL) * 0.32}
+                    fill="none" stroke="white" strokeWidth={2.4}
+                    pointerEvents="none" />
+                  <circle cx={cx} cy={cy} r={Math.min(halfMD, halfBL) * 0.14}
+                    fill="white" pointerEvents="none" />
+                </g>
+              )}
+            </g>
           );
         })}
-        {/* Pontic (FPD) or implant crown — solid teal-filled tooth shape */}
-        <path d={ponticD}
-          fill={C_FIXED} fillOpacity={0.7}
-          stroke={C_FIXED} strokeWidth={2.6} strokeLinejoin="round"
-          pointerEvents="none" />
-        {/* Implant fixture marker — small bullseye on the crown so the
-            implant case visually differs from the FPD case (an implant
-            crown sits on a fixture; the FPD pontic doesn't). */}
-        {!isFPD && (
-          <g pointerEvents="none">
-            <circle cx={cx} cy={cy} r={Math.min(halfMD, halfBL) * 0.32}
-              fill="none" stroke="white" strokeWidth={2.4}
-              pointerEvents="none" />
-            <circle cx={cx} cy={cy} r={Math.min(halfMD, halfBL) * 0.14}
-              fill="white" pointerEvents="none" />
-          </g>
-        )}
         {/* Treatment label — lingual side, in teal, distinct from RPD blue */}
         <text x={labelX} y={labelY} fontSize="18"
           fontFamily="'Geist', sans-serif" fontWeight="700"
           fill={C_FIXED} textAnchor="middle"
           letterSpacing="0.08em" style={{ textTransform: "uppercase" }}
           pointerEvents="none">
-          {isFPD ? "FPD" : "Implant"}
+          {labelText}
         </text>
       </g>
     );
@@ -17296,7 +17361,7 @@ function RPDPaperFormArchDrawing({
 
         {/* RPD framework overlay — suppressed for single-tooth cases where
             the recommended treatment is an FPD or implant, not an RPD. */}
-        {!isSingleToothCase && (
+        {!isFixedTreatmentCase && (
           <>
             {/* 1. Major connector (background) — only when there's a case */}
             {hasDesign && selectable(
@@ -17332,7 +17397,7 @@ function RPDPaperFormArchDrawing({
             after teeth so it sits on top of the missing-tooth outline. */}
         {drawFixedReplacement()}
 
-        {!isSingleToothCase && (
+        {!isFixedTreatmentCase && (
           <>
             {/* 4. Survey lines / HOC ovals on abutments — positioned at
                 the engine's EFFECTIVE undercut (DB / MB for Akers) rather
@@ -17461,11 +17526,11 @@ function RPDPaperFormArchDrawing({
             tooth, where implant is a valid alternative). For Class II we
             already show "Implant" as the only option, so no footnote needed.
             Bottom-left of SVG, in the verdict italic-Fraunces accent style. */}
-        {isSingleToothCase && isFPD && (
+        {isFixedTreatmentCase && isFPD && (
           <text x={28} y={isMax ? 38 : H - 22} fontSize="28"
             fontFamily="'Fraunces', serif" fontStyle="italic"
             fill="var(--accent)" textAnchor="start">
-            *or implant
+            *or implant{fixedTreatmentTeeth.length > 1 ? "s" : ""}
           </text>
         )}
       </svg>
@@ -19278,6 +19343,13 @@ function RPDHelper() {
     && singleToothMissing.length === 1
     && (result.kennedy.class === "II" || result.kennedy.class === "III")
     && result.designIntent === "definitive";
+  // The engine also flags multi-tooth short-unilateral spans (≤3 missing) as
+  // "fixed treatment recommended" via majorConnector.recommendsFixed. Treat
+  // those the same as single-tooth cases for verdict and form gating —
+  // they're not RPD cases.
+  const isFixedTreatmentRecommendedCase = isSingleToothFixedCase
+    || (hasContent && !!result.majorConnector?.recommendsFixed
+        && result.designIntent === "definitive");
 
   const sectionTitle = {
     fontFamily: "'Fraunces', serif", fontSize: "13px",
@@ -19405,14 +19477,24 @@ function RPDHelper() {
       </div>
 
       {/* ─── Classification verdict (only when a case is built and it's
-          an actual RPD, not a single-tooth fixed-replacement case). The
-          "no teeth marked yet" prompt was removed — the empty chart is
+          an actual RPD, not a fixed-replacement case). The "no teeth
+          marked yet" prompt was removed — the empty chart is
           self-explanatory. */}
-      {hasContent && !isSingleToothFixedCase && (
+      {hasContent && !isFixedTreatmentRecommendedCase && (
         <div style={{ ...verdict, marginTop: "14px", marginBottom: "12px" }}>
           {result.kennedy.description}
           {result.kennedy.deSide ? ` (distal extension on patient's ${result.kennedy.deSide})` : ""}.
           {" "}Designed as {result.designIntent} RPD with {result.majorConnector.type} major connector and {result.framework.material} framework.
+        </div>
+      )}
+      {/* ─── Fixed-treatment verdict (multi-tooth case where engine
+          recommends FPD instead of RPD). Single-tooth cases handle
+          their own verdict elsewhere; this fires for short unilateral
+          Class III with ≥2 missing teeth. */}
+      {hasContent && isFixedTreatmentRecommendedCase && !isSingleToothFixedCase && (
+        <div style={{ ...verdict, marginTop: "14px", marginBottom: "12px" }}>
+          {result.kennedy.description}.
+          {" "}{result.majorConnector.rationale}
         </div>
       )}
 
@@ -19426,14 +19508,14 @@ function RPDHelper() {
           the classification + Applegate dropdown because this is what the
           student is filling out in clinic. The arch drawing is omitted —
           it's already at the top of this page. */}
-      {hasContent && !isSingleToothFixedCase && (
+      {hasContent && !isFixedTreatmentRecommendedCase && (
         <div style={{ marginTop: "12px", marginBottom: "20px" }}>
           <RPDPreliminaryDesignForm caseInput={caseInput} result={result} />
           <RPDLabRxForm caseInput={caseInput} result={result} />
         </div>
       )}
 
-      {hasContent && !isSingleToothFixedCase && <>
+      {hasContent && !isFixedTreatmentRecommendedCase && <>
 
       {/* Notices — inline severity-tinted call-outs without a section header.
           The prior "RED FLAGS" heading + uppercase severity badge over-
