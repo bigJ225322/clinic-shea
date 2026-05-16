@@ -16805,49 +16805,47 @@ function RPDPaperFormArchDrawing({
       // Render an edge as a thick filled rectangle between two points.
       // perp direction = 90° rotation of the line direction; thickness
       // applied perpendicular to the line.
-      const edge = (p1, p2, thickness, k) => {
-        const dx = p2.x - p1.x, dy = p2.y - p1.y;
-        const len = Math.hypot(dx, dy);
-        if (len < 1) return null;
-        const ux = dx / len, uy = dy / len;
-        const px = -uy, py = ux;          // perpendicular unit vector
-        const h = thickness / 2;
-        const d = `M ${p1.x + px * h} ${p1.y + py * h}` +
-                  ` L ${p2.x + px * h} ${p2.y + py * h}` +
-                  ` L ${p2.x - px * h} ${p2.y - py * h}` +
-                  ` L ${p1.x - px * h} ${p1.y - py * h} Z`;
-        return (
-          <path key={k} d={d}
-            fill={C_CAST} fillOpacity={0.75}
-            stroke={C_CAST} strokeWidth={1.4} strokeLinejoin="round" />
-        );
+      // Per the UIC Design Case I photos (Shahin slides + actual cast
+      // photos), the A-P strap covers ~70% of the palate area, with a
+      // SMALL central window. The four corner abutments form the OUTER
+      // perimeter; the strap extends INWARD from each abutment toward
+      // the central palate, leaving a rectangular open window in the
+      // middle that's ~55% the linear dimensions of the outer frame.
+      //
+      // Render as a single filled path with evenodd fill rule: outer
+      // quadrilateral (rA→lA→lP→rP) minus inner quadrilateral (rAi→
+      // rPi→lPi→lAi). The inner quadrilateral is the open window. The
+      // filled area between them is the strap.
+      //
+      // The asymmetric inward extrusion (only toward palate center,
+      // not toward teeth) matches the anatomic reality: the strap
+      // can't extend toward the teeth past the abutments' lingual
+      // surfaces, only inward into the palate.
+      const center = {
+        x: (rA.x + lA.x + rP.x + lP.x) / 4,
+        y: (rA.y + lA.y + rP.y + lP.y) / 4,
       };
-      // Thick bands match how UIC draws the A-P strap on paper forms —
-      // visually substantial bracing, not a thin line. Bands slightly
-      // thicker than the lateral connectors so the bracing role reads
-      // as more prominent than the bridging role.
-      const bandThick = 32;
-      const lateralThick = 24;
-      // Filled circle at each corner to round the joint where the
-      // band edges meet. Without these the bands meet at an angular
-      // \"L\" with visible kinks; with a circle of radius = bandThick/2
-      // at each corner, the joint reads as a smoothly-rounded corner
-      // of one cohesive frame.
-      const cornerRadius = bandThick / 2;
+      // Compute inner corners by moving each outer corner toward the
+      // center by a fraction of its distance to center. Fraction
+      // controls the central window size — 0.50 gives ~25% window
+      // area (75% strap), matching the UIC drawings.
+      const innerFrac = 0.50;
+      const innerCorner = (p) => ({
+        x: p.x + (center.x - p.x) * innerFrac,
+        y: p.y + (center.y - p.y) * innerFrac,
+      });
+      const rAi = innerCorner(rA);
+      const lAi = innerCorner(lA);
+      const rPi = innerCorner(rP);
+      const lPi = innerCorner(lP);
+      const d =
+        `M ${rA.x} ${rA.y} L ${lA.x} ${lA.y} L ${lP.x} ${lP.y} L ${rP.x} ${rP.y} Z` +
+        ` M ${rAi.x} ${rAi.y} L ${rPi.x} ${rPi.y} L ${lPi.x} ${lPi.y} L ${lAi.x} ${lAi.y} Z`;
       return (
         <g key={key}>
-          {edge(rA, lA, bandThick, "ap-ant-band")}
-          {edge(rP, lP, bandThick, "ap-post-band")}
-          {edge(rA, rP, lateralThick, "ap-right-lat")}
-          {edge(lA, lP, lateralThick, "ap-left-lat")}
-          {[
-            ["ap-corner-rA", rA], ["ap-corner-lA", lA],
-            ["ap-corner-rP", rP], ["ap-corner-lP", lP],
-          ].map(([k, p]) => (
-            <circle key={k} cx={p.x} cy={p.y} r={cornerRadius}
-              fill={C_CAST} fillOpacity={0.75}
-              stroke={C_CAST} strokeWidth={1.4} />
-          ))}
+          <path d={d} fillRule="evenodd"
+            fill={C_CAST} fillOpacity={0.75}
+            stroke={C_CAST} strokeWidth={1.4} strokeLinejoin="round" />
         </g>
       );
     }
