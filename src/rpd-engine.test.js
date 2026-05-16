@@ -4014,6 +4014,29 @@ describe("UIC-AUDIT — Clasp 1/3 rule in lab Rx", () => {
   });
 });
 
+describe("UIC-AUDIT — Step 3 surveying protocol + Block-out callout", () => {
+  it("Step 3 enumerates 8-step surveying protocol with tripod + undercut gauge", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/SURVEYING PROTOCOL/);
+    expect(r.axiumSteps).toMatch(/PATH OF INSERTION/);
+    expect(r.axiumSteps).toMatch(/SURVEY LINE/);
+    expect(r.axiumSteps).toMatch(/TRIPOD/);
+    expect(r.axiumSteps).toMatch(/undercut gauge/i);
+    expect(r.axiumSteps).toMatch(/BLOCK OUT/);
+  });
+  it("Definitive lab Rx includes block-out callout", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3]);
+    const r = rpdRunEngine(c);
+    expect(r.labScript).toMatch(/Block out/);
+    expect(r.labScript).toMatch(/baseplate wax/);
+  });
+});
+
 describe("UIC-AUDIT — Occlusion scheme red flag (Lecture 3)", () => {
   it("Natural opposing arch → group function scheme flag fires", () => {
     const c = rpdMakeBlankCase("mandibular");

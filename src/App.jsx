@@ -14169,6 +14169,14 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
     lines.push("Acrylic gingival shade: [TBD via UIC gingival shade guide — typically L199-OR or 50% OR + 50% DK mix].");
   }
 
+  // Block out instruction (Lecture 4A p. 14 — surveyor procedure). The
+  // student blocks out unwanted undercuts on the cast BEFORE submitting
+  // to the lab; this is part of the surveying step. The lab Rx reminds
+  // the lab to verify block-out integrity before duplicating the cast for
+  // framework casting.
+  lines.push("");
+  lines.push("Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per UIC surveyor protocol, Lecture 4A p. 14). Lab to verify block-out integrity before duplicating cast for framework investing.");
+
   lines.push("");
   lines.push("Please return for try-in. Thank you.");
   return lines.join("\n");
@@ -14322,8 +14330,8 @@ const RPD_AXIUM_STEPS = [
     step: 3,
     phase: "Diagnostic & Treatment Planning",
     clinic: "Survey Diagnostic Casts + Preliminary Partial Denture Design Form",
-    action: "Propose RPD design per standard prosthodontic concepts. Survey potential abutments. Identify tooth modifications needed; survey-crown decisions. Duplicate diagnostic casts; practice tooth modifications. Fill out Preliminary Partial Denture Design Form (guide planes, rest seats with reduction amounts, undercuts with location and depth, HOC adjustments, clasp types, minor + major connectors).",
-    axiumEntry: "Preliminary Partial Denture Design Form (separate from lab Rx); design rationales documented",
+    action: "SURVEYING PROTOCOL (Lecture 4A pp. 7-14 — required before any design decisions):\n  1. Mount diagnostic cast on dental surveyor (Ney-style); horizontal table.\n  2. Determine PATH OF INSERTION (POI): UIC predoctoral standard is SINGLE LEVEL POI (no tilt). Rotational paths are reserved for advanced cases.\n  3. With analyzing rod (graphite tip), mark SURVEY LINE on every potential abutment — the line of greatest convexity (HOC, height of contour) along the POI.\n  4. Identify clasp-tip position candidates BELOW the survey line in the gingival 1/3 of the crown.\n  5. With undercut gauge (0.01\" for cast, 0.02\" for wrought wire), measure undercut depth at candidate clasp-tip locations. Record location (mid-B, MB, DB, ML, DL) + depth.\n  6. TRIPOD the cast: scribe 3 reference dots on the cast (one anterior, two posterior) that share a single Z-plane at the chosen POI. This locks the POI so the cast can be re-mounted later.\n  7. BLOCK OUT undercuts NOT engaged by the clasp design with wax — prevents framework binding during seating.\n  8. Mark proximal GUIDE PLANE locations on the cast.\nDESIGN STEPS (after surveying):\n  • Propose RPD design per UIC prosthodontic principles.\n  • Identify tooth modifications needed; survey-crown vs enameloplasty decisions.\n  • Duplicate diagnostic cast; practice tooth modifications.\n  • Fill out Preliminary Partial Denture Design Form (guide planes, rest seats with reduction amounts, undercuts with location and depth, HOC adjustments, clasp types, minor + major connectors).",
+    axiumEntry: "Surveying note: POI determined + tripod marks scribed + undercut measurements per abutment recorded. Preliminary Partial Denture Design Form (separate from lab Rx); design rationales documented.",
     design: "Finalize Kennedy classification. Run engine: major connector, per-abutment clasp + rest + guide plane, indirect retainers, base design, framework material. Surface red flags for clinician review.",
   },
   // ── (B) Phase I: Active Disease Control ────────────────────────────────
