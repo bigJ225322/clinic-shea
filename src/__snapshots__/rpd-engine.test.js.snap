@@ -253,6 +253,11 @@ Please return for try-in. Thank you.",
       "severity": "info",
       "type": "altered-cast",
     },
+    {
+      "message": "Occlusion scheme (Lecture 3): GROUP FUNCTION on the working side with NO balancing-side interferences. Canine guidance is acceptable if the patient's natural dentition exhibits it. Do NOT attempt bilateral balanced occlusion when opposing natural teeth — that scheme is for CD-opposing-RPD only. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "severity": "info",
+      "type": "occlusion-scheme-group-function",
+    },
   ],
 }
 `;
@@ -547,6 +552,11 @@ Please return for try-in. Thank you.",
       "severity": "info",
       "type": "altered-cast",
     },
+    {
+      "message": "Occlusion scheme (Lecture 3): GROUP FUNCTION on the working side with NO balancing-side interferences. Canine guidance is acceptable if the patient's natural dentition exhibits it. Do NOT attempt bilateral balanced occlusion when opposing natural teeth — that scheme is for CD-opposing-RPD only. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "severity": "info",
+      "type": "occlusion-scheme-group-function",
+    },
   ],
 }
 `;
@@ -745,6 +755,11 @@ Please return for try-in. Thank you.",
       "message": "Nesbit (unilateral cantilever) RPD is PROHIBITED at UIC College of Dentistry per Final RPD Huddle 2 answer key — aspiration risk if dislodged. For this short unilateral edentulous space, the engine recommends a fixed solution (FPD or implants). If the patient declines fixed treatment, an Interim Partial Denture with non-metal clasps is the only acceptable removable option (Summer 2023 Interim RPD lecture: indicated for Class III / short-span IV).",
       "severity": "info",
       "type": "nesbit-prohibition",
+    },
+    {
+      "message": "Occlusion scheme (Lecture 3): GROUP FUNCTION on the working side with NO balancing-side interferences. Canine guidance is acceptable if the patient's natural dentition exhibits it. Do NOT attempt bilateral balanced occlusion when opposing natural teeth — that scheme is for CD-opposing-RPD only. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "severity": "info",
+      "type": "occlusion-scheme-group-function",
     },
   ],
 }
@@ -1250,6 +1265,11 @@ Please return for try-in. Thank you.",
       "type": "altered-cast",
     },
     {
+      "message": "Occlusion scheme (Lecture 3): GROUP FUNCTION on the working side with NO balancing-side interferences. Canine guidance is acceptable if the patient's natural dentition exhibits it. Do NOT attempt bilateral balanced occlusion when opposing natural teeth — that scheme is for CD-opposing-RPD only. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "severity": "info",
+      "type": "occlusion-scheme-group-function",
+    },
+    {
       "message": "Anterior edentulous area present (#7, #8, #10). UIC Lecture 2 hard rule: "Always close the anterior edentulous area." Replacement options (in order of preference): FPD (if abutments allow), implant-supported crown(s), RPD with appropriate base design (Mesh for ≥3 anterior teeth, Facing for extremely limited vertical space + non-resorbed ridge), or IPD with denture teeth bonded to acrylic base if transitional. Leaving the gap open is never an acceptable definitive outcome.",
       "severity": "info",
       "type": "always-close-anterior",
@@ -1658,6 +1678,11 @@ Please return for try-in. Thank you.",
       "message": "Class I/II distal extension: altered cast technique MAY be needed at framework try-in. UIC default is single-step PVS. Indication for altered cast: (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby/compressible. If indicated: heat framework saddle, add Triad spacer, border-mold the saddle, light-body PVS impression — press on REST SEATS ONLY, never on the distal extension framework. Lab sections the master cast and pours new distal extensions.",
       "severity": "info",
       "type": "altered-cast",
+    },
+    {
+      "message": "Occlusion scheme (Lecture 3): GROUP FUNCTION on the working side with NO balancing-side interferences. Canine guidance is acceptable if the patient's natural dentition exhibits it. Do NOT attempt bilateral balanced occlusion when opposing natural teeth — that scheme is for CD-opposing-RPD only. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "severity": "info",
+      "type": "occlusion-scheme-group-function",
     },
     {
       "message": "Anterior edentulous area present (#7, #8, #9, #10). UIC Lecture 2 hard rule: "Always close the anterior edentulous area." Replacement options (in order of preference): FPD (if abutments allow), implant-supported crown(s), RPD with appropriate base design (Mesh for ≥3 anterior teeth, Facing for extremely limited vertical space + non-resorbed ridge), or IPD with denture teeth bonded to acrylic base if transitional. Leaving the gap open is never an acceptable definitive outcome.",

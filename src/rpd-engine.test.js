@@ -4014,6 +4014,37 @@ describe("UIC-AUDIT — Clasp 1/3 rule in lab Rx", () => {
   });
 });
 
+describe("UIC-AUDIT — Occlusion scheme red flag (Lecture 3)", () => {
+  it("Natural opposing arch → group function scheme flag fires", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    c.patientFactors.opposingArch = "natural";
+    const r = rpdRunEngine(c);
+    const occlFlag = r.redFlags.find(f => f.type === "occlusion-scheme-group-function");
+    expect(occlFlag).toBeDefined();
+    expect(occlFlag.message).toMatch(/GROUP FUNCTION/);
+    expect(occlFlag.message).toMatch(/balancing-side interferences/i);
+  });
+  it("Existing partial opposing → group function scheme flag fires", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    c.patientFactors.opposingArch = "existing_partial";
+    const r = rpdRunEngine(c);
+    expect(r.redFlags.find(f => f.type === "occlusion-scheme-group-function")).toBeDefined();
+  });
+  it("CD opposing → bilateral balanced fires, NOT group function", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    c.patientFactors.opposingArch = "complete_denture";
+    const r = rpdRunEngine(c);
+    expect(r.redFlags.find(f => f.type === "bilateral-balanced-occlusion")).toBeDefined();
+    expect(r.redFlags.find(f => f.type === "occlusion-scheme-group-function")).toBeUndefined();
+  });
+});
+
 describe("UIC-AUDIT — Denture tooth mold + shade specs in lab Rx", () => {
   it("Definitive RPD with denture teeth includes Trubyte mold + Vita shade TBD fields", () => {
     const c = rpdMakeBlankCase("mandibular");

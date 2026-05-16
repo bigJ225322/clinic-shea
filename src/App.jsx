@@ -13735,6 +13735,22 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
     });
   }
 
+  // Group function scheme for RPD opposing natural dentition (Lecture 3 RPD
+  // occlusion principles). When opposing arch is intact natural teeth or
+  // an existing RPD, UIC's standard is GROUP FUNCTION on the working side
+  // with no balancing-side interferences. Canine guidance is acceptable if
+  // the patient's natural dentition exhibits it. Bilateral balanced is
+  // SPECIFIC to CD-opposing-RPD; do not apply it to natural-opposing-RPD.
+  if ((pf.opposingArch === "natural" || pf.opposingArch === "existing_partial" || !pf.opposingArch)
+      && designIntent === "definitive"
+      && kennedy.class !== null) {
+    flags.push({
+      severity: "info",
+      type: "occlusion-scheme-group-function",
+      message: "Occlusion scheme (Lecture 3): GROUP FUNCTION on the working side with NO balancing-side interferences. Canine guidance is acceptable if the patient's natural dentition exhibits it. Do NOT attempt bilateral balanced occlusion when opposing natural teeth — that scheme is for CD-opposing-RPD only. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+    });
+  }
+
   // "Always close the anterior edentulous area" — UIC Lecture 2 p. 14
   // (red text, hard rule). Engine surfaces this as an info-tier confirmation
   // whenever the case includes an anterior span (#7-10 max or #23-26 mand),
