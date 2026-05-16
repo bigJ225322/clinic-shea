@@ -13837,6 +13837,18 @@ function rpdDesignNMCD(caseInput, kennedy) {
   }
   const claspTeeth = Array.from(abutments);
 
+  // UIC restorative-space gating (Fall 2022 Non-metal Clasps lecture):
+  //   - NMCD WITH metal major connector: contraindicated if restorative space <6 mm
+  //   - NMCD WITHOUT metal (pure Valplast): contraindicated if restorative space <5 mm
+  // The engine uses categorical interocclusalSpace ("limited" ≈ 5-6mm,
+  // "extremely_limited" ≈ <5mm) as a proxy since exact mm isn't a separate
+  // input. "extremely_limited" disables both variants; "limited" disables
+  // the hybrid (which has the stricter ≥6mm requirement) but permits the
+  // pure variant.
+  const ioSpace = caseInput.measurements?.interocclusalSpace;
+  const hybridSpaceContra = ioSpace === "extremely_limited" || ioSpace === "limited";
+  const pureSpaceContra = ioSpace === "extremely_limited";
+
   return {
     applicable: true,
     designIntent: caseInput.patientFactors?.designIntent || "definitive",
@@ -13850,6 +13862,10 @@ function rpdDesignNMCD(caseInput, kennedy) {
       majorConnector: "Metal (cast) — see primary design above",
       claspTeeth,
       claspDescription: "Thermoplastic clasps on each abutment, engaging undercuts (no rest seats / guide planes — adhesive retention)",
+      contraindicatedBySpace: hybridSpaceContra,
+      spaceContraReason: hybridSpaceContra
+        ? `Hybrid NMCD requires ≥6mm restorative space (UIC Non-metal Clasps lecture). The case's interocclusal space is "${ioSpace}" — below threshold. Consider definitive cast metal RPD or implant-supported alternative.`
+        : null,
     },
 
     // Option B: pure non-metal (Valplast-type)
@@ -13861,6 +13877,10 @@ function rpdDesignNMCD(caseInput, kennedy) {
       claspTeeth,
       claspDescription: "Flexible thermoplastic clasps; no rest seats / guide planes",
       interimPreferred: true,
+      contraindicatedBySpace: pureSpaceContra,
+      spaceContraReason: pureSpaceContra
+        ? `Pure NMCD (no metal) requires ≥5mm restorative space (UIC Non-metal Clasps lecture). The case's interocclusal space is "${ioSpace}" — below threshold.`
+        : null,
     },
 
     // Shared
