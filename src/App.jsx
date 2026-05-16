@@ -13525,6 +13525,40 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
     });
   }
 
+  // Bilateral balanced occlusion required when opposing arch is a complete
+  // denture (Fall RPD 22 Combination Syndrome lecture, Prevention p. 9;
+  // also Lecture 3 occlusion principles). UIC's RPD-opposing-CD scenario
+  // demands bilateral balanced articulation including protrusive movements
+  // to prevent denture tipping and Combination Syndrome progression.
+  if (pf.opposingArch === "complete_denture"
+      && designIntent === "definitive"
+      && kennedy.class !== null) {
+    flags.push({
+      severity: "info",
+      type: "bilateral-balanced-occlusion",
+      message: "Opposing arch is a complete denture. UIC requires BILATERAL BALANCED ARTICULATION including protrusive and lateral excursive movements for this RPD (Combination Syndrome prevention; Lecture 3). At wax-rim try-in, set teeth for simultaneous bilateral contacts in MI, protrusion, and lateral excursions. Use the Hanau facebow + bite registration to mount casts. Selective pressure or altered cast impression technique is also required.",
+    });
+  }
+
+  // "Always close the anterior edentulous area" — UIC Lecture 2 p. 14
+  // (red text, hard rule). Engine surfaces this as an info-tier confirmation
+  // whenever the case includes an anterior span (#7-10 max or #23-26 mand),
+  // so the student is reminded the gap MUST be closed by some means (RPD,
+  // FPD, or implant) — never left open. The engine never recommends leaving
+  // an anterior gap open, but the explicit reminder reinforces UIC's hard rule.
+  const RPD_MAX_ANTERIOR_SET = new Set([7, 8, 9, 10]);
+  const RPD_MAND_ANTERIOR_SET = new Set([23, 24, 25, 26]);
+  const anteriorSet = caseInput.arch === "maxillary" ? RPD_MAX_ANTERIOR_SET : RPD_MAND_ANTERIOR_SET;
+  const missingAnteriors = rpdArchTeeth(caseInput.arch)
+    .filter(n => anteriorSet.has(n) && !rpdIsPresent(caseInput, n));
+  if (missingAnteriors.length > 0) {
+    flags.push({
+      severity: "info",
+      type: "always-close-anterior",
+      message: `Anterior edentulous area present (${rpdToothList(missingAnteriors)}). UIC Lecture 2 hard rule: "Always close the anterior edentulous area." Replacement options (in order of preference): FPD (if abutments allow), implant-supported crown(s), RPD with appropriate base design (Mesh for ≥3 anterior teeth, Facing for extremely limited vertical space + non-resorbed ridge), or IPD with denture teeth bonded to acrylic base if transitional. Leaving the gap open is never an acceptable definitive outcome.`,
+    });
+  }
+
   // Short crown / crown lengthening recommended
   const shortCrownTeeth = abutmentDesigns.filter(a => a.crownLengthening?.indicated).map(a => a.tooth);
   if (shortCrownTeeth.length) {
