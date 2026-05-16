@@ -13547,6 +13547,82 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
     });
   }
 
+  // CAMBRA caries-protective prescription block (Lecture 2 p. 20).
+  // UIC requires the dentist to address caries risk BEFORE delivering an RPD.
+  // A retained framework on a high-caries-risk mouth fails fast: abutments
+  // decay under clasps, secondary caries undermines rest seats, and the
+  // framework levers further damage. The CAMBRA package below is the UIC
+  // protocol — prescribe ALL items, not pick-and-choose.
+  const cariesRisk = pf.cariesRisk; // expected: "low" | "moderate" | "high" | "extreme"
+  if (cariesRisk === "high" || cariesRisk === "extreme") {
+    const riskLabel = cariesRisk === "extreme" ? "EXTREME" : "HIGH";
+    const extremeRationale = cariesRisk === "extreme"
+      ? " EXTREME risk = HIGH + severe xerostomia OR recent tooth loss to caries; this is a hard prerequisite — do NOT deliver definitive RPD until risk is stabilized."
+      : "";
+    flags.push({
+      severity: cariesRisk === "extreme" ? "warning" : "info",
+      type: "cambra-prescription",
+      message: `Caries risk: ${riskLabel} per CAMBRA assessment (Lecture 2 p. 20). Prescribe the full UIC protective package BEFORE framework delivery: (1) PreviDent 5000 — Rx 1.1% NaF dentifrice, brush BID in place of regular toothpaste; (2) Peridex (0.12% chlorhexidine gluconate) rinse — 1 week per month, BID, do not rinse with water after; (3) Fluoride varnish 5% NaF in-office, 3x per year minimum; (4) Xylitol — gum or lozenges, 2x per day for 15 min (stimulates salivary flow + bacteriostatic to S. mutans); (5) CariFree xylitol spray for dry-mouth episodes; (6) Diet counseling — limit fermentable carb exposures to <3 per day, no sipping sugary drinks.${extremeRationale} Recall: 3-month perio/caries recall, not 6-month. Document each prescription in Axium and reassess risk at every recall.`,
+    });
+  }
+
+  // Perio-risk prerequisite (Lecture 2 p. 14 — Phase I Active Disease
+  // Control must be complete before definitive RPD impressions). High
+  // overall perio risk = active disease; the framework will accelerate
+  // bone loss around abutments if disease is not stabilized first.
+  const perioRisk = pf.perioRisk; // expected: "low" | "moderate" | "high"
+  if (perioRisk === "high" && designIntent === "definitive") {
+    flags.push({
+      severity: "warning",
+      type: "perio-risk",
+      message: "Overall perio risk: HIGH. UIC sequence (Lecture 2 p. 14): Phase I Active Disease Control must be COMPLETE before definitive RPD impressions. Required prior to impressions: full-mouth SRP, OHI, 4-6 week re-evaluation with re-probing, all pockets ≤5mm + no BOP at abutment sites. If perio is unstable, deliver an IPD as a holding phase and reassess. Recall: 3-month perio maintenance schedule, indefinitely. Document stabilization in Axium before advancing to Phase III.",
+    });
+  }
+
+  // Refer-to-prosthodontist triggers (Lecture 1 — scope of practice for
+  // predoctoral student vs specialist referral; PDI Classification for
+  // Partial Edentulism — ACP). The predoctoral student handles PDI Class
+  // I-II; PDI Class III-IV cases warrant consult OR referral. The triggers
+  // below approximate PDI Class III/IV from existing engine inputs.
+  const referralTriggers = [];
+  // Trigger 1: VDO reestablishment required = full-mouth rehab territory.
+  if (pf.vdoLoss === true) {
+    referralTriggers.push("loss of vertical dimension of occlusion requiring reestablishment (full-mouth rehab)");
+  }
+  // Trigger 2: Severe ridge resorption + distal extension + high perio risk
+  // = compromised abutments AND compromised ridge AND active disease.
+  if ((m.ridgeResorption === "severe")
+      && (kennedy.class === "I" || kennedy.class === "II")
+      && perioRisk === "high") {
+    referralTriggers.push("severe ridge resorption + distal-extension Kennedy + high perio risk (PDI Class IV biomechanics)");
+  }
+  // Trigger 3: Existing Combination Syndrome (CD opposing mand Class I)
+  // already documented (not just at risk) — full-mouth rehab considerations.
+  if (caseInput.arch === "mandibular"
+      && kennedy.class === "I"
+      && pf.opposingArch === "complete_denture"
+      && pf.vdoLoss === true) {
+    referralTriggers.push("active Combination Syndrome with VDO loss");
+  }
+  // Trigger 4: Class IV with high esthetic demand — anterior esthetic
+  // restoration in a partially edentulous Class IV span is challenging
+  // (smile line, lip support, denture tooth shade matching).
+  if (kennedy.class === "IV" && pf.estheticDemand === "high") {
+    referralTriggers.push("Kennedy Class IV anterior modification with high esthetic demand");
+  }
+  // Trigger 5: New prosthesis to opposing arch simultaneously (RPD opposing
+  // a new prosthesis means dual-arch reconstruction).
+  if (pf.opposingArch === "new_prosthesis" && designIntent === "definitive") {
+    referralTriggers.push("simultaneous bilateral arch reconstruction (new prosthesis opposing)");
+  }
+  if (referralTriggers.length) {
+    flags.push({
+      severity: "warning",
+      type: "refer-prosthodontist",
+      message: `Consider prosthodontist consult or referral. Triggers: ${referralTriggers.join("; ")}. Per UIC Lecture 1 scope-of-practice guidance, predoctoral student handles PDI Class I-II partial edentulism predictably; PDI Class III-IV cases benefit from specialist input (ACP Prosthodontic Diagnostic Index). At minimum, present this case at Tx Plan Conference for faculty review before proceeding.`,
+    });
+  }
+
   // Hopeless abutments
   const hopeless = rpdArchTeeth(caseInput.arch).filter(n => rpdIsPresent(caseInput, n) && caseInput.teeth[n]?.attrs?.perioPrognosis === "hopeless");
   if (hopeless.length) {
@@ -19274,6 +19350,41 @@ function RPDInputsForm({ caseInput, onUpdate }) {
             placeholder="leave blank if none"
             onChange={(e) => setFactor("monthsSinceExtraction", e.target.value === "" ? undefined : Number(e.target.value))} />
         </div>
+        {/* CAMBRA caries risk (Lecture 2 p. 20) — gates CAMBRA prescription
+            block and 3-month recall recommendation. UIC requires risk
+            assessment BEFORE every RPD treatment plan. */}
+        <div style={field}>
+          <label style={labelText}>Caries risk (CAMBRA)</label>
+          <select style={ctrl} value={pf.cariesRisk || "moderate"} onChange={(e) => setFactor("cariesRisk", e.target.value)}>
+            <option value="low">Low</option>
+            <option value="moderate">Moderate</option>
+            <option value="high">High</option>
+            <option value="extreme">Extreme</option>
+          </select>
+        </div>
+        {/* Perio risk — gates abutment selection and recall frequency.
+            "Questionable" or "poor" prognosis already routes to IPD pathway
+            via the per-tooth perioPrognosis attribute; this is the overall
+            patient-level risk for ongoing perio disease activity. */}
+        <div style={field}>
+          <label style={labelText}>Perio risk (overall)</label>
+          <select style={ctrl} value={pf.perioRisk || "low"} onChange={(e) => setFactor("perioRisk", e.target.value)}>
+            <option value="low">Low</option>
+            <option value="moderate">Moderate</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        {/* Esthetic demand — gates Class IV anterior referral, base-design
+            choice (Facing vs Mesh), and clasp esthetic considerations
+            (I-bar esthetic vs Akers in display zone). */}
+        <div style={field}>
+          <label style={labelText}>Esthetic demand</label>
+          <select style={ctrl} value={pf.estheticDemand || "moderate"} onChange={(e) => setFactor("estheticDemand", e.target.value)}>
+            <option value="low">Low</option>
+            <option value="moderate">Moderate</option>
+            <option value="high">High</option>
+          </select>
+        </div>
       </div>
 
       {/* Boolean patient factors — moved to bottom; metal allergy first
@@ -19307,6 +19418,14 @@ function RPDInputsForm({ caseInput, onUpdate }) {
             </label>
           </>
         )}
+        {/* VDO loss — gates refer-to-prosthodontist trigger and bite
+            registration protocol. UIC sequence (Lecture 3): if VDO is
+            compromised, reestablish at provisional/wax-rim stage, not
+            after framework is delivered. */}
+        <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "var(--ink)" }}>
+          <input type="checkbox" checked={!!pf.vdoLoss} onChange={(e) => setFactor("vdoLoss", e.target.checked)} />
+          Loss of VDO
+        </label>
       </div>
 
       {/* Toggle for the input-reference panel. The reference itself is
