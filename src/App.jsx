@@ -16810,12 +16810,26 @@ function RPDPaperFormArchDrawing({
       // as more prominent than the bridging role.
       const bandThick = 32;
       const lateralThick = 24;
+      // Filled circle at each corner to round the joint where the
+      // band edges meet. Without these the bands meet at an angular
+      // \"L\" with visible kinks; with a circle of radius = bandThick/2
+      // at each corner, the joint reads as a smoothly-rounded corner
+      // of one cohesive frame.
+      const cornerRadius = bandThick / 2;
       return (
         <g key={key}>
           {edge(rA, lA, bandThick, "ap-ant-band")}
           {edge(rP, lP, bandThick, "ap-post-band")}
           {edge(rA, rP, lateralThick, "ap-right-lat")}
           {edge(lA, lP, lateralThick, "ap-left-lat")}
+          {[
+            ["ap-corner-rA", rA], ["ap-corner-lA", lA],
+            ["ap-corner-rP", rP], ["ap-corner-lP", lP],
+          ].map(([k, p]) => (
+            <circle key={k} cx={p.x} cy={p.y} r={cornerRadius}
+              fill={C_CAST} fillOpacity={0.75}
+              stroke={C_CAST} strokeWidth={1.4} />
+          ))}
         </g>
       );
     }
