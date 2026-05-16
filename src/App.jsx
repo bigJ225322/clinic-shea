@@ -15630,14 +15630,32 @@ function RPDPaperFormArchDrawing({
     );
   };
 
-  // Circumferential arm (Akers retentive). Per McCracken / UIC convention:
-  //   - Proximal 1/3 (rigid): emerges from the proximal plate AT or just
-  //     above the HOC, on the same side as the rest.
-  //   - Middle 1/3 (limited flex): hugs along the buccal (or lingual) surface
-  //     just ABOVE the height of contour.
-  //   - Terminal 1/3 (flexible): dips BELOW the HOC to engage the undercut.
+  // Circumferential arm (Akers retentive) — V2 textbook rendering.
+  //
+  // Calibrated against McCracken Fig 7-15 (taper diagram), the UIC Retainers
+  // slide deck (Fall 2022, Kim), and hand-drawn UIC design forms (Design Case
+  // 1, Case II). Key textbook properties this renderer now honors:
+  //
+  //   1. Encirclement >180° — arm reaches near the far proximal corner,
+  //      not just the midpoint. Hand-drawn UIC designs show the clasp
+  //      wrapping from one proximal plate corner almost all the way to
+  //      the opposite proximal corner before terminating at the undercut.
+  //
+  //   2. Dramatic taper — proximal 1/3 is ~2.5× wider than the terminal
+  //      tip (McCracken: "uniform taper in both thickness AND width" for
+  //      retentive arms). Rendered with five segments of decreasing
+  //      stroke width so the taper is visible at chart scale.
+  //
+  //   3. Three thirds with visible vertical excursion — the curve bows
+  //      OUTWARD past the tooth perimeter at the middle 1/3 (slightly
+  //      above HOC in 3D, "outside" the buccal contour in our top-down
+  //      view) then dips back inward as the tip drops INTO the undercut
+  //      on the far proximal side.
+  //
+  //   4. Terminal tip marker — small dot at the engagement point so
+  //      students can immediately see where the undercut is engaged.
+  //
   // `plateSide` is the side of the rest/plate (where the arm originates).
-  // `undercutSide` is the opposite side where the arm tip engages.
   // `onBuccal` toggles between buccal Akers and lingual Reverse Akers.
   const drawCircumferentialArm = (n, opts, key) => {
     const { color = C_CAST, plateSide = "mesial", onBuccal = true,
@@ -15650,55 +15668,88 @@ function RPDPaperFormArchDrawing({
     const radSign = onBuccal ? +1 : -1;
     const plateSgn = plateSide === "mesial" ? +1 : -1;
     // ── Origin: at the proximal plate's buccal (or lingual) corner ──
-    // Arm emerges from where the plate sits against the proximal surface,
-    // at HOC height (~halfBL from center along radial, just inside the
-    // tooth perimeter).
+    // Slightly OUTSIDE the tooth perimeter so the arm visibly attaches
+    // to the plate rather than emerging from inside the tooth body.
     const halfThick = 4;
     const originDist = halfMD + halfThick - 1;
-    const originRad = halfBL * 0.85;          // at HOC height
+    const originRad = halfBL * 0.92;
     const start = {
       x: cx + plateSgn * mes.x * originDist + radSign * rad.x * originRad,
       y: cy + plateSgn * mes.y * originDist + radSign * rad.y * originRad,
     };
-    // ── Middle-third anchor: at the middle of the buccal/lingual surface,
-    // slightly above the HOC line (so the arm hugs above HOC). ──
-    const middleAnchorRad = halfBL * 0.95;    // slightly outside HOC
+    // ── Middle 1/3 anchor: bows OUTWARD past the buccal/lingual contour.
+    // 1.05 halfBL puts the arm visibly past the tooth perimeter, which is
+    // how it reads at chart scale as "wrapping over the contour" rather
+    // than hugging it as a flat line. ──
+    const middleAnchorRad = halfBL * 1.05;
     const middle = {
       x: cx + radSign * rad.x * middleAnchorRad,
       y: cy + radSign * rad.y * middleAnchorRad,
     };
-    // ── Terminal 1/3: dips BELOW HOC at the distal-of-undercut end.
-    // The undercut is on the opposite proximal side from the rest. Arm tip
-    // crosses HOC and sits below it (deeper into undercut as depth factor
-    // increases — 0.02" wrought wire gets deeper than 0.01" cast). ──
-    const undercutSgn = -plateSgn;              // opposite proximal side
-    const tipMD = halfMD * 0.55;
-    const tipBL = halfBL * (1.10 + 0.08 * undercutDepthFactor); // dips past tooth contour
+    // ── Terminal 1/3: dips back INWARD at the far proximal side, into
+    // the undercut. tipMD = 0.85 means the tip reaches 85% of the way to
+    // the far proximal corner — gives the >180° encirclement that
+    // textbook drawings show. tipBL just past the contour at 1.15 so
+    // there's a visible engagement past the tooth perimeter. ──
+    const undercutSgn = -plateSgn;
+    const tipMD = halfMD * 0.85;
+    const tipBL = halfBL * (1.15 + 0.06 * undercutDepthFactor);
     const tip = {
       x: cx + undercutSgn * mes.x * tipMD + radSign * rad.x * tipBL,
       y: cy + undercutSgn * mes.y * tipMD + radSign * rad.y * tipBL,
     };
-    // Smooth path: start → middle (just-above-HOC) → tip (below-HOC at undercut)
-    // Use cubic Bezier so the curve transitions smoothly from above to below HOC.
-    const ctrl1 = {
-      x: start.x + (middle.x - start.x) * 0.5 + radSign * rad.x * 2,
-      y: start.y + (middle.y - start.y) * 0.5 + radSign * rad.y * 2,
+    // ── Build the path as a cubic Bezier from start → middle → tip.
+    // Control points pull outward (along radial) so the curve bows past
+    // the tooth contour rather than hugging it. ──
+    const ctrlA = {
+      x: cx + plateSgn * mes.x * (halfMD * 0.55) + radSign * rad.x * (halfBL * 1.05),
+      y: cy + plateSgn * mes.y * (halfMD * 0.55) + radSign * rad.y * (halfBL * 1.05),
     };
-    const ctrl2 = {
-      x: middle.x + (tip.x - middle.x) * 0.4 + radSign * rad.x * 3,
-      y: middle.y + (tip.y - middle.y) * 0.4 + radSign * rad.y * 3,
+    const ctrlB = {
+      x: cx + undercutSgn * mes.x * (halfMD * 0.40) + radSign * rad.x * (halfBL * 1.12),
+      y: cy + undercutSgn * mes.y * (halfMD * 0.40) + radSign * rad.y * (halfBL * 1.12),
     };
-    const armWidth = tapered ? 4.2 : 3.8;
-    const tipWidth = tapered ? 2.0 : 2.8;
-    // Render arm with tapering by drawing 3 segments of decreasing width.
+    // Build interpolated points along the bezier so we can render the
+    // taper as 5 segments of decreasing stroke width.
+    // Cubic Bezier formula: B(t) = (1-t)³P0 + 3(1-t)²t·P1 + 3(1-t)t²·P2 + t³P3
+    const bezPt = (t) => {
+      const u = 1 - t;
+      return {
+        x: u*u*u*start.x + 3*u*u*t*ctrlA.x + 3*u*t*t*ctrlB.x + t*t*t*tip.x,
+        y: u*u*u*start.y + 3*u*u*t*ctrlA.y + 3*u*t*t*ctrlB.y + t*t*t*tip.y,
+      };
+    };
+    const p0 = start;
+    const p1 = bezPt(0.25);
+    const p2 = bezPt(0.50);
+    const p3 = bezPt(0.75);
+    const p4 = tip;
+    // Stroke widths: dramatic taper from rigid proximal to flexible tip.
+    // tapered=true (the default for Akers) ≈ 2.4× ratio across length.
+    const wMax = tapered ? 6.0 : 5.0;
+    const wMin = tapered ? 2.5 : 2.5;
+    // Linear interpolation across 4 segments.
+    const w = (i) => wMax - (wMax - wMin) * (i / 4);
     return (
       <g key={key}>
-        {/* Proximal 1/3 — thickest, rigid */}
-        <path d={`M ${start.x} ${start.y} Q ${ctrl1.x} ${ctrl1.y} ${middle.x} ${middle.y}`}
-          stroke={color} strokeWidth={armWidth} fill="none" strokeLinecap="round" />
-        {/* Middle 1/3 — slightly thinner */}
-        <path d={`M ${middle.x} ${middle.y} Q ${ctrl2.x} ${ctrl2.y} ${tip.x} ${tip.y}`}
-          stroke={color} strokeWidth={(armWidth + tipWidth) / 2} fill="none" strokeLinecap="round" />
+        {/* Segment 1 (proximal, rigid)  — widest */}
+        <path d={`M ${p0.x} ${p0.y} L ${p1.x} ${p1.y}`}
+          stroke={color} strokeWidth={w(0.5)} fill="none"
+          strokeLinecap="round" />
+        {/* Segment 2 */}
+        <path d={`M ${p1.x} ${p1.y} L ${p2.x} ${p2.y}`}
+          stroke={color} strokeWidth={w(1.5)} fill="none"
+          strokeLinecap="round" />
+        {/* Segment 3 (middle, limited-flex) */}
+        <path d={`M ${p2.x} ${p2.y} L ${p3.x} ${p3.y}`}
+          stroke={color} strokeWidth={w(2.5)} fill="none"
+          strokeLinecap="round" />
+        {/* Segment 4 (terminal, flexible) — narrowest */}
+        <path d={`M ${p3.x} ${p3.y} L ${p4.x} ${p4.y}`}
+          stroke={color} strokeWidth={w(3.5)} fill="none"
+          strokeLinecap="round" />
+        {/* Terminal tip marker — shows where the undercut is engaged */}
+        <circle cx={tip.x} cy={tip.y} r={3} fill={color} />
       </g>
     );
   };
