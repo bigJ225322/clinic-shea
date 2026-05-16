@@ -3914,6 +3914,89 @@ describe("UIC-AUDIT — Phase IV step 10 long-term recall + maintenance decision
   });
 });
 
+describe("UIC-AUDIT — Rest seat dimensions (Lab 3 EXCELLENT panel)", () => {
+  it("Molar rest seat carries 2.5-3mm M-D × 1/3-1/2 B-L × 1.5mm dimensions", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [29]); // #30 1M becomes abutment
+    const r = rpdRunEngine(c);
+    const d30 = r.abutmentDesigns.find(a => a.tooth === 30);
+    if (d30?.restSeat) {
+      expect(d30.restSeat.dimensions).toMatch(/2\.5-3 mm M-D/);
+      expect(d30.restSeat.dimensions).toMatch(/1\/3-1\/2 B-L/);
+      expect(d30.restSeat.dimensions).toMatch(/1\.5 mm deep/);
+      expect(d30.restSeat.dimensions).toMatch(/spoon-shaped/);
+    }
+  });
+  it("Premolar rest seat carries 2.5-3mm M-D × 2/3 B-L dimensions", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]); // #29 2PM becomes terminal RPI abutment
+    const r = rpdRunEngine(c);
+    const d29 = r.abutmentDesigns.find(a => a.tooth === 29);
+    if (d29?.restSeat) {
+      expect(d29.restSeat.dimensions).toMatch(/2\.5-3 mm M-D/);
+      expect(d29.restSeat.dimensions).toMatch(/2\/3 B-L/);
+    }
+  });
+  it("Maxillary canine cingulum rest carries V-shaped teardrop dimensions", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [7]); // #6 canine becomes a bounding abutment
+    const r = rpdRunEngine(c);
+    const d6 = r.abutmentDesigns.find(a => a.tooth === 6);
+    if (d6?.restSeat?.type === "cingulum") {
+      expect(d6.restSeat.dimensions).toMatch(/V-shaped/);
+      expect(d6.restSeat.dimensions).toMatch(/teardrop/);
+      expect(d6.restSeat.dimensions).toMatch(/1\.5 mm deep/);
+    }
+  });
+  it("Mand canine ML ball rest carries 1.5mm hemisphere spec", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [24, 25, 26]); // bilateral anteriors missing → canines as abutments
+    const r = rpdRunEngine(c);
+    const d22 = r.abutmentDesigns.find(a => a.tooth === 22);
+    if (d22?.restSeat?.type === "ball") {
+      expect(d22.restSeat.dimensions).toMatch(/1\.5 mm diameter/);
+      expect(d22.restSeat.dimensions).toMatch(/hemispherical/);
+      expect(d22.restSeat.dimensions).toMatch(/mesio-lingual/);
+    }
+  });
+});
+
+describe("UIC-AUDIT — Clasp 1/3 rule in lab Rx", () => {
+  it("Cast clasps present → lab Rx includes 1/3-rule reminder", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]); // RPI on #29
+    const r = rpdRunEngine(c);
+    expect(r.labScript).toMatch(/terminal 1\/3 in undercut/i);
+    expect(r.labScript).toMatch(/middle 1\/3 at survey line/i);
+    expect(r.labScript).toMatch(/gingival 1\/3 of clinical crown/i);
+  });
+  it("IPD (wrought wire only, no cast clasps) → no 1/3 rule reminder", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    c.patientFactors.designIntent = "interim";
+    const r = rpdRunEngine(c);
+    expect(r.labScript).not.toMatch(/terminal 1\/3 in undercut/i);
+  });
+});
+
+describe("UIC-AUDIT — Mandibular relief callouts in lab Rx", () => {
+  it("Mandibular lab Rx includes genial tubercles, mylohyoid ridge, external oblique relief", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.labScript).toMatch(/genial tubercles/i);
+    expect(r.labScript).toMatch(/mylohyoid ridge/i);
+    expect(r.labScript).toMatch(/external oblique ridge/i);
+  });
+});
+
 describe("UIC-AUDIT — VDO loss promotes PDI to Class IV", () => {
   it("VDO loss alone forces PDI Class IV regardless of Kennedy class", () => {
     const c = rpdMakeBlankCase("maxillary");

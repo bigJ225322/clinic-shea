@@ -27,6 +27,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
+        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -59,6 +60,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
+        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -201,6 +203,9 @@ Major connector: Lingual Bar.
 Lingual bar: superior border ≥3 mm below gingival margins of remaining mandibular teeth (UIC spec). Inferior border at functional vestibular depth (do not impinge on lingual frenum). Half-pear cross-section, 4 mm vertical height minimum.
 Lingual sulcus depth requirement: ≥8 mm (verify clinically before approving design).
 Framework metal thickness: 0.5-1.0 mm Co-Cr at major connector.
+Relief: 0.5 mm relief over the genial tubercles, mylohyoid ridge, and external oblique ridge (mandatory per UIC).
+
+Cast clasp arm position: terminal 1/3 in undercut (0.01" engagement); middle 1/3 at survey line; origin 1/3 rigid above survey line. Clasp tip in gingival 1/3 of clinical crown — NOT on gingival margin.
 
 Please return for try-in. Thank you.",
   "majorConnector": {
@@ -279,6 +284,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
+        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -311,6 +317,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
+        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
         "surface": "distal",
         "type": "occlusal",
       },
@@ -348,6 +355,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "restRationale": null,
       "restSeat": {
         "bur": "#8 round (outline) / #6 round (axial inclination) / #4 round (refinement)",
+        "dimensions": "2.5-3 mm M-D × 1/3-1/2 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -484,6 +492,9 @@ Major connector: Lingual Bar.
 Lingual bar: superior border ≥3 mm below gingival margins of remaining mandibular teeth (UIC spec). Inferior border at functional vestibular depth (do not impinge on lingual frenum). Half-pear cross-section, 4 mm vertical height minimum.
 Lingual sulcus depth requirement: ≥8 mm (verify clinically before approving design).
 Framework metal thickness: 0.5-1.0 mm Co-Cr at major connector.
+Relief: 0.5 mm relief over the genial tubercles, mylohyoid ridge, and external oblique ridge (mandatory per UIC).
+
+Cast clasp arm position: terminal 1/3 in undercut (0.01" engagement); middle 1/3 at survey line; origin 1/3 rigid above survey line. Clasp tip in gingival 1/3 of clinical crown — NOT on gingival margin.
 
 Please return for try-in. Thank you.",
   "majorConnector": {
@@ -557,6 +568,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "restRationale": null,
       "restSeat": {
         "bur": "#8 round (outline) / #6 round (axial inclination) / #4 round (refinement)",
+        "dimensions": "2.5-3 mm M-D × 1/3-1/2 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -589,6 +601,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
+        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
         "surface": "distal",
         "type": "occlusal",
       },
@@ -670,6 +683,9 @@ Major connector: Lingual Bar.
 Lingual bar: superior border ≥3 mm below gingival margins of remaining mandibular teeth (UIC spec). Inferior border at functional vestibular depth (do not impinge on lingual frenum). Half-pear cross-section, 4 mm vertical height minimum.
 Lingual sulcus depth requirement: ≥8 mm (verify clinically before approving design).
 Framework metal thickness: 0.5-1.0 mm Co-Cr at major connector.
+Relief: 0.5 mm relief over the genial tubercles, mylohyoid ridge, and external oblique ridge (mandatory per UIC).
+
+Cast clasp arm position: terminal 1/3 in undercut (0.01" engagement); middle 1/3 at survey line; origin 1/3 rigid above survey line. Clasp tip in gingival 1/3 of clinical crown — NOT on gingival margin.
 
 Please return for try-in. Thank you.",
   "majorConnector": {
@@ -751,6 +767,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": null,
       "restSeat": {
         "bur": "#8 round (outline) / #6 round (axial inclination) / #4 round (refinement)",
+        "dimensions": "2.5-3 mm M-D × 1/3-1/2 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -788,6 +805,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
+        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
         "surface": "distal",
         "type": "occlusal",
       },
@@ -814,6 +832,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment (Lecture 4A p. 16). Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
       "restSeat": {
         "bur": "inverted cone",
+        "dimensions": "V-shaped (teardrop) depression on cingulum; 1.5 mm deep × 2.5 mm M-D × 2 mm I-G; perpendicular to long axis of tooth",
         "surface": "distal",
         "type": "cingulum",
       },
@@ -840,6 +859,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment (Lecture 4A p. 16). Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
       "restSeat": {
         "bur": "inverted cone",
+        "dimensions": "1.5 mm diameter hemispherical depression on distal line angle of central incisor lingual surface",
         "surface": "mesial",
         "type": "ball",
       },
@@ -866,6 +886,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment (Lecture 4A p. 16). Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
       "restSeat": {
         "bur": "inverted cone",
+        "dimensions": "V-shaped (teardrop) depression on cingulum; 1.5 mm deep × 2.5 mm M-D × 2 mm I-G; perpendicular to long axis of tooth",
         "surface": "mesial",
         "type": "cingulum",
       },
@@ -907,6 +928,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
+        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -1165,6 +1187,8 @@ Posterior strap: 6 mm anterior to vibrating line, 6-8 mm wide.
 Lateral straps: ≥4 mm wide; cross the palate at oblique angle for tongue comfort.
 Framework metal thickness: 0.5-1.0 mm Co-Cr at major connector; smooth, polished tongue-facing surface.
 
+Cast clasp arm position: terminal 1/3 in undercut (0.01" engagement); middle 1/3 at survey line; origin 1/3 rigid above survey line. Clasp tip in gingival 1/3 of clinical crown — NOT on gingival margin.
+
 Please return for try-in. Thank you.",
   "majorConnector": {
     "note": "0.5mm beading on tissue side",
@@ -1246,6 +1270,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
+        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -1272,6 +1297,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment (Lecture 4A p. 16). Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
       "restSeat": {
         "bur": "inverted cone",
+        "dimensions": "V-shaped (teardrop) depression on cingulum; 1.5 mm deep × 2.5 mm M-D × 2 mm I-G; perpendicular to long axis of tooth",
         "surface": "distal",
         "type": "cingulum",
       },
@@ -1298,6 +1324,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment (Lecture 4A p. 16). Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
       "restSeat": {
         "bur": "inverted cone",
+        "dimensions": "V-shaped (teardrop) depression on cingulum; 1.5 mm deep × 2.5 mm M-D × 2 mm I-G; perpendicular to long axis of tooth",
         "surface": "mesial",
         "type": "cingulum",
       },
@@ -1330,6 +1357,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "restRationale": null,
       "restSeat": {
         "bur": "#6 round (outline) / #4 round (axial inclination)",
+        "dimensions": "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -1562,6 +1590,8 @@ Relief: 0.5 mm relief over the incisive papilla and median palatal raphe (mandat
 Posterior boundary: AT the vibrating line (junction of hard and soft palate); confirm with T-burnisher or 'ah' line marking.
 Anterior boundary: extends to lingual surfaces of anterior teeth (NOT covering gingival margin — finish on tooth surface above gingival third).
 Framework metal thickness: 0.5-1.0 mm Co-Cr at major connector; smooth, polished tongue-facing surface.
+
+Cast clasp arm position: terminal 1/3 in undercut (0.01" engagement); middle 1/3 at survey line; origin 1/3 rigid above survey line. Clasp tip in gingival 1/3 of clinical crown — NOT on gingival margin.
 
 Please return for try-in. Thank you.",
   "majorConnector": {

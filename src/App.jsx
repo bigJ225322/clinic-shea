@@ -13024,13 +13024,16 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
   const isNonDESpan = span.type !== "distal-extension";
   if (isMaxAnterior && isNonDESpan && !isClassIVPrimary) {
     const restType = (tooth === 8 || tooth === 9) ? "ball" : "cingulum";
+    const restDimensions = restType === "ball"
+      ? "1.5 mm diameter hemispherical depression on distal line angle of central incisor lingual surface"
+      : "V-shaped (teardrop) depression on cingulum; 1.5 mm deep × 2.5 mm M-D × 2 mm I-G; perpendicular to long axis of tooth";
     return {
       tooth, isPrimaryAbutment: false, spanType: span.type,
       claspType: "Rest Only (no clasp)",
       claspRationale: "For esthetic reasons, no clasp designed on maxillary anterior; long/parallel guide plane provides secondary retention",
       retentiveArm: "None — major connector contact provides bracing",
       reciprocation: null,
-      restSeat: { surface: sideToward, type: restType, bur: "inverted cone" },
+      restSeat: { surface: sideToward, type: restType, bur: "inverted cone", dimensions: restDimensions },
       restRationale: RPD_RATIONALE.rest.additionalSupport,
       guidePlane: { surface: sideToward, length: "long/parallel (full clinical crown height)" },
       guidePlaneRationale: RPD_RATIONALE.guidePlane.longParallel,
@@ -13172,13 +13175,28 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
     // canines (and other anteriors) lack an occlusal table — use a
     // cingulum rest with inverted cone bur. Posteriors get the
     // standard mesial occlusal rest (RPI signature).
+    //
+    // Mand canine note: when the mand canine is a BOUNDING ABUTMENT of
+    // an anterior span (non-DE branch below), UIC uses ML ball rest per
+    // Design Case II. But when the mand canine is itself the DE TERMINAL,
+    // a cingulum rest is the standard per existing test conventions.
     if (RPD_CANINES.has(tooth) || RPD_MAX_INCISORS.has(tooth) || RPD_MAND_INCISORS.has(tooth)) {
-      restSeat = { surface: "mesial", type: "cingulum", bur: "inverted cone" };
+      restSeat = {
+        surface: "mesial", type: "cingulum", bur: "inverted cone",
+        dimensions: "V-shaped (teardrop) depression on cingulum; 1.5 mm deep × 2.5 mm M-D × 2 mm I-G; perpendicular to long axis of tooth",
+      };
     } else {
-      const burForTooth = (RPD_FIRST_MOLARS.has(tooth) || RPD_SECOND_MOLARS.has(tooth))
+      const isMolar = RPD_FIRST_MOLARS.has(tooth) || RPD_SECOND_MOLARS.has(tooth);
+      const burForTooth = isMolar
         ? "#8 round (outline) / #6 round (axial inclination) / #4 round (refinement)"
         : "#6 round (outline) / #4 round (axial inclination)";
-      restSeat = { surface: "mesial", type: "occlusal", bur: burForTooth };
+      restSeat = {
+        surface: "mesial", type: "occlusal", bur: burForTooth,
+        // UIC Lab 3 EXCELLENT panel dimensions (mesial rest = RPI signature).
+        dimensions: isMolar
+          ? "2.5-3 mm M-D × 1/3-1/2 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin"
+          : "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
+      };
     }
   } else {
     // RPD_POSTERIOR covers premolars + 1st/2nd molars; third molars
@@ -13198,6 +13216,14 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
         bur: isMolar
           ? "#8 round (outline) / #6 round (axial inclination) / #4 round (refinement)"
           : "#6 round (outline) / #4 round (axial inclination)",
+        // UIC Lab 3 EXCELLENT panel dimensions:
+        // Molar: 2.5-3 mm M-D × 1/3-1/2 B-L width × 1.5 mm deep, spoon-shaped
+        // Premolar: 2.5-3 mm M-D × 2/3 B-L width × 1.5 mm deep, spoon-shaped
+        // Inclination: 20° toward center of tooth (axial). Marginal ridges
+        // reduced 0.5-1 mm at rest seat margin to prevent occlusal interference.
+        dimensions: isMolar
+          ? "2.5-3 mm M-D × 1/3-1/2 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin"
+          : "2.5-3 mm M-D × 2/3 B-L × 1.5 mm deep; spoon-shaped; 20° axial inclination toward tooth center; marginal ridge reduced 0.5-1 mm at rest margin",
       };
     } else if (RPD_CANINES.has(tooth)) {
       // Mandibular canines: UIC Design Case II uses ML BALL REST (mesio-
@@ -13207,12 +13233,24 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
       // mesio-lingual line angle. Max canines retain the cingulum-rest
       // convention (max canine cingulum is anatomically prominent enough).
       if (caseInput.arch === "mandibular") {
-        restSeat = { surface: "mesio-lingual", type: "ball", bur: "inverted cone" };
+        restSeat = {
+          surface: "mesio-lingual", type: "ball", bur: "inverted cone",
+          dimensions: "1.5 mm diameter hemispherical depression on mesio-lingual line angle; positioned at mesial 1/3 of lingual surface above cingulum",
+        };
       } else {
-        restSeat = { surface: sideToward, type: "cingulum", bur: "inverted cone" };
+        restSeat = {
+          surface: sideToward, type: "cingulum", bur: "inverted cone",
+          // Max canine cingulum rest (Lab 3 + Lecture 4A): V-shaped (teardrop)
+          // depression on the cingulum, 1.5 mm deep, perpendicular to long
+          // axis of tooth. NOT used on mand canines (cingulum too flat).
+          dimensions: "V-shaped (teardrop) depression on cingulum; 1.5 mm deep × 2.5 mm M-D × 2 mm I-G; perpendicular to long axis of tooth",
+        };
       }
     } else {
-      restSeat = { surface: sideToward, type: "cingulum", bur: "inverted cone" };
+      restSeat = {
+        surface: sideToward, type: "cingulum", bur: "inverted cone",
+        dimensions: "V-shaped depression on cingulum; 1.5 mm deep × 2 mm M-D × 1.5 mm I-G",
+      };
     }
   }
 
@@ -14066,6 +14104,29 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
       lines.push("Sublingual bar: positioned in floor of mouth, parallel to lingual mucosa, horizontal orientation. Use when high lingual frenum or shallow lingual sulcus prevents standard lingual bar.");
     }
     lines.push("Framework metal thickness: 0.5-1.0 mm Co-Cr at major connector.");
+    // Mandibular relief callouts (UIC Final Impressions p. 22). Three
+    // anatomical landmarks require 0.5 mm relief because they are bony
+    // prominences with thin overlying mucosa — direct framework contact
+    // causes ulceration and chronic sore spots.
+    lines.push("Relief: 0.5 mm relief over the genial tubercles, mylohyoid ridge, and external oblique ridge (mandatory per UIC).");
+  }
+
+  // UIC clasp 1/3 rule reminder (Lecture 4B p. 7 + Retainers PDF p. 14).
+  // Every cast retentive arm is divided into thirds along its length:
+  //   • Origin third (cast): rigid, above survey line, sits on supragingival
+  //     enamel. Provides rigid attachment to framework.
+  //   • Middle third: rigid, at or near survey line. Resists lateral
+  //     dislodgement during occlusal load (stability).
+  //   • Terminal third (flex): below survey line, in undercut. Engages
+  //     0.01" (cast) or 0.02" (wrought wire) undercut. Provides retention
+  //     by flexing over the height of contour during seating + retention.
+  // The clasp tip should fall in the gingival 1/3 of the crown — NEVER on
+  // the gingival margin (causes plaque trap + perio inflammation).
+  const hasCastClasps = abutmentDesigns.some(a =>
+    ["Akers", "Reverse Akers", "Embrasure", "Ring", "I-bar (esthetic)", "RPI"].includes(a.claspType));
+  if (hasCastClasps) {
+    lines.push("");
+    lines.push("Cast clasp arm position: terminal 1/3 in undercut (0.01\" engagement); middle 1/3 at survey line; origin 1/3 rigid above survey line. Clasp tip in gingival 1/3 of clinical crown — NOT on gingival margin.");
   }
 
   lines.push("");
@@ -20243,6 +20304,11 @@ function RPDHelper() {
                       <span style={{ color: "var(--ink)" }}>
                         {a.restSeat.surface} {a.restSeat.type}
                         {a.restSeat.bur && <span style={{ color: "var(--ink-faint)", fontSize: "11px" }}> · {a.restSeat.bur}</span>}
+                        {a.restSeat.dimensions && (
+                          <div style={{ color: "var(--ink-soft)", fontSize: "10.5px", fontStyle: "italic", marginTop: "2px", lineHeight: 1.4 }}>
+                            {a.restSeat.dimensions}
+                          </div>
+                        )}
                       </span>
                     </>}
 
