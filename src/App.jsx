@@ -13029,8 +13029,18 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
     if (claspContras.length === 0) {
       claspType = "RPI";
       claspRationale = RPD_RATIONALE.clasp["RPI"];
-      retentiveArm = "I-bar engaging 0.01\" mid-buccal undercut";
-      reciprocation = { type: "plate", text: "Distal proximal plate + lingual plating", rationale: RPD_RATIONALE.reciprocation.plate };
+      retentiveArm = "I-bar engaging 0.01\" mid-buccal undercut at the greatest curvature of the buccal surface (mesial-buccal aspect)";
+      // UIC house rule for RPI proximal plate (Retainers lecture slide 35):
+      // a middle ground between Kratochvil (extensive contact) and Krol
+      // (minimal contact) — the plate contacts 1/2 to 2/3 of the
+      // occluso-gingival height of the distal proximal surface of the
+      // distal abutment tooth. This is a UIC-specific specification that
+      // doesn't appear in the textbook references the engine was built on.
+      reciprocation = {
+        type: "plate",
+        text: "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (UIC house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
+        rationale: RPD_RATIONALE.reciprocation.plate,
+      };
       // RPI is the unambiguous default for distal extensions per UIC's
       // Retainers lecture — deterministic rule, no alternative.
       claspTier = "strong";
@@ -13140,8 +13150,8 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
       restSeat = { surface: "mesial", type: "cingulum", bur: "inverted cone" };
     } else {
       const burForTooth = (RPD_FIRST_MOLARS.has(tooth) || RPD_SECOND_MOLARS.has(tooth))
-        ? "#8 round (outline) / #6 round (deepening) / #4 round (spoon point)"
-        : "#6 round (outline) / #4 round (deepening)";
+        ? "#8 round (outline) / #6 round (axial inclination) / #4 round (refinement)"
+        : "#6 round (outline) / #4 round (axial inclination)";
       restSeat = { surface: "mesial", type: "occlusal", bur: burForTooth };
     }
   } else {
@@ -13160,8 +13170,8 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
       restSeat = {
         surface: sideToward, type: "occlusal",
         bur: isMolar
-          ? "#8 round (outline) / #6 round (deepening) / #4 round (spoon point)"
-          : "#6 round (outline) / #4 round (deepening)",
+          ? "#8 round (outline) / #6 round (axial inclination) / #4 round (refinement)"
+          : "#6 round (outline) / #4 round (axial inclination)",
       };
     } else if (RPD_CANINES.has(tooth)) {
       restSeat = { surface: sideToward, type: "cingulum", bur: "inverted cone" };

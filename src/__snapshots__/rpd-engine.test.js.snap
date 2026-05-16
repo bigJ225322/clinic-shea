@@ -21,16 +21,16 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "isPrimaryAbutment": true,
       "reciprocation": {
         "rationale": "Reciprocation provided by the major connector plating",
-        "text": "Distal proximal plate + lingual plating",
+        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (UIC house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
         "type": "plate",
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#6 round (outline) / #4 round (deepening)",
+        "bur": "#6 round (outline) / #4 round (axial inclination)",
         "surface": "mesial",
         "type": "occlusal",
       },
-      "retentiveArm": "I-bar engaging 0.01" mid-buccal undercut",
+      "retentiveArm": "I-bar engaging 0.01" mid-buccal undercut at the greatest curvature of the buccal surface (mesial-buccal aspect)",
       "spanType": "distal-extension",
       "surveyCrown": null,
       "tooth": 20,
@@ -53,16 +53,16 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "isPrimaryAbutment": true,
       "reciprocation": {
         "rationale": "Reciprocation provided by the major connector plating",
-        "text": "Distal proximal plate + lingual plating",
+        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (UIC house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
         "type": "plate",
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#6 round (outline) / #4 round (deepening)",
+        "bur": "#6 round (outline) / #4 round (axial inclination)",
         "surface": "mesial",
         "type": "occlusal",
       },
-      "retentiveArm": "I-bar engaging 0.01" mid-buccal undercut",
+      "retentiveArm": "I-bar engaging 0.01" mid-buccal undercut at the greatest curvature of the buccal surface (mesial-buccal aspect)",
       "spanType": "distal-extension",
       "surveyCrown": null,
       "tooth": 29,
@@ -190,10 +190,10 @@ Major connector: Lingual Bar.
 
 * Exact undercuts to engage are marked in red. *
 
-#20: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut.
+#20: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut at the greatest curvature of the buccal surface (mesial-buccal aspect).
 #21: Mesial rest.
 #28: Mesial rest.
-#29: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut.
+#29: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut at the greatest curvature of the buccal surface (mesial-buccal aspect).
 
 #18-19: Open lattice with distal tissue stop.
 #30-31: Open lattice with distal tissue stop.
@@ -274,7 +274,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#6 round (outline) / #4 round (deepening)",
+        "bur": "#6 round (outline) / #4 round (axial inclination)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -306,7 +306,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#6 round (outline) / #4 round (deepening)",
+        "bur": "#6 round (outline) / #4 round (axial inclination)",
         "surface": "distal",
         "type": "occlusal",
       },
@@ -343,7 +343,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#8 round (outline) / #6 round (deepening) / #4 round (spoon point)",
+        "bur": "#8 round (outline) / #6 round (axial inclination) / #4 round (refinement)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -548,7 +548,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#8 round (outline) / #6 round (deepening) / #4 round (spoon point)",
+        "bur": "#8 round (outline) / #6 round (axial inclination) / #4 round (refinement)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -580,7 +580,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#6 round (outline) / #4 round (deepening)",
+        "bur": "#6 round (outline) / #4 round (axial inclination)",
         "surface": "distal",
         "type": "occlusal",
       },
@@ -738,7 +738,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#8 round (outline) / #6 round (deepening) / #4 round (spoon point)",
+        "bur": "#8 round (outline) / #6 round (axial inclination) / #4 round (refinement)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -775,7 +775,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#6 round (outline) / #4 round (deepening)",
+        "bur": "#6 round (outline) / #4 round (axial inclination)",
         "surface": "distal",
         "type": "occlusal",
       },
@@ -894,7 +894,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#6 round (outline) / #4 round (deepening)",
+        "bur": "#6 round (outline) / #4 round (axial inclination)",
         "surface": "mesial",
         "type": "occlusal",
       },
@@ -1217,16 +1217,16 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "isPrimaryAbutment": true,
       "reciprocation": {
         "rationale": "Reciprocation provided by the major connector plating",
-        "text": "Distal proximal plate + lingual plating",
+        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (UIC house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
         "type": "plate",
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#6 round (outline) / #4 round (deepening)",
+        "bur": "#6 round (outline) / #4 round (axial inclination)",
         "surface": "mesial",
         "type": "occlusal",
       },
-      "retentiveArm": "I-bar engaging 0.01" mid-buccal undercut",
+      "retentiveArm": "I-bar engaging 0.01" mid-buccal undercut at the greatest curvature of the buccal surface (mesial-buccal aspect)",
       "spanType": "distal-extension",
       "surveyCrown": null,
       "tooth": 4,
@@ -1301,16 +1301,16 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "isPrimaryAbutment": true,
       "reciprocation": {
         "rationale": "Reciprocation provided by the major connector plating",
-        "text": "Distal proximal plate + lingual plating",
+        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (UIC house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
         "type": "plate",
       },
       "restRationale": null,
       "restSeat": {
-        "bur": "#6 round (outline) / #4 round (deepening)",
+        "bur": "#6 round (outline) / #4 round (axial inclination)",
         "surface": "mesial",
         "type": "occlusal",
       },
-      "retentiveArm": "I-bar engaging 0.01" mid-buccal undercut",
+      "retentiveArm": "I-bar engaging 0.01" mid-buccal undercut at the greatest curvature of the buccal surface (mesial-buccal aspect)",
       "spanType": "distal-extension",
       "surveyCrown": null,
       "tooth": 12,
@@ -1525,10 +1525,10 @@ Major connector: Full Palatal Plate with 0.5mm beading on the tissue side.
 
 * Exact undercuts to engage are marked in red. *
 
-#4: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut.
+#4: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut at the greatest curvature of the buccal surface (mesial-buccal aspect).
 #6: Distal proximal plate, Cingulum rest.
 #11: Mesial proximal plate, Cingulum rest.
-#12: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut.
+#12: Distal proximal plate, Mesial rest, I-bar engaging 0.01" mid-buccal undercut at the greatest curvature of the buccal surface (mesial-buccal aspect).
 
 #2-3: Open lattice with distal tissue stop.
 #5: Open lattice.
