@@ -13013,10 +13013,21 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
       restSeat = { surface: "mesial", type: "occlusal", bur: burForTooth };
     }
   } else {
-    if (RPD_POSTERIOR.has(tooth)) {
+    // RPD_POSTERIOR covers premolars + 1st/2nd molars; third molars
+    // (#1, #16, #17, #32) are excluded from RPD_POSTERIOR because they're
+    // typically omitted as abutments per Applegate Rule 2. But IF a
+    // third molar ends up as a TS abutment (e.g. the 2nd molar is
+    // missing and the 3rd is the bounded distal), the rest must still
+    // be occlusal — third molars are molars, not anterior teeth. Bug
+    // before this fix: third-molar TS abutments fell through to the
+    // cingulum branch.
+    const isMolarOrPM = RPD_POSTERIOR.has(tooth) || RPD_THIRD_MOLARS.has(tooth);
+    if (isMolarOrPM) {
+      const isMolar = RPD_FIRST_MOLARS.has(tooth) || RPD_SECOND_MOLARS.has(tooth)
+                    || RPD_THIRD_MOLARS.has(tooth);
       restSeat = {
         surface: sideToward, type: "occlusal",
-        bur: (RPD_FIRST_MOLARS.has(tooth) || RPD_SECOND_MOLARS.has(tooth))
+        bur: isMolar
           ? "#8 round (outline) / #6 round (deepening)"
           : "#6 round (outline) / #4 round (deepening)",
       };
@@ -16321,35 +16332,46 @@ function RPDPaperFormArchDrawing({
     const { cx, cy } = positionOf(distalN);
     const rad = radialUnit(distalN);
     const mes = mesialUnit(distalN);
-    // Tissue stop sits at the DISTAL end of the tooth, slightly outward
-    // along the radial (so it visually projects past the saddle outline).
+    // Tissue stop sits at the DISTAL end of the saddle, projecting past
+    // its outline. Crucially it must visibly CONNECT to the saddle (it's
+    // a continuous piece of the framework), so we draw a short blue
+    // connector segment from the saddle edge to the stop's cross-bar.
     const halfMD = toothHalfMD(distalN);
     const halfBL = toothHalfBL(distalN);
-    // Distal direction is -mes (toward edentulous distal end of arch).
-    const tsX = cx - mes.x * (halfMD + 10) + rad.x * (halfBL * 0.3);
-    const tsY = cy - mes.y * (halfMD + 10) + rad.y * (halfBL * 0.3);
-    // T-shape: horizontal cross-bar (perpendicular to the saddle long axis,
-    // along the radial direction) + short vertical stem (along the saddle
-    // long axis, pointing distally past the saddle outline).
-    const crossHalf = 7;   // half-length of the horizontal cross-bar
-    const stemLen = 7;     // length of the vertical stem
-    // Cross-bar endpoints (radial direction = perpendicular to saddle axis)
+    // Saddle outline distal edge: 6 px past the tooth's distal proximal
+    // face (matches drawSaddleSpan's R + 6 buccal offset for the outline).
+    const saddleEdge = {
+      x: cx - mes.x * (halfMD + 6),
+      y: cy - mes.y * (halfMD + 6),
+    };
+    // Tissue-stop center: another ~12 px distal of the saddle edge so
+    // there's a visible connector segment between them.
+    const tsX = saddleEdge.x - mes.x * 12 + rad.x * (halfBL * 0.3);
+    const tsY = saddleEdge.y - mes.y * 12 + rad.y * (halfBL * 0.3);
+    // T-shape: horizontal cross-bar (perpendicular to saddle long axis)
+    // + short vertical stem (along saddle long axis, pointing distally).
+    const crossHalf = 7;
+    const stemLen = 7;
     const crossA = { x: tsX + rad.x * crossHalf, y: tsY + rad.y * crossHalf };
     const crossB = { x: tsX - rad.x * crossHalf, y: tsY - rad.y * crossHalf };
-    // Stem endpoint (distal direction = -mes from cross-bar center)
     const stemEnd = { x: tsX - mes.x * stemLen, y: tsY - mes.y * stemLen };
     return (
       <g key={key}>
-        {/* Invisible hit pad — the visible T is small; a 28-px radius
-            transparent circle gives a comfortable click target. */}
+        {/* Invisible hit pad — comfortable click target. */}
         {interactive && (
           <circle cx={tsX} cy={tsY} r={28}
             fill="rgba(0,0,0,0)" pointerEvents="all" />
         )}
+        {/* Connector segment from the saddle edge to the cross-bar.
+            Drawn in cast-metal blue so it reads as a continuous piece of
+            the framework, then transitions to the red T-shape for the
+            tissue-stop marker itself. */}
+        <line x1={saddleEdge.x} y1={saddleEdge.y} x2={tsX} y2={tsY}
+          stroke={C_CAST} strokeWidth={2.6} strokeLinecap="round" />
         {/* Horizontal cross-bar of the T */}
         <line x1={crossA.x} y1={crossA.y} x2={crossB.x} y2={crossB.y}
           stroke={C_WW} strokeWidth={2.4} strokeLinecap="round" />
-        {/* Vertical stem of the T */}
+        {/* Vertical stem of the T (distal-pointing) */}
         <line x1={tsX} y1={tsY} x2={stemEnd.x} y2={stemEnd.y}
           stroke={C_WW} strokeWidth={2.4} strokeLinecap="round" />
         <text className="rpd-elem-label"
@@ -16612,23 +16634,93 @@ function RPDPaperFormArchDrawing({
     const archAbutments = [...abutTeethSet].filter(inActiveArch);
 
     if (isAP) {
-      // AP: anterior solid band + posterior solid band, both with depth so
-      // they read as filled straps rather than thin lines. The posterior
-      // band extends to include any abutments outside the standard
-      // premolar/molar range so it reaches them.
-      const ant = archTeeth.filter(n => (isMax ? (n >= 6 && n <= 11) : (n >= 22 && n <= 27)) || abutTeethSet.has(n));
-      const inPostDefault = (n) => isMax
-        ? (n === 3 || n === 14 || n === 4 || n === 13)
-        : (n === 19 || n === 30);
-      const post = archTeeth.filter(n => inPostDefault(n) || abutTeethSet.has(n));
-      const antUpper = ant.map(n => palatalAt(n, 1.0));
-      const antLower = ant.map(n => palatalAt(n, 1.7));
-      const postUpper = post.map(n => palatalAt(n, 0.8));
-      const postLower = post.map(n => palatalAt(n, 1.6));
+      // A-P (Anterior-Posterior) Strap: TWO distinct straight bands
+      // perpendicular to the mid-sagittal axis, connected by short
+      // lateral longitudinal connectors on each side. Creates an open
+      // rectangular window in the middle of the palate. This is the
+      // textbook shape (McCracken Fig 5-16, UIC Major Connectors
+      // lecture) and NOT a curved crescent following the teeth.
+      //
+      // Geometry: pick anchor teeth that define the two band positions
+      // and the lateral extent.
+      //
+      //   Anterior band Y:   lingual of the canines (#6 / #11 max,
+      //                      #22 / #27 mand) — just posterior to the
+      //                      rugae.
+      //   Posterior band Y:  lingual of the posteriormost abutments
+      //                      (typically 1st/2nd molars) — just anterior
+      //                      to the posterior palatal seal area.
+      //   Lateral extent:    bounded by the leftmost and rightmost
+      //                      abutments on each side.
+      const canineSet = isMax ? [6, 11] : [22, 27];
+      const presentAnchors = canineSet.filter(n => isPresent(n));
+      // Anterior anchors: present canines, or anterior abutments as
+      // fallback if canines are missing.
+      const antAnchors = presentAnchors.length >= 2
+        ? presentAnchors
+        : archAbutments.filter(n => isMax ? (n <= 11) : (n >= 22)).slice(0, 2);
+      // Posterior anchors: the most distal abutment on each side.
+      const isLeftSide = (n) => isMax ? (n >= 9) : (n <= 24);
+      const leftAbutments = archAbutments.filter(isLeftSide).sort((a, b) => isMax ? b - a : a - b);
+      const rightAbutments = archAbutments.filter(n => !isLeftSide(n)).sort((a, b) => isMax ? a - b : b - a);
+      const postLeft = leftAbutments[0];
+      const postRight = rightAbutments[0];
+      if (antAnchors.length < 2 || postLeft == null || postRight == null) {
+        // Fallback to the curve-following render if the case doesn't
+        // have enough anchors — better than rendering nothing.
+        const ant = archTeeth.filter(n => (isMax ? (n >= 6 && n <= 11) : (n >= 22 && n <= 27)) || abutTeethSet.has(n));
+        const post = archTeeth.filter(n => isMax ? (n === 3 || n === 14 || abutTeethSet.has(n)) : (n === 19 || n === 30 || abutTeethSet.has(n)));
+        const antUpper = ant.map(n => palatalAt(n, 1.0));
+        const antLower = ant.map(n => palatalAt(n, 1.7));
+        const postUpper = post.map(n => palatalAt(n, 0.8));
+        const postLower = post.map(n => palatalAt(n, 1.6));
+        return (
+          <g key={key}>
+            {filledBand(antUpper, antLower)}
+            {filledBand(postUpper, postLower)}
+          </g>
+        );
+      }
+      // Compute the Y positions for the two bands.
+      // Anterior band: midpoint of the lingual-anchor points of the canines.
+      const antLeft = palatalAt(antAnchors[0], 1.2);
+      const antRight = palatalAt(antAnchors[1], 1.2);
+      const antY = (antLeft.y + antRight.y) / 2;
+      // Posterior band: midpoint of the lingual-anchor points of the
+      // posteriormost abutments.
+      const postLeftPt = palatalAt(postLeft, 0.8);
+      const postRightPt = palatalAt(postRight, 0.8);
+      const postY = (postLeftPt.y + postRightPt.y) / 2;
+      // Lateral X extents: span between the abutments at each Y.
+      const minX = Math.min(antLeft.x, antRight.x, postLeftPt.x, postRightPt.x);
+      const maxX = Math.max(antLeft.x, antRight.x, postLeftPt.x, postRightPt.x);
+      // Band thickness ~8mm at chart scale.
+      const bandHalfThick = 8;
+      const latThick = 7; // lateral connector width
+      // Render two straight bands + two lateral connectors as a single
+      // composite shape so the assembly reads as one cohesive frame.
       return (
         <g key={key}>
-          {filledBand(antUpper, antLower)}
-          {filledBand(postUpper, postLower)}
+          {/* Anterior band */}
+          <rect x={minX} y={antY - bandHalfThick}
+            width={maxX - minX} height={bandHalfThick * 2}
+            fill={C_CAST} fillOpacity={0.75}
+            stroke={C_CAST} strokeWidth={1.4} />
+          {/* Posterior band */}
+          <rect x={minX} y={postY - bandHalfThick}
+            width={maxX - minX} height={bandHalfThick * 2}
+            fill={C_CAST} fillOpacity={0.75}
+            stroke={C_CAST} strokeWidth={1.4} />
+          {/* Left lateral connector */}
+          <rect x={minX} y={Math.min(antY, postY) - bandHalfThick}
+            width={latThick} height={Math.abs(postY - antY) + bandHalfThick * 2}
+            fill={C_CAST} fillOpacity={0.75}
+            stroke={C_CAST} strokeWidth={1.4} />
+          {/* Right lateral connector */}
+          <rect x={maxX - latThick} y={Math.min(antY, postY) - bandHalfThick}
+            width={latThick} height={Math.abs(postY - antY) + bandHalfThick * 2}
+            fill={C_CAST} fillOpacity={0.75}
+            stroke={C_CAST} strokeWidth={1.4} />
         </g>
       );
     }
@@ -17355,11 +17447,11 @@ function RPDLabRxForm({ caseInput, result }) {
             fontSize: "11px", letterSpacing: "0.06em", textTransform: "uppercase",
             opacity: 0.7,
           }}>
-            D5213 · auto-filled
+            {/* CDT code for the procedure: D5213 = maxillary cast-metal RPD,
+                D5214 = mandibular. Drives the Axium procedure code on the
+                lab Rx form. */}
+            {result.axiumCode || "D5213"}
           </span>
-        </span>
-        <span style={{ fontFamily: "'Geist', sans-serif", fontSize: "11px", fontWeight: 500, opacity: 0.8 }}>
-          {open ? "hide" : "open lab Rx"}
         </span>
       </button>
 
@@ -18624,7 +18716,13 @@ function RPDCollapsibleSection({ title, summary, defaultOpen = false, children }
   // clean uniform list rather than a ragged tree of italic descriptions.
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <section style={{ marginBottom: "20px" }}>
+    <section style={{ marginBottom: open ? "20px" : "0" }}>
+      {/* When the section is CLOSED, its bottom border is the only thing
+          separating it from the next collapsible — so we drop the
+          section margin so adjacent button-borders stack as one
+          continuous divider instead of two parallel lines with a gap.
+          When OPEN, restore the 20px margin so the content has room
+          below it before the next collapsible's header begins. */}
       <button
         type="button"
         onClick={() => setOpen(!open)}
