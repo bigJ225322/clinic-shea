@@ -12507,27 +12507,27 @@ const RPD_RATIONALE = {
     "Ball Clasp":           "18ga wrought-wire ball clasp engaging buccal embrasure (Summer 2023 IPD lecture). INTERIM only; provides retention without etching tooth surface. Common on mandibular premolar embrasures.",
   },
   guidePlane: {
-    standard:     "Establish path of insertion",
-    longParallel: "Provide secondary retention",
+    standard:     "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
+    longParallel: "Provides secondary retention via frictional contact along extended parallel surface (Lecture 4A p. 13). Used when primary undercut retention is marginal — the long parallel surface adds resistance to dislodgement during chewing.",
   },
   rest: {
-    indirectFulcrum:     "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base",
-    classIVAnterior:     "Posterior rests provide indirect retention and additional support for the anterior edentulous span",
-    additionalSupport:   "Additional rest to distribute occlusal forces away from compromised abutment",
+    indirectFulcrum:     "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (Lecture 5 p. 8-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II.",
+    classIVAnterior:     "Posterior rests provide indirect retention and additional support for the anterior edentulous span (Lecture 5 p. 11). Class IV fulcrum line runs through the two bounding anterior abutments; posterior rests sit perpendicular to this line, distal to bounding abutments.",
+    additionalSupport:   "Additional rest to distribute occlusal forces away from compromised abutment (Lecture 4A p. 16). Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
   },
   base: {
-    "Open Lattice": "Replace tooth and tissue; provides maximum acrylic retention",
-    "Mesh":         "Used where there is limited inter-occlusal space",
-    "Tube Tooth":   "Used in tooth-supported area with limited vertical space on a well-healed ridge",
-    "Facing":       "Used for anterior single-tooth replacement with extremely limited vertical space",
+    "Open Lattice": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops.",
+    "Mesh":         "Used where there is limited inter-occlusal space (Denture Base Considerations p. 13). Fine metal mesh provides acrylic retention with thinner profile than Open Lattice. Preferred for anterior spans ≥3 teeth (esthetic-bulk reduction).",
+    "Tube Tooth":   "Used in tooth-supported area with limited vertical space on a well-healed ridge (≥6 mo post-extraction) (Denture Base Considerations p. 14). Metal sleeve cast into the framework; prosthetic tooth slides into sleeve. UIC RED-TEXT rule: denture tooth must be sent to lab AT framework fabrication, set in ideal position.",
+    "Facing":       "Used for anterior single-tooth replacement with extremely limited vertical space + non-resorbed ridge (Denture Base Considerations p. 15). Metal backing supports a prosthetic tooth facing; ridge surface exposed. UIC RED-TEXT rule: denture tooth must be sent to lab AT framework fabrication.",
   },
   reciprocation: {
-    plate: "Reciprocation provided by the major connector plating",
-    arm:   "Cast lingual reciprocal arm opposing the retentive arm",
+    plate: "Reciprocation provided by the major connector plating opposite the retentive arm (Lecture 5 reciprocation p. 4). When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
+    arm:   "Cast lingual/buccal reciprocal arm opposing the retentive arm (Lecture 5 reciprocation p. 5). Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
   },
   framework: {
-    "Co-Cr": "Standard favorable choice for RPD frameworks",
-    "Gold":  "Used for documented metal allergy with Managing Partner approval",
+    "Co-Cr": "Standard favorable choice for RPD frameworks (UIC default per Final Impressions p. 18). Cobalt-chromium alloy; 0.5-1.0 mm major connector thickness; excellent rigidity-to-weight ratio; biocompatible; predictable casting; standard at UIC unless allergy.",
+    "Gold":  "Used for documented metal allergy with Managing Partner approval (Fall 2025 NMCD lecture p. 4). Type IV gold alloy is the metallic alternative for Co-Cr-allergic patients; significantly more expensive; same design specs as Co-Cr but slightly less rigid (compensate with thicker major connector if appropriate).",
   },
 };
 
