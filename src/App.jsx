@@ -17774,19 +17774,36 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
     rationale = abutment.reciprocation.rationale || "Reciprocation neutralizes the lateral force of the retentive arm and stays above the survey line so it does not engage an undercut.";
   } else if (kind === 'iBar' && abutment) {
     title = `I-bar — ${rpdToothName(tooth)}`;
+    // For Akers-family clasps the engine translates the user's default
+    // mid-buccal to a context-appropriate DB or MB; for I-bar the user's
+    // raw attrs setting is what's actually engaged. Prefer the engine's
+    // effective value when present so this panel agrees with the SVG
+    // annotation and the clasp detail.
+    const iBarEngages = abutment.effectiveUndercutLocation
+      || caseInput.teeth?.[tooth]?.attrs?.undercutLocation || "mid-buccal";
     lines = [
       ["Type",      "Cast metal vertical bar"],
       ["Approach",  "Gingival → buccal cervical"],
-      ["Engages",   `${caseInput.teeth?.[tooth]?.attrs?.undercutLocation || "mid-buccal"} undercut`],
+      ["Engages",   `${iBarEngages} undercut`],
     ];
     rationale = "I-bar component of RPI: cast vertical retentive bar approaching from the gingival sulcus. Stress-releasing under occlusal load — rotates away from the abutment, sparing it from torque.";
   } else if (kind === 'undercut' && tooth != null) {
     const attrs = caseInput.teeth?.[tooth]?.attrs || {};
+    // Engine effective undercut takes precedence over the user's raw
+    // attrs (matters when the user has the default mid-buccal selected
+    // on an Akers abutment, where the engine translates to DB / MB).
+    const effective = abutment?.effectiveUndercutLocation
+      || attrs.undercutLocation || "mid-buccal";
     title = `Undercut — ${rpdToothName(tooth)}`;
     lines = [
-      ["Location", attrs.undercutLocation || "mid-buccal"],
+      ["Location", effective],
       ["Depth",    attrs.undercutDepth || "0.01\""],
     ];
+    // If the engine translated the user's input, surface that explicitly
+    // so the panel reads as consistent with the user's setting.
+    if (effective !== (attrs.undercutLocation || "mid-buccal")) {
+      lines.push(["Inferred from", `your "${attrs.undercutLocation || "mid-buccal"}" setting + Akers convention on this abutment`]);
+    }
     rationale = "Red marking indicates the surveyed undercut where the clasp engages for retention. Standard: cast clasps engage 0.01\" undercuts; wrought-wire engages 0.02\".";
   } else if (kind === 'surveyLine' && tooth != null) {
     title = `Survey line (HOC) — ${rpdToothName(tooth)}`;
