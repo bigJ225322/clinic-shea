@@ -16896,11 +16896,23 @@ function RPDPaperFormArchDrawing({
   // framework so the chart shows the model's actual recommendation rather
   // than an "outrageous RPD" for a tooth that shouldn't get one.
   const designIntentLocal = caseInput.patientFactors?.designIntent || "definitive";
-  const missingArchTeeth = archTeeth.filter(n => caseInput.teeth?.[n]?.status === "missing");
+  // Wisdoms are excluded from the "missing teeth that need replacement"
+  // count — they're typically omitted (Applegate Rule 2) and clinically
+  // you don't replace a missing wisdom. So a case with only #15 + #16
+  // (wisdom) missing reads as a SINGLE-tooth replacement scenario for
+  // #15, not as a two-tooth RPD case. See the matching exclusion in
+  // singleToothMissing below the RPDHelper definition.
+  const missingArchTeeth = archTeeth.filter(n =>
+    caseInput.teeth?.[n]?.status === "missing" && !RPD_THIRD_MOLARS.has(n));
   const isSingleToothCase = missingArchTeeth.length === 1
     && (result.kennedy.class === "II" || result.kennedy.class === "III")
     && designIntentLocal === "definitive";
   const singleToothId = isSingleToothCase ? missingArchTeeth[0] : null;
+  // Bridge only when the tooth being replaced has present abutments on
+  // BOTH sides (Kennedy Class III = tooth-bounded space). For Class II
+  // — terminal tooth missing, no distal abutment — a bridge would be
+  // a cantilever (clinically contraindicated in the posterior). Engine
+  // implies implant instead in that case.
   const isFPD = isSingleToothCase && result.kennedy.class === "III";
 
   // FPD bridge or implant crown — rendered IN PLACE OF the RPD framework
@@ -18957,10 +18969,21 @@ function RPDHelper() {
   // script, etc.) because none of it applies — the indicated treatment
   // isn't an RPD. To force the RPD content back (e.g. patient cannot
   // get an implant), the user can change design intent to "interim".
+  //
+  // Third molars (#1, #16, #17, #32) are EXCLUDED from this count.
+  // Per Applegate Rule 2 the engine already treats wisdoms as omitted
+  // for Kennedy classification — and clinically you don't replace a
+  // missing wisdom. So a case with only #15 + #16 missing should read
+  // as a single-tooth replacement scenario for #15 (the wisdom doesn't
+  // add a second replacement target). The Kennedy classifier will
+  // naturally mark this as Class II (no distal abutment because the
+  // wisdom is omitted), so isFPD = false → implant is implied rather
+  // than a cantilever bridge (which the user correctly flagged as
+  // contraindicated when the distal abutment is missing/omitted).
   const singleToothMissing = Object.entries(caseInput.teeth || {})
-    .filter(([n, t]) => t?.status === "missing" && (
-      caseInput.arch === "maxillary" ? +n >= 1 && +n <= 16 : +n >= 17 && +n <= 32
-    ))
+    .filter(([n, t]) => t?.status === "missing"
+      && !RPD_THIRD_MOLARS.has(+n)
+      && (caseInput.arch === "maxillary" ? +n >= 1 && +n <= 16 : +n >= 17 && +n <= 32))
     .map(([n]) => +n);
   const isSingleToothFixedCase = hasContent
     && singleToothMissing.length === 1
