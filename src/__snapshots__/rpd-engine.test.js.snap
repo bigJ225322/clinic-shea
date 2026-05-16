@@ -214,6 +214,8 @@ Acrylic gingival shade: [TBD via UIC gingival shade guide — typically L199-OR 
 
 Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per UIC surveyor protocol, Lecture 4A p. 14). Lab to verify block-out integrity before duplicating cast for framework investing.
 
+Distal extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — BOTH buccally AND lingually (Huddle 6 Q11 — UIC verbatim rule). Maximum tissue contact distributes occlusal load across the residual ridge and resists framework rotation under load.
+
 Please return for try-in. Thank you.",
   "majorConnector": {
     "alternative": "Lingual Plate",
@@ -256,7 +258,12 @@ Please return for try-in. Thank you.",
       "type": "altered-cast",
     },
     {
-      "message": "Occlusion scheme (Lecture 3): GROUP FUNCTION on the working side with NO balancing-side interferences. Canine guidance is acceptable if the patient's natural dentition exhibits it. Do NOT attempt bilateral balanced occlusion when opposing natural teeth — that scheme is for CD-opposing-RPD only. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "message": "Kennedy Class I distal extension: UIC Lecture 3 p. 4 — bilateral balanced articulation is "also strived" in Class I cases (in addition to group function on natural-tooth working side). The combination provides stability against distal extension saddle tipping. Set posterior denture teeth for simultaneous bilateral contacts in lateral excursions; verify no balancing-side interferences exist on remaining natural teeth.",
+      "severity": "info",
+      "type": "class-i-balanced-strived",
+    },
+    {
+      "message": "Occlusion scheme (Lecture 3 p. 4): GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — UIC's explicit prohibition. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
       "severity": "info",
       "type": "occlusion-scheme-group-function",
     },
@@ -340,10 +347,10 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
     },
     {
       "claspAlternative": "Ring clasp",
-      "claspAlternativeRationale": "Ring clasp is UIC's typical choice for a tilted molar with a distal undercut: ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut. Reverse Akers on a molar is off-label per the Retainers lecture scope (bicuspids/cuspids only).",
+      "claspAlternativeRationale": "Ring clasp is the alternative for tilted terminal molars with lingual undercut: ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut. Both Reverse Akers AND Ring are UIC-acceptable for this scenario (Huddle 6 Q10).",
       "claspAlternatives": null,
-      "claspRationale": "Used when ONLY a mesial/lingual undercut is available on a bicuspid or cuspid (NEVER molar — aspiration risk per Retainers PDF p. 27). Cast clasp originates from the distal aspect of the tooth and wraps to engage a mesio-lingual undercut. Tier-downgraded for molars (use Combination or Embrasure instead). (retentive arm engages disto-lingual undercut) — NOTE: UIC restricts Reverse Akers to bicuspids and cuspids; this tooth is outside that indication scope. Consider Ring clasp instead for a tilted molar with distal undercut.",
-      "claspTier": "judgment",
+      "claspRationale": "Used when ONLY a mesial/lingual undercut is available on a bicuspid or cuspid (NEVER molar — aspiration risk per Retainers PDF p. 27). Cast clasp originates from the distal aspect of the tooth and wraps to engage a mesio-lingual undercut. Tier-downgraded for molars (use Combination or Embrasure instead). (retentive arm engages disto-lingual undercut) — UIC Huddle 6 Q10 carve-out: lingually inclined terminal molar permits Reverse Akers (or Ring clasp). The tilt makes lingual surface the practical engagement location.",
+      "claspTier": "common",
       "claspType": "Reverse Akers",
       "contraindications": [
         {
@@ -515,6 +522,8 @@ Acrylic gingival shade: [TBD via UIC gingival shade guide — typically L199-OR 
 
 Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per UIC surveyor protocol, Lecture 4A p. 14). Lab to verify block-out integrity before duplicating cast for framework investing.
 
+Distal extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — BOTH buccally AND lingually (Huddle 6 Q11 — UIC verbatim rule). Maximum tissue contact distributes occlusal load across the residual ridge and resists framework rotation under load.
+
 Please return for try-in. Thank you.",
   "majorConnector": {
     "alternative": "Lingual Plate",
@@ -557,7 +566,7 @@ Please return for try-in. Thank you.",
       "type": "altered-cast",
     },
     {
-      "message": "Occlusion scheme (Lecture 3): GROUP FUNCTION on the working side with NO balancing-side interferences. Canine guidance is acceptable if the patient's natural dentition exhibits it. Do NOT attempt bilateral balanced occlusion when opposing natural teeth — that scheme is for CD-opposing-RPD only. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "message": "Occlusion scheme (Lecture 3 p. 4): GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — UIC's explicit prohibition. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
       "severity": "info",
       "type": "occlusion-scheme-group-function",
     },
@@ -763,7 +772,7 @@ Please return for try-in. Thank you.",
       "type": "nesbit-prohibition",
     },
     {
-      "message": "Occlusion scheme (Lecture 3): GROUP FUNCTION on the working side with NO balancing-side interferences. Canine guidance is acceptable if the patient's natural dentition exhibits it. Do NOT attempt bilateral balanced occlusion when opposing natural teeth — that scheme is for CD-opposing-RPD only. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "message": "Occlusion scheme (Lecture 3 p. 4): GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — UIC's explicit prohibition. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
       "severity": "info",
       "type": "occlusion-scheme-group-function",
     },
@@ -1232,6 +1241,8 @@ Acrylic gingival shade: [TBD via UIC gingival shade guide — typically L199-OR 
 
 Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per UIC surveyor protocol, Lecture 4A p. 14). Lab to verify block-out integrity before duplicating cast for framework investing.
 
+Distal extension saddle acrylic: must COMPLETELY engage the BUCCAL sulcus (Huddle 6 Q11). Palatal coverage is provided by the major connector — saddle extension is buccal-only on the maxilla.
+
 Please return for try-in. Thank you.",
   "majorConnector": {
     "note": "0.5mm beading on tissue side",
@@ -1273,7 +1284,7 @@ Please return for try-in. Thank you.",
       "type": "altered-cast",
     },
     {
-      "message": "Occlusion scheme (Lecture 3): GROUP FUNCTION on the working side with NO balancing-side interferences. Canine guidance is acceptable if the patient's natural dentition exhibits it. Do NOT attempt bilateral balanced occlusion when opposing natural teeth — that scheme is for CD-opposing-RPD only. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "message": "Occlusion scheme (Lecture 3 p. 4): GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — UIC's explicit prohibition. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
       "severity": "info",
       "type": "occlusion-scheme-group-function",
     },
@@ -1648,6 +1659,8 @@ Acrylic gingival shade: [TBD via UIC gingival shade guide — typically L199-OR 
 
 Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per UIC surveyor protocol, Lecture 4A p. 14). Lab to verify block-out integrity before duplicating cast for framework investing.
 
+Distal extension saddle acrylic: must COMPLETELY engage the BUCCAL sulcus (Huddle 6 Q11). Palatal coverage is provided by the major connector — saddle extension is buccal-only on the maxilla.
+
 Please return for try-in. Thank you.",
   "majorConnector": {
     "alternative": "A-P Strap",
@@ -1690,7 +1703,12 @@ Please return for try-in. Thank you.",
       "type": "altered-cast",
     },
     {
-      "message": "Occlusion scheme (Lecture 3): GROUP FUNCTION on the working side with NO balancing-side interferences. Canine guidance is acceptable if the patient's natural dentition exhibits it. Do NOT attempt bilateral balanced occlusion when opposing natural teeth — that scheme is for CD-opposing-RPD only. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "message": "Kennedy Class I distal extension: UIC Lecture 3 p. 4 — bilateral balanced articulation is "also strived" in Class I cases (in addition to group function on natural-tooth working side). The combination provides stability against distal extension saddle tipping. Set posterior denture teeth for simultaneous bilateral contacts in lateral excursions; verify no balancing-side interferences exist on remaining natural teeth.",
+      "severity": "info",
+      "type": "class-i-balanced-strived",
+    },
+    {
+      "message": "Occlusion scheme (Lecture 3 p. 4): GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — UIC's explicit prohibition. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
       "severity": "info",
       "type": "occlusion-scheme-group-function",
     },

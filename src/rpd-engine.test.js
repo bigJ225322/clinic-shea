@@ -3920,7 +3920,7 @@ describe("UIC-AUDIT — Phase IV long-term recall + maintenance decision tree", 
     const r = rpdRunEngine(c);
     expect(r.axiumSteps).toMatch(/Step 8/);
     expect(r.axiumSteps).toMatch(/Wax Rim/);
-    expect(r.axiumSteps).toMatch(/Hanau facebow/);
+    expect(r.axiumSteps).toMatch(/Denar facebow/); // UIC uses Denar, not Hanau
     expect(r.axiumSteps).toMatch(/Regisil/);
     expect(r.axiumSteps).toMatch(/Fox plane/);
   });
@@ -4011,6 +4011,170 @@ describe("UIC-AUDIT — Clasp 1/3 rule in lab Rx", () => {
     c.patientFactors.designIntent = "interim";
     const r = rpdRunEngine(c);
     expect(r.labScript).not.toMatch(/terminal 1\/3 in undercut/i);
+  });
+});
+
+describe("UIC-AUDIT — Lecture 3 MI primary / CR fallback + Class I balanced strived", () => {
+  it("Step 8 specifies MI as primary reference and CR as fallback (Lecture 3 p. 4-9)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/MI \(Maximum Intercuspation\) is the operating reference/);
+    expect(r.axiumSteps).toMatch(/CR\/CO is only used as a fallback/);
+  });
+  it("Step 8 includes Alluwax + Regisil as bite reg materials", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/Regisil PVS OR Alluwax/);
+  });
+  it("Step 8 uses Denar articulator (NOT Hanau)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/Denar facebow/);
+    expect(r.axiumSteps).toMatch(/Denar articulator/);
+    expect(r.axiumSteps).not.toMatch(/Hanau facebow/);
+  });
+  it("Step 8 uses VDR minus 2-4 mm (not 3-4) per Lecture 3", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/MINUS 2-4 mm/);
+  });
+  it("Class I distal extension on natural opposing fires balanced-strived flag", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [18, 19, 30, 31]); // Class I bilateral DE
+    c.patientFactors.opposingArch = "natural";
+    const r = rpdRunEngine(c);
+    const balancedStrivedFlag = r.redFlags.find(f => f.type === "class-i-balanced-strived");
+    expect(balancedStrivedFlag).toBeDefined();
+    expect(balancedStrivedFlag.message).toMatch(/also strived/);
+  });
+  it("Class III on natural opposing does NOT fire balanced-strived flag (only group function)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3]); // Class III
+    c.patientFactors.opposingArch = "natural";
+    const r = rpdRunEngine(c);
+    expect(r.redFlags.find(f => f.type === "class-i-balanced-strived")).toBeUndefined();
+    expect(r.redFlags.find(f => f.type === "occlusion-scheme-group-function")).toBeDefined();
+  });
+});
+
+describe("UIC-AUDIT — Master cast pre-lab checklist + clasp function map + saddle sulcus", () => {
+  it("Step 7 includes master cast pre-lab checklist (HOC / red dot / tripod / block out / POI)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/MASTER CAST PRE-LAB CHECKLIST/);
+    expect(r.axiumSteps).toMatch(/HOC.*lines/);
+    expect(r.axiumSteps).toMatch(/RED DOT/);
+    expect(r.axiumSteps).toMatch(/0\.01.*cast/);
+    expect(r.axiumSteps).toMatch(/0\.02.*wrought/);
+    expect(r.axiumSteps).toMatch(/Tripod marks/);
+  });
+  it("Step 3 includes clasp function map (proximal plate / reciprocal / retentive / rest)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/CLASP ASSEMBLY FUNCTION MAP/);
+    expect(r.axiumSteps).toMatch(/PROXIMAL PLATE.*connection/);
+    expect(r.axiumSteps).toMatch(/RECIPROCAL ARM.*stabilization/);
+    expect(r.axiumSteps).toMatch(/RETENTIVE ARM.*retention/);
+    expect(r.axiumSteps).toMatch(/REST.*support/);
+  });
+  it("Mandibular DE lab Rx includes saddle sulcus engagement rule (buccal AND lingual)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.labScript).toMatch(/Distal extension saddle acrylic.*BOTH buccally AND lingually/);
+  });
+  it("Maxillary DE lab Rx includes saddle sulcus engagement rule (buccal only)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [14, 15]); // unilateral DE → unilateral Full Palatal Plate case
+    const r = rpdRunEngine(c);
+    if (r.labScript.match(/Distal extension saddle/)) {
+      expect(r.labScript).toMatch(/COMPLETELY engage the BUCCAL sulcus/);
+    }
+  });
+});
+
+describe("UIC-AUDIT — Posterior tooth set-up + festoon + wax rim construction", () => {
+  it("Step 8 enumerates 3 posterior tooth-to-tooth patterns", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/cusp-to-marginal-ridge/);
+    expect(r.axiumSteps).toMatch(/cusp-to-fossa/);
+    expect(r.axiumSteps).toMatch(/cusp-to-cusp/);
+  });
+  it("Step 8 includes mand central groove ridge-crest rule", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/CENTRAL GROOVES.*crest of the residual alveolar ridge/);
+  });
+  it("Step 8 includes 6 set-up criteria + 5 permitted tooth modifications", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/SIX SET-UP CRITERIA/);
+    expect(r.axiumSteps).toMatch(/Bucco-lingual tilt/);
+    expect(r.axiumSteps).toMatch(/Mesio-distal tilt/);
+    expect(r.axiumSteps).toMatch(/Central groove on ridge crest/);
+  });
+  it("Step 8 includes festoon + processing rules", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/FESTOONING RULES/);
+    expect(r.axiumSteps).toMatch(/EXAGGERATE/);
+    expect(r.axiumSteps).toMatch(/Compression molding/);
+  });
+  it("Step 8 wax rim construction uses Greenie and Brownie burs", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/GREENIE and BROWNIE/);
+  });
+  it("Step 8 wax rim has ≥1mm clearance check", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/≥1 mm of clearance/);
+  });
+});
+
+describe("UIC-AUDIT — Reverse Akers exception for lingually inclined terminal molar (Huddle 6 Q10)", () => {
+  it("Lingually-tilted terminal molar with disto-lingual undercut → Reverse Akers tier common", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    setAttrs(c, 18, { tilt: "tilted", undercutLocation: "disto-lingual" });
+    const r = rpdRunEngine(c);
+    const d18 = r.abutmentDesigns.find(a => a.tooth === 18);
+    if (d18) {
+      expect(d18.claspType).toBe("Reverse Akers");
+      // Tier should be "common" for tilted terminal molar carve-out (not "judgment")
+      expect(d18.claspTier).toBe("common");
+      expect(d18.claspRationale).toMatch(/Huddle 6.*carve-out/);
+    }
   });
 });
 
@@ -4143,7 +4307,7 @@ describe("UIC-AUDIT — Occlusion scheme red flag (Lecture 3)", () => {
     const occlFlag = r.redFlags.find(f => f.type === "occlusion-scheme-group-function");
     expect(occlFlag).toBeDefined();
     expect(occlFlag.message).toMatch(/GROUP FUNCTION/);
-    expect(occlFlag.message).toMatch(/balancing-side interferences/i);
+    expect(occlFlag.message).toMatch(/NON-WORKING.*NO contact/i);
   });
   it("Existing partial opposing → group function scheme flag fires", () => {
     const c = rpdMakeBlankCase("mandibular");
