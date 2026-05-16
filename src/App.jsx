@@ -12804,13 +12804,20 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
       //    contralateral abutments, covering the palate via tissue contact.
       const totalMissing = (kennedy.spans || []).reduce((s, sp) => s + (sp.teeth?.length || 0), 0);
       if (totalMissing <= 3) {
+        // UIC's curriculum has no unilateral RPD design for short tooth-
+        // bounded spaces — the Nesbit RPD is explicitly banned (aspiration
+        // risk; Final RPD Huddle 2 answer key Q2). Fixed treatment is the
+        // first choice; if the patient declines fixed, UIC's fallback is
+        // an Interim Partial Denture (IPD) with non-metal clasps, which
+        // is indicated for "Class III or short-span IV" per the IPD
+        // lecture and contraindicated for Class I/II.
         return {
           type: "FPD",
           recommendsFixed: true,
-          rationale: `Short unilateral tooth-bounded space (${totalMissing} missing teeth in one span on one side). The clinical treatment of choice is a ${totalMissing + 2}-unit fixed partial denture (bridge) — RPD is not indicated for this configuration. The unilateral abutment geometry would force a Full Palatal Plate, which is overtreatment for a gap a bridge handles cleanly.`,
+          rationale: `Short unilateral tooth-bounded space (${totalMissing} missing teeth in one span on one side). The clinical treatment of choice is a ${totalMissing + 2}-unit fixed partial denture (bridge) — definitive RPD is not indicated for this configuration. The unilateral abutment geometry would force a Full Palatal Plate, which is overtreatment for a gap a bridge handles cleanly.`,
           tier: "strong",
-          alternative: "Implant-supported crowns",
-          alternativeRationale: "If the patient declines bridging (preserving contralateral abutments, esthetics, or cost), individual implant crowns at each missing-tooth site are the alternative fixed solution. Definitive RPD is not appropriate.",
+          alternative: "Implant-supported crowns or Interim Partial Denture (non-metal clasp)",
+          alternativeRationale: "Primary alternative if the patient declines bridging: individual implant crowns at each missing-tooth site. If the patient declines BOTH FPD and implants (cost, surgical contraindication), UIC indicates an Interim Partial Denture (IPD) with non-metal (e.g., Valplast/Duraflex thermoplastic) clasps — explicitly indicated for Class III / short-span IV cases per the UIC IPD lecture. Unilateral cantilever (Nesbit) RPDs are banned at UIC due to aspiration risk; definitive cast-metal RPD is not appropriate for this configuration.",
         };
       }
       // Long unilateral span — fall back to Full Palatal Plate as the
@@ -13260,138 +13267,6 @@ function rpdPlaceIndirectRetainers(caseInput, kennedy) {
       tier, alternativeRationale: altRationale,
     });
   }
-  return out;
-}
-
-// ============================================================================
-// CROSS-ARCH DIRECT RETAINER — Class II "double Akers" on the non-working side
-// ============================================================================
-// For a Kennedy Class II distal extension, the working-side terminal abutment
-// gets an RPI (or Combination), and an indirect retainer rest sits on a
-// contralateral premolar/canine. Without an additional direct retainer on the
-// non-working side, the framework has no clasp opposing vertical displacement
-// of the saddle on the contralateral side — it can rock around the fulcrum
-// line through the RPI and the indirect retainer.
-//
-// UIC's standard fix is a "double Akers" / back-action pair: two adjacent
-// Akers clasps on the non-working-side posteriors, sharing an embrasure rest,
-// with retentive tips facing AWAY from each other (DB on the more-distal
-// tooth, MB on the more-mesial tooth). The pair functions like a vise —
-// two non-collinear retentive engagements braced against rotation.
-//
-// Only fires for Class II cases where the non-working side has no existing
-// abutments. Class II Mod 1+ cases with the modification on the non-working
-// side already place direct retainers there via the modification span, so the
-// cross-arch retention is already satisfied.
-
-function rpdAddCrossArchAkersClasps(caseInput, kennedy, existingAbutments, indirectRetainers) {
-  if (kennedy.class !== "II") return [];
-  const arch = caseInput.arch;
-  const nonWorkingSide = kennedy.deSide === "right" ? "left" : "right";
-  // If the non-working side already has a span-based abutment (e.g., Class II
-  // Mod 1 with mod on the non-working side), the cross-arch role is already
-  // covered. Skip rather than stacking redundant retention.
-  const nonWorkingExistingAbutments = existingAbutments.filter(a =>
-    rpdSideOf(a.tooth) === nonWorkingSide
-  );
-  if (nonWorkingExistingAbutments.length > 0) return [];
-
-  // Eligible teeth: premolars + 1st/2nd molars on the non-working side.
-  // 3rd molars excluded by convention — they're often Rule-2 missing and
-  // when present are usually poorly positioned for clasp retention.
-  const ELIGIBLE_POSTERIOR = new Set([
-    2, 3, 4, 5, 12, 13, 14, 15,      // max: 2M, 1M, 2PM, 1PM each side
-    18, 19, 20, 21, 28, 29, 30, 31,  // mand: 2M, 1M, 2PM, 1PM each side
-  ]);
-  const indirectTeeth = new Set((indirectRetainers || []).map(r => r.tooth));
-
-  const candidates = rpdArchTeeth(arch)
-    .filter(n => rpdSideOf(n) === nonWorkingSide)
-    .filter(n => ELIGIBLE_POSTERIOR.has(n))
-    .filter(n => rpdIsPresent(caseInput, n))
-    .filter(n => !indirectTeeth.has(n))
-    .sort((a, b) => rpdDistalRank(b) - rpdDistalRank(a)); // most distal first
-
-  if (candidates.length === 0) return [];
-
-  const distalTooth = candidates[0];
-  const mesialTooth = candidates[1] || null;
-
-  // Bur sizing matches the rest of the engine — molars use #8 round outline /
-  // #6 round deepening; premolars use #6 round outline / #4 round deepening.
-  const burFor = (n) => {
-    const isMolar = RPD_FIRST_MOLARS.has(n) || RPD_SECOND_MOLARS.has(n);
-    return isMolar
-      ? "#8 round (outline) / #6 round (deepening)"
-      : "#6 round (outline) / #4 round (deepening)";
-  };
-
-  const baseRationale =
-    "Cross-arch direct retainer for Class II — UIC double-Akers / back-action " +
-    "pair. Two adjacent clasps on non-working-side posteriors share an " +
-    "embrasure rest; retentive tips face AWAY from each other (DB on the " +
-    "distal tooth, MB on the mesial tooth). The non-collinear retention " +
-    "opposes vertical displacement of the distal-extension saddle around the " +
-    "fulcrum line through the working-side terminal abutment and the " +
-    "indirect retainer. The distal component is a Reverse Akers (engages a " +
-    "DB undercut); the mesial component is a standard Akers (engages MB).";
-
-  const out = [];
-
-  // Distal component: Reverse Akers — rest mesial, retentive tip engages DB
-  // undercut. UIC nomenclature: an Akers engaging a DISTAL undercut is a
-  // Reverse Akers regardless of why the distal undercut was chosen (survey-
-  // driven for tooth-supported, design-driven for back-action here).
-  out.push({
-    tooth: distalTooth,
-    isPrimaryAbutment: false,
-    isCrossArch: true,
-    spanType: null,
-    claspType: "Reverse Akers",
-    claspRationale: baseRationale + " — Distal component: mesial rest with disto-buccal retentive tip (Reverse Akers).",
-    retentiveArm: "Cast circumferential retentive arm engaging 0.01\" disto-buccal undercut",
-    reciprocation: { type: "arm", text: "Cast lingual reciprocal arm", rationale: RPD_RATIONALE.reciprocation.arm },
-    restSeat: { surface: "mesial", type: "occlusal", bur: burFor(distalTooth) },
-    restRationale: "Embrasure rest shared with the mesial Akers on the adjacent tooth. Mesial rest position places the retentive arm origin on the distal side, terminating in a DB undercut engagement.",
-    guidePlane: { surface: "distal", length: "2/3 clinical crown height, 1/3 BL width" },
-    guidePlaneRationale: RPD_RATIONALE.guidePlane.standard,
-    surveyCrown: null, crownLengthening: null,
-    contraindications: [],
-    effectiveUndercutLocation: "disto-buccal",
-    claspTier: "common",
-    claspAlternative: mesialTooth ? null : "Single Akers (lone non-working posterior available)",
-    claspAlternativeRationale: mesialTooth ? null :
-      "Only one eligible non-working-side posterior is present, so the back-action pair degrades to a single clasp. Cross-arch retention is reduced but still better than rest-only on a contralateral premolar.",
-    attrs: rpdGetAttrs(caseInput, distalTooth),
-  });
-
-  if (mesialTooth) {
-    // Mesial component: standard Akers — rest distal, retentive tip engages
-    // MB undercut. The arm originates at the distal corner (in the embrasure)
-    // and sweeps mesially across the buccal to engage the MB undercut. By the
-    // engine's standard convention this is a regular Akers (distal rest →
-    // mesial undercut is the textbook geometry).
-    out.push({
-      tooth: mesialTooth,
-      isPrimaryAbutment: false,
-      isCrossArch: true,
-      spanType: null,
-      claspType: "Akers",
-      claspRationale: baseRationale + " — Mesial component: distal rest with mesio-buccal retentive tip (standard Akers).",
-      retentiveArm: "Cast circumferential retentive arm engaging 0.01\" mesio-buccal undercut",
-      reciprocation: { type: "arm", text: "Cast lingual reciprocal arm", rationale: RPD_RATIONALE.reciprocation.arm },
-      restSeat: { surface: "distal", type: "occlusal", bur: burFor(mesialTooth) },
-      restRationale: "Embrasure rest shared with the Reverse Akers on the adjacent tooth. Distal rest position places the retentive arm origin on the mesial side, terminating in an MB undercut engagement.",
-      guidePlane: { surface: "mesial", length: "2/3 clinical crown height, 1/3 BL width" },
-      guidePlaneRationale: RPD_RATIONALE.guidePlane.standard,
-      surveyCrown: null, crownLengthening: null,
-      contraindications: [],
-      effectiveUndercutLocation: "mesio-buccal",
-      claspTier: "common",
-      attrs: rpdGetAttrs(caseInput, mesialTooth),
-    });
-  }
-
   return out;
 }
 
@@ -14351,18 +14226,6 @@ function rpdRunEngine(caseInput) {
   }
 
   const indirectRetainers = rpdPlaceIndirectRetainers(safeCase, kennedy);
-
-  // Class II cross-arch direct retention: double Akers on the non-working
-  // side. Runs AFTER embrasure detection so the new abutments don't trip
-  // the "two adjacent posteriors → Embrasure" note — these clasps form a
-  // back-action pair, not a continuous embrasure clasp.
-  const crossArchAbutments = rpdAddCrossArchAkersClasps(
-    safeCase, kennedy, abutmentDesigns, indirectRetainers
-  );
-  if (crossArchAbutments.length > 0) {
-    abutmentDesigns.push(...crossArchAbutments);
-    abutmentDesigns.sort((a, b) => teethList.indexOf(a.tooth) - teethList.indexOf(b.tooth));
-  }
 
   const baseDesigns = rpdSelectBaseDesign(safeCase, kennedy);
   const redFlags = rpdCheckRedFlags(safeCase, kennedy, abutmentDesigns);
