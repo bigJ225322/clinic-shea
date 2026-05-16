@@ -15624,38 +15624,72 @@ function RPDPaperFormArchDrawing({
   //   (2) RED DASHED CURVE arcing through the buccal vestibule, showing the
   //       exact undercut path the tip engages (the "create 0.01 mid-buccal
   //       undercut" instruction, marked in red per standard convention).
-  // I-bar with explicit connection to the framework. The bar has an "L" shape:
-  //   - tip touches the buccal surface in the gingival third
-  //   - vertical segment runs gingivally (radially outward) to the vestibule
-  //   - horizontal segment bends toward the saddle direction so the tail
-  //     visibly enters the saddle's lattice pattern (connecting to framework)
+  //
+  // I-bar — V2 textbook rendering. Calibrated against the UIC Fall 2022
+  // "Bar Clasps" slide deck and the hand-drawn UIC Design Case 1 forms,
+  // both of which show:
+  //   1. A short horizontal ENGAGEMENT segment AT the tooth surface
+  //      (the actual contact with the gingival-third undercut), running
+  //      parallel to the tooth contour. This is what gives the "I-bar"
+  //      its characteristic flat terminal — distinguishes it from a
+  //      pointed contact.
+  //   2. A pronounced VERTICAL APPROACH segment from the vestibule up to
+  //      the engagement (the "I" of I-bar). Approaches from gingival.
+  //   3. A horizontal LIMB extending toward the saddle/framework.
+  //
+  // The bar emerges from below the tissue level (saddle/framework),
+  // approaches gingivally, and terminates with a small flat contact at
+  // the undercut. Variable stroke width across segments gives the cast-
+  // metal "wider proximal, narrower terminal" taper visible in clinical
+  // photos (page 28 of the Retainers slide deck).
   const drawIBar = (n, ucLocation, saddleSurface, key) => {
     const { cx, cy } = positionOf(n);
-    // Use halfBL for the radial-outward distance (the tooth's buccal edge
-    // is at halfBL along rad), and halfMD for the mesial/distal direction
-    // (saddle direction). Previously used R = max(halfMD, halfBL) which
-    // pushed the I-bar too far outward when halfBL < halfMD.
     const halfMD = toothHalfMD(n);
     const halfBL = toothHalfBL(n);
     const rad = radialUnit(n);
     const mes = mesialUnit(n);
-    const mdBias = ucLocation === "mesio-buccal" ? +0.28 : 0;
+    const mdBias = ucLocation === "mesio-buccal" ? +0.28
+                  : ucLocation === "disto-buccal" ? -0.28 : 0;
     const saddleSgn = saddleSurface === "mesial" ? +1 : -1; // direction toward saddle
-    // Tip sits at the buccal surface (just inside halfBL).
-    const tip = {
-      x: cx + rad.x * halfBL * 0.95 + mes.x * mdBias * halfMD,
-      y: cy + rad.y * halfBL * 0.95 + mes.y * mdBias * halfMD,
+
+    // ── Engagement terminal: a short horizontal segment AT the tooth
+    // surface, running parallel to the contour. This is the actual
+    // contact with the undercut, drawn as a short line ~10–14 px long. ──
+    const tipBase = halfBL * 0.95;
+    // Terminal sits at tooth's buccal surface. The two ends of the
+    // engagement segment are offset slightly along the mesial-distal axis
+    // (M-D parallel to the buccal contour at this point).
+    const engLen = Math.min(halfMD * 0.40, 10);
+    const engCenter = {
+      x: cx + rad.x * tipBase + mes.x * mdBias * halfMD,
+      y: cy + rad.y * tipBase + mes.y * mdBias * halfMD,
     };
-    // Bend point — vestibule level, just outside the buccal edge.
-    const bend = {
-      x: cx + rad.x * (halfBL + 16),
-      y: cy + rad.y * (halfBL + 16),
+    const engA = {
+      x: engCenter.x - mes.x * engLen,
+      y: engCenter.y - mes.y * engLen,
     };
-    // Tail extends toward the saddle so it merges with the lattice pattern.
+    const engB = {
+      x: engCenter.x + mes.x * engLen,
+      y: engCenter.y + mes.y * engLen,
+    };
+
+    // ── Vertical approach: from the saddle-side end of the engagement
+    // segment, drop radially outward to the vestibule (the "I" stem). ──
+    // Bias toward the saddle side so the vertical bar visibly connects
+    // up to the contact rather than coming straight in from the middle.
+    const stemTop = saddleSgn > 0 ? engB : engA;
+    const stemBottom = {
+      x: cx + rad.x * (halfBL + 18) + (saddleSgn * mes.x * engLen),
+      y: cy + rad.y * (halfBL + 18) + (saddleSgn * mes.y * engLen),
+    };
+
+    // ── Horizontal limb: from the bottom of the stem, run toward the
+    // saddle so the bar visually connects into the framework lattice. ──
     const tail = {
-      x: cx + rad.x * (halfBL + 18) + saddleSgn * mes.x * (halfMD + 16),
-      y: cy + rad.y * (halfBL + 18) + saddleSgn * mes.y * (halfMD + 16),
+      x: stemBottom.x + saddleSgn * mes.x * (halfMD + 14),
+      y: stemBottom.y + saddleSgn * mes.y * (halfMD + 14),
     };
+
     // Red dashed undercut curve in the vestibule, just outside buccal edge.
     const curveStart = {
       x: cx + (rad.x * (halfBL + 14)) - (mes.x * 0.5 * halfMD),
@@ -15675,11 +15709,20 @@ function RPDPaperFormArchDrawing({
         <path d={`M ${curveStart.x} ${curveStart.y} Q ${curveCtrl.x} ${curveCtrl.y} ${curveEnd.x} ${curveEnd.y}`}
           stroke={C_WW} strokeWidth={1.8} fill="none"
           strokeDasharray="4,3" strokeLinecap="round" opacity={0.85} />
-        {/* Solid blue I-bar — L-shape: tip → bend → tail-into-saddle */}
-        <path d={`M ${tip.x} ${tip.y} L ${bend.x} ${bend.y} L ${tail.x} ${tail.y}`}
-          stroke={C_CAST} strokeWidth={5.5} fill="none"
+        {/* Horizontal limb (widest — rigid framework connection) */}
+        <path d={`M ${tail.x} ${tail.y} L ${stemBottom.x} ${stemBottom.y}`}
+          stroke={C_CAST} strokeWidth={5.0} fill="none"
           strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx={tip.x} cy={tip.y} r={3.5} fill={C_CAST} />
+        {/* Vertical approach stem (medium — the "I" of I-bar) */}
+        <path d={`M ${stemBottom.x} ${stemBottom.y} L ${stemTop.x} ${stemTop.y}`}
+          stroke={C_CAST} strokeWidth={4.5} fill="none"
+          strokeLinecap="round" strokeLinejoin="round" />
+        {/* Engagement terminal (narrowest — flexible undercut contact) */}
+        <path d={`M ${engA.x} ${engA.y} L ${engB.x} ${engB.y}`}
+          stroke={C_CAST} strokeWidth={3.8} fill="none"
+          strokeLinecap="round" />
+        {/* Contact dot at the engagement center */}
+        <circle cx={engCenter.x} cy={engCenter.y} r={3} fill={C_CAST} />
       </g>
     );
   };
@@ -15808,13 +15851,22 @@ function RPDPaperFormArchDrawing({
     );
   };
 
-  // Reciprocal arm — STAYS ABOVE HOC throughout (never engages an undercut).
-  // Drawn so the arm HUGS the lingual surface from proximal corner to
-  // proximal corner. Per McCracken, the arm tapers in thickness but not
-  // width to maintain rigidity. McCracken / UIC form illustrations show a
-  // rounded arc that follows the convex lingual contour — start, midpoint,
-  // and end all sit AT or just inside the lingual surface (never bulging
-  // past it, never cutting diagonally across the proximal corners).
+  // Reciprocal arm — V2. STAYS ABOVE HOC throughout (never engages an
+  // undercut), provides bracing (must be rigid). Drawn so the arm HUGS
+  // the lingual surface from proximal corner to proximal corner.
+  //
+  // Visually distinguished from the retentive Akers arm:
+  //   - Wider (4.5 px vs the retentive arm's 6→2.5 taper) — reflects
+  //     McCracken's "tapers in thickness BUT NOT width to maintain
+  //     rigidity" rule for reciprocal arms.
+  //   - No terminal tip marker — reciprocal arm has no engagement point.
+  //   - Blunter end caps (butt instead of round) — reads as a bracing
+  //     ribbon rather than a flexible retentive arm.
+  //
+  // McCracken / UIC form illustrations show a rounded arc that follows
+  // the convex lingual contour — start, midpoint, and end all sit AT or
+  // just inside the lingual surface (never bulging past it, never
+  // cutting diagonally across the proximal corners).
   const drawReciprocalArm = (n, plateSide, key) => {
     const { cx, cy } = positionOf(n);
     const halfMD = toothHalfMD(n);
@@ -15837,12 +15889,8 @@ function RPDPaperFormArchDrawing({
       x: cx - plateSgn * mes.x * proxDist + radSign * rad.x * cornerDepth,
       y: cy - plateSgn * mes.y * proxDist + radSign * rad.y * cornerDepth,
     };
-    // Control points pulled to the lingual surface (right at halfBL) and
-    // symmetric about the mid-mesiodistal line. With cubic Bezier midpoint
-    // = (S + 3·C1 + 3·C2 + E) / 8, this gives a midpoint depth of
-    // (0.93 + 3·1.0 + 3·1.0 + 0.93)/8 ≈ 0.98 halfBL — right on the lingual
-    // surface, never past it. The result is a gentle convex arc that
-    // visually hugs the lingual contour from corner to corner.
+    // Control points pulled to the lingual surface so the arc follows the
+    // convex lingual contour without bulging past it.
     const surfaceDepth = halfBL * 1.0;
     const ctrl1 = {
       x: cx + plateSgn * mes.x * (halfMD * 0.45) + radSign * rad.x * surfaceDepth,
@@ -15855,7 +15903,7 @@ function RPDPaperFormArchDrawing({
     return (
       <path key={key}
         d={`M ${start.x} ${start.y} C ${ctrl1.x} ${ctrl1.y} ${ctrl2.x} ${ctrl2.y} ${end.x} ${end.y}`}
-        stroke={C_CAST} strokeWidth={3.5} fill="none" strokeLinecap="round" />
+        stroke={C_CAST} strokeWidth={4.5} fill="none" strokeLinecap="butt" />
     );
   };
 
