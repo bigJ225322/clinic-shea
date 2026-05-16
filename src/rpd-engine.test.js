@@ -3898,19 +3898,48 @@ describe("UIC-AUDIT — Existing RPD decision tree (reline/rebase/remake)", () =
   });
 });
 
-describe("UIC-AUDIT — Phase IV step 10 long-term recall + maintenance decision tree", () => {
-  it("Step 10 appears in Axium output with reline/rebase/remake decision tree", () => {
+describe("UIC-AUDIT — Phase IV long-term recall + maintenance decision tree", () => {
+  it("Maintenance step appears in Axium output with reline/rebase/remake decision tree", () => {
     const c = rpdMakeBlankCase("mandibular");
     setMissing(c, [17, 32]);
     setMissing(c, [30, 31]);
     const r = rpdRunEngine(c);
-    expect(r.axiumSteps).toMatch(/Step 10/);
+    expect(r.axiumSteps).toMatch(/Step 11/);
+    expect(r.axiumSteps).toMatch(/Long-Term Recall/);
     expect(r.axiumSteps).toMatch(/RELINE/);
     expect(r.axiumSteps).toMatch(/REBASE/);
     expect(r.axiumSteps).toMatch(/REMAKE/);
     expect(r.axiumSteps).toMatch(/D5750/);
     expect(r.axiumSteps).toMatch(/D5710/);
     expect(r.axiumSteps).toMatch(/3-month recall/);
+  });
+  it("Wax rim try-in step appears as a separate Axium step", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/Step 8/);
+    expect(r.axiumSteps).toMatch(/Wax Rim/);
+    expect(r.axiumSteps).toMatch(/Hanau facebow/);
+    expect(r.axiumSteps).toMatch(/Regisil/);
+    expect(r.axiumSteps).toMatch(/Fox plane/);
+  });
+});
+
+describe("UIC-AUDIT — Survey crown multi-appointment workflow in Step 6", () => {
+  it("Step 6 enumerates survey crown 4-appointment pathway with codes", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/SURVEY CROWN PATHWAY/);
+    expect(r.axiumSteps).toMatch(/APPT 1/);
+    expect(r.axiumSteps).toMatch(/APPT 2/);
+    expect(r.axiumSteps).toMatch(/APPT 3/);
+    expect(r.axiumSteps).toMatch(/APPT 4/);
+    expect(r.axiumSteps).toMatch(/D2740/); // PFM crown code
+    expect(r.axiumSteps).toMatch(/Pindex/i);
+    expect(r.axiumSteps).toMatch(/IPS e\.max.*NOT compatible/i);
   });
 });
 
