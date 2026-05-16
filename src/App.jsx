@@ -8898,11 +8898,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                   fields.consepsis && "Consepsis",
                   fields.gluma && "Gluma",
                 ].filter(Boolean).join(", ")}>
-                <p style={{ fontSize: "11px", color: "var(--ink-faint)",
-                    margin: "0 0 10px", lineHeight: 1.45, fontStyle: "italic" }}>
-                  Check any liners or sealers you used. Each adds the corresponding
-                  step to the note in the standard manual phrasing.
-                </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                   <Checkbox checked={fields.vitrebond}
                     onChange={v=>setField("vitrebond",v)}
