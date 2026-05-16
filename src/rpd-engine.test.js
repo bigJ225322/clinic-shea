@@ -4014,6 +4014,40 @@ describe("UIC-AUDIT — Clasp 1/3 rule in lab Rx", () => {
   });
 });
 
+describe("UIC-AUDIT — Step 8 wax rim VDO + phonetics tests", () => {
+  it("Step 8 enumerates VDO determination methods (closest speaking space, /F/V/, /S/, facial)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/Closest speaking space/i);
+    expect(r.axiumSteps).toMatch(/Mississippi/);
+    expect(r.axiumSteps).toMatch(/\/F\/.*\/V\//);
+    expect(r.axiumSteps).toMatch(/\/S\/ test/);
+    expect(r.axiumSteps).toMatch(/nasion-menton/i);
+  });
+  it("Step 8 includes Williams face-form classification for anterior mold selection", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/Williams classification/);
+    expect(r.axiumSteps).toMatch(/square.*tapered.*ovoid/i);
+  });
+  it("Step 8 wax try-in includes all 9 verification criteria", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/VDO/);
+    expect(r.axiumSteps).toMatch(/OVJ/);
+    expect(r.axiumSteps).toMatch(/OVB/);
+    expect(r.axiumSteps).toMatch(/Midline alignment/);
+    expect(r.axiumSteps).toMatch(/Phonetics/);
+    expect(r.axiumSteps).toMatch(/Buccal corridor/);
+  });
+});
+
 describe("UIC-AUDIT — Step 11 adjustment/repair codes + stomatitis protocol", () => {
   it("Step 11 enumerates UIC adjustment/repair codes D5410-D5660", () => {
     const c = rpdMakeBlankCase("mandibular");
