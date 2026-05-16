@@ -4014,6 +4014,33 @@ describe("UIC-AUDIT — Clasp 1/3 rule in lab Rx", () => {
   });
 });
 
+describe("UIC-AUDIT — Step 9 delivery day comprehensive instructions", () => {
+  it("Delivery step includes full UIC patient instruction handout", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/INTAGLIO FIT CHECK/);
+    expect(r.axiumSteps).toMatch(/PIP paste/);
+    expect(r.axiumSteps).toMatch(/Mizzy spray/);
+    expect(r.axiumSteps).toMatch(/Bird Beak/);
+    expect(r.axiumSteps).toMatch(/NIGHTLY REMOVAL/);
+    expect(r.axiumSteps).toMatch(/denture stomatitis/i);
+    expect(r.axiumSteps).toMatch(/Polident/);
+    expect(r.axiumSteps).toMatch(/NEVER toothpaste/i);
+    expect(r.axiumSteps).toMatch(/NEVER bleach/i);
+    expect(r.axiumSteps).toMatch(/2-3 weeks adaptation/i);
+  });
+  it("Delivery step calls out group function vs bilateral balanced occlusion check", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/GROUP FUNCTION/);
+    expect(r.axiumSteps).toMatch(/BILATERAL BALANCED/);
+  });
+});
+
 describe("UIC-AUDIT — Step 3 surveying protocol + Block-out callout", () => {
   it("Step 3 enumerates 8-step surveying protocol with tripod + undercut gauge", () => {
     const c = rpdMakeBlankCase("mandibular");
