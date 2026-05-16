@@ -14,7 +14,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "crownLengthening": null,
       "effectiveUndercutLocation": "mid-buccal",
       "guidePlane": {
-        "length": "2/3 clinical crown height, 1/3 BL width",
+        "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
       "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
@@ -47,7 +47,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "crownLengthening": null,
       "effectiveUndercutLocation": "mid-buccal",
       "guidePlane": {
-        "length": "2/3 clinical crown height, 1/3 BL width",
+        "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
       "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
@@ -285,7 +285,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "crownLengthening": null,
       "effectiveUndercutLocation": "mesio-buccal",
       "guidePlane": {
-        "length": "2/3 clinical crown height, 1/3 BL width",
+        "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
       "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
@@ -318,7 +318,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "crownLengthening": null,
       "effectiveUndercutLocation": "mesio-buccal",
       "guidePlane": {
-        "length": "2/3 clinical crown height, 1/3 BL width",
+        "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
       "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
@@ -356,7 +356,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "crownLengthening": null,
       "effectiveUndercutLocation": "disto-lingual",
       "guidePlane": {
-        "length": "2/3 clinical crown height, 1/3 BL width",
+        "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "mesial",
       },
       "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
@@ -583,7 +583,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "crownLengthening": null,
       "effectiveUndercutLocation": "disto-buccal",
       "guidePlane": {
-        "length": "2/3 clinical crown height, 1/3 BL width",
+        "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "mesial",
       },
       "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
@@ -616,7 +616,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "crownLengthening": null,
       "effectiveUndercutLocation": "mesio-buccal",
       "guidePlane": {
-        "length": "2/3 clinical crown height, 1/3 BL width",
+        "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
       "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
@@ -794,7 +794,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "crownLengthening": null,
       "effectiveUndercutLocation": "disto-buccal",
       "guidePlane": {
-        "length": "2/3 clinical crown height, 1/3 BL width",
+        "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "mesial",
       },
       "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
@@ -832,7 +832,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "crownLengthening": null,
       "effectiveUndercutLocation": "mesio-buccal",
       "guidePlane": {
-        "length": "2/3 clinical crown height, 1/3 BL width",
+        "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
       "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
@@ -955,7 +955,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "crownLengthening": null,
       "effectiveUndercutLocation": "mesio-buccal",
       "guidePlane": {
-        "length": "2/3 clinical crown height, 1/3 BL width",
+        "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
       "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
@@ -1312,7 +1312,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "crownLengthening": null,
       "effectiveUndercutLocation": "mid-buccal",
       "guidePlane": {
-        "length": "2/3 clinical crown height, 1/3 BL width",
+        "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
       "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
@@ -1399,7 +1399,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "crownLengthening": null,
       "effectiveUndercutLocation": "mid-buccal",
       "guidePlane": {
-        "length": "2/3 clinical crown height, 1/3 BL width",
+        "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
       "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",

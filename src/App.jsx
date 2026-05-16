@@ -13274,7 +13274,20 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
 
   // Guide plane
   const gpSurface = isDE ? "distal" : sideToward;
-  const gpLength = (claspType === "I-bar (esthetic)") ? "long/parallel (full clinical crown height)" : "2/3 clinical crown height, 1/3 BL width";
+  // Guide plane dimensions per Lab 5 p. 5:
+  //   • Posterior: 1/3 B-L width (2/3 cusp-tip-to-cusp-tip retained for
+  //     proximal contact integrity) × 2/3 length cervically from the
+  //     marginal ridge (i.e., 2/3 of the M-D crown height occluso-cervically)
+  //   • Anterior: linguo-proximal positioning for esthetics (not full B-L
+  //     proximal — minimizes metal show on the labial)
+  //   • I-bar esthetic: full clinical crown height, long/parallel (for
+  //     secondary retention via frictional contact)
+  const isAnteriorAbutment = RPD_CANINES.has(tooth) || RPD_MAX_INCISORS.has(tooth) || RPD_MAND_INCISORS.has(tooth);
+  const gpLength = (claspType === "I-bar (esthetic)")
+    ? "long/parallel (full clinical crown height)"
+    : isAnteriorAbutment
+      ? "linguo-proximal, 2/3 crown length cervically from incisal edge (Lab 5 p. 5 — esthetic placement; minimizes labial metal show)"
+      : "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)";
   const gpRationale = gpLength.startsWith("long") ? RPD_RATIONALE.guidePlane.longParallel : RPD_RATIONALE.guidePlane.standard;
 
   // Compute the effective undercut location for chart annotation / inspector

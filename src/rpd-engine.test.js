@@ -866,7 +866,7 @@ describe("Granular 6 — Guide plane length tracks clasp choice", () => {
     setMissing(c, [19]);
     const r = rpdRunEngine(c);
     const d = designOf(r, 18);
-    expect(d?.guidePlane?.length).toMatch(/2\/3 clinical crown height/);
+    expect(d?.guidePlane?.length).toMatch(/2\/3 length cervically from marginal ridge/);
   });
 
   it("Esthetic I-bar gets long/parallel guide plane", () => {
@@ -1361,7 +1361,7 @@ describe("UIC Case 1 — Maxillary Class II Mod 3 (full granular detail)", () =>
     });
     it("guide plane is mesial 2/3 height", () => {
       expect(d?.guidePlane?.surface).toBe("mesial");
-      expect(d?.guidePlane?.length).toMatch(/2\/3 clinical crown height/);
+      expect(d?.guidePlane?.length).toMatch(/2\/3 length cervically from marginal ridge/);
     });
     it("reciprocation is cast lingual arm", () => {
       expect(d?.reciprocation?.type).toBe("arm");
@@ -3170,7 +3170,7 @@ describe("GUIDE PLANE — length tracks clasp type", () => {
   it("Standard Akers → 2/3 height guide plane", () => {
     const c = rpdMakeBlankCase("mandibular");
     setMissing(c, [17, 32, 19]);
-    expect(designOf(rpdRunEngine(c), 18)?.guidePlane?.length).toMatch(/2\/3 clinical crown height/);
+    expect(designOf(rpdRunEngine(c), 18)?.guidePlane?.length).toMatch(/2\/3 length cervically from marginal ridge/);
   });
 
   it("RPI → 2/3 height (standard, not long/parallel — I-bar handles vertical)", () => {
@@ -3178,7 +3178,7 @@ describe("GUIDE PLANE — length tracks clasp type", () => {
     setMissing(c, [17, 32, 18, 19, 20]);
     const d = designOf(rpdRunEngine(c), 21);
     if (d?.claspType === "RPI") {
-      expect(d?.guidePlane?.length).toMatch(/2\/3 clinical crown height/);
+      expect(d?.guidePlane?.length).toMatch(/2\/3 length cervically from marginal ridge/);
     }
   });
 });
