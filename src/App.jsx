@@ -3114,7 +3114,7 @@ const REF_DATA = {
       { type: "script",
         caption: "Lab Rx",
         body: "Please pour impression for PFM bridge from [##-##].\nPlease section dies & return working cast for mounting.\nThank you.",
-        note: "Replace [##-##] with the bridge span (e.g. 28-30 for a 3-unit posterior bridge)." },
+        note: "Pick mesial + distal abutments above (e.g. 28 + 30 for a 3-unit posterior bridge spanning #28 to #30)." },
       { type: "cards", caption: "What to send with this Rx", cards: [
         { title: "Supplements", rows: [
           ["Final impression", "heavy + light body PVS, full arch"],
@@ -5688,21 +5688,36 @@ function RefProse({ heading, lines }) {
 }
 
 // Renders a copy-able lab Rx body in a monospace block. Bracket placeholders
-// like [shade] or [##-##] are visually distinct so students know what to fill
-// in before sending. If the body contains a [tooth] placeholder, also renders
-// a tooth picker above the Rx — picking a tooth substitutes the number into
-// the displayed body and the copy output. Used by the lab-script REF_DATA
-// entries.
+// like [shade] or [tooth] or [##-##] are visually distinct so students know
+// what to fill in before sending. The component auto-detects two kinds of
+// tooth placeholders and renders the matching picker(s):
+//
+//   [tooth]   → single-tooth dropdown (PFM crown, implant cast/abutment/crown)
+//   [##-##]   → bridge-span dropdowns (mesial + distal abutments)
+//
+// Picked values substitute into both the displayed Rx and the copy output.
+// Other bracket placeholders ([A2] shade, brand choices, etc.) stay
+// highlighted as plain template placeholders for now.
 function RefScript({ caption, body, note }) {
   const [copied, setCopied]             = useState(false);
   const [selectedTooth, setSelectedTooth] = useState("");
+  const [spanMesial, setSpanMesial]     = useState("");
+  const [spanDistal, setSpanDistal]     = useState("");
 
-  // Substitute the picked tooth into the body. If no tooth is picked yet,
-  // leave [tooth] in place so the Rx still reads as a template.
   const hasToothPlaceholder = body.includes("[tooth]");
-  const filledBody = hasToothPlaceholder && selectedTooth
-    ? body.replaceAll("[tooth]", selectedTooth)
-    : body;
+  const hasSpanPlaceholder  = body.includes("[##-##]");
+
+  // Substitute picked values into the body. Each placeholder type
+  // substitutes only when fully resolved (both ends of the span, etc.);
+  // partial selections leave the placeholder in place so the Rx still
+  // reads as a template.
+  let filledBody = body;
+  if (hasToothPlaceholder && selectedTooth) {
+    filledBody = filledBody.replaceAll("[tooth]", selectedTooth);
+  }
+  if (hasSpanPlaceholder && spanMesial && spanDistal) {
+    filledBody = filledBody.replaceAll("[##-##]", `${spanMesial}-${spanDistal}`);
+  }
 
   const onCopy = async () => {
     try {
@@ -5715,6 +5730,32 @@ function RefScript({ caption, body, note }) {
   // Highlight [bracket] placeholders. Split on a capturing group so the
   // brackets land in odd-indexed positions.
   const segments = filledBody.split(/(\[[^\]]+\])/g);
+
+  // Shared dropdown styling for tooth pickers.
+  const pickerStyle = {
+    background: "var(--paper)",
+    border: "1px solid var(--rule)",
+    borderRadius: "3px",
+    padding: "4px 8px",
+    fontFamily: "'JetBrains Mono', ui-monospace, monospace",
+    fontSize: "13px",
+    color: "var(--ink)",
+    cursor: "pointer",
+  };
+  const labelStyle = {
+    fontWeight: 600, fontSize: "10.5px",
+    letterSpacing: "0.07em", textTransform: "uppercase",
+    color: "var(--ink-soft)",
+  };
+  const clearLinkStyle = {
+    background: "transparent",
+    color: "var(--ink-faint)",
+    border: "none", padding: 0,
+    fontFamily: "'Geist', sans-serif",
+    fontSize: "11px", cursor: "pointer",
+    textDecoration: "underline",
+  };
+  const toothOptions = Array.from({ length: 32 }, (_, i) => i + 1);
 
   return (
     <div style={{ marginBottom: "26px" }}>
@@ -5746,38 +5787,51 @@ function RefScript({ caption, body, note }) {
           marginBottom: "10px",
           fontFamily: "'Geist', sans-serif",
         }}>
-          <label htmlFor="lab-rx-tooth" style={{
-            fontWeight: 600, fontSize: "10.5px",
-            letterSpacing: "0.07em", textTransform: "uppercase",
-            color: "var(--ink-soft)",
-          }}>Tooth</label>
+          <label htmlFor="lab-rx-tooth" style={labelStyle}>Tooth</label>
           <select id="lab-rx-tooth"
             value={selectedTooth}
             onChange={e => setSelectedTooth(e.target.value)}
-            style={{
-              background: "var(--paper)",
-              border: "1px solid var(--rule)",
-              borderRadius: "3px",
-              padding: "4px 8px",
-              fontFamily: "'JetBrains Mono', ui-monospace, monospace",
-              fontSize: "13px",
-              color: "var(--ink)",
-              cursor: "pointer",
-            }}>
+            style={pickerStyle}>
             <option value="">— pick a tooth —</option>
-            {Array.from({ length: 32 }, (_, i) => i + 1).map(n => (
+            {toothOptions.map(n => (
               <option key={n} value={n}>#{n}</option>
             ))}
           </select>
           {selectedTooth && (
-            <button onClick={() => setSelectedTooth("")} style={{
-              background: "transparent",
-              color: "var(--ink-faint)",
-              border: "none", padding: 0,
-              fontFamily: "'Geist', sans-serif",
-              fontSize: "11px", cursor: "pointer",
-              textDecoration: "underline",
-            }}>clear</button>
+            <button onClick={() => setSelectedTooth("")} style={clearLinkStyle}>clear</button>
+          )}
+        </div>
+      )}
+      {hasSpanPlaceholder && (
+        <div style={{
+          display: "flex", alignItems: "center", flexWrap: "wrap",
+          gap: "10px 14px",
+          marginBottom: "10px",
+          fontFamily: "'Geist', sans-serif",
+        }}>
+          <label htmlFor="lab-rx-span-mesial" style={labelStyle}>Mesial abutment</label>
+          <select id="lab-rx-span-mesial"
+            value={spanMesial}
+            onChange={e => setSpanMesial(e.target.value)}
+            style={pickerStyle}>
+            <option value="">—</option>
+            {toothOptions.map(n => (
+              <option key={n} value={n}>#{n}</option>
+            ))}
+          </select>
+          <label htmlFor="lab-rx-span-distal" style={labelStyle}>Distal abutment</label>
+          <select id="lab-rx-span-distal"
+            value={spanDistal}
+            onChange={e => setSpanDistal(e.target.value)}
+            style={pickerStyle}>
+            <option value="">—</option>
+            {toothOptions.map(n => (
+              <option key={n} value={n}>#{n}</option>
+            ))}
+          </select>
+          {(spanMesial || spanDistal) && (
+            <button onClick={() => { setSpanMesial(""); setSpanDistal(""); }}
+              style={clearLinkStyle}>clear</button>
           )}
         </div>
       )}
