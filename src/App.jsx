@@ -15632,24 +15632,31 @@ function RPDPaperFormArchDrawing({
   //       exact undercut path the tip engages (the "create 0.01 mid-buccal
   //       undercut" instruction, marked in red per standard convention).
   //
-  // I-bar — V2 textbook rendering. Calibrated against the UIC Fall 2022
-  // "Bar Clasps" slide deck and the hand-drawn UIC Design Case 1 forms,
-  // both of which show:
-  //   1. A short horizontal ENGAGEMENT segment AT the tooth surface
-  //      (the actual contact with the gingival-third undercut), running
-  //      parallel to the tooth contour. This is what gives the "I-bar"
-  //      its characteristic flat terminal — distinguishes it from a
-  //      pointed contact.
-  //   2. A pronounced VERTICAL APPROACH segment from the vestibule up to
-  //      the engagement (the "I" of I-bar). Approaches from gingival.
-  //   3. A horizontal LIMB extending toward the saddle/framework.
+  // I-bar (and its T-bar / Y-bar variants) — V2 textbook rendering.
+  // Calibrated against the UIC Fall 2022 "Bar Clasps" slide deck and the
+  // hand-drawn UIC Design Case 1 forms.
   //
-  // The bar emerges from below the tissue level (saddle/framework),
-  // approaches gingivally, and terminates with a small flat contact at
-  // the undercut. Variable stroke width across segments gives the cast-
-  // metal "wider proximal, narrower terminal" taper visible in clinical
-  // photos (page 28 of the Retainers slide deck).
-  const drawIBar = (n, ucLocation, saddleSurface, key) => {
+  // All three variants share the same approach geometry — a horizontal
+  // limb from the saddle, a vertical approach stem rising gingivally to
+  // the tooth — and differ only at the terminal:
+  //
+  //   I-bar  → short horizontal engagement segment parallel to the
+  //            buccal contour. Single contact point at the gingival
+  //            third of the tooth.
+  //
+  //   T-bar  → longer horizontal CROSS-PIECE at the tip with a short
+  //            connecting wing up to it from the stem. The cross-piece
+  //            lies along the gingival contour and gives broader buccal
+  //            contact. Used when a wider engagement footprint is
+  //            indicated.
+  //
+  //   Y-bar  → forked tip: two short arms diverging from the top of the
+  //            stem, each contacting the tooth at the gingival third.
+  //            Used when a single I-bar tip would be too short to engage
+  //            adequately on a narrow tooth.
+  //
+  // `variant` accepts "I" (default), "T", or "Y".
+  const drawIBar = (n, ucLocation, saddleSurface, key, variant = "I") => {
     const { cx, cy } = positionOf(n);
     const halfMD = toothHalfMD(n);
     const halfBL = toothHalfBL(n);
@@ -15710,6 +15717,22 @@ function RPDPaperFormArchDrawing({
       x: cx + rad.x * (halfBL + 24),
       y: cy + rad.y * (halfBL + 24),
     };
+    // ── Variant-specific terminal geometry ──
+    // T-bar: extend the engagement segment ~1.6× wider as a cross-piece.
+    // Y-bar: replace the single segment with two diverging arms from the
+    //        top of the stem to the engagement endpoints.
+    const isT = variant === "T";
+    const isY = variant === "Y";
+    const crossLen = isT ? engLen * 1.6 : engLen;
+    const termA = {
+      x: engCenter.x - mes.x * crossLen,
+      y: engCenter.y - mes.y * crossLen,
+    };
+    const termB = {
+      x: engCenter.x + mes.x * crossLen,
+      y: engCenter.y + mes.y * crossLen,
+    };
+
     return (
       <g key={key}>
         {/* Red dashed undercut curve (drawn first, so I-bar sits on top) */}
@@ -15724,12 +15747,32 @@ function RPDPaperFormArchDrawing({
         <path d={`M ${stemBottom.x} ${stemBottom.y} L ${stemTop.x} ${stemTop.y}`}
           stroke={C_CAST} strokeWidth={4.5} fill="none"
           strokeLinecap="round" strokeLinejoin="round" />
-        {/* Engagement terminal (narrowest — flexible undercut contact) */}
-        <path d={`M ${engA.x} ${engA.y} L ${engB.x} ${engB.y}`}
-          stroke={C_CAST} strokeWidth={3.8} fill="none"
-          strokeLinecap="round" />
-        {/* Contact dot at the engagement center */}
-        <circle cx={engCenter.x} cy={engCenter.y} r={3} fill={C_CAST} />
+        {/* Terminal — geometry depends on variant. */}
+        {isY ? (
+          // Y-bar: two diverging short arms from the top of the stem.
+          // Each arm runs from stemTop out to one of the cross-piece ends.
+          <>
+            <path d={`M ${stemTop.x} ${stemTop.y} L ${termA.x} ${termA.y}`}
+              stroke={C_CAST} strokeWidth={3.5} fill="none" strokeLinecap="round" />
+            <path d={`M ${stemTop.x} ${stemTop.y} L ${termB.x} ${termB.y}`}
+              stroke={C_CAST} strokeWidth={3.5} fill="none" strokeLinecap="round" />
+            <circle cx={termA.x} cy={termA.y} r={2.5} fill={C_CAST} />
+            <circle cx={termB.x} cy={termB.y} r={2.5} fill={C_CAST} />
+          </>
+        ) : (
+          // I-bar or T-bar: single horizontal contact segment.
+          // T-bar's contact is wider (crossLen = 1.6× engLen).
+          <>
+            <path d={`M ${termA.x} ${termA.y} L ${termB.x} ${termB.y}`}
+              stroke={C_CAST} strokeWidth={isT ? 4.2 : 3.8} fill="none"
+              strokeLinecap="round" />
+            {/* Contact dot at the engagement center (I-bar only — T-bar's
+                wider contact is its own marker). */}
+            {!isT && (
+              <circle cx={engCenter.x} cy={engCenter.y} r={3} fill={C_CAST} />
+            )}
+          </>
+        )}
       </g>
     );
   };
@@ -15863,6 +15906,170 @@ function RPDPaperFormArchDrawing({
           strokeLinecap="round" />
         {/* Terminal tip marker — shows where the undercut is engaged */}
         <circle cx={tip.x} cy={tip.y} r={3} fill={color} />
+      </g>
+    );
+  };
+
+  // Ring clasp — specialty clasp for tilted mandibular molars (mesially
+  // tilted with undercut on the mesio-lingual surface). Per the UIC
+  // Retainers slide deck (page 26):
+  //
+  //   - Primary rest:    mesial occlusal (same as Akers)
+  //   - Auxiliary rest:  distal occlusal (smaller)
+  //   - Supportive strut: lingual surface, supports the clasp arm against
+  //                       collapse (rigidly braces the arm during seating)
+  //   - Retentive tip:   engages mesio-lingual undercut (mandibular case)
+  //
+  // The clasp arm encircles ~330° of the tooth — starts at the primary
+  // rest, wraps around the buccal contour, around the distal corner past
+  // the auxiliary rest, along the lingual surface (supported by the
+  // strut), and terminates at the retentive tip near the mesio-lingual
+  // undercut. This near-complete "ring" gives the clasp its name.
+  //
+  // `plateSide` = "mesial" by default (mesial proximal plate / saddle).
+  // `ucLoc` selects the undercut location; defaults to mesio-lingual for
+  // typical mandibular Ring use (can be mesio-buccal for maxillary).
+  const drawRingClasp = (n, opts, key) => {
+    const { plateSide = "mesial", ucLoc = "mesio-lingual" } = opts;
+    const { cx, cy } = positionOf(n);
+    const halfMD = toothHalfMD(n);
+    const halfBL = toothHalfBL(n);
+    const rad = radialUnit(n);
+    const mes = mesialUnit(n);
+    const plateSgn = plateSide === "mesial" ? +1 : -1;
+    // Buccal undercut → buccal side approach. Default lingual.
+    const tipOnBuccal = ucLoc === "mesio-buccal" || ucLoc === "disto-buccal";
+    const tipRadSign = tipOnBuccal ? +1 : -1;
+    // ── Primary rest anchor: at the mesial buccal corner (proximal plate
+    // origin). Same as Akers proximal origin. ──
+    const origin = {
+      x: cx + plateSgn * mes.x * (halfMD + 3) + rad.x * (halfBL * 0.92),
+      y: cy + plateSgn * mes.y * (halfMD + 3) + rad.y * (halfBL * 0.92),
+    };
+    // ── Mid-buccal anchor: bows outward past the buccal contour. ──
+    const buccalMid = {
+      x: cx + rad.x * (halfBL * 1.08),
+      y: cy + rad.y * (halfBL * 1.08),
+    };
+    // ── Distal buccal corner: where the auxiliary rest sits. ──
+    const distalBuccal = {
+      x: cx - plateSgn * mes.x * (halfMD * 0.85) + rad.x * (halfBL * 1.0),
+      y: cy - plateSgn * mes.y * (halfMD * 0.85) + rad.y * (halfBL * 1.0),
+    };
+    // ── Distal lingual corner: arm wraps to the lingual side. ──
+    const distalLingual = {
+      x: cx - plateSgn * mes.x * (halfMD * 0.85) - rad.x * (halfBL * 1.0),
+      y: cy - plateSgn * mes.y * (halfMD * 0.85) - rad.y * (halfBL * 1.0),
+    };
+    // ── Mid-lingual anchor: supportive strut location. ──
+    const lingualMid = {
+      x: cx - rad.x * (halfBL * 1.05),
+      y: cy - rad.y * (halfBL * 1.05),
+    };
+    // ── Terminal tip: engages the undercut. Position near the mesio-
+    // lingual (or mesio-buccal) corner per ucLoc. ──
+    const tip = {
+      x: cx + plateSgn * mes.x * (halfMD * 0.75) + tipRadSign * rad.x * (halfBL * 1.15),
+      y: cy + plateSgn * mes.y * (halfMD * 0.75) + tipRadSign * rad.y * (halfBL * 1.15),
+    };
+    // ── Auxiliary rest at distal occlusal (small filled marker). ──
+    const auxRest = {
+      x: cx - plateSgn * mes.x * (halfMD * 0.7),
+      y: cy - plateSgn * mes.y * (halfMD * 0.7),
+    };
+    // Build the encircling arm as a cubic Bezier going through all the
+    // anchors. Uses three Bezier segments for smooth wrap.
+    const arm = [origin, buccalMid, distalBuccal, distalLingual, lingualMid, tip];
+    const armD = `M ${arm[0].x} ${arm[0].y}` +
+      ` Q ${arm[1].x} ${arm[1].y} ${arm[2].x} ${arm[2].y}` +
+      ` Q ${arm[3].x} ${arm[3].y} ${arm[4].x} ${arm[4].y}` +
+      ` Q ${(arm[4].x + tip.x) / 2 - rad.x * halfBL * 0.1} ${(arm[4].y + tip.y) / 2 - rad.y * halfBL * 0.1} ${tip.x} ${tip.y}`;
+    return (
+      <g key={key}>
+        {/* Encircling arm — single continuous cast metal path */}
+        <path d={armD}
+          stroke={C_CAST} strokeWidth={4.5} fill="none"
+          strokeLinecap="round" strokeLinejoin="round" />
+        {/* Supportive strut — short perpendicular brace on lingual */}
+        <line x1={lingualMid.x} y1={lingualMid.y}
+          x2={lingualMid.x - rad.x * 14} y2={lingualMid.y - rad.y * 14}
+          stroke={C_CAST} strokeWidth={3.2} strokeLinecap="round" />
+        {/* Auxiliary rest — small filled square on distal occlusal */}
+        <circle cx={auxRest.x} cy={auxRest.y} r={3.5}
+          fill={C_CAST} />
+        {/* Terminal tip marker — engagement point */}
+        <circle cx={tip.x} cy={tip.y} r={3} fill={C_CAST} />
+      </g>
+    );
+  };
+
+  // Embrasure clasp — used in a quadrant with no edentulous space when a
+  // clasp is needed on a single tooth without an adjacent saddle. Per the
+  // UIC Retainers slide deck (page 24):
+  //
+  //   - Two adjacent abutments share a prepared occlusal groove in the
+  //     embrasure between them (interproximal contact preserved).
+  //   - Each tooth gets its own rest seat in the embrasure.
+  //   - Each tooth has a retentive arm engaging the opposite-side
+  //     undercut (one buccal, one lingual — or both buccal on opposite
+  //     sides of the embrasure).
+  //   - Looks like "back-to-back Akers" from the top-down view.
+  //
+  // This renderer draws ONE side of the embrasure (single tooth view).
+  // When two adjacent abutments both have claspType = "Embrasure", both
+  // teeth get their own render that visually meet in the middle.
+  //
+  // `plateSide` = side of the embrasure (which proximal surface of the
+  // tooth abuts the shared embrasure groove).
+  const drawEmbrasureClasp = (n, opts, key) => {
+    const { plateSide = "mesial", onBuccal = true } = opts;
+    const { cx, cy } = positionOf(n);
+    const halfMD = toothHalfMD(n);
+    const halfBL = toothHalfBL(n);
+    const rad = radialUnit(n);
+    const mes = mesialUnit(n);
+    const radSign = onBuccal ? +1 : -1;
+    const plateSgn = plateSide === "mesial" ? +1 : -1;
+    // Origin: at the embrasure (proximal surface that abuts the partner
+    // tooth), at HOC height.
+    const origin = {
+      x: cx + plateSgn * mes.x * (halfMD + 1) + radSign * rad.x * (halfBL * 0.92),
+      y: cy + plateSgn * mes.y * (halfMD + 1) + radSign * rad.y * (halfBL * 0.92),
+    };
+    // Wrap around the buccal (or lingual) contour to the opposite proximal
+    // corner — similar to Akers but the wrap is shorter (~140°) since
+    // the arm doesn't need to encircle the tooth.
+    const mid = {
+      x: cx + radSign * rad.x * (halfBL * 1.05),
+      y: cy + radSign * rad.y * (halfBL * 1.05),
+    };
+    const tip = {
+      x: cx - plateSgn * mes.x * (halfMD * 0.70) + radSign * rad.x * (halfBL * 1.15),
+      y: cy - plateSgn * mes.y * (halfMD * 0.70) + radSign * rad.y * (halfBL * 1.15),
+    };
+    // Embrasure rest seat (small filled marker AT the embrasure side,
+    // shared with the partner tooth).
+    const restSeat = {
+      x: cx + plateSgn * mes.x * (halfMD * 0.85),
+      y: cy + plateSgn * mes.y * (halfMD * 0.85),
+    };
+    // Smooth Bezier path: origin → buccal mid → tip
+    const ctrl = {
+      x: cx + plateSgn * mes.x * (halfMD * 0.5) + radSign * rad.x * (halfBL * 1.08),
+      y: cy + plateSgn * mes.y * (halfMD * 0.5) + radSign * rad.y * (halfBL * 1.08),
+    };
+    const armD = `M ${origin.x} ${origin.y} Q ${ctrl.x} ${ctrl.y} ${mid.x} ${mid.y} Q ${(mid.x + tip.x)/2} ${(mid.y + tip.y)/2 + radSign * 2} ${tip.x} ${tip.y}`;
+    return (
+      <g key={key}>
+        {/* Retentive arm: tapered from rest origin to tip */}
+        <path d={armD}
+          stroke={C_CAST} strokeWidth={4.0} fill="none"
+          strokeLinecap="round" />
+        {/* Embrasure rest seat marker */}
+        <rect x={restSeat.x - 3} y={restSeat.y - 3} width={6} height={6}
+          fill={C_CAST} />
+        {/* Terminal tip marker */}
+        <circle cx={tip.x} cy={tip.y} r={3} fill={C_CAST} />
       </g>
     );
   };
@@ -16090,12 +16297,15 @@ function RPDPaperFormArchDrawing({
     );
   };
 
-  // Tissue stop — small red marker at the DISTAL END of a distal-extension
+  // Tissue stop — small red T-shape at the DISTAL END of a distal-extension
   // saddle. Per UIC Performance Exam color code: drawn in RED. Per the 2025
   // Connectors lecture: mandatory on all Class I/II distal-extension cases;
   // stabilizes the framework during acrylic processing.
-  // Drawn as a separate selectable element so the student can click it to
-  // see its purpose/location in the detail panel.
+  //
+  // The T-shape (a short horizontal bar perpendicular to a vertical stem)
+  // matches the UIC hand-drawn convention better than the previous small
+  // oval — it visually reads as a "stop" hitting tissue rather than just
+  // a marker.
   const drawTissueStop = (spanTeeth, key) => {
     if (!spanTeeth || spanTeeth.length === 0) return null;
     const archSpan = spanTeeth.filter(n => archTeeth.includes(n));
@@ -16116,26 +16326,34 @@ function RPDPaperFormArchDrawing({
     const halfMD = toothHalfMD(distalN);
     const halfBL = toothHalfBL(distalN);
     // Distal direction is -mes (toward edentulous distal end of arch).
-    const tsX = cx - mes.x * (halfMD + 8) + rad.x * (halfBL * 0.3);
-    const tsY = cy - mes.y * (halfMD + 8) + rad.y * (halfBL * 0.3);
-    // Small red oval, ~10 px long along mesial axis, 5 px tall radially.
-    const halfLong = 8;
-    const halfShort = 4;
+    const tsX = cx - mes.x * (halfMD + 10) + rad.x * (halfBL * 0.3);
+    const tsY = cy - mes.y * (halfMD + 10) + rad.y * (halfBL * 0.3);
+    // T-shape: horizontal cross-bar (perpendicular to the saddle long axis,
+    // along the radial direction) + short vertical stem (along the saddle
+    // long axis, pointing distally past the saddle outline).
+    const crossHalf = 7;   // half-length of the horizontal cross-bar
+    const stemLen = 7;     // length of the vertical stem
+    // Cross-bar endpoints (radial direction = perpendicular to saddle axis)
+    const crossA = { x: tsX + rad.x * crossHalf, y: tsY + rad.y * crossHalf };
+    const crossB = { x: tsX - rad.x * crossHalf, y: tsY - rad.y * crossHalf };
+    // Stem endpoint (distal direction = -mes from cross-bar center)
+    const stemEnd = { x: tsX - mes.x * stemLen, y: tsY - mes.y * stemLen };
     return (
       <g key={key}>
-        {/* Invisible hit pad — the visible ellipse is only ~16x8 px, far
-            too small a click target on its own. A 28-px radius transparent
-            circle centered on the stop gives a comfortable hit area
-            without affecting the rendered appearance. */}
+        {/* Invisible hit pad — the visible T is small; a 28-px radius
+            transparent circle gives a comfortable click target. */}
         {interactive && (
           <circle cx={tsX} cy={tsY} r={28}
             fill="rgba(0,0,0,0)" pointerEvents="all" />
         )}
-        <ellipse cx={tsX} cy={tsY} rx={halfLong} ry={halfShort}
-          transform={`rotate(${Math.atan2(mes.y, mes.x) * 180 / Math.PI} ${tsX} ${tsY})`}
-          fill={C_WW} stroke={C_WW} strokeWidth={0.8} />
+        {/* Horizontal cross-bar of the T */}
+        <line x1={crossA.x} y1={crossA.y} x2={crossB.x} y2={crossB.y}
+          stroke={C_WW} strokeWidth={2.4} strokeLinecap="round" />
+        {/* Vertical stem of the T */}
+        <line x1={tsX} y1={tsY} x2={stemEnd.x} y2={stemEnd.y}
+          stroke={C_WW} strokeWidth={2.4} strokeLinecap="round" />
         <text className="rpd-elem-label"
-          x={tsX + rad.x * 18} y={tsY + rad.y * 18 + 4}>
+          x={tsX + rad.x * 20} y={tsY + rad.y * 20 + 4}>
           Tissue stop
         </text>
       </g>
@@ -16665,7 +16883,16 @@ function RPDPaperFormArchDrawing({
               if (ct.includes("Rest Only")) return [];
               let el;
               if (ct === "RPI" || ct === "I-bar (esthetic)") {
-                el = drawIBar(a.tooth, ucLoc, plateSide, `clasp-${i}`);
+                el = drawIBar(a.tooth, ucLoc, plateSide, `clasp-${i}`, "I");
+              } else if (ct === "T-bar") {
+                el = drawIBar(a.tooth, ucLoc, plateSide, `clasp-${i}`, "T");
+              } else if (ct === "Y-bar") {
+                el = drawIBar(a.tooth, ucLoc, plateSide, `clasp-${i}`, "Y");
+              } else if (ct === "Ring" || ct === "Ring Clasp") {
+                el = drawRingClasp(a.tooth, { plateSide, ucLoc }, `clasp-${i}`);
+              } else if (ct === "Embrasure") {
+                const onBuccal = !(ucLoc === "disto-lingual" || ucLoc === "mesio-lingual");
+                el = drawEmbrasureClasp(a.tooth, { plateSide, onBuccal }, `clasp-${i}`);
               } else if (ct === "Combination" || ct === "WW C-clasp" || ct === "Ball Clasp") {
                 el = drawCircumferentialArm(a.tooth, { color: C_WW, plateSide, onBuccal: true }, `clasp-${i}`);
               } else if (ct === "Reverse Akers") {
