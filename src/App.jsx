@@ -15777,30 +15777,35 @@ function RPDPaperFormArchDrawing({
     );
   };
 
-  // Circumferential arm (Akers retentive) — V2 textbook rendering.
+  // Circumferential arm (Akers retentive) — V3 textbook rendering.
   //
-  // Calibrated against McCracken Fig 7-15 (taper diagram), the UIC Retainers
-  // slide deck (Fall 2022, Kim), and hand-drawn UIC design forms (Design Case
-  // 1, Case II). Key textbook properties this renderer now honors:
+  // Anatomically the clasp arm sits ON the tooth surface, just gingival
+  // to the height of contour for most of its length, dipping into the
+  // undercut only at the terminal tip. V2 bowed the entire arm OUTWARD
+  // past the tooth perimeter to emphasize "wrap"; that read as the arm
+  // floating off the tooth, which isn't how it looks in McCracken's
+  // figures or UIC's hand-drawn design forms.
   //
-  //   1. Encirclement >180° — arm reaches near the far proximal corner,
-  //      not just the midpoint. Hand-drawn UIC designs show the clasp
-  //      wrapping from one proximal plate corner almost all the way to
-  //      the opposite proximal corner before terminating at the undercut.
+  // V3 honors:
   //
-  //   2. Dramatic taper — proximal 1/3 is ~2.5× wider than the terminal
-  //      tip (McCracken: "uniform taper in both thickness AND width" for
-  //      retentive arms). Rendered with five segments of decreasing
-  //      stroke width so the taper is visible at chart scale.
+  //   1. Arm HUGS the buccal/lingual contour. All anchors sit at ~halfBL
+  //      (right on the surface) so the path follows the perimeter
+  //      faithfully.
   //
-  //   3. Three thirds with visible vertical excursion — the curve bows
-  //      OUTWARD past the tooth perimeter at the middle 1/3 (slightly
-  //      above HOC in 3D, "outside" the buccal contour in our top-down
-  //      view) then dips back inward as the tip drops INTO the undercut
-  //      on the far proximal side.
+  //   2. Origin TOUCHES the proximal plate's buccal corner. Arm visibly
+  //      emerges from the plate instead of starting in mid-air.
   //
-  //   4. Terminal tip marker — small dot at the engagement point so
-  //      students can immediately see where the undercut is engaged.
+  //   3. Encirclement >180° — arm reaches near the far proximal corner
+  //      (tipMD = 0.85 halfMD). The wrap is shown by the angular extent
+  //      of the path, not by pushing it outward.
+  //
+  //   4. Terminal tip dips just past the contour (1.05 halfBL) in the
+  //      LAST segment only. This is the only place the arm is "outside"
+  //      the perimeter — it represents the actual undercut engagement.
+  //
+  //   5. Taper from rigid proximal (5.5–6 px) to flexible tip (2.5 px).
+  //
+  //   6. Small contact dot at the terminal tip marks the engagement.
   //
   // `plateSide` is the side of the rest/plate (where the arm originates).
   // `onBuccal` toggles between buccal Akers and lingual Reverse Akers.
@@ -15814,47 +15819,41 @@ function RPDPaperFormArchDrawing({
     const mes = mesialUnit(n);
     const radSign = onBuccal ? +1 : -1;
     const plateSgn = plateSide === "mesial" ? +1 : -1;
-    // ── Origin: at the proximal plate's buccal (or lingual) corner ──
-    // Slightly OUTSIDE the tooth perimeter so the arm visibly attaches
-    // to the plate rather than emerging from inside the tooth body.
-    const halfThick = 4;
-    const originDist = halfMD + halfThick - 1;
-    const originRad = halfBL * 0.92;
+    // ── Origin: at the proximal plate's buccal-outer corner so the arm
+    // visibly emerges from the plate (no floating gap). The plate is
+    // drawn centered at (halfMD + 3.5) along the mesial axis with
+    // ±halfThick (5 px) thickness and ±0.55*halfBL extent radially; the
+    // outer-buccal corner sits at (halfMD + 8.5, +0.55*halfBL). ──
+    const plateOuterMes = halfMD + 8.5;
+    const plateBL = halfBL * 0.55;
     const start = {
-      x: cx + plateSgn * mes.x * originDist + radSign * rad.x * originRad,
-      y: cy + plateSgn * mes.y * originDist + radSign * rad.y * originRad,
+      x: cx + plateSgn * mes.x * plateOuterMes + radSign * rad.x * plateBL,
+      y: cy + plateSgn * mes.y * plateOuterMes + radSign * rad.y * plateBL,
     };
-    // ── Middle 1/3 anchor: bows OUTWARD past the buccal/lingual contour.
-    // 1.05 halfBL puts the arm visibly past the tooth perimeter, which is
-    // how it reads at chart scale as "wrapping over the contour" rather
-    // than hugging it as a flat line. ──
-    const middleAnchorRad = halfBL * 1.05;
-    const middle = {
-      x: cx + radSign * rad.x * middleAnchorRad,
-      y: cy + radSign * rad.y * middleAnchorRad,
-    };
-    // ── Terminal 1/3: dips back INWARD at the far proximal side, into
-    // the undercut. tipMD = 0.85 means the tip reaches 85% of the way to
-    // the far proximal corner — gives the >180° encirclement that
-    // textbook drawings show. tipBL just past the contour at 1.15 so
-    // there's a visible engagement past the tooth perimeter. ──
+    // ── Terminal tip: only the very tip dips slightly past the contour
+    // — that's where the undercut is engaged. Rest of the arm hugs the
+    // surface. tipMD = 0.92 halfMD reaches near the far proximal corner;
+    // tipBL = 1.05 halfBL puts the tip just past the perimeter so the
+    // engagement reads visually without making the whole arm look
+    // detached from the tooth. ──
     const undercutSgn = -plateSgn;
-    const tipMD = halfMD * 0.85;
-    const tipBL = halfBL * (1.15 + 0.06 * undercutDepthFactor);
+    const tipMD = halfMD * 0.92;
+    const tipBL = halfBL * (1.05 + 0.04 * undercutDepthFactor);
     const tip = {
       x: cx + undercutSgn * mes.x * tipMD + radSign * rad.x * tipBL,
       y: cy + undercutSgn * mes.y * tipMD + radSign * rad.y * tipBL,
     };
-    // ── Build the path as a cubic Bezier from start → middle → tip.
-    // Control points pull outward (along radial) so the curve bows past
-    // the tooth contour rather than hugging it. ──
+    // ── Control points pull the bezier ON the contour (1.02 halfBL),
+    // not outside it. The midpoint of the curve lands at ~(0, 0.965*halfBL)
+    // — right on the buccal surface — so the arm hugs the tooth for its
+    // entire length except the final tip. ──
     const ctrlA = {
-      x: cx + plateSgn * mes.x * (halfMD * 0.55) + radSign * rad.x * (halfBL * 1.05),
-      y: cy + plateSgn * mes.y * (halfMD * 0.55) + radSign * rad.y * (halfBL * 1.05),
+      x: cx + plateSgn * mes.x * (halfMD * 0.50) + radSign * rad.x * (halfBL * 1.02),
+      y: cy + plateSgn * mes.y * (halfMD * 0.50) + radSign * rad.y * (halfBL * 1.02),
     };
     const ctrlB = {
-      x: cx + undercutSgn * mes.x * (halfMD * 0.40) + radSign * rad.x * (halfBL * 1.12),
-      y: cy + undercutSgn * mes.y * (halfMD * 0.40) + radSign * rad.y * (halfBL * 1.12),
+      x: cx + undercutSgn * mes.x * (halfMD * 0.50) + radSign * rad.x * (halfBL * 1.02),
+      y: cy + undercutSgn * mes.y * (halfMD * 0.50) + radSign * rad.y * (halfBL * 1.02),
     };
     // Build interpolated points along the bezier so we can render the
     // taper as 5 segments of decreasing stroke width.
@@ -16098,19 +16097,20 @@ function RPDPaperFormArchDrawing({
     const mes = mesialUnit(n);
     const radSign = -1;  // lingual side (opposite the retentive arm)
     const plateSgn = plateSide === "mesial" ? +1 : -1;
-    // Start/end at the lingual PROXIMAL CORNERS — proximally just inside
-    // the proximal face (so the arm doesn't float in space off the corner)
-    // and lingually just inside the lingual contour (so the arm sits ON the
-    // surface, not floating in the palate).
-    const proxDist = halfMD * 0.82;
-    const cornerDepth = halfBL * 0.93;
+    // Start at the proximal plate's lingual-outer corner so the arm
+    // visibly emerges from the plate (mirrors the retentive arm origin
+    // on the buccal side). Plate is centered at (halfMD + 3.5) along
+    // mesial with ±5 px thickness and ±0.55*halfBL extent — lingual-outer
+    // corner sits at (halfMD + 8.5, −0.55*halfBL).
     const start = {
-      x: cx + plateSgn * mes.x * proxDist + radSign * rad.x * cornerDepth,
-      y: cy + plateSgn * mes.y * proxDist + radSign * rad.y * cornerDepth,
+      x: cx + plateSgn * mes.x * (halfMD + 8.5) + radSign * rad.x * (halfBL * 0.55),
+      y: cy + plateSgn * mes.y * (halfMD + 8.5) + radSign * rad.y * (halfBL * 0.55),
     };
+    // End at the OPPOSITE proximal-lingual corner of the tooth (no plate
+    // there — the arm just terminates at the tooth's proximal edge).
     const end = {
-      x: cx - plateSgn * mes.x * proxDist + radSign * rad.x * cornerDepth,
-      y: cy - plateSgn * mes.y * proxDist + radSign * rad.y * cornerDepth,
+      x: cx - plateSgn * mes.x * (halfMD * 0.92) + radSign * rad.x * (halfBL * 0.95),
+      y: cy - plateSgn * mes.y * (halfMD * 0.92) + radSign * rad.y * (halfBL * 0.95),
     };
     // Control points pulled to the lingual surface so the arc follows the
     // convex lingual contour without bulging past it.
