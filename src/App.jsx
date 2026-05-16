@@ -15261,10 +15261,26 @@ function RPDPaperFormArchDrawing({
   // perpendicular to the arch and unconstrained by neighbors, so it gets
   // a larger bump for better visibility of internal anatomy and clasp
   // arms.
+  // Tooth dimensions (half-widths along mesio-distal and bucco-lingual
+  // axes). Values calibrated to real anatomic ratios:
+  //   Maxillary molars: M-D ≈ 0.9 × B-L (nearly square, slight BL bias)
+  //   Mandibular molars: M-D ≈ 1.05 × B-L (M-D WIDER than B-L)
+  //   Max premolars:    M-D ≈ 0.85 × B-L (BL wider, more square)
+  //   Mand premolars:   M-D ≈ B-L (nearly square)
+  //   Canines:          M-D ≈ 0.85 × B-L
+  //   Incisors:         M-D < B-L (narrower along arch)
+  // Numbers are intentionally larger than literal anatomic mm so the
+  // chart has room for internal annotations + clasp arms.
+  const isMaxMolar = (n) => n >= 1 && n <= 3 || n >= 14 && n <= 16;
+  const isMandMolar = (n) => n >= 17 && n <= 19 || n >= 30 && n <= 32;
+  const isMaxPremolar = (n) => n === 4 || n === 5 || n === 12 || n === 13;
+  const isMandPremolar = (n) => n === 20 || n === 21 || n === 28 || n === 29;
   const toothHalfMD = (n) => {
-    if (RPD_FIRST_MOLARS.has(n) || RPD_SECOND_MOLARS.has(n) || RPD_THIRD_MOLARS.has(n)) return 37;
-    if ([4,5,12,13,20,21,28,29].includes(n)) return 32;   // premolars
-    if (RPD_CANINES.has(n)) return 31;                     // canines
+    if (isMaxMolar(n)) return 48;       // max molars: nearly square
+    if (isMandMolar(n)) return 50;      // mand molars: MD slightly wider
+    if (isMaxPremolar(n)) return 38;
+    if (isMandPremolar(n)) return 40;
+    if (RPD_CANINES.has(n)) return 36;
     if (isMaxCentralPF(n)) return 32;
     if (isMaxLateralPF(n)) return 28;
     if (isMandCentralPF(n)) return 28;
@@ -15272,9 +15288,11 @@ function RPDPaperFormArchDrawing({
     return 28;
   };
   const toothHalfBL = (n) => {
-    if (RPD_FIRST_MOLARS.has(n) || RPD_SECOND_MOLARS.has(n) || RPD_THIRD_MOLARS.has(n)) return 62;
-    if ([4,5,12,13,20,21,28,29].includes(n)) return 54;
-    if (RPD_CANINES.has(n)) return 50;
+    if (isMaxMolar(n)) return 52;       // max molars: BL slight wider
+    if (isMandMolar(n)) return 46;      // mand molars: BL narrower than MD
+    if (isMaxPremolar(n)) return 45;
+    if (isMandPremolar(n)) return 42;
+    if (RPD_CANINES.has(n)) return 44;
     if (isMaxCentralPF(n)) return 42;
     if (isMaxLateralPF(n)) return 38;
     if (isMandCentralPF(n)) return 36;
