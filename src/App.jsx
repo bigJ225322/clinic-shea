@@ -16903,30 +16903,32 @@ function RPDPaperFormArchDrawing({
     }
     // Default: single palatal strap.
     //
-    // The strap should always SPAN THE FULL PALATE laterally, even
-    // when abutments happen to be on just one side of the arch. V3
-    // used abutment X-extent for both bounds, which collapsed to a
-    // short stub when abutments were unilateral (e.g. #2 + #5 on
-    // patient's right only — the strap only covered the right half).
+    // The strap should sit INSIDE the palate at the strap's Y level,
+    // bounded by the lingual surfaces of the teeth AT that Y. Prior
+    // versions used the min/max X of every tooth's lingual anchor —
+    // but the palatal width varies by Y (narrower anteriorly, wider
+    // posteriorly), so using all-tooth X bounds made the strap span
+    // the full chart width and cut through teeth at the strap's Y.
     //
-    // V4 decouples X and Y:
+    // V5 anchors X to the teeth on each side closest to the strap's
+    // Y level:
+    //
     //   Y position = average Y of ABUTMENT lingual anchors
-    //                (the strap sits at the level the abutments
-    //                connect to it, not pulled forward by anteriors)
-    //   X extent   = min/max X of ALL present-or-abutment teeth's
-    //                lingual anchors (full palate width)
+    //                (so the strap sits where it connects)
+    //   X bounds   = lingual X of the right-side tooth nearest the
+    //                strap Y (left boundary) + lingual X of the
+    //                left-side tooth nearest the strap Y (right
+    //                boundary)
     //
-    // Bilateral cases now look the same as before (abutments define
-    // both Y and the X extent because their X range already spans the
-    // arch). Unilateral cases get a properly-wide strap that extends
-    // across the palate; the abutments connect to it via minor
-    // connector struts that are already drawn separately.
+    // Result: the strap is a horizontal band at the abutment level,
+    // bounded laterally by the teeth at that level. Minor connector
+    // struts from abutments at OTHER Y levels still reach the strap
+    // because the strut length is fixed.
     const abutAnchors = [...abutTeethSet]
       .filter(n => inActiveArch(n))
       .map(n => palatalAt(n, 1.0));
     if (abutAnchors.length < 1) {
-      // No abutments yet — fall back to the curve-following render so
-      // the user sees SOMETHING while still inputting the case.
+      // No abutments yet — fall back to the curve-following render.
       const inDefaultRange = (n) => isMax ? (n >= 4 && n <= 13) : (n >= 20 && n <= 29);
       const midTeeth = archTeeth.filter(n => inDefaultRange(n) || abutTeethSet.has(n));
       const upper = midTeeth.map(n => palatalAt(n, 0.9));
@@ -16935,14 +16937,40 @@ function RPDPaperFormArchDrawing({
     }
     const ys = abutAnchors.map(p => p.y);
     const avgY = ys.reduce((s, y) => s + y, 0) / ys.length;
-    // X extent: every present-or-abutment tooth's lingual X, so the
-    // strap spans the full palate width regardless of abutment laterality.
-    const allLingualXs = archTeeth
-      .filter(n => isPresent(n) || abutTeethSet.has(n))
-      .map(n => palatalAt(n, 1.0).x);
-    if (allLingualXs.length < 2) return null;
-    const minX = Math.min(...allLingualXs);
-    const maxX = Math.max(...allLingualXs);
+    // Right side of the arch = patient's right = #1-8 max / #25-32 mand
+    // (visible on the LEFT side of the chart at low X). Left side
+    // (patient's left) is the opposite range.
+    const rightSideTeeth = archTeeth.filter(n =>
+      isMax ? (n >= 1 && n <= 8) : (n >= 25 && n <= 32));
+    const leftSideTeeth = archTeeth.filter(n =>
+      isMax ? (n >= 9 && n <= 16) : (n >= 17 && n <= 24));
+    const closestPresentByY = (sideTeeth, targetY) => {
+      let best = null;
+      let bestDist = Infinity;
+      for (const n of sideTeeth) {
+        if (!isPresent(n) && !abutTeethSet.has(n)) continue;
+        const dist = Math.abs(positionOf(n).cy - targetY);
+        if (dist < bestDist) { bestDist = dist; best = n; }
+      }
+      return best;
+    };
+    const rightAnchor = closestPresentByY(rightSideTeeth, avgY);
+    const leftAnchor = closestPresentByY(leftSideTeeth, avgY);
+    if (!rightAnchor || !leftAnchor) {
+      // Only one side has present teeth — fall back to a band spanning
+      // the abutment X-range so we render something.
+      const xsFb = abutAnchors.map(p => p.x);
+      const minXFb = Math.min(...xsFb);
+      const maxXFb = Math.max(...xsFb);
+      const strapThickFb = 22;
+      const hFb = strapThickFb / 2;
+      const dFb = `M ${minXFb} ${avgY - hFb} L ${maxXFb} ${avgY - hFb}` +
+                  ` L ${maxXFb} ${avgY + hFb} L ${minXFb} ${avgY + hFb} Z`;
+      return <g key={key}><path d={dFb} fill={C_CAST} fillOpacity={0.75}
+        stroke={C_CAST} strokeWidth={1.4} strokeLinejoin="round" /></g>;
+    }
+    const minX = palatalAt(rightAnchor, 1.0).x;
+    const maxX = palatalAt(leftAnchor, 1.0).x;
     const strapThick = 22;
     const h = strapThick / 2;
     const d = `M ${minX} ${avgY - h} L ${maxX} ${avgY - h}` +
