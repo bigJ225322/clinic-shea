@@ -16903,30 +16903,27 @@ function RPDPaperFormArchDrawing({
     }
     // Default: single palatal strap.
     //
-    // The strap should sit INSIDE the palate at the strap's Y level,
-    // bounded by the lingual surfaces of the teeth AT that Y. Prior
-    // versions used the min/max X of every tooth's lingual anchor —
-    // but the palatal width varies by Y (narrower anteriorly, wider
-    // posteriorly), so using all-tooth X bounds made the strap span
-    // the full chart width and cut through teeth at the strap's Y.
+    // Render as a THICK STROKED PATH passing through every abutment's
+    // lingual anchor (palatalAt depth 1.0). Each abutment's anchor is
+    // a point ON the strap centerline; with thickness 22 px the strap
+    // extends ±11 px perpendicularly, comfortably enclosing the minor
+    // connector strut endpoints (which sit at depth ~1.17 from tooth
+    // center, ~4 px deeper than the strap centerline). This guarantees
+    // every minor connector strut visibly TERMINATES INSIDE the strap.
     //
-    // V5 anchors X to the teeth on each side closest to the strap's
-    // Y level:
-    //
-    //   Y position = average Y of ABUTMENT lingual anchors
-    //                (so the strap sits where it connects)
-    //   X bounds   = lingual X of the right-side tooth nearest the
-    //                strap Y (left boundary) + lingual X of the
-    //                left-side tooth nearest the strap Y (right
-    //                boundary)
-    //
-    // Result: the strap is a horizontal band at the abutment level,
-    // bounded laterally by the teeth at that level. Minor connector
-    // struts from abutments at OTHER Y levels still reach the strap
-    // because the strut length is fixed.
+    // Multiple iterations of this code tried to compute a fixed Y for
+    // the strap and then place it horizontally — each failed in some
+    // direction (avgY-across-all-teeth pulled forward by anteriors;
+    // abutment-only avgY left the strut endpoints sitting on the
+    // wrong side of the band; per-Y palatal walls produced bands that
+    // didn't reach abutments at other Ys). The pass-through approach
+    // makes the connectivity property structural — by construction
+    // the strap passes through every abutment anchor, so the struts
+    // always meet the strap.
     const abutAnchors = [...abutTeethSet]
       .filter(n => inActiveArch(n))
-      .map(n => palatalAt(n, 1.0));
+      .map(n => palatalAt(n, 1.0))
+      .sort((a, b) => a.x - b.x);
     if (abutAnchors.length < 1) {
       // No abutments yet — fall back to the curve-following render.
       const inDefaultRange = (n) => isMax ? (n >= 4 && n <= 13) : (n >= 20 && n <= 29);
@@ -16935,51 +16932,22 @@ function RPDPaperFormArchDrawing({
       const lower = midTeeth.map(n => palatalAt(n, 1.5));
       return <g key={key}>{filledBand(upper, lower)}</g>;
     }
-    const ys = abutAnchors.map(p => p.y);
-    const avgY = ys.reduce((s, y) => s + y, 0) / ys.length;
-    // Right side of the arch = patient's right = #1-8 max / #25-32 mand
-    // (visible on the LEFT side of the chart at low X). Left side
-    // (patient's left) is the opposite range.
-    const rightSideTeeth = archTeeth.filter(n =>
-      isMax ? (n >= 1 && n <= 8) : (n >= 25 && n <= 32));
-    const leftSideTeeth = archTeeth.filter(n =>
-      isMax ? (n >= 9 && n <= 16) : (n >= 17 && n <= 24));
-    const closestPresentByY = (sideTeeth, targetY) => {
-      let best = null;
-      let bestDist = Infinity;
-      for (const n of sideTeeth) {
-        if (!isPresent(n) && !abutTeethSet.has(n)) continue;
-        const dist = Math.abs(positionOf(n).cy - targetY);
-        if (dist < bestDist) { bestDist = dist; best = n; }
-      }
-      return best;
-    };
-    const rightAnchor = closestPresentByY(rightSideTeeth, avgY);
-    const leftAnchor = closestPresentByY(leftSideTeeth, avgY);
-    if (!rightAnchor || !leftAnchor) {
-      // Only one side has present teeth — fall back to a band spanning
-      // the abutment X-range so we render something.
-      const xsFb = abutAnchors.map(p => p.x);
-      const minXFb = Math.min(...xsFb);
-      const maxXFb = Math.max(...xsFb);
-      const strapThickFb = 22;
-      const hFb = strapThickFb / 2;
-      const dFb = `M ${minXFb} ${avgY - hFb} L ${maxXFb} ${avgY - hFb}` +
-                  ` L ${maxXFb} ${avgY + hFb} L ${minXFb} ${avgY + hFb} Z`;
-      return <g key={key}><path d={dFb} fill={C_CAST} fillOpacity={0.75}
-        stroke={C_CAST} strokeWidth={1.4} strokeLinejoin="round" /></g>;
+    if (abutAnchors.length === 1) {
+      // Single abutment — just draw a small dot at its anchor so there's
+      // something visible.
+      const p = abutAnchors[0];
+      return <g key={key}><circle cx={p.x} cy={p.y} r={11}
+        fill={C_CAST} fillOpacity={0.75} stroke={C_CAST} strokeWidth={1.4} /></g>;
     }
-    const minX = palatalAt(rightAnchor, 1.0).x;
-    const maxX = palatalAt(leftAnchor, 1.0).x;
-    const strapThick = 22;
-    const h = strapThick / 2;
-    const d = `M ${minX} ${avgY - h} L ${maxX} ${avgY - h}` +
-              ` L ${maxX} ${avgY + h} L ${minX} ${avgY + h} Z`;
+    // Build a smooth path passing through every abutment anchor.
+    // buildPassThroughPath (Catmull-Rom helper) handles 2+ points.
+    const centerlineD = buildPassThroughPath(abutAnchors);
     return (
       <g key={key}>
-        <path d={d}
-          fill={C_CAST} fillOpacity={0.75}
-          stroke={C_CAST} strokeWidth={1.4} strokeLinejoin="round" />
+        <path d={centerlineD}
+          stroke={C_CAST} strokeWidth={22}
+          strokeLinecap="round" strokeLinejoin="round"
+          fill="none" opacity={0.75} />
       </g>
     );
   };
