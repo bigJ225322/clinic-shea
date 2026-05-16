@@ -4014,6 +4014,115 @@ describe("UIC-AUDIT — Clasp 1/3 rule in lab Rx", () => {
   });
 });
 
+describe("UIC-AUDIT — Lecture 4 deep-mine: diagnostic + verification + NMCD refinements", () => {
+  it("Step 1 requires BOTH pan AND FMS (not either/or)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/full mouth series.*panoramic/i);
+    expect(r.axiumSteps).toMatch(/Not one or the other/);
+  });
+  it("Step 1 includes EOE + IOE cancer screening + TMD with max opening measurement", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/Oral cancer screening/);
+    expect(r.axiumSteps).toMatch(/TMD screening/);
+    expect(r.axiumSteps).toMatch(/maximum opening.*≥40 mm/);
+  });
+  it("Step 2 enumerates the 5 diagnostic-cast questions", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/FIVE DIAGNOSTIC-CAST QUESTIONS/);
+    expect(r.axiumSteps).toMatch(/VDO increase needed/);
+    expect(r.axiumSteps).toMatch(/supra-erupted/);
+    expect(r.axiumSteps).toMatch(/RCT \(root canal therapy\) needed/);
+    expect(r.axiumSteps).toMatch(/crown lengthening/);
+    expect(r.axiumSteps).toMatch(/mal-positioned teeth/);
+  });
+  it("Step 2 mounting marked as hard gate", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/absolutely necessary.*HARD GATE/);
+  });
+  it("Step 6 includes verification cast step between undercuts and rest seats", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/VERIFICATION CAST.*REQUIRED before rest seat prep/);
+  });
+  it("Step 6 includes survey crown pre-cementation verification gate", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [3]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/PRE-CEMENTATION VERIFICATION GATE/);
+    expect(r.axiumSteps).toMatch(/Do NOT cement until surveyor verification passes/);
+  });
+  it("Maxillary Class I fires balanced-required flag (NOT mandibular)", () => {
+    const cMax = rpdMakeBlankCase("maxillary");
+    setMissing(cMax, [1, 16]);
+    setMissing(cMax, [2, 3, 14, 15]);
+    cMax.patientFactors.opposingArch = "natural";
+    const rMax = rpdRunEngine(cMax);
+    expect(rMax.redFlags.find(f => f.type === "max-class-i-balanced-required")).toBeDefined();
+  });
+  it("Class IV fires anterior-MI-contact flag", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissing(c, [1, 16]);
+    setMissing(c, [8, 9]); // Class IV
+    const r = rpdRunEngine(c);
+    const cIvFlag = r.redFlags.find(f => f.type === "class-iv-anterior-mi-contact");
+    expect(cIvFlag).toBeDefined();
+    expect(cIvFlag.message).toMatch(/prevent supra-eruption/);
+    expect(cIvFlag.message).toMatch(/NO contacts during lateral movements/);
+  });
+  it("NMCD flag includes Fueki 2016 two-tier split + signed consent + arylketone polymer", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30]); // Class III mod 0
+    c.patientFactors.metalAllergy = true;
+    const r = rpdRunEngine(c);
+    const nmcdFlag = r.redFlags.find(f => f.type === "nmcd");
+    expect(nmcdFlag).toBeDefined();
+    expect(nmcdFlag.message).toMatch(/SIGNED INFORMED CONSENT BEFORE fabrication/);
+    expect(nmcdFlag.message).toMatch(/FUEKI 2016 TWO-TIER SPLIT/);
+    expect(nmcdFlag.message).toMatch(/arylketone polymer/);
+    expect(nmcdFlag.message).toMatch(/parafunction/i);
+  });
+  it("Step 9 delivery includes Mizzy ON PIP (not on tissue) + disclosing wax separate from PIP", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/spray Mizzy ON THE PIP/);
+    expect(r.axiumSteps).toMatch(/PIP is for ACRYLIC-to-tissue.*disclosing wax is for METAL-to-tooth/);
+  });
+  it("Step 9 includes clinical remount protocol", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/CLINICAL REMOUNT PROTOCOL/);
+    expect(r.axiumSteps).toMatch(/PICK-UP IMPRESSION with the RPD seated/);
+  });
+  it("Step 9 includes xerostomia root caries protocol", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissing(c, [17, 32]);
+    setMissing(c, [30, 31]);
+    const r = rpdRunEngine(c);
+    expect(r.axiumSteps).toMatch(/XEROSTOMIA RISK/);
+    expect(r.axiumSteps).toMatch(/ROOT CARIES specifically AROUND THE RETAINERS/);
+  });
+});
+
 describe("UIC-AUDIT — Retainers PDF deep-mine: encirclement + taxonomy + variants", () => {
   it("Step 3 includes encirclement rule (>180° or 3 contact points)", () => {
     const c = rpdMakeBlankCase("mandibular");
@@ -4147,23 +4256,35 @@ describe("UIC-AUDIT — Lecture 3 MI primary / CR fallback + Class I balanced st
     const r = rpdRunEngine(c);
     expect(r.axiumSteps).toMatch(/MINUS 2-4 mm/);
   });
-  it("Class I distal extension on natural opposing fires balanced-strived flag", () => {
-    const c = rpdMakeBlankCase("mandibular");
-    setMissing(c, [17, 32]);
-    setMissing(c, [18, 19, 30, 31]); // Class I bilateral DE
-    c.patientFactors.opposingArch = "natural";
-    const r = rpdRunEngine(c);
-    const balancedStrivedFlag = r.redFlags.find(f => f.type === "class-i-balanced-strived");
-    expect(balancedStrivedFlag).toBeDefined();
-    expect(balancedStrivedFlag.message).toMatch(/also strived/);
+  it("Maxillary Class I on natural opposing fires balanced-required flag (NOT mandibular)", () => {
+    // Per Occlusion lecture p. 4: ONLY maxillary Class I requires balancing
+    // contacts; mandibular Class I does NOT. The earlier blanket "Class I
+    // strives balanced" rule from Lecture 3 is refined here arch-specifically.
+    const cMax = rpdMakeBlankCase("maxillary");
+    setMissing(cMax, [1, 16]);
+    setMissing(cMax, [2, 3, 14, 15]); // Class I bilateral DE
+    cMax.patientFactors.opposingArch = "natural";
+    const rMax = rpdRunEngine(cMax);
+    const maxFlag = rMax.redFlags.find(f => f.type === "max-class-i-balanced-required");
+    expect(maxFlag).toBeDefined();
+    expect(maxFlag.message).toMatch(/REQUIRES balancing contacts/);
+    expect(maxFlag.message).toMatch(/LATERAL to the residual alveolar ridge/);
+
+    const cMand = rpdMakeBlankCase("mandibular");
+    setMissing(cMand, [17, 32]);
+    setMissing(cMand, [18, 19, 30, 31]);
+    cMand.patientFactors.opposingArch = "natural";
+    const rMand = rpdRunEngine(cMand);
+    // Mandibular Class I does NOT fire the max-balanced-required flag
+    expect(rMand.redFlags.find(f => f.type === "max-class-i-balanced-required")).toBeUndefined();
   });
-  it("Class III on natural opposing does NOT fire balanced-strived flag (only group function)", () => {
+  it("Class III on natural opposing does NOT fire balanced-required flag (only group function)", () => {
     const c = rpdMakeBlankCase("maxillary");
     setMissing(c, [1, 16]);
     setMissing(c, [3]); // Class III
     c.patientFactors.opposingArch = "natural";
     const r = rpdRunEngine(c);
-    expect(r.redFlags.find(f => f.type === "class-i-balanced-strived")).toBeUndefined();
+    expect(r.redFlags.find(f => f.type === "max-class-i-balanced-required")).toBeUndefined();
     expect(r.redFlags.find(f => f.type === "occlusion-scheme-group-function")).toBeDefined();
   });
 });

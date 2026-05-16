@@ -258,11 +258,6 @@ Please return for try-in. Thank you.",
       "type": "altered-cast",
     },
     {
-      "message": "Kennedy Class I distal extension: UIC Lecture 3 p. 4 — bilateral balanced articulation is "also strived" in Class I cases (in addition to group function on natural-tooth working side). The combination provides stability against distal extension saddle tipping. Set posterior denture teeth for simultaneous bilateral contacts in lateral excursions; verify no balancing-side interferences exist on remaining natural teeth.",
-      "severity": "info",
-      "type": "class-i-balanced-strived",
-    },
-    {
       "message": "Occlusion scheme (Lecture 3 p. 4): GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — UIC's explicit prohibition. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
       "severity": "info",
       "type": "occlusion-scheme-group-function",
@@ -1704,9 +1699,9 @@ Please return for try-in. Thank you.",
       "type": "altered-cast",
     },
     {
-      "message": "Kennedy Class I distal extension: UIC Lecture 3 p. 4 — bilateral balanced articulation is "also strived" in Class I cases (in addition to group function on natural-tooth working side). The combination provides stability against distal extension saddle tipping. Set posterior denture teeth for simultaneous bilateral contacts in lateral excursions; verify no balancing-side interferences exist on remaining natural teeth.",
+      "message": "Maxillary Kennedy Class I distal extension: UIC Occlusion lecture p. 4 — REQUIRES balancing contacts (in addition to group function on remaining natural teeth). Set posterior denture teeth LATERAL to the residual alveolar ridge (cross-arch loading consideration — distributes occlusal force across the palate). At wax-rim try-in, verify simultaneous bilateral contacts in lateral excursions on denture teeth; natural-tooth side maintains group function with no interferences.",
       "severity": "info",
-      "type": "class-i-balanced-strived",
+      "type": "max-class-i-balanced-required",
     },
     {
       "message": "Occlusion scheme (Lecture 3 p. 4): GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — UIC's explicit prohibition. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
