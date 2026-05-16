@@ -16903,24 +16903,29 @@ function RPDPaperFormArchDrawing({
     }
     // Default: single palatal strap.
     //
-    // Anchor the strap to the ABUTMENTS only, not to every present
-    // tooth. Prior versions averaged Y across all present teeth, which
-    // pulled the strap anterior whenever anteriors were present (their
-    // lingual anchors sit at low Y in the chart) — the band ended up
-    // crossing through anterior teeth instead of sitting where the
-    // abutments are.
+    // The strap should always SPAN THE FULL PALATE laterally, even
+    // when abutments happen to be on just one side of the arch. V3
+    // used abutment X-extent for both bounds, which collapsed to a
+    // short stub when abutments were unilateral (e.g. #2 + #5 on
+    // patient's right only — the strap only covered the right half).
     //
-    // V3 geometry:
+    // V4 decouples X and Y:
     //   Y position = average Y of ABUTMENT lingual anchors
-    //   X extent   = min/max X of ABUTMENT lingual anchors
-    // The strap sits at the level of the abutments and extends just
-    // far enough to reach them. Minor connector struts already handle
-    // the short bridge from each abutment's lingual edge to the strap.
+    //                (the strap sits at the level the abutments
+    //                connect to it, not pulled forward by anteriors)
+    //   X extent   = min/max X of ALL present-or-abutment teeth's
+    //                lingual anchors (full palate width)
+    //
+    // Bilateral cases now look the same as before (abutments define
+    // both Y and the X extent because their X range already spans the
+    // arch). Unilateral cases get a properly-wide strap that extends
+    // across the palate; the abutments connect to it via minor
+    // connector struts that are already drawn separately.
     const abutAnchors = [...abutTeethSet]
       .filter(n => inActiveArch(n))
       .map(n => palatalAt(n, 1.0));
-    if (abutAnchors.length < 2) {
-      // Single abutment or none — fall back to a tooth-tracking band so
+    if (abutAnchors.length < 1) {
+      // No abutments yet — fall back to the curve-following render so
       // the user sees SOMETHING while still inputting the case.
       const inDefaultRange = (n) => isMax ? (n >= 4 && n <= 13) : (n >= 20 && n <= 29);
       const midTeeth = archTeeth.filter(n => inDefaultRange(n) || abutTeethSet.has(n));
@@ -16928,11 +16933,16 @@ function RPDPaperFormArchDrawing({
       const lower = midTeeth.map(n => palatalAt(n, 1.5));
       return <g key={key}>{filledBand(upper, lower)}</g>;
     }
-    const xs = abutAnchors.map(p => p.x);
     const ys = abutAnchors.map(p => p.y);
     const avgY = ys.reduce((s, y) => s + y, 0) / ys.length;
-    const minX = Math.min(...xs);
-    const maxX = Math.max(...xs);
+    // X extent: every present-or-abutment tooth's lingual X, so the
+    // strap spans the full palate width regardless of abutment laterality.
+    const allLingualXs = archTeeth
+      .filter(n => isPresent(n) || abutTeethSet.has(n))
+      .map(n => palatalAt(n, 1.0).x);
+    if (allLingualXs.length < 2) return null;
+    const minX = Math.min(...allLingualXs);
+    const maxX = Math.max(...allLingualXs);
     const strapThick = 22;
     const h = strapThick / 2;
     const d = `M ${minX} ${avgY - h} L ${maxX} ${avgY - h}` +
