@@ -13065,15 +13065,30 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
       // undercut location. The engine's own DB default for sideToward=mesial
       // does NOT trigger Reverse Akers (that case is a standard Akers
       // engaging DB, which is the textbook expectation).
+      //
+      // UIC indication scope (Retainers PDF p.27): "Used on bicuspids and
+      // cuspids, when usable undercut is on the distal surface of the
+      // abutment tooth." When the engine fires Reverse Akers on a molar
+      // (outside UIC's stated scope), the tier downgrades to "judgment"
+      // and the rationale notes the off-label use — Ring clasp is usually
+      // the preferred UIC alternative for tilted molars with distal undercuts.
+      const isBicuspidOrCanine = RPD_FIRST_PREMOLARS.has(tooth)
+                              || RPD_SECOND_PREMOLARS.has(tooth)
+                              || RPD_CANINES.has(tooth);
       claspType = "Reverse Akers";
-      claspRationale = RPD_RATIONALE.clasp["Reverse Akers"] + ` (Reverse Akers pattern: retentive arm engages ${userUndercut} undercut)`;
+      claspRationale = RPD_RATIONALE.clasp["Reverse Akers"] +
+        ` (retentive arm engages ${userUndercut} undercut)` +
+        (isBicuspidOrCanine ? "" :
+          " — NOTE: UIC restricts Reverse Akers to bicuspids and cuspids; this tooth is outside that indication scope. Consider Ring clasp instead for a tilted molar with distal undercut.");
       retentiveArm = `Cast retentive arm engaging 0.01" ${userUndercut} undercut`;
       reciprocation = { type: "arm",
         text: userUndercut === "disto-lingual" ? "Cast buccal reciprocal arm" : "Cast lingual reciprocal arm",
         rationale: RPD_RATIONALE.reciprocation.arm };
-      claspTier = "common";
-      claspAlternative = null;
-      claspAlternativeRationale = "Some clinical nomenclature in some lectures labels this clasp simply as \"Akers\" with notation that the retentive arm engages the DL/DB undercut (rather than calling it \"Reverse Akers\" explicitly). Same physical design.";
+      claspTier = isBicuspidOrCanine ? "common" : "judgment";
+      claspAlternative = isBicuspidOrCanine ? null : "Ring clasp";
+      claspAlternativeRationale = isBicuspidOrCanine
+        ? "UIC's lab Rx convention writes \"Akers clasp engaging 0.01\" [DL/DB] undercut\" rather than \"Reverse Akers\" explicitly — same physical design, different name. Either notation is accepted."
+        : "Ring clasp is UIC's typical choice for a tilted molar with a distal undercut: ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut. Reverse Akers on a molar is off-label per the Retainers lecture scope (bicuspids/cuspids only).";
     } else {
       claspType = "Akers";
       claspRationale = RPD_RATIONALE.clasp["Akers"];
@@ -13390,6 +13405,46 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
       type: "healing-period",
       message: `Only ${months} mo since last extraction. Definitive RPD impressions cannot be taken until extraction sites have healed for at least 6 months. Recommend Interim RPD (IPD) until healing is complete.`,
     });
+  }
+
+  // Nesbit RPD prohibition — informational flag for any case configuration
+  // that historically might have been treated with a unilateral cantilever
+  // RPD ("Nesbit"). UIC explicitly bans this design due to aspiration risk
+  // (Final RPD Huddle 2 answer key Q2). The engine never emits a Nesbit
+  // RPD, but flagging the prohibition keeps it on the student's radar when
+  // they're tempted to recommend one based on outside reading.
+  //
+  // Trigger: Class III with all abutments on one side (unilateral) — the
+  // historical "you could just put a clasp on each side of the gap and
+  // call it a day" scenario where a Nesbit might be considered.
+  if (kennedy.class === "III") {
+    const archMin = caseInput.arch === "maxillary" ? 1 : 17;
+    const archMax = caseInput.arch === "maxillary" ? 16 : 32;
+    const isPresentInCase = (n) =>
+      n >= archMin && n <= archMax && caseInput.teeth?.[n]?.status !== "missing";
+    const abutSet = new Set();
+    for (const span of kennedy.spans || []) {
+      const teeth = span.teeth || [];
+      if (teeth.length === 0) continue;
+      const minT = Math.min(...teeth);
+      const maxT = Math.max(...teeth);
+      for (let t = minT - 1; t >= archMin; t--) {
+        if (isPresentInCase(t)) { abutSet.add(t); break; }
+      }
+      for (let t = maxT + 1; t <= archMax; t++) {
+        if (isPresentInCase(t)) { abutSet.add(t); break; }
+      }
+    }
+    const isMaxArch = caseInput.arch === "maxillary";
+    const rightAbuts = [...abutSet].filter(n => isMaxArch ? n <= 8 : n >= 25);
+    const leftAbuts = [...abutSet].filter(n => isMaxArch ? n >= 9 : n <= 24);
+    if (rightAbuts.length === 0 || leftAbuts.length === 0) {
+      flags.push({
+        severity: "info",
+        type: "nesbit-prohibition",
+        message: "Nesbit (unilateral cantilever) RPD is PROHIBITED at UIC College of Dentistry per Final RPD Huddle 2 answer key — aspiration risk if dislodged. For this short unilateral edentulous space, the engine recommends a fixed solution (FPD or implants). If the patient declines fixed treatment, an Interim Partial Denture with non-metal clasps is the only acceptable removable option (Summer 2023 Interim RPD lecture: indicated for Class III / short-span IV).",
+      });
+    }
   }
 
   // Altered cast (auto for Class I/II definitive)

@@ -316,11 +316,11 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "tooth": 29,
     },
     {
-      "claspAlternative": null,
-      "claspAlternativeRationale": "Some clinical nomenclature in some lectures labels this clasp simply as "Akers" with notation that the retentive arm engages the DL/DB undercut (rather than calling it "Reverse Akers" explicitly). Same physical design.",
+      "claspAlternative": "Ring clasp",
+      "claspAlternativeRationale": "Ring clasp is UIC's typical choice for a tilted molar with a distal undercut: ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut. Reverse Akers on a molar is off-label per the Retainers lecture scope (bicuspids/cuspids only).",
       "claspAlternatives": null,
-      "claspRationale": "Used when only a distal undercut is available (Reverse Akers pattern: retentive arm engages disto-lingual undercut)",
-      "claspTier": "common",
+      "claspRationale": "Used when only a distal undercut is available (retentive arm engages disto-lingual undercut) — NOTE: UIC restricts Reverse Akers to bicuspids and cuspids; this tooth is outside that indication scope. Consider Ring clasp instead for a tilted molar with distal undercut.",
+      "claspTier": "judgment",
       "claspType": "Reverse Akers",
       "contraindications": [
         {
@@ -697,7 +697,13 @@ Please return for try-in. Thank you.",
       "residual ridge",
     ],
   },
-  "redFlags": [],
+  "redFlags": [
+    {
+      "message": "Nesbit (unilateral cantilever) RPD is PROHIBITED at UIC College of Dentistry per Final RPD Huddle 2 answer key — aspiration risk if dislodged. For this short unilateral edentulous space, the engine recommends a fixed solution (FPD or implants). If the patient declines fixed treatment, an Interim Partial Denture with non-metal clasps is the only acceptable removable option (Summer 2023 Interim RPD lecture: indicated for Class III / short-span IV).",
+      "severity": "info",
+      "type": "nesbit-prohibition",
+    },
+  ],
 }
 `;
 
