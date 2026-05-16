@@ -13948,6 +13948,23 @@ const RPD_AXIUM_STEPS = [
     axiumEntry: "Lab Rx submitted (D5213/D5214 definitive; D5820/D5821 interim); framework try-in note; altered cast impression note (Class I/II); final delivery note",
     design: "This engine's lab script section becomes the Rx text. Procedure code in metadata.",
   },
+  // ── (E) Phase IV: Post-Delivery Follow-up (per UIC Delivery RPD lecture) ──
+  {
+    step: 8,
+    phase: "Phase IV: Post-Delivery Follow-Up",
+    clinic: "Delivery Day + 24-Hour Recall",
+    action: "Delivery: check intaglio fit with PIP paste + Mizzy spray (max pressure spots: tuberosities, hamular notch, zygomatic root, rugae, midpalatal suture/torus; mand pressure spots: lingual ridge / mylohyoid ridge / buccal shelf / retromolar pad / external oblique ridge). Verify proximal plate + rest seat contact with disclosing wax. Check occlusion (AccuFilm II or Surgident full arch); reduce premature contacts on denture teeth until natural teeth occlude simultaneously in MI. Tighten retentive arms (Bird Beak or Three Prong pliers — cast harder than wrought wire; I-bar adjusted inward/outward only; cast Akers only in horizontal plane). Polish metal with metal kit; pumice on rag wheel for acrylic. DO NOT polish intaglio or denture teeth. Patient instructions: wear RPD first 24 hours, then remove nightly + store in water. NO toothpaste — use soap or denture cleaner. 24-hour follow-up scheduled.",
+    axiumEntry: "Delivery note (D5213/D5214); occlusal adjustments; pressure-spot adjustments; clinical-remount note if pick-up impression taken; patient instruction documentation",
+    design: "Avoid delivery the day before a holiday or weekend (patient needs same-week access for adjustments).",
+  },
+  {
+    step: 9,
+    phase: "Phase IV: Post-Delivery Follow-Up",
+    clinic: "24-Hour Follow-Up + 1-Week Follow-Up",
+    action: "24-hour follow-up: identify and adjust soft tissue irritation, verify intaglio comfort, re-check occlusion. 1-week follow-up: re-evaluate patient adaptation, check for sore spots, re-evaluate occlusion under function, reinforce home-care + nightly removal + water storage. Subsequent recall every 6 months (or 3-4 months for high-perio-risk patients).",
+    axiumEntry: "D9445 (Office visit — follow-up); adjustment notes; sore spot relief notes; recall schedule",
+    design: "If Class I distal extension RPD begins rotating around the fulcrum line at follow-up (alginate test: thick alginate on intaglio = reline indicated), schedule lab reline.",
+  },
 ];
 
 function rpdGenerateAxiumSteps(caseInput, kennedy, designIntent) {
