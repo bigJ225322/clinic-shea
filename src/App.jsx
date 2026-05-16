@@ -17549,7 +17549,7 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
           {alternative && (
             <div style={{ marginBottom: "6px", fontSize: "12px" }}>
               Engine selected <strong>{lines[0]?.[1] || title}</strong>.
-              {" "}UIC alternative: <strong>{alternative}</strong>.
+              {" "}Alternative: <strong>{alternative}</strong>.
             </div>
           )}
           <div style={{ fontStyle: "italic", color: "var(--ink-soft)" }}>
