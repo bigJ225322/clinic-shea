@@ -2250,42 +2250,6 @@ const CATEGORIES = [
       { id: "3319", label: "Endo Access Fill" },
     ]},
   ]},
-  { id: "dentures", label: "Dentures", groups: [
-    { id: "f-f", label: "Complete Denture Sequence", procedures: [
-      { id: "3704", label: "#1 — COE & Diagnostic Impressions" },
-      { id: "3831", label: "#2 — Border Molding & Final Impression" },
-      { id: "3954", label: "#3 — Wax Rims" },
-      { id: "4055", label: "#4 — Anterior Try-In" },
-      { id: "4169", label: "#5 — Posterior Try-In" },
-      { id: "4257", label: "#6 — Delivery" },
-      { id: "4374", label: "#7 — Adjustment" },
-    ]},
-    { id: "denture-other", label: "Maintenance", procedures: [
-      { id: "4454", label: "Lab Reline" },
-    ]},
-  ]},
-  { id: "implant", label: "Implant", groups: [
-    { id: "implant-procs", label: "Procedures", procedures: [
-      { id: "4574", label: "Implant-Level Impression" },
-      { id: "4685", label: "Custom Abutment Try-In" },
-      { id: "4812", label: "Crown Delivery" },
-    ]},
-  ]},
-  { id: "digital", label: "Digital", groups: [
-    { id: "digital-prep", label: "Prep & Scan", procedures: [
-      { id: "5004", label: "Inlay" },
-      { id: "5032", label: "Onlay" },
-      { id: "5062", label: "Crown" },
-    ]},
-    { id: "digital-deliver", label: "Delivery", procedures: [
-      { id: "5305", label: "Digital Delivery" },
-    ]},
-  ]},
-  { id: "endo", label: "Endo", groups: [
-    { id: "rct", label: "Root Canal", procedures: [
-      { id: "5472", label: "RCT" },
-    ]},
-  ]},
   { id: "peds", label: "Peds", groups: [
     { id: "peds-exam", label: "Exam & Recall", procedures: [
       { id: "5985", label: "Initial / Recall" },
@@ -2321,6 +2285,20 @@ const CATEGORIES = [
       { id: "peds-eruption",  label: "Tooth Eruption" },
     ]},
   ]},
+  { id: "dentures", label: "Dentures", groups: [
+    { id: "f-f", label: "Complete Denture Sequence", procedures: [
+      { id: "3704", label: "#1 — COE & Diagnostic Impressions" },
+      { id: "3831", label: "#2 — Border Molding & Final Impression" },
+      { id: "3954", label: "#3 — Wax Rims" },
+      { id: "4055", label: "#4 — Anterior Try-In" },
+      { id: "4169", label: "#5 — Posterior Try-In" },
+      { id: "4257", label: "#6 — Delivery" },
+      { id: "4374", label: "#7 — Adjustment" },
+    ]},
+    { id: "denture-other", label: "Maintenance", procedures: [
+      { id: "4454", label: "Lab Reline" },
+    ]},
+  ]},
   { id: "lab", label: "Lab Scripts", groups: [
     { id: "lab-fixed", label: "Fixed & Implant", procedures: [
       { id: "lab-pfm",           label: "PFM Crown" },
@@ -2343,6 +2321,28 @@ const CATEGORIES = [
       { id: "lab-howto",     label: "How to Submit a Lab Script" },
       { id: "lab-tooth-req", label: "Tooth Requisition" },
       { id: "lab-turnaround", label: "Lab Turn-Around Time" },
+    ]},
+  ]},
+  { id: "implant", label: "Implant", groups: [
+    { id: "implant-procs", label: "Procedures", procedures: [
+      { id: "4574", label: "Implant-Level Impression" },
+      { id: "4685", label: "Custom Abutment Try-In" },
+      { id: "4812", label: "Crown Delivery" },
+    ]},
+  ]},
+  { id: "digital", label: "Digital", groups: [
+    { id: "digital-prep", label: "Prep & Scan", procedures: [
+      { id: "5004", label: "Inlay" },
+      { id: "5032", label: "Onlay" },
+      { id: "5062", label: "Crown" },
+    ]},
+    { id: "digital-deliver", label: "Delivery", procedures: [
+      { id: "5305", label: "Digital Delivery" },
+    ]},
+  ]},
+  { id: "endo", label: "Endo", groups: [
+    { id: "rct", label: "Root Canal", procedures: [
+      { id: "5472", label: "RCT" },
     ]},
   ]},
   { id: "misc", label: "Misc.", groups: [
