@@ -53,12 +53,12 @@ describe("Case 1 — Maxillary Class II Mod 3 (Design Case I)", () => {
   it("#4 is Akers", () => expect(designOf(r, 4)?.claspType).toBe("Akers"));
   it("#9 is Rest Only with ball rest", () => {
     const d = designOf(r, 9);
-    expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    expect(d?.claspType).toBe("Rest Only (no clasp)");
     expect(d?.restSeat?.type).toBe("ball");
   });
   it("#11 is Rest Only with cingulum rest", () => {
     const d = designOf(r, 11);
-    expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    expect(d?.claspType).toBe("Rest Only (no clasp)");
     expect(d?.restSeat?.type).toBe("cingulum");
   });
   it("#12 is Combination (vestibule + frenum contraindications)", () => expect(designOf(r, 12)?.claspType).toBe("Combination"));
@@ -115,12 +115,12 @@ describe("Case 3 — Maxillary few teeth remaining (Design Case II)", () => {
   it("#4 is RPI (DE terminal, no contras)", () => expect(designOf(r, 4)?.claspType).toBe("RPI"));
   it("#6 is Rest Only with cingulum rest (esthetic)", () => {
     const d = designOf(r, 6);
-    expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    expect(d?.claspType).toBe("Rest Only (no clasp)");
     expect(d?.restSeat?.type).toBe("cingulum");
   });
   it("#11 is Rest Only with cingulum rest (esthetic)", () => {
     const d = designOf(r, 11);
-    expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    expect(d?.claspType).toBe("Rest Only (no clasp)");
     expect(d?.restSeat?.type).toBe("cingulum");
   });
   it("#12 is RPI", () => expect(designOf(r, 12)?.claspType).toBe("RPI"));
@@ -233,7 +233,7 @@ describe("Case 11 — LabRx A: Maxillary Class II Mod 1 (DE left + tooth-bounded
   // valid; UIC's choice depends on case-specific retention needs.
   it("#6 is Rest Only OR I-bar esthetic (engine accepts either)", () => {
     const d = designOf(r, 6);
-    expect(["Rest Only (esthetic omission)", "I-bar (esthetic)"]).toContain(d?.claspType);
+    expect(["Rest Only (no clasp)", "I-bar (esthetic)"]).toContain(d?.claspType);
   });
 });
 
@@ -325,7 +325,7 @@ describe("Case 7 — Maxillary Class III Mod 1 (AIDental R0024)", () => {
 // Per UIC textbook: Class IV is a single anterior edentulous span crossing
 // the midline. Examples: missing #6-#11 (canine to canine). The bounding
 // teeth ARE the primary abutments — they need RETENTION (clasps), not
-// esthetic omission. Engine's Class IV exclusion handles this.
+// the no-clasp treatment. Engine's Class IV exclusion handles this.
 // =========================================================================
 describe("Case 8 — Maxillary Class IV (anterior bounded gap)", () => {
   const c = rpdMakeBlankCase("maxillary");
@@ -338,11 +338,11 @@ describe("Case 8 — Maxillary Class IV (anterior bounded gap)", () => {
   it("Major connector is A-P Strap", () => expect(r.majorConnector.type).toBe("A-P Strap"));
   it("#6 is NOT rest-only (Class IV primary abutment needs retention)", () => {
     const d = designOf(r, 6);
-    expect(d?.claspType).not.toBe("Rest Only (esthetic omission)");
+    expect(d?.claspType).not.toBe("Rest Only (no clasp)");
   });
   it("#11 is NOT rest-only", () => {
     const d = designOf(r, 11);
-    expect(d?.claspType).not.toBe("Rest Only (esthetic omission)");
+    expect(d?.claspType).not.toBe("Rest Only (no clasp)");
   });
 });
 
@@ -406,7 +406,7 @@ describe("Case 10 — Maxillary tori → U-Shaped Connector", () => {
 //   Guide planes: #4D, #9D, #12M, #13D, #15M
 //   Major connector: A-P strap
 //   #4: RPI or Combination
-//   #9: ball rest (esthetic omission, also serves as indirect retainer)
+//   #9: ball rest (no clasp, also serves as indirect retainer)
 //   #12, #13, #15: Akers
 // =========================================================================
 describe("Case 6 — Maxillary Class II Mod 2 (Huddle Week 6 Case 2)", () => {
@@ -429,7 +429,7 @@ describe("Case 6 — Maxillary Class II Mod 2 (Huddle Week 6 Case 2)", () => {
   it("#4 is RPI (DE, no contras)", () => expect(designOf(r, 4)?.claspType).toBe("RPI"));
   it("#9 is Rest Only with ball rest (esthetic)", () => {
     const d = designOf(r, 9);
-    expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    expect(d?.claspType).toBe("Rest Only (no clasp)");
     expect(d?.restSeat?.type).toBe("ball");
   });
   it("#12 is Akers (tooth-supported, NOT in max anterior set)", () => expect(designOf(r, 12)?.claspType).toBe("Akers"));
@@ -480,7 +480,7 @@ describe("Edge 1 — Class IV (anterior crossing midline)", () => {
   it("Canine abutments (#6/#11) avoid cast circumferential clasps", () => {
     // Per UIC esthetic-omission rule, max anteriors used as Class IV
     // primary abutments should NOT receive Akers (visible in smile).
-    // Acceptable: Rest Only (esthetic omission), I-bar (esthetic),
+    // Acceptable: Rest Only (no clasp), I-bar (esthetic),
     // Combination with wrought wire, or similar.
     const ar6 = designOf(r, 6);
     const ar11 = designOf(r, 11);
@@ -787,7 +787,7 @@ describe("Granular 3 — Combination clasp specifics (wrought wire + 0.02 underc
 
 // -------- Granular 4 — Esthetic omission on max anteriors --------
 // Maxillary anterior abutments bounding a modification space should
-// receive Rest Only (esthetic omission) — cast circumferential clasps
+// receive Rest Only (no clasp) — cast circumferential clasps
 // on visible anteriors fail UIC's esthetic-zone rule. The rest seat
 // itself differs by tooth: ball rest for centrals, cingulum for laterals
 // and canines.
@@ -799,19 +799,19 @@ describe("Granular 4 — Esthetic omission on maxillary anteriors", () => {
 
   it("#8 (central) is Rest Only with ball rest", () => {
     const d = designOf(r, 8);
-    expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    expect(d?.claspType).toBe("Rest Only (no clasp)");
     expect(d?.restSeat?.type).toBe("ball");
   });
 
   it("#9 (central) is Rest Only with ball rest", () => {
     const d = designOf(r, 9);
-    expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    expect(d?.claspType).toBe("Rest Only (no clasp)");
     expect(d?.restSeat?.type).toBe("ball");
   });
 
   it("#6 (canine) is Rest Only with cingulum rest", () => {
     const d = designOf(r, 6);
-    expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    expect(d?.claspType).toBe("Rest Only (no clasp)");
     expect(d?.restSeat?.type).toBe("cingulum");
   });
 
@@ -1053,10 +1053,10 @@ describe("INVARIANTS — rules that must hold across ALL test cases", () => {
   });
 
   // ─── 2. Esthetic zone never gets cast circumferential Akers ──────────
-  // Per UIC esthetic-omission rule: cast Akers clasps on max/mand
-  // anteriors are visible during smile. These teeth must be Rest Only
-  // (esthetic omission), I-bar (esthetic), or Combination — never a
-  // standard Akers.
+  // Per UIC no-clasp rule (historically "esthetic omission"): cast
+  // Akers clasps on max/mand anteriors are visible during smile.
+  // These teeth must be Rest Only (no clasp), I-bar (esthetic), or
+  // Combination — never a standard Akers.
   describe("Esthetic zone: no cast Akers on anteriors", () => {
     cases.forEach(({ name, result }) => {
       const violations = (result.abutmentDesigns || []).filter(a =>
@@ -1380,20 +1380,20 @@ describe("UIC Case 1 — Maxillary Class II Mod 3 (full granular detail)", () =>
     });
   });
 
-  // Per-abutment: #9 (left central incisor, esthetic omission with ball rest)
+  // Per-abutment: #9 (left central incisor, no clasp with ball rest)
   describe("#9 — central incisor, Rest Only with ball rest", () => {
     const d = designOf(r, 9);
-    it("claspType is Rest Only", () => expect(d?.claspType).toBe("Rest Only (esthetic omission)"));
+    it("claspType is Rest Only", () => expect(d?.claspType).toBe("Rest Only (no clasp)"));
     it("rest seat is ball, inverted cone bur", () => {
       expect(d?.restSeat?.type).toBe("ball");
       expect(d?.restSeat?.bur).toMatch(/inverted cone/i);
     });
   });
 
-  // Per-abutment: #11 (left canine, esthetic omission with cingulum rest)
+  // Per-abutment: #11 (left canine, no clasp with cingulum rest)
   describe("#11 — canine, Rest Only with cingulum rest", () => {
     const d = designOf(r, 11);
-    it("claspType is Rest Only", () => expect(d?.claspType).toBe("Rest Only (esthetic omission)"));
+    it("claspType is Rest Only", () => expect(d?.claspType).toBe("Rest Only (no clasp)"));
     it("rest seat is cingulum, inverted cone bur", () => {
       expect(d?.restSeat?.type).toBe("cingulum");
       expect(d?.restSeat?.bur).toMatch(/inverted cone/i);
@@ -1548,8 +1548,8 @@ describe("UIC Case 6 — Maxillary Class II Mod 2 full granular detail (Huddle W
 
   describe("#9 — central incisor adjacent to anterior mod space", () => {
     const d = designOf(r, 9);
-    it("claspType is Rest Only (esthetic omission)", () => {
-      expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    it("claspType is Rest Only (no clasp)", () => {
+      expect(d?.claspType).toBe("Rest Only (no clasp)");
     });
     it("rest seat is ball type (central incisor convention)", () => {
       expect(d?.restSeat?.type).toBe("ball");
@@ -1904,13 +1904,13 @@ describe("UIC Case 3 — Maxillary Full Palate granular detail", () => {
   describe("#6 / #11 — canines, Rest Only with cingulum rests", () => {
     it("#6 is Rest Only with cingulum rest, inverted cone bur", () => {
       const d = designOf(r, 6);
-      expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+      expect(d?.claspType).toBe("Rest Only (no clasp)");
       expect(d?.restSeat?.type).toBe("cingulum");
       expect(d?.restSeat?.bur).toMatch(/inverted cone/i);
     });
     it("#11 is Rest Only with cingulum rest", () => {
       const d = designOf(r, 11);
-      expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+      expect(d?.claspType).toBe("Rest Only (no clasp)");
       expect(d?.restSeat?.type).toBe("cingulum");
     });
   });
@@ -2356,12 +2356,12 @@ describe("ROBUSTNESS — malformed input handling", () => {
 //   • Canine as DE terminal → RPI (or Combination if gates fail). No
 //     canine-specific override.
 //   • Canine as tooth-supported abutment in mod space → Rest Only
-//     (esthetic omission per UIC rule) — NOT Akers, NOT cast clasp.
+//     (no clasp, per UIC rule) — NOT Akers, NOT cast clasp.
 //   The single esthetic restriction is on cast Akers (visible during
 //   smile). RPI's I-bar approaches gingivally, so it's more esthetic
 //   than Akers, not less, and is permitted on max anteriors.
 // =========================================================================
-describe("CANINE rules — RPI allowed on DE-terminal canines; esthetic omission for tooth-supported", () => {
+describe("CANINE rules — RPI allowed on DE-terminal canines; no clasp for tooth-supported", () => {
   // Max Class I with both canines as DE terminals (all premolars +
   // molars missing). #6 and #11 should produce RPI if gates pass.
   it("Max Class I, both canines as DE terminals → both produce RPI (or Combination)", () => {
@@ -2394,7 +2394,7 @@ describe("CANINE rules — RPI allowed on DE-terminal canines; esthetic omission
     setMissing(c, [1, 16, 5]);
     const r = rpdRunEngine(c);
     const d = designOf(r, 6);
-    expect(d?.claspType).toBe("Rest Only (esthetic omission)");
+    expect(d?.claspType).toBe("Rest Only (no clasp)");
     expect(d?.restSeat?.type).toBe("cingulum");
   });
 });
@@ -2413,7 +2413,7 @@ describe("INVARIANT — every DE terminal uses a stress-releasing design (never 
     if (deTerminals.length === 0) return;
     it(`${name}: every DE terminal is RPI / Combination / WW C-clasp — never Akers`, () => {
       deTerminals.forEach(a => {
-        expect(["RPI", "Combination", "WW C-clasp", "I-bar (esthetic)", "Rest Only (esthetic omission)"], `#${a.tooth}`)
+        expect(["RPI", "Combination", "WW C-clasp", "I-bar (esthetic)", "Rest Only (no clasp)"], `#${a.tooth}`)
           .toContain(a.claspType);
       });
     });
@@ -3485,7 +3485,7 @@ describe("INVARIANT — every clasp type is in the known vocabulary", () => {
   const knownClaspTypes = new Set([
     "RPI", "Combination", "Akers", "Reverse Akers", "Embrasure",
     "I-bar (esthetic)", "WW C-clasp", "Ball Clasp",
-    "Rest Only (esthetic omission)",
+    "Rest Only (no clasp)",
   ]);
   cases.forEach(({ name, result }) => {
     it(`${name}: every claspType is in the known vocabulary`, () => {

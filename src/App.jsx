@@ -12359,10 +12359,11 @@ const RPD_MAX_INCISORS     = new Set([7, 8, 9, 10]);
 const RPD_MAND_INCISORS    = new Set([23, 24, 25, 26]);
 const RPD_ANTERIOR         = new Set([6,7,8,9,10,11,22,23,24,25,26,27]);
 const RPD_POSTERIOR        = new Set([2,3,4,5,12,13,14,15,18,19,20,21,28,29,30,31]);
-// Maxillary anteriors: UIC "esthetic omission" rule applies here — these
-// teeth, when they bound a modification space (NOT when they are primary DE
-// abutments or Class IV primary abutments), receive rest-only design with
-// long/parallel guide planes, no clasp.
+// Maxillary anteriors: UIC "no-clasp" rule applies here (historically
+// called "esthetic omission"). These teeth, when they bound a modification
+// space (NOT when they are primary DE abutments or Class IV primary
+// abutments), receive rest-only design with long/parallel guide planes,
+// no clasp.
 const RPD_MAX_ANTERIOR     = new Set([6, 7, 8, 9, 10, 11]);
 // Esthetic zone for I-bar (esthetic) clasp choice — includes both arches
 // since lower anteriors are still visible enough to justify an esthetic
@@ -12816,14 +12817,14 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
     reason: "short clinical crown — evaluate for Phase II crown lengthening to establish vertical height for RPD components",
   } : null;
 
-  // ─── UIC esthetic omission: max anteriors bounding modification spaces ──
+  // ─── UIC no-clasp rule: max anteriors bounding modification spaces ──
   // No clasp; rest + long/parallel guide plane only. Major connector contact
   // provides bracing. Centrals get a distal ball rest, canines + laterals
   // get a cingulum rest. Class IV primary abutments are excluded from this
   // rule — they still need retention because the anterior gap IS the primary
   // span. But for a tooth-bounded anterior modification (e.g. Case II maxillary
   // with #7-10 missing between #6 and #11), the canine abutments DO get
-  // esthetic omission — even though the span "crosses midline" and the
+  // no-clasp treatment — even though the span "crosses midline" and the
   // engine's span classifier marks it as `type === "anterior"`.
   const isClassIVPrimary = kennedy.class === "IV" && (kennedy.primarySpans || []).includes(span);
   const isNonDESpan = span.type !== "distal-extension";
@@ -12831,7 +12832,7 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
     const restType = (tooth === 8 || tooth === 9) ? "ball" : "cingulum";
     return {
       tooth, isPrimaryAbutment: false, spanType: span.type,
-      claspType: "Rest Only (esthetic omission)",
+      claspType: "Rest Only (no clasp)",
       claspRationale: "For esthetic reasons, no clasp designed on maxillary anterior; long/parallel guide plane provides secondary retention",
       retentiveArm: "None — major connector contact provides bracing",
       reciprocation: null,
@@ -12900,10 +12901,10 @@ function rpdDesignAbutment({ tooth, span, caseInput, kennedy, attrs, vestibularL
       retentiveArm = "I-bar engaging 0.01\" mid-buccal undercut";
       reciprocation = { type: "plate", text: "Lingual plating for reciprocation", rationale: RPD_RATIONALE.reciprocation.plate };
       // I-bar esthetic on an esthetic-zone abutment is a judgment call —
-      // UIC sometimes prefers Rest Only (esthetic omission) when retention
+      // UIC sometimes prefers Rest Only (no clasp) when retention
       // budget is already adequate from other abutments.
       claspTier = "judgment";
-      claspAlternative = "Rest Only (esthetic omission)";
+      claspAlternative = "Rest Only (no clasp)";
       claspAlternativeRationale = "Design Case II uses Rest Only on max-anterior abutments when the case already has adequate retention from other clasps (e.g., bilateral RPI on premolars). Consider Rest Only if the design has ≥2 strong retentive clasps elsewhere.";
     } else if (userUndercut === "disto-buccal" || userUndercut === "disto-lingual") {
       // Reverse Akers — only when the USER explicitly sets a distal
@@ -13438,11 +13439,11 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
   const perToothEntries = [];
 
   abutmentDesigns.forEach(a => {
-    const isEsthetic = a.claspType === "Rest Only (esthetic omission)";
+    const isEsthetic = a.claspType === "Rest Only (no clasp)";
     const parts = [];
     // UIC actual lab Rx convention: Proximal plate FIRST, then Rest, then Clasp, then Reciprocation.
     // Per UIC primary-source examples (Design Case II, framework Design Case 1), the
-    // proximal plate IS included even for esthetic omission when the major connector
+    // proximal plate IS included even for no-clasp abutments when the major connector
     // contacts that abutment surface.
     const pp = rpdDescribeProximalPlate(a.guidePlane);
     if (pp) parts.push(pp);
@@ -14052,7 +14053,7 @@ function rpdRunEngine(caseInput) {
     if (!RPD_POSTERIOR.has(a1.tooth) || !RPD_POSTERIOR.has(a2.tooth)) continue;
     // Skip if either is esthetic-rest-only or already RPI/Combination (those have
     // a defined retention scheme that shouldn't be overridden by embrasure).
-    const skipClasps = new Set(["Rest Only (esthetic omission)", "RPI", "Combination"]);
+    const skipClasps = new Set(["Rest Only (no clasp)", "RPI", "Combination"]);
     if (skipClasps.has(a1.claspType) || skipClasps.has(a2.claspType)) continue;
     const note = `Consider Embrasure clasp spanning ${rpdToothName(a1.tooth)} and ${rpdToothName(a2.tooth)} — one continuous clasp with a shared occlusal embrasure rest assembly, engaging facing undercuts on both teeth. Indicated when adjacent posterior teeth both serve as abutments on a tooth-supported (modification) side with no edentulous space between them.`;
     a1.claspAlternatives = a1.claspAlternatives ? `${a1.claspAlternatives}\n\n${note}` : note;
@@ -17108,7 +17109,7 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
   // Show the decision tree for any clickable element on an abutment.
   // The tree explains WHY this abutment got the design it got — applies
   // whether you click the clasp, rest seat, guide plane, or undercut tick.
-  // Critical for "Rest Only (esthetic omission)" abutments which have no
+  // Critical for "Rest Only (no clasp)" abutments which have no
   // clasp arm to click — without this expansion the decision tree would
   // be unreachable for those teeth.
   if (abutment && ['clasp', 'reciprocal', 'iBar', 'undercut', 'rest', 'guidePlane'].includes(kind)) {
@@ -17209,15 +17210,15 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
         detail: !inEsthetic ? `Proceed to Step 3 to evaluate undercut location (${uc}).` : null,
       });
 
-      if (inEsthetic && cl === "Rest Only (esthetic omission)") {
+      if (inEsthetic && cl === "Rest Only (no clasp)") {
         // Max-anterior in tooth-bounded span → Rest Only path
         nodes.push({
           kind: "step",
           text: "Step 3 — Max anterior abutment in non-DE span?",
-          detail: "standard convention for max anteriors in tooth-supported spans: esthetic omission (rest only, no visible clasp). The major connector contact provides bracing; long parallel guide plane provides secondary retention.",
+          detail: "standard convention for max anteriors in tooth-supported spans: no clasp arm — rest only, esthetics-driven. The major connector contact provides bracing; long parallel guide plane provides secondary retention.",
         });
         nodes.push({
-          kind: "branch-taken", text: "Yes — apply esthetic omission",
+          kind: "branch-taken", text: "Yes — omit the clasp",
           detail: "No clasp on this abutment. Place rest seat (cingulum/ball) and a long parallel guide plane for path-of-insertion retention.",
         });
         nodes.push({
@@ -17226,7 +17227,7 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
         });
         nodes.push({
           kind: "leaf",
-          text: "Rest Only (esthetic omission) with " + (tooth === 8 || tooth === 9 ? "distal ball rest" : "cingulum rest"),
+          text: "Rest Only (no clasp) with " + (tooth === 8 || tooth === 9 ? "distal ball rest" : "cingulum rest"),
           detail: "Zero visible clasp. Retention comes from path-of-insertion friction along long parallel guide planes and major connector contact against lingual cingula. Used when the case has adequate retention elsewhere.",
         });
       } else if (inEsthetic && cl === "I-bar (esthetic)") {
@@ -17240,7 +17241,7 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
           detail: "Gingival approach hides cast metal from labial view; engages 0.01\" mid-buccal undercut.",
         });
         nodes.push({
-          kind: "branch-skipped", text: "Rest Only (esthetic omission) — alternative for cases with adequate retention elsewhere",
+          kind: "branch-skipped", text: "Rest Only (no clasp) — alternative for cases with adequate retention elsewhere",
           detail: null,
         });
         nodes.push({
