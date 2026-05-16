@@ -15563,6 +15563,32 @@ function RPDPaperFormArchDrawing({
     return d;
   };
 
+  // Variant of buildSmoothPath that PASSES THROUGH every supplied point
+  // (Catmull-Rom-to-Bezier conversion). buildSmoothPath uses interior
+  // points as control points, so the curve passes near but not through
+  // them — fine for outlines that just need to track the general arch
+  // shape. For major-connector bands that need to physically reach each
+  // abutment's lingual anchor (so the minor-connector strut visibly
+  // terminates inside the band), the curve must pass through every
+  // anchor — use this function instead.
+  const buildPassThroughPath = (pts) => {
+    if (pts.length === 0) return "";
+    if (pts.length === 1) return `M ${pts[0].x} ${pts[0].y}`;
+    let d = `M ${pts[0].x} ${pts[0].y}`;
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[i - 1] || pts[i];
+      const p1 = pts[i];
+      const p2 = pts[i + 1];
+      const p3 = pts[i + 2] || p2;
+      const c1x = p1.x + (p2.x - p0.x) / 6;
+      const c1y = p1.y + (p2.y - p0.y) / 6;
+      const c2x = p2.x - (p3.x - p1.x) / 6;
+      const c2y = p2.y - (p3.y - p1.y) / 6;
+      d += ` C ${c1x} ${c1y} ${c2x} ${c2y} ${p2.x} ${p2.y}`;
+    }
+    return d;
+  };
+
   // HOC / survey-line marker — per Lab 4 + Performance Exam convention,
   // drawn as a small RED OVAL at the tripod/HOC point on the buccal or
   // lingual surface where the undercut sits. Replaces the prior 3-dash
@@ -16720,15 +16746,19 @@ function RPDPaperFormArchDrawing({
       const inPostMolar = (n) => isMax
         ? (n === 3 || n === 14 || n === 2 || n === 15)
         : (n === 19 || n === 30 || n === 18 || n === 31);
-      // Strict ranges — no abutments, so the bands don't span the
-      // entire arch.
+      // Anterior band: anterior teeth that are present + any anterior
+      // abutments. Posterior band: posteriormost molars that are
+      // present + every non-anterior abutment (including premolars).
+      //
+      // Every abutment ends up in exactly ONE band (no overlap) AND is
+      // an anchor on that band's path. Combined with buildPassThrough-
+      // Path, this means the band physically curves through each
+      // abutment's lingual anchor — the minor-connector strut from each
+      // abutment terminates INSIDE the band rather than near it.
       const ant = archTeeth.filter(n => inAnt(n) && isPresent(n));
-      // Posterior band tracks the molar zone PLUS any posterior
-      // abutments outside it (e.g. a 2nd premolar abutment at #4 or
-      // #13). Stays in the posterior palate region.
       const post = archTeeth.filter(n =>
         (inPostMolar(n) && isPresent(n))
-        || (abutTeethSet.has(n) && !inAnt(n) && n !== (isMax ? 4 : 21) && n !== (isMax ? 13 : 28))
+        || (abutTeethSet.has(n) && !inAnt(n))
       );
       if (ant.length < 2 || post.length < 2) {
         // Fallback to the full-arch render if anchor selection fails.
@@ -16749,6 +16779,20 @@ function RPDPaperFormArchDrawing({
       const antLower = ant.map(n => palatalAt(n, 1.7));
       const postUpper = post.map(n => palatalAt(n, 0.8));
       const postLower = post.map(n => palatalAt(n, 1.6));
+      // Inline pass-through filled band — uses buildPassThroughPath so
+      // the curve physically goes through every anchor, ensuring each
+      // abutment's minor-connector strut lands INSIDE the band rather
+      // than near it.
+      const filledBandThrough = (upper, lower, k) => {
+        const upperD = buildPassThroughPath(upper);
+        const lowerRevD = buildPassThroughPath([...lower].reverse());
+        const closedD = `${upperD} L ${lower[lower.length - 1].x} ${lower[lower.length - 1].y} ${lowerRevD.replace(/^M [^ ]+ [^ ]+/, '')} Z`;
+        return (
+          <path key={k} d={closedD} fill={C_CAST} fillOpacity={0.7}
+            stroke={C_CAST} strokeWidth={1.6}
+            strokeLinejoin="round" strokeLinecap="round" />
+        );
+      };
       // Lateral connectors: short polygon struts joining the band ends
       // on each side. End points come from the band edges themselves
       // so the connectors visibly merge into the bands.
@@ -16779,8 +16823,8 @@ function RPDPaperFormArchDrawing({
       // the left.
       return (
         <g key={key}>
-          {filledBand(antUpper, antLower)}
-          {filledBand(postUpper, postLower)}
+          {filledBandThrough(antUpper, antLower, "ap-ant")}
+          {filledBandThrough(postUpper, postLower, "ap-post")}
           {lateralStrut(antL.upper, antL.lower, postL.upper, postL.lower, "lat-r")}
           {lateralStrut(antR.upper, antR.lower, postR.upper, postR.lower, "lat-l")}
         </g>
