@@ -16847,43 +16847,40 @@ function RPDPaperFormArchDrawing({
       const lAi = innerCorner(lA);
       const rPi = innerCorner(rP);
       const lPi = innerCorner(lP);
-      // Inner perimeter (the open palate window): the user asked for the
-      // internal angles to be slightly curved instead of sharp 90° L
-      // segments. We trim each inner corner by a small offset toward
-      // each neighbor and bridge the two trim points with a quadratic
-      // Bezier whose control point IS the original corner — gives a
-      // gentle radius at each inside angle. Outer perimeter stays sharp
-      // (anchored to the abutments, which are themselves discrete).
-      const cornerEase = 0.18; // fraction of edge length to trim per corner
-      // Build the inner perimeter walking rAi → rPi → lPi → lAi → back.
-      const innerPts = [rAi, rPi, lPi, lAi];
-      // For each corner, compute the two trim points (one toward the
-      // previous neighbor, one toward the next neighbor).
-      const trims = innerPts.map((c, i) => {
-        const prev = innerPts[(i + innerPts.length - 1) % innerPts.length];
-        const next = innerPts[(i + 1) % innerPts.length];
-        return {
-          fromPrev: { x: c.x + (prev.x - c.x) * cornerEase, y: c.y + (prev.y - c.y) * cornerEase },
-          toNext:   { x: c.x + (next.x - c.x) * cornerEase, y: c.y + (next.y - c.y) * cornerEase },
-        };
-      });
-      // Stitch the inner path: start at the first corner's "fromPrev"
-      // trim point, then for each corner: line to the corner's "toNext"
-      // trim point (across that edge), then Q-curve through the next
-      // corner to its "fromPrev" trim point.
-      let innerD = `M ${trims[0].fromPrev.x} ${trims[0].fromPrev.y}`;
-      for (let i = 0; i < innerPts.length; i++) {
-        const cur = trims[i];
-        const nextIdx = (i + 1) % innerPts.length;
-        const nextCorner = innerPts[nextIdx];
-        const nextTrim = trims[nextIdx];
-        innerD += ` L ${cur.toNext.x} ${cur.toNext.y}` +
+      // Both perimeters get gently-rounded corners using the same
+      // trim-and-Q-curve technique: for each corner, trim a small
+      // fraction along each adjacent edge and bridge the two trim
+      // points with a quadratic Bezier whose control point IS the
+      // original corner. Outer corners are eased less than inner
+      // (cornerEaseOuter < cornerEaseInner) since the outer corners
+      // are anchored at the abutments and shouldn't pull away too far.
+      const cornerEaseOuter = 0.10;
+      const cornerEaseInner = 0.18;
+      const roundedRectPath = (pts, ease) => {
+        const trims = pts.map((c, i) => {
+          const prev = pts[(i + pts.length - 1) % pts.length];
+          const next = pts[(i + 1) % pts.length];
+          return {
+            fromPrev: { x: c.x + (prev.x - c.x) * ease, y: c.y + (prev.y - c.y) * ease },
+            toNext:   { x: c.x + (next.x - c.x) * ease, y: c.y + (next.y - c.y) * ease },
+          };
+        });
+        let path = `M ${trims[0].fromPrev.x} ${trims[0].fromPrev.y}`;
+        for (let i = 0; i < pts.length; i++) {
+          const cur = trims[i];
+          const nextIdx = (i + 1) % pts.length;
+          const nextCorner = pts[nextIdx];
+          const nextTrim = trims[nextIdx];
+          path += ` L ${cur.toNext.x} ${cur.toNext.y}` +
                   ` Q ${nextCorner.x} ${nextCorner.y} ${nextTrim.fromPrev.x} ${nextTrim.fromPrev.y}`;
-      }
-      innerD += " Z";
-      const d =
-        `M ${rA.x} ${rA.y} L ${lA.x} ${lA.y} L ${lP.x} ${lP.y} L ${rP.x} ${rP.y} Z ` +
-        innerD;
+        }
+        return path + " Z";
+      };
+      const outerPts = [rA, lA, lP, rP];
+      const innerPts = [rAi, rPi, lPi, lAi];
+      const d = roundedRectPath(outerPts, cornerEaseOuter) +
+                " " +
+                roundedRectPath(innerPts, cornerEaseInner);
       return (
         <g key={key}>
           <path d={d} fillRule="evenodd"
