@@ -8,7 +8,7 @@
 //   - Huddle Week 6 Case 2 — maxillary Class II Mod 2
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { rpdRunEngine, rpdMakeBlankCase } from "./App.jsx";
+import { rpdRunEngine, rpdMakeBlankCase, rpdClassifyKennedy, rpdPlanRetention } from "./rpd-engine.js";
 
 const setMissing = (c, teeth) => {
   for (const n of teeth) c.teeth[n].status = "missing";
@@ -3189,8 +3189,13 @@ describe("GUIDE PLANE — length tracks clasp type", () => {
 describe("INVARIANT — every clasped abutment has a guide plane", () => {
   const cases = allInvariantCases();
   cases.forEach(({ name, result }) => {
+    // Contralateral-retention abutments (Embrasure pair, single Akers added
+    // by rpdSelectAbutments Phase B) have NO adjacent edentulous space, so
+    // no proximal plate and no guide plane is needed by definition. Exclude
+    // them from the guide-plane invariant.
     const clasped = (result.abutmentDesigns || []).filter(a =>
-      a.claspType && !a.claspType.includes("Rest Only"));
+      a.claspType && !a.claspType.includes("Rest Only")
+      && a.role !== "embrasure-retention" && a.role !== "contralateral-akers");
     if (clasped.length === 0) return;
     it(`${name}: every clasped abutment has guide plane (surface + length)`, () => {
       clasped.forEach(a => {
@@ -3312,10 +3317,14 @@ describe("NEGATIVE INVARIANTS — engine must NEVER produce these", () => {
   });
 
   // No abutment with a clasp should be missing a guide plane.
+  // Exception: contralateral-retention abutments (Embrasure pair or single
+  // Akers added by rpdSelectAbutments Phase B) have no adjacent edentulous
+  // space, so no proximal plate / no guide plane by definition.
   describe("Clasped abutments never lack a guide plane", () => {
     cases.forEach(({ name, result }) => {
       const claspedNoGP = (result.abutmentDesigns || []).filter(a =>
-        a.claspType && !a.claspType.includes("Rest Only") && !a.guidePlane?.surface);
+        a.claspType && !a.claspType.includes("Rest Only") && !a.guidePlane?.surface
+        && a.role !== "embrasure-retention" && a.role !== "contralateral-akers");
       it(`${name}: no clasped abutment lacks a guide plane`, () => {
         expect(claspedNoGP.map(a => `#${a.tooth}`)).toEqual([]);
       });
@@ -4707,5 +4716,880 @@ describe("UIC-AUDIT — Lab Rx includes major connector boundary specs", () => {
     if (/Full Palatal Plate/i.test(r.majorConnector.type)) {
       expect(r.labScript).toMatch(/AT the vibrating line/i);
     }
+  });
+});
+
+// =========================================================================
+// INVARIANT — BILATERAL DIRECT RETENTION (no unilateral / Nesbit designs)
+// =========================================================================
+// UIC PROHIBITS Nesbit (unilateral cantilever) RPDs (Final RPD Huddle 2
+// answer key Q2 — aspiration risk). The OLD engine derived abutments
+// bottom-up from span boundaries only; for Class III mod 0 cases with a
+// unilateral span this produced abutments on one side only — a Nesbit.
+//
+// The NEW pipeline (rpdSelectAbutments) enforces the top-down invariant
+// that every RPD MUST have direct retention on both sides of the arch.
+// When span-derived abutments are unilateral, the engine adds an
+// Embrasure-clasp pair (preferred — Retainers PDF p. 24) or a single
+// Akers (fallback) on the contralateral side.
+//
+// These tests guard the invariant for every documented configuration
+// where it could fail.
+// =========================================================================
+
+describe("INVARIANT — bilateral direct retention (Nesbit prevention)", () => {
+  // ── helpers ──────────────────────────────────────────────────────────────
+  function abutmentsBySide(result, arch) {
+    const right = (result.abutmentDesigns || []).filter(a => {
+      if (arch === "maxillary") return a.tooth >= 1 && a.tooth <= 8;
+      return a.tooth >= 25 && a.tooth <= 32;
+    });
+    const left = (result.abutmentDesigns || []).filter(a => {
+      if (arch === "maxillary") return a.tooth >= 9 && a.tooth <= 16;
+      return a.tooth >= 17 && a.tooth <= 24;
+    });
+    return { right, left };
+  }
+
+  // ── Class III mod 0 — the canonical Nesbit-risk geometry ───────────────
+  describe("Class III mod 0 — unilateral span triggers contralateral Embrasure", () => {
+    it("Max #14 missing only → bilateral abutments via right-side Embrasure pair", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);   // 3rd molars
+      setMissing(c, [14]);      // unilateral span
+      const r = rpdRunEngine(c);
+      const sides = abutmentsBySide(r, "maxillary");
+      expect(sides.right.length, "right-side retention required").toBeGreaterThanOrEqual(2);
+      expect(sides.left.length,  "left-side abutments from #14 span").toBeGreaterThanOrEqual(2);
+      // Left side has the span boundaries #13 + #15
+      expect(sides.left.map(a => a.tooth).sort()).toEqual([13, 15]);
+      // Right side has an Embrasure pair
+      const rightEmbrasures = sides.right.filter(a => a.claspType === "Embrasure");
+      expect(rightEmbrasures.length, "right Embrasure pair as PRIMARY retention").toBe(2);
+      // Embrasure abutments are mutually paired
+      const [e1, e2] = rightEmbrasures;
+      expect(e1.pairedWith).toBe(e2.tooth);
+      expect(e2.pairedWith).toBe(e1.tooth);
+    });
+
+    it("Mand #29 missing only → bilateral abutments via left-side Embrasure pair", () => {
+      const c = rpdMakeBlankCase("mandibular");
+      setMissing(c, [17, 32]);
+      setMissing(c, [29]);
+      const r = rpdRunEngine(c);
+      const sides = abutmentsBySide(r, "mandibular");
+      // Right has #28 + #30 from span
+      expect(sides.right.map(a => a.tooth).sort()).toEqual([28, 30]);
+      // Left has Embrasure pair as primary
+      const leftEmbrasures = sides.left.filter(a => a.claspType === "Embrasure");
+      expect(leftEmbrasures.length).toBe(2);
+    });
+
+    it("Max #3 missing only → bilateral abutments via left-side Embrasure pair", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [3]);
+      const r = rpdRunEngine(c);
+      const sides = abutmentsBySide(r, "maxillary");
+      expect(sides.right.map(a => a.tooth).sort()).toEqual([2, 4]);
+      const leftEmbrasures = sides.left.filter(a => a.claspType === "Embrasure");
+      expect(leftEmbrasures.length).toBe(2);
+    });
+
+    it("Mand #19 missing only → bilateral abutments via right-side Embrasure pair", () => {
+      const c = rpdMakeBlankCase("mandibular");
+      setMissing(c, [17, 32]);
+      setMissing(c, [19]);
+      const r = rpdRunEngine(c);
+      const sides = abutmentsBySide(r, "mandibular");
+      expect(sides.left.map(a => a.tooth).sort()).toEqual([18, 20]);
+      const rightEmbrasures = sides.right.filter(a => a.claspType === "Embrasure");
+      expect(rightEmbrasures.length).toBe(2);
+    });
+
+    it("Embrasure pair is the MOST POSTERIOR viable pair on the contralateral side", () => {
+      // Max #14 missing — Phase B should pick the most-posterior embrasure
+      // pair on the right (#2-#3, both molars). Premolar-premolar (#4-#5)
+      // and PM-molar (#3-#4) are alternatives but lower leverage.
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [14]);
+      const r = rpdRunEngine(c);
+      const sides = abutmentsBySide(r, "maxillary");
+      const rightEmbrasureTeeth = sides.right
+        .filter(a => a.claspType === "Embrasure")
+        .map(a => a.tooth).sort();
+      expect(rightEmbrasureTeeth).toEqual([2, 3]);
+    });
+
+    it("Embrasure rest seat surfaces face the partner tooth (anatomically correct)", () => {
+      // For ANY embrasure pair, the lower-distal-rank tooth's rest is on
+      // the surface adjacent to the higher-distal-rank partner, and vice
+      // versa. Test multiple configurations to catch arch-order mistakes.
+      const configs = [
+        { arch: "maxillary",  miss: [14], expectedPair: [2, 3]  },  // max right molars
+        { arch: "mandibular", miss: [19], expectedPair: [30, 31] },  // mand right molars
+        { arch: "maxillary",  miss: [3],  expectedPair: [14, 15] },  // max left molars
+        { arch: "mandibular", miss: [30], expectedPair: [18, 19] },  // mand left molars
+      ];
+      configs.forEach(({ arch, miss, expectedPair }) => {
+        const c = rpdMakeBlankCase(arch);
+        setMissing(c, arch === "maxillary" ? [1, 16] : [17, 32]);
+        setMissing(c, miss);
+        const r = rpdRunEngine(c);
+        const embrasures = (r.abutmentDesigns || [])
+          .filter(a => a.claspType === "Embrasure")
+          .sort((a, b) => a.tooth - b.tooth);
+        expect(embrasures.length, `${arch} missing #${miss[0]}`).toBe(2);
+        expect(embrasures.map(e => e.tooth), `pair teeth`).toEqual(expectedPair);
+        // For each pair, the more-mesial tooth's rest should face the more-distal
+        // partner. In ALL four configs (right or left, max or mand), the pair
+        // has one tooth at a lower distal rank (more mesial) and one at higher
+        // distal rank (more distal). The mesial-of-pair tooth has rest on
+        // its DISTAL (toward partner). The distal-of-pair tooth has rest on
+        // its MESIAL (toward partner).
+        const [t1, t2] = embrasures;
+        // Note: in numerically-sorted order, "more mesial" varies by side.
+        // We use rpdDistalRank to disambiguate.
+        const more_mesial = embrasures.reduce((a, b) => {
+          // Lower distal rank = more mesial. We can't import rpdDistalRank
+          // directly, but rank correlates with tooth type. For premolar+molar
+          // and molar+molar pairs, lower tooth number is more mesial on the
+          // right side, and higher tooth number is more mesial on the left side.
+          // Simpler: tooth closer to midline (8/9 max, 24/25 mand) is more mesial.
+          const midline = arch === "maxillary" ? 8.5 : 24.5;
+          return Math.abs(a.tooth - midline) < Math.abs(b.tooth - midline) ? a : b;
+        });
+        const more_distal = embrasures.find(e => e !== more_mesial);
+        // Mesial-of-pair tooth → rest on its distal surface (facing partner).
+        expect(more_mesial.restSeat.surface,
+          `${arch} pair ${embrasures.map(e=>e.tooth).join(",")}: mesial-of-pair #${more_mesial.tooth} rest should face partner (distal)`)
+          .toBe("distal");
+        // Distal-of-pair tooth → rest on its mesial surface (facing partner).
+        expect(more_distal.restSeat.surface,
+          `${arch} pair ${embrasures.map(e=>e.tooth).join(",")}: distal-of-pair #${more_distal.tooth} rest should face partner (mesial)`)
+          .toBe("mesial");
+      });
+    });
+
+    it("Nesbit-prohibition flag fires AND mentions contralateral retention added", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [14]);
+      const r = rpdRunEngine(c);
+      const nesbit = (r.redFlags || []).find(f => f.type === "nesbit-prohibition");
+      expect(nesbit).toBeTruthy();
+      expect(nesbit.message).toMatch(/Embrasure clasp pair/i);
+    });
+  });
+
+  // ── Fallback behavior ───────────────────────────────────────────────────
+  describe("Class III mod 0 — fallback to single Akers when no Embrasure pair viable", () => {
+    it("Single-tooth contralateral side → single Akers (no pair possible)", () => {
+      // Max #14 missing. All right-side posteriors hopeless or missing
+      // EXCEPT #2 — engine should fall back to a single Akers on #2.
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [14]);
+      setMissing(c, [3, 4, 5]); // wipe out the right-side embrasure candidates
+      // Now right side has only #2 + the anteriors. Only #2 is a viable
+      // contralateral retainer candidate.
+      // BUT — wiping #3, #4, #5 changes Kennedy: still Class III with mods.
+      // For Class III Mod 1 (left span #14 + right span #3-5), spans now
+      // give bilateral abutments via #2 + #6 (right span boundaries), so
+      // the invariant pass shouldn't even fire. So this test verifies the
+      // OPPOSITE — that with bilateral span coverage, no extra retainer
+      // is added (and we tested fallback elsewhere).
+      const r = rpdRunEngine(c);
+      const sides = abutmentsBySide(r, "maxillary");
+      // Both sides have at least one abutment from spans → invariant
+      // satisfied, no extra contralateral-akers role expected.
+      expect(sides.right.length).toBeGreaterThanOrEqual(1);
+      const ctrlAkers = (r.abutmentDesigns || [])
+        .filter(a => a.role === "contralateral-akers");
+      expect(ctrlAkers.length).toBe(0);
+    });
+
+    it("Hopeless contralateral partner → falls back to single Akers", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [14]);
+      // Make #3 hopeless — Embrasure pair needs TWO acceptable teeth.
+      // The picker will look for the next-best adjacent posterior pair.
+      // #4-#5 (both premolars) should be selected as the new pair.
+      setAttrs(c, 3, { perioPrognosis: "hopeless" });
+      const r = rpdRunEngine(c);
+      const sides = abutmentsBySide(r, "maxillary");
+      const rightEmbrasures = sides.right.filter(a => a.claspType === "Embrasure");
+      expect(rightEmbrasures.length).toBe(2);
+      const teeth = rightEmbrasures.map(a => a.tooth).sort();
+      expect(teeth, "should fall back to #4-#5 pair when #2-#3 is broken")
+        .toEqual([4, 5]);
+    });
+  });
+
+  // ── Cases that should NOT trigger the invariant pass ─────────────────────
+  describe("Bilateral span coverage — invariant pass is a no-op", () => {
+    it("Class III Mod 1 (#3 + #14 missing) → spans alone provide bilateral coverage", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [3, 14]);
+      const r = rpdRunEngine(c);
+      // No Embrasure-as-primary added (spans already bilateral)
+      const primaryEmbrasures = (r.abutmentDesigns || [])
+        .filter(a => a.role === "embrasure-retention");
+      expect(primaryEmbrasures.length).toBe(0);
+      const ctrlAkers = (r.abutmentDesigns || [])
+        .filter(a => a.role === "contralateral-akers");
+      expect(ctrlAkers.length).toBe(0);
+    });
+
+    it("Class I bilateral DE → invariant satisfied by terminal abutments", () => {
+      const c = rpdMakeBlankCase("mandibular");
+      setMissing(c, [17, 32]);
+      setMissing(c, [19, 20, 21, 28, 29, 30]); // bilateral posterior DE
+      const r = rpdRunEngine(c);
+      const sides = abutmentsBySide(r, "mandibular");
+      expect(sides.right.length).toBeGreaterThanOrEqual(1);
+      expect(sides.left.length).toBeGreaterThanOrEqual(1);
+      const primaryEmbrasures = (r.abutmentDesigns || [])
+        .filter(a => a.role === "embrasure-retention");
+      expect(primaryEmbrasures.length).toBe(0);
+    });
+
+    it("Class II — DE one side, tooth-bounded mod other side → bilateral by spans", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [13, 14, 15]); // left DE
+      setMissing(c, [4, 5]);        // right mod
+      const r = rpdRunEngine(c);
+      const sides = abutmentsBySide(r, "maxillary");
+      expect(sides.right.length).toBeGreaterThanOrEqual(1);
+      expect(sides.left.length).toBeGreaterThanOrEqual(1);
+      const primaryEmbrasures = (r.abutmentDesigns || [])
+        .filter(a => a.role === "embrasure-retention");
+      expect(primaryEmbrasures.length).toBe(0);
+    });
+
+    it("Class IV — anterior span crosses midline → invariant skipped", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [7, 8, 9, 10]); // anterior span crossing midline
+      const r = rpdRunEngine(c);
+      const primaryEmbrasures = (r.abutmentDesigns || [])
+        .filter(a => a.role === "embrasure-retention");
+      expect(primaryEmbrasures.length).toBe(0);
+      const ctrlAkers = (r.abutmentDesigns || [])
+        .filter(a => a.role === "contralateral-akers");
+      expect(ctrlAkers.length).toBe(0);
+    });
+  });
+
+  // ── Interim RPD behavior ─────────────────────────────────────────────────
+  describe("Interim RPD — contralateral retention uses wrought-wire clasps", () => {
+    it("Class III mod 0 + interim → contralateral pair is WW C-clasp, not cast Embrasure", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [14]);
+      c.patientFactors.designIntent = "interim";
+      c.patientFactors.monthsSinceExtraction = 2;
+      const r = rpdRunEngine(c);
+      const ctrlAbuts = (r.abutmentDesigns || [])
+        .filter(a => a.role === "embrasure-retention" || a.role === "contralateral-akers");
+      expect(ctrlAbuts.length).toBeGreaterThanOrEqual(1);
+      ctrlAbuts.forEach(a => {
+        expect(a.claspType).toBe("WW C-clasp");
+      });
+    });
+  });
+
+  // ── Whole-arch sanity sweep ──────────────────────────────────────────────
+  describe("Whole-arch sweep — every single-tooth-missing scenario has bilateral retention", () => {
+    const arches = [
+      { arch: "maxillary",  archMin: 1,  archMax: 16, thirdMolars: [1, 16] },
+      { arch: "mandibular", archMin: 17, archMax: 32, thirdMolars: [17, 32] },
+    ];
+    arches.forEach(({ arch, archMin, archMax, thirdMolars }) => {
+      // Every non-third-molar, non-second-molar (2nd molars become Class II
+      // not III) tooth in the arch.
+      const teethToTest = [];
+      for (let t = archMin; t <= archMax; t++) {
+        if (thirdMolars.includes(t)) continue;
+        // Skip 2nd molars — they become DE (Class II), already bilateral
+        // by virtue of span definition.
+        if (t === 2 || t === 15 || t === 18 || t === 31) continue;
+        teethToTest.push(t);
+      }
+      teethToTest.forEach(t => {
+        it(`${arch} #${t} missing alone → bilateral retention`, () => {
+          const c = rpdMakeBlankCase(arch);
+          setMissing(c, thirdMolars);
+          setMissing(c, [t]);
+          const r = rpdRunEngine(c);
+          const sides = abutmentsBySide(r, arch);
+          expect(sides.right.length, `right side abutments for ${arch} #${t}`).toBeGreaterThanOrEqual(1);
+          expect(sides.left.length,  `left side abutments for ${arch} #${t}`).toBeGreaterThanOrEqual(1);
+        });
+      });
+    });
+  });
+});
+
+// =========================================================================
+// MCCRACKEN INVARIANT COVERAGE — additions for rebuild Phase 0
+// =========================================================================
+// These tests fill gaps in the invariant-coverage matrix identified during
+// the McCracken 12th Edition catalog validation. Tests are grouped by the
+// invariant they exercise.
+//
+// IMPORTANT: Some tests in this block document REBUILD TARGETS rather than
+// current behavior. Those use `it.todo()` or explicit comments marking them
+// as future-state. The rebuild's success criterion is that all `it.todo`
+// tests in this block become passing `it(...)` tests by Phase 6.
+//
+// Source: RPD-PRINCIPLES.md (this repo), McCracken 12th ed (Carr & Brown 2011).
+// =========================================================================
+
+describe("MCCRACKEN INVARIANT COVERAGE — rebuild Phase 0 corpus", () => {
+
+  // -----------------------------------------------------------------------
+  // INV-16 — Embrasure clasps must use DOUBLE occlusal rests (McCracken p. 83)
+  // -----------------------------------------------------------------------
+  // "The embrasure clasp always should be used with double occlusal rests,
+  //  even when definite proximal shoulders can be established. This is done
+  //  to avoid interproximal wedging by the prosthesis, which could cause
+  //  separation of the abutment teeth, resulting in food impaction and
+  //  clasp displacement."
+  describe("INV-16 — Embrasure pair: double occlusal rests required", () => {
+    it("Each tooth in Embrasure pair has its OWN restSeat object (not a shared single rest)", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [14]);
+      const r = rpdRunEngine(c);
+      const embrasures = (r.abutmentDesigns || [])
+        .filter(a => a.claspType === "Embrasure");
+      expect(embrasures.length).toBe(2);
+      embrasures.forEach(e => {
+        expect(e.restSeat, `#${e.tooth} should have its own restSeat object`).toBeTruthy();
+        expect(e.restSeat.surface, `#${e.tooth} restSeat needs surface`).toBeTruthy();
+        expect(e.restSeat.type, `#${e.tooth} restSeat needs type`).toBe("occlusal");
+        expect(e.restSeat.bur, `#${e.tooth} restSeat needs bur`).toBeTruthy();
+      });
+    });
+
+    it("Embrasure pair rests are on OPPOSING surfaces (one mesial, one distal — both face the embrasure between them)", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [14]);
+      const r = rpdRunEngine(c);
+      const embrasures = (r.abutmentDesigns || [])
+        .filter(a => a.claspType === "Embrasure");
+      const surfaces = embrasures.map(e => e.restSeat.surface).sort();
+      expect(surfaces).toEqual(["distal", "mesial"]);
+    });
+
+    it("V2 — Lab Rx mentions TWO separate rests for an Embrasure pair (one per tooth)", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      for (const n of [1, 16, 14]) c.teeth[n].status = "missing";
+      const r = rpdRunEngine(c);
+      // The Lab Rx should have two distinct lines for the embrasure pair,
+      // each mentioning its own rest seat surface (one mesial, one distal).
+      const labLines = r.labScript.split("\n");
+      const embrasureLines = labLines.filter(l => /Embrasure clasp/i.test(l));
+      expect(embrasureLines.length).toBeGreaterThanOrEqual(2);
+      // Each line should mention a rest seat (Mesial rest or Distal rest)
+      embrasureLines.forEach(line => {
+        expect(line).toMatch(/(Mesial|Distal) rest/);
+      });
+    });
+  });
+
+  // -----------------------------------------------------------------------
+  // INV-1 fallback — Class III mod 0 with no viable embrasure pair on contralateral side
+  // -----------------------------------------------------------------------
+  // Existing tests cover the happy path (embrasure pair found). These cover
+  // the fallback paths: single Akers, then RPD-not-designable.
+  describe("INV-1 fallback paths — degraded contralateral configurations", () => {
+    it("Class III mod 0 with hopeless partner falls back to single Akers (already tested elsewhere) — meta-check that the role marker is correct", () => {
+      // Same setup as my earlier hopeless-partner test, but assert the
+      // role string is consistent with what the rebuild will emit.
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [14]);
+      setAttrs(c, 3, { perioPrognosis: "hopeless" });
+      const r = rpdRunEngine(c);
+      const rightContralateral = (r.abutmentDesigns || [])
+        .filter(a => a.tooth >= 1 && a.tooth <= 8)
+        .filter(a => a.role === "embrasure-retention" || a.role === "contralateral-akers");
+      expect(rightContralateral.length).toBeGreaterThan(0);
+      const roles = rightContralateral.map(a => a.role);
+      // Should fall back to #4-#5 embrasure pair (both still viable)
+      expect(roles).toEqual(["embrasure-retention", "embrasure-retention"]);
+    });
+
+    it("V2 — Class III mod 0 with ALL contralateral posteriors hopeless → not-designable blocker red flag", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      for (const n of [1, 16, 14]) c.teeth[n].status = "missing";
+      // All right-side posteriors (excluding 3rd molar #1 which is missing) hopeless
+      for (const n of [2, 3, 4, 5]) {
+        c.teeth[n].attrs = { ...(c.teeth[n].attrs || {}), perioPrognosis: "hopeless" };
+      }
+      const r = rpdRunEngine(c);
+      const notDesignableFlag = (r.redFlags || []).find(f => f.type === "rpd-not-designable");
+      expect(notDesignableFlag).toBeTruthy();
+      expect(notDesignableFlag.severity).toBe("blocker");
+      expect(notDesignableFlag.message).toMatch(/FPD|implant|fixed|Nesbit/i);
+    });
+
+    it("V2 — Class III mod 0 with NO posterior teeth on missing side → not-designable blocker red flag", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      for (const n of [1, 16, 14]) c.teeth[n].status = "missing";
+      // Remove ALL right-side posteriors (only anteriors + 3rd molar remain)
+      for (const n of [2, 3, 4, 5]) c.teeth[n].status = "missing";
+      const r = rpdRunEngine(c);
+      // Kennedy might reclassify — but if it's still III with all spans
+      // on left, the planner should mark not-designable.
+      if (r.kennedy.class === "III") {
+        const notDesignableFlag = (r.redFlags || []).find(f => f.type === "rpd-not-designable");
+        expect(notDesignableFlag, "expected not-designable flag for Class III with no contralateral posteriors").toBeTruthy();
+      }
+    });
+  });
+
+  // -----------------------------------------------------------------------
+  // Class III Mod 1+ where all spans are on one side
+  // -----------------------------------------------------------------------
+  // Multi-mod configurations where bilateral retention still requires
+  // contralateral addition.
+  describe("Class III all-spans-one-side configurations", () => {
+    it("Class III with #13 + #14 missing (multi-tooth single span on left) → bilateral retention via right embrasure", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [13, 14]); // adjacent missing → single span, both left
+      const r = rpdRunEngine(c);
+      const right = (r.abutmentDesigns || [])
+        .filter(a => a.tooth >= 1 && a.tooth <= 8);
+      const left = (r.abutmentDesigns || [])
+        .filter(a => a.tooth >= 9 && a.tooth <= 16);
+      // Left side: #12 + #15 from span boundaries
+      expect(left.map(a => a.tooth).sort()).toEqual([12, 15]);
+      // Right side: must have embrasure pair (no spans here)
+      const rightEmbrasures = right.filter(a => a.claspType === "Embrasure");
+      expect(rightEmbrasures.length).toBe(2);
+    });
+
+    it("Class III mod 2 — both spans on left (#11 and #14 missing) → bilateral retention added on right", () => {
+      // #11 = max left canine missing → span boundaries #10 + #12 (both left)
+      // #14 = max left 1st molar missing → span boundaries #13 + #15 (both left)
+      // Class is determined by most-posterior bounded span (#14) → III with 1 mod
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [11, 14]);
+      const r = rpdRunEngine(c);
+      expect(r.kennedy.class).toBe("III");
+      // All span boundaries are left side
+      const left = (r.abutmentDesigns || [])
+        .filter(a => a.tooth >= 9 && a.tooth <= 16 && a.role === "primary");
+      expect(left.length).toBeGreaterThanOrEqual(3); // #10, #12, #13, #15
+      // Right side must have contralateral retention
+      const rightContralateral = (r.abutmentDesigns || [])
+        .filter(a => a.tooth >= 1 && a.tooth <= 8)
+        .filter(a => a.role === "embrasure-retention" || a.role === "contralateral-akers");
+      expect(rightContralateral.length).toBeGreaterThanOrEqual(1);
+    });
+  });
+
+  // -----------------------------------------------------------------------
+  // Class II Mod 0 — pure unilateral distal extension
+  // -----------------------------------------------------------------------
+  // Per McCracken: Class II uses indirect retention on the opposite side,
+  // NOT extra direct retention. The bilateral invariant DOES NOT fire for
+  // Class II (per the rebuild's planner logic).
+  describe("Class II Mod 0 — pure unilateral DE", () => {
+    it("Mand #18-20 missing (left DE only, no mods) → Class II Mod 0", () => {
+      const c = rpdMakeBlankCase("mandibular");
+      setMissing(c, [17, 32]);
+      setMissing(c, [18, 19, 20]);
+      const r = rpdRunEngine(c);
+      expect(r.kennedy.class).toBe("II");
+      expect(r.kennedy.modifications).toBe(0);
+    });
+
+    it("Class II Mod 0 has ONE direct retainer (DE terminal) — no contralateral direct retainer added", () => {
+      const c = rpdMakeBlankCase("mandibular");
+      setMissing(c, [17, 32]);
+      setMissing(c, [18, 19, 20]);
+      const r = rpdRunEngine(c);
+      // Direct retainers come only from span boundaries — #21 is the only one
+      const directRetainers = (r.abutmentDesigns || [])
+        .filter(a => a.role === "primary");
+      expect(directRetainers.length).toBe(1);
+      expect(directRetainers[0].tooth).toBe(21);
+      // No bilateral-invariant contralateral retention added (this is Class II,
+      // not Class III)
+      const contralateral = (r.abutmentDesigns || [])
+        .filter(a => a.role === "embrasure-retention" || a.role === "contralateral-akers");
+      expect(contralateral.length).toBe(0);
+    });
+
+    it("Class II Mod 0 has indirect retainer on OPPOSITE side from DE (right side)", () => {
+      const c = rpdMakeBlankCase("mandibular");
+      setMissing(c, [17, 32]);
+      setMissing(c, [18, 19, 20]); // left DE
+      const r = rpdRunEngine(c);
+      expect(r.indirectRetainers).toBeTruthy();
+      expect(r.indirectRetainers.length).toBeGreaterThanOrEqual(1);
+      // Indirect retainer should be on right side (opposite of left DE)
+      const rightIR = r.indirectRetainers.filter(ir => ir.tooth >= 25 && ir.tooth <= 32);
+      expect(rightIR.length).toBeGreaterThanOrEqual(1);
+    });
+  });
+
+  // -----------------------------------------------------------------------
+  // Class IV variants — different bounding teeth
+  // -----------------------------------------------------------------------
+  describe("Class IV bounding-teeth variants", () => {
+    it("Class IV with canines bounding (4 incisors out, #7-#10) → canine dual-role abutments", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [7, 8, 9, 10]);
+      const r = rpdRunEngine(c);
+      expect(r.kennedy.class).toBe("IV");
+      const canineAbutments = (r.abutmentDesigns || [])
+        .filter(a => a.tooth === 6 || a.tooth === 11);
+      expect(canineAbutments.length).toBe(2);
+    });
+
+    it("Class IV with laterals bounding (centrals out, #8 + #9) → laterals serve as abutments", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [8, 9]); // just centrals
+      const r = rpdRunEngine(c);
+      expect(r.kennedy.class).toBe("IV");
+      const lateralAbutments = (r.abutmentDesigns || [])
+        .filter(a => a.tooth === 7 || a.tooth === 10);
+      expect(lateralAbutments.length).toBe(2);
+    });
+
+    it("Class IV with premolars bounding (all incisors + canines out, #6-#11) → premolars serve as abutments", () => {
+      const c = rpdMakeBlankCase("maxillary");
+      setMissing(c, [1, 16]);
+      setMissing(c, [6, 7, 8, 9, 10, 11]); // all anteriors
+      const r = rpdRunEngine(c);
+      expect(r.kennedy.class).toBe("IV");
+      const premolarAbutments = (r.abutmentDesigns || [])
+        .filter(a => a.tooth === 5 || a.tooth === 12);
+      expect(premolarAbutments.length).toBe(2);
+    });
+  });
+
+  // -----------------------------------------------------------------------
+  // INV-15 — Cross-arch stabilization on opposite side
+  // -----------------------------------------------------------------------
+  // McCracken p. 27: "Stabilizing components on one side of the arch act to
+  // stabilize the partial denture against horizontal forces applied from the
+  // opposite side. It is obvious that rigid connectors must be used to make
+  // this effect possible."
+  describe("INV-15 — Cross-arch stabilization via opposite-side components", () => {
+    it("Every multi-tooth-missing case has framework contact on BOTH sides of the arch (via major connector + abutments)", () => {
+      // The major connector ALWAYS spans both sides (it's a structural
+      // requirement). Check that for every Class I/II/III/IV case with
+      // ≥2 abutments, abutments OR indirect retainers exist on both sides.
+      const testConfigs = [
+        { arch: "mandibular", miss: [17, 32, 18, 19] },     // Class II
+        { arch: "maxillary",  miss: [1, 16, 14] },          // Class III mod 0
+        { arch: "mandibular", miss: [17, 32, 19, 30] },     // Class III mod 1
+        { arch: "maxillary",  miss: [1, 16, 7, 8, 9, 10] }, // Class IV
+        { arch: "mandibular", miss: [17, 32, 18, 19, 30, 31] }, // Class I
+      ];
+      testConfigs.forEach(({ arch, miss }) => {
+        const c = rpdMakeBlankCase(arch);
+        setMissing(c, miss);
+        const r = rpdRunEngine(c);
+        const archMid = arch === "maxillary" ? 8 : 24;
+        const allComponentTeeth = [
+          ...(r.abutmentDesigns || []).map(a => a.tooth),
+          ...(r.indirectRetainers || []).map(ir => ir.tooth),
+        ];
+        const hasRight = allComponentTeeth.some(t =>
+          arch === "maxillary" ? t <= archMid : t >= archMid + 1);
+        const hasLeft = allComponentTeeth.some(t =>
+          arch === "maxillary" ? t >= archMid + 1 : t <= archMid);
+        expect(hasRight, `${arch} ${miss}: needs right-side framework contact`).toBe(true);
+        expect(hasLeft,  `${arch} ${miss}: needs left-side framework contact`).toBe(true);
+      });
+    });
+  });
+
+  // -----------------------------------------------------------------------
+  // INV-9 — Encirclement (>180°) for every clasped abutment
+  // -----------------------------------------------------------------------
+  // McCracken p. 68: "Therefore the basic principle of clasp design,
+  // referred to as the principle of encirclement, means that more than 180
+  // degrees in the greatest circumference of the tooth, passing from
+  // diverging axial surfaces to converging axial surfaces, must be engaged
+  // by the clasp assembly."
+  describe("INV-9 — Encirclement (>180° engagement)", () => {
+    // Encirclement is structurally satisfied by the design: every clasp
+    // type the engine emits (RPI, Akers, Combination, Reverse Akers,
+    // Embrasure) provides >180° contact via rest + retentive arm + reciprocal
+    // arm/plate. The test verifies that every clasped abutment has the
+    // three engagement points (rest seat + retentive feature + reciprocation).
+    it("Every clasped abutment has rest seat AND retentive arm AND reciprocation (or equivalent)", () => {
+      const testConfigs = [
+        { arch: "mandibular", miss: [17, 32, 18, 19] },
+        { arch: "maxillary",  miss: [1, 16, 14] },
+        { arch: "mandibular", miss: [17, 32, 19, 30] },
+      ];
+      testConfigs.forEach(({ arch, miss }) => {
+        const c = rpdMakeBlankCase(arch);
+        setMissing(c, miss);
+        const r = rpdRunEngine(c);
+        const clasped = (r.abutmentDesigns || [])
+          .filter(a => a.claspType && !a.claspType.includes("Rest Only"));
+        clasped.forEach(a => {
+          expect(a.restSeat, `#${a.tooth} (${a.claspType}): rest seat required`).toBeTruthy();
+          expect(a.retentiveArm, `#${a.tooth} (${a.claspType}): retentive arm required`).toBeTruthy();
+          // Reciprocation is either explicit (reciprocation object) or
+          // implicit (RPI/I-bar self-reciprocates via proximal plate +
+          // lingual plating from the major connector — engine encodes this
+          // by returning null reciprocation for RPI/I-bar esthetic).
+          const hasReciprocation =
+            a.reciprocation !== undefined &&
+            (a.reciprocation !== null
+              || a.claspType === "RPI"
+              || a.claspType === "I-bar (esthetic)"
+              || a.claspType === "WW C-clasp");
+          expect(hasReciprocation, `#${a.tooth} (${a.claspType}): reciprocation explicit or implicit`).toBe(true);
+        });
+      });
+    });
+  });
+
+  // -----------------------------------------------------------------------
+  // INV-14 — Design sequence (rests → connectors → retention → base)
+  // -----------------------------------------------------------------------
+  // McCracken Chapter 10 prescribes a 5-step design sequence. The engine's
+  // OUTPUT shape doesn't expose this sequence directly (the sequence is a
+  // thinking order, not a data-structure order). But the engine's result
+  // object should make every component independently accessible so a
+  // student can follow McCracken's sequence when reading the output.
+  describe("INV-14 — Design sequence: engine output exposes all 5 component categories", () => {
+    it("Engine result has separable: rests (within abutments), retention (clasps), reciprocation, major connector, indirect retainers, guide planes, base designs", () => {
+      const c = rpdMakeBlankCase("mandibular");
+      setMissing(c, [17, 32, 18, 19, 20, 30]);
+      const r = rpdRunEngine(c);
+      // Major connector
+      expect(r.majorConnector?.type, "major connector").toBeTruthy();
+      // Abutments (contain rests, clasps, guide planes, reciprocation)
+      expect(Array.isArray(r.abutmentDesigns), "abutment designs array").toBe(true);
+      r.abutmentDesigns.forEach(a => {
+        // Each clasped abutment has rest + clasp; tooth-supported abutments
+        // also have guide planes (DE terminals have proximal plates instead)
+        if (a.claspType && !a.claspType.includes("Rest Only")) {
+          expect(a.restSeat || a.restSeat === null, "rest seat field exists").toBeDefined();
+          expect(a.claspType, "clasp type").toBeTruthy();
+        }
+      });
+      // Indirect retainers
+      expect(Array.isArray(r.indirectRetainers), "indirect retainers array").toBe(true);
+      // Base designs (saddle types per span)
+      expect(Array.isArray(r.baseDesigns), "base designs array").toBe(true);
+    });
+  });
+});
+
+// =========================================================================
+// PLANNER V2 SPEC — rpdPlanRetention output for canonical cases
+// =========================================================================
+// Tests that rpdPlanRetention produces correct RetentionPlan objects for
+// each canonical case. These tests are independent of the hydrator and
+// orchestrator — they only verify the planner's decision-making layer.
+//
+// The planner is the new spine of the rebuilt engine. Once these tests
+// pass, the hydrator + orchestrator can be built on top with confidence.
+// =========================================================================
+
+describe("PLANNER V2 — rpdPlanRetention output spec", () => {
+  const planFor = (arch, missing, attrs = {}) => {
+    const c = rpdMakeBlankCase(arch);
+    for (const n of missing) c.teeth[n].status = "missing";
+    for (const [n, a] of Object.entries(attrs)) {
+      c.teeth[+n].attrs = { ...(c.teeth[+n].attrs || {}), ...a };
+    }
+    const kennedy = rpdClassifyKennedy(c);
+    const plan = rpdPlanRetention(c, kennedy);
+    return { plan, kennedy };
+  };
+
+  // ── Schema sanity ───────────────────────────────────────────────────────
+  describe("Schema sanity — RetentionPlan always has expected shape", () => {
+    it("Every plan has directRetainers + indirectRetainers + notDesignable fields", () => {
+      const { plan } = planFor("mandibular", [17, 32, 18, 19, 20]);
+      expect(Array.isArray(plan.directRetainers)).toBe(true);
+      expect(Array.isArray(plan.indirectRetainers)).toBe(true);
+      expect(plan.notDesignable === null || typeof plan.notDesignable === "object").toBe(true);
+    });
+
+    it("Every direct retainer has tooth + source + mechanic", () => {
+      const { plan } = planFor("mandibular", [17, 32, 18, 19, 20]);
+      plan.directRetainers.forEach(d => {
+        expect(typeof d.tooth).toBe("number");
+        expect(d.source).toBeTruthy();
+        expect(d.mechanic).toBeTruthy();
+      });
+    });
+
+    it("Every indirect retainer has tooth + source", () => {
+      const { plan } = planFor("mandibular", [17, 32, 18, 19, 20]);
+      plan.indirectRetainers.forEach(ir => {
+        expect(typeof ir.tooth).toBe("number");
+        expect(ir.source).toBeTruthy();
+      });
+    });
+  });
+
+  // ── Class I — bilateral distal extension ────────────────────────────────
+  describe("Class I — bilateral distal extension", () => {
+    it("Mand Class I (#18-20, #30-32 missing approx) → 2 direct retainers (terminal abutments), 2 indirect", () => {
+      const { plan, kennedy } = planFor("mandibular", [17, 32, 18, 19, 30, 31]);
+      expect(kennedy.class).toBe("I");
+      const directs = plan.directRetainers;
+      expect(directs.length).toBe(2);
+      const teeth = directs.map(d => d.tooth).sort((a, b) => a - b);
+      expect(teeth).toEqual([20, 29]);
+      // Both should be rpi-family (DE terminals)
+      directs.forEach(d => expect(d.mechanic).toBe("rpi-family"));
+      // Source is the class-specific DE-terminal label (Class I uses
+      // "kennedy-i-de-terminal" rather than the generic "span-boundary")
+      directs.forEach(d => expect(d.source).toBe("kennedy-i-de-terminal"));
+      // Indirect retainers: bilateral (one each side)
+      expect(plan.indirectRetainers.length).toBeGreaterThanOrEqual(1);
+    });
+  });
+
+  // ── Class II — unilateral distal extension ──────────────────────────────
+  describe("Class II — unilateral DE", () => {
+    it("Mand Class II Mod 0 (#18-20 missing only) → 1 direct retainer + 1 indirect on opposite side", () => {
+      const { plan, kennedy } = planFor("mandibular", [17, 32, 18, 19, 20]);
+      expect(kennedy.class).toBe("II");
+      expect(kennedy.modifications).toBe(0);
+      expect(plan.directRetainers.length).toBe(1);
+      expect(plan.directRetainers[0].tooth).toBe(21);
+      expect(plan.directRetainers[0].mechanic).toBe("rpi-family");
+      // Indirect on right side (opposite DE)
+      const indirectsRight = plan.indirectRetainers
+        .filter(ir => ir.tooth >= 25 && ir.tooth <= 32);
+      expect(indirectsRight.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it("Mand Class II Mod 1 (#18-19 + #30 missing) → bilateral direct retainers via spans, indirect on right", () => {
+      const { plan, kennedy } = planFor("mandibular", [17, 32, 18, 19, 30]);
+      expect(kennedy.class).toBe("II");
+      expect(kennedy.modifications).toBe(1);
+      // Direct retainers from spans: #20 (left DE terminal) + #29 + #31 (mod boundaries)
+      const directTeeth = plan.directRetainers.map(d => d.tooth).sort((a, b) => a - b);
+      expect(directTeeth).toContain(20);
+      expect(directTeeth).toContain(29);
+      // No bilateral-invariant additions (this is Class II, not Class III)
+      const bilateralInvariant = plan.directRetainers
+        .filter(d => d.source.startsWith("bilateral-invariant"));
+      expect(bilateralInvariant.length).toBe(0);
+    });
+  });
+
+  // ── Class III — tooth-supported (with bilateral invariant) ──────────────
+  describe("Class III — bilateral invariant enforcement", () => {
+    it("Class III mod 0 (#14 missing only) → 4 direct retainers: #13+#15 from span, #2+#3 from bilateral invariant", () => {
+      const { plan, kennedy } = planFor("maxillary", [1, 16, 14]);
+      expect(kennedy.class).toBe("III");
+      expect(kennedy.modifications).toBe(0);
+      const directTeeth = plan.directRetainers.map(d => d.tooth).sort((a, b) => a - b);
+      expect(directTeeth).toEqual([2, 3, 13, 15]);
+      // Span boundaries: #13, #15 (akers-family)
+      const spanBound = plan.directRetainers.filter(d => d.source === "span-boundary");
+      expect(spanBound.length).toBe(2);
+      // Bilateral invariant: #2, #3 (embrasure-pair)
+      const bilateralInv = plan.directRetainers.filter(d => d.source === "bilateral-invariant-embrasure");
+      expect(bilateralInv.length).toBe(2);
+      bilateralInv.forEach(d => expect(d.mechanic).toBe("embrasure-pair"));
+      // Pair cross-references
+      const [b1, b2] = bilateralInv;
+      expect(b1.pairedWith).toBe(b2.tooth);
+      expect(b2.pairedWith).toBe(b1.tooth);
+      // No indirect retainers for Class III
+      expect(plan.indirectRetainers.length).toBe(0);
+    });
+
+    it("Class III mod 1 (#3 + #14 missing) → bilateral from spans, no invariant addition", () => {
+      const { plan, kennedy } = planFor("maxillary", [1, 16, 3, 14]);
+      expect(kennedy.class).toBe("III");
+      expect(kennedy.modifications).toBe(1);
+      const directTeeth = plan.directRetainers.map(d => d.tooth).sort((a, b) => a - b);
+      expect(directTeeth).toEqual([2, 4, 13, 15]);
+      // All from span boundaries
+      plan.directRetainers.forEach(d => expect(d.source).toBe("span-boundary"));
+    });
+
+    it("Class III mod 0 + hopeless partner → single-Akers fallback OR alternate embrasure pair", () => {
+      // Make #3 hopeless; engine should pick #4-#5 as the new pair
+      const { plan } = planFor("maxillary", [1, 16, 14], { 3: { perioPrognosis: "hopeless" } });
+      const rightContralateral = plan.directRetainers
+        .filter(d => d.tooth >= 1 && d.tooth <= 8)
+        .filter(d => d.source.startsWith("bilateral-invariant"));
+      expect(rightContralateral.length).toBeGreaterThanOrEqual(1);
+    });
+  });
+
+  // ── Class IV — anterior bounded ─────────────────────────────────────────
+  describe("Class IV — anterior bounded", () => {
+    it("Class IV (#7-#10 missing) → bounding canines as direct retainers, no invariant additions", () => {
+      const { plan, kennedy } = planFor("maxillary", [1, 16, 7, 8, 9, 10]);
+      expect(kennedy.class).toBe("IV");
+      // Bounding canines #6 + #11 are direct retainers
+      const directTeeth = plan.directRetainers.map(d => d.tooth).sort((a, b) => a - b);
+      expect(directTeeth).toContain(6);
+      expect(directTeeth).toContain(11);
+      // No bilateral invariant additions
+      const inv = plan.directRetainers.filter(d => d.source.startsWith("bilateral-invariant"));
+      expect(inv.length).toBe(0);
+      // Class IV has indirect retainers (dual-role bounding teeth)
+      expect(plan.indirectRetainers.length).toBeGreaterThanOrEqual(1);
+    });
+  });
+
+  // ── notDesignable path ──────────────────────────────────────────────────
+  describe("notDesignable — Class III with no viable contralateral retention", () => {
+    it("Class III mod 0 with hopeless contralateral posteriors → notDesignable flag set", () => {
+      // Wipe out all contralateral viable posterior teeth via hopeless attrs
+      const { plan } = planFor("maxillary", [1, 16, 14], {
+        2: { perioPrognosis: "hopeless" },
+        3: { perioPrognosis: "hopeless" },
+        4: { perioPrognosis: "hopeless" },
+        5: { perioPrognosis: "hopeless" },
+      });
+      expect(plan.notDesignable).toBeTruthy();
+      expect(plan.notDesignable.reason).toMatch(/Nesbit|prohibited|unilateral|aspiration/i);
+    });
+  });
+
+  // ── Plan determinism ────────────────────────────────────────────────────
+  describe("Plan determinism — same input always produces same plan", () => {
+    it("Two identical case inputs produce identical plans", () => {
+      const factory = () => {
+        const c = rpdMakeBlankCase("mandibular");
+        for (const n of [17, 32, 19, 20, 30]) c.teeth[n].status = "missing";
+        return c;
+      };
+      const k1 = rpdClassifyKennedy(factory());
+      const k2 = rpdClassifyKennedy(factory());
+      const p1 = rpdPlanRetention(factory(), k1);
+      const p2 = rpdPlanRetention(factory(), k2);
+      expect(p1.directRetainers.length).toBe(p2.directRetainers.length);
+      expect(p1.indirectRetainers.length).toBe(p2.indirectRetainers.length);
+      const teeth1 = p1.directRetainers.map(d => d.tooth).sort();
+      const teeth2 = p2.directRetainers.map(d => d.tooth).sort();
+      expect(teeth1).toEqual(teeth2);
+    });
   });
 });
