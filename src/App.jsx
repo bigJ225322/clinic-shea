@@ -14916,46 +14916,86 @@ function RPDPaperFormArchDrawing({
       // applied perpendicular to the line.
       // Per the UIC Design Case I photos (Shahin slides + actual cast
       // photos), the A-P strap covers ~70% of the palate area, with a
-      // SMALL central window. The four corner abutments form the OUTER
-      // perimeter; the strap extends INWARD from each abutment toward
-      // the central palate, leaving a rectangular open window in the
-      // middle that's ~55% the linear dimensions of the outer frame.
-      //
-      // Render as a single filled path with evenodd fill rule: outer
-      // quadrilateral (rA→lA→lP→rP) minus inner quadrilateral (rAi→
-      // rPi→lPi→lAi). The inner quadrilateral is the open window. The
+      // SMALL central window. Render as a filled path with evenodd
+      // fill rule: outer polygon traces through every abutment (sharp
+      // corners), minus inner polygon (smooth rounded window). The
       // filled area between them is the strap.
       //
-      // The asymmetric inward extrusion (only toward palate center,
-      // not toward teeth) matches the anatomic reality: the strap
-      // can't extend toward the teeth past the abutments' lingual
-      // surfaces, only inward into the palate.
-      const center = {
-        x: (rA.x + lA.x + rP.x + lP.x) / 4,
-        y: (rA.y + lA.y + rP.y + lP.y) / 4,
+      // OUTER PERIMETER: trace through every abutment's lingual point
+      // along the arch. This guarantees every abutment's minor connector
+      // strut visibly terminates INSIDE the strap fill, not in a gap
+      // between the strap and the tooth.
+      //
+      // Path order:
+      //   right anteriors → right posteriors (along arch back)
+      //   → left posteriors (cross posterior palate)
+      //   → left anteriors (along arch front)
+      //   → close back to right anteriors
+      //
+      // Each abutment is a SHARP polygon vertex; no Q-curve rounding
+      // at the outer perimeter. McCracken's hand-drawn A-P straps have
+      // sharp angles at the abutment anchors anyway.
+      //
+      // When a side has only ONE abutment (typical Class I bilateral DE
+      // with single terminal per side), synthesize a posterior corner by
+      // projecting from the abutment toward the back of the palate. This
+      // ensures the strap always has a proper 4+ vertex closed perimeter.
+      const rightAbutsByArch = [...abutTeethSet].filter(isRight).sort((a, b) =>
+        // Most anterior first (closer to midline = smaller |ord - midOrd|).
+        Math.abs(ordOf(a) - midOrd) - Math.abs(ordOf(b) - midOrd));
+      const leftAbutsByArch = [...abutTeethSet].filter(isLeft).sort((a, b) =>
+        Math.abs(ordOf(a) - midOrd) - Math.abs(ordOf(b) - midOrd));
+      // Synthesize an extra posterior corner for any side with only one
+      // abutment. The corner is positioned at the same arch position as
+      // the abutment but pushed DEEPER toward the back of the palate by
+      // a fixed offset, creating the posterior anchor of the A-P frame.
+      const synthesizePosteriorCorner = (sideAbuts) => {
+        if (sideAbuts.length >= 2) return null;
+        if (sideAbuts.length === 0) return null;
+        const anchor = sideAbuts[0];
+        const a = palatalAt(anchor, 1.0);
+        // Push toward postY (the y-coord at the back of the palate)
+        const offsetX = (a.x - midlineX) * 0.20;  // slight lateral shift away from midline
+        const dy = (postY - a.y) * 0.55;             // 55% of distance toward posterior palate
+        return { x: a.x + offsetX, y: a.y + dy };
       };
-      // Compute inner corners by moving each outer corner toward the
-      // center by a fraction of its distance to center. Fraction
-      // controls the central window size — 0.50 gives ~25% window
-      // area (75% strap), matching the UIC drawings.
-      const innerFrac = 0.50;
-      const innerCorner = (p) => ({
-        x: p.x + (center.x - p.x) * innerFrac,
-        y: p.y + (center.y - p.y) * innerFrac,
-      });
-      const rAi = innerCorner(rA);
-      const lAi = innerCorner(lA);
-      const rPi = innerCorner(rP);
-      const lPi = innerCorner(lP);
-      // Both perimeters get gently-rounded corners using the same
-      // trim-and-Q-curve technique: for each corner, trim a small
-      // fraction along each adjacent edge and bridge the two trim
-      // points with a quadratic Bezier whose control point IS the
-      // original corner. Outer corners are eased less than inner
-      // (cornerEaseOuter < cornerEaseInner) since the outer corners
-      // are anchored at the abutments and shouldn't pull away too far.
-      const cornerEaseOuter = 0.10;
+      const rightSyntheticPost = synthesizePosteriorCorner(rightAbutsByArch);
+      const leftSyntheticPost  = synthesizePosteriorCorner(leftAbutsByArch);
+      // right side, anterior → posterior
+      const rightOuterPts = [
+        ...rightAbutsByArch.map(n => palatalAt(n, 1.0)),
+        ...(rightSyntheticPost ? [rightSyntheticPost] : []),
+      ];
+      // left side, posterior → anterior (reverse so we trace the perimeter)
+      const leftOuterPts = [
+        ...(leftSyntheticPost ? [leftSyntheticPost] : []),
+        ...[...leftAbutsByArch].reverse().map(n => palatalAt(n, 1.0)),
+      ];
+      const outerPts = [...rightOuterPts, ...leftOuterPts];
+      // INNER PERIMETER (window): derive from outer perimeter so it always
+      // has the same vertex count and never degenerates. Inner point i =
+      // outer point i scaled toward the centroid by innerFrac.
+      // McCracken's hand-drawn straps have a smooth rounded inner window,
+      // so we keep the Q-curve rounding for inner corners.
       const cornerEaseInner = 0.18;
+      const centroidOuter = {
+        x: outerPts.reduce((s, p) => s + p.x, 0) / outerPts.length,
+        y: outerPts.reduce((s, p) => s + p.y, 0) / outerPts.length,
+      };
+      const innerScale = 0.50;
+      const innerPts = outerPts.map(p => ({
+        x: p.x + (centroidOuter.x - p.x) * innerScale,
+        y: p.y + (centroidOuter.y - p.y) * innerScale,
+      }));
+      const sharpRectPath = (pts) => {
+        // Straight-line polygon, sharp corners
+        if (pts.length === 0) return "";
+        let path = `M ${pts[0].x} ${pts[0].y}`;
+        for (let i = 1; i < pts.length; i++) {
+          path += ` L ${pts[i].x} ${pts[i].y}`;
+        }
+        return path + " Z";
+      };
       const roundedRectPath = (pts, ease) => {
         const trims = pts.map((c, i) => {
           const prev = pts[(i + pts.length - 1) % pts.length];
@@ -14976,9 +15016,7 @@ function RPDPaperFormArchDrawing({
         }
         return path + " Z";
       };
-      const outerPts = [rA, lA, lP, rP];
-      const innerPts = [rAi, rPi, lPi, lAi];
-      const d = roundedRectPath(outerPts, cornerEaseOuter) +
+      const d = sharpRectPath(outerPts) +
                 " " +
                 roundedRectPath(innerPts, cornerEaseInner);
       return (

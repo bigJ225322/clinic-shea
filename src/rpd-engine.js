@@ -1047,28 +1047,186 @@ function planClassIIndirectRetainers(caseInput, kennedy) {
 }
 
 /**
- * Class II indirect retainer — ONE retainer on the side OPPOSITE the DE.
- * Per McCracken Fig 8-2 C, the fulcrum line is diagonal (DE-side terminal
- * + opposite-side most-posterior abutment), and the indirect retainer
- * should sit perpendicular to the midpoint of that diagonal as far
- * anterior as practical.
+ * Approximate 2D position of each tooth in arch coordinates (mm, anatomic).
+ * +x = patient's right side. +y = anterior (toward lips).
  *
- * v1 implementation: picks the opposite-side first premolar / canine
- * (mirrors Class I logic, since the geometric "perpendicular to diagonal
- * midpoint" reduces to roughly the same anatomic region in most cases).
+ * Values are derived from average adult arch dimensions (Wheeler's Dental
+ * Anatomy + McCracken Ch 1). Used for geometric fulcrum-line calculations
+ * in Class II indirect-retainer placement (INV-18, McCracken Fig 8-2 C).
  *
- * Returns plan entries with `source: "fulcrum-opposite-distalmost"`.
+ * Not used for any actual measurement — only for relative perpendicular
+ * projection ranking. Approximation accuracy ±2 mm is fine for this purpose.
+ */
+const RPD_TOOTH_COORDS = {
+  // Maxillary arch (1-16); 1 = patient's right 3rd molar, 16 = left 3rd molar
+   1: { x:  31, y: -30 },  2: { x:  29, y: -22 },  3: { x:  26, y: -15 },
+   4: { x:  22, y:  -7 },  5: { x:  18, y:   0 },  6: { x:  14, y:   8 },
+   7: { x:   7, y:  14 },  8: { x:   3, y:  16 },  9: { x:  -3, y:  16 },
+  10: { x:  -7, y:  14 }, 11: { x: -14, y:   8 }, 12: { x: -18, y:   0 },
+  13: { x: -22, y:  -7 }, 14: { x: -26, y: -15 }, 15: { x: -29, y: -22 },
+  16: { x: -31, y: -30 },
+  // Mandibular arch (17-32); 17 = patient's left 3rd molar, 32 = right 3rd molar
+  17: { x: -28, y: -28 }, 18: { x: -26, y: -22 }, 19: { x: -23, y: -15 },
+  20: { x: -20, y:  -7 }, 21: { x: -17, y:   0 }, 22: { x: -13, y:   7 },
+  23: { x:  -6, y:  12 }, 24: { x:  -2, y:  14 }, 25: { x:   2, y:  14 },
+  26: { x:   6, y:  12 }, 27: { x:  13, y:   7 }, 28: { x:  17, y:   0 },
+  29: { x:  20, y:  -7 }, 30: { x:  23, y: -15 }, 31: { x:  26, y: -22 },
+  32: { x:  28, y: -28 },
+};
+
+function rpdToothPos(tooth) {
+  return RPD_TOOTH_COORDS[tooth] || { x: 0, y: 0 };
+}
+
+/**
+ * Class II indirect retainer — ONE retainer placed using diagonal-fulcrum
+ * geometry per McCracken Fig 8-2 C.
+ *
+ * Algorithm (INV-18):
+ *   1. Identify fulcrum line endpoints:
+ *      - DE-terminal: distalmost present tooth on DE side
+ *      - Opposite-distalmost: distalmost present tooth on opposite side
+ *   2. Compute fulcrum-line midpoint and the perpendicular-anterior vector.
+ *   3. For each candidate tooth (opposite side, anterior to opposite-
+ *      distalmost, present, viable), compute its anteriority distance
+ *      from the fulcrum line (positive = anterior).
+ *   4. Filter by tooth-type priority (canine/premolar — UIC convention).
+ *   5. Among candidates of the highest priority class, pick the one with
+ *      the GREATEST perpendicular distance from the fulcrum line.
+ *
+ * Per McCracken Fig 8-2 D: if a Class II Mod 1's mesial-most modification-
+ * span abutment is far enough anterior, it can serve double-duty as both
+ * direct AND indirect retainer (dual-role) — the rest seat already exists
+ * on the direct retainer; no separate IR needed. The function detects this
+ * and emits a dual-role marker rather than a separate IR entry.
+ *
+ * Returns plan entries with `source: "fulcrum-diagonal-perpendicular"`.
  */
 function planClassIIIndirectRetainers(caseInput, kennedy) {
   const arch = caseInput.arch;
   if (!kennedy.deSide) return [];
   const oppositeSide = kennedy.deSide === "right" ? "left" : "right";
-  const pick = pickIndirectRetainerForSide(caseInput, kennedy, arch, oppositeSide);
+  const teethList = rpdArchTeeth(arch);
+
+  // Step 1: identify fulcrum line endpoints
+  const deSideTeeth = teethList.filter(n =>
+    rpdSideOf(n) === kennedy.deSide && rpdIsPresent(caseInput, n));
+  const oppositeTeeth = teethList.filter(n =>
+    rpdSideOf(n) === oppositeSide && rpdIsPresent(caseInput, n));
+  if (deSideTeeth.length === 0 || oppositeTeeth.length === 0) return [];
+  // DE terminal: distalmost present on DE side. Excludes 3rd molars when
+  // they're typically not abutments (Rule 2). For now: just most-distal present.
+  const deTerminal = deSideTeeth.reduce((a, b) =>
+    rpdDistalRank(b) > rpdDistalRank(a) ? b : a);
+  const oppDistalmost = oppositeTeeth.reduce((a, b) =>
+    rpdDistalRank(b) > rpdDistalRank(a) ? b : a);
+
+  // Step 2: midpoint + perpendicular-anterior vector
+  const p1 = rpdToothPos(deTerminal);
+  const p2 = rpdToothPos(oppDistalmost);
+  const mid = { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 };
+  // Fulcrum direction (p1 → p2)
+  const dx = p2.x - p1.x;
+  const dy = p2.y - p1.y;
+  // Perpendicular: two options (-dy, dx) and (dy, -dx). The anterior one
+  // is the one with positive y component (i.e., toward the lips).
+  // Choose the perpendicular vector with positive y.
+  let perpX = -dy, perpY = dx;
+  if (perpY < 0) { perpX = dy; perpY = -dx; }
+  // Normalize for cleaner projection math
+  const perpMag = Math.sqrt(perpX * perpX + perpY * perpY) || 1;
+  perpX /= perpMag; perpY /= perpMag;
+
+  // Step 3 + 4: candidate teeth on opposite side, anterior to oppDistalmost,
+  // viable (no incisor exclusions), with anteriority scores
+  const RPD_MAX_LATERALS = new Set([7, 10]);
+  const RPD_MAND_INCISORS = new Set([23, 24, 25, 26]);
+  const candidates = oppositeTeeth
+    .filter(n => rpdDistalRank(n) < rpdDistalRank(oppDistalmost))
+    .filter(n => !RPD_MAND_INCISORS.has(n) && !RPD_MAX_LATERALS.has(n));
+  if (candidates.length === 0) return [];
+
+  // Anteriority score = perpendicular distance from fulcrum line
+  // (signed: positive = anterior to fulcrum, negative = posterior).
+  const anteriority = (tooth) => {
+    const t = rpdToothPos(tooth);
+    return (t.x - mid.x) * perpX + (t.y - mid.y) * perpY;
+  };
+
+  // Step 4: tooth-type priority classes (UIC convention)
+  const priorityClasses = arch === "maxillary"
+    ? [
+        candidates.filter(n => RPD_CANINES.has(n)),
+        candidates.filter(n => RPD_FIRST_PREMOLARS.has(n)),
+        candidates.filter(n => RPD_SECOND_PREMOLARS.has(n)),
+        candidates.filter(n => n === 8 || n === 9),
+      ]
+    : [
+        candidates.filter(n => RPD_FIRST_PREMOLARS.has(n)),
+        candidates.filter(n => RPD_SECOND_PREMOLARS.has(n)),
+        candidates.filter(n => RPD_CANINES.has(n)),
+      ];
+
+  // Step 5: within the highest non-empty priority class, pick the tooth
+  // with the greatest anteriority. This is the geometric refinement —
+  // when a priority class has multiple eligible teeth (rare in standard
+  // dentition but real for Class II Mod 1 with anterior modification),
+  // the more-anterior tooth wins.
+  let pick = null;
+  for (const cls of priorityClasses) {
+    if (cls.length === 0) continue;
+    pick = cls.reduce((a, b) => anteriority(b) > anteriority(a) ? b : a);
+    break;
+  }
+  if (!pick) {
+    pick = candidates.reduce((a, b) => anteriority(b) > anteriority(a) ? b : a);
+  }
   if (!pick) return [];
+
+  // McCracken Fig 8-2 D: dual-role detection.
+  // If the chosen tooth is also a direct retainer (span boundary on the
+  // opposite side, typically the mesial-most boundary of a Class II Mod 1
+  // modification span), mark as dual-role.
+  const oppSpanBoundaries = new Set();
+  for (const span of (kennedy.spans || [])) {
+    for (const t of [span.beforeBound, span.afterBound]) {
+      if (!t) continue;
+      if (rpdSideOf(t) === oppositeSide) oppSpanBoundaries.add(t);
+    }
+  }
+  const isDualRole = oppSpanBoundaries.has(pick);
+
+  // Build legacy-shape entry
+  let restType;
+  if (RPD_CANINES.has(pick)) {
+    restType = arch === "mandibular" ? "ML ball rest" : "mesial cingulum rest";
+  } else if (RPD_FIRST_PREMOLARS.has(pick) || RPD_SECOND_PREMOLARS.has(pick)) {
+    restType = "mesial occlusal rest";
+  } else if (pick === 8 || pick === 9) {
+    restType = "distal ball rest";
+  } else {
+    restType = "cingulum rest";
+  }
+
+  const projAnteriority = anteriority(pick);
+  const rationaleSuffix = isDualRole
+    ? ` Per McCracken Fig 8-2 D, this tooth's anterior position relative to the diagonal fulcrum line (#${deTerminal}–#${oppDistalmost}) permits dual-role direct + indirect retention; no separate IR tooth is needed.`
+    : ` Indirect retainer placement chosen via diagonal fulcrum-line geometry (McCracken Fig 8-2 C): fulcrum endpoints #${deTerminal} (DE terminal) and #${oppDistalmost} (opposite-side distalmost); perpendicular projection from fulcrum midpoint = ${projAnteriority.toFixed(1)} mm anterior. Among UIC-preferred tooth types on opposite side, this tooth has the greatest anteriority.`;
+
   return [{
-    tooth: pick.tooth,
-    source: "fulcrum-opposite-distalmost",
-    _legacyData: pick.legacyEntry,
+    tooth: pick,
+    source: "fulcrum-diagonal-perpendicular",
+    fulcrumEndpoints: { deTerminal, oppDistalmost },
+    anteriority: projAnteriority,
+    dualRole: isDualRole,
+    _legacyData: {
+      tooth: pick,
+      restType,
+      rationale: RPD_RATIONALE.rest.indirectFulcrum + rationaleSuffix,
+      tier: "common",
+      alternativeRationale: "If the indirect retainer's chosen tooth has compromised support, the next-best tooth in the UIC priority class (canine ↔ premolar) can be used. Geometric perpendicular ranking is a refinement, not a hard rule — instructor judgment can pick a different anterior tooth if support is inadequate at the geometric ideal.",
+      dualRole: isDualRole,
+    },
   }];
 }
 
