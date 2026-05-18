@@ -7734,32 +7734,6 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
         AAP 2018 staging
       </div>
 
-      {/* Max PD stat — pulled from the perio chart's PD Range field */}
-      <div style={{
-        display: "flex", alignItems: "center", gap: "10px",
-        padding: "8px 12px", marginBottom: "12px",
-        background: pdParsed.invalid ? "rgba(124,30,32,0.06)" : "white",
-        border: "1px solid " + (pdParsed.invalid ? "var(--accent)" : "var(--rule)"),
-        borderRadius: "2px",
-      }}>
-        <span style={{
-          fontSize: "9px", letterSpacing: "0.12em",
-          textTransform: "uppercase", color: "var(--ink-soft)",
-          fontFamily: "'Geist', sans-serif",
-        }}>Max PD</span>
-        <span style={{
-          fontFamily: "'Fraunces', serif", fontSize: "18px", fontWeight: 600,
-          color: pdParsed.invalid ? "var(--accent)" : "var(--ink)",
-        }}>
-          {pdParsed.invalid ? "invalid Max PD" : `${maxPD}mm`}
-        </span>
-        <span style={{ fontSize: "11px", color: "var(--ink-faint)", fontStyle: "italic" }}>
-          {pdParsed.invalid
-            ? "fill in the PD Range field above first"
-            : "from perio chart PD Range"}
-        </span>
-      </div>
-
       {/* Three staging fields on one row: Recession, BL %, Teeth Lost */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px" }}>
         <Field label="Recession at max PD (mm)">
@@ -7792,10 +7766,14 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
         <div style={{
           marginTop: "4px", marginBottom: "12px",
           padding: "6px 10px",
-          fontSize: "11px", color: "var(--ink-soft)",
           fontFamily: "'Geist', sans-serif",
         }}>
-          CAL = {maxPD} + {Number(fields.perioCOEMaxRecession) || 0} = <strong style={{ color: "var(--ink)" }}>{maxPD + (Number(fields.perioCOEMaxRecession) || 0)}mm</strong>
+          <div style={{ fontSize: "11px", color: "var(--ink-soft)" }}>
+            CAL = {maxPD} + {Number(fields.perioCOEMaxRecession) || 0} = <strong style={{ color: "var(--ink)" }}>{maxPD + (Number(fields.perioCOEMaxRecession) || 0)}mm</strong>
+          </div>
+          <div style={{ fontSize: "10px", color: "var(--ink-faint)", marginTop: "2px", fontStyle: "italic" }}>
+            Clinical Attachment Loss = Max Probing Depth + Recession at Max PD
+          </div>
         </div>
       )}
 
@@ -7904,7 +7882,7 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
 
       {/* ── Extent ── */}
       <div style={{ marginTop: "10px" }}>
-        <Field label="Disease extent">
+        <Field label="Extent">
           <Select value={fields.perioCOEExtent || ""}
             onChange={v => setField("perioCOEExtent", v)}>
             <option value="">— select —</option>
