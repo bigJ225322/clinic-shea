@@ -18038,7 +18038,9 @@ const TABS = [
   { id: "browse",  label: "Steps",   hint: "Read the guide" },
   { id: "rvus",    label: "Codes",   hint: "Progress & code lookup" },
   { id: "pes",     label: "PEs",     hint: "Performance exam reference" },
-  { id: "helpers", label: "RPD",     hint: "Design helper for removable partial dentures" },
+  // RPD tab temporarily disabled (engine rebuild in flight; UI to be
+  // re-enabled once a few visual polish items are addressed).
+  // { id: "helpers", label: "RPD",     hint: "Design helper for removable partial dentures" },
 ];
 
 // Engine names are exported from src/rpd-engine.js directly. Tests import
