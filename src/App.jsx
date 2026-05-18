@@ -7917,27 +7917,11 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
 
       {/* ── Suggestion output ── */}
       <div style={{ marginTop: "18px", paddingTop: "14px", borderTop: "1px solid var(--rule)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+        <div style={{ marginBottom: "10px" }}>
           <span style={{
             fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
             color: "var(--accent)", fontWeight: 500, fontFamily: "'Geist', sans-serif",
-          }}>Suggested</span>
-          {dx && (
-            <button
-              type="button"
-              onClick={() => setRationaleOpen(o => !o)}
-              style={{
-                padding: "3px 10px", borderRadius: "2px",
-                background: rationaleOpen ? "var(--accent)" : "transparent",
-                color: rationaleOpen ? "white" : "var(--accent)",
-                border: "1px solid var(--accent)",
-                fontSize: "11px", fontWeight: 600, letterSpacing: "0.04em",
-                cursor: "pointer", fontFamily: "'Geist', sans-serif",
-              }}
-            >
-              {rationaleOpen ? "Hide rationale" : "Rationale"}
-            </button>
-          )}
+          }}>Suggested diagnosis</span>
         </div>
         {dx ? (
           <>
@@ -7968,6 +7952,32 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
                 <strong>ADA:</strong> {dx.ada}
               </div>
             </div>
+
+            {/* Rationale dropdown — disclosure-style toggle below the
+                diagnosis. Chevron indicates expandability. */}
+            {rationale && (
+              <button
+                type="button"
+                onClick={() => setRationaleOpen(o => !o)}
+                style={{
+                  display: "flex", alignItems: "center", gap: "6px",
+                  marginTop: "10px", padding: "6px 10px",
+                  background: "transparent", border: "1px solid var(--rule)",
+                  borderRadius: "2px", color: "var(--accent)",
+                  fontSize: "11px", fontWeight: 600, letterSpacing: "0.04em",
+                  cursor: "pointer", fontFamily: "'Geist', sans-serif",
+                  width: "100%", justifyContent: "space-between",
+                }}
+              >
+                <span>Why this diagnosis?</span>
+                <span style={{
+                  display: "inline-block",
+                  transform: rationaleOpen ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "transform 140ms",
+                  fontSize: "10px",
+                }}>▾</span>
+              </button>
+            )}
 
             {/* Rationale panel — collapsible. Shows what triggered each
                 decision, what's ambiguous, and what the engine took on
