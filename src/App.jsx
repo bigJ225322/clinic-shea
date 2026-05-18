@@ -7917,12 +7917,6 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
 
       {/* ── Suggestion output ── */}
       <div style={{ marginTop: "18px", paddingTop: "14px", borderTop: "1px solid var(--rule)" }}>
-        <div style={{ marginBottom: "10px" }}>
-          <span style={{
-            fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
-            color: "var(--accent)", fontWeight: 500, fontFamily: "'Geist', sans-serif",
-          }}>Suggested diagnosis</span>
-        </div>
         {dx ? (
           <>
             <div style={{
@@ -7969,7 +7963,7 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
                   width: "100%", justifyContent: "space-between",
                 }}
               >
-                <span>Why this diagnosis?</span>
+                <span>Explanation</span>
                 <span style={{
                   display: "inline-block",
                   transform: rationaleOpen ? "rotate(180deg)" : "rotate(0deg)",
