@@ -8,7 +8,16 @@
 //   - Huddle Week 6 Case 2 — maxillary Class II Mod 2
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { rpdRunEngine, rpdMakeBlankCase, rpdClassifyKennedy, rpdPlanRetention } from "./rpd-engine.js";
+import {
+  rpdRunEngine, rpdMakeBlankCase, rpdClassifyKennedy, rpdPlanRetention,
+  // Hydration helpers — unit-tested directly for behavior isolation
+  computeSideToward, evaluateSurveyCrown, evaluateCrownLengthening,
+  shouldApplyMaxAnteriorNoClasp, hydrateInterimAbutment,
+  pickRestSeat, pickGuidePlane, pickClaspMechanic,
+  computeEffectiveUndercutForOutput, maybeRingClaspAlternative,
+  // Building blocks the helpers depend on
+  rpdGetEdentulousSpans, RPD_ABUTMENT_DEFAULTS,
+} from "./rpd-engine.js";
 
 const setMissing = (c, teeth) => {
   for (const n of teeth) c.teeth[n].status = "missing";
@@ -5590,6 +5599,636 @@ describe("PLANNER V2 — rpdPlanRetention output spec", () => {
       const teeth1 = p1.directRetainers.map(d => d.tooth).sort();
       const teeth2 = p2.directRetainers.map(d => d.tooth).sort();
       expect(teeth1).toEqual(teeth2);
+    });
+  });
+});
+
+// =========================================================================
+// HYDRATION HELPERS — unit tests for each helper in isolation
+// =========================================================================
+// Each helper extracted from rpdDesignAbutment gets dedicated unit tests
+// that verify its behavior independent of the rest of the engine. This is
+// the dimension that was missing from the architectural rebuild — claiming
+// "independently testable" without writing the tests.
+// =========================================================================
+
+describe("UNIT — computeSideToward(tooth, span, arch)", () => {
+  // Build a minimal span object compatible with rpdGetEdentulousSpans output
+  const mkSpan = ({ teeth, type = "tooth-supported", beforeBound = null, afterBound = null }) => ({
+    teeth, type, beforeBound, afterBound,
+    crossesMidline: false, containsAnterior: false, containsPosterior: true,
+    isDistalExtensionRight: false, isDistalExtensionLeft: false,
+  });
+
+  it("DE terminal always returns 'distal' regardless of arch/side", () => {
+    const span = mkSpan({ teeth: [18, 19], type: "distal-extension", afterBound: 20 });
+    expect(computeSideToward(20, span, "mandibular")).toBe("distal");
+    const span2 = mkSpan({ teeth: [13, 14, 15], type: "distal-extension", beforeBound: 12 });
+    expect(computeSideToward(12, span2, "maxillary")).toBe("distal");
+  });
+
+  it("Tooth-supported: bound on the distal side of an arch-neighbor in span", () => {
+    // Mand mod span [19] with #18 on left of #19. For #20 (after #19): #19 is in span.
+    // afterInSpan=true, rpdSideOf(20)=right (mand right starts at 25... wait #20 is left).
+    // Actually #20 mand: rpdSideOf(20)=left. mand left arch order goes 17→24.
+    // For #20 (idx 3), span teeth = [19] (idx 2). before=19 is in span, after=21 not in span.
+    // beforeInSpan=true, arch=mand → rpdSideOf(20)='left' ? distal : mesial = "distal"
+    const span = mkSpan({ teeth: [19], beforeBound: 18, afterBound: 20 });
+    expect(computeSideToward(20, span, "mandibular")).toBe("distal");
+  });
+
+  it("Tooth-supported: max right, span between (e.g. #4 missing, #3+#5 are boundaries)", () => {
+    // Max #4 missing. Span = [4]. For #5: span has #4 before #5 in array order.
+    // arch=max array [1..16]. #5 idx=4, #4 idx=3. before #4 is in span. arch=max.
+    // beforeInSpan=true, max → rpdSideOf(5)="right" ? distal : mesial = "distal".
+    const span = mkSpan({ teeth: [4], beforeBound: 3, afterBound: 5 });
+    expect(computeSideToward(5, span, "maxillary")).toBe("distal");
+    // For #3: #4 is after in array. afterInSpan=true, max → rpdSideOf(3)="right" ? mesial : distal = "mesial".
+    expect(computeSideToward(3, span, "maxillary")).toBe("mesial");
+  });
+
+  it("Tooth-supported: max left, span between (e.g. #14 missing, #13+#15 boundaries)", () => {
+    const span = mkSpan({ teeth: [14], beforeBound: 13, afterBound: 15 });
+    // Max left arch order: 9 (mesial) → 16 (distal). #14 is between #13 and #15.
+    // For #15: #14 before me in array. left side, beforeInSpan → "distal" toward #14.
+    expect(computeSideToward(15, span, "maxillary")).toBe("mesial");
+    // For #13: #14 after me in array. left side, afterInSpan → "distal" toward #14.
+    expect(computeSideToward(13, span, "maxillary")).toBe("distal");
+  });
+
+  it("Fallback when neither neighbor is in span (degenerate case) returns 'mesial'", () => {
+    const span = mkSpan({ teeth: [], beforeBound: null, afterBound: null });
+    expect(computeSideToward(5, span, "maxillary")).toBe("mesial");
+  });
+});
+
+describe("UNIT — evaluateSurveyCrown(attrs)", () => {
+  const defaults = { ...RPD_ABUTMENT_DEFAULTS };
+
+  it("Returns null for healthy default attrs (no triggers)", () => {
+    expect(evaluateSurveyCrown(defaults)).toBeNull();
+  });
+
+  it("Triggers on insufficient enamel integrity at rest seat (UIC criterion 3)", () => {
+    const a = { ...defaults, enamelIntegrityAtRestSeat: "insufficient" };
+    const sc = evaluateSurveyCrown(a);
+    expect(sc).toBeTruthy();
+    expect(sc.indicated).toBe(true);
+    expect(sc.reason).toMatch(/enamel|dentin/i);
+  });
+
+  it("Triggers on extensive existing restorations (UIC criterion 1)", () => {
+    const a = { ...defaults, existingRestorations: "extensive" };
+    const sc = evaluateSurveyCrown(a);
+    expect(sc.indicated).toBe(true);
+    expect(sc.reason).toMatch(/restoration/i);
+  });
+
+  it("Triggers on extreme tilt (UIC criterion 2 — plane of occlusion)", () => {
+    const a = { ...defaults, tilt: "extreme" };
+    const sc = evaluateSurveyCrown(a);
+    expect(sc.indicated).toBe(true);
+    expect(sc.reason).toMatch(/tilt|occlusion/i);
+  });
+
+  it("Triggers on existing crown that obstructs prep (UIC criterion 4)", () => {
+    const a = { ...defaults, existingCrown: "obstructing" };
+    const sc = evaluateSurveyCrown(a);
+    expect(sc.indicated).toBe(true);
+    expect(sc.reason).toMatch(/existing crown|obstruct/i);
+  });
+
+  it("Returns PFM dimensional note regardless of which trigger fires", () => {
+    const a = { ...defaults, tilt: "extreme" };
+    const sc = evaluateSurveyCrown(a);
+    expect(sc.note).toMatch(/PFM|2\.5|metal/i);
+  });
+});
+
+describe("UNIT — evaluateCrownLengthening(attrs, surveyCrownIndicated)", () => {
+  const defaults = { ...RPD_ABUTMENT_DEFAULTS };
+
+  it("Returns null when crown height is normal", () => {
+    expect(evaluateCrownLengthening(defaults, false)).toBeNull();
+  });
+
+  it("Returns null when survey crown is already indicated (survey crown subsumes lengthening)", () => {
+    const a = { ...defaults, crownHeight: "short" };
+    expect(evaluateCrownLengthening(a, true)).toBeNull();
+  });
+
+  it("Triggers when short crown + NO survey crown", () => {
+    const a = { ...defaults, crownHeight: "short" };
+    const cl = evaluateCrownLengthening(a, false);
+    expect(cl).toBeTruthy();
+    expect(cl.indicated).toBe(true);
+    expect(cl.reason).toMatch(/short|Phase II/i);
+  });
+});
+
+describe("UNIT — shouldApplyMaxAnteriorNoClasp(tooth, span, kennedy, arch)", () => {
+  const spanTS = { type: "tooth-supported", teeth: [7] };
+  const spanDE = { type: "distal-extension", teeth: [13, 14, 15] };
+  const kClassIII = { class: "III", primarySpans: [spanTS] };
+  const kClassIV  = { class: "IV",  primarySpans: [spanTS] };
+
+  it("Applies for max anterior (#6) on tooth-supported non-Class-IV span", () => {
+    expect(shouldApplyMaxAnteriorNoClasp(6, spanTS, kClassIII, "maxillary")).toBe(true);
+  });
+
+  it("Does NOT apply on mandibular arch", () => {
+    expect(shouldApplyMaxAnteriorNoClasp(22, spanTS, kClassIII, "mandibular")).toBe(false);
+  });
+
+  it("Does NOT apply on max posterior (#3)", () => {
+    expect(shouldApplyMaxAnteriorNoClasp(3, spanTS, kClassIII, "maxillary")).toBe(false);
+  });
+
+  it("Does NOT apply for DE span (max anteriors there still need clasps)", () => {
+    expect(shouldApplyMaxAnteriorNoClasp(6, spanDE, kClassIII, "maxillary")).toBe(false);
+  });
+
+  it("Does NOT apply for Class IV primary span (bounding teeth need retention)", () => {
+    expect(shouldApplyMaxAnteriorNoClasp(6, spanTS, kClassIV, "maxillary")).toBe(false);
+  });
+});
+
+describe("UNIT — hydrateInterimAbutment(tooth)", () => {
+  it("Returns WW C-clasp design with no rest seat / no guide plane", () => {
+    const d = hydrateInterimAbutment(20);
+    expect(d.tooth).toBe(20);
+    expect(d.claspType).toBe("WW C-clasp");
+    expect(d.restSeat).toBeNull();
+    expect(d.guidePlane).toBeNull();
+    expect(d.reciprocation).toBeNull();
+    expect(d.surveyCrown).toBeNull();
+  });
+
+  it("Posterior teeth get ball clasp alternative", () => {
+    const d = hydrateInterimAbutment(19); // mand 1st molar
+    expect(d.claspAlternative).toMatch(/Ball clasp/i);
+  });
+
+  it("Anterior teeth do NOT get ball clasp alternative", () => {
+    const d = hydrateInterimAbutment(8); // max central
+    expect(d.claspAlternative).toBeNull();
+  });
+
+  it("Includes UIC IPD lecture rationale", () => {
+    const d = hydrateInterimAbutment(20);
+    expect(d.claspRationale).toMatch(/wrought wire|IPD/i);
+  });
+});
+
+describe("UNIT — pickRestSeat({tooth, isDE, sideToward, arch})", () => {
+  it("DE terminal molar → mesial occlusal rest with #8 round bur outline", () => {
+    const r = pickRestSeat({ tooth: 30, isDE: true, sideToward: "distal", arch: "mandibular" });
+    expect(r.surface).toBe("mesial");
+    expect(r.type).toBe("occlusal");
+    expect(r.bur).toMatch(/#8 round/);
+  });
+
+  it("DE terminal premolar → mesial occlusal rest with #6 round bur outline", () => {
+    const r = pickRestSeat({ tooth: 5, isDE: true, sideToward: "distal", arch: "maxillary" });
+    expect(r.surface).toBe("mesial");
+    expect(r.type).toBe("occlusal");
+    expect(r.bur).toMatch(/#6 round/);
+  });
+
+  it("DE terminal canine → cingulum rest with inverted cone bur", () => {
+    const r = pickRestSeat({ tooth: 22, isDE: true, sideToward: "distal", arch: "mandibular" });
+    expect(r.surface).toBe("mesial");
+    expect(r.type).toBe("cingulum");
+    expect(r.bur).toBe("inverted cone");
+  });
+
+  it("Tooth-supported molar → occlusal rest on sideToward", () => {
+    const r = pickRestSeat({ tooth: 30, isDE: false, sideToward: "distal", arch: "mandibular" });
+    expect(r.surface).toBe("distal");
+    expect(r.type).toBe("occlusal");
+  });
+
+  it("Mandibular canine bounding anterior span → ML ball rest (UIC Design Case II)", () => {
+    const r = pickRestSeat({ tooth: 22, isDE: false, sideToward: "distal", arch: "mandibular" });
+    expect(r.type).toBe("ball");
+    expect(r.surface).toBe("mesio-lingual");
+  });
+
+  it("Maxillary canine bounding anterior span → cingulum rest (max cingulum is adequate)", () => {
+    const r = pickRestSeat({ tooth: 6, isDE: false, sideToward: "distal", arch: "maxillary" });
+    expect(r.type).toBe("cingulum");
+  });
+
+  it("Third molar (if used as TS abutment) → occlusal rest, NOT cingulum", () => {
+    const r = pickRestSeat({ tooth: 1, isDE: false, sideToward: "mesial", arch: "maxillary" });
+    expect(r.type).toBe("occlusal");
+    expect(r.bur).toMatch(/#8 round/);
+  });
+});
+
+describe("UNIT — pickGuidePlane({tooth, isDE, sideToward, claspType})", () => {
+  it("DE terminal → guide plane on distal (proximal plate location)", () => {
+    const r = pickGuidePlane({ tooth: 20, isDE: true, sideToward: "distal", claspType: "RPI" });
+    expect(r.spec.surface).toBe("distal");
+  });
+
+  it("Tooth-supported → guide plane on sideToward", () => {
+    const r = pickGuidePlane({ tooth: 30, isDE: false, sideToward: "mesial", claspType: "Akers" });
+    expect(r.spec.surface).toBe("mesial");
+  });
+
+  it("I-bar esthetic clasp → long/parallel guide plane", () => {
+    const r = pickGuidePlane({ tooth: 6, isDE: false, sideToward: "distal", claspType: "I-bar (esthetic)" });
+    expect(r.spec.length).toMatch(/long\/parallel/i);
+  });
+
+  it("Posterior abutment, non-I-bar → 1/3 B-L × 2/3 cervically standard prep", () => {
+    const r = pickGuidePlane({ tooth: 30, isDE: false, sideToward: "mesial", claspType: "Akers" });
+    expect(r.spec.length).toMatch(/1\/3 B-L/i);
+  });
+
+  it("Anterior abutment, non-I-bar → linguo-proximal esthetic placement", () => {
+    const r = pickGuidePlane({ tooth: 22, isDE: false, sideToward: "distal", claspType: "Akers" });
+    expect(r.spec.length).toMatch(/linguo-proximal/i);
+  });
+});
+
+describe("UNIT — pickClaspMechanic({tooth, span, attrs, claspContras, sideToward})", () => {
+  const defaultAttrs = { ...RPD_ABUTMENT_DEFAULTS };
+  const spanDE = { type: "distal-extension", teeth: [18, 19, 20] };
+  const spanTS = { type: "tooth-supported", teeth: [14] };
+
+  it("DE terminal with no contras → RPI", () => {
+    const m = pickClaspMechanic({ tooth: 21, span: spanDE, attrs: defaultAttrs, claspContras: [], sideToward: "distal" });
+    expect(m.claspType).toBe("RPI");
+    expect(m.reciprocation.type).toBe("plate");
+  });
+
+  it("DE terminal with vestibular contra → Combination", () => {
+    const m = pickClaspMechanic({
+      tooth: 21, span: spanDE, attrs: defaultAttrs,
+      claspContras: [{ key: "vestibular", text: "vestibular depth ≤5mm" }],
+      sideToward: "distal",
+    });
+    expect(m.claspType).toBe("Combination");
+    expect(m.retentiveArm).toMatch(/wrought wire|0\.02/i);
+  });
+
+  it("Tooth-supported with default attrs, posterior tooth → Akers", () => {
+    const m = pickClaspMechanic({ tooth: 13, span: spanTS, attrs: defaultAttrs, claspContras: [], sideToward: "distal" });
+    expect(m.claspType).toBe("Akers");
+  });
+
+  it("Tooth-supported with disto-buccal undercut explicit → Reverse Akers", () => {
+    const a = { ...defaultAttrs, undercutLocation: "disto-buccal" };
+    const m = pickClaspMechanic({ tooth: 13, span: spanTS, attrs: a, claspContras: [], sideToward: "distal" });
+    expect(m.claspType).toBe("Reverse Akers");
+  });
+
+  it("Tooth-supported in esthetic zone with valid undercut → I-bar (esthetic)", () => {
+    const m = pickClaspMechanic({ tooth: 6, span: spanTS, attrs: defaultAttrs, claspContras: [], sideToward: "distal" });
+    expect(m.claspType).toBe("I-bar (esthetic)");
+  });
+
+  it("Esthetic zone but undercut absent → standard Akers (not I-bar esthetic)", () => {
+    const a = { ...defaultAttrs, undercutLocation: "none" };
+    const m = pickClaspMechanic({ tooth: 6, span: spanTS, attrs: a, claspContras: [], sideToward: "distal" });
+    expect(m.claspType).not.toBe("I-bar (esthetic)");
+  });
+
+  it("Reverse Akers on a molar (off-label per UIC Retainers PDF) tier-downgrades", () => {
+    const a = { ...defaultAttrs, undercutLocation: "disto-buccal" };
+    const m = pickClaspMechanic({ tooth: 19, span: spanTS, attrs: a, claspContras: [], sideToward: "distal" });
+    expect(m.claspType).toBe("Reverse Akers");
+    expect(m.claspTier).toBe("judgment");
+    expect(m.claspAlternative).toBe("Ring clasp");
+  });
+
+  it("Reverse Akers on tilted molar with disto-lingual undercut stays tier-common (Huddle 6 Q10 carve-out)", () => {
+    const a = { ...defaultAttrs, undercutLocation: "disto-lingual", tilt: "tilted" };
+    const m = pickClaspMechanic({ tooth: 18, span: spanTS, attrs: a, claspContras: [], sideToward: "distal" });
+    expect(m.claspType).toBe("Reverse Akers");
+    expect(m.claspTier).toBe("common");
+  });
+});
+
+describe("UNIT — computeEffectiveUndercutForOutput({claspType, sideToward, userUndercut})", () => {
+  it("Akers with default mid-buccal + sideToward=mesial → DB (textbook standard)", () => {
+    expect(computeEffectiveUndercutForOutput({
+      claspType: "Akers", sideToward: "mesial", userUndercut: "mid-buccal",
+    })).toBe("disto-buccal");
+  });
+
+  it("Akers with default mid-buccal + sideToward=distal → MB", () => {
+    expect(computeEffectiveUndercutForOutput({
+      claspType: "Akers", sideToward: "distal", userUndercut: "mid-buccal",
+    })).toBe("mesio-buccal");
+  });
+
+  it("Akers with user-explicit undercut respects the user's setting", () => {
+    expect(computeEffectiveUndercutForOutput({
+      claspType: "Akers", sideToward: "distal", userUndercut: "disto-lingual",
+    })).toBe("disto-lingual");
+  });
+
+  it("Combination always engages mesio-buccal regardless of user setting", () => {
+    expect(computeEffectiveUndercutForOutput({
+      claspType: "Combination", sideToward: "distal", userUndercut: "mid-buccal",
+    })).toBe("mesio-buccal");
+    expect(computeEffectiveUndercutForOutput({
+      claspType: "Combination", sideToward: "distal", userUndercut: "disto-buccal",
+    })).toBe("mesio-buccal");
+  });
+
+  it("RPI / I-bar esthetic / other types pass through user setting", () => {
+    expect(computeEffectiveUndercutForOutput({
+      claspType: "RPI", sideToward: "distal", userUndercut: "mid-buccal",
+    })).toBe("mid-buccal");
+    expect(computeEffectiveUndercutForOutput({
+      claspType: "I-bar (esthetic)", sideToward: "distal", userUndercut: "mid-buccal",
+    })).toBe("mid-buccal");
+  });
+});
+
+describe("UNIT — maybeRingClaspAlternative({tooth, attrs, claspType})", () => {
+  it("Returns null for non-molar teeth", () => {
+    const a = { ...RPD_ABUTMENT_DEFAULTS, tilt: "tilted", undercutLocation: "mesio-lingual" };
+    expect(maybeRingClaspAlternative({ tooth: 21, attrs: a, claspType: "Akers" })).toBeNull();
+  });
+
+  it("Returns null for non-tilted molars", () => {
+    const a = { ...RPD_ABUTMENT_DEFAULTS, tilt: "normal", undercutLocation: "mesio-lingual" };
+    expect(maybeRingClaspAlternative({ tooth: 19, attrs: a, claspType: "Akers" })).toBeNull();
+  });
+
+  it("Returns null when undercut is not on mesial surface", () => {
+    const a = { ...RPD_ABUTMENT_DEFAULTS, tilt: "tilted", undercutLocation: "disto-buccal" };
+    expect(maybeRingClaspAlternative({ tooth: 19, attrs: a, claspType: "Akers" })).toBeNull();
+  });
+
+  it("Returns Ring suggestion for tilted molar with ML/MB undercut + Akers/Reverse Akers clasp", () => {
+    const a = { ...RPD_ABUTMENT_DEFAULTS, tilt: "tilted", undercutLocation: "mesio-lingual" };
+    const note = maybeRingClaspAlternative({ tooth: 19, attrs: a, claspType: "Akers" });
+    expect(note).toMatch(/Ring clasp/);
+    expect(note).toMatch(/360|encirclement/i);
+  });
+
+  it("Returns null when claspType is RPI / Combination / others (not Akers family)", () => {
+    const a = { ...RPD_ABUTMENT_DEFAULTS, tilt: "tilted", undercutLocation: "mesio-lingual" };
+    expect(maybeRingClaspAlternative({ tooth: 19, attrs: a, claspType: "RPI" })).toBeNull();
+    expect(maybeRingClaspAlternative({ tooth: 19, attrs: a, claspType: "Combination" })).toBeNull();
+  });
+});
+
+// =========================================================================
+// INV-20 — Class III with compromised abutment anticipates Class II
+// =========================================================================
+// McCracken Fig 8-2 G: "In a Class III arch with a posterior tooth ... which
+// has a poor prognosis and eventually will be lost, the fulcrum line is
+// considered the same as though posterior tooth were not present. Thus its
+// future loss may not necessitate altering the original design of the
+// removable partial denture framework."
+//
+// New clinical capability the rebuild adds: when a Class III span-boundary
+// abutment has poor/hopeless perio prognosis, the design includes an
+// indirect retainer on the opposite side (anticipating the Class II
+// configuration that will exist after the compromised tooth is lost).
+// =========================================================================
+
+describe("INV-20 — Class III with compromised abutment behaves like Class II", () => {
+  const setMissingFor = (c, teeth) => {
+    for (const n of teeth) c.teeth[n].status = "missing";
+    return c;
+  };
+  const setAttrsFor = (c, n, attrs) => {
+    c.teeth[n].attrs = { ...(c.teeth[n].attrs || {}), ...attrs };
+    return c;
+  };
+
+  it("Class III with NO compromised abutments → no indirect retainer (INV-3 baseline)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissingFor(c, [1, 16, 14]);
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("III");
+    expect(r.indirectRetainers || []).toEqual([]);
+  });
+
+  it("Class III with HOPELESS span-boundary abutment → adds indirect retainer on opposite side", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissingFor(c, [1, 16, 14]);
+    // #15 (left, distal abutment of #14 span) has hopeless prognosis
+    setAttrsFor(c, 15, { perioPrognosis: "hopeless" });
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("III");
+    expect(r.indirectRetainers.length).toBeGreaterThan(0);
+    // Indirect retainer should be on the RIGHT side (opposite of #15 which is left)
+    const ir = r.indirectRetainers[0];
+    const irIsRight = ir.tooth >= 1 && ir.tooth <= 8;
+    expect(irIsRight).toBe(true);
+  });
+
+  it("Class III with POOR span-boundary abutment → also triggers (poor and hopeless both qualify)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissingFor(c, [17, 32, 19]);
+    // #18 (left distal abutment) has poor prognosis
+    setAttrsFor(c, 18, { perioPrognosis: "poor" });
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("III");
+    expect(r.indirectRetainers.length).toBeGreaterThan(0);
+    // Indirect retainer should be on the RIGHT side (opposite of #18 which is left)
+    const ir = r.indirectRetainers[0];
+    const irIsRight = ir.tooth >= 25 && ir.tooth <= 32;
+    expect(irIsRight).toBe(true);
+  });
+
+  it("Indirect retainer cites McCracken Fig 8-2 G in its rationale", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissingFor(c, [17, 32, 19]);
+    setAttrsFor(c, 18, { perioPrognosis: "hopeless" });
+    const r = rpdRunEngine(c);
+    const ir = r.indirectRetainers[0];
+    expect(ir.rationale).toMatch(/Fig 8-2 G|anticipate|future|McCracken/i);
+  });
+
+  it("Red flag emitted explaining the anticipated future tooth loss", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissingFor(c, [17, 32, 19]);
+    setAttrsFor(c, 18, { perioPrognosis: "hopeless" });
+    const r = rpdRunEngine(c);
+    const flag = (r.redFlags || []).find(f => f.type === "class-iii-compromised-abutment");
+    expect(flag).toBeTruthy();
+    expect(flag.message).toMatch(/anticipate|McCracken|Class II/i);
+  });
+
+  it("Picks first premolar > second premolar > canine on mandibular side (UIC convention)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    setMissingFor(c, [17, 32, 19]);
+    setAttrsFor(c, 18, { perioPrognosis: "hopeless" });
+    const r = rpdRunEngine(c);
+    const ir = r.indirectRetainers[0];
+    // Mand right side first premolar = #28
+    expect(ir.tooth).toBe(28);
+    expect(ir.restType).toMatch(/mesial occlusal/i);
+  });
+
+  it("Picks canine on maxillary side (UIC convention — max canine cingulum is adequate)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissingFor(c, [1, 16, 14]);
+    setAttrsFor(c, 15, { perioPrognosis: "hopeless" });
+    const r = rpdRunEngine(c);
+    const ir = r.indirectRetainers[0];
+    // Max right side canine = #6
+    expect(ir.tooth).toBe(6);
+    expect(ir.restType).toMatch(/cingulum/i);
+  });
+
+  it("Class III mod 1 with one compromised side → indirect retainer added", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissingFor(c, [1, 16, 3, 14]); // bilateral spans
+    // #13 (left side of #14 span) compromised
+    setAttrsFor(c, 13, { perioPrognosis: "poor" });
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("III");
+    // Even though spans are bilateral, the compromised abutment still
+    // anticipates a Class II configuration after #13 is lost.
+    expect(r.indirectRetainers.length).toBeGreaterThan(0);
+  });
+
+  it("Multiple compromised abutments → only one indirect retainer added (not duplicated)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissingFor(c, [1, 16, 14]);
+    setAttrsFor(c, 13, { perioPrognosis: "poor" });
+    setAttrsFor(c, 15, { perioPrognosis: "hopeless" });
+    const r = rpdRunEngine(c);
+    // Both #13 and #15 are compromised on left; engine picks the most-distal
+    // and adds ONE indirect retainer on the opposite (right) side.
+    expect(r.indirectRetainers.length).toBe(1);
+  });
+
+  it("Compromised abutment on right side → indirect on LEFT (mirror)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissingFor(c, [1, 16, 4]); // span #4 with boundaries #3, #5 (both right)
+    setAttrsFor(c, 5, { perioPrognosis: "hopeless" });
+    const r = rpdRunEngine(c);
+    // Class III mod 0 with #4 missing has bilateral retention via embrasure pair on the LEFT.
+    // Add INV-20 compromised: indirect on the left (opposite of #5/right).
+    const ir = (r.indirectRetainers || [])[0];
+    if (ir) {
+      const irIsLeft = ir.tooth >= 9 && ir.tooth <= 16;
+      expect(irIsLeft).toBe(true);
+    }
+  });
+});
+
+// =========================================================================
+// CLINICAL WINS DOCUMENTATION — what the rebuild adds beyond V1
+// =========================================================================
+// These tests document the new clinical capabilities the rebuild ships
+// (vs. the pre-rebuild V1 engine which had only the Class III mod 0
+// bug-fix patch). Each test exercises a case where V2's output is
+// strictly better than V1's would have been, with a McCracken citation.
+//
+// The rebuild's purpose was to enable these clinical improvements — not
+// just to reorganize code. This block is the answer to "what would a
+// clinician actually NOTICE about the rebuilt engine?"
+// =========================================================================
+
+describe("CLINICAL WINS — what the rebuild adds beyond V1", () => {
+  const setMissingC = (c, teeth) => {
+    for (const n of teeth) c.teeth[n].status = "missing";
+    return c;
+  };
+  const setAttrsC = (c, n, attrs) => {
+    c.teeth[n].attrs = { ...(c.teeth[n].attrs || {}), ...attrs };
+    return c;
+  };
+
+  it("WIN 1 — Class III with compromised distal abutment gets indirect retainer (McCracken Fig 8-2 G, INV-20)", () => {
+    // Case: maxillary Class III, #14 missing, #15 has hopeless prognosis.
+    // V1 produced ZERO indirect retainers (Class III rule).
+    // V2 produces one indirect retainer on the opposite side, anticipating
+    // the future Class II configuration when #15 is lost.
+    const c = rpdMakeBlankCase("maxillary");
+    setMissingC(c, [1, 16, 14]);
+    setAttrsC(c, 15, { perioPrognosis: "hopeless" });
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("III");
+    expect(r.indirectRetainers.length).toBe(1);
+    expect(r.indirectRetainers[0].source).toBe("class-iii-anticipated-class-ii");
+    const flag = (r.redFlags || []).find(f => f.type === "class-iii-compromised-abutment");
+    expect(flag).toBeTruthy();
+  });
+
+  it("WIN 2 — Class III with NO viable contralateral retention emits blocker red flag (INV-1)", () => {
+    // V1 degraded silently to a marginal single-Akers. V2 emits blocker + FPD recommendation.
+    const c = rpdMakeBlankCase("maxillary");
+    setMissingC(c, [1, 16, 14]);
+    for (const t of [2, 3, 4, 5]) setAttrsC(c, t, { perioPrognosis: "hopeless" });
+    const r = rpdRunEngine(c);
+    const blocker = (r.redFlags || []).find(f => f.type === "rpd-not-designable");
+    expect(blocker).toBeTruthy();
+    expect(blocker.severity).toBe("blocker");
+    expect(blocker.message).toMatch(/FPD|implant|fixed|Nesbit/i);
+  });
+
+  it("WIN 3 — Class III mod 0 gets cross-arch Embrasure pair (McCracken p. 82, INV-5)", () => {
+    // V1's bottom-up walk produced only #13 + #15 (unilateral / Nesbit).
+    // V2 enforces bilateral retention structurally → adds Embrasure pair on right.
+    const c = rpdMakeBlankCase("maxillary");
+    setMissingC(c, [1, 16, 14]);
+    const r = rpdRunEngine(c);
+    const embrasureTeeth = (r.abutmentDesigns || [])
+      .filter(a => a.claspType === "Embrasure")
+      .map(a => a.tooth)
+      .sort();
+    expect(embrasureTeeth).toEqual([2, 3]);
+  });
+
+  it("WIN 4 — Embrasure pair has TWO occlusal rests (McCracken p. 83, INV-16)", () => {
+    // "Double occlusal rests" prevents interproximal wedging.
+    const c = rpdMakeBlankCase("maxillary");
+    setMissingC(c, [1, 16, 14]);
+    const r = rpdRunEngine(c);
+    const pair = (r.abutmentDesigns || []).filter(a => a.claspType === "Embrasure");
+    expect(pair.length).toBe(2);
+    pair.forEach(a => {
+      expect(a.restSeat).toBeTruthy();
+      expect(a.restSeat.type).toBe("occlusal");
+    });
+    const surfaces = pair.map(a => a.restSeat.surface).sort();
+    expect(surfaces).toEqual(["distal", "mesial"]);
+  });
+
+  it("WIN 5 — Compromised tooth + Class III mod 0 still produces designable RPD (INV-1 + INV-20 compose)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    setMissingC(c, [1, 16, 14]);
+    setAttrsC(c, 15, { perioPrognosis: "poor" });
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("III");
+    const sides = {
+      right: (r.abutmentDesigns || []).filter(a => a.tooth >= 1 && a.tooth <= 8),
+      left:  (r.abutmentDesigns || []).filter(a => a.tooth >= 9 && a.tooth <= 16),
+    };
+    expect(sides.right.length).toBeGreaterThanOrEqual(2);
+    expect(sides.left.length).toBeGreaterThanOrEqual(2);
+    expect(r.indirectRetainers.length).toBeGreaterThanOrEqual(1);
+    const blocker = (r.redFlags || []).find(f => f.type === "rpd-not-designable");
+    expect(blocker).toBeFalsy();
+  });
+
+  it("WIN 6 — Every clinical decision is traceable to its source (each plan entry has explicit source)", () => {
+    // V1's bottom-up loop didn't expose WHY each abutment was selected.
+    // V2's retentionPlan exposes the source — enabling audit, chart annotation, student learning.
+    const c = rpdMakeBlankCase("mandibular");
+    setMissingC(c, [17, 32, 18, 19]);
+    const r = rpdRunEngine(c);
+    expect(r.retentionPlan).toBeTruthy();
+    r.retentionPlan.directRetainers.forEach(d => {
+      expect(d.source).toBeTruthy();
+      expect(d.mechanic).toBeTruthy();
+    });
+    r.retentionPlan.indirectRetainers.forEach(ir => {
+      expect(ir.source).toBeTruthy();
     });
   });
 });

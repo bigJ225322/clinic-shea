@@ -670,7 +670,8 @@ function planRetentionClassI(caseInput, kennedy) {
   }
 
   // Required role 3: bilateral indirect retainers (one per side)
-  const indirectRetainers = legacyIndirectRetainers(caseInput, kennedy, "kennedy-i-bilateral");
+  // — computed from first principles by planClassIIndirectRetainers
+  const indirectRetainers = planClassIIndirectRetainers(caseInput, kennedy);
 
   return { directRetainers, indirectRetainers, notDesignable: null };
 }
@@ -712,25 +713,73 @@ function planRetentionClassII(caseInput, kennedy) {
   }
 
   // Required role 3: ONE indirect retainer, opposite side from DE
-  const indirectRetainers = legacyIndirectRetainers(caseInput, kennedy, "fulcrum-opposite-distalmost");
+  // — computed from first principles by planClassIIIndirectRetainers
+  const indirectRetainers = planClassIIIndirectRetainers(caseInput, kennedy);
 
   return { directRetainers, indirectRetainers, notDesignable: null };
 }
 
 /**
+ * INV-20 — Detect Class III configurations that effectively behave like
+ * Class II for indirect-retention purposes. Per McCracken Fig 8-2 G:
+ *
+ *   "In a Class III arch with a posterior tooth on the right side, which
+ *    has a poor prognosis and eventually will be lost, the fulcrum line is
+ *    considered the same as though posterior tooth were not present."
+ *
+ * Translation: if a span-boundary tooth in a Class III case has poor or
+ * hopeless periodontal prognosis, the design should ANTICIPATE the future
+ * loss of that tooth — which would turn the case into Class II with a
+ * diagonal fulcrum line through the (now-compromised) distal abutment and
+ * the opposite-side terminal. The framework therefore needs an indirect
+ * retainer on the side OPPOSITE the compromised tooth, perpendicular to
+ * that anticipated diagonal fulcrum.
+ *
+ * Returns { compromisedTooth, compromisedSide, perio } or null.
+ */
+function detectClassIIICompromisedAbutment(caseInput, kennedy) {
+  if (kennedy.class !== "III") return null;
+  // Find the most-posterior span-boundary tooth with poor/hopeless perio.
+  // Most-posterior because that's the one whose loss would most change the
+  // fulcrum geometry (the distal abutment of a span anchors retention).
+  let compromised = null;
+  for (const span of (kennedy.spans || [])) {
+    for (const t of [span.beforeBound, span.afterBound]) {
+      if (!t) continue;
+      const attrs = rpdGetAttrs(caseInput, t);
+      if (attrs.perioPrognosis === "poor" || attrs.perioPrognosis === "hopeless") {
+        if (!compromised || rpdDistalRank(t) > rpdDistalRank(compromised.compromisedTooth)) {
+          compromised = {
+            compromisedTooth: t,
+            compromisedSide: rpdSideOf(t),
+            perio: attrs.perioPrognosis,
+          };
+        }
+      }
+    }
+  }
+  return compromised;
+}
+
+/**
  * CLASS III — Tooth-bounded edentulous space(s), no distal extension.
  *
- * Retention pattern (McCracken Ch 10 + Ch 7 principle #4):
+ * Retention pattern (McCracken Ch 10 + Ch 7 principle #4 + Fig 8-2 G/H):
  *   - Direct retainers at every span boundary (akers-family default; max
  *     anteriors bordering mod spaces get rest-only per UIC rule)
  *   - BILATERAL retention INVARIANT: if span-derived abutments are all on
  *     one side, ADD contralateral retention (Embrasure pair preferred per
  *     McCracken p. 82; single Akers as fallback; otherwise notDesignable).
- *   - NO indirect retainers (no fulcrum line to rotate about — INV-3)
+ *   - NO indirect retainers (no fulcrum line to rotate about — INV-3),
+ *     EXCEPT when a span-boundary tooth has poor/hopeless perio prognosis
+ *     (INV-20 / McCracken Fig 8-2 G): treat as if that tooth is already
+ *     gone (anticipating Class II), and add an indirect retainer on the
+ *     opposite side.
  *   - Ideal: quadrilateral configuration of 4 direct retainers (INV-6)
  */
 function planRetentionClassIII(caseInput, kennedy) {
   const directRetainers = [];
+  const indirectRetainers = [];
   const claimed = new Set();
   let notDesignable = null;
 
@@ -783,9 +832,92 @@ function planRetentionClassIII(caseInput, kennedy) {
     }
   }
 
-  // INV-3: Class III has no indirect retainers (no fulcrum line)
-  return { directRetainers, indirectRetainers: [], notDesignable };
+  // Required role 3: INV-20 — Class III with compromised boundary tooth.
+  // Per McCracken Fig 8-2 G, if a span-boundary abutment has poor/hopeless
+  // prognosis, design for anticipated tooth loss → effectively Class II.
+  // Add an indirect retainer on the side OPPOSITE the compromised tooth.
+  const compromised = detectClassIIICompromisedAbutment(caseInput, kennedy);
+  if (compromised) {
+    const opposingSide = compromised.compromisedSide === "right" ? "left" : "right";
+    const ir = pickClassIIIAnticipatedIndirectRetainer(caseInput, kennedy, opposingSide);
+    if (ir) {
+      indirectRetainers.push({
+        tooth: ir.tooth,
+        source: "class-iii-anticipated-class-ii",
+        anticipatedDueTo: compromised.compromisedTooth,
+        perioPrognosis: compromised.perio,
+        _legacyData: ir,
+      });
+    }
+  }
+
+  return { directRetainers, indirectRetainers, notDesignable };
 }
+
+/**
+ * Pick an indirect retainer for a Class III case anticipating Class II
+ * behavior (INV-20). Returns a legacy-shape entry the lab Rx generator
+ * already knows how to render, or null if no viable tooth exists.
+ *
+ * Logic mirrors the Class II "opposite side from DE, distalmost viable
+ * non-compromised tooth" rule, but applied to the side opposite the
+ * compromised Class III boundary.
+ */
+function pickClassIIIAnticipatedIndirectRetainer(caseInput, kennedy, oppositeSide) {
+  const arch = caseInput.arch;
+  const teethList = rpdArchTeeth(arch);
+  // Identify span-boundary teeth on the opposite side (don't double-up;
+  // direct retainers already exist there)
+  const oppositeSpanBounds = new Set();
+  for (const span of (kennedy.spans || [])) {
+    for (const t of [span.beforeBound, span.afterBound]) {
+      if (!t) continue;
+      if (rpdSideOf(t) === oppositeSide) oppositeSpanBounds.add(t);
+    }
+  }
+  // Find candidates: opposite side, present, non-incisor, non-third-molar,
+  // not a span boundary (mod boundaries already get direct retainers), and
+  // anterior to the most-posterior present tooth on that side.
+  const oppositeSidePresent = teethList
+    .filter(n => rpdSideOf(n) === oppositeSide)
+    .filter(n => rpdIsPresent(caseInput, n))
+    .filter(n => !RPD_THIRD_MOLARS.has(n))
+    .filter(n => !oppositeSpanBounds.has(n));
+  if (oppositeSidePresent.length === 0) return null;
+  // Prefer first premolar > second premolar > canine (UIC convention for
+  // mandibular indirect retainers; reversed for maxillary). Drop incisors.
+  const isPremolar = (n) => RPD_FIRST_PREMOLARS.has(n) || RPD_SECOND_PREMOLARS.has(n);
+  const isCanine = (n) => RPD_CANINES.has(n);
+  // Maxillary: canine preferred (anatomically prominent cingulum)
+  // Mandibular: first premolar preferred (canine cingulum often inadequate)
+  let pick;
+  if (arch === "maxillary") {
+    pick = oppositeSidePresent.find(isCanine) || oppositeSidePresent.find(isPremolar);
+  } else {
+    pick = oppositeSidePresent.find(n => RPD_FIRST_PREMOLARS.has(n))
+        || oppositeSidePresent.find(n => RPD_SECOND_PREMOLARS.has(n))
+        || oppositeSidePresent.find(isCanine);
+  }
+  if (!pick) return null;
+  // Build a legacy-shape indirect retainer entry the lab Rx generator
+  // already knows how to render
+  let restType;
+  if (RPD_CANINES.has(pick)) {
+    restType = arch === "mandibular" ? "ML ball rest" : "mesial cingulum rest";
+  } else if (RPD_FIRST_PREMOLARS.has(pick) || RPD_SECOND_PREMOLARS.has(pick)) {
+    restType = "mesial occlusal rest";
+  } else {
+    restType = "cingulum rest";
+  }
+  return {
+    tooth: pick,
+    restType,
+    rationale: `Class III with compromised distal abutment (poor/hopeless prognosis). Per McCracken Fig 8-2 G, design ANTICIPATES future tooth loss, which would convert this case to Class II. Indirect retainer placed on the side opposite the compromised tooth, perpendicular to the anticipated diagonal fulcrum line. ${RPD_RATIONALE.rest.indirectFulcrum}`,
+    tier: "common",
+    alternativeRationale: "If the compromised tooth's prognosis improves with treatment (perio therapy, endo, splinting), the indirect retainer can be omitted — but designing for the more pessimistic scenario is safer and McCracken-recommended.",
+  };
+}
+
 
 /**
  * CLASS IV — Single bounded anterior edentulous space crossing midline.
@@ -825,7 +957,7 @@ function planRetentionClassIV(caseInput, kennedy) {
   // Required role 3: indirect retention via dual-role bounding teeth
   // (delegated to existing rpdPlaceIndirectRetainers Class IV branch which
   // emits ML ball / cingulum / distal ball rests on the bounding teeth)
-  const indirectRetainers = legacyIndirectRetainers(caseInput, kennedy, "kennedy-iv-bounding-dual-role");
+  const indirectRetainers = planClassIVIndirectRetainers(caseInput, kennedy);
 
   return { directRetainers, indirectRetainers, notDesignable: null };
 }
@@ -866,10 +998,10 @@ function appendSpanBoundaryRetainers({
 }
 
 /**
- * Bridge to existing rpdPlaceIndirectRetainers logic. Wraps each entry in
- * a plan-compatible shape with `source` and `_legacyData` for the
- * hydrator. This is the seam where future versions can replace the
- * approximation with proper fulcrum-line geometry.
+ * Bridge to existing rpdPlaceIndirectRetainers logic. Used by Class IV
+ * (dual-role bounding teeth) where the bridge logic is correct and
+ * non-trivial. Class I and Class II now compute from first principles
+ * in their per-class planners below.
  */
 function legacyIndirectRetainers(caseInput, kennedy, source) {
   const ir = rpdPlaceIndirectRetainers(caseInput, kennedy);
@@ -879,6 +1011,154 @@ function legacyIndirectRetainers(caseInput, kennedy, source) {
     dualRoleWith: kennedy.class === "IV" ? r.tooth : undefined,
     _legacyData: r,
   }));
+}
+
+// ============================================================================
+// PER-CLASS INDIRECT RETAINER PLANNERS — computed from first principles
+// ============================================================================
+// These functions compute indirect retainers structurally from the kennedy
+// classification + dentition, NOT by delegating to rpdPlaceIndirectRetainers.
+// The legacy function remains for backwards compat (other consumers may
+// import it), but the planner pipeline is now self-sufficient.
+
+/**
+ * Class I indirect retainers — bilateral, one per side. Each indirect
+ * retainer sits anterior to the DE terminal on its side, perpendicular to
+ * the fulcrum line through the two DE terminals. UIC convention: first
+ * premolar preferred over canine on mandibular arch (mand canine cingulum
+ * inadequate); canine preferred on maxillary (max cingulum anatomically
+ * prominent). Mand incisors and max lateral incisors excluded.
+ *
+ * Returns plan entries with `source: "kennedy-i-bilateral"`.
+ */
+function planClassIIndirectRetainers(caseInput, kennedy) {
+  const arch = caseInput.arch;
+  const out = [];
+  for (const side of ["right", "left"]) {
+    const pick = pickIndirectRetainerForSide(caseInput, kennedy, arch, side);
+    if (!pick) continue;
+    out.push({
+      tooth: pick.tooth,
+      source: "kennedy-i-bilateral",
+      _legacyData: pick.legacyEntry,
+    });
+  }
+  return out;
+}
+
+/**
+ * Class II indirect retainer — ONE retainer on the side OPPOSITE the DE.
+ * Per McCracken Fig 8-2 C, the fulcrum line is diagonal (DE-side terminal
+ * + opposite-side most-posterior abutment), and the indirect retainer
+ * should sit perpendicular to the midpoint of that diagonal as far
+ * anterior as practical.
+ *
+ * v1 implementation: picks the opposite-side first premolar / canine
+ * (mirrors Class I logic, since the geometric "perpendicular to diagonal
+ * midpoint" reduces to roughly the same anatomic region in most cases).
+ *
+ * Returns plan entries with `source: "fulcrum-opposite-distalmost"`.
+ */
+function planClassIIIndirectRetainers(caseInput, kennedy) {
+  const arch = caseInput.arch;
+  if (!kennedy.deSide) return [];
+  const oppositeSide = kennedy.deSide === "right" ? "left" : "right";
+  const pick = pickIndirectRetainerForSide(caseInput, kennedy, arch, oppositeSide);
+  if (!pick) return [];
+  return [{
+    tooth: pick.tooth,
+    source: "fulcrum-opposite-distalmost",
+    _legacyData: pick.legacyEntry,
+  }];
+}
+
+/**
+ * Class IV indirect retainers — bounding teeth themselves serve as dual-role
+ * direct + indirect. Returns one entry per bounding tooth of the primary
+ * anterior span. The bounding teeth get rest seats appropriate to their
+ * anatomy (canine ML ball mand / mesial cingulum max; premolar mesial
+ * occlusal; max central distal ball per UIC Huddle 6 Q8).
+ *
+ * Delegated to rpdPlaceIndirectRetainers because the Class IV logic there
+ * is already correct and non-trivial (handles bounding-tooth identification,
+ * dual-role marking, rest-type per tooth anatomy). Refactoring it here
+ * adds code volume without behavioral change.
+ *
+ * Returns plan entries with `source: "kennedy-iv-bounding-dual-role"`.
+ */
+function planClassIVIndirectRetainers(caseInput, kennedy) {
+  return legacyIndirectRetainers(caseInput, kennedy, "kennedy-iv-bounding-dual-role");
+}
+
+/**
+ * Helper for Class I/II indirect retainer placement. Picks the best tooth
+ * on `side` for an indirect retainer, anterior to the most-distal present
+ * tooth on that side. Returns { tooth, legacyEntry } or null.
+ *
+ * Selection priority (UIC convention):
+ *   - Maxillary: canine > first premolar > second premolar > max central (#8/#9)
+ *   - Mandibular: first premolar > second premolar > canine
+ *   - Excludes: mandibular incisors (cingulum inadequate); max lateral
+ *     incisors (root too short to support indirect retention reliably).
+ */
+function pickIndirectRetainerForSide(caseInput, kennedy, arch, side) {
+  const teethList = rpdArchTeeth(arch);
+  const presentTeeth = teethList.filter(n => rpdIsPresent(caseInput, n));
+  const sideTeeth = presentTeeth.filter(n => rpdSideOf(n) === side);
+  if (sideTeeth.length === 0) return null;
+  // Find most-distal present tooth on this side as the "primary abutment"
+  // for distance comparisons.
+  const primary = sideTeeth.reduce((a, b) =>
+    rpdDistalRank(b) > rpdDistalRank(a) ? b : a);
+  // Candidates: anterior to primary, side-matched, present, excluded
+  // categories filtered out.
+  const RPD_MAX_LATERALS = new Set([7, 10]);
+  const RPD_MAND_INCISORS = new Set([23, 24, 25, 26]);
+  const candidates = sideTeeth
+    .filter(n => rpdDistalRank(n) < rpdDistalRank(primary))
+    .filter(n => !RPD_MAND_INCISORS.has(n) && !RPD_MAX_LATERALS.has(n));
+  if (candidates.length === 0) return null;
+
+  let pick;
+  if (arch === "maxillary") {
+    pick = candidates.find(n => RPD_CANINES.has(n))
+        || candidates.find(n => RPD_FIRST_PREMOLARS.has(n))
+        || candidates.find(n => RPD_SECOND_PREMOLARS.has(n))
+        || candidates.find(n => n === 8 || n === 9);
+  } else {
+    pick = candidates.find(n => RPD_FIRST_PREMOLARS.has(n))
+        || candidates.find(n => RPD_SECOND_PREMOLARS.has(n))
+        || candidates.find(n => RPD_CANINES.has(n));
+  }
+  if (!pick) {
+    pick = candidates.reduce((a, b) => rpdDistalRank(b) < rpdDistalRank(a) ? b : a);
+  }
+
+  let restType;
+  if (RPD_CANINES.has(pick)) {
+    restType = arch === "mandibular" ? "ML ball rest" : "mesial cingulum rest";
+  } else if (RPD_FIRST_PREMOLARS.has(pick) || RPD_SECOND_PREMOLARS.has(pick)) {
+    restType = "mesial occlusal rest";
+  } else if (pick === 8 || pick === 9) {
+    restType = "distal ball rest";
+  } else {
+    restType = "cingulum rest";
+  }
+
+  const tier = kennedy.class === "I" ? "strong" : "common";
+  const altRationale = kennedy.class === "I" ? null :
+    "Engine places indirect retainer on the opposite side from the distal extension. The textbook clinical rule is geometric — perpendicular to the fulcrum line at its midpoint, on the side opposite the saddle. For most Class II cases these give the same answer, but in some configurations (Class II Mod 1 with diagonal fulcrum line) in practice the indirect is sometimes placed on the SAME side as the DE but at a perpendicular position to the fulcrum. In practice, instructors may also reuse an existing rest-only abutment (max anterior with ball/cingulum rest) as the dual-role indirect retainer rather than adding a separate one.";
+
+  return {
+    tooth: pick,
+    legacyEntry: {
+      tooth: pick,
+      restType,
+      rationale: RPD_RATIONALE.rest.indirectFulcrum,
+      tier,
+      alternativeRationale: altRationale,
+    },
+  };
 }
 
 /**
@@ -1883,6 +2163,33 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
         type: "nesbit-prohibition",
         message: `Nesbit (unilateral cantilever) RPD is PROHIBITED at UIC per Final RPD Huddle 2 answer key Q2 — aspiration risk. The span-derived abutments alone would have been unilateral, so the engine satisfied the bilateral direct-retention invariant by adding cross-arch retention. ${ctrlSummary} Confirm RPD is the appropriate modality for this short unilateral span; a fixed solution (FPD or implant) is often preferable for Class III mod 0. If the patient declines fixed treatment, this RPD design is acceptable.`,
       });
+    }
+  }
+
+  // INV-20 — Class III with compromised boundary tooth flag (McCracken Fig 8-2 G).
+  // The planner already adds an indirect retainer in this case; this flag
+  // surfaces the rationale for the student/clinician.
+  if (kennedy.class === "III") {
+    const compromisedIR = (abutmentDesigns ? null : null); // not used; we check the plan's IR instead
+    // Find a compromised-IR indirect retainer added by the planner
+    // (the planner attaches anticipatedDueTo to the entry it inserts).
+    // We pass it via the engine's result; lookup happens in the orchestrator.
+    // Here we just check if a span boundary has poor/hopeless perio.
+    for (const span of (kennedy.spans || [])) {
+      for (const t of [span.beforeBound, span.afterBound]) {
+        if (!t) continue;
+        const teethRecord = caseInput.teeth?.[t];
+        const perio = (teethRecord?.attrs || {}).perioPrognosis;
+        if (perio === "poor" || perio === "hopeless") {
+          flags.push({
+            severity: "info",
+            type: "class-iii-compromised-abutment",
+            message: `Class III abutment #${t} has ${perio} periodontal prognosis. Per McCracken Fig 8-2 G, the design ANTICIPATES future tooth loss — when #${t} is lost, this case effectively becomes Class II with a diagonal fulcrum line. Engine added an indirect retainer on the side opposite #${t} to handle that anticipated configuration. If perio prognosis improves with treatment (perio therapy, splinting), the indirect retainer can be omitted. Document the prognosis in the chart; re-evaluate the design at each maintenance visit.`,
+          });
+          // Only emit once per case even if multiple compromised abutments
+          break;
+        }
+      }
     }
   }
 
@@ -3211,11 +3518,18 @@ function rpdRunEngine(caseInput) {
     a2.claspAlternatives = a2.claspAlternatives ? `${a2.claspAlternatives}\n\n${note}` : note;
   }
 
-  // ── Indirect retainers (planner already computed; use the legacy
-  //     data attached to each plan entry) ────────────────────────────
+  // ── Indirect retainers (planner already computed; merge plan-entry
+  //     metadata with the rendered legacy data for the UI/lab Rx) ──────
   const indirectRetainers = retentionPlan.indirectRetainers
-    .map(ir => ir._legacyData)
-    .filter(Boolean);
+    .filter(ir => ir._legacyData)
+    .map(ir => ({
+      ...ir._legacyData,
+      // Preserve plan-entry traceability fields
+      source: ir.source,
+      ...(ir.anticipatedDueTo ? { anticipatedDueTo: ir.anticipatedDueTo } : {}),
+      ...(ir.perioPrognosis ? { perioPrognosis: ir.perioPrognosis } : {}),
+      ...(ir.dualRoleWith != null ? { dualRoleWith: ir.dualRoleWith } : {}),
+    }));
 
   // ── Base design + red flags + output ───────────────────────────────
   const baseDesigns = rpdSelectBaseDesign(safeCase, kennedy);
