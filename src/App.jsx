@@ -7637,7 +7637,7 @@ function buildPerioCOERationale(dx, inputs) {
     "AAP 2018 case definitions are descriptive, not algorithmic. Some thresholds are anchored (CAL, bone loss %, ratio bands); others (\"complex rehabilitation\", \"ridge defect severity\") require clinical judgment.",
     "Stage = worst single criterion among CAL / bone loss / tooth loss. Engine applies AAP's stated rule.",
     "Stage IV requires either ≥5 teeth lost from perio OR Stage III baseline + a rehabilitation-complexity elevator (mobility ≥2, severe ridge defect, <20 remaining teeth). This threshold is the engine's reading — the manual is fuzzy here.",
-    "Grade = worst single criterion (ratio / smoking / diabetes). Any single Grade C trigger sets grade to C. AAP's stated rule.",
+    "Grade = worst of three factors: bone-loss/age ratio, smoking, or diabetes. Any single Grade C trigger (ratio >1.0, ≥10 cig/day, or HbA1c ≥7) makes the case Grade C regardless of the other two.",
   ];
 
   return { stageDrivers, gradeDrivers, ambiguity, judgmentCalls, cal, ratio };
@@ -7875,7 +7875,7 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
             onChange={v => setField("perioCOEDiabetes", v)}>
             <option value="none">none</option>
             <option value="controlled">controlled (&lt;7)</option>
-            <option value="uncontrolled">uncontrolled (≥7)</option>
+            <option value="uncontrolled">uncontrolled (≥7) (C)</option>
           </Select>
         </Field>
       </div>
