@@ -77,7 +77,7 @@ const TEMPLATES = {
  "5305": " - y/o female patient presents to Vivaldi clinic for #19-MODB digital e.max onlay delivery\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltration #4.\n\n #19-MODB digital e.max onlay delivery:\n\n Removed sprue & prepared onlay for pre-crystallization try-in. Placed Isodry (size M). Removed provisional onlay. Removed temporary cement with\n a scaler. Cleaned tooth with pumice & prophy angle\n\n Pre-crystallization try-in:\n - Marginal adaptation satisfactory; verified visually, tactilely, & radiographically (BW taken).\n - Interproximal contacts adjusted with a bur; contacts are satisfactory as evaluated with floss.\n - Occlusal & excursive contacts adjusted with a bur; contacts are satisfactory as evaluated with articulating paper.\n\n Crystallization try-in:\n - [ Stains added? ]. Crystallized using regular glaze and regular firing cycle. [ spray glaze and speed firing cycle ]\n - Crystallized restoration tried in. Adjusted [surfaces].\n - Pt expressed satisfaction with final shade of restoration.\n - Total number of restorations milled: 1 [reason]\n\n Cementation -- Panavia F2.0 resin cement:\n - Restoration intaglio cleaned with Ivoclean 20s, rinsed, dried; etched with 5% HF acid 20s, rinsed, dried; primed with Clearfil ceramic primer 1m,\n dried.\n - Tooth isolated with Isodry. Scrubbed with Consepsis, rinsed, dried; primed with Primer A+B 30s, dried.\n - Mixed Panavia cement pastes A&B (shade TC). Cemented restoration. Removed excess cement. Flossed. Light cured 20s per side.\n - Took BW to verify closed margins. Verified interproximal contacts. Evaluated & adjusted occlusal contacts & excursive contacts to ideal. Polished\n ceramic.\n - Pt is satisfied with bite & esthetics. Gave verbal post-op instructions re: 24 hr set, uneven bite, sore injection site.\n\n NV:",
  "5472": " - y/o female patient presents to Chicago clinic for #12 RCT -- same day access & fill\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n CC: “”\n\n Re-confirmed findings from endo consult visit 1/1/2021 1 month ago:\n - EOE: WNL\n - IOE: WNL\n - symptoms: pain on chewing\n - #12 is restorable as confirmed with Dr. ?\n\n Endo tests:\n - #: percussion +++, palpation +++, probing X mm, mobility 1, cold test NR\n - #: percussion -, palpation -, probing X mm, mobility 0, cold test 2/2 s\n\n Radiographic exam:\n - Re-evaluated BW & PA taken 1/1/2021\n - Periapical radiolucency #12\n\n Diagnosis #12:\n - Pulpal dx: necrotic pulp\n - Periapical dx: symptomatic apical periodontitis\n\n Thoroughly reviewed treatment options, timelines, & costs with the pt. Discussed advantages & disadvantages of treatment. Answered pt’s\n questions, pt understood tx options. Pt opts to proceed with RCT #12. Specifically discussed need for pt to return to primary dentist for a crown.\n Verbal & written consent obtained.\n\n #12 RCT:\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal\n block on right / buccal infiltration #12.\n\n Rubber dam placed. Excavated caries completely. Accessed, completely unroofed pulp chamber, & achieved straight-line access. Located 2 canals.\n Pre-flared with Vortex orifice opener #20/.08. Determined WL with electronic apex locator. Confirmed WL with WM radiograph taken straight and\n from distal. Created guide path with #10, #15 SS files. Cleansed & shaped canals with powered rotary files. Reconfirmed patency and copious\n irrigation with 1% NaOCl throughout procedure. Fitted mater cones and took radiograph.\n\n Buccal canal -- WL 18.5 mm (reference point: buccal cusp tip)\n Palatal canal -- WL 18.0 mm (reference point: lingual cusp tip)\n MAF: 35 (buccal & palatal)\n\n Final irrigation with 1% NaOCl, 17% EDTA, 1% NaOCl. Dried canals with needle aspiration and paper points. Obturated with Endoseal MTA sealer and\n master cone. Took post-op radiograph. Placed sponge & Cavit.\n\n POI given verbally. Pt tolerated procedure well and left in stable condition.\n\n - NV:",
  "5985": " - y/o female presents to UG Peds with mother for initial/recall appt.\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n - dental history: brushes 2x a day, flosses 1x a week, mother helps with brushing & flossing\n - caries risk: HIGH\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology, generalized mild gingivitis, generalized moderate plaque\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n\n Took 4 bitewings & updated odontogram with radiographic & intraoral hard tissue findings:\n - mixed dentition\n -\n - occlusal assessment:\n\n Treatment planned for the following treatments:\n -\n Findings & treatment options, advantages & disadvantages, reviewed with parent. Treatment plan formulated & discussed, all questions were\n answered. Mother signed treatment plan.\n\n Prophy completed.\n - Removed plaque & calculus using hand instruments. Flossed. Polished with prophy paste.\n - Fluoride varnish applied.\n - OHI given; brushing & flossing were demonstrated with mother & pt; advised to brush 2x daily + floss 1x daily\n - Nutritional counseling completed. Advised to limit sugary drinks & snacks, and when consumed, to shorten duration.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr.",
- "6038": " Discussed with parent and patient the disadvantages of SDF, including: staining carious lesions black (showed pictures), possible transient soft\n tissue staining, failure to arrest caries with future need for restoration. Parent understood risks and consented to SDF placement.\n\n Isolated with cotton rolls. Thoroughly dried teeth. Applied SDF to #A in a scrubbing motion. Allowed 60s to air dry. Removed excess SDF & rinsed.",
+ "6038": " - y/o female presents to UG Peds with mother for #A SDF\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Discussed with parent and patient the disadvantages of SDF, including: staining carious lesions black (showed pictures), possible transient soft\n tissue staining, failure to arrest caries with future need for restoration. Parent understood risks and consented to SDF placement.\n\n Isolated with cotton rolls. Thoroughly dried teeth. Applied SDF to #A in a scrubbing motion. Allowed 60s to air dry. Removed excess SDF & rinsed.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr.",
  "6095": " - y/o female presents to UG Peds with mother for #3, #14, #19, #30 sealants\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Sealants — #3, #14, #19, #30\n Tooth cleaned with pumice & prophy angle. Isodry placed (size P). Etched with 35% phosphoric acid for 30s, rinsed 15s, gently dried. Applied\n Scotchbond Universal 20s, air dried 5s, cured 10s. Applied Ultradent UltraSeal XT Plus to occlusal surface & buccal pit of mandibular molars /\n lingual groove of maxillary molars. Light cured 20s. Repeated for all molars (#2, #3, #14, #15, #18, #19, #30, #31). Occlusion evaluated with\n articulating paper -- occlusion is satisfactory, pt is not occluding on sealant.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Informed mother that pt is still numb, monitor lip & soft\n tissue biting.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr.",
  "6173": " - y/o female presents to UG Peds with mother for #A-MO preventative resin restoration\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Titrated to 40% nitrous oxide / 60% oxygen at 4L/min. Administered for 90 minutes. Applied 20% topical benzocaine & administered 1 carpule of\n 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal block on right/ buccal infiltration #A.\n\n #A-MO PRR\n Placed Isodry (size P). Excavated shallow decay using high & slow speed burs. Prepared cavity preparation to ideal form. Etched with 35%\n phosphoric acid for 15s, rinsed 5s, gently dried. Applied Scotchbond Universal 20s, air dried 5s, cured 10s. Applied shade A2 Renamel nanofill\n composite in increments, each cured 20-40s. Applied Ultradent UltraSeal XT Plus to occlusal surface & buccal pit / lingual groove, light cured 20s.\n Restoration finished & polished. Occlusion evaluated with articulating paper & adjusted to ideal.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Informed mother that pt is still numb, monitor lip & soft\n tissue biting.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr.",
  "6284": " - y/o female presents to UG Peds with mother for #A-O composite\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Titrated to 40% nitrous oxide / 60% oxygen at 4L/min. Administered for 60 minutes. Applied 20% topical benzocaine & administered 1 carpule of\n 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal block on right / buccal infiltration #A.\n\n #A-O\n Placed Isodry (size P). Removed existing failing O amalgam restoration. Excavated decay using high & slow speed burs. Prepared cavity preparation\n to ideal form. Etched with 35% phosphoric acid for 15s, rinsed 5s, gently dried leaving dentin moist. Applied Scotchbond Universal 20s, air dried\n 5s, cured 10s. Applied shade A2 Renamel nanofill composite in increments, each cured 20s, with 40s final cure. Finished restoration with finishing\n diamond burs, polished with Shofu & Jiffy brush. Evaluated occlusion with articulating paper, adjusted to ideal.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Informed mother that pt is still numb, monitor lip & soft\n tissue biting.\n\n - behavior: F4 --\n - NV:\n - Sarah Swade / Dr.",
@@ -3877,14 +3877,25 @@ function renderTemplate(raw, f) {
           t = t.split(oldRef).join(joinedNew);
         }
 
-        // Step 2: Replace remaining bare tooth refs (e.g. anesthetic line
-        // "buccal infiltration #19.") with the FIRST tooth's bare ref —
-        // anesthetic typically mentions just one tooth even in multi-tooth
-        // procedures. Strip surfaces off refs[0] for the bare replacement.
+        // Steps 2 & 3 (combined, segment by segment): walk the template in
+        // chunks separated by parens. Inside parens (e.g. sealants prose
+        // "(#2, #3, #14, ..., #31)") is general clinical context and stays
+        // verbatim. Outside parens, replace bare single-tooth refs AND
+        // multi-tooth lists with the user's selection.
         const firstBare = refs[0].split("-")[0];
         const escaped = oldBase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
         const baseRegex = new RegExp(escaped + "(?![-A-Za-z0-9])", "g");
-        t = t.replace(baseRegex, firstBare);
+        const multiToothRe = /#[A-Z0-9]+(?:-[A-Z]+)?(?:,\s*#[A-Z0-9]+(?:-[A-Z]+)?)+/g;
+        t = t.replace(/\(([^()]*)\)|([^()]+)/g, (_m, inside, outside) => {
+          if (outside !== undefined) {
+            let chunk = outside.replace(baseRegex, firstBare);
+            if (refs.length > 1) {
+              chunk = chunk.replace(multiToothRe, joinedNew);
+            }
+            return chunk;
+          }
+          return `(${inside})`;
+        });
       }
     }
   }
@@ -4163,8 +4174,21 @@ function renderTemplate(raw, f) {
                   `$1 ${f.medications.trim()}`);
   }
   // Allergies: default to "NKDA" when the field is left empty.
+  // When the user types specific allergens (e.g. "penicillin" or "penicillin,
+  // latex"), append " allergy" / " allergies" so the note reads naturally —
+  // unless the user already wrote it themselves or the value is the NKDA
+  // shorthand.
   {
-    const allergiesVal = f.allergies.trim() || "NKDA";
+    const raw = f.allergies.trim();
+    let allergiesVal;
+    if (!raw) {
+      allergiesVal = "NKDA";
+    } else if (/^NKDA$/i.test(raw) || /allerg/i.test(raw)) {
+      allergiesVal = raw;
+    } else {
+      const suffix = raw.includes(",") ? " allergies" : " allergy";
+      allergiesVal = raw + suffix;
+    }
     t = t.replace(/^([ \t]*-[ \t]*allergies:)[^\n]*/im,
                   `$1 ${allergiesVal}`);
     // Peds templates use inline "allergies???" placeholder.
@@ -4693,9 +4717,18 @@ function renderTemplate(raw, f) {
   }
 
   // -------- 11. Names (signature line). --------
+  // Peds templates ship with "- Sarah Swade / Dr." as a placeholder for the
+  // student / instructor signature. When the user provides their names,
+  // REPLACE the placeholder rather than appending a duplicate line.
+  // For templates without that placeholder, append a new "- {names}" line
+  // after the NV: line.
   if (f.names.trim()) {
-    t = t.replace(/(^|\n)([ \t]*-?[ \t]*NV:.*)$/m,
-                  _m => `${_m}\n${f.names.trim()}`);
+    if (/Sarah Swade \/ Dr\./.test(t)) {
+      t = t.replace(/Sarah Swade \/ Dr\./, f.names.trim());
+    } else {
+      t = t.replace(/(^|\n)([ \t]*-?[ \t]*NV:.*)$/m,
+                    _m => `${_m}\n- ${f.names.trim()}`);
+    }
   }
 
   // -------- 12. Tidy: collapse 3+ consecutive newlines down to 2. --------
