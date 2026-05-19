@@ -3880,15 +3880,21 @@ function renderTemplate(raw, f) {
         // Steps 2 & 3 (combined, segment by segment): walk the template in
         // chunks separated by parens. Inside parens (e.g. sealants prose
         // "(#2, #3, #14, ..., #31)") is general clinical context and stays
-        // verbatim. Outside parens, replace bare single-tooth refs AND
-        // multi-tooth lists with the user's selection.
+        // verbatim. Outside parens:
+        //   - bare single-tooth refs get replaced with either the first
+        //     user tooth (single-tooth case) or the full joined list
+        //     (multi-tooth case — e.g. SDF "Applied SDF to #A" →
+        //     "Applied SDF to #B, #C, #D");
+        //   - multi-tooth lists in the template (e.g. sealants
+        //     "#3, #14, #19, #30") get replaced with the user's list.
         const firstBare = refs[0].split("-")[0];
+        const bareReplacement = refs.length > 1 ? joinedNew : firstBare;
         const escaped = oldBase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
         const baseRegex = new RegExp(escaped + "(?![-A-Za-z0-9])", "g");
         const multiToothRe = /#[A-Z0-9]+(?:-[A-Z]+)?(?:,\s*#[A-Z0-9]+(?:-[A-Z]+)?)+/g;
         t = t.replace(/\(([^()]*)\)|([^()]+)/g, (_m, inside, outside) => {
           if (outside !== undefined) {
-            let chunk = outside.replace(baseRegex, firstBare);
+            let chunk = outside.replace(baseRegex, bareReplacement);
             if (refs.length > 1) {
               chunk = chunk.replace(multiToothRe, joinedNew);
             }
@@ -5071,12 +5077,25 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
   }, [activeTooth, withSurfaces, open]);
 
   // ── Toggle a tooth ────────────────────────────────────────────────────
+  // Three click states so the user can re-enter a previously-selected tooth
+  // to adjust its surfaces without accidentally deselecting it:
+  //   - Click unselected tooth → select it + make it the active one.
+  //   - Click selected non-active tooth → just make it active (surfaces card
+  //     points at it); don't deselect.
+  //   - Click active tooth → deselect (and clear active).
   const toggleTooth = (id) => {
     const k = String(id);
+    const isSel    = sels[k] !== undefined;
+    const isActive = String(activeTooth) === k;
     const next = { ...sels };
-    if (next[k] !== undefined) {
+
+    if (isSel && isActive) {
       delete next[k];
       setActiveTooth(null);
+    } else if (isSel && !isActive) {
+      setActiveTooth(id);
+      // Selection unchanged — no need to re-serialize, just update active.
+      return;
     } else {
       next[k] = [];
       setActiveTooth(id);
@@ -5126,14 +5145,19 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
     const k = String(id);
     const isSel    = sels[k] !== undefined;
     const isActive = String(activeTooth) === k;
+    // All selected teeth use the solid accent fill + white text so there's
+    // no ambiguity about which teeth are in the selection. The active tooth
+    // (the one whose surfaces are showing in the panel below) gets an extra
+    // outer ring so users can still tell which is currently being edited.
     return (
       <button key={id} ref={el => btnRefs.current[id] = el}
         onClick={() => toggleTooth(id)}
         style={{
           position: "relative",
-          background: isActive ? "var(--accent)" : isSel ? "rgba(122,26,26,0.10)" : "transparent",
-          color:      isActive ? "var(--paper)"  : isSel ? "var(--accent)"         : "var(--ink-soft)",
-          border:    `1px solid ${isActive || isSel ? "var(--accent)" : "var(--rule)"}`,
+          background: isSel ? "var(--accent)" : "transparent",
+          color:      isSel ? "var(--paper)" : "var(--ink-soft)",
+          border:    `1px solid ${isSel ? "var(--accent)" : "var(--rule)"}`,
+          boxShadow:  isActive ? "0 0 0 2px var(--paper), 0 0 0 3px var(--accent)" : "none",
           borderRadius: "2px", fontSize: "11px", padding: "5px 0",
           cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
           lineHeight: 1.2, textAlign: "center",
