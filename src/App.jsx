@@ -3518,6 +3518,9 @@ const DEFAULT_FIELDS = {
   pedsProphyCompleted: true,       // prophy section in note (default true)
   pedsNutritionalCounseling: true, // nutritional counseling line (default true)
   pedsBehavior: "F4",              // Frankl behavior scale: "F1" | "F2" | "F3" | "F4"
+  // Matrix system choice for Class II resin composite (procedure 6406).
+  // Template offers "Garrison system with matrix band & wedge" or "Gold matrix band".
+  pedsMatrix: "Garrison",          // "Garrison" | "Gold band"
   // Dental history fields (COE / POE templates).
   //   lastDentist: fills "last time at dentist: ;" → "last time at dentist: 6 months ago;"
   //   brushing / flossing: override the template defaults "2x a day" / "1x a day".
@@ -4168,6 +4171,18 @@ function renderTemplate(raw, f) {
   // Peds behavior: "- behavior: F4 --" → user's choice
   if (f.pedsBehavior && f.pedsBehavior !== "F4") {
     t = t.replace(/(-[ \t]*behavior:[ \t]*)F4\b/, `$1${f.pedsBehavior}`);
+  }
+  // Peds Class II matrix choice: the template ships with both options
+  // separated by " / " so the student knows what choice to make. Once they
+  // pick in the form, replace the whole "/"-joined phrase with their pick.
+  if (/Placed Garrison system with matrix band & wedge, burnished\. \/ Gold matrix band placed\./.test(t)) {
+    const replacement = f.pedsMatrix === "Gold band"
+      ? "Placed gold matrix band."
+      : "Placed Garrison system with matrix band & wedge, burnished.";
+    t = t.replace(
+      /Placed Garrison system with matrix band & wedge, burnished\. \/ Gold matrix band placed\./,
+      replacement
+    );
   }
 
   // -------- 7. Medical history / meds / allergies / BP. --------
@@ -6468,8 +6483,9 @@ const EXAM_FINDINGS_CONFIG = {
       fields: [
         { type: "peds-prophy-checkbox" },
         { type: "peds-nutrition-checkbox" },
-        { label: "behavior", type: "select", defaultValue: "F4",
-          options: ["F1", "F2", "F3", "F4"], pedsBehavior: true },
+        // Behavior dropdown lives in the global NoteBuilder section
+        // (rendered for every peds procedure that has "- behavior: F4 --"
+        // in its template, which is all of them).
       ],
     },
   ],
@@ -8640,6 +8656,16 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
     () => /\bflossing 1x a day\b/.test(rawTemplate), [rawTemplate]);
   const needsIntraoralPhotos = useMemo(
     () => /Took intraoral photos/i.test(rawTemplate), [rawTemplate]);
+  // Behavior (Frankl scale): peds templates ship with "- behavior: F4 --"
+  // as the default. Show the dropdown for any template with that line.
+  const needsBehavior = useMemo(
+    () => /^[ \t]*-[ \t]*behavior:[ \t]*F4\b/m.test(rawTemplate), [rawTemplate]);
+  // Class II resin composite ships with both matrix options separated by
+  // " / " so the student knows the choice. When that pattern is in the
+  // template, surface a matrix selector in the form.
+  const needsMatrix = useMemo(
+    () => /Placed Garrison system with matrix band & wedge, burnished\. \/ Gold matrix band placed\./.test(rawTemplate),
+    [rawTemplate]);
 
   // Regenerate the note when needed.
   //
@@ -9311,6 +9337,19 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
             </>
           )}
 
+          {needsMatrix && (
+            <>
+              <Hairline />
+              <Field label="Matrix system">
+                <Select value={fields.pedsMatrix || "Garrison"}
+                  onChange={v => setField("pedsMatrix", v)}>
+                  <option value="Garrison">Garrison + wedge, burnished</option>
+                  <option value="Gold band">Gold matrix band</option>
+                </Select>
+              </Field>
+            </>
+          )}
+
           {needsNitrous && (
             <>
               <Hairline />
@@ -9424,6 +9463,21 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
                     accentColor: "var(--accent)", cursor: "pointer" }} />
                 <span>Took intraoral photos</span>
               </label>
+            </>
+          )}
+
+          {needsBehavior && (
+            <>
+              <Hairline />
+              <Field label="Behavior (Frankl)">
+                <Select value={fields.pedsBehavior || "F4"}
+                  onChange={v => setField("pedsBehavior", v)}>
+                  <option value="F1">F1 — definitely negative</option>
+                  <option value="F2">F2 — negative</option>
+                  <option value="F3">F3 — positive</option>
+                  <option value="F4">F4 — definitely positive</option>
+                </Select>
+              </Field>
             </>
           )}
 
