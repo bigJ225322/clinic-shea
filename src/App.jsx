@@ -4738,22 +4738,18 @@ function renderTemplate(raw, f) {
   }
 
   // -------- 11. Names (signature line). --------
-  // Peds templates ship with "- Sarah Swade / Dr." as a placeholder for the
-  // student / instructor signature. When the user provides their names,
-  // replace the placeholder. When they don't, strip the placeholder line
-  // entirely — the rendered note shouldn't show a fake name. For non-peds
-  // templates without the placeholder, append a "- {names}" line after the
-  // NV: line when the user provides names.
-  const hasSwadePlaceholder = /^[ \t]*-[ \t]*Sarah Swade \/ Dr\.[ \t]*$/m.test(t);
-  if (f.names.trim()) {
-    if (hasSwadePlaceholder) {
-      t = t.replace(/Sarah Swade \/ Dr\./, f.names.trim());
-    } else {
-      t = t.replace(/(^|\n)([ \t]*-?[ \t]*NV:.*)$/m,
-                    _m => `${_m}\n- ${f.names.trim()}`);
-    }
-  } else if (hasSwadePlaceholder) {
-    t = t.replace(/^[ \t]*-[ \t]*Sarah Swade \/ Dr\.[ \t]*\n?/m, "");
+  // Peds templates ship with "- Sarah Swade / Dr." as the signature line.
+  // Always replace "Sarah Swade / Dr." with the user's names — or with
+  // nothing (so the line renders as just "- "), giving the student a clean
+  // empty bullet to write their name into by hand if they didn't fill the
+  // form field. For non-peds templates without that placeholder, append a
+  // "- {names}" line after NV when names is provided.
+  const hasSwadePlaceholder = /Sarah Swade \/ Dr\./.test(t);
+  if (hasSwadePlaceholder) {
+    t = t.replace(/Sarah Swade \/ Dr\./, f.names.trim());
+  } else if (f.names.trim()) {
+    t = t.replace(/(^|\n)([ \t]*-?[ \t]*NV:.*)$/m,
+                  _m => `${_m}\n- ${f.names.trim()}`);
   }
 
   // -------- 12. Tidy: collapse 3+ consecutive newlines down to 2. --------
