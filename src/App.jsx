@@ -10792,6 +10792,11 @@ function RVUs() {
   const [showD3Pct, setShowD3Pct] = useState(false);
   const [showD4Pct, setShowD4Pct] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState(new Set());
+  // Tracks groups the user has explicitly collapsed even though the search
+  // would auto-expand them. Without this, clicking the chevron on a
+  // search-auto-expanded group has no visible effect because `autoExpand`
+  // re-opens it on every render.
+  const [userCollapsed, setUserCollapsed] = useState(new Set());
   const [showMeeMinPopup, setShowMeeMinPopup] = useState(false);
 
   // MEE = RVU total. Percentage = rvu / threshold × 100.
@@ -10807,9 +10812,18 @@ function RVUs() {
     };
   };
   const showMee = showD3Pct || showD4Pct;
-  const toggleGroup = code => setExpandedGroups(prev => {
-    const s = new Set(prev); s.has(code) ? s.delete(code) : s.add(code); return s;
-  });
+  // Toggle handles both explicit expansion and explicit collapse. Callers
+  // pass the current open state (already computed in the render path with
+  // the auto-expand search overlay) so we can flip it correctly.
+  const toggleGroup = (code, currentlyOpen) => {
+    if (currentlyOpen) {
+      setExpandedGroups(prev => { const s = new Set(prev); s.delete(code); return s; });
+      setUserCollapsed(prev => { const s = new Set(prev); s.add(code); return s; });
+    } else {
+      setExpandedGroups(prev => { const s = new Set(prev); s.add(code); return s; });
+      setUserCollapsed(prev => { const s = new Set(prev); s.delete(code); return s; });
+    }
+  };
 
   // Helper: is a code (or its parent group) SWADE-relevant?
   const isSwade = code => {
@@ -11150,7 +11164,8 @@ function RVUs() {
                 No matches.
               </div>
             ) : rows.flatMap(r => {
-              const isOpen = expandedGroups.has(r.code) || autoExpand.has(r.code);
+              const isOpen = !userCollapsed.has(r.code) &&
+                (expandedGroups.has(r.code) || autoExpand.has(r.code));
               const rowSwade = isSwade(r.code);
               const fee = lookupFee(r.code);
               const rowStyle = {
@@ -11217,7 +11232,7 @@ function RVUs() {
               if (r._type === "parent") {
                 const parentRow = (
                   <div key={r.code} style={rowStyle}>
-                    <button onClick={() => toggleGroup(r.code)} style={{
+                    <button onClick={() => toggleGroup(r.code, isOpen)} style={{
                       background: "none", border: "none", padding: 0, cursor: "pointer",
                       color: "var(--ink)", textAlign: "left", fontFamily: "inherit",
                       fontSize: "inherit", display: "flex", alignItems: "center", gap: "6px",
