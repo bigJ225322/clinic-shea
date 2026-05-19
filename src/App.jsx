@@ -3499,6 +3499,12 @@ const DEFAULT_FIELDS = {
   // poeOnly: when true for POE (1091), strips the Prophy section from the note
   //   and hides the perio chart & OHI form sections.
   poeOnly: false,
+  // noTreatmentsPlanned: when true for POE/Peds/Restorative COE, strips the
+  //   "Treatment planned for the following treatments:" block and the
+  //   "Thoroughly reviewed all treatment options..." boilerplate paragraph
+  //   from the note. For Restorative COE, also drops "treatment plan" from
+  //   "- NV: treatment plan".
+  noTreatmentsPlanned: false,
   // Dental history fields (COE / POE templates).
   //   lastDentist: fills "last time at dentist: ;" → "last time at dentist: 6 months ago;"
   //   brushing / flossing: override the template defaults "2x a day" / "1x a day".
@@ -3741,6 +3747,22 @@ function renderTemplate(raw, f) {
 
   // Normalize Cavitron assistant language to "isodry" everywhere.
   t = t.replace(/\(with (?:an )?assistant using HVE\)/g, "(with isodry)");
+
+  // -------- 0b. Strip the treatment plan section when the user checks
+  //              "No treatments planned" on the exam findings form. The
+  //              "Treatment planned for the following treatments:" heading,
+  //              its dash stub, and the boilerplate "Thoroughly reviewed all
+  //              treatment options..." paragraph (POE) / "Findings & treatment
+  //              options... signed treatment plan." paragraph (Peds) all go.
+  //              For Restorative COE, also drop "treatment plan" from the
+  //              "- NV: treatment plan" line. --------
+  if (f.noTreatmentsPlanned) {
+    t = t.replace(
+      /Treatment planned for the following treatments:\n[\s\S]*?(?:tx plan\.|signed treatment plan\.)\s*\n/,
+      ""
+    );
+    t = t.replace(/(-\s*NV:)\s*treatment plan\b/, "$1");
+  }
 
   // -------- 1. Strip the COVID-19 paragraph entirely. --------
   // The block runs from " COVID-19:" through the second screening line,
@@ -5948,7 +5970,8 @@ const EXAM_FINDINGS_CONFIG = {
            placeholder: "Class I; no wear facets" }],
         [{ label: "odontogram", type: "odontogram",
            displayLabel: "Updated odontogram with clinical and radiographic findings",
-           placeholder: "List each finding on its own line. Press Enter to add another.", seedOnFocus: true }],
+           placeholder: "List each finding on its own line. Press Enter to add another.",
+           seedOnFocus: true, showNoTxPlanCheckbox: true }],
       ],
     },
     {
@@ -6129,7 +6152,8 @@ const EXAM_FINDINGS_CONFIG = {
         ],
         [{ label: "odontogram", type: "odontogram",
            displayLabel: "Updated odontogram with clinical and radiographic findings",
-           placeholder: "List each finding on its own line. Press Enter to add another.", seedOnFocus: true }],
+           placeholder: "List each finding on its own line. Press Enter to add another.",
+           seedOnFocus: true, showNoTxPlanCheckbox: true }],
       ],
     },
     { type: "prophy-toggle" },
@@ -6256,7 +6280,8 @@ const EXAM_FINDINGS_CONFIG = {
       title: "Treatment plan",
       fields: [
         { label: "treatment plan", type: "odontogram", hideLabel: true,
-          placeholder: "List each treatment on its own line. Press Enter to add another.", seedOnFocus: true },
+          placeholder: "List each treatment on its own line. Press Enter to add another.",
+          seedOnFocus: true, showNoTxPlanCheckbox: true },
       ],
     },
   ],
@@ -7191,16 +7216,38 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
 
     return (
       <div key={field.label} style={{ marginBottom: "9px" }}>
-        {display && <label style={{
-          ...labelStyle,
-          fontSize: "10px",
-          textTransform: "none",
-          letterSpacing: "0.04em",
-          color: "var(--ink-soft)",
-          fontStyle: "italic",
-        }}>
-          {display}
-        </label>}
+        {(display || field.showNoTxPlanCheckbox) && (
+          <div style={{
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+            gap: "10px", marginBottom: "3px",
+          }}>
+            {display ? (
+              <label style={{
+                ...labelStyle, marginBottom: 0, flex: 1,
+                fontSize: "10px", textTransform: "none",
+                letterSpacing: "0.04em", color: "var(--ink-soft)",
+                fontStyle: "italic",
+              }}>
+                {display}
+              </label>
+            ) : <span style={{ flex: 1 }} />}
+            {field.showNoTxPlanCheckbox && (
+              <label style={{
+                display: "flex", alignItems: "center", gap: "5px",
+                fontSize: "10px", color: "var(--ink-soft)",
+                cursor: "pointer", fontFamily: "'Geist', sans-serif",
+                whiteSpace: "nowrap", letterSpacing: "0.02em",
+              }}>
+                <input type="checkbox"
+                  checked={!!fields.noTreatmentsPlanned}
+                  onChange={e => setField("noTreatmentsPlanned", e.target.checked)}
+                  style={{ width: "13px", height: "13px",
+                    accentColor: "var(--teal)", cursor: "pointer", margin: 0 }} />
+                <span>No treatments planned</span>
+              </label>
+            )}
+          </div>
+        )}
         {field.type === "textarea" ? (
           <textarea value={value} onChange={onChange}
             placeholder={field.placeholder} rows={1}
