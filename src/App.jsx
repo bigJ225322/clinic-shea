@@ -18572,14 +18572,25 @@ function RPDHelper() {
 }
 
 
+// RPD tab is hidden from public production but stays accessible via the
+// query flag ?rpd=1 (sticky once set — written to localStorage so reloads
+// keep it). Toggle off with ?rpd=0.
+const RPD_FLAG_KEY = "clinic-shea:rpd-enabled";
+function rpdEnabled() {
+  if (typeof window === "undefined") return false;
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get("rpd");
+  if (q === "1") { try { localStorage.setItem(RPD_FLAG_KEY, "1"); } catch {} return true; }
+  if (q === "0") { try { localStorage.removeItem(RPD_FLAG_KEY); } catch {} return false; }
+  try { return localStorage.getItem(RPD_FLAG_KEY) === "1"; } catch { return false; }
+}
+
 const TABS = [
   { id: "note",    label: "Note",    hint: "Generate chart notes" },
   { id: "browse",  label: "Steps",   hint: "Read the guide" },
   { id: "rvus",    label: "Codes",   hint: "Progress & code lookup" },
   { id: "pes",     label: "PEs",     hint: "Performance exam reference" },
-  // RPD tab temporarily disabled (engine rebuild in flight; UI to be
-  // re-enabled once a few visual polish items are addressed).
-  // { id: "helpers", label: "RPD",     hint: "Design helper for removable partial dentures" },
+  ...(rpdEnabled() ? [{ id: "helpers", label: "RPD", hint: "Design helper for removable partial dentures" }] : []),
 ];
 
 // Engine names are exported from src/rpd-engine.js directly. Tests import
