@@ -19142,6 +19142,37 @@ const GUIDES = [
  ],
  },
  {
+ id: "perio",
+ label: "Periodontics",
+ parts: [
+ {
+ id: "perio-p1",
+ label: "Workflow fundamentals",
+ tagline: "The chairside evaluation + instrumentation steps shared across every perio procedure.",
+ chapters: [
+ { id: "perio-ch1", num: 1, title: "Perio charting — 6-point probe, mobility, furcation, recession", stub: true },
+ { id: "perio-ch2", num: 2, title: "Diagnosis — AAP stages (I-IV) and grades (A-C)", stub: true },
+ { id: "perio-ch3", num: 3, title: "Hand instrumentation — universal vs Gracey curettes, scaler choice", stub: true },
+ { id: "perio-ch4", num: 4, title: "Ultrasonic instrumentation — magnetostrictive (Cavitron) vs piezo, settings", stub: true },
+ { id: "perio-ch5", num: 5, title: "Local anesthesia for perio — block + supraperiosteal infiltration choices", stub: true },
+ ],
+ },
+ {
+ id: "perio-p2",
+ label: "By case type",
+ tagline: "Case-specific procedure modifications and decision trees.",
+ chapters: [
+ { id: "perio-ch10", num: 10, title: "Scaling & root planing (SRP) — quadrant approach, healing window", stub: true },
+ { id: "perio-ch11", num: 11, title: "Periodontal maintenance — every 3-4 months after SRP, what to do", stub: true },
+ { id: "perio-ch12", num: 12, title: "Crown lengthening — biologic width, surgical technique, healing time", stub: true },
+ { id: "perio-ch13", num: 13, title: "Free gingival graft (FGG) — keratinized tissue augmentation", stub: true },
+ { id: "perio-ch14", num: 14, title: "Connective tissue graft (CTG) — root coverage for recession", stub: true },
+ { id: "perio-ch15", num: 15, title: "Acute periodontal abscess — incision and drainage, antibiotic decision", stub: true },
+ ],
+ },
+ ],
+ },
+ {
  id: "pedo",
  label: "Pediatric Dentistry",
  parts: [
@@ -19634,6 +19665,7 @@ const PATHWAY_DOMAINS = [
  { id: "indirect", label: "Indirect Restorations" },
  { id: "endo", label: "Endodontics" },
  { id: "surgery", label: "Oral Surgery" },
+ { id: "perio", label: "Periodontics" },
  { id: "pedo", label: "Pediatric Dentistry" },
  { id: "rpd", label: "Removable Partial Dentures" },
  { id: "cd", label: "Complete Dentures" },
@@ -19671,6 +19703,11 @@ const PATHWAY_GROUPS = {
  { label: "Foundational & interim", ids: [
  "dir-sedative",
  "dir-core-buildup",
+ ]},
+ { label: "Decision-driven cases", ids: [
+ "dir-deep-caries-decision",
+ "dir-large-mod",
+ "dir-replacing-failing-composite",
  ]},
  { label: "Preventive", ids: [
  "dir-sealant",
@@ -19726,6 +19763,17 @@ const PATHWAY_GROUPS = {
  { label: "Preventive", ids: [
  "pedo-sealant",
  "pedo-fluoride-varnish",
+ ]},
+ ],
+ perio: [
+ { label: "Non-surgical", ids: [
+ "perio-srp",
+ "perio-maintenance",
+ "perio-acute-abscess",
+ ]},
+ { label: "Surgical", ids: [
+ "perio-crown-lengthening",
+ "perio-gingival-graft",
  ]},
  ],
  indirect: [
@@ -22623,6 +22671,208 @@ const PATHWAYS = [
  sections: [
  { guideId: "pedo", chapterId: "pedo-ch14" },
  { guideId: "pedo", chapterId: "pedo-ch1" },
+ ],
+ },
+ // ── Periodontics ────────────────────────────────────────────────────────
+ {
+ id: "perio-srp",
+ domain: "perio",
+ label: "Scaling & root planing (D4341/D4342)",
+ description: "A patient with Stage II–III periodontitis (4-5 mm pockets with bleeding, calculus, or 5 mm+ pockets) needs definitive non-surgical therapy. SRP differs from a prophy in three ways: anesthesia is required (subgingival instrumentation hurts), the endpoint is calculus-free root surfaces (not plaque-free crowns), and you bill by quadrant (D4341 if 4+ teeth involved per quadrant, D4342 if 1-3 teeth). UIC typically schedules SRP in two visits — Mx in one visit, Mn in the next — to balance anesthesia and patient tolerance. Maintenance interval converts from 6 months to 3-4 months after SRP.",
+ keyDecisions: [
+ "Confirm staging: pocket depths ≥4 mm with bleeding, radiographic bone loss > 15% of root length, or clinical attachment loss ≥3 mm. Stage I (3 mm pockets, gingivitis-level) = prophy + OHI, not SRP.",
+ "Anesthesia: long-acting (Marcaine 0.5% w/ epi 1:200K) for mandibular blocks, lidocaine 2% w/ epi for maxillary infiltrations. Anesthetize quadrant before starting; subgingival calculus removal without anesthesia is patient torture and breaks rapport.",
+ "Instrumentation sequence: ultrasonic (Cavitron) for gross calculus removal first (medium-power universal tip, foot pedal-paced strokes), then hand instrumentation (Gracey 1-2 anteriors, 11-12 mesial posterior, 13-14 distal posterior) for definitive root planing.",
+ "Endpoint check: explorer detects no calculus, no rough surface. Visible plaque alone isn't the endpoint; calculus is. Subgingival calculus that's been there 10 years feels glassy-smooth — it's not finished until you can run an explorer along the root surface and it feels like polished glass.",
+ "Re-evaluation at 4-6 weeks. Pockets should reduce 1-2 mm, bleeding should decrease. Residual 5+ mm pockets after SRP go to periodontal specialist or surgical referral. Maintenance interval set to 3-4 months going forward.",
+ ],
+ phases: [
+ { label: "Diagnosis & anesthesia", count: 2 },
+ { label: "Instrumentation", count: 2 },
+ { label: "Re-eval & maintenance", count: 2 },
+ ],
+ sections: [
+ { guideId: "perio", chapterId: "perio-ch1" },
+ { guideId: "perio", chapterId: "perio-ch2" },
+ { guideId: "perio", chapterId: "perio-ch5" },
+ { guideId: "perio", chapterId: "perio-ch4" },
+ { guideId: "perio", chapterId: "perio-ch3" },
+ { guideId: "perio", chapterId: "perio-ch10" },
+ { guideId: "perio", chapterId: "perio-ch11" },
+ ],
+ },
+ {
+ id: "perio-maintenance",
+ domain: "perio",
+ label: "Periodontal maintenance (D4910, post-SRP)",
+ description: "A patient with previous SRP returning at the 3-4 month maintenance interval. The procedure is in between a prophy and a re-SRP: full-mouth ultrasonic + hand-instrumentation, with anesthesia for any quadrants that re-developed pockets. The clinical task is to identify the quadrants where instrumentation needs to go subgingival again vs the quadrants stable enough for surface debridement. Re-charting every 12 months (full 6-point probe) is the trigger for deciding whether to escalate back to SRP.",
+ keyDecisions: [
+ "Re-chart pocket depths at the maintenance visit. Sites that have increased >1 mm or developed new bleeding = quadrant gets anesthesia + sub-gingival instrumentation. Stable sites = surface debridement only.",
+ "Confirm patient is following the recommended interval. Skipped maintenance visits (6+ months instead of 3) are the #1 cause of perio recurrence — recharting at this visit will show new pocket formation.",
+ "OHI re-assessment: ask about brushing technique, interproximal aids (floss, interdental brushes, water flosser). Watch the patient demonstrate. Most patients have drifted from the technique they learned at SRP.",
+ "If 4+ sites have re-developed 5+ mm pockets, treat as a re-SRP not a maintenance — bill D4341/D4342 instead of D4910. Document the clinical changes.",
+ "Maintenance interval stays at 3-4 months indefinitely. Patients sometimes try to extend to 6 months — refuse unless 2+ consecutive maintenance visits show no pocket changes.",
+ ],
+ phases: [
+ { label: "Re-charting", count: 1 },
+ { label: "Instrumentation by site", count: 2 },
+ { label: "OHI & next visit", count: 2 },
+ ],
+ sections: [
+ { guideId: "perio", chapterId: "perio-ch1" },
+ { guideId: "perio", chapterId: "perio-ch11" },
+ { guideId: "perio", chapterId: "perio-ch3" },
+ { guideId: "perio", chapterId: "perio-ch4" },
+ ],
+ },
+ {
+ id: "perio-acute-abscess",
+ domain: "perio",
+ label: "Acute periodontal abscess (localized swelling, pocket-origin)",
+ description: "Patient presents with localized swelling and pain at the gingival margin or attached gingiva of one or two teeth. The tooth is vital (cold-positive, EPT-positive — differentiating from acute apical abscess), the pocket is deep (often a single 8-10 mm pocket on the affected tooth), and pus may be expressed from the sulcus on probing. Treatment is immediate drainage (through the pocket with curettage, or with a small incision if a fluctuant pointing abscess is present), thorough debridement of the involved root surface, and warm saline rinses. Antibiotics are reserved for systemic involvement.",
+ keyDecisions: [
+ "Vital-pulp test first to differentiate from acute apical abscess. Cold + EPT positive on the affected tooth = perio origin; negative = endo origin. Treatment paths diverge here.",
+ "Drainage through the pocket: anesthetize, then debride the affected root surface with a curette through the pocket. Pus typically drains during instrumentation. If a fluctuant point on the gingiva exists, small incision drains it cleanly.",
+ "Irrigation with chlorhexidine 0.12% or warm sterile saline. Patient prescribed CHX rinse BID for 7-10 days. Warm saltwater rinses every 4 hours at home.",
+ "Antibiotics ONLY for systemic involvement (fever, cellulitis, lymphadenopathy). Localized abscess that drains does not need antibiotics. If prescribed: amoxicillin 500 mg TID × 7 days or pen V K 500 mg QID × 7 days.",
+ "Re-evaluation at 7-10 days. Acute symptoms should be resolved. Schedule SRP for the quadrant (or full-mouth if not previously done) — the abscess is a sign the patient needs definitive perio therapy.",
+ ],
+ phases: [
+ { label: "Diagnosis", count: 2 },
+ { label: "Drainage & irrigation", count: 2 },
+ { label: "Follow-up", count: 1 },
+ ],
+ sections: [
+ { guideId: "perio", chapterId: "perio-ch1" },
+ { guideId: "perio", chapterId: "perio-ch15" },
+ { guideId: "perio", chapterId: "perio-ch10" },
+ ],
+ },
+ {
+ id: "perio-crown-lengthening",
+ domain: "perio",
+ label: "Crown lengthening (biologic width, ferrule)",
+ description: "A tooth needs a crown but there's not enough sound supragingival tooth structure for a ferrule (the 1.5-2 mm of axial wall the crown engages above the prep margin). The decision tree: gummy smile / esthetic short tooth → esthetic crown lengthening (often gingivectomy only); subgingival caries or fracture violating biologic width → functional crown lengthening (osseous resection required to restore the 3 mm of supracrestal tissue attachment). Most cases are functional and require flap + osseous + 6-week healing before crown prep.",
+ keyDecisions: [
+ "Confirm need: pre-prep evaluation shows less than 1.5 mm of supragingival tooth structure on the cervical aspect, OR the prep margin will be within 3 mm of bone (violating biologic width).",
+ "Esthetic CL = gingivectomy or flap with no bone removal. Indicated for short clinical crowns from incomplete eruption. Heal 4-6 weeks before final restoration.",
+ "Functional CL = full-thickness flap + osseous recontouring. Reduce buccal + interproximal + lingual bone to establish 3 mm clearance from new crown margin to bone crest. Healing 6-8 weeks for crown prep; longer (3-6 months) before definitive impressioning if the patient is a smoker or healing slowly.",
+ "Pre-surgical consult between restorative + perio: agree on the planned crown margin location BEFORE surgery. Marking the planned margin with a perio probe + surgical pen on the tooth before flap reflection saves rework.",
+ "Post-op management: ibuprofen 600 mg q6h × 48 hr, CHX rinse BID × 14 days, soft diet 1 week, suture removal 7-10 days. Warn about gingival recession risk — interproximal papilla often doesn't return to its original height.",
+ ],
+ phases: [
+ { label: "Pre-surgical planning", count: 2 },
+ { label: "Surgery", count: 2 },
+ { label: "Healing & restoration", count: 2 },
+ ],
+ sections: [
+ { guideId: "perio", chapterId: "perio-ch12" },
+ { guideId: "perio", chapterId: "perio-ch5" },
+ ],
+ },
+ {
+ id: "perio-gingival-graft",
+ domain: "perio",
+ label: "Gingival graft (CTG for root coverage, FGG for keratinized tissue)",
+ description: "A tooth with gingival recession exposing root surface, plus inadequate keratinized tissue, plus a patient who's symptomatic (sensitivity, esthetic concern) or at risk of progression (high frenum pull, RPD-clasp engagement zone). Two main techniques: connective tissue graft (CTG) tunneled or coronally advanced for root coverage in the esthetic zone; free gingival graft (FGG) for thickening keratinized tissue when esthetics don't dominate. Donor site is the palate; graft is harvested, sutured to the recipient site, and a periodontal pack covers both sites for 7-10 days.",
+ keyDecisions: [
+ "Indication: Miller / Cairo Class I-II recession with adequate interdental bone, ≥2 mm of attached gingiva loss, symptomatic patient (sensitivity, esthetic, RPD compatibility), or progressive recession on serial photos.",
+ "Choose technique: CTG for esthetic-zone root coverage (anterior teeth, smile line), FGG for keratinized tissue augmentation alone (posterior teeth, RPD abutment prep, frenectomy area), tunneled CTG for multiple adjacent recessions.",
+ "Donor site planning: palatal vault between #4 and #14, at least 2 mm from gingival margin and 2 mm from greater palatine artery (which exits the greater palatine foramen and runs anteriorly). Use the patient's anatomy + a periodontal probe to map the artery before incision.",
+ "Suturing technique critical: sling sutures on the recipient site to coronally advance + immobilize the graft. Periosteal sutures on the FGG to prevent slippage. Failure to immobilize = graft sloughs in 48 hours.",
+ "Post-op: NO mechanical hygiene on the surgical site for 14 days — CHX rinse only. Sutures out at 10-14 days. Final esthetic + functional result evaluated at 6 months; full maturation 1 year.",
+ ],
+ phases: [
+ { label: "Indication & technique choice", count: 2 },
+ { label: "Surgery", count: 3 },
+ { label: "Healing", count: 2 },
+ ],
+ sections: [
+ { guideId: "perio", chapterId: "perio-ch13" },
+ { guideId: "perio", chapterId: "perio-ch14" },
+ { guideId: "perio", chapterId: "perio-ch5" },
+ ],
+ },
+ // ── Additional Direct & Indirect (high-frequency gaps) ──────────────────
+ {
+ id: "dir-deep-caries-decision",
+ domain: "direct",
+ label: "Deep caries near pulp (excavation decision tree)",
+ description: "On caries excavation, you've reached the point where deeper progress will likely expose the pulp. The patient was asymptomatic or had reversible pulpitis. The decision tree: (1) complete excavation + direct cap if you expose, (2) selective excavation leaving caries-affected dentin + RMGI cap (indirect pulp cap), or (3) stepwise excavation (leave some caries, seal, return 3-6 months to re-excavate). Modern evidence favors options 2 and 3 for asymptomatic teeth — preserve the pulp, don't push for textbook caries-free dentin in the deepest area.",
+ keyDecisions: [
+ "Patient symptom check first. Asymptomatic OR reversible pulpitis = vital pulp therapy options open. Lingering pain to cold, spontaneous night pain, or radiographic periapical changes = full RCT, skip the preservation attempts.",
+ "Tactile assessment of the deepest dentin. Soft + wet + mushy = caries-infected, must remove. Firm + leathery + discolored = caries-affected, can leave. The distinction is by feel — caries detector dye is unreliable.",
+ "Selective excavation (indirect pulp cap): leave the deepest 1-2 mm of caries-affected dentin, place RMGI (Vitrebond, Fuji II LC) directly on it, then composite over the RMGI. The pulp lays down tertiary dentin under the seal; the residual lesion remineralizes.",
+ "Stepwise excavation: seal residual caries with IRM or Cavit for 3-6 months, then return to complete excavation. Used when you're not sure the pulp will survive a single visit. Bond + composite as definitive at the second visit.",
+ "Document the decision in the chart: which option chosen, the depth of residual caries, the patient's symptom timeline. Recall at 6 months with cold/EPT test. Pulp necrosis in the first year is the expected failure window — discuss this at consent.",
+ ],
+ phases: [
+ { label: "Symptom check", count: 1 },
+ { label: "Excavation decision", count: 2 },
+ { label: "Seal & restore", count: 2 },
+ { label: "Recall", count: 1 },
+ ],
+ sections: [
+ { guideId: "direct", chapterId: "dir-ch1" },
+ { guideId: "direct", chapterId: "dir-ch2" },
+ { guideId: "direct", chapterId: "dir-ch3" },
+ { guideId: "endo", chapterId: "endo-ch14" },
+ { guideId: "direct", chapterId: "dir-ch11" },
+ { guideId: "direct", chapterId: "dir-ch31" },
+ ],
+ },
+ {
+ id: "dir-large-mod",
+ domain: "direct",
+ label: "Large MOD composite (cuspal coverage decision)",
+ description: "A posterior tooth with a large MOD lesion or fractured filling — the cusps are undermined or the isthmus is wider than half the buccolingual width. Direct composite is the cheaper, faster option but has a 5-year failure rate of ~30% for these large restorations; indirect onlay or crown has 5-year failure of ~5-10% but requires two visits + lab fees. The decision is part clinical (how undermined are the cusps?), part financial (insurance coverage, patient budget), and part patient-factor (bruxer? cuspal proximity to occlusal contacts?). UIC predoctoral often does the direct restoration as the interim and refers for definitive indirect later.",
+ keyDecisions: [
+ "Cusp involvement assessment: if the isthmus (B-L) is more than half the intercuspal distance, OR if cusps are unsupported (no dentin underneath), OR if the tooth has any vertical crack — direct composite has poor long-term prognosis; recommend onlay or crown.",
+ "Patient factors: bruxer (occlusal wear, attrition, masseter hypertrophy) = indirect always. Heavy occlusal contact area on the restoration = indirect. Patient willing to return for a crown later = direct interim is reasonable.",
+ "Direct technique modifications for large MOD: deeper bevel on all margins, sectional matrix with custom contour, fiber reinforcement (everStick or Ribbond) across the isthmus, bulk-fill base + capping composite for occlusal anatomy.",
+ "Consent the patient on prognosis: 'Direct composite at this size has higher chance of fracture or recurrent caries in 3-5 years. A crown or onlay would last longer but costs more and takes two visits.' Document the conversation.",
+ "Schedule a 6-month recall specifically to check the large MOD. Marginal staining, occlusal wear, or cusp fracture detected early can be addressed before pulp involvement.",
+ ],
+ phases: [
+ { label: "Diagnosis & consent", count: 2 },
+ { label: "Setup & isolation", count: 2 },
+ { label: "Restoration", count: 2 },
+ { label: "Recall", count: 1 },
+ ],
+ sections: [
+ { guideId: "direct", chapterId: "dir-ch1" },
+ { guideId: "direct", chapterId: "dir-ch2" },
+ { guideId: "direct", chapterId: "dir-ch3" },
+ { guideId: "direct", chapterId: "dir-ch4" },
+ { guideId: "direct", chapterId: "dir-ch11" },
+ { guideId: "direct", chapterId: "dir-ch7" },
+ { guideId: "direct", chapterId: "dir-ch31" },
+ ],
+ },
+ {
+ id: "dir-replacing-failing-composite",
+ domain: "direct",
+ label: "Replacing a failing composite (recurrent caries, marginal stain)",
+ description: "An existing composite needs replacement — marginal staining, recurrent caries at the margin, or fracture / chip. The decision tree: (1) repair the existing restoration if defect is limited and the rest is intact, (2) remove + replace if recurrent caries underneath or wholesale failure. Repair is faster, preserves tooth structure, and is well-supported by evidence for small defects. Removal + replacement loses 1-2 mm of additional tooth structure each cycle and accelerates the restoration spiral.",
+ keyDecisions: [
+ "Diagnose the failure: marginal stain alone (no caries) = surface re-finish + repair. Recurrent caries detected by tactile catch + radiograph = remove + replace. Bulk fracture or open contact = remove + replace.",
+ "Repair technique: refresh the existing composite surface with a fine diamond, etch with phosphoric acid 15 sec (mechanical retention on the old composite, not chemical), apply silane (if old composite is microfilled) + universal adhesive, place new composite.",
+ "Removal technique: differentiate composite from tooth structure visually + tactically — composite chatters under a slow-speed round bur, dentin doesn't. Use the dentin-to-composite color difference under good lighting + magnification.",
+ "Caries detector dye is useful here. Apply 10 sec, rinse, look for stained dentin under removed composite. Stained = caries-infected, remove. Unstained = sound dentin, leave even if discolored.",
+ "Document the replacement reason + technique in the chart. Pattern of failure (marginal stain at multiple restorations, caries at multiple margins) may indicate dietary acid exposure or xerostomia worth addressing.",
+ ],
+ phases: [
+ { label: "Diagnosis", count: 2 },
+ { label: "Repair OR remove", count: 2 },
+ { label: "New restoration", count: 2 },
+ ],
+ sections: [
+ { guideId: "direct", chapterId: "dir-ch1" },
+ { guideId: "direct", chapterId: "dir-ch2" },
+ { guideId: "direct", chapterId: "dir-ch3" },
+ { guideId: "direct", chapterId: "dir-ch4" },
+ { guideId: "direct", chapterId: "dir-ch7" },
+ { guideId: "direct", chapterId: "dir-ch31" },
  ],
  },
 ];
