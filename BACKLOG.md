@@ -1,14 +1,40 @@
-# Cases tab vetting backlog
+# Cases tab vetting + gap-filling backlog
 
-Source-vetting pass — Cases tab content against Swade UIC manual + Dentistry Files lectures.
+Two missions:
+1. **Vet** existing Cases tab content for accuracy against Swade + lecture PDFs
+2. **Fill gaps** — find Swade subjects the Cases tab doesn't cover at all, and create new chapters/pathways for them (user suspects Swade is broader than current coverage)
 
-Loop reads this file each iteration. Check off groups as you finish. Add notes inline (e.g., "[skipped — unverified]" or "[partial — re-vet next pass]").
+Loop reads this file each iteration. Check off groups as you finish. Add notes inline (e.g., "[skipped — unverified]", "[partial — re-vet next pass]", "[gap noted, not filled — needs user input]").
 
 ---
 
 ## Phase 1 — Prerequisite (do FIRST)
 
-- [ ] **Inventory + source-map.** Create `VETTING-SOURCE-MAP.md` mapping every chapter id (96 total: 17 direct, 30 indirect, 28 CD, 21 RPD) to the Swade page range + lecture PDF(s) that cover it. Use the file structure under `/Users/jakeshea/Documents/Dentistry Files/` (subdirectories ALL CD FILES, ALL RPD FILES, ALL INDIRECT RESTORATION FILES, ALL IMPLANTS FILES). This file is the unlock for every subsequent pass.
+- [ ] **Inventory + source-map.** Create `VETTING-SOURCE-MAP.md` with three tables:
+    1. **Chapter → Swade source**: every chapter id (96 total: 17 direct, 30 indirect, 28 CD, 21 RPD) mapped to the Swade page range that covers it (or "no direct Swade match" if UIC-lecture-only).
+    2. **Swade topic → Chapter**: scan Swade page-by-page; for each distinct topic Swade covers, either name the chapter that covers it OR mark `[GAP]`. **This is the gap-finding inventory.**
+    3. **Dentistry Files lecture → Chapter**: same for the lecture PDFs in the 5 subdirectories under `/Users/jakeshea/Documents/Dentistry Files/`.
+    
+    This file unlocks every subsequent iteration. Loop should not start vetting or gap-filling until this exists.
+
+## Phase 1.5 — Gap analysis + filling (new priority)
+
+Once VETTING-SOURCE-MAP.md is built, work through every `[GAP]` entry:
+
+- [ ] **Catalog the gaps.** Add a `## Gaps to consider` section to VETTING-SOURCE-MAP.md listing every Swade topic that has no chapter coverage. Categorize as: substantive (≥1 page of Swade content) / drive-by (mentioned but not detailed).
+- [ ] **Fill substantive gaps.** For each substantive gap, create a new chapter following the existing schema. Add to the appropriate guide (direct/indirect/cd/rpd) using the next available chapter number. Cite Swade pages in the chapter content.
+- [ ] **Add pathway pills** for gaps that students would reach for via the Cases tab. Pathway goes in the existing domain — do NOT invent new domains.
+- [ ] **Areas to scan for gaps** (likely candidates based on user's hint that Swade is broader):
+    - Endodontic procedures (RCT step-by-step, retreatment, apicoectomy, pulp cap protocols)
+    - Oral surgery (simple + surgical extractions, alveoloplasty, suturing technique)
+    - Periodontal procedures (SRP, perio maintenance, gingivectomy, biologic width)
+    - Diagnostic + treatment planning workflow (COE, treatment plan sequencing)
+    - Pediatric considerations (if Swade covers — verify before creating)
+    - Emergency dentistry (avulsion, fracture, pulpitis triage)
+    - Local anesthesia technique (block + infiltration patterns)
+    - Radiography protocols (FMX, panoramic, CBCT indications)
+    - Infection control / clinic protocols
+    - Pre-operative medical management (premedication, bleeding-risk patients)
 
 ## Phase 2 — First-pass vetting (clinical claims)
 
