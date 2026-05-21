@@ -18831,6 +18831,7 @@ const GUIDES = [
  { id: "dir-ch13", num: 13, title: "Class IV composite — incisal corner build-up", stub: true },
  { id: "dir-ch14", num: 14, title: "Class V — composite versus RMGI decision", stub: true },
  { id: "dir-ch15", num: 15, title: "Direct composite veneer — single tooth shape correction", stub: true },
+ { id: "dir-ch16", num: 16, title: "Amalgam restoration — Class I and Class II", stub: true },
  ],
  },
  {
@@ -19523,6 +19524,7 @@ const PATHWAY_GROUPS = {
  { label: "Class I & II", ids: [
  "dir-class2",
  "dir-class1",
+ "dir-amalgam",
  ]},
  { label: "Class III, IV & direct veneer", ids: [
  "dir-class3",
@@ -19875,6 +19877,34 @@ const PATHWAYS = [
  { guideId: "direct", chapterId: "dir-ch3" },
  { guideId: "direct", chapterId: "dir-ch4" },
  { guideId: "direct", chapterId: "dir-ch10" },
+ { guideId: "direct", chapterId: "dir-ch7" },
+ { guideId: "direct", chapterId: "dir-ch31" },
+ ],
+ },
+ {
+ id: "dir-amalgam",
+ domain: "direct",
+ label: "Amalgam restoration (Class I / Class II)",
+ description: "Legacy posterior restorative — non-adhesive, mechanically retained. Still indicated where bonding is unreliable: Class II preps with deep subgingival margins, cases where a clean dry field can't be reliably maintained, and patients with significant cost barriers to composite. The case turns on Black's prep parameters (the 5 specs in the chapter), a properly burnished Tofflemire band + wedge for Class II, condensation that overfills then carves to anatomy, and a mandatory Gluma sealer step that replaces the bonding step and prevents post-op sensitivity.",
+ keyDecisions: [
+ "Amalgam needs Black's prep geometry — convergent buccal/lingual walls, parallel-or-divergent proximal walls, ≥1.5mm deep, flat pulpal floor with rounded line angles + beveled axiopulpal walls, and no undermined marginal ridges. These are NOT optional — amalgam retains by mechanical undercut.",
+ "Gluma sealer is mandatory under amalgam — 45 sec scrub, 15 sec wait, air dry, 15 sec rinse, lightly dry. Skip this and the patient returns with post-op sensitivity.",
+ "Tofflemire universal matrix band + wooden wedge for Class II, with the closed end of the retainer toward the occlusal. Burnish the band against the adjacent tooth before placing the amalgam — this is what creates an anatomic contact.",
+ "Overfill the prep — cavosurface margins must be covered. Condense with the small condenser into line angles first, then the large condenser. Carve back to anatomy with 5T, Cleoid-Discoid, ½ Hollenback, anatomic burnisher.",
+ "Check occlusion gently with articulating paper — if the patient bites hard before the amalgam fully sets, it can fracture. Adjust high spots with a high-speed bur, lightly.",
+ ],
+ phases: [
+ { label: "Setup", count: 3 },
+ { label: "Prep + sealer", count: 2 },
+ { label: "Place + carve", count: 1 },
+ { label: "Reference", count: 1 },
+ ],
+ sections: [
+ { guideId: "direct", chapterId: "dir-ch1" },
+ { guideId: "direct", chapterId: "dir-ch2" },
+ { guideId: "direct", chapterId: "dir-ch3" },
+ { guideId: "direct", chapterId: "dir-ch4" },
+ { guideId: "direct", chapterId: "dir-ch16" },
  { guideId: "direct", chapterId: "dir-ch7" },
  { guideId: "direct", chapterId: "dir-ch31" },
  ],

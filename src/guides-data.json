@@ -10497,6 +10497,76 @@
             ]
           },
           {
+            "id": "dir-ch16",
+            "num": 16,
+            "title": "Amalgam restoration — Class I and Class II",
+            "verdict": "Amalgam is the legacy posterior restorative — non-adhesive, mechanical retention, slowly disappearing from clinical practice but still on the indication list for Class II preps with subgingival margins where bonding is unreliable, for patients with cost barriers to composite, and for any case where a clean dry field can't be reliably maintained. The case turns on prep geometry (this is one of the few restorations where Black's prep parameters still rule), proper matrix + wedging for Class II, condensation that overfills then carves back to anatomy, and a Gluma sealer step that is mandatory under amalgam to prevent post-op sensitivity. Source: Swade pp. 35-36.",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "Amalgam is mechanically retained, not bonded. That single fact drives most of the procedural differences from composite — the prep must have geometry that holds the restoration in place against occlusal forces, the matrix system stays simple (Tofflemire band + wedge), and there is no etch-and-bond step. The Gluma sealer step that replaces the bonding step is mandatory: it desensitizes the prepared dentin and reduces post-op sensitivity that is otherwise common under fresh amalgam."
+              },
+              {
+                "kind": "section",
+                "text": "Materials checklist (Swade)"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "**From sterilization:** amalgam kit, rubber dam kit, handpieces, restorative burs, composite finishing burs, Isodry, septocaine, patient goggles, blood glucose kit.",
+                  "**From locker:** blood pressure cuff, loupes / eye protection.",
+                  "**In clinic:** articulating paper, matrix band (Tofflemire universal), wooden wedges, wedget, amalgamator, amalgam capsules, **Gluma sealer**, rubber dam.",
+                  "**In unit:** anesthetic needle / carpule / shield / topical, floss."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Procedure (the Swade 15-step sequence)"
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "**Get a start check.**",
+                  "**Check occlusion before anesthesia.** Use articulating paper to mark contacts on the tooth and the two adjacent teeth. Draw a simple diagram of the marks so post-op occlusion can be compared to pre-op (especially adjacent-tooth contacts, which should be unchanged).",
+                  "**Deliver local anesthetic.**",
+                  "**Isolate** with rubber dam or Isodry. Tie floss to the clamp.",
+                  "**Complete prep.** Pre-wedge with a wooden wedge for Class II (expands the PDL and makes restoring the contact easier). Slow-speed round bur for caries removal — infected dentin reads wet, cheesy, clumpy; healthy dentin reads dry, chalky, dusty. If you're removing an existing composite, you can distinguish composite from tooth by drying thoroughly and scratching with an explorer (composite scratches, tooth does not).",
+                  "**Check in** — have instructor check the prep.",
+                  "**Place matrix and wedge.** Tofflemire retainer + universal matrix band + wooden wedge, then **burnish** the band against the adjacent tooth. The closed end of the Tofflemire retainer goes toward the occlusal. The matrix band should be narrower gingivally and wider occlusally (anatomic shape).",
+                  "**Clean prep with Consepsis.** Apply Consepsis and scrub for 10 seconds, rinse 5 seconds, gently air-dry leaving dentin moist (not desiccated).",
+                  "**Place liner or base if indicated.** Liner (Vitrebond / RMGI, ~0.5 mm) when remaining dentin thickness is too thin to prevent bacterial insult to the pulp. Base (Dycal — calcium hydroxide) ONLY over an indirect pulp cap area or a small mechanical (non-carious) pulpal exposure — then cover with Vitrebond.",
+                  "**Place Gluma sealer.** Gluma is ALWAYS indicated under amalgam restorations. Apply a very thin layer in a scrubbing motion for 45 sec → wait 15 sec → air dry → rinse 15 sec → lightly dry, leaving dentin moist (high-evacuation suction over the tooth + light quick air dry; dentin should be glossy without pooling).",
+                  "**Deliver and condense the amalgam.** Amalgamate the capsule for 9-12 sec at 3600 cpm (medium speed). Evaluate the mix — should look consistent, shiny, and smooth (a poor mix looks dull, crumbly, or dry). Empty the capsule into the amalgam well, use the amalgam carrier to deliver into the prep. Overfill — the cavosurface margins should be well covered.",
+                  "**Continue condensing.** Use the small condenser first with adequate pressure over the pulpal wall and into preparation line angles. Then switch to the large condenser for the bulk of the preparation. Use high-speed suction to remove excess amalgam. Use a large ball burnisher to sweep across the restoration and establish the right contour (fossae and ridges) — generally while continuing to condense.",
+                  "**Carve.** 5T for initial carving (keep the carving surface on both the tooth and the restoration to expose margins). Then Cleoid-Discoid, ½ Hollenback, and anatomic burnisher to carve anatomy. Smooth the surface with a wet cotton roll once the amalgam is mostly set.",
+                  "**Check occlusion and contact.** Remove rubber dam / Isodry. Check occlusion with articulating paper — **be careful**: if the patient bites really hard amalgam can fracture before it fully sets. If occlusion is high, adjust gently with a high-speed bur (don't be aggressive — you don't want to fracture the amalgam). Check interproximal contact with floss.",
+                  "**Check in** — have instructor check the restoration.",
+                  "**Complete codes and note.** D2140 (1 surface), D2150 (2 surfaces), D2160 (3 surfaces), D2161 (4 or more surfaces)."
+                ]
+              },
+              {
+                "kind": "callout",
+                "title": "Amalgam prep parameters (Swade — these are non-negotiable)",
+                "body": "Amalgam needs specific geometry because it retains by mechanical undercut, not bonding. The 5 specs:\n\n**1. Convergent buccal and lingual walls** (occlusally) — creates the mechanical undercut.\n**2. Parallel or slightly divergent proximal walls** — prevents over-thinning and gives the restoration draw.\n**3. At least 1.5 mm deep** — deeper if decay extends deeper. Less than 1.5 mm risks fracture.\n**4. Flat pulpal floor with rounded line angles + beveled axiopulpal walls** — distributes occlusal force evenly; rounded angles avoid stress concentrations.\n**5. Does not undermine marginal ridges** — unsupported enamel will fracture later."
+              },
+              {
+                "kind": "callout",
+                "title": "Why Gluma is mandatory under amalgam",
+                "body": "Amalgam doesn't seal the dentinal tubules (composite does, via the bond layer). Without a sealer step, dentinal-fluid movement causes post-op sensitivity that can last weeks. Gluma (glutaraldehyde + HEMA) coagulates protein in the tubule fluid and seals the surface chemically. **Apply Gluma to the prep before placing the amalgam, EVERY time.** Skip the Gluma step and the patient returns with a sensitivity complaint."
+              },
+              {
+                "kind": "callout",
+                "title": "When to choose amalgam vs composite",
+                "body": "Amalgam is still indicated for: (1) Class II preps with deep subgingival margins where bonding can't be kept dry, (2) patients with significant cost barriers to composite (amalgam is faster, no etch/bond materials), (3) cases requiring high compressive strength under heavy occlusal load where bonded composite has a track record of marginal failure (rare), (4) any case where a clean dry field can't be reliably maintained throughout the bonding sequence. Composite is preferred everywhere else — esthetics, conservation of tooth structure, and the bonded seal."
+              },
+              {
+                "kind": "troubleshoot",
+                "title": "Amalgam pitfalls",
+                "body": "**Amalgam fractures within days of delivery:** prep was less than 1.5 mm deep, OR the patient bit hard before set was complete. Always counsel the patient to avoid chewing on the new amalgam for 24 hours. **Post-op sensitivity at 1 week:** Gluma step was skipped or under-applied. Counsel; usually resolves over 2-3 weeks. If persistent, may need to replace. **Marginal ridge fractures:** restoration was placed with the marginal ridge thin or unsupported. The prep undermined the natural marginal ridge or the carving over-thinned the amalgam ridge. **Open contact at delivery:** matrix band wasn't well-burnished against the adjacent tooth before placing the amalgam. Floss should snap through with resistance. Re-do — there is no salvaging an open contact. **Mix looks dull or crumbly:** amalgamator setting wrong, or capsule expired. Replace with a fresh capsule. **Carving wears through to dentin:** carved too aggressively while amalgam was still soft. Wait until amalgam is mostly set (use the wet-cotton-roll smoothing step) before final carving."
+              }
+            ]
+          },
+          {
             "id": "dir-ch20",
             "num": 20,
             "title": "Sedative restoration (D2940) — emergency IRM placement",
