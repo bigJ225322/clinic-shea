@@ -188,6 +188,10 @@ Once VETTING-SOURCE-MAP.md was built (iteration 1), the gap-fill work executed i
 - [ ] Verify pathway phase counts equal the number of sections in each pathway
 - [ ] Identify any chapters still rendering as stubs that should have content
 
+## Future feature requests (not in scope for vetting loop)
+
+- [ ] **Cases tab: search by materials.** Add a "material-specific modifications/situations" entry point — e.g. browse by cement type (RMGI vs resin vs zinc phosphate) with side-by-side comparison of when each is used, surface treatment differences, and the key clinical distinctions. Target audience: experienced dentists who don't need the step-by-step workflow but want a quick reference for unfamiliar UIC materials. Likely sits as a new sub-group in the Indirect domain ("Material reference") or its own pseudo-domain ("Materials & comparisons").
+
 ---
 
 ## Stop conditions met (set when done)

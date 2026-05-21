@@ -9548,7 +9548,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <Hairline />
  <Field label="Name(s)">
  <TextInput value={fields.names} onChange={v=>setField("names",v)}
- placeholder="e.g. S.Swade/the supervising instructor" />
+ placeholder="S.Swade/Dr. Nice" />
  </Field>
  <button className="ghost" onClick={handleReset} style={{ width: "100%", marginTop: "10px" }}>
  Clear patient fields
@@ -9853,7 +9853,7 @@ function Browse({
  if (!stepsChunk) return null;
  let body = stepsChunk.body;
  const m = body.match(/(^|\n)[^\n]*note template/i);
- body = m? body.slice(0, m.index).trimEnd: body;
+ body = m? body.slice(0, m.index).trimEnd(): body;
  body = body.replace(/^[^\n]+:\s+(?:steps|instructions|equipment)\n+/i, "");
  return body.trim() || null;
  }, [stepsChunk]);
@@ -18106,6 +18106,18 @@ function RPDHelper() {
 
  return (
  <>
+ {/* Honesty banner — italic, red, serif (Fraunces). Sits above the
+ white RPD card so it reads as a footnote on the whole tool. */}
+ <div className="serif rpd-print-hide" style={{
+ fontStyle: "italic",
+ fontSize: "0.85rem",
+ color: "var(--accent)",
+ marginBottom: "8px",
+ letterSpacing: "0.01em",
+ textAlign: "left",
+ }}>
+ *Not super accurate yet
+ </div>
  <div style={{...cardStyle, padding: "26px 28px" }}>
  {/* Top action bar — all three controls on one horizontal line.
  Clear all (left), Mx/Mn toggle (center), Case inputs (right).
