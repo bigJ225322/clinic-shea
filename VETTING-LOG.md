@@ -69,14 +69,83 @@ Pending in BACKLOG.md at loop start:
 - `c233855` — `Iteration 1: VETTING-SOURCE-MAP.md with gap inventory`
 
 ### Next iteration plan
-The next cron fire (iteration 2, due ~07:07 local time) should:
-1. Read VETTING-SOURCE-MAP.md to see the gap list
-2. Pick a Tier 2 single-chapter gap (amalgam OR crown removal OR sealants) — lower risk than starting a new domain
-3. Read the relevant Swade pages + lecture PDFs
-4. Create the new chapter in `src/guides-data.json`
-5. Add to PATHWAYS in `src/App.jsx` with appropriate pill
-6. Validate + build + commit + log
+Iteration 2+ should pick Tier 2 single-chapter gaps to fill.
 
-Tier 1 gaps (peds, endo, OS, perio, dx/tp) are blocked on user input about whether to create new top-level domains. They're noted in BACKLOG.md Phase 1.5 area for now.
+---
+
+## 2026-05-21 ~06:00-07:30 — Iterations 2-6 (Mode C: gap-filling, in-session continuous run)
+
+User redirected at the start of this work block: instead of the cron-based 2-hourly loop, the user wanted in-session continuous autonomous work for ~2 hours. Cron `bcb2cd42` cancelled; six gap-fill iterations completed in this session.
+
+### Iteration 2 — Amalgam restoration
+- **Chapter:** dir-ch16 — Amalgam restoration (Class I and Class II)
+- **Pathway:** dir-amalgam (Class I & II sub-group, alongside composite Class I/II)
+- **Source:** Swade pp. 35-36
+- **Key content:** Black's prep parameters (the 5 specs that are non-negotiable for amalgam), Tofflemire universal matrix band protocol, Gluma sealer step (always indicated under amalgam), condensation sequence with small then large condenser, carving with 5T + Cleoid-Discoid + ½ Hollenback + anatomic burnisher, codes D2140-D2161 (1-4+ surfaces)
+- **Commit:** `1efaaa9`
+
+### Iteration 3 — Crown removal + Crown endo access fill
+- **Chapters:** ind-ch31 (Crown removal — sectioning, spreader, airway protection), ind-ch32 (Crown endo access fill — composite over Vitrebond after RCT)
+- **Pathways:** ind-crown-removal, ind-crown-endo-access-fill (both in indirect "Bridges & re-treatment" sub-group)
+- **Source:** Swade pp. 70-71
+- **Key content (ch31):** Make putty BEFORE patient seated, anterior vs posterior crown-removing bur selection, Isodry > gauze for airway protection (porcelain aspiration risk), buccal-occlusal sectioning to tooth structure, crown spreader rotation, bitewing after removal. (ch32): Vitrebond mandatory over GP (composite alone doesn't bond to GP), code D2950
+- **Commit:** `d5b840c`
+
+### Iteration 4 — Sealants
+- **Chapter:** dir-ch17 — Sealants (caries prevention + incipient-lesion arrest)
+- **Pathway:** dir-sealant (NEW "Preventive" sub-group in direct domain — first entry)
+- **Source:** Swade p. 51
+- **Key content:** Indications (caries-free prevention OR non-cavitated enamel-lesion arrest), fluoride-free pumice step, Isodry isolation (no anesthesia needed), etch 30s + optional bond + sealant material + cure, code D1351 per tooth. Note about UIC sealant material living in peds clinic supply.
+- **Commit:** `4a7553c`
+
+### Iteration 5 — Local anesthesia reference
+- **Chapter:** dir-ch18 — Local anesthesia reference (maxillary + mandibular blocks)
+- **Pathway:** dir-la-reference (NEW "Reference & adjunctive" sub-group in direct domain)
+- **Source:** Swade pp. 175-180
+- **Key content:** 8 maxillary blocks (buccal infiltration, palatal infiltration, PSA, MSA, ASA, greater palatine, nasopalatine, infraorbital) + 3 mandibular blocks (IAN+lingual, long buccal, mental). Innervation lookup table + max-dose table (5 anesthetics × 3 vasoconstrictor concentrations). Troubleshoot block for IAN miss, PSA hematoma, CN VII anesthesia from too-posterior IAN, electric-shock paresthesia, palatal necrosis.
+- **Commit:** `7dbfe61`
+
+### Iteration 6 — PRR + SDF
+- **Chapters:** dir-ch19 (PRR — Preventive Resin Restoration), dir-ch22 (SDF — Silver Diamine Fluoride)
+- **Pathways:** dir-prr, dir-sdf (both in "Preventive" sub-group alongside dir-sealant)
+- **Source:** Swade pp. 133 (SDF), 136-137 (PRR)
+- **Key content (PRR):** Small cavitation + sealable surrounding occlusal surface. Code D2391, cannot bill D1351 separately same day. Peds patient prep workflow (present to instructor first, weigh patient, 1 carpule limit). (SDF): Informed-consent-first protocol (permanent black staining), Vaseline on lips, 1 drop in dappen dish, 60-sec dry time. Re-application 6-12 months.
+- **Commit:** `d16da19`
+
+### Build verification across all iterations
+- Every iteration: `node -e 'JSON.parse(...)'` passed
+- Every iteration: `npx vite build` successful (no compile errors)
+- No regressions in existing pathways or rendering
+
+### Gap-fill summary
+**7 new chapters** added:
+- dir-ch16 (amalgam), dir-ch17 (sealants), dir-ch18 (LA reference), dir-ch19 (PRR), dir-ch22 (SDF)
+- ind-ch31 (crown removal), ind-ch32 (crown endo access fill)
+
+**7 new pathways** added:
+- dir-amalgam (Class I & II sub-group)
+- dir-sealant, dir-prr, dir-sdf (Preventive sub-group — NEW sub-group)
+- dir-la-reference (Reference & adjunctive sub-group — NEW sub-group)
+- ind-crown-removal, ind-crown-endo-access-fill (Bridges & re-treatment sub-group)
+
+**2 new sub-groups** added to PATHWAY_GROUPS.direct:
+- Preventive (sealant, PRR, SDF)
+- Reference & adjunctive (LA reference)
+
+### What's still gap (Tier 1 — blocked on user input)
+- Diagnostic + treatment planning workflow (Start Check, Screening, Urgent Care, COE Parts 1-3, Treatment Plan, POE) — Swade pp. 5-24
+- Periodontal procedures (Prophy, SRP, Perio Reeval, Perio Maintenance) — Swade pp. 21-24
+- Endodontics (RCT 1-visit, tooth anatomy, vital pulp therapy, emergency endo) — Swade pp. 118-124 + Endo Lectures folder
+- Oral Surgery (extraction protocol, post-op care, surgical instruments) — Swade pp. 160-167 + O.S. Lectures folder
+- Pediatric Dentistry (the major peds section) — Swade pp. 125-159
+
+These are blocked on the question: should peds/endo/OS/perio/dx-tp get new top-level domains in PATHWAY_DOMAINS, or fold under existing 6 domains? The loop.md's "DO NOT invent new domains" rule means autonomous mode shouldn't make this call.
+
+### What's still gap (Tier 2/3 — not yet filled)
+- Provisional crown materials reference (Swade pp. 63-65) — could be folded into ind-ch1 or stand alone
+- ADA caries classification (Swade p. 171) — Notes-tab material
+- Antibiotic prophylaxis guidelines (Swade pp. 184-185) — Notes-tab material
+- Pregnant patient care (Swade p. 187) — Notes-tab material
+- Common prescriptions (Swade p. 188) — Notes-tab material
 
 ---

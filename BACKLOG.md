@@ -20,24 +20,39 @@ Loop reads this file each iteration. Check off groups as you finish. Add notes i
     
     This file unlocks every subsequent iteration. Loop should not start vetting or gap-filling until this exists.
 
-## Phase 1.5 — Gap analysis + filling (new priority)
+## Phase 1.5 — Gap analysis + filling (PARTIAL — Tier 2 done)
 
-Once VETTING-SOURCE-MAP.md is built, work through every `[GAP]` entry:
+Once VETTING-SOURCE-MAP.md was built (iteration 1), the gap-fill work executed in iterations 2-6:
 
-- [ ] **Catalog the gaps.** Add a `## Gaps to consider` section to VETTING-SOURCE-MAP.md listing every Swade topic that has no chapter coverage. Categorize as: substantive (≥1 page of Swade content) / drive-by (mentioned but not detailed).
-- [ ] **Fill substantive gaps.** For each substantive gap, create a new chapter following the existing schema. Add to the appropriate guide (direct/indirect/cd/rpd) using the next available chapter number. Cite Swade pages in the chapter content.
-- [ ] **Add pathway pills** for gaps that students would reach for via the Cases tab. Pathway goes in the existing domain — do NOT invent new domains.
-- [ ] **Areas to scan for gaps** (likely candidates based on user's hint that Swade is broader):
-    - Endodontic procedures (RCT step-by-step, retreatment, apicoectomy, pulp cap protocols)
-    - Oral surgery (simple + surgical extractions, alveoloplasty, suturing technique)
-    - Periodontal procedures (SRP, perio maintenance, gingivectomy, biologic width)
-    - Diagnostic + treatment planning workflow (COE, treatment plan sequencing)
-    - Pediatric considerations (if Swade covers — verify before creating)
-    - Emergency dentistry (avulsion, fracture, pulpitis triage)
-    - Local anesthesia technique (block + infiltration patterns)
-    - Radiography protocols (FMX, panoramic, CBCT indications)
-    - Infection control / clinic protocols
-    - Pre-operative medical management (premedication, bleeding-risk patients)
+- [x] **Catalog the gaps.** Done in iteration 1 — VETTING-SOURCE-MAP.md has the gap inventory in 3 tiers.
+- [x] **Fill substantive Tier 2 gaps.** Done in iterations 2-6:
+    - Amalgam restoration (dir-ch16, commit 1efaaa9)
+    - Crown removal + crown endo access fill (ind-ch31 + ind-ch32, commit d5b840c)
+    - Sealants (dir-ch17, commit 4a7553c)
+    - Local anesthesia reference (dir-ch18, commit 7dbfe61)
+    - PRR + SDF (dir-ch19 + dir-ch22, commit d16da19)
+- [x] **Add pathway pills** for the new chapters — 7 new pathways added.
+- [x] **New sub-groups created** under direct domain: "Preventive" (sealant, PRR, SDF), "Reference & adjunctive" (LA reference).
+
+**Tier 1 gaps remaining — BLOCKED on user input** (need new top-level domains?):
+- [ ] Endodontic procedures (RCT step-by-step, retreatment, apicoectomy, pulp cap protocols) — Swade pp. 118-124 + Endo Lectures folder
+- [ ] Oral surgery (simple + surgical extractions, alveoloplasty, suturing technique) — Swade pp. 160-167 + O.S. Lectures folder
+- [ ] Periodontal procedures (SRP, perio maintenance, prophy, perio reeval) — Swade pp. 21-24
+- [ ] Diagnostic + treatment planning workflow (COE, treatment plan sequencing) — Swade pp. 5-24
+- [ ] Pediatric considerations — Swade pp. 125-159 (large section; peds-specific composite, amalgam, SSC, pulpotomy, strip crown, space maintainer)
+
+**Tier 2/3 remaining gaps (lower priority, can fold under existing):**
+- [ ] Provisional crown materials reference (Swade pp. 63-65)
+- [ ] ADA caries classification table (Swade p. 171) — Notes-tab material
+- [ ] Antibiotic prophylaxis guidelines (Swade pp. 184-185) — Notes-tab material
+- [ ] Pregnant patient care (Swade p. 187) — Notes-tab material
+- [ ] Common prescriptions (Swade p. 188) — Notes-tab material
+
+**Areas to scan for additional gaps (not yet fully cataloged):**
+- Emergency dentistry (avulsion, fracture, pulpitis triage)
+- Radiography protocols (FMX, panoramic, CBCT indications)
+- Infection control / clinic protocols
+- Pre-operative medical management (premedication, bleeding-risk patients)
 
 ## Phase 2 — First-pass vetting (clinical claims)
 
