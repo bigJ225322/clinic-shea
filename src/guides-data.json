@@ -10685,6 +10685,64 @@
             ]
           },
           {
+            "id": "dir-ch17",
+            "num": 17,
+            "title": "Sealants — caries prevention + incipient-lesion arrest",
+            "verdict": "Sealants are placed on caries-free teeth to prevent pit-and-fissure caries, OR on teeth with non-cavitated enamel lesions to arrest them before they progress. Quick, single-visit, code D1351 per tooth. The case turns on absolutely dry isolation (Isodry — saliva contamination kills the bond), pumice + dry the surface clean, etch + optional bond + sealant material, light cure. Material is thick; over-application causes occlusal interference, so check with articulating paper before dismissing. Source: Swade p. 51.",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "Sealants prevent caries by mechanically sealing the deep pits and fissures of posterior teeth where biofilm accumulates. Two indications: (1) caries-free teeth where prevention is the goal — typical for first and second molars in young patients shortly after eruption, and (2) teeth with non-cavitated carious lesions limited to enamel, where the sealant arrests the lesion by cutting off substrate. If the lesion has cavitated through enamel into dentin, sealant is no longer indicated — that's a Class I composite case (see dir-ch10)."
+              },
+              {
+                "kind": "section",
+                "text": "Materials checklist (Swade)"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "**From sterilization:** composite kit, handpieces, prophy handpiece, composite finishing burs, curing light, Isodry, patient goggles, blood glucose kit.",
+                  "**From locker:** blood pressure cuff, loupes / eye protection.",
+                  "**In clinic:** articulating paper, etch, ScotchBond, **sealant material** (note: at UIC the sealant material lives in the peds clinic supply — pick it up there if it's not on your operatory cart). Sealant material per Swade: Ultradent UltraSeal XT Plus.",
+                  "**In unit:** prophy pumice (fluoride-free), prophy angle."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Procedure (Swade 9-step sequence)"
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "**Get a start check.**",
+                  "**Isolate.** Achieve adequate isolation. Sealant placement requires a *totally* dry field — saliva contamination during the etch or bond step means the sealant won't adhere. Isodry is the ideal isolation here because it doesn't require numbing for rubber dam clamp placement (sealants are usually placed without anesthesia).",
+                  "**Clean the tooth.** Use a prophy cup with **fluoride-free** pumice (fluoride-containing pumice inhibits the etch and the bond). Thoroughly dry the tooth after cleaning.",
+                  "**Etch and bond.** Etch enamel (35% phosphoric) for 30 sec → rinse → lightly dry. Apply ScotchBond in a vigorous scrubbing motion for 20 sec → air thin for 5 sec → light cure 10 sec. Bonding before the sealant is technically optional, but faculty typically want it done — confirm with your instructor before skipping.",
+                  "**Apply sealant.** Use the included sealant brush, a microbrush, or an explorer tip to manipulate the material into the pits and fissures. The material is THICK — apply too much and it interferes with occlusion. Better to under-fill and add a thin top layer than to over-fill and adjust afterward. Light cure 20 sec.",
+                  "**Check for excess.** The most common excess-sealant location is distal of mandibular molars, near or under the gingival margin. Remove excess with a finishing bur before dismissing the patient.",
+                  "**Check occlusion.** Articulating paper at MI; sealant should not be high on the occlusion. If it is, adjust gently with a fine finishing bur. Patient should not feel any change in bite from a properly placed sealant.",
+                  "**Complete codes and note.** D1351 (Sealant — per tooth). Note records each tooth sealed individually.",
+                  "**Check in** — instructor checks the work + swipes EPR/codes/notes."
+                ]
+              },
+              {
+                "kind": "callout",
+                "title": "When sealants are NOT indicated",
+                "body": "If the lesion has progressed into dentin (cavitated, radiolucency on bitewing), a sealant won't stop it — that's a Class I composite case. Don't seal over frank dentinal caries; you'll trap bacteria under the seal and the lesion will progress under the restoration. Also do not seal teeth that are too newly erupted (gingival tissue covering occlusal surface — wait until the tooth is fully erupted)."
+              },
+              {
+                "kind": "callout",
+                "title": "Sealants on multiple teeth — batch the workflow",
+                "body": "Sealants are routinely done as batches: all four first molars (#3, #14, #19, #30) in a single visit, or all 8 molars + premolars in some cases. Set up Isodry once, etch all teeth in sequence, bond all teeth, then place sealant on each. Saves time + the patient is anesthesia-free so chair time is fast."
+              },
+              {
+                "kind": "troubleshoot",
+                "title": "Sealant pitfalls",
+                "body": "**Sealant debonds within weeks:** moisture contamination during the etch or bond step. Re-isolate, re-etch (5 sec only this time), re-bond, re-place. **Patient reports bite feels uneven:** sealant over-filled the occlusal — adjust with a fine finishing bur. **Sealant doesn't reach into a deep fissure:** material was too viscous or didn't flow. Use a microbrush or explorer tip to actively push material into the fissure before curing. **Tooth has both a sealable area and a small cavitation:** the cavitation is a Class I composite case; the rest of the occlusal can be sealed at the same visit. This is technically a PRR (Preventive Resin Restoration) — single code, different from D1351 sealant alone. **Patient asks if it'll \"wear off\":** modern sealants last years if well-placed; degradation is at the margins typically. Recheck at recall visits and reapply if needed."
+              }
+            ]
+          },
+          {
             "id": "dir-ch20",
             "num": 20,
             "title": "Sedative restoration (D2940) — emergency IRM placement",

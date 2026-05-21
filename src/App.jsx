@@ -18832,6 +18832,7 @@ const GUIDES = [
  { id: "dir-ch14", num: 14, title: "Class V — composite versus RMGI decision", stub: true },
  { id: "dir-ch15", num: 15, title: "Direct composite veneer — single tooth shape correction", stub: true },
  { id: "dir-ch16", num: 16, title: "Amalgam restoration — Class I and Class II", stub: true },
+ { id: "dir-ch17", num: 17, title: "Sealants — caries prevention + incipient-lesion arrest", stub: true },
  ],
  },
  {
@@ -19541,6 +19542,9 @@ const PATHWAY_GROUPS = {
  "dir-sedative",
  "dir-core-buildup",
  ]},
+ { label: "Preventive", ids: [
+ "dir-sealant",
+ ]},
  ],
  indirect: [
  { label: "Crowns", ids: [
@@ -20093,6 +20097,30 @@ const PATHWAYS = [
  { guideId: "direct", chapterId: "dir-ch1" },
  { guideId: "direct", chapterId: "dir-ch4" },
  { guideId: "direct", chapterId: "dir-ch21" },
+ { guideId: "direct", chapterId: "dir-ch31" },
+ ],
+ },
+ {
+ id: "dir-sealant",
+ domain: "direct",
+ label: "Sealant — caries prevention or incipient-lesion arrest",
+ description: "Pit-and-fissure sealant placed on a caries-free or non-cavitated occlusal surface — preventive (most common indication, first/second molars in young patients) or therapeutic (arresting an enamel-limited carious lesion). Single visit, no anesthesia, code D1351 per tooth. The case turns on absolutely dry isolation (Isodry — saliva contamination kills the bond), pumice cleaning with fluoride-free pumice, etch, optional bond, sealant material, light cure. Material is thick; over-application causes occlusal interference. Sealants are routinely batched — four molars or all eight posterior teeth in a single visit.",
+ keyDecisions: [
+ "Indication check: caries-free OR enamel-limited non-cavitated lesion. If lesion has progressed into dentin (cavitated, radiolucency on bitewing), it's a Class I composite case (see dir-ch10), not a sealant.",
+ "Use fluoride-free pumice for the prophy step — fluoride interferes with the etch and bond.",
+ "Isodry is the standard isolation — no anesthesia needed since rubber dam clamp isn't placed.",
+ "Etch 30 sec, optional bond step (faculty usually want it done), sealant material (thick — apply sparingly), 20-sec cure.",
+ "Check occlusion with articulating paper before dismissing — sealant high on occlusion needs adjustment with a fine finishing bur.",
+ ],
+ phases: [
+ { label: "Indication + setup", count: 2 },
+ { label: "Etch + bond + place", count: 2 },
+ { label: "Verify", count: 1 },
+ ],
+ sections: [
+ { guideId: "direct", chapterId: "dir-ch1" },
+ { guideId: "direct", chapterId: "dir-ch2" },
+ { guideId: "direct", chapterId: "dir-ch17" },
  { guideId: "direct", chapterId: "dir-ch31" },
  ],
  },
