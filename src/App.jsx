@@ -16008,6 +16008,10 @@ function RPDPaperFormArchDrawing({
 // form.
 function RPDPreliminaryDesignForm({ caseInput, result, compact = false }) {
   const [drawingOpen, setDrawingOpen] = useState(false);
+  // Rationale verbosity mode. Default = compressed (form-style, 1-line per
+  // decision, deduped per clasp type). Toggle reveals the educational
+  // paragraph-length rationale with UIC page references.
+  const [showFullRationale, setShowFullRationale] = useState(false);
   if (!result || result.kennedy.class === null) return null;
   const arch = caseInput.arch === "maxillary" ? "MAXILLARY" : "MANDIBULAR";
   const pf = caseInput.patientFactors || {};
@@ -16075,22 +16079,143 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false }) {
     .filter(Boolean)
     .join("; ");
 
-  // ─── Rationale lines (per major decision) ──
+  // ─── Rationale lines ──
+  // Two modes:
+  //   VERBOSE (showFullRationale=true): paragraph-length, page-referenced,
+  //     one block per tooth/component (kept for study use).
+  //   COMPRESSED (default): first sentence only, page references stripped,
+  //     per-tooth lines grouped by clasp type so #2 + #4 (both Akers)
+  //     appear once as "#2, #4 (Akers): ..." instead of twice.
+  //
+  // Helpers:
+  const firstSentence = (s) => {
+    if (!s) return "";
+    // Split on the first period followed by a space (or end of string).
+    // Avoids splitting on decimal numbers like "0.01" because there's no
+    // following space.
+    const m = String(s).match(/^[^.]+\./);
+    return (m ? m[0] : String(s)).trim();
+  };
+  const stripPageRefs = (s) => {
+    if (!s) return "";
+    return String(s)
+      // Inline parenthetical page refs: "(Retainers PDF p. 14)", "(p. 12)",
+      // "(Lecture 4A pp. 7-14)", "(Design Case II p. 8)" — drop them.
+      .replace(/\s*\([^)]*\bp{1,2}\.\s*\d[^)]*\)/g, "")
+      // Collapse repeated whitespace + trim.
+      .replace(/\s+/g, " ")
+      .trim();
+  };
+  const compress = (s) => stripPageRefs(firstSentence(s));
+
   const rationaleLines = [];
-  rationaleLines.push(`Framework: ${result.framework.material} — ${result.framework.rationale}`);
-  rationaleLines.push(`Major connector: ${result.majorConnector.rationale}`);
+
+  // Framework + major connector (always one line each; cheap to compress)
+  rationaleLines.push({
+    key: "framework",
+    verbose: `Framework: ${result.framework.material} — ${result.framework.rationale}`,
+    compressed: `Framework: ${result.framework.material} — ${compress(result.framework.rationale)}`,
+  });
+  rationaleLines.push({
+    key: "major",
+    verbose: `Major connector: ${result.majorConnector.rationale}`,
+    compressed: `Major connector: ${compress(result.majorConnector.rationale)}`,
+  });
+
   if (abutmentPrepLines) {
-    rationaleLines.push("Guide planes establish path of insertion; axial recontouring lowers HOC where needed for favorable clasp placement.");
+    const guideLine = "Guide planes establish path of insertion; axial recontouring lowers HOC where needed for favorable clasp placement.";
+    rationaleLines.push({ key: "abutprep", verbose: guideLine, compressed: guideLine });
   }
-  result.abutmentDesigns?.forEach(a => {
-    if (a.claspRationale) rationaleLines.push(`#${a.tooth} (${a.claspType}): ${a.claspRationale}`);
+
+  // Per-tooth clasp rationales — DEDUPE by claspType in compressed mode.
+  const claspGroups = new Map();
+  (result.abutmentDesigns || []).forEach(a => {
+    if (!a.claspRationale) return;
+    const key = a.claspType;
+    if (!claspGroups.has(key)) {
+      claspGroups.set(key, { teeth: [], verboseRationale: a.claspRationale });
+    }
+    claspGroups.get(key).teeth.push(a.tooth);
   });
-  result.indirectRetainers?.forEach(r => {
-    if (r.rationale) rationaleLines.push(`#${r.tooth} indirect: ${r.rationale}`);
+  claspGroups.forEach((group, claspType) => {
+    const teethList = group.teeth.map(t => `#${t}`).join(", ");
+    // Verbose mode keeps one entry per tooth.
+    group.teeth.forEach(tooth => {
+      rationaleLines.push({
+        key: `clasp-${tooth}`,
+        verbose: `#${tooth} (${claspType}): ${group.verboseRationale}`,
+        compressed: null,
+      });
+    });
+    // One compressed entry per claspType, regardless of tooth count.
+    rationaleLines.push({
+      key: `clasp-grouped-${claspType}`,
+      verbose: null,
+      compressed: `${teethList} (${claspType}): ${compress(group.verboseRationale)}`,
+    });
   });
-  result.baseDesigns?.forEach(b => {
-    if (b.rationale) rationaleLines.push(`${b.type}: ${b.rationale}`);
+
+  // Indirect retainers — same dedupe.
+  const indirectGroups = new Map();
+  (result.indirectRetainers || []).forEach(r => {
+    if (!r.rationale) return;
+    const key = r.restType || "indirect";
+    if (!indirectGroups.has(key)) {
+      indirectGroups.set(key, { teeth: [], verboseRationale: r.rationale });
+    }
+    indirectGroups.get(key).teeth.push(r.tooth);
   });
+  indirectGroups.forEach((group, restType) => {
+    const teethList = group.teeth.map(t => `#${t}`).join(", ");
+    group.teeth.forEach(tooth => {
+      rationaleLines.push({
+        key: `ind-${tooth}`,
+        verbose: `#${tooth} indirect: ${group.verboseRationale}`,
+        compressed: null,
+      });
+    });
+    rationaleLines.push({
+      key: `ind-grouped-${restType}`,
+      verbose: null,
+      compressed: `${teethList} indirect retainer: ${compress(group.verboseRationale)}`,
+    });
+  });
+
+  // Base designs (Open Lattice, Mesh, Tube Tooth, Facing) — group by type.
+  const baseGroups = new Map();
+  (result.baseDesigns || []).forEach(b => {
+    if (!b.rationale) return;
+    const key = b.type;
+    if (!baseGroups.has(key)) {
+      baseGroups.set(key, { spans: [], verboseRationale: b.rationale });
+    }
+    baseGroups.get(key).spans.push(...(b.spanTeeth || []));
+  });
+  // Verbose: one entry per baseDesign block.
+  (result.baseDesigns || []).forEach(b => {
+    if (!b.rationale) return;
+    rationaleLines.push({
+      key: `base-v-${b.type}-${(b.spanTeeth || []).join("-")}`,
+      verbose: `${b.type}: ${b.rationale}`,
+      compressed: null,
+    });
+  });
+  // Compressed: one entry per base type with all teeth listed.
+  baseGroups.forEach((group, baseType) => {
+    const teethList = group.spans.length
+      ? `${group.spans.map(t => `#${t}`).join(", ")} (${baseType})`
+      : baseType;
+    rationaleLines.push({
+      key: `base-grouped-${baseType}`,
+      verbose: null,
+      compressed: `${teethList}: ${compress(group.verboseRationale)}`,
+    });
+  });
+
+  // Choose which lines to render based on the toggle.
+  const visibleRationaleLines = rationaleLines
+    .map(l => showFullRationale ? l.verbose : l.compressed)
+    .filter(Boolean);
 
   const fieldRow = (label, value) => (
     <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "8px" }}>
@@ -16276,15 +16401,40 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false }) {
 
         {/* Rationale column */}
         <div>
-          <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "12px", paddingBottom: "4px", borderBottom: "1.5px solid var(--ink)" }}>
-            Rationale / Comments
+          <div style={{
+            display: "flex", justifyContent: "space-between", alignItems: "baseline",
+            marginBottom: "12px", paddingBottom: "4px", borderBottom: "1.5px solid var(--ink)",
+          }}>
+            <span style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>
+              Rationale / Comments
+            </span>
+            <button
+              type="button"
+              onClick={() => setShowFullRationale(v => !v)}
+              style={{
+                fontSize: "10px", padding: "3px 8px",
+                background: showFullRationale ? "var(--accent)" : "transparent",
+                color: showFullRationale ? "white" : "var(--ink-soft)",
+                border: `1px solid ${showFullRationale ? "var(--accent)" : "var(--rule)"}`,
+                borderRadius: "100px",
+                cursor: "pointer",
+                fontFamily: "'Geist', sans-serif",
+                fontWeight: 500, letterSpacing: "0.04em",
+                textTransform: "uppercase",
+              }}
+              title={showFullRationale
+                ? "Currently showing full educational rationale with page refs. Click for compressed."
+                : "Currently showing compressed form-style rationale. Click for full educational text with page refs."}
+            >
+              {showFullRationale ? "Compressed" : "Full detail"}
+            </button>
           </div>
           <div style={{ fontSize: "11px", lineHeight: 1.55 }}>
-            {rationaleLines.map((line, i) => (
+            {visibleRationaleLines.map((line, i) => (
               <div key={i} style={{
                 marginBottom: "8px",
                 paddingBottom: "6px",
-                borderBottom: i === rationaleLines.length - 1 ? "none" : "1px dotted var(--rule)",
+                borderBottom: i === visibleRationaleLines.length - 1 ? "none" : "1px dotted var(--rule)",
               }}>
                 {line}
               </div>
