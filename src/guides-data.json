@@ -9798,6 +9798,124 @@
                 "text": "*Where this fits in the workflow:* Used in cross-anterior-trauma as a less-invasive alternative to a 3-unit FPD. Also a viable consideration in any anterior single-tooth replacement decision (e.g., as alternative to an implant during growth, or in cross-anterior-implant-esthetic if the patient declines the implant route).*"
               }
             ]
+          },
+          {
+            "id": "ind-ch31",
+            "num": 31,
+            "title": "Crown removal — sectioning, spreader, airway protection",
+            "verdict": "When an existing crown needs to come off — fractured tooth underneath, recurrent caries that's exhausted the margin, failed endo through the crown, or planning a remake — you section the crown with a crown-removing bur, split it with a crown spreader, and pull. The case turns on airway protection (Isodry over gauze), accurate sectioning that goes through to dentin, and not fracturing porcelain into the patient's airway. Source: Swade p. 70.",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "Crown removal is one of those procedures every dentist does eventually and one nobody is comfortable with the first time. The work is mechanical — section the crown buccal-to-occlusal with a crown-removing bur, place a crown spreader in the cut, rotate to split the halves apart. Most of the failure modes are about preparation: not making a putty for the provisional before starting, not protecting the airway against porcelain fragments, not sectioning deep enough to reach tooth structure (so the spreader can't catch and leverage)."
+              },
+              {
+                "kind": "section",
+                "text": "Materials checklist (Swade)"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "**From sterilization:** fixed prosth kit, handpieces, radiograph kit, fixed prosth burs, **crown-removing burs (anterior OR posterior — pick before starting)**, **crown remover (spreader)**, Isodry, patient goggles, blood glucose kit.",
+                  "**From locker:** blood pressure cuff, loupes / eye protection.",
+                  "**In clinic:** retraction cords + Hemodent + dappen dish."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Procedure (the Swade 10-step sequence)"
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "**Make a putty.** Before bringing the patient in, take a putty impression of the cast (or the existing crown if you have it) so you can use it as a provisional matrix later. Without a putty you'll be improvising a provisional chairside, which adds 20-30 minutes and looks worse.",
+                  "**Get a start check.**",
+                  "**Deliver local anesthetic.**",
+                  "**Select a shade.** Determine the shade of the existing crown AND record it for future reference. Choose a shade for the final crown — use overhead light, ambient light, AND natural light for the comparison (different lights reveal different mismatches).",
+                  "**Place cord.** Use a retraction cord as needed to better visualize the subgingival margins of the crown — this is what tells you where to terminate the section.",
+                  "**Protect the throat.** Isodry is ideal — it captures fragments and protects the airway. Gauze is acceptable but more difficult to manipulate and less reliable. Do NOT skip this — porcelain fragments aspirated into the airway are a real complication of crown removal.",
+                  "**Section the crown with a bur.** Use a crown-removing bur to cut THROUGH the buccal and occlusal of the crown — down to tooth structure. The cut needs to go all the way through; an incomplete section means the spreader can't get purchase later.",
+                  "**Remove the crown.** Place the crown spreader in the cut and gently rotate to force the halves apart. If the buccal-occlusal cut alone doesn't release the crown, section part of the lingual surface to facilitate. If still unsuccessful, section the lingual fully. **Be careful that porcelain does not fracture into the patient's mouth** — aspiration risk.",
+                  "**Take a radiograph.** Bitewing of the tooth to visualize the underlying tooth structure now that the crown is off. Decay, fracture lines, post status — all visible only after removal.",
+                  "**Continue treatment.** Whatever the case demanded: excavate decay, complete core buildup, provisionalize from the putty you made in step 1, plan RCT, plan extraction, etc."
+                ]
+              },
+              {
+                "kind": "callout",
+                "title": "Airway protection is non-negotiable",
+                "body": "Porcelain fragments are sharp and radiopaque, and aspiration is a documented complication of crown removal. Isodry over the working area + active high-volume suction during sectioning is the standard. If Isodry isn't available, fold gauze into a posterior throat pack and verify it's secure before starting. If the patient is supine and the crown is in the maxillary arch, the risk is highest — consider semi-upright positioning."
+              },
+              {
+                "kind": "callout",
+                "title": "Anterior vs posterior crown-removing burs",
+                "body": "Pick the right bur before starting. Anterior crown-removing burs are smaller, more delicate, and angled for incisal access. Posterior burs are stouter and cut through the occlusal of a molar crown faster. Using a posterior bur on an anterior wastes tooth structure; using an anterior bur on a posterior takes forever and burns out the bur."
+              },
+              {
+                "kind": "troubleshoot",
+                "title": "Crown removal pitfalls",
+                "body": "**Section is partial but the spreader won't catch:** the cut didn't reach tooth structure. Extend the cut deeper — the spreader needs leverage against the dentin on either side. **Porcelain fragments break loose during sectioning:** Isodry wasn't well-seated or suction wasn't aggressive enough. Pause, secure the airway, retrieve fragments, then continue. **Crown won't release even after lingual section:** check that the cement type is conventional (which releases) vs resin (which holds firmer). Resin-cemented crowns sometimes need multi-axis sectioning. **No putty made before starting:** improvise a provisional from a previous cast or use a quick-set bis-acryl over the prepared stump. Note for future: putty BEFORE patient seated."
+              },
+              {
+                "kind": "paragraph",
+                "text": "**Where this fits in the workflow:** Triggered by failed endo through an existing crown (often the precursor to ind-ch32 Crown endo access fill OR a full remake via ind-ch1), recurrent caries that extends beyond a repairable margin, or a fractured underlying tooth that needs assessment before deciding remake vs extraction."
+              }
+            ]
+          },
+          {
+            "id": "ind-ch32",
+            "num": 32,
+            "title": "Crown endo access fill — composite over Vitrebond after RCT through a crown",
+            "verdict": "When endodontic treatment was done through an existing crown (rather than removing the crown to do the RCT and then placing a new crown), the access cavity needs to be filled. Vitrebond goes over the gutta-percha as a base; composite fills the access. Code D2950 (core buildup including pins). Source: Swade p. 71.",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "Sometimes RCT is done through an existing crown — the crown is in good shape, the patient doesn't want a remake, the tooth needed endo, and the path of least resistance is access-through-crown rather than crown removal first. After the obturation, the access cavity is restored with Vitrebond over the gutta-percha and a composite fill on top."
+              },
+              {
+                "kind": "section",
+                "text": "Materials checklist (Swade)"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "**From sterilization:** fixed prosth kit, handpieces, radiograph kit, fixed prosth burs, crown-removing burs (anterior or posterior — kept on the tray in case the crown is failing), crown remover, Isodry, patient goggles, blood glucose kit.",
+                  "**From locker:** blood pressure cuff, loupes / eye protection.",
+                  "**In clinic:** retraction cords + Hemodent + dappen dish."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Procedure"
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "**Get a start check.**",
+                  "**Select a shade.** Match composite to the existing crown shade. Tip: open the \"Labs\" tab in the EHR to see the original shade the crown was fabricated to. Use overhead, ambient, and natural light.",
+                  "**Isolate** with Isodry or rubber dam.",
+                  "**Remove temp filling.** Use a diamond tapered bur to remove the temporary that was placed at the end of the RCT visit. Remove sponge / cotton pellet completely. The gutta-percha should be exposed and clean.",
+                  "**Check in** — instructor checks the access prep; refine until approved.",
+                  "**Clean access with Consepsis.** Apply Consepsis, scrub 10 sec, rinse 5 sec, gently air-dry leaving dentin moist.",
+                  "**Place Vitrebond over RMGI base.** Dispense Vitrebond (RMGI) onto a mixing pad, mix with a spatula, apply a thin layer (~0.5 mm) to cover the gutta-percha. Light cure 20 sec.",
+                  "**Etch and bond.** Etch the access cavity walls: etch enamel + dentin, wait 15 sec, rinse 5 sec, lightly dry leaving dentin moist (use high-volume suction over the tooth + light quick air dry; dentin should be glossy without pooling). Apply ScotchBond in a vigorous scrubbing motion for 20 sec, air thin for 5 sec, light cure 10 sec. If contaminated: re-etch for 5 sec only, then proceed (rinse, dry, bond, dry, cure).",
+                  "**Place composite.** Place in increments and cure 20-40 sec after each increment (depending on increment size). Cure the final increment for 60 sec.",
+                  "**Check occlusion.** Remove rubber dam / Isodry. Check with articulating paper.",
+                  "**Finish and polish.** Composite finishing burs, Shofu, Jiffy Brush.",
+                  "**Check in** — instructor checks the restoration.",
+                  "**Complete codes and note.** D2950 (Core buildup — including pins)."
+                ]
+              },
+              {
+                "kind": "callout",
+                "title": "Why Vitrebond over the gutta-percha",
+                "body": "Vitrebond is an RMGI — it bonds chemically to dentin and seals the access opening of the canal system. The composite alone wouldn't reliably seal the GP-tooth interface (composite doesn't bond to gutta-percha). The Vitrebond layer acts as the seal; the composite acts as the structural fill. Skip the Vitrebond and you get coronal leakage that re-infects the obturated canal within months."
+              },
+              {
+                "kind": "troubleshoot",
+                "title": "Endo access fill pitfalls",
+                "body": "**Composite debonds from the access cavity floor within months:** Vitrebond layer wasn't well-adapted or wasn't there. Re-do — replace with full Vitrebond + composite. **Patient returns with sensitivity:** the access wasn't fully sealed, or the GP exposed during access work has bacterial contamination. Re-treat. **Composite stains around the access opening:** under-polished. Re-polish; if recurrent, may indicate microleakage at the margin. **Existing crown porcelain chips during access prep:** diamond bur pressure was too high or the access opening too wide. Document, evaluate the chip — if small and supragingival, polish; if large or in occlusion, the crown may need remake."
+              }
+            ]
           }
         ]
       }

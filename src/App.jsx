@@ -18988,6 +18988,8 @@ const GUIDES = [
  { id: "ind-ch28", num: 28, title: "Intraoral scanner workflow + troubleshooting", stub: true },
  { id: "ind-ch29", num: 29, title: "Intraoral repair protocols — PFM porcelain chip + zirconia chip", stub: true },
  { id: "ind-ch30", num: 30, title: "Maryland / resin-bonded bridge (RBFPD)", stub: true },
+ { id: "ind-ch31", num: 31, title: "Crown removal — sectioning, spreader, airway protection", stub: true },
+ { id: "ind-ch32", num: 32, title: "Crown endo access fill — composite over Vitrebond after RCT through a crown", stub: true },
  ],
  },
  ],
@@ -19564,6 +19566,8 @@ const PATHWAY_GROUPS = {
  "ind-large-span-fpd",
  "ind-recement",
  "ind-failing-existing-crown",
+ "ind-crown-removal",
+ "ind-crown-endo-access-fill",
  ]},
  ],
  rpd: [
@@ -20667,6 +20671,55 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "ind-ch5" }, // PFM
  { guideId: "indirect", chapterId: "ind-ch7" }, // Zirconia (often the better remake choice)
  { guideId: "indirect", chapterId: "ind-ch16" }, // Endo-treated (if post-crown)
+ ],
+ },
+ {
+ id: "ind-crown-removal",
+ domain: "indirect",
+ label: "Existing crown needs to come off (sectioning + airway protection)",
+ description: "Crown needs to be removed — failed endo through the crown, recurrent caries that exhausted the margin, fractured underlying tooth, or planning a remake. The work is mechanical: section the crown with a crown-removing bur (anterior or posterior depending on the tooth), place a crown spreader in the cut, rotate to split the halves apart. The case turns on airway protection (Isodry, not just gauze) and on having a putty made before the patient is seated so the provisional can go in quickly after removal.",
+ keyDecisions: [
+ "Make a putty BEFORE the patient is seated — provisionalization is faster + better-looking afterward. Without a putty you'll be improvising a provisional which adds 20-30 minutes.",
+ "Pick anterior vs posterior crown-removing bur before starting. Wrong bur wastes tooth structure or takes forever.",
+ "Isodry over gauze for airway protection — porcelain fragments can be aspirated. This is a documented complication of crown removal.",
+ "Section buccal-to-occlusal first; if the crown doesn't release with the spreader, section the lingual surface. The cut must go all the way through to tooth structure, otherwise the spreader can't catch.",
+ "After removal: bitewing radiograph to assess the underlying tooth before deciding next steps (decay excavation, core buildup, RCT, extraction).",
+ ],
+ phases: [
+ { label: "Pre-prep", count: 1 },
+ { label: "Anesthesia + isolation", count: 2 },
+ { label: "Section + remove", count: 2 },
+ { label: "Next-step planning", count: 1 },
+ ],
+ sections: [
+ { guideId: "indirect", chapterId: "ind-ch31" }, // Crown removal procedure
+ { guideId: "indirect", chapterId: "ind-ch1" }, // Workflow if remaking the crown
+ { guideId: "indirect", chapterId: "ind-ch16" }, // Endo-treated tooth (if RCT planned)
+ { guideId: "indirect", chapterId: "ind-ch23" }, // Pitfalls
+ ],
+ },
+ {
+ id: "ind-crown-endo-access-fill",
+ domain: "indirect",
+ label: "Crown endo access fill — RCT was done through an existing crown",
+ description: "Endodontic treatment was completed through an existing crown (rather than removing the crown first). The access cavity now needs to be sealed. Vitrebond (RMGI) goes over the gutta-percha as the coronal seal; composite fills the access on top. The case turns on getting the shade match right (composite to the existing crown's porcelain), exposing clean dentin on the access walls for the bond, and the Vitrebond layer being well-adapted to the GP-tooth junction. Code D2950.",
+ keyDecisions: [
+ "Match composite to the existing crown shade — open the EHR's Labs tab to find the original shade the crown was fabricated to.",
+ "Vitrebond over the gutta-percha is mandatory — composite alone does not bond to GP. The Vitrebond is the coronal seal.",
+ "Etch + bond protocol applies to the access cavity walls (enamel + dentin), not to the GP itself. Standard 15-sec phosphoric etch, ScotchBond, light cure.",
+ "Light cure composite in increments — 20-40 sec each, 60 sec final.",
+ "Code D2950 (Core buildup — including pins) per Swade. This is technically a buildup over the obturated canal, not a typical surface restoration.",
+ ],
+ phases: [
+ { label: "Access prep", count: 2 },
+ { label: "Sealing", count: 2 },
+ { label: "Restoration", count: 2 },
+ ],
+ sections: [
+ { guideId: "indirect", chapterId: "ind-ch32" }, // Crown endo access fill procedure
+ { guideId: "indirect", chapterId: "ind-ch16" }, // Restoring endo-treated teeth (context)
+ { guideId: "indirect", chapterId: "ind-ch4" }, // Cementation (related — for context if cement choices matter)
+ { guideId: "indirect", chapterId: "ind-ch23" }, // Pitfalls
  ],
  },
  {
