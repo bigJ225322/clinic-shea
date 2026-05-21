@@ -18106,20 +18106,6 @@ function RPDHelper() {
 
  return (
  <>
- {/* Honesty banner — engine output is provisional and frequently wrong.
- Sits ABOVE the white RPD card, top-left, light italic, asterisk-led
- so it reads as a footnote on the whole tool rather than a heading
- inside it. */}
- <div className="rpd-print-hide" style={{
- fontStyle: "italic",
- fontSize: "0.78rem",
- color: "var(--ink-faint)",
- marginBottom: "8px",
- letterSpacing: "0.01em",
- textAlign: "left",
- }}>
- *Assume wildly incorrect
- </div>
  <div style={{...cardStyle, padding: "26px 28px" }}>
  {/* Top action bar — all three controls on one horizontal line.
  Clear all (left), Mx/Mn toggle (center), Case inputs (right).
