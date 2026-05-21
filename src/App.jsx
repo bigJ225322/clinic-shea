@@ -6194,13 +6194,20 @@ const EXAM_FINDINGS_CONFIG = {
  [{ label: "cc", type: "input", displayLabel: "Chief complaint",
  placeholder: "in the patient's words" }],
  [
- { label: "location", type: "input", placeholder: "e.g. #8, upper left" },
+ { label: "location", type: "input", displayLabel: "Area / tooth",
+ placeholder: "e.g. #8, #14, UL, UR, LL, LR" },
  { label: "inception", type: "input", placeholder: "e.g. 3 days ago" },
  ],
  [
  { label: "quality", type: "select",
  options: ["", "dull", "sharp", "throbbing", "aching", "pressure", "burning"] },
  { label: "intensity", type: "input", placeholder: "e.g. 7/10" },
+ ],
+ [
+ { label: "frequency", type: "select",
+ options: ["", "constant", "intermittent", "with triggers only", "rare"] },
+ { label: "duration", type: "select",
+ options: ["", "seconds", "minutes", "hours", "all day", "weeks"] },
  ],
  [
  { label: "spontaneous pain", type: "yn-toggle" },
@@ -6244,7 +6251,7 @@ const EXAM_FINDINGS_CONFIG = {
  title: "Diagnoses",
  rows: [
  [{ label: "diagnosis tooth", type: "input", displayLabel: "Tooth #",
- placeholder: "e.g. 8" }],
+ placeholder: "e.g. 8, 14, UL, UR, LL, LR" }],
  [
  { label: "pulpal diagnosis", type: "select",
  options: ["", "Normal pulp", "Reversible pulpitis",
