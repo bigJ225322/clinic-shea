@@ -2178,12 +2178,18 @@ function rpdSelectBaseDesign(caseInput, kennedy) {
  // Per NotebookLM (standards):
  // - Mesh (top priority for anteriors): anterior span ≥3 teeth → Mesh
  // REGARDLESS of interocclusal space (esthetic-bulk preference; reduces
- // acrylic bulk in the visible zone).
- // - Facing: very limited space + single anterior tooth + NON-resorbed ridge.
- // Rare in practice (definitive RPD typically requires healed ridge ≥6 mo).
+ // acrylic bulk in the visible zone). Also preferred for single/pair anterior
+ // spans with normal space — Open Lattice would put too much acrylic in the
+ // smile zone for one or two missing teeth.
+ // - Facing: limited or extremely limited vertical space + single anterior
+ // tooth + NON-resorbed ridge. The clinical trigger is no room for any
+ // structure between the prosthetic tooth and ridge, which applies to
+ // both "limited" and "extremely_limited" interocclusalSpace values when
+ // the ridge hasn't resorbed.
  // - Tube Tooth: limited space + ≤2 teeth + WELL-HEALED ridge. Preferred over
  // Facing for esthetics (Facings show metal hue).
- // - Open Lattice: default (and only choice that supports distal tissue stops).
+ // - Open Lattice: default for posterior, multi-tooth tooth-supported spans,
+ // and distal extensions (only choice that supports distal tissue stops).
  let tier = "strong";
  let alternative = null;
  let alternativeRationale = null;
@@ -2193,7 +2199,12 @@ function rpdSelectBaseDesign(caseInput, kennedy) {
  tier = "common";
  alternative = "Open Lattice";
  alternativeRationale = "Mesh is the preferred choice for anterior spans ≥3 teeth (esthetic-bulk preference reduces acrylic bulk in the visible zone). Open Lattice is also acceptable and provides slightly more acrylic retention.";
- } else if (extremelyLimited && isAnterior && span.teeth.length === 1 && !wellHealedRidge) {
+ } else if (isAnterior && span.teeth.length === 1 && !wellHealedRidge && (extremelyLimited || limitedSpace)) {
+ // Facing: single anterior + non-resorbed ridge + tight vertical space.
+ // Expanded from "extremely_limited only" to also include "limited" when
+ // the ridge is non-healed — clinically, "limited + non-healed" still
+ // has insufficient room for a tube structure but the ridge still has
+ // enough volume to support a facing.
  type = "Facing";
  rationale = RPD_RATIONALE.base["Facing"];
  tier = "common";
@@ -2205,6 +2216,16 @@ function rpdSelectBaseDesign(caseInput, kennedy) {
  tier = "common";
  alternative = "Open Lattice";
  alternativeRationale = "Tube Tooth is preferred for limited interocclusal space + healed ridge + ≤2 teeth. Open Lattice is acceptable if interocclusal space is adequate.";
+ } else if (isAnterior && !isDE && span.teeth.length <= 2) {
+ // Single or paired anterior tooth in the smile zone with adequate space:
+ // Mesh is the esthetic-preserving default (less visible acrylic bulk than
+ // Open Lattice). Open Lattice is acceptable if maximum retention is
+ // prioritized over esthetics.
+ type = "Mesh";
+ rationale = RPD_RATIONALE.base["Mesh"];
+ tier = "common";
+ alternative = "Open Lattice";
+ alternativeRationale = "For a single or paired anterior tooth in the smile zone, Mesh reduces visible acrylic bulk. Open Lattice is acceptable when maximum retention matters more than esthetics (e.g., heavily resorbed ridge needing the broader retention footprint).";
  } else {
  type = "Open Lattice";
  rationale = RPD_RATIONALE.base["Open Lattice"];
@@ -2564,7 +2585,7 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
  flags.push({
  severity: "info",
  type: "always-close-anterior",
- message: `Anterior edentulous area present (${rpdToothList(missingAnteriors)}). "Always close the anterior edentulous area." Replacement options (in order of preference): FPD (if abutments allow), implant-supported crown(s), RPD with appropriate base design (Mesh for ≥3 anterior teeth, Facing for extremely limited vertical space + non-resorbed ridge), or IPD with denture teeth bonded to acrylic base if transitional. Leaving the gap open is never an acceptable definitive outcome.`,
+ message: `Anterior edentulous area present (${rpdToothList(missingAnteriors)}). UIC Lecture 2 hard rule: "Always close the anterior edentulous area." Replacement options (in order of preference): FPD (if abutments allow), implant-supported crown(s), RPD with appropriate base design (Mesh for ≥3 anterior teeth, Facing for extremely limited vertical space + non-resorbed ridge), or IPD with denture teeth bonded to acrylic base if transitional. Leaving the gap open is never an acceptable definitive outcome.`,
  });
  }
 
@@ -2630,16 +2651,16 @@ function rpdDescribeRestSeat(restSeat) {
  if (!restSeat) return null;
  const { surface, type } = restSeat;
  if (type === "cingulum") return "Cingulum rest";
- if (type === "ball") return `${surface.charAt(0).toUpperCase}${surface.slice(1)} ball rest`;
+ if (type === "ball") return `${surface.charAt(0).toUpperCase()}${surface.slice(1)} ball rest`;
  // occlusal default
- return `${surface.charAt(0).toUpperCase}${surface.slice(1)} rest`;
+ return `${surface.charAt(0).toUpperCase()}${surface.slice(1)} rest`;
 }
 
 // Proximal plate sits on the guide plane; lists it by surface (capitalized).
 function rpdDescribeProximalPlate(guidePlane) {
  if (!guidePlane) return null;
  const s = guidePlane.surface;
- return `${s.charAt(0).toUpperCase}${s.slice(1)} proximal plate`;
+ return `${s.charAt(0).toUpperCase()}${s.slice(1)} proximal plate`;
 }
 
 // abbreviation for undercut locations in lab Rx

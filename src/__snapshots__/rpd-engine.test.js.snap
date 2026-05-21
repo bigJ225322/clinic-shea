@@ -7,7 +7,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (UIC house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
+      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
       "claspTier": "strong",
       "claspType": "RPI",
       "contraindications": [],
@@ -17,11 +17,11 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
         "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
-      "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
+      "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": true,
       "reciprocation": {
-        "rationale": "Reciprocation provided by the major connector plating opposite the retentive arm (Lecture 5 reciprocation p. 4). When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
-        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (UIC house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
+        "rationale": "Reciprocation provided by the major connector plating opposite the retentive arm. When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
+        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
         "type": "plate",
       },
       "restRationale": null,
@@ -41,7 +41,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (UIC house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
+      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
       "claspTier": "strong",
       "claspType": "RPI",
       "contraindications": [],
@@ -51,11 +51,11 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
         "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
-      "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
+      "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": true,
       "reciprocation": {
-        "rationale": "Reciprocation provided by the major connector plating opposite the retentive arm (Lecture 5 reciprocation p. 4). When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
-        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (UIC house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
+        "rationale": "Reciprocation provided by the major connector plating opposite the retentive arm. When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
+        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
         "type": "plate",
       },
       "restRationale": null,
@@ -78,7 +78,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "alternative": null,
       "alternativeRationale": null,
       "note": "Distal tissue stop required",
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture. Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined.",
       "spanTeeth": [
         18,
         19,
@@ -90,7 +90,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "alternative": null,
       "alternativeRationale": null,
       "note": "Distal tissue stop required",
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture. Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined.",
       "spanTeeth": [
         30,
         31,
@@ -102,13 +102,13 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
   "designIntent": "definitive",
   "framework": {
     "material": "Co-Cr",
-    "rationale": "Standard favorable choice for RPD frameworks (UIC default per Final Impressions p. 18). Cobalt-chromium alloy; 0.5-1.0 mm major connector thickness; excellent rigidity-to-weight ratio; biocompatible; predictable casting; standard at UIC unless allergy.",
+    "rationale": "Standard favorable choice for RPD frameworks (default per Final Impressions p. 18). Cobalt-chromium alloy; 0.5-1.0 mm major connector thickness; excellent rigidity-to-weight ratio; biocompatible; predictable casting; standard unless allergy.",
     "requiresApproval": false,
   },
   "indirectRetainers": [
     {
       "alternativeRationale": null,
-      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (Lecture 5 p. 8-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II.",
+      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II.",
       "restType": "mesial occlusal rest",
       "source": "kennedy-i-bilateral",
       "tier": "strong",
@@ -116,7 +116,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
     },
     {
       "alternativeRationale": null,
-      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (Lecture 5 p. 8-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II.",
+      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II.",
       "restType": "mesial occlusal rest",
       "source": "kennedy-i-bilateral",
       "tier": "strong",
@@ -204,27 +204,27 @@ Major connector: Lingual Bar.
 #18-19: Open lattice with distal tissue stop.
 #30-31: Open lattice with distal tissue stop.
 
-Lingual bar: superior border ≥3 mm below gingival margins of remaining mandibular teeth (UIC spec). Inferior border at functional vestibular depth (do not impinge on lingual frenum). Half-pear cross-section, 4 mm vertical height minimum.
+Lingual bar: superior border ≥3 mm below gingival margins of remaining mandibular teeth (spec). Inferior border at functional vestibular depth (do not impinge on lingual frenum). Half-pear cross-section, 4 mm vertical height minimum.
 Lingual sulcus depth requirement: ≥8 mm (verify clinically before approving design).
 Framework metal thickness: 0.5-1.0 mm Co-Cr at major connector.
-Relief: 0.5 mm relief over the genial tubercles, mylohyoid ridge, and external oblique ridge (mandatory per UIC).
+Relief: 0.5 mm relief over the genial tubercles, mylohyoid ridge, and external oblique ridge (mandatory per protocol).
 
 Cast clasp arm position: terminal 1/3 in undercut (0.01" engagement); middle 1/3 at survey line; origin 1/3 rigid above survey line. Clasp tip in gingival 1/3 of clinical crown — NOT on gingival margin.
 
 Denture tooth mold (anterior): [Trubyte Classic — TBD at wax-rim try-in based on intercanine distance + high-smile line].
 Denture tooth mold (posterior): [Trubyte Classic posterior, e.g. F30 10° — TBD at wax-rim try-in].
 Tooth shade: [TBD chairside via Vita shade guide — matched to existing natural teeth].
-Acrylic gingival shade: [TBD via UIC gingival shade guide — typically L199-OR or 50% OR + 50% DK mix].
+Acrylic gingival shade: [TBD via the gingival shade guide — typically L199-OR or 50% OR + 50% DK mix].
 
-Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per UIC surveyor protocol, Lecture 4A p. 14). Lab to verify block-out integrity before duplicating cast for framework investing.
+Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per protocol surveyor protocol,). Lab to verify block-out integrity before duplicating cast for framework investing.
 
-Distal extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — BOTH buccally AND lingually (Huddle 6 Q11 — UIC verbatim rule). Maximum tissue contact distributes occlusal load across the residual ridge and resists framework rotation under load.
+Distal extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — BOTH buccally AND lingually (Huddle 6 Q11 — verbatim rule). Maximum tissue contact distributes occlusal load across the residual ridge and resists framework rotation under load.
 
 Please return for try-in. Thank you.",
   "majorConnector": {
     "alternative": "Lingual Plate",
     "alternativeRationale": "Lingual Plate is indicated if the patient has mandibular tori or if lingual sulcus depth is <8mm. Selected Lingual Bar here because sulcus is adequate and no tori.",
-    "rationale": "Major connector of choice when sufficient lingual sulcus space exists (≥8 mm from gingival margin to floor of mouth) (Lecture 6 p. 13). Half-pear cross-section, 4 mm vertical height, superior border ≥3 mm below gingival margins. Minimal tissue coverage, easiest for patient to adapt to.",
+    "rationale": "Major connector of choice when sufficient lingual sulcus space exists (≥8 mm from gingival margin to floor of mouth). Half-pear cross-section, 4 mm vertical height, superior border ≥3 mm below gingival margins. Minimal tissue coverage, easiest for patient to adapt to.",
     "tier": "common",
     "type": "Lingual Bar",
     "width": "4mm + 4mm clearance from gingival margin",
@@ -257,12 +257,12 @@ Please return for try-in. Thank you.",
   },
   "redFlags": [
     {
-      "message": "Class I/II distal extension: altered cast technique MAY be needed at framework try-in. UIC default is single-step PVS. Indication for altered cast: (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby/compressible. If indicated: heat framework saddle, add Triad spacer, border-mold the saddle, light-body PVS impression — press on REST SEATS ONLY, never on the distal extension framework. Lab sections the master cast and pours new distal extensions.",
+      "message": "Class I/II distal extension: altered cast technique MAY be needed at framework try-in. default is single-step PVS. Indication for altered cast: (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby/compressible. If indicated: heat framework saddle, add Triad spacer, border-mold the saddle, light-body PVS impression — press on REST SEATS ONLY, never on the distal extension framework. Lab sections the master cast and pours new distal extensions.",
       "severity": "info",
       "type": "altered-cast",
     },
     {
-      "message": "Occlusion scheme (Lecture 3 p. 4): GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — UIC's explicit prohibition. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "message": "Occlusion scheme: GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — the convention. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
       "severity": "info",
       "type": "occlusion-scheme-group-function",
     },
@@ -277,7 +277,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Stress-releasing clasp assembly when RPI is contraindicated (vestibular depth <5 mm, undercut location mid-mesial/MB/DB) (Retainers PDF p. 20). Cast rest + 18ga wrought-wire C-clasp arm engaging 0.02" undercut; wrought wire flexes more than cast metal under stress. (soft tissue undercut >1mm at 4–5mm below the buccal gingival margin)",
+      "claspRationale": "Stress-releasing clasp assembly when RPI is contraindicated (vestibular depth <5 mm, undercut location mid-mesial/MB/DB). Cast rest + 18ga wrought-wire C-clasp arm engaging 0.02" undercut; wrought wire flexes more than cast metal under stress. (soft tissue undercut >1mm at 4–5mm below the buccal gingival margin)",
       "claspTier": "strong",
       "claspType": "Combination",
       "contraindications": [
@@ -292,10 +292,10 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
         "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
-      "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
+      "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": true,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm (Lecture 5 reciprocation p. 5). Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
         "text": "Cast lingual reciprocal arm",
         "type": "arm",
       },
@@ -316,7 +316,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Cast circumferential clasp of choice for tooth-supported abutments (Kennedy III/IV) (Retainers PDF p. 14). Engages 0.01" buccal undercut on mesial half of tooth; rigid until terminal third where it flexes into undercut. Reciprocation by opposite-arch plating or cast lingual arm. NOT for distal extension (causes Class I torquing).",
+      "claspRationale": "Cast circumferential clasp of choice for tooth-supported abutments (Kennedy III/IV). Engages 0.01" buccal undercut on mesial half of tooth; rigid until terminal third where it flexes into undercut. Reciprocation by opposite-arch plating or cast lingual arm. NOT for distal extension (causes Class I torquing).",
       "claspTier": "strong",
       "claspType": "Akers",
       "contraindications": [],
@@ -326,10 +326,10 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
         "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
-      "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
+      "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": false,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm (Lecture 5 reciprocation p. 5). Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
         "text": "Cast lingual reciprocal arm",
         "type": "arm",
       },
@@ -348,9 +348,9 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
     },
     {
       "claspAlternative": "Ring clasp",
-      "claspAlternativeRationale": "Ring clasp is the alternative for tilted terminal molars with lingual undercut: ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut. Both Reverse Akers AND Ring are UIC-acceptable for this scenario (Huddle 6 Q10).",
+      "claspAlternativeRationale": "Ring clasp is the alternative for tilted terminal molars with lingual undercut: ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut. Both Reverse Akers AND Ring are -acceptable for this scenario (Huddle 6 Q10).",
       "claspAlternatives": null,
-      "claspRationale": "Used when ONLY a mesial/lingual undercut is available on a bicuspid or cuspid (NEVER molar — aspiration risk per Retainers PDF p. 27). Cast clasp originates from the distal aspect of the tooth and wraps to engage a mesio-lingual undercut. Tier-downgraded for molars (use Combination or Embrasure instead). (retentive arm engages disto-lingual undercut) — UIC Huddle 6 Q10 carve-out: lingually inclined terminal molar permits Reverse Akers (or Ring clasp). The tilt makes lingual surface the practical engagement location.",
+      "claspRationale": "Used when ONLY a mesial/lingual undercut is available on a bicuspid or cuspid (NEVER molar — aspiration risk per Retainers PDF p. 27). Cast clasp originates from the distal aspect of the tooth and wraps to engage a mesio-lingual undercut. Tier-downgraded for molars (use Combination or Embrasure instead). (retentive arm engages disto-lingual undercut) — Huddle 6 Q10 carve-out: lingually inclined terminal molar permits Reverse Akers (or Ring clasp). The tilt makes lingual surface the practical engagement location.",
       "claspTier": "common",
       "claspType": "Reverse Akers",
       "contraindications": [
@@ -365,10 +365,10 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
         "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "mesial",
       },
-      "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
+      "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": false,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm (Lecture 5 reciprocation p. 5). Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
         "text": "Cast buccal reciprocal arm",
         "type": "arm",
       },
@@ -392,7 +392,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "alternative": null,
       "alternativeRationale": null,
       "note": "Distal tissue stop required",
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture. Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined.",
       "spanTeeth": [
         18,
         19,
@@ -405,7 +405,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "alternative": null,
       "alternativeRationale": null,
       "note": undefined,
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture. Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined.",
       "spanTeeth": [
         30,
       ],
@@ -416,14 +416,14 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
   "designIntent": "definitive",
   "framework": {
     "material": "Co-Cr",
-    "rationale": "Standard favorable choice for RPD frameworks (UIC default per Final Impressions p. 18). Cobalt-chromium alloy; 0.5-1.0 mm major connector thickness; excellent rigidity-to-weight ratio; biocompatible; predictable casting; standard at UIC unless allergy.",
+    "rationale": "Standard favorable choice for RPD frameworks (default per Final Impressions p. 18). Cobalt-chromium alloy; 0.5-1.0 mm major connector thickness; excellent rigidity-to-weight ratio; biocompatible; predictable casting; standard unless allergy.",
     "requiresApproval": false,
   },
   "indirectRetainers": [
     {
-      "alternativeRationale": "If the indirect retainer's chosen tooth has compromised support, the next-best tooth in the UIC priority class (canine ↔ premolar) can be used. Geometric perpendicular ranking is a refinement, not a hard rule — instructor judgment can pick a different anterior tooth if support is inadequate at the geometric ideal.",
+      "alternativeRationale": "If the indirect retainer's chosen tooth has compromised support, the next-best tooth in the priority class (canine ↔ premolar) can be used. Geometric perpendicular ranking is a refinement, not a hard rule — instructor judgment can pick a different anterior tooth if support is inadequate at the geometric ideal.",
       "dualRole": false,
-      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (Lecture 5 p. 8-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II. Indirect retainer placement chosen via diagonal fulcrum-line geometry (McCracken Fig 8-2 C): fulcrum endpoints #21 (DE terminal) and #31 (opposite-side distalmost); perpendicular projection from fulcrum midpoint = 15.5 mm anterior. Among UIC-preferred tooth types on opposite side, this tooth has the greatest anteriority.",
+      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II. Indirect retainer placement chosen via diagonal fulcrum-line geometry (McCracken Fig 8-2 C): fulcrum endpoints #21 (DE terminal) and #31 (opposite-side distalmost); perpendicular projection from fulcrum midpoint = 15.5 mm anterior. Among -preferred tooth types on opposite side, this tooth has the greatest anteriority.",
       "restType": "mesial occlusal rest",
       "source": "fulcrum-diagonal-perpendicular",
       "tier": "common",
@@ -512,27 +512,27 @@ Major connector: Lingual Bar.
 #18-20: Open lattice with distal tissue stop.
 #30: Open lattice.
 
-Lingual bar: superior border ≥3 mm below gingival margins of remaining mandibular teeth (UIC spec). Inferior border at functional vestibular depth (do not impinge on lingual frenum). Half-pear cross-section, 4 mm vertical height minimum.
+Lingual bar: superior border ≥3 mm below gingival margins of remaining mandibular teeth (spec). Inferior border at functional vestibular depth (do not impinge on lingual frenum). Half-pear cross-section, 4 mm vertical height minimum.
 Lingual sulcus depth requirement: ≥8 mm (verify clinically before approving design).
 Framework metal thickness: 0.5-1.0 mm Co-Cr at major connector.
-Relief: 0.5 mm relief over the genial tubercles, mylohyoid ridge, and external oblique ridge (mandatory per UIC).
+Relief: 0.5 mm relief over the genial tubercles, mylohyoid ridge, and external oblique ridge (mandatory per protocol).
 
 Cast clasp arm position: terminal 1/3 in undercut (0.01" engagement); middle 1/3 at survey line; origin 1/3 rigid above survey line. Clasp tip in gingival 1/3 of clinical crown — NOT on gingival margin.
 
 Denture tooth mold (anterior): [Trubyte Classic — TBD at wax-rim try-in based on intercanine distance + high-smile line].
 Denture tooth mold (posterior): [Trubyte Classic posterior, e.g. F30 10° — TBD at wax-rim try-in].
 Tooth shade: [TBD chairside via Vita shade guide — matched to existing natural teeth].
-Acrylic gingival shade: [TBD via UIC gingival shade guide — typically L199-OR or 50% OR + 50% DK mix].
+Acrylic gingival shade: [TBD via the gingival shade guide — typically L199-OR or 50% OR + 50% DK mix].
 
-Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per UIC surveyor protocol, Lecture 4A p. 14). Lab to verify block-out integrity before duplicating cast for framework investing.
+Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per protocol surveyor protocol,). Lab to verify block-out integrity before duplicating cast for framework investing.
 
-Distal extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — BOTH buccally AND lingually (Huddle 6 Q11 — UIC verbatim rule). Maximum tissue contact distributes occlusal load across the residual ridge and resists framework rotation under load.
+Distal extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — BOTH buccally AND lingually (Huddle 6 Q11 — verbatim rule). Maximum tissue contact distributes occlusal load across the residual ridge and resists framework rotation under load.
 
 Please return for try-in. Thank you.",
   "majorConnector": {
     "alternative": "Lingual Plate",
     "alternativeRationale": "Lingual Plate is indicated if the patient has mandibular tori or if lingual sulcus depth is <8mm. Selected Lingual Bar here because sulcus is adequate and no tori.",
-    "rationale": "Major connector of choice when sufficient lingual sulcus space exists (≥8 mm from gingival margin to floor of mouth) (Lecture 6 p. 13). Half-pear cross-section, 4 mm vertical height, superior border ≥3 mm below gingival margins. Minimal tissue coverage, easiest for patient to adapt to.",
+    "rationale": "Major connector of choice when sufficient lingual sulcus space exists (≥8 mm from gingival margin to floor of mouth). Half-pear cross-section, 4 mm vertical height, superior border ≥3 mm below gingival margins. Minimal tissue coverage, easiest for patient to adapt to.",
     "tier": "common",
     "type": "Lingual Bar",
     "width": "4mm + 4mm clearance from gingival margin",
@@ -565,12 +565,12 @@ Please return for try-in. Thank you.",
   },
   "redFlags": [
     {
-      "message": "Class I/II distal extension: altered cast technique MAY be needed at framework try-in. UIC default is single-step PVS. Indication for altered cast: (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby/compressible. If indicated: heat framework saddle, add Triad spacer, border-mold the saddle, light-body PVS impression — press on REST SEATS ONLY, never on the distal extension framework. Lab sections the master cast and pours new distal extensions.",
+      "message": "Class I/II distal extension: altered cast technique MAY be needed at framework try-in. default is single-step PVS. Indication for altered cast: (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby/compressible. If indicated: heat framework saddle, add Triad spacer, border-mold the saddle, light-body PVS impression — press on REST SEATS ONLY, never on the distal extension framework. Lab sections the master cast and pours new distal extensions.",
       "severity": "info",
       "type": "altered-cast",
     },
     {
-      "message": "Occlusion scheme (Lecture 3 p. 4): GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — UIC's explicit prohibition. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "message": "Occlusion scheme: GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — the convention. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
       "severity": "info",
       "type": "occlusion-scheme-group-function",
     },
@@ -585,7 +585,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Cast circumferential clasp of choice for tooth-supported abutments (Kennedy III/IV) (Retainers PDF p. 14). Engages 0.01" buccal undercut on mesial half of tooth; rigid until terminal third where it flexes into undercut. Reciprocation by opposite-arch plating or cast lingual arm. NOT for distal extension (causes Class I torquing).",
+      "claspRationale": "Cast circumferential clasp of choice for tooth-supported abutments (Kennedy III/IV). Engages 0.01" buccal undercut on mesial half of tooth; rigid until terminal third where it flexes into undercut. Reciprocation by opposite-arch plating or cast lingual arm. NOT for distal extension (causes Class I torquing).",
       "claspTier": "strong",
       "claspType": "Akers",
       "contraindications": [],
@@ -595,10 +595,10 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
         "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "mesial",
       },
-      "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
+      "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": false,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm (Lecture 5 reciprocation p. 5). Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
         "text": "Cast lingual reciprocal arm",
         "type": "arm",
       },
@@ -619,7 +619,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Cast circumferential clasp of choice for tooth-supported abutments (Kennedy III/IV) (Retainers PDF p. 14). Engages 0.01" buccal undercut on mesial half of tooth; rigid until terminal third where it flexes into undercut. Reciprocation by opposite-arch plating or cast lingual arm. NOT for distal extension (causes Class I torquing).",
+      "claspRationale": "Cast circumferential clasp of choice for tooth-supported abutments (Kennedy III/IV). Engages 0.01" buccal undercut on mesial half of tooth; rigid until terminal third where it flexes into undercut. Reciprocation by opposite-arch plating or cast lingual arm. NOT for distal extension (causes Class I torquing).",
       "claspTier": "strong",
       "claspType": "Akers",
       "contraindications": [],
@@ -629,10 +629,10 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
         "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
-      "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
+      "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": false,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm (Lecture 5 reciprocation p. 5). Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
         "text": "Cast lingual reciprocal arm",
         "type": "arm",
       },
@@ -652,7 +652,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
     {
       "claspAlternative": "Single Akers on this tooth (forgoing the embrasure pair) — less retention but simpler if the partner tooth has poor undercut access.",
       "claspAlternativeRationale": "Embrasure provides superior bilateral retention but requires an acceptable buccal undercut + suitable occlusal embrasure on BOTH teeth. If either fails clinical evaluation, fall back to a single Akers on the most posterior premolar/molar on this side.",
-      "claspRationale": "Clasp of choice for a quadrant with no edentulous space (Class III mod 0 where retention is needed on a quadrant where no teeth are missing) (Retainers PDF p. 24). Two opposing C-clasps cradle adjacent teeth at the embrasure; each engages a 0.01" undercut. Requires a prepped occlusal rest seat at the embrasure between the two teeth. This Embrasure clasp provides PRIMARY cross-arch retention paired with #31, required to satisfy the bilateral direct-retention invariant. Without it the design would be unilateral (Nesbit) — UIC PROHIBITS Nesbit RPDs (Final RPD Huddle 2 answer key Q2, aspiration risk).",
+      "claspRationale": "Clasp of choice for a quadrant with no edentulous space (Class III mod 0 where retention is needed on a quadrant where no teeth are missing). Two opposing C-clasps cradle adjacent teeth at the embrasure; each engages a 0.01" undercut. Requires a prepped occlusal rest seat at the embrasure between the two teeth. This Embrasure clasp provides PRIMARY cross-arch retention paired with #31, required to satisfy the bilateral direct-retention invariant. Without it the design would be unilateral (Nesbit) — PROHIBITS Nesbit RPDs (Final RPD Huddle 2 answer key Q2, aspiration risk).",
       "claspTier": "strong",
       "claspType": "Embrasure",
       "contraindications": [],
@@ -682,7 +682,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
     {
       "claspAlternative": "Single Akers on this tooth (forgoing the embrasure pair) — less retention but simpler if the partner tooth has poor undercut access.",
       "claspAlternativeRationale": "Embrasure provides superior bilateral retention but requires an acceptable buccal undercut + suitable occlusal embrasure on BOTH teeth. If either fails clinical evaluation, fall back to a single Akers on the most posterior premolar/molar on this side.",
-      "claspRationale": "Clasp of choice for a quadrant with no edentulous space (Class III mod 0 where retention is needed on a quadrant where no teeth are missing) (Retainers PDF p. 24). Two opposing C-clasps cradle adjacent teeth at the embrasure; each engages a 0.01" undercut. Requires a prepped occlusal rest seat at the embrasure between the two teeth. This Embrasure clasp provides PRIMARY cross-arch retention paired with #30, required to satisfy the bilateral direct-retention invariant. Without it the design would be unilateral (Nesbit) — UIC PROHIBITS Nesbit RPDs (Final RPD Huddle 2 answer key Q2, aspiration risk).",
+      "claspRationale": "Clasp of choice for a quadrant with no edentulous space (Class III mod 0 where retention is needed on a quadrant where no teeth are missing). Two opposing C-clasps cradle adjacent teeth at the embrasure; each engages a 0.01" undercut. Requires a prepped occlusal rest seat at the embrasure between the two teeth. This Embrasure clasp provides PRIMARY cross-arch retention paired with #30, required to satisfy the bilateral direct-retention invariant. Without it the design would be unilateral (Nesbit) — PROHIBITS Nesbit RPDs (Final RPD Huddle 2 answer key Q2, aspiration risk).",
       "claspTier": "strong",
       "claspType": "Embrasure",
       "contraindications": [],
@@ -716,7 +716,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "alternative": null,
       "alternativeRationale": null,
       "note": undefined,
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture. Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined.",
       "spanTeeth": [
         19,
       ],
@@ -727,7 +727,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
   "designIntent": "definitive",
   "framework": {
     "material": "Co-Cr",
-    "rationale": "Standard favorable choice for RPD frameworks (UIC default per Final Impressions p. 18). Cobalt-chromium alloy; 0.5-1.0 mm major connector thickness; excellent rigidity-to-weight ratio; biocompatible; predictable casting; standard at UIC unless allergy.",
+    "rationale": "Standard favorable choice for RPD frameworks (default per Final Impressions p. 18). Cobalt-chromium alloy; 0.5-1.0 mm major connector thickness; excellent rigidity-to-weight ratio; biocompatible; predictable casting; standard unless allergy.",
     "requiresApproval": false,
   },
   "indirectRetainers": [],
@@ -781,25 +781,25 @@ Major connector: Lingual Bar.
 
 #19: Open lattice.
 
-Lingual bar: superior border ≥3 mm below gingival margins of remaining mandibular teeth (UIC spec). Inferior border at functional vestibular depth (do not impinge on lingual frenum). Half-pear cross-section, 4 mm vertical height minimum.
+Lingual bar: superior border ≥3 mm below gingival margins of remaining mandibular teeth (spec). Inferior border at functional vestibular depth (do not impinge on lingual frenum). Half-pear cross-section, 4 mm vertical height minimum.
 Lingual sulcus depth requirement: ≥8 mm (verify clinically before approving design).
 Framework metal thickness: 0.5-1.0 mm Co-Cr at major connector.
-Relief: 0.5 mm relief over the genial tubercles, mylohyoid ridge, and external oblique ridge (mandatory per UIC).
+Relief: 0.5 mm relief over the genial tubercles, mylohyoid ridge, and external oblique ridge (mandatory per protocol).
 
 Cast clasp arm position: terminal 1/3 in undercut (0.01" engagement); middle 1/3 at survey line; origin 1/3 rigid above survey line. Clasp tip in gingival 1/3 of clinical crown — NOT on gingival margin.
 
 Denture tooth mold (anterior): [Trubyte Classic — TBD at wax-rim try-in based on intercanine distance + high-smile line].
 Denture tooth mold (posterior): [Trubyte Classic posterior, e.g. F30 10° — TBD at wax-rim try-in].
 Tooth shade: [TBD chairside via Vita shade guide — matched to existing natural teeth].
-Acrylic gingival shade: [TBD via UIC gingival shade guide — typically L199-OR or 50% OR + 50% DK mix].
+Acrylic gingival shade: [TBD via the gingival shade guide — typically L199-OR or 50% OR + 50% DK mix].
 
-Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per UIC surveyor protocol, Lecture 4A p. 14). Lab to verify block-out integrity before duplicating cast for framework investing.
+Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per protocol surveyor protocol,). Lab to verify block-out integrity before duplicating cast for framework investing.
 
 Please return for try-in. Thank you.",
   "majorConnector": {
     "alternative": "Lingual Plate",
     "alternativeRationale": "Lingual Plate is indicated if the patient has mandibular tori or if lingual sulcus depth is <8mm. Selected Lingual Bar here because sulcus is adequate and no tori.",
-    "rationale": "Major connector of choice when sufficient lingual sulcus space exists (≥8 mm from gingival margin to floor of mouth) (Lecture 6 p. 13). Half-pear cross-section, 4 mm vertical height, superior border ≥3 mm below gingival margins. Minimal tissue coverage, easiest for patient to adapt to.",
+    "rationale": "Major connector of choice when sufficient lingual sulcus space exists (≥8 mm from gingival margin to floor of mouth). Half-pear cross-section, 4 mm vertical height, superior border ≥3 mm below gingival margins. Minimal tissue coverage, easiest for patient to adapt to.",
     "tier": "common",
     "type": "Lingual Bar",
     "width": "4mm + 4mm clearance from gingival margin",
@@ -835,12 +835,12 @@ Please return for try-in. Thank you.",
   },
   "redFlags": [
     {
-      "message": "Nesbit (unilateral cantilever) RPD is PROHIBITED at UIC per Final RPD Huddle 2 answer key Q2 — aspiration risk. The span-derived abutments alone would have been unilateral, so the engine satisfied the bilateral direct-retention invariant by adding cross-arch retention. Engine added Embrasure clasp pair on #30 + #31 for the required contralateral retention. Confirm RPD is the appropriate modality for this short unilateral span; a fixed solution (FPD or implant) is often preferable for Class III mod 0. If the patient declines fixed treatment, this RPD design is acceptable.",
+      "message": "Nesbit (unilateral cantilever) RPD is PROHIBITED per Final RPD Huddle 2 answer key Q2 — aspiration risk. The span-derived abutments alone would have been unilateral, so the engine satisfied the bilateral direct-retention invariant by adding cross-arch retention. Engine added Embrasure clasp pair on #30 + #31 for the required contralateral retention. Confirm RPD is the appropriate modality for this short unilateral span; a fixed solution (FPD or implant) is often preferable for Class III mod 0. If the patient declines fixed treatment, this RPD design is acceptable.",
       "severity": "info",
       "type": "nesbit-prohibition",
     },
     {
-      "message": "Occlusion scheme (Lecture 3 p. 4): GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — UIC's explicit prohibition. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "message": "Occlusion scheme: GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — the convention. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
       "severity": "info",
       "type": "occlusion-scheme-group-function",
     },
@@ -855,7 +855,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Cast circumferential clasp of choice for tooth-supported abutments (Kennedy III/IV) (Retainers PDF p. 14). Engages 0.01" buccal undercut on mesial half of tooth; rigid until terminal third where it flexes into undercut. Reciprocation by opposite-arch plating or cast lingual arm. NOT for distal extension (causes Class I torquing).",
+      "claspRationale": "Cast circumferential clasp of choice for tooth-supported abutments (Kennedy III/IV). Engages 0.01" buccal undercut on mesial half of tooth; rigid until terminal third where it flexes into undercut. Reciprocation by opposite-arch plating or cast lingual arm. NOT for distal extension (causes Class I torquing).",
       "claspTier": "strong",
       "claspType": "Akers",
       "contraindications": [
@@ -870,10 +870,10 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
         "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "mesial",
       },
-      "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
+      "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": false,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm (Lecture 5 reciprocation p. 5). Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
         "text": "Cast lingual reciprocal arm",
         "type": "arm",
       },
@@ -894,7 +894,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Cast circumferential clasp of choice for tooth-supported abutments (Kennedy III/IV) (Retainers PDF p. 14). Engages 0.01" buccal undercut on mesial half of tooth; rigid until terminal third where it flexes into undercut. Reciprocation by opposite-arch plating or cast lingual arm. NOT for distal extension (causes Class I torquing).",
+      "claspRationale": "Cast circumferential clasp of choice for tooth-supported abutments (Kennedy III/IV). Engages 0.01" buccal undercut on mesial half of tooth; rigid until terminal third where it flexes into undercut. Reciprocation by opposite-arch plating or cast lingual arm. NOT for distal extension (causes Class I torquing).",
       "claspTier": "strong",
       "claspType": "Akers",
       "contraindications": [
@@ -909,10 +909,10 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
         "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
-      "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
+      "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": false,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm (Lecture 5 reciprocation p. 5). Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
         "text": "Cast lingual reciprocal arm",
         "type": "arm",
       },
@@ -941,10 +941,10 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
         "length": "long/parallel (full clinical crown height)",
         "surface": "distal",
       },
-      "guidePlaneRationale": "Provides secondary retention via frictional contact along extended parallel surface (Lecture 4A p. 13). Used when primary undercut retention is marginal — the long parallel surface adds resistance to dislodgement during chewing.",
+      "guidePlaneRationale": "Provides secondary retention via frictional contact along extended parallel surface. Used when primary undercut retention is marginal — the long parallel surface adds resistance to dislodgement during chewing.",
       "isPrimaryAbutment": false,
       "reciprocation": null,
-      "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment (Lecture 4A p. 16). Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
+      "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment. Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
       "restSeat": {
         "bur": "inverted cone",
         "dimensions": "V-shaped (teardrop) depression on cingulum; 1.5 mm deep × 2.5 mm M-D × 2 mm I-G; perpendicular to long axis of tooth",
@@ -969,10 +969,10 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
         "length": "long/parallel (full clinical crown height)",
         "surface": "mesial",
       },
-      "guidePlaneRationale": "Provides secondary retention via frictional contact along extended parallel surface (Lecture 4A p. 13). Used when primary undercut retention is marginal — the long parallel surface adds resistance to dislodgement during chewing.",
+      "guidePlaneRationale": "Provides secondary retention via frictional contact along extended parallel surface. Used when primary undercut retention is marginal — the long parallel surface adds resistance to dislodgement during chewing.",
       "isPrimaryAbutment": false,
       "reciprocation": null,
-      "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment (Lecture 4A p. 16). Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
+      "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment. Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
       "restSeat": {
         "bur": "inverted cone",
         "dimensions": "1.5 mm diameter hemispherical depression on distal line angle of central incisor lingual surface",
@@ -997,10 +997,10 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
         "length": "long/parallel (full clinical crown height)",
         "surface": "mesial",
       },
-      "guidePlaneRationale": "Provides secondary retention via frictional contact along extended parallel surface (Lecture 4A p. 13). Used when primary undercut retention is marginal — the long parallel surface adds resistance to dislodgement during chewing.",
+      "guidePlaneRationale": "Provides secondary retention via frictional contact along extended parallel surface. Used when primary undercut retention is marginal — the long parallel surface adds resistance to dislodgement during chewing.",
       "isPrimaryAbutment": false,
       "reciprocation": null,
-      "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment (Lecture 4A p. 16). Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
+      "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment. Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
       "restSeat": {
         "bur": "inverted cone",
         "dimensions": "V-shaped (teardrop) depression on cingulum; 1.5 mm deep × 2.5 mm M-D × 2 mm I-G; perpendicular to long axis of tooth",
@@ -1017,7 +1017,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Stress-releasing clasp assembly when RPI is contraindicated (vestibular depth <5 mm, undercut location mid-mesial/MB/DB) (Retainers PDF p. 20). Cast rest + 18ga wrought-wire C-clasp arm engaging 0.02" undercut; wrought wire flexes more than cast metal under stress. (vestibular depth ≤5mm)",
+      "claspRationale": "Stress-releasing clasp assembly when RPI is contraindicated (vestibular depth <5 mm, undercut location mid-mesial/MB/DB). Cast rest + 18ga wrought-wire C-clasp arm engaging 0.02" undercut; wrought wire flexes more than cast metal under stress. (vestibular depth ≤5mm)",
       "claspTier": "strong",
       "claspType": "Combination",
       "contraindications": [
@@ -1036,10 +1036,10 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
         "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
-      "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
+      "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": true,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm (Lecture 5 reciprocation p. 5). Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
         "text": "Cast lingual reciprocal arm",
         "type": "arm",
       },
@@ -1063,7 +1063,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": null,
       "alternativeRationale": null,
       "note": undefined,
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture. Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined.",
       "spanTeeth": [
         3,
       ],
@@ -1074,7 +1074,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": null,
       "alternativeRationale": null,
       "note": undefined,
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture. Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined.",
       "spanTeeth": [
         5,
       ],
@@ -1082,33 +1082,33 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "type": "Open Lattice",
     },
     {
-      "alternative": null,
-      "alternativeRationale": null,
+      "alternative": "Open Lattice",
+      "alternativeRationale": "For a single or paired anterior tooth in the smile zone, Mesh reduces visible acrylic bulk. Open Lattice is acceptable when maximum retention matters more than esthetics (e.g., heavily resorbed ridge needing the broader retention footprint).",
       "note": undefined,
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
+      "rationale": "Used where there is limited inter-occlusal space (Denture Base Considerations p. 13). Fine metal mesh provides acrylic retention with thinner profile than Open Lattice. Preferred for anterior spans ≥3 teeth (esthetic-bulk reduction). rule of thumb: mesh anterior / lattice posterior in mixed cases.",
       "spanTeeth": [
         7,
         8,
       ],
-      "tier": "strong",
-      "type": "Open Lattice",
+      "tier": "common",
+      "type": "Mesh",
     },
     {
-      "alternative": null,
-      "alternativeRationale": null,
+      "alternative": "Open Lattice",
+      "alternativeRationale": "For a single or paired anterior tooth in the smile zone, Mesh reduces visible acrylic bulk. Open Lattice is acceptable when maximum retention matters more than esthetics (e.g., heavily resorbed ridge needing the broader retention footprint).",
       "note": undefined,
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
+      "rationale": "Used where there is limited inter-occlusal space (Denture Base Considerations p. 13). Fine metal mesh provides acrylic retention with thinner profile than Open Lattice. Preferred for anterior spans ≥3 teeth (esthetic-bulk reduction). rule of thumb: mesh anterior / lattice posterior in mixed cases.",
       "spanTeeth": [
         10,
       ],
-      "tier": "strong",
-      "type": "Open Lattice",
+      "tier": "common",
+      "type": "Mesh",
     },
     {
       "alternative": null,
       "alternativeRationale": null,
       "note": "Distal tissue stop required",
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture. Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined.",
       "spanTeeth": [
         13,
         14,
@@ -1121,14 +1121,14 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
   "designIntent": "definitive",
   "framework": {
     "material": "Co-Cr",
-    "rationale": "Standard favorable choice for RPD frameworks (UIC default per Final Impressions p. 18). Cobalt-chromium alloy; 0.5-1.0 mm major connector thickness; excellent rigidity-to-weight ratio; biocompatible; predictable casting; standard at UIC unless allergy.",
+    "rationale": "Standard favorable choice for RPD frameworks (default per Final Impressions p. 18). Cobalt-chromium alloy; 0.5-1.0 mm major connector thickness; excellent rigidity-to-weight ratio; biocompatible; predictable casting; standard unless allergy.",
     "requiresApproval": false,
   },
   "indirectRetainers": [
     {
-      "alternativeRationale": "If the indirect retainer's chosen tooth has compromised support, the next-best tooth in the UIC priority class (canine ↔ premolar) can be used. Geometric perpendicular ranking is a refinement, not a hard rule — instructor judgment can pick a different anterior tooth if support is inadequate at the geometric ideal.",
+      "alternativeRationale": "If the indirect retainer's chosen tooth has compromised support, the next-best tooth in the priority class (canine ↔ premolar) can be used. Geometric perpendicular ranking is a refinement, not a hard rule — instructor judgment can pick a different anterior tooth if support is inadequate at the geometric ideal.",
       "dualRole": true,
-      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (Lecture 5 p. 8-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II. Per McCracken Fig 8-2 D, this tooth's anterior position relative to the diagonal fulcrum line (#12–#2) permits dual-role direct + indirect retention; no separate IR tooth is needed.",
+      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II. Per McCracken Fig 8-2 D, this tooth's anterior position relative to the diagonal fulcrum line (#12–#2) permits dual-role direct + indirect retention; no separate IR tooth is needed.",
       "restType": "mesial cingulum rest",
       "source": "fulcrum-diagonal-perpendicular",
       "tier": "common",
@@ -1298,11 +1298,11 @@ Major connector: A-P Strap with 0.5mm beading on the tissue side.
 
 #3: Open lattice.
 #5: Open lattice.
-#7-8: Open lattice.
-#10: Open lattice.
+#7-8: Mesh.
+#10: Mesh.
 #13-15: Open lattice with distal tissue stop.
 
-Relief: 0.5 mm relief over the incisive papilla and median palatal raphe (mandatory per UIC).
+Relief: 0.5 mm relief over the incisive papilla and median palatal raphe (mandatory per protocol).
 Anterior strap: 6 mm posterior to gingival margins of anterior teeth, 8 mm wide.
 Posterior strap: 6 mm anterior to vibrating line, 6-8 mm wide.
 Lateral straps: ≥4 mm wide; cross the palate at oblique angle for tongue comfort.
@@ -1314,16 +1314,16 @@ Cast clasp arm position: terminal 1/3 in undercut (0.01" engagement); middle 1/3
 Denture tooth mold (anterior): [Trubyte Classic — TBD at wax-rim try-in based on intercanine distance + high-smile line].
 Denture tooth mold (posterior): [Trubyte Classic posterior, e.g. F30 10° — TBD at wax-rim try-in].
 Tooth shade: [TBD chairside via Vita shade guide — matched to existing natural teeth].
-Acrylic gingival shade: [TBD via UIC gingival shade guide — typically L199-OR or 50% OR + 50% DK mix].
+Acrylic gingival shade: [TBD via the gingival shade guide — typically L199-OR or 50% OR + 50% DK mix].
 
-Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per UIC surveyor protocol, Lecture 4A p. 14). Lab to verify block-out integrity before duplicating cast for framework investing.
+Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per protocol surveyor protocol,). Lab to verify block-out integrity before duplicating cast for framework investing.
 
 Distal extension saddle acrylic: must COMPLETELY engage the BUCCAL sulcus (Huddle 6 Q11). Palatal coverage is provided by the major connector — saddle extension is buccal-only on the maxilla.
 
 Please return for try-in. Thank you.",
   "majorConnector": {
     "note": "0.5mm beading on tissue side",
-    "rationale": "Rigid major connector of choice for Maxillary Kennedy Class I and II (Lecture 6 p. 8). Two transverse straps (8 mm anterior, 6-8 mm posterior) connected laterally provide cross-arch rigidity essential for distal extension support.",
+    "rationale": "Rigid major connector of choice for Maxillary Kennedy Class I and II. Two transverse straps (8 mm anterior, 6-8 mm posterior) connected laterally provide cross-arch rigidity essential for distal extension support.",
     "tier": "strong",
     "type": "A-P Strap",
     "width": "8mm each strap, 6mm gingival clearance",
@@ -1356,12 +1356,12 @@ Please return for try-in. Thank you.",
   },
   "redFlags": [
     {
-      "message": "Class I/II distal extension: altered cast technique MAY be needed at framework try-in. UIC default is single-step PVS. Indication for altered cast: (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby/compressible. If indicated: heat framework saddle, add Triad spacer, border-mold the saddle, light-body PVS impression — press on REST SEATS ONLY, never on the distal extension framework. Lab sections the master cast and pours new distal extensions.",
+      "message": "Class I/II distal extension: altered cast technique MAY be needed at framework try-in. default is single-step PVS. Indication for altered cast: (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby/compressible. If indicated: heat framework saddle, add Triad spacer, border-mold the saddle, light-body PVS impression — press on REST SEATS ONLY, never on the distal extension framework. Lab sections the master cast and pours new distal extensions.",
       "severity": "info",
       "type": "altered-cast",
     },
     {
-      "message": "Occlusion scheme (Lecture 3 p. 4): GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — UIC's explicit prohibition. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "message": "Occlusion scheme: GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — the convention. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
       "severity": "info",
       "type": "occlusion-scheme-group-function",
     },
@@ -1386,7 +1386,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (UIC house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
+      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
       "claspTier": "strong",
       "claspType": "RPI",
       "contraindications": [],
@@ -1396,11 +1396,11 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
         "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
-      "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
+      "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": true,
       "reciprocation": {
-        "rationale": "Reciprocation provided by the major connector plating opposite the retentive arm (Lecture 5 reciprocation p. 4). When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
-        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (UIC house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
+        "rationale": "Reciprocation provided by the major connector plating opposite the retentive arm. When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
+        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
         "type": "plate",
       },
       "restRationale": null,
@@ -1428,10 +1428,10 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
         "length": "long/parallel (full clinical crown height)",
         "surface": "distal",
       },
-      "guidePlaneRationale": "Provides secondary retention via frictional contact along extended parallel surface (Lecture 4A p. 13). Used when primary undercut retention is marginal — the long parallel surface adds resistance to dislodgement during chewing.",
+      "guidePlaneRationale": "Provides secondary retention via frictional contact along extended parallel surface. Used when primary undercut retention is marginal — the long parallel surface adds resistance to dislodgement during chewing.",
       "isPrimaryAbutment": false,
       "reciprocation": null,
-      "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment (Lecture 4A p. 16). Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
+      "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment. Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
       "restSeat": {
         "bur": "inverted cone",
         "dimensions": "V-shaped (teardrop) depression on cingulum; 1.5 mm deep × 2.5 mm M-D × 2 mm I-G; perpendicular to long axis of tooth",
@@ -1456,10 +1456,10 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
         "length": "long/parallel (full clinical crown height)",
         "surface": "mesial",
       },
-      "guidePlaneRationale": "Provides secondary retention via frictional contact along extended parallel surface (Lecture 4A p. 13). Used when primary undercut retention is marginal — the long parallel surface adds resistance to dislodgement during chewing.",
+      "guidePlaneRationale": "Provides secondary retention via frictional contact along extended parallel surface. Used when primary undercut retention is marginal — the long parallel surface adds resistance to dislodgement during chewing.",
       "isPrimaryAbutment": false,
       "reciprocation": null,
-      "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment (Lecture 4A p. 16). Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
+      "restRationale": "Additional rest to distribute occlusal forces away from compromised abutment. Used when a single rest would overload a periodontally compromised tooth; spreading load across multiple rests reduces per-tooth force.",
       "restSeat": {
         "bur": "inverted cone",
         "dimensions": "V-shaped (teardrop) depression on cingulum; 1.5 mm deep × 2.5 mm M-D × 2 mm I-G; perpendicular to long axis of tooth",
@@ -1476,7 +1476,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (UIC house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
+      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
       "claspTier": "strong",
       "claspType": "RPI",
       "contraindications": [],
@@ -1486,11 +1486,11 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
         "length": "1/3 B-L width × 2/3 length cervically from marginal ridge (Lab 5 p. 5)",
         "surface": "distal",
       },
-      "guidePlaneRationale": "Establishes path of insertion (Lecture 4A p. 12). Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
+      "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": true,
       "reciprocation": {
-        "rationale": "Reciprocation provided by the major connector plating opposite the retentive arm (Lecture 5 reciprocation p. 4). When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
-        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (UIC house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
+        "rationale": "Reciprocation provided by the major connector plating opposite the retentive arm. When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
+        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
         "type": "plate",
       },
       "restRationale": null,
@@ -1513,7 +1513,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": null,
       "alternativeRationale": null,
       "note": "Distal tissue stop required",
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture. Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined.",
       "spanTeeth": [
         2,
         3,
@@ -1525,7 +1525,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": null,
       "alternativeRationale": null,
       "note": undefined,
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture. Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined.",
       "spanTeeth": [
         5,
       ],
@@ -1536,7 +1536,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": "Open Lattice",
       "alternativeRationale": "Mesh is the preferred choice for anterior spans ≥3 teeth (esthetic-bulk preference reduces acrylic bulk in the visible zone). Open Lattice is also acceptable and provides slightly more acrylic retention.",
       "note": undefined,
-      "rationale": "Used where there is limited inter-occlusal space (Denture Base Considerations p. 13). Fine metal mesh provides acrylic retention with thinner profile than Open Lattice. Preferred for anterior spans ≥3 teeth (esthetic-bulk reduction). UIC rule of thumb: mesh anterior / lattice posterior in mixed cases (Design Case II p. 8).",
+      "rationale": "Used where there is limited inter-occlusal space (Denture Base Considerations p. 13). Fine metal mesh provides acrylic retention with thinner profile than Open Lattice. Preferred for anterior spans ≥3 teeth (esthetic-bulk reduction). rule of thumb: mesh anterior / lattice posterior in mixed cases.",
       "spanTeeth": [
         7,
         8,
@@ -1550,7 +1550,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "alternative": null,
       "alternativeRationale": null,
       "note": "Distal tissue stop required",
-      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture (p. 20). Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined (p. 9).",
+      "rationale": "Replace tooth and tissue; provides maximum acrylic retention (Denture Base Considerations p. 12). Cast metal grid pattern with through-holes for acrylic; standard for distal extensions and most tooth-supported spans ≥2 teeth. Required carrier for distal tissue stops. Border-mold the denture base into the vestibule like a complete denture. Acrylic base permits reline/rebase; metal bases are CONTRAINDICATED for distal extensions and recent extraction sites because they cannot be relined.",
       "spanTeeth": [
         13,
         14,
@@ -1563,13 +1563,13 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
   "designIntent": "definitive",
   "framework": {
     "material": "Co-Cr",
-    "rationale": "Standard favorable choice for RPD frameworks (UIC default per Final Impressions p. 18). Cobalt-chromium alloy; 0.5-1.0 mm major connector thickness; excellent rigidity-to-weight ratio; biocompatible; predictable casting; standard at UIC unless allergy.",
+    "rationale": "Standard favorable choice for RPD frameworks (default per Final Impressions p. 18). Cobalt-chromium alloy; 0.5-1.0 mm major connector thickness; excellent rigidity-to-weight ratio; biocompatible; predictable casting; standard unless allergy.",
     "requiresApproval": false,
   },
   "indirectRetainers": [
     {
       "alternativeRationale": null,
-      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (Lecture 5 p. 8-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II.",
+      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II.",
       "restType": "mesial cingulum rest",
       "source": "kennedy-i-bilateral",
       "tier": "strong",
@@ -1577,7 +1577,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
     },
     {
       "alternativeRationale": null,
-      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (Lecture 5 p. 8-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II.",
+      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II.",
       "restType": "mesial cingulum rest",
       "source": "kennedy-i-bilateral",
       "tier": "strong",
@@ -1728,7 +1728,7 @@ Major connector: Full Palatal Plate with 0.5mm beading on the tissue side.
 #7-10: Mesh.
 #13-15: Open lattice with distal tissue stop.
 
-Relief: 0.5 mm relief over the incisive papilla and median palatal raphe (mandatory per UIC).
+Relief: 0.5 mm relief over the incisive papilla and median palatal raphe (mandatory per protocol).
 Posterior boundary: AT the vibrating line (junction of hard and soft palate); confirm with T-burnisher or 'ah' line marking.
 Anterior boundary: extends to lingual surfaces of anterior teeth (NOT covering gingival margin — finish on tooth surface above gingival third).
 Framework metal thickness: 0.5-1.0 mm Co-Cr at major connector; smooth, polished tongue-facing surface.
@@ -1738,9 +1738,9 @@ Cast clasp arm position: terminal 1/3 in undercut (0.01" engagement); middle 1/3
 Denture tooth mold (anterior): [Trubyte Classic — TBD at wax-rim try-in based on intercanine distance + high-smile line].
 Denture tooth mold (posterior): [Trubyte Classic posterior, e.g. F30 10° — TBD at wax-rim try-in].
 Tooth shade: [TBD chairside via Vita shade guide — matched to existing natural teeth].
-Acrylic gingival shade: [TBD via UIC gingival shade guide — typically L199-OR or 50% OR + 50% DK mix].
+Acrylic gingival shade: [TBD via the gingival shade guide — typically L199-OR or 50% OR + 50% DK mix].
 
-Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per UIC surveyor protocol, Lecture 4A p. 14). Lab to verify block-out integrity before duplicating cast for framework investing.
+Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per protocol surveyor protocol,). Lab to verify block-out integrity before duplicating cast for framework investing.
 
 Distal extension saddle acrylic: must COMPLETELY engage the BUCCAL sulcus (Huddle 6 Q11). Palatal coverage is provided by the major connector — saddle extension is buccal-only on the maxilla.
 
@@ -1749,7 +1749,7 @@ Please return for try-in. Thank you.",
     "alternative": "A-P Strap",
     "alternativeRationale": "The cutoff between A-P Strap and Full Palatal Plate ("few teeth remain") is qualitative in the curriculum. Engine uses ≤4 abutments OR severe resorption as the threshold based on Design Case II (4 abutments → Full Palate) vs Design Case I (6 abutments → A-P Strap). Some instructors may prefer A-P Strap with 4 abutments if the tooth distribution is favorable.",
     "note": "0.5mm beading on tissue side",
-    "rationale": "Connector of choice when few abutments remain (≤4 abutments, typically distributed) (Lecture 6 p. 11). Maximum stability + retention via broad palatal coverage; posterior border AT vibrating line. Rigid plate; not for severe gag reflex patients.",
+    "rationale": "Connector of choice when few abutments remain (≤4 abutments, typically distributed). Maximum stability + retention via broad palatal coverage; posterior border AT vibrating line. Rigid plate; not for severe gag reflex patients.",
     "tier": "judgment",
     "type": "Full Palatal Plate",
   },
@@ -1781,17 +1781,17 @@ Please return for try-in. Thank you.",
   },
   "redFlags": [
     {
-      "message": "Class I/II distal extension: altered cast technique MAY be needed at framework try-in. UIC default is single-step PVS. Indication for altered cast: (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby/compressible. If indicated: heat framework saddle, add Triad spacer, border-mold the saddle, light-body PVS impression — press on REST SEATS ONLY, never on the distal extension framework. Lab sections the master cast and pours new distal extensions.",
+      "message": "Class I/II distal extension: altered cast technique MAY be needed at framework try-in. default is single-step PVS. Indication for altered cast: (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby/compressible. If indicated: heat framework saddle, add Triad spacer, border-mold the saddle, light-body PVS impression — press on REST SEATS ONLY, never on the distal extension framework. Lab sections the master cast and pours new distal extensions.",
       "severity": "info",
       "type": "altered-cast",
     },
     {
-      "message": "Maxillary Kennedy Class I distal extension: UIC Occlusion lecture p. 4 — REQUIRES balancing contacts (in addition to group function on remaining natural teeth). Set posterior denture teeth LATERAL to the residual alveolar ridge (cross-arch loading consideration — distributes occlusal force across the palate). At wax-rim try-in, verify simultaneous bilateral contacts in lateral excursions on denture teeth; natural-tooth side maintains group function with no interferences.",
+      "message": "Maxillary Kennedy Class I distal extension: Occlusion — REQUIRES balancing contacts (in addition to group function on remaining natural teeth). Set posterior denture teeth LATERAL to the residual alveolar ridge (cross-arch loading consideration — distributes occlusal force across the palate). At wax-rim try-in, verify simultaneous bilateral contacts in lateral excursions on denture teeth; natural-tooth side maintains group function with no interferences.",
       "severity": "info",
       "type": "max-class-i-balanced-required",
     },
     {
-      "message": "Occlusion scheme (Lecture 3 p. 4): GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — UIC's explicit prohibition. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
+      "message": "Occlusion scheme: GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — the convention. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
       "severity": "info",
       "type": "occlusion-scheme-group-function",
     },
