@@ -19708,6 +19708,7 @@ const PATHWAY_GROUPS = {
  "dir-deep-caries-decision",
  "dir-large-mod",
  "dir-replacing-failing-composite",
+ "dir-bruxer-management",
  ]},
  { label: "Preventive", ids: [
  "dir-sealant",
@@ -19746,6 +19747,10 @@ const PATHWAY_GROUPS = {
  "surgery-surgical-ext",
  "surgery-third-molar",
  "surgery-retained-root",
+ ]},
+ { label: "Trauma & emergencies", ids: [
+ "surgery-avulsed-tooth",
+ "surgery-fractured-anterior",
  ]},
  { label: "Post-op complications", ids: [
  "surgery-dry-socket",
@@ -19786,6 +19791,7 @@ const PATHWAY_GROUPS = {
  "ind-endo-treated",
  "ind-post-and-core",
  "ind-survey-crown",
+ "ind-single-implant-crown",
  ]},
  { label: "Partial coverage", ids: [
  "ind-inlay",
@@ -19794,6 +19800,10 @@ const PATHWAY_GROUPS = {
  "ind-cad-cam-inlay-onlay",
  "ind-fractured-cusp",
  "ind-veneers",
+ "ind-onlay-vs-crown-decision",
+ ]},
+ { label: "Diagnostic challenges", ids: [
+ "ind-cracked-tooth-syndrome",
  ]},
  { label: "Bridges & re-treatment", ids: [
  "ind-bridge",
@@ -22871,6 +22881,153 @@ const PATHWAYS = [
  { guideId: "direct", chapterId: "dir-ch2" },
  { guideId: "direct", chapterId: "dir-ch3" },
  { guideId: "direct", chapterId: "dir-ch4" },
+ { guideId: "direct", chapterId: "dir-ch7" },
+ { guideId: "direct", chapterId: "dir-ch31" },
+ ],
+ },
+ // ── Additional Indirect pathways (implant restoration, cracked tooth) ──
+ {
+ id: "ind-single-implant-crown",
+ domain: "indirect",
+ label: "Single implant crown (cement vs screw-retained)",
+ description: "A patient who had an implant placed 3-6 months ago returns for the restoration phase. The crown will sit on a custom or stock abutment connected to the implant fixture. The first big decision is cement-retained (esthetic, but residual cement is the #1 cause of peri-implantitis) vs screw-retained (retrievable, no cement risk, requires access hole). The second is anterior (where esthetic dominates, often cement-retained with esthetic abutment) vs posterior (where retrievability dominates, often screw-retained).",
+ keyDecisions: [
+ "Cement vs screw: anterior + esthetic priority + 0° angled access NOT possible = cement-retained. Posterior + retrievability + easy access angle = screw-retained. The angled-screw-channel (ASC) abutments can shift the decision toward screw when the access angle is up to 25° off ideal.",
+ "Abutment type: stock titanium (cheapest, posterior, low esthetic demand), custom titanium (better emergence profile, posterior or non-smile anterior), zirconia (esthetic anterior, but only with hex-locked or anti-rotation feature for screw-retention).",
+ "Margin location: 0.5-1.0 mm subgingival on the buccal of anterior implants for esthetic emergence; equigingival or supragingival on posterior. Sub-gingival margin demands precise impression and cementation to avoid retained cement.",
+ "Cement choice (if cement-retained): non-eugenol provisional or definitive. Resin-modified glass ionomer (RelyX Luting) is the workhorse. Avoid resin cements at the gingival margin (irretrievable if peri-implantitis develops).",
+ "Occlusion: implant crowns should have lighter contact in MI than natural teeth (because implants don't have PDL to absorb force) - shimstock pulls through without holding when biting normally, holds in maximum clenching. Lateral excursions: anterior guidance on natural teeth, NOT on the implant crown.",
+ ],
+ phases: [
+ { label: "Cement vs screw decision", count: 2 },
+ { label: "Impression & lab", count: 2 },
+ { label: "Delivery & occlusion", count: 2 },
+ ],
+ sections: [
+ { guideId: "indirect", chapterId: "ind-ch26" },
+ { guideId: "indirect", chapterId: "ind-ch27" },
+ { guideId: "indirect", chapterId: "ind-ch4" },
+ { guideId: "indirect", chapterId: "ind-ch25" },
+ ],
+ },
+ {
+ id: "ind-cracked-tooth-syndrome",
+ domain: "indirect",
+ label: "Cracked tooth syndrome (diagnose + treat)",
+ description: "Patient reports sharp pain on biting, especially on release, often only on certain foods or only at certain bite positions. No obvious caries or restoration failure on exam. The tooth tests vital + cold-positive + percussion-mildly-positive. This is the diagnostic + therapeutic challenge of cracked tooth syndrome: the crack is present but often invisible without methylene blue + transillumination. Treatment depends on crack depth and propagation: shallow enamel crack = monitor; crack reaches dentin = onlay or crown; crack reaches pulp or root = RCT + crown or extraction.",
+ keyDecisions: [
+ "Diagnostic workup: bite-stick test (Tooth Slooth) on individual cusps - pain on RELEASE (not bite) on one specific cusp = positive. Methylene blue stain applied to suspected area then rinsed - residual blue in the crack confirms. Transillumination with a fiber-optic light from buccal/lingual - crack stops light propagation, creating a dark line.",
+ "Locate the crack precisely. Most common: mesial-distal crack on a mandibular molar (often the lingual cusp), or buccal-lingual on a maxillary premolar. Direction matters - lateral cracks have better prognosis than vertical-into-root cracks.",
+ "Vital pulp + shallow crack (enamel only) = full-coverage onlay or crown to reduce cuspal flexure. Resolves symptoms in 6-8 weeks.",
+ "Vital pulp + crack into dentin = onlay or crown; consider provisional crown first to test if cuspal coverage resolves symptoms before committing to definitive restoration.",
+ "Non-vital pulp (cold-negative) or crack visible on radiograph extending to bone level = RCT first, then crown. Crack-to-root extraction is required if the crack extends below the bone level (poor prognosis for retention).",
+ ],
+ phases: [
+ { label: "Diagnosis", count: 3 },
+ { label: "Provisional + observation", count: 2 },
+ { label: "Definitive restoration", count: 2 },
+ ],
+ sections: [
+ { guideId: "indirect", chapterId: "ind-ch14" },
+ { guideId: "indirect", chapterId: "ind-ch1" },
+ { guideId: "indirect", chapterId: "ind-ch4" },
+ { guideId: "indirect", chapterId: "ind-ch23" },
+ ],
+ },
+ {
+ id: "ind-onlay-vs-crown-decision",
+ domain: "indirect",
+ label: "Onlay vs crown decision (borderline cuspal coverage)",
+ description: "A posterior tooth with extensive prior restoration, fractured cusp, or cracked tooth syndrome where you need cuspal coverage. The question: does this need an onlay (partial coverage, preserves more tooth structure) or a full crown (complete coverage, more retentive)? Onlay is preferred when adequate axial wall height remains (≥3 mm buccal + lingual + interproximal) and the patient is not a heavy bruxer. Crown is preferred when axial walls are short or there's vertical fracture risk. Modern ceramics (e.max, lithium disilicate) have made onlays more durable, expanding their indication range.",
+ keyDecisions: [
+ "Measure axial wall height with a probe. ≥3 mm of remaining tooth structure circumferentially = onlay candidate. <3 mm = full crown for retention.",
+ "Cusp involvement: if 1-2 cusps need coverage and the others have ≥3 mm axial wall, onlay works. If 3+ cusps need coverage, full crown is more predictable.",
+ "Bruxism check: parafunctional clenching/grinding = full crown with monolithic zirconia OR onlay only if night guard is part of the plan. Heavy bruxer + onlay = predictable failure.",
+ "Material choice: lithium disilicate (e.max) is the onlay workhorse - bondable, esthetic, adequate strength. Monolithic zirconia for bruxers and posterior cases where esthetic is secondary.",
+ "Cementation differs: onlay = etch + silane (e.max) + resin cement (RelyX Unicem, Variolink Esthetic). Full crown = depends on material - PFM/zirconia conventional cement (RelyX Luting), e.max bonded resin.",
+ ],
+ phases: [
+ { label: "Diagnosis & measurement", count: 2 },
+ { label: "Prep", count: 2 },
+ { label: "Lab & delivery", count: 2 },
+ ],
+ sections: [
+ { guideId: "indirect", chapterId: "ind-ch14" },
+ { guideId: "indirect", chapterId: "ind-ch6" },
+ { guideId: "indirect", chapterId: "ind-ch7" },
+ { guideId: "indirect", chapterId: "ind-ch4" },
+ ],
+ },
+ // ── Additional Surgery pathways (trauma / replantation) ─────────────────
+ {
+ id: "surgery-avulsed-tooth",
+ domain: "surgery",
+ label: "Avulsed permanent tooth (emergency replantation)",
+ description: "Patient calls or arrives within hours of trauma — a permanent tooth has been knocked out entirely. This is one of the few true dental emergencies: replantation success drops dramatically after 60 minutes of extraoral time, and after 2 hours the periodontal ligament cells are non-viable. The clinical priority is rinse the tooth (without scrubbing — preserve PDL cells), replant immediately if at all possible, splint for 7-14 days, and start RCT in 7-10 days (the pulp is necrotic but the periodontal ligament can survive if cells are preserved).",
+ keyDecisions: [
+ "TIME is the dominant factor. Replantation within 60 min has the best prognosis. After 60 min outside the mouth, PDL viability decreases; after 2 hours dry the PDL is non-viable and ankylosis is expected.",
+ "Storage medium matters: Hank's Balanced Salt Solution (HBSS, in Save-A-Tooth kits) is best. Cold milk is the next best widely-available option. Saliva (patient's own buccal vestibule) is good. Water is poor (hypotonic — bursts PDL cells). NEVER scrub or dry the tooth.",
+ "Rinse with saline ONLY at the dental office - do not handle the root. Pick up the tooth by the crown. Replant immediately into the socket; the patient usually does this themselves at home if instructed by phone.",
+ "Flexible splint (composite + 0.014-inch orthodontic wire, or fiber-reinforced ribbon) for 7-14 days. NOT rigid splinting - ankylosis is the worst outcome. Adjacent tooth or two should be included in the splint.",
+ "RCT in 7-10 days. The pulp is necrotic from avulsion; RCT prevents inflammatory root resorption. Use calcium hydroxide for 1-3 months as the intracanal medicament before final obturation (slows resorption).",
+ ],
+ phases: [
+ { label: "Emergency call + first hour", count: 2 },
+ { label: "Replant + splint", count: 2 },
+ { label: "RCT + follow-up", count: 2 },
+ ],
+ sections: [
+ { guideId: "surgery", chapterId: "surgery-ch1" },
+ { guideId: "surgery", chapterId: "surgery-ch2" },
+ { guideId: "endo", chapterId: "endo-ch1" },
+ { guideId: "endo", chapterId: "endo-ch13" },
+ ],
+ },
+ {
+ id: "surgery-fractured-anterior",
+ domain: "surgery",
+ label: "Fractured anterior tooth (vital exposure or near-exposure)",
+ description: "A young patient (usually 7-15 years old, but can be adult) presents within hours of trauma with a fractured maxillary central incisor — Ellis Class II (enamel + dentin) or Class III (enamel + dentin + pulp exposure). The immediate clinical decision: vital pulp therapy + restoration (if small exposure, recent injury, asymptomatic), or RCT + crown later. In a young patient with an open apex (under age 12 typically), vital pulp therapy preserves apex maturation and gives a much better long-term prognosis.",
+ keyDecisions: [
+ "Assess pulp status: bleeding from exposure = vital pulp. Cold-test if no exposure but deep fracture into dentin. Determine fracture extent radiographically — root fracture is a different problem (different treatment).",
+ "Time since injury: <24 hr + small exposure (<1 mm) + young patient = vital pulp therapy (pulpotomy or direct cap, depending on exposure size). >24 hr or larger exposure = RCT planning, vital pulp therapy unlikely to succeed.",
+ "Apex maturity: open apex (younger patient) = aggressive preservation effort (apexogenesis with MTA/Biodentine; revascularization protocol if necrotic). Closed apex = standard RCT if pulp can't be saved.",
+ "Bond the fragment if patient brought it: cleaned + rehydrated in saline, bonded with composite. Provides best esthetic match. If fragment is lost, build up with composite using a clear matrix and free-hand technique, plan for definitive porcelain veneer or crown in 6-12 months when soft tissue stabilizes.",
+ "Endodontic + restorative follow-up critical. Vital pulp therapy recall at 6 weeks + 6 months + 1 year with cold/EPT testing. Composite restoration recall at 6 months for esthetic + integrity check.",
+ ],
+ phases: [
+ { label: "Initial evaluation", count: 2 },
+ { label: "Vital pulp therapy or RCT", count: 2 },
+ { label: "Restoration + follow-up", count: 2 },
+ ],
+ sections: [
+ { guideId: "endo", chapterId: "endo-ch1" },
+ { guideId: "endo", chapterId: "endo-ch14" },
+ { guideId: "direct", chapterId: "dir-ch1" },
+ { guideId: "direct", chapterId: "dir-ch11" },
+ ],
+ },
+ // ── Additional Direct pathways (occlusal management) ─────────────────────
+ {
+ id: "dir-bruxer-management",
+ domain: "direct",
+ label: "Bruxer management (restorations + occlusal appliance)",
+ description: "A patient with parafunction — clenching, grinding, masseter hypertrophy, wear facets on canines and posterior teeth, and often a history of failed restorations. The restorative work isn't different (composite or crown technique-identical) but the OCCLUSAL PLANNING is different: lighter contacts, reduce posterior interferences in protrusion/laterotrusion, and ALWAYS include a night guard (Michigan splint or NTI) in the treatment plan. Without the splint, restorations have a 3-5 year survival in heavy bruxers vs 10+ years in normal patients.",
+ keyDecisions: [
+ "Diagnosis: wear facets on canine tips, attrition on cusp tips of posteriors, masseter hypertrophy (palpate the muscle in clench position), patient or partner reports of grinding sounds, morning jaw pain.",
+ "Severity grade: mild (occasional, no symptoms) = night guard + monitor. Moderate (regular grinding, mild jaw pain, wear visible) = night guard + restorative as needed + recall every 6 months. Severe (broken teeth, TMD, chronic pain) = co-treat with TMD specialist or prosthodontist.",
+ "Restorative material choice: monolithic zirconia for crowns (most fracture-resistant), bulk-fill composites for direct restorations (less stress concentration than layered), avoid feldspathic porcelain in heavy bruxers.",
+ "Occlusal adjustment at delivery: shimstock holds in MI clench, pulls through in light bite. Reduce excursive contacts on the restored tooth — anterior guidance on canines and incisors only.",
+ "Night guard is MANDATORY for any new restoration in a bruxer: hard acrylic Michigan splint (full coverage, lab-made, $300-500 patient cost), or NTI as interim (chairside, single-tooth, $150). Document the prescription in the chart.",
+ ],
+ phases: [
+ { label: "Diagnosis & planning", count: 2 },
+ { label: "Restoration", count: 2 },
+ { label: "Splint + recall", count: 2 },
+ ],
+ sections: [
+ { guideId: "direct", chapterId: "dir-ch1" },
+ { guideId: "indirect", chapterId: "ind-ch7" },
  { guideId: "direct", chapterId: "dir-ch7" },
  { guideId: "direct", chapterId: "dir-ch31" },
  ],
