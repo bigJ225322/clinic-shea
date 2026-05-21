@@ -9633,7 +9633,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  if (RPD_FIRST_PREMOLARS.has(n) || RPD_SECOND_PREMOLARS.has(n)) return "premolar";
  if (RPD_FIRST_MOLARS.has(n) || RPD_SECOND_MOLARS.has(n) || RPD_THIRD_MOLARS.has(n)) return "molar";
  return null;
- });
+ })();
  let codes = basePool.filter(({ code }) => {
  if (code === "D1110" || code === "D1120") return prophyChecked;
  if (code === "D1310") return nutriChecked && prophyChecked;
@@ -9680,7 +9680,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </span>
  </div>
 ));
- })}
+ })()}
  </div>
  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", flexShrink: 0 }}>
  <button className="primary" disabled={!note} onClick={handleCopy}
@@ -10447,7 +10447,7 @@ const SWADE_FREQ = (() => {
  const freq = {};
  for (const m of matches) freq[m] = (freq[m] || 0) + 1;
  return freq;
-});
+})();
 
 // Predoctoral Fee Guide — patient-facing fees, keyed by CDT code.
 // Only non-zero fees are included; $0/N/C codes are omitted.
@@ -11355,7 +11355,7 @@ function RVUs() {
  </div>
  </div>
 );
- })}
+ })()}
 
  <p style={{
  marginTop: "14px", fontSize: "11px",
@@ -12672,7 +12672,7 @@ function PETimeline({ pes, selectedId, onSelect }) {
  {showAS && trackGroup("AS only")}
  </div>
 );
- })}
+ })()}
  </div>
 );
  })}
@@ -15774,14 +15774,14 @@ function RPDPaperFormArchDrawing({
  if (isPresent(t)) return t;
  }
  return null;
- });
+ })();
  const distalAbutment = (() => {
  for (let i = lastIdx + 1; i < archTeeth.length; i++) {
  const t = archTeeth[i];
  if (isPresent(t)) return t;
  }
  return null;
- });
+ })();
  const abutments = isFPD? [mesialAbutment, distalAbutment].filter(Boolean): [];
 
  // Label position — centered on the missing run, lingual to avoid the
@@ -15889,7 +15889,7 @@ function RPDPaperFormArchDrawing({
 
  {/* Fixed replacement overlay — only when isSingleToothCase. Drawn
  after teeth so it sits on top of the missing-tooth outline. */}
- {drawFixedReplacement}
+ {drawFixedReplacement()}
 
  {!isFixedTreatmentCase && (
  <>
@@ -16080,7 +16080,7 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false }) {
  const u = attrs.undercutLocation || "mid-buccal";
  return u === "mesio-buccal"? "MB": u === "disto-buccal"? "DB"
 : u === "mesio-lingual"? "ML": u === "disto-lingual"? "DL": "mid-B";
- })}`;
+ })()}`;
  const bracing = a.reciprocation
 ? (a.reciprocation.type === "plate"? `${caseInput.arch === "maxillary"? "Palatal": "Lingual"} plate`
 : a.reciprocation.type === "arm"? `${caseInput.arch === "maxillary"? "Palatal": "Lingual"} arm`
@@ -17421,7 +17421,7 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
 )}
  </div>
 );
- })}
+ })()}
  {rationale && (
  <div style={{
  fontSize: "12px", color: "var(--ink-soft)", fontStyle: "italic",
@@ -18795,7 +18795,7 @@ function RPDHelper() {
 )}
  </RPDCollapsibleSection>
 );
- })}
+ })()}
 
  </>}
  </div>
@@ -19113,7 +19113,7 @@ const GUIDES = [
  });
  }
  });
-});
+})();
 
 // Inline-markdown renderer: bold (**) and italic (*). No HTML escaping needed
 // since content is hand-authored above. Returns an array of React nodes.
@@ -21954,7 +21954,7 @@ const CHAPTER_INDEX = (() => {
  });
  });
  return index;
-});
+})();
 
 // Validate all pathway references on load. Logs warnings for unresolved refs.
 (() => {
@@ -21968,7 +21968,7 @@ const CHAPTER_INDEX = (() => {
  }
  });
  });
-});
+})();
 
 function Pathways() {
  // Nothing auto-selected: user opens the tab to a clean state and must
@@ -22468,7 +22468,7 @@ function Pathways() {
 ))}
  </div>
 );
- })
+ })()
 ): (
  <div style={{ fontSize: "0.85rem", color: "var(--ink-faint)", fontStyle: "italic" }}>
  {searchQuery
@@ -22578,7 +22578,7 @@ function Pathways() {
  }}
  >{allCollapsed ? "Expand all" : "Collapse all"}</button>
  );
- })}
+ })()}
  </div>
  {(() => {
  // Phase-aware TOC rendering. If the pathway has a `phases` array, render
@@ -22631,7 +22631,7 @@ function Pathways() {
  })}
  </div>
  );
- })}
+ })()}
  </div>
 
  {/* Sections rendered inline — each is a collapsible card with a
@@ -22854,7 +22854,7 @@ function PathwaySidebarTOC({ sections, activeIdx, collapsedSections, onToggle, o
  )}
  </div>
  );
- })}
+ })()}
  <ol style={{
  margin: 0, padding: 0, listStyle: "none",
  display: "flex", flexDirection: "column",
