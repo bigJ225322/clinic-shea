@@ -149,3 +149,47 @@ These are blocked on the question: should peds/endo/OS/perio/dx-tp get new top-l
 - Common prescriptions (Swade p. 188) — Notes-tab material
 
 ---
+
+## 2026-05-21 — Clean bill of health (debugging sweep loop)
+
+Two consecutive iterations of the full structured debugging sweep returned **zero console errors** across every interactive surface in the app. Stopping the iteration loop here.
+
+### Coverage per iteration
+
+**Step 1 — All 6 tabs:** Note, Steps, Codes, PEs, RPD, Cases. Each tab click captured zero new `console.error` calls; each rendered the expected initial state (Note 161 chars empty placeholder, Steps 373 chars with dropdowns, Codes 4202 chars with table, PEs 1814 chars, RPD 235 chars with arch chart, Cases 230 chars with domain pills).
+
+**Step 2 — Steps tab, full section × procedure sweep:** all 11 sections cycled (exams, perio, restorative, fixed, peds, dentures, lab, implant, digital, endo, misc), all 46 procedures across them changed via the procedure dropdown. Zero errors. The previously-crashing Perio section is now stable across all 5 of its procedures (Prophy, SRP, Perio Re-Eval, Perio Maintenance, OHI).
+
+**Step 3 — Cases tab, full domain × pathway sweep:** all 10 domains clicked, every pathway pill within each domain clicked (then deselected for the next iteration). Pill counts per domain:
+- Direct Restorations: 18 ✓
+- Indirect Restorations: 23 ✓
+- Endodontics: 9 ✓
+- Oral Surgery: 9 ✓
+- Periodontics: 5 ✓
+- Pediatric Dentistry: 5 ✓
+- Removable Partial Dentures: 12 ✓
+- Complete Dentures: 8 ✓
+- Cross-disciplinary: 8 ✓
+- Repair situations: 10 ✓
+
+**Total: 107 pathways exercised per iteration, zero errors, zero pathways under the 1000-char content threshold.**
+
+**Step 4 — RPD tab:** Case Inputs popup opened correctly (bodyLen 235 → 761 with all input fields visible), click-outside on the header closed it (back to 235). All 32 teeth (16 maxillary + 16 mandibular, exercised via `g.rpd-tooth-active` SVG group clicks) clicked across both arches without producing any React errors.
+
+**Step 5 — Note tab:** category dropdown (Restorative) + procedure dropdown ("Resin Composite — Class I" iteration 2, "Amalgam" iteration 1) generated full notes (1352–1424 chars of templated output). Zero errors.
+
+### Sweep mechanics
+
+- Error capture: wrapped `console.error` with a hook that filtered Vite/React DevTools noise and pushed everything else into `window.__sweepErrs`. Compared lengths before/after every interaction.
+- Full page reload between iterations to ensure each sweep started from a clean React state and a fresh console.
+- Cases pill sweep was chunked one domain at a time (the single-eval all-domains version hit the 30s `preview_eval` timeout because of the 107-pill click count).
+
+### Commits in this loop (none)
+
+No fixes were necessary — both sweeps produced zero errors. The previous loop's paren-strip casualty repairs (commits `e0edd7a`, `472edfe`, `a378f1d`, `a61c373`, `1319386`) appear to have caught everything. The 90-min content-expansion loop's additions (35 new pathways, 4 new domains, 3 deep chapters) survived this sweep cleanly.
+
+### Stopping criteria
+
+Per the task spec: 2 consecutive clean sweeps → write VETTING-LOG.md entry → stop scheduling iterations. Both conditions met. Loop closed.
+
+---
