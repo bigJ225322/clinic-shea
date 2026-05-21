@@ -11005,6 +11005,120 @@
             ]
           },
           {
+            "id": "dir-ch19",
+            "num": 19,
+            "title": "PRR (Preventive Resin Restoration) — small cavitation in a sealable surface",
+            "verdict": "PRR is the case in between a sealant and a Class I composite — there's a small cavitation that needs restoration, but the surrounding occlusal anatomy is sealable. You restore the cavitation with composite AND seal the rest of the occlusal at the same visit. Single code D2391 (cannot bill sealant separately on the same tooth on the same day). The case turns on minimal-prep philosophy (the smallest cavity prep that addresses the caries), uniform etch + bond across the whole occlusal surface, composite in the cavitation, sealant material as the top layer covering both composite and remaining pits. Source: Swade pp. 136-137.",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "PRR comes up when you do a sealant exam and find one tooth with a small cavitation that has progressed past the enamel — a sealant alone is now insufficient, but the tooth isn't a full Class I composite case either. The minimal-prep restoration + sealant-over-the-rest combination is faster than a full Class I composite, less invasive, and codes as D2391 (resin-based composite, 1 surface, posterior) rather than as a sealant + separate restoration. Note: DHS will not cover both a composite AND a sealant on the same tooth on the same day, so PRR is the right single code."
+              },
+              {
+                "kind": "section",
+                "text": "Materials checklist (Swade)"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "**From sterilization:** peds composite kit, handpieces, peds burs, composite finishing burs (not peds-specific), restorative burs (not peds), composite gun, curing light, peds rubber dam kit, nitrous nose, peds goggles.",
+                  "**From locker:** loupes / eye protection.",
+                  "**In clinic:** anesthetic needle/carpule/shield/topical, rubber dam, wedget, Isodry, etch, ScotchBond, Shofu, articulating paper."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Procedure (Swade 10-step sequence)"
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "**Present patient to instructor BEFORE bringing them to the chair.** Cover: patient (age, gender, MH, sig dental history, behavior), restorative plan (procedures for today, sequencing if multiple teeth), anesthesia plan (anesthetic + injection type + how much + nitrous), isolation plan. Other useful mentions: how recent the treatment plan is, date of last radiographs.",
+                  "**Call patient in.** Find patient + guardian in waiting room. Ask the guardian if anything has changed (med history, medications, allergies, etc.). Explain what you're doing today and how long they should expect to wait. Leave guardian in waiting room, bring patient back. **Weigh the patient** (peds dosing depends on it).",
+                  "**Administer nitrous oxide** if planned.",
+                  "**Give local anesthetic.** **1 carpule is the limit** — check with instructor before delivering more than 1.",
+                  "**Isolate.** Isodry is acceptable. If using rubber dam: tie floss to the clamp; instead of punching several holes, punch 2 holes ½ inch apart and use scissors to cut between them — allows quicker placement on a peds patient.",
+                  "**Complete prep.** Remove decay with high-speed then slow-speed burs. With slow-speed round bur: infected dentin reads wet, cheesy, clumpy; healthy dentin reads dry, chalky, dusty. **Only remove carious enamel + dentin** — the point of a PRR is to make the SMALLEST possible preparation. Depth is usually 1.0-1.5 mm and typically only involves pits (no need to extend into grooves unless cariously involved). If caries is larger than expected or you're close to the pulp, check with instructor.",
+                  "**Check in** — instructor checks the cavity preparation.",
+                  "**Restore, polish, and adjust.** Etch enamel first (the ENTIRE occlusal surface to allow sealant placement later), then dentin → wait 15 sec → rinse → lightly dry leaving dentin moist (high-evac suction + light quick air dry; dentin should be glossy without pooling). Apply ScotchBond in a vigorous scrubbing motion for 20 sec → air thin for 5 sec → light cure 10 sec. If contaminated: re-etch for 5 sec only, then proceed. Place composite in increments and cure 20-40 sec each (often 1 increment due to small prep size); cure final increment 60 sec. **Place a sealant over the composite restoration** and cure 20 sec (10 sec on high). Remove Isodry / rubber dam, check occlusion with articulating paper, finish and polish.",
+                  "**Complete codes.** D2391 (Resin-based composite — 1 surface, posterior). **Cannot complete codes for composite AND sealant on the same tooth in the same day** because DHS will not cover both. The PRR is one code that covers both.",
+                  "**Check in** — instructor checks final restoration, swipes EPR/codes/notes."
+                ]
+              },
+              {
+                "kind": "callout",
+                "title": "PRR vs sealant vs Class I composite — the decision",
+                "body": "**Sealant only (D1351):** caries-free pits/fissures OR non-cavitated enamel lesion. No drilling.\n\n**PRR (D2391):** small cavitation in one or two pits, surrounding pits/fissures are sealable. Minimal prep + composite + sealant overlay, all in one tooth, one visit, one code.\n\n**Class I composite (D2391):** larger cavitation that requires a more substantial prep. No sealant overlay needed — the composite IS the restoration.\n\nThe code D2391 covers both PRR and a simple Class I composite — they bill the same. The PRR distinction is procedural (sealant overlay) not billing."
+              },
+              {
+                "kind": "callout",
+                "title": "Peds patient prep notes",
+                "body": "Most PRRs are placed on pediatric patients. Specific peds considerations: weigh the patient before dosing anesthesia (1 carpule is the routine limit), use Isodry over rubber dam when possible to avoid clamp-related complaints, give 100% oxygen at 4 L/min for 5 minutes at the end if nitrous was used, counsel the guardian about post-op numbness + lip/tongue biting watching. Sarah Swade / Dr. signature on the note."
+              },
+              {
+                "kind": "troubleshoot",
+                "title": "PRR pitfalls",
+                "body": "**Prep extended too far into the grooves:** the point of PRR is minimal prep. If you find yourself extending into surrounding grooves to follow caries, the case has become a Class I composite — not a PRR. Don't try to keep it minimal at the expense of leaving caries. **Sealant overlay debonded within weeks:** moisture contamination during the etch — re-isolate, re-etch (5 sec), re-bond, re-place. **Composite + sealant high on occlusion:** the sealant material over the composite added bulk. Adjust gently with a fine finishing bur. **Billing wrong code (D2391 + D1351):** DHS doesn't cover both on the same tooth same day. Just the D2391. Educate yourself before the codes step."
+              }
+            ]
+          },
+          {
+            "id": "dir-ch22",
+            "num": 22,
+            "title": "SDF (Silver Diamine Fluoride) — non-surgical caries arrest",
+            "verdict": "SDF is a topical liquid that arrests caries in place — no drilling, no anesthesia, no restoration required. Used for cases where definitive treatment isn't possible: very young / very anxious patients, patients with significant medical or behavioral barriers to operative work, palliative cases in the elderly, root caries in patients who can't tolerate restorative procedures. The patient (or guardian) MUST be informed that SDF stains carious lesions black permanently — show pictures during consent. Source: Swade p. 133.",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "SDF is a 38% silver diamine fluoride solution that's painted onto carious lesions. The silver kills cariogenic bacteria + forms a precipitate that mechanically blocks dentinal tubules; the fluoride remineralizes adjacent tooth structure. The result is an arrested carious lesion — the surface stays soft initially but hardens over weeks, and the bacterial activity stops. The lesion turns BLACK permanently, which is the trade-off the patient/guardian must understand before consenting."
+              },
+              {
+                "kind": "section",
+                "text": "Materials checklist (Swade)"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "**In clinic:** SDF (38% solution, single-use vial or capsule), dappen dish, microbrush.",
+                  "**In unit:** cotton rolls, gauze."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Procedure (Swade 9-step sequence)"
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "**OBTAIN INFORMED CONSENT FROM PARENT, INCLUDING SHOWING PICTURES OF SDF-STAINED LESIONS.** This is the single most important step. The carious lesion will turn permanently black. If the parent is not OK with that — even if you've explained that it's only the carious area, not the whole tooth — do NOT proceed. Have the conversation BEFORE you set up.",
+                  "**Put 1 drop of SDF in a dappen dish.** That's enough for several lesions; SDF goes a long way.",
+                  "**Apply a thick layer of Vaseline to the lips.** SDF will stain skin temporarily — Vaseline prevents this. Don't skip on a child patient.",
+                  "**Isolate the tooth with cotton rolls**, or retract with your hand if possible. Rubber dam is overkill; cotton rolls suffice.",
+                  "**Dry the tooth completely using gauze, then air.** SDF needs a dry surface to penetrate.",
+                  "**Apply SDF with a microbrush** — you don't need a lot, just a very thin coating.",
+                  "**Wait 60 seconds** for SDF to dry/be absorbed.",
+                  "**Dry the tooth with cotton roll** and wipe away remaining wet SDF.",
+                  "**Rinse the tooth and suction.**"
+                ]
+              },
+              {
+                "kind": "callout",
+                "title": "Informed consent talking points",
+                "body": "Before doing SDF, walk the parent through:\n\n**Pros:** No drilling, no anesthesia, no nitrous, no chair time beyond ~5 minutes per tooth. Arrests the caries — buys time. Can be repeated every 6-12 months.\n\n**Cons:** Carious areas will turn permanently BLACK (show pictures from a reference). Soft tissue can develop transient staining that resolves in 1-2 weeks. The treatment doesn't restore the tooth — if a definitive restoration is eventually needed, SDF doesn't prevent it.\n\n**When SDF is the right call:** patient is too young / too anxious for operative work, the carious lesion is not symptomatic, the parent is informed about and OK with the staining, and the goal is buying time until definitive treatment is feasible."
+              },
+              {
+                "kind": "callout",
+                "title": "After SDF — what happens to the tooth",
+                "body": "Over 2-4 weeks, the carious surface hardens. The tooth still LOOKS carious (black + cavitated) but the bacterial activity has stopped. The lesion can still progress mechanically (the patient can chip more tooth off) but the caries itself isn't actively destroying tooth structure. Re-application every 6-12 months maintains the arrest. If a definitive restoration is later placed, the stained dentin can be excavated normally OR left in place under the restoration (since it's arrested)."
+              },
+              {
+                "kind": "troubleshoot",
+                "title": "SDF pitfalls",
+                "body": "**Skin staining on the patient's face or lips:** insufficient Vaseline. Wipe immediately with a damp gauze — staining is transient (1-2 weeks) on skin. Counsel the parent. **Soft tissue staining adjacent to the tooth:** transient, resolves in 1-2 weeks. Counsel the parent before they panic. **Parent unhappy with the black staining at follow-up:** this is the informed consent failure. Document the consent conversation carefully BEFORE applying. If the parent already consented and is now unhappy, document, explore restoration options. **SDF dripped onto operatory countertops:** SDF stains EVERYTHING. Wipe immediately; permanent staining is the rule. Keep SDF over the dappen dish and microbrush only. **Lesion didn't arrest:** very deep lesions or those with pulpal involvement won't arrest with SDF alone. Re-evaluate with bitewing; may need definitive treatment."
+              }
+            ]
+          },
+          {
             "id": "dir-ch20",
             "num": 20,
             "title": "Sedative restoration (D2940) — emergency IRM placement",
