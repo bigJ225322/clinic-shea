@@ -10743,6 +10743,268 @@
             ]
           },
           {
+            "id": "dir-ch18",
+            "num": 18,
+            "title": "Local anesthesia reference — maxillary + mandibular blocks",
+            "verdict": "Comprehensive reference for every block technique used in restorative dentistry — maxillary infiltrations + 6 named max blocks, the IAN + long buccal + mental for the mandible, plus the innervation lookup table and the maximum-dose table for every anesthetic-vasoconstrictor combination. Use as a chairside reference when planning anesthesia for a procedure that's outside your routine. Source: Swade pp. 175-180.",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "Most restorative procedures use infiltration (maxillary) or IAN block (mandibular) and never need anything else. The other blocks come up when infiltration won't reach (e.g., dense maxillary bone in older patients), when a single tooth needs deep anesthesia and the infiltration didn't take, or when the procedure crosses an anatomic boundary (e.g., a maxillary midline frenectomy needs both ASA and nasopalatine for bilateral coverage). The first table below maps every tooth + soft-tissue area to the relevant block. The second table is the maximum-dose table for safety calculations."
+              },
+              {
+                "kind": "section",
+                "text": "General considerations (apply to every block)"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "Do not insert the needle to the full length at the hub — if it breaks, retrieval is difficult.",
+                  "Do not change needle direction while it's deep in tissue.",
+                  "**Always aspirate before injection** to avoid intravascular delivery.",
+                  "Inject slowly to minimize pain.",
+                  "Do not inject into or through an infected area.",
+                  "Use needles no smaller than 27-gauge — higher gauge (smaller bore) makes aspiration unreliable."
+                ]
+              },
+              {
+                "kind": "h2",
+                "id": "maxillary-anesthesia",
+                "text": "Maxillary anesthesia"
+              },
+              {
+                "kind": "section",
+                "text": "1. Buccal infiltration (single maxillary tooth)"
+              },
+              {
+                "kind": "paragraph",
+                "text": "**Anesthetizes:** the individual maxillary tooth + its associated buccal gingiva (sometimes palatal gingiva, depending on volume). The injection works by depositing anesthetic near the bone supporting the tooth; the solution penetrates the cortex to reach the nerve."
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "Apply topical (20% benzocaine on a cotton-tipped applicator; have the patient or the cheek hold it in place 2-3 min). Dry the area thoroughly with gauze first.",
+                  "Pull the mucous membrane outward and downward to extend the mucosa and delineate the mucobuccal fold.",
+                  "Puncture the mucobuccal fold with the bevel facing bone, aligned with the center of the tooth, aimed toward the maxilla.",
+                  "Contact maxilla, then withdraw the needle 1 mm.",
+                  "Aspirate.",
+                  "Deposit anesthetic.",
+                  "**Failure modes:** solution deposited too far from the periosteum (needle too high above or too low below the root), or unusually dense bone — the infiltration may not take."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "2. Palatal infiltration (single tooth)"
+              },
+              {
+                "kind": "paragraph",
+                "text": "**Anesthetizes:** palatal gingiva immediately around a single tooth."
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "Apply topical.",
+                  "Apply pressure to the injection site with a cotton-tipped applicator to blanch the tissue (left hand).",
+                  "Puncture palatal gingiva within the blanched area, close to the applicator.",
+                  "Deposit a small volume while simultaneously advancing the needle until bone is contacted."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "3. PSA block (posterior superior alveolar)"
+              },
+              {
+                "kind": "paragraph",
+                "text": "**Anesthetizes:** maxillary molars + associated buccal gingiva. **Caveat:** the MB root of the maxillary 1st molar is usually innervated by the MSA (not PSA) and may require an additional MSA injection or buccal infiltration around the 1st molar."
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "Apply topical.",
+                  "Retract the cheek laterally.",
+                  "Puncture the mucobuccal fold just distal to the distobuccal root of the maxillary 2nd molar.",
+                  "Direct the needle toward the maxillary tuberosity (upward, backward, inward), then along the curvature of the maxilla to a depth of 2.0-2.5 cm. **Don't advance too far posteriorly** — risks a CN V division II block. **If the needle contacts bone, withdraw and redirect more laterally.**",
+                  "Aspirate (critical — risk of injection into the pterygoid plexus, which causes hematoma).",
+                  "Deposit anesthetic."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "4. MSA block (middle superior alveolar)"
+              },
+              {
+                "kind": "paragraph",
+                "text": "**Anesthetizes:** maxillary premolars + MB root of maxillary 1st molar + associated buccal gingiva."
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "Apply topical.",
+                  "Retract the cheek laterally.",
+                  "Puncture the mucobuccal fold between the maxillary 2nd premolar and 1st molar.",
+                  "Direct the needle posteriorly at a 45° angle, into the tissue at 45°.",
+                  "Advance to a depth of 1-1.5 cm.",
+                  "Aspirate. Deposit anesthetic."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "5. ASA block (anterior superior alveolar)"
+              },
+              {
+                "kind": "paragraph",
+                "text": "**Anesthetizes:** maxillary incisors + canine + associated buccal gingiva. **Landmark:** the apex of the canine tooth."
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "Apply topical. Retract the lip anteriorly and locate the mucobuccal fold.",
+                  "Puncture the mucobuccal fold at the apex of the canine tooth.",
+                  "Insert the needle at the intersection of the mucobuccal fold and the apex / center of the canine at a 45° angle.",
+                  "Advance to a depth of 1-1.5 cm.",
+                  "Aspirate. Deposit anesthetic."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "6. Greater palatine block"
+              },
+              {
+                "kind": "paragraph",
+                "text": "**Anesthetizes:** posterior 2/3 of the palatal gingiva, unilateral, from premolars distally."
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "Locate the greater palatine foramen via palpation — 1 cm medial from the distal of the 2nd molar; a cotton-tipped applicator will fall into the depression.",
+                  "Apply topical.",
+                  "Apply pressure with the applicator to blanch the tissue for 30 sec.",
+                  "Puncture within the blanched area, close to the applicator, at a 90° angle to the curvature of the hard palate. **Do not advance the needle into the foramen.**",
+                  "Aspirate.",
+                  "**Deposit ¼ carpule only** — more risks separating the mucosa from the palate (necrosis)."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "7. Nasopalatine block"
+              },
+              {
+                "kind": "paragraph",
+                "text": "**Anesthetizes:** anterior 1/3 of the palatal gingiva — canine to canine, bilaterally (single injection covers both sides)."
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "Locate the incisive foramen via palpation — underneath the incisive papilla, ~0.5 cm posterior to the central incisors at the midline.",
+                  "Apply topical.",
+                  "Apply pressure with the applicator to blanch the tissue for 30 sec.",
+                  "Puncture the palatal mucosa just lateral to the incisive papilla.",
+                  "Advance 3-4 mm medially or until the needle contacts bone.",
+                  "Aspirate.",
+                  "**Deposit ¼ carpule only** — same necrosis caveat as greater palatine."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "8. Infraorbital block"
+              },
+              {
+                "kind": "paragraph",
+                "text": "**Anesthetizes:** incisors + premolars + buccal gingiva + lower eyelid + upper cheek + part of nose + upper lip (extraoral coverage). Used for procedures involving the upper lip or for cases where ASA + MSA combined aren't covering well."
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "Locate the infraorbital foramen via palpation — just medial to the intersection of a vertical line from the pupil and the inferior border of the infraorbital ridge.",
+                  "Apply topical.",
+                  "Place the index finger of the left hand above the infraorbital foramen, retract the cheek with the thumb.",
+                  "Puncture the mucobuccal fold at the junction of the premolars; direct the needle parallel to the long axis of the 2nd premolar, palpating its location as the needle advances.",
+                  "Advance until adjacent to the infraorbital foramen, about 1.5-2 cm. **If the angle is too acute the needle hits the maxillary eminence; if too superior the needle enters the orbit.**",
+                  "Aspirate.",
+                  "Deposit anesthetic while holding firm pressure over the infraorbital ridge — prevents ballooning of the lower eyelid."
+                ]
+              },
+              {
+                "kind": "h2",
+                "id": "mandibular-anesthesia",
+                "text": "Mandibular anesthesia"
+              },
+              {
+                "kind": "section",
+                "text": "1. IAN block + lingual block (the workhorse)"
+              },
+              {
+                "kind": "paragraph",
+                "text": "**Anesthetizes:** ALL mandibular teeth + buccal gingiva from premolars to midline + lingual gingiva + floor of mouth + tongue + lower lip + skin of chin."
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "Palpate the retromolar fossa with index finger or thumb. Identify the coronoid notch (greatest depth of the anterior border of the ramus).",
+                  "With thumb in the mouth and index finger placed externally behind the ramus, retract the tissues toward the buccal side and visualize the pterygomandibular triangle.",
+                  "Hold the syringe parallel to the occlusal surfaces of the teeth and angled so the barrel lies between the premolars on the opposite side of the mandible.",
+                  "Puncture the pterygomandibular triangle 1 cm above the occlusal surface of the molars. **If the needle enters too low** (at the level of the teeth), anesthetic is deposited over the bony canal and prominence (lingula) that house the mandibular nerve — not over the nerve.",
+                  "There may be slight resistance as the needle passes through the ligaments and muscles covering the internal surface of the mandible.",
+                  "Stop when the needle has reached bone — this signifies contact with the posterior wall of the mandibular sulcus. **Failure to contact bone usually means the needle was directed too posteriorly toward the parotid gland**, which anesthetizes the facial nerve instead.",
+                  "After reaching bone, withdraw slightly. Aspirate. Deposit anesthetic.",
+                  "**Deposit anesthetic while withdrawing the needle** to ensure lingual nerve anesthesia (the lingual nerve sits anterior to the IAN in the same compartment)."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "2. Long buccal block"
+              },
+              {
+                "kind": "paragraph",
+                "text": "**Anesthetizes:** buccal gingiva of mandibular molars. Required IN ADDITION to the IAN block for procedures involving molar buccal soft tissue (e.g., extractions)."
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "Apply topical.",
+                  "Pull the cheek laterally.",
+                  "Puncture the mucosa 1 mm lateral to the molars at the anterior border of the ramus, in the occlusal plane.",
+                  "Advance 3-4 mm.",
+                  "Aspirate. Deposit anesthetic."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "3. Mental nerve block"
+              },
+              {
+                "kind": "paragraph",
+                "text": "**Anesthetizes:** premolars + canine + (sometimes incisors) + buccal gingiva from premolars to midline + lower lip + skin of chin. Useful as a less-invasive alternative to IAN for procedures involving only the anterior mandible."
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "Locate the mental foramen via palpation — halfway between the upper and lower edges of the mandible, underneath the 2nd premolar. **Alternative:** locate the foramen on the patient's panoramic radiograph.",
+                  "Apply topical.",
+                  "Retract the lower lip.",
+                  "Puncture the mucosa at the depth of the buccal vestibule at the 2nd premolar, parallel to its long axis.",
+                  "Insert the needle ~1 cm.",
+                  "Aspirate. Deposit anesthetic."
+                ]
+              },
+              {
+                "kind": "callout",
+                "title": "Oral cavity innervation — tooth/soft tissue → block lookup",
+                "body": "**Maxillary (CN V2):**\n- Incisors + buccal gingiva: ASA n. — buccal infiltration OR ASA block.\n- Canine + buccal gingiva: ASA n. — buccal infiltration OR MSA block.\n- Premolars + buccal gingiva: MSA n. — buccal infiltration OR MSA block.\n- Molars + buccal gingiva: PSA n. (MB root of 1st molar 75% MSA) — buccal infiltration OR PSA block.\n- Palatal gingiva, anterior (canine to canine): nasopalatine n. — palatal infiltration OR nasopalatine block.\n- Palatal gingiva, posterior: greater palatine n. — palatal infiltration OR greater palatine block.\n- Upper lip: infraorbital n. — infraorbital block.\n\n**Mandibular (CN V3):**\n- Incisors / canine / premolars: inferior alveolar n. (some incisor innervation from mylohyoid n.) — IAN block OR mental block.\n- Molars: inferior alveolar n. (mesial root of 1st molar sometimes from mylohyoid) — IAN block.\n- Buccal gingiva, incisors to premolars: mental n. — mental block OR buccal block.\n- Buccal gingiva, molars: long buccal n. — long buccal block.\n- Lingual gingiva / floor of mouth / tongue (anterior 2/3): lingual n. — lingual block (usually on withdrawal of IAN block).\n- Lower lip: mental n. — mental block."
+              },
+              {
+                "kind": "callout",
+                "title": "Maximum dose reference (Swade p. 180)",
+                "body": "**Per carpule (1.8 mL):**\n- 2% lidocaine: 36 mg\n- 3% mepivacaine: 54 mg\n- 4% prilocaine or 4% articaine: 72 mg\n\n**Maximum total dose (typical adult):**\n- 2% lidocaine + 1:100k epi: 500 mg max, ≈13 carpules. With 1:50k epi: 5 carpules (epi limits before lidocaine does).\n- 3% mepivacaine (no vasoconstrictor): 400 mg max, ≈7 carpules.\n- 2% mepivacaine + 1:200k levonordefrin: 400 mg max, ≈11 carpules.\n- 4% prilocaine + 1:200k epi: 600 mg max, ≈8 carpules.\n- 4% articaine + 1:200k epi: 500 mg max, ≈6 carpules. With 1:100k epi: ≈6 carpules.\n- 0.5% bupivacaine + 1:200k epi: 90 mg max, ≈10 carpules.\n\n**By weight:** lidocaine 7 mg/kg, mepivacaine 6.6 mg/kg, prilocaine 8 mg/kg, articaine 7 mg/kg, bupivacaine 1.3 mg/kg.\n\n**Vasoconstrictor limits (typical adult):** 0.2 mg epi total. With cardiac patients, 0.04 mg epi total. 1:100k = 0.018 mg per carpule; 1:50k = 0.036 mg per carpule; 1:200k = 0.009 mg per carpule."
+              },
+              {
+                "kind": "troubleshoot",
+                "title": "Anesthesia pitfalls",
+                "body": "**IAN block didn't take (patient still feels the tooth):** common causes — needle was too low (deposited over bone canal, not nerve), accessory innervation from mylohyoid (give a buccal infiltration of the affected tooth as a supplement), or patient anatomy with accessory canals. Re-block from a different angle, OR supplement with intraligamentary or intraosseous. **PSA block caused hematoma:** needle entered the pterygoid plexus — apply pressure for several minutes, ice on the cheek. Bruising lasts 7-10 days; counsel the patient. **Patient develops Bell's-palsy-like symptoms after IAN:** facial nerve (CN VII) was anesthetized because the needle was directed too posteriorly into the parotid gland. Effect is temporary; reassure the patient, cover the eye to protect from drying out, anesthesia wears off in 1-3 hours. **Patient feels electric shock during IAN:** the needle hit the IAN directly — withdraw 1-2 mm before depositing. Persistent paresthesia is rare but documented; refer if it doesn't resolve. **Palatal injection caused necrosis:** too much volume deposited — limit to ¼ carpule on greater palatine and nasopalatine. Necrotic area heals in 2-3 weeks; topical analgesic + reassurance."
+              }
+            ]
+          },
+          {
             "id": "dir-ch20",
             "num": 20,
             "title": "Sedative restoration (D2940) — emergency IRM placement",

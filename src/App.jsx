@@ -18833,6 +18833,7 @@ const GUIDES = [
  { id: "dir-ch15", num: 15, title: "Direct composite veneer — single tooth shape correction", stub: true },
  { id: "dir-ch16", num: 16, title: "Amalgam restoration — Class I and Class II", stub: true },
  { id: "dir-ch17", num: 17, title: "Sealants — caries prevention + incipient-lesion arrest", stub: true },
+ { id: "dir-ch18", num: 18, title: "Local anesthesia reference — maxillary + mandibular blocks", stub: true },
  ],
  },
  {
@@ -19545,6 +19546,9 @@ const PATHWAY_GROUPS = {
  { label: "Preventive", ids: [
  "dir-sealant",
  ]},
+ { label: "Reference & adjunctive", ids: [
+ "dir-la-reference",
+ ]},
  ],
  indirect: [
  { label: "Crowns", ids: [
@@ -20122,6 +20126,26 @@ const PATHWAYS = [
  { guideId: "direct", chapterId: "dir-ch2" },
  { guideId: "direct", chapterId: "dir-ch17" },
  { guideId: "direct", chapterId: "dir-ch31" },
+ ],
+ },
+ {
+ id: "dir-la-reference",
+ domain: "direct",
+ label: "Local anesthesia reference (max + mand blocks, dosing)",
+ description: "Chairside lookup for every block technique used in restorative dentistry: 8 maxillary blocks (buccal infiltration, palatal infiltration, PSA, MSA, ASA, greater palatine, nasopalatine, infraorbital) and 3 mandibular blocks (IAN + lingual, long buccal, mental). Plus the innervation table (tooth/soft tissue → recommended block) and the max-dose table for every anesthetic-vasoconstrictor combination. Use when a routine infiltration didn't take, when the procedure crosses an anatomic boundary, or when you need to verify max-dose safety for a long appointment.",
+ keyDecisions: [
+ "Default to infiltration (maxillary) or IAN block (mandibular) for most restorative work — the named blocks come up only when the routine approach won't reach.",
+ "Always aspirate before injection. Always use a needle no smaller than 27-gauge so aspiration is reliable.",
+ "For palatal blocks (greater palatine, nasopalatine), deposit ¼ carpule only — more risks separating mucosa from palate (necrosis).",
+ "For PSA block, watch the depth and angle: too deep / too posterior risks CN V division II block; too lateral risks pterygoid plexus hematoma.",
+ "Use the max-dose table for safety — lidocaine 7 mg/kg, mepivacaine 6.6 mg/kg, articaine 7 mg/kg by weight. Vasoconstrictor (epi) max 0.2 mg total in healthy adults; 0.04 mg in cardiac patients.",
+ ],
+ phases: [
+ { label: "General principles", count: 1 },
+ { label: "Block techniques", count: 1 },
+ ],
+ sections: [
+ { guideId: "direct", chapterId: "dir-ch18" },
  ],
  },
  // ── Indirect ────────────────────────────────────────────────────────────
