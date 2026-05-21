@@ -22898,6 +22898,11 @@ const TABS = [
  { id: "browse", label: "Steps", hint: "Read the guide" },
  { id: "rvus", label: "Codes", hint: "Progress & code lookup" },
  { id: "pes", label: "PEs", hint: "Performance exam reference" },
+ // RPD then Cases as the last two tabs (per user). RPD is the
+ // procedural-helper context-switcher; Cases is the scenario-driven
+ // customized guide and sits at the far right as the primary
+ // workflow-launching tab.
+ { id: "helpers", label: "RPD", hint: "Design helper for removable partial dentures" },
  // "Cases" is the renamed Pathways tab — internal id stays "pathways"
  // so any deep links / cached state continues to work; only the visible
  // label changed. The standalone "Guides" tab was cut earlier; its
@@ -22906,7 +22911,6 @@ const TABS = [
  // component + GUIDES const are retained because the Cases patcher
  // reads them; they're just not directly navigable as a top-level tab.
  { id: "pathways", label: "Cases", hint: "Customized guide for your patient case" },
- { id: "helpers", label: "RPD", hint: "Design helper for removable partial dentures" },
 ];
 
 // Engine names are exported from src/rpd-engine.js directly. Tests import
