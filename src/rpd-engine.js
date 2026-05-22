@@ -738,13 +738,13 @@ function planRetentionClassI(caseInput, kennedy) {
  }
 
  // Required role 3: bilateral indirect retainers (one per side).
- // If canineModIndirects already provides bilateral (one per arch side)
- // coverage, skip the geometric algorithm — those canines ARE the IRs.
+ // Pass already-covered sides to the geometric algorithm so it only fills
+ // in the gaps — avoids redundant IRs on the same side as a canine mod IR.
  const canineSides = new Set(canineModIndirects.map(c => rpdSideOf(c.tooth)));
  const hasBilateralCanineIndirects = canineSides.size >= 2;
  const geometricIndirects = hasBilateralCanineIndirects
  ? []
- : planClassIIndirectRetainers(caseInput, kennedy);
+ : planClassIIndirectRetainers(caseInput, kennedy, canineSides);
  const indirectRetainers = [...canineModIndirects, ...geometricIndirects];
 
  return { directRetainers, indirectRetainers, notDesignable: null };
@@ -791,11 +791,15 @@ function planRetentionClassII(caseInput, kennedy) {
  }
 
  // Required role 3: ONE geometric indirect retainer (opposite side from DE).
- // If canineModIndirects provides bilateral coverage (one canine per side),
- // those canines already satisfy indirect retention — skip the geometry step.
+ // Class II only needs ONE IR on the opposite side from the DE.
+ // If canineModIndirects already has a tooth on that opposite side, the
+ // geometric algorithm is redundant — skip it to avoid a duplicate entry.
+ // (Class I needs bilateral, so Class I still requires both sides covered.)
+ const oppositeSideII = kennedy.deSide === "right" ? "left" : "right";
  const canineSides = new Set(canineModIndirects.map(c => rpdSideOf(c.tooth)));
+ const hasCanineOnOppositeSide = canineSides.has(oppositeSideII);
  const hasBilateralCanineIndirects = canineSides.size >= 2;
- const geometricIndirects = hasBilateralCanineIndirects
+ const geometricIndirects = (hasCanineOnOppositeSide || hasBilateralCanineIndirects)
  ? []
  : planClassIIIndirectRetainers(caseInput, kennedy);
  const indirectRetainers = [...canineModIndirects, ...geometricIndirects];
@@ -1151,10 +1155,11 @@ function legacyIndirectRetainers(caseInput, kennedy, source) {
  *
  * Returns plan entries with `source: "kennedy-i-bilateral"`.
  */
-function planClassIIndirectRetainers(caseInput, kennedy) {
+function planClassIIndirectRetainers(caseInput, kennedy, skipSides = new Set()) {
  const arch = caseInput.arch;
  const out = [];
  for (const side of ["right", "left"]) {
+ if (skipSides.has(side)) continue; // already covered by canineModIndirects
  const pick = pickIndirectRetainerForSide(caseInput, kennedy, arch, side);
  if (!pick) continue;
  out.push({
