@@ -24373,13 +24373,13 @@ function PathwaySidebarTOC({ sections, activeIdx, collapsedSections, onToggle, o
  // looks redundant.
  const tocEl = document.getElementById("pw-toc");
  if (!lastEl) return;
- const tocBottom = tocEl? tocEl.getBoundingClientRect.bottom: 0;
- const lastBottom = lastEl.getBoundingClientRect.bottom;
+ const tocBottom = tocEl? tocEl.getBoundingClientRect().bottom: 0;
+ const lastBottom = lastEl.getBoundingClientRect().bottom;
  // Visible while: in-page TOC is fully above the viewport AND any part
  // of the last section is still below the viewport top.
  setInRange(tocBottom <= 0 && lastBottom > 0);
  };
- update;
+ update();
  window.addEventListener("scroll", update, { passive: true });
  window.addEventListener("resize", update);
  return () => {
