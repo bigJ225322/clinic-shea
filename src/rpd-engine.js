@@ -3152,7 +3152,7 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
  // the lab to verify block-out integrity before duplicating the cast for
  // framework casting.
  lines.push("");
- lines.push("Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per protocol surveyor protocol,). Lab to verify block-out integrity before duplicating cast for framework investing.");
+ lines.push("Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per surveyor protocol). Lab to verify block-out integrity before duplicating cast for framework investing.");
 
  // Saddle base sulcus engagement (Huddle 6 p. 1 Q11 — verbatim rule).
  // Mandibular distal extension acrylic saddle must engage the sulcus IN
