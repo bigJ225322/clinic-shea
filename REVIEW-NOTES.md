@@ -779,3 +779,31 @@ The current pedo Cases pathways hardcode "Isodry (size M)" in note templates and
 
 These echo `pedo-local-anesthetic` content; no expansion needed.
 
+---
+
+## Iteration 11 (2026-05-22 evening) — Real engine bugs found + fixed
+
+### Three engine improvements shipped to main
+
+#### 1. Fully-edentulous + single-tooth arch guards (commit d0d8a51)
+The engine was happily designing a Full Palatal Plate RPD for an arch with zero remaining teeth or only a single tooth — clinically wrong. Added early-return guards at the top of `rpdRunEngine`:
+
+- **Fully edentulous** (`_presentAll.length === 0`): returns `framework: null, majorConnector: null` and a blocker red flag `fully-edentulous` recommending complete denture (with McGill/York overdenture minimums if implants planned).
+- **Single remaining tooth**: blocker red flag `single-tooth-arch` with 3 options — extract + CD, root-reduce + overdenture abutment with stud/locator, or implant-retained overdenture.
+
+Both guards return null Kennedy class so the existing UI gating (`hasContent = result.kennedy.class !== null`) prevents crashes. The Applegate Rule 2 + 3rd molar replacement test still passes because the guard counts ALL present teeth (not just non-3rd-molars).
+
+Tests: updated the EDGE: Single remaining tooth test to assert the new correct behavior (blocker red flag instead of any framework output). 1012/1012 pass.
+
+#### 2. Implant-assisted RPD red flag for severe ridge + DE (commit 8791226)
+When ridge resorption is severe AND Kennedy class is I or II (distal extension), the engine now fires a warning-tier `implant-assisted-rpd-severe-ridge` flag recommending implant-assisted RPD as the definitive alternative.
+
+Biomechanical rationale (per Dr. Kim's Combination Syndrome lecture): distally-placed implants convert Class I/II into a Class III (tooth + implant-supported) configuration, eliminating the rotational axis around the fulcrum line that drives further resorption and abutment trauma. Different from the existing Combination Syndrome flag (which only fires for mand Class I + opposing CD); this flag applies broadly to severe-resorption DE cases regardless of opposing arch.
+
+Includes vertical-space requirement (≥10mm), parallelism guidance, and the standard workflow.
+
+#### 3. Lab Rx typo fix (commit 52c3e3f)
+The block-out instruction read `(per protocol surveyor protocol,)` — duplicated word and orphan comma. Now reads `(per surveyor protocol)`.
+
+
+
