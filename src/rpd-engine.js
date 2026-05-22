@@ -683,17 +683,28 @@ function planRetentionClassI(caseInput, kennedy) {
  });
  }
 
- // Required role 2: span-boundary direct retainers for modification spans
+ // Required role 2: span-boundary direct retainers for modification spans.
+ // Mandibular canines bounding a purely-anterior TS span (e.g. #22/#27
+ // flanking missing incisors) are routed to canineModIndirects instead
+ // of directRetainers — they serve as rest-only indirect retainers.
+ const canineModIndirects = [];
  for (const span of (kennedy.modSpans || [])) {
  appendSpanBoundaryRetainers({
  span, kennedy, arch: caseInput.arch,
  directRetainers, claimed,
+ mandibularCanineAnteriorIndirects: caseInput.arch === "mandibular" ? canineModIndirects : null,
  });
  }
 
- // Required role 3: bilateral indirect retainers (one per side)
- // — computed from first principles by planClassIIndirectRetainers
- const indirectRetainers = planClassIIndirectRetainers(caseInput, kennedy);
+ // Required role 3: bilateral indirect retainers (one per side).
+ // If canineModIndirects already provides bilateral (one per arch side)
+ // coverage, skip the geometric algorithm — those canines ARE the IRs.
+ const canineSides = new Set(canineModIndirects.map(c => rpdSideOf(c.tooth)));
+ const hasBilateralCanineIndirects = canineSides.size >= 2;
+ const geometricIndirects = hasBilateralCanineIndirects
+ ? []
+ : planClassIIndirectRetainers(caseInput, kennedy);
+ const indirectRetainers = [...canineModIndirects, ...geometricIndirects];
 
  return { directRetainers, indirectRetainers, notDesignable: null };
 }
@@ -726,17 +737,27 @@ function planRetentionClassII(caseInput, kennedy) {
  });
  }
 
- // Required role 2: modification-span boundaries
+ // Required role 2: modification-span boundaries.
+ // Mandibular canines bounding purely-anterior TS spans are routed to
+ // canineModIndirects (rest-only indirect retainers, no clasp arm).
+ const canineModIndirects = [];
  for (const span of (kennedy.modSpans || [])) {
  appendSpanBoundaryRetainers({
  span, kennedy, arch: caseInput.arch,
  directRetainers, claimed,
+ mandibularCanineAnteriorIndirects: caseInput.arch === "mandibular" ? canineModIndirects : null,
  });
  }
 
- // Required role 3: ONE indirect retainer, opposite side from DE
- // — computed from first principles by planClassIIIndirectRetainers
- const indirectRetainers = planClassIIIndirectRetainers(caseInput, kennedy);
+ // Required role 3: ONE geometric indirect retainer (opposite side from DE).
+ // If canineModIndirects provides bilateral coverage (one canine per side),
+ // those canines already satisfy indirect retention — skip the geometry step.
+ const canineSides = new Set(canineModIndirects.map(c => rpdSideOf(c.tooth)));
+ const hasBilateralCanineIndirects = canineSides.size >= 2;
+ const geometricIndirects = hasBilateralCanineIndirects
+ ? []
+ : planClassIIIndirectRetainers(caseInput, kennedy);
+ const indirectRetainers = [...canineModIndirects, ...geometricIndirects];
 
  return { directRetainers, indirectRetainers, notDesignable: null };
 }
@@ -991,15 +1012,52 @@ function planRetentionClassIV(caseInput, kennedy) {
 function appendSpanBoundaryRetainers({
  span, kennedy, arch, directRetainers, claimed,
  forceMechanicForClassIV = false,
+ mandibularCanineAnteriorIndirects = null,
 }) {
  for (const tooth of [span.beforeBound, span.afterBound]) {
  if (!tooth) continue;
  if (claimed.has(tooth)) continue;
- claimed.add(tooth);
  const isDE = span.type === "distal-extension";
  const isMaxAnterior = arch === "maxillary" && RPD_MAX_ANTERIOR.has(tooth);
  const isClassIVPrimary = kennedy.class === "IV"
  && (kennedy.primarySpans || []).includes(span);
+
+ // Mandibular canines bounding a PURELY ANTERIOR tooth-supported span
+ // (e.g. #22/#27 flanking missing incisors #23-26) serve as rest-only
+ // INDIRECT retainers, not clasped direct retainers. With lingual plate
+ // the major connector contacts the lingual surface, providing bracing
+ // in lieu of a clasp arm. McCracken Ch 5 + UIC Design Case II protocol.
+ if (
+ mandibularCanineAnteriorIndirects !== null
+ && arch === "mandibular"
+ && RPD_CANINES.has(tooth)
+ && !isDE
+ && span.containsAnterior
+ && !span.containsPosterior
+ ) {
+ claimed.add(tooth);
+ const spanDesc = (span.teeth || []).map(String).join(", ");
+ mandibularCanineAnteriorIndirects.push({
+ tooth,
+ source: "mand-canine-anterior-mod-bound",
+ _legacyData: {
+ tooth,
+ restType: "ML ball rest",
+ rationale:
+ `Mandibular canine #${tooth} flanks the anterior modification span (teeth ${spanDesc}). `
+ + `It functions as a REST-ONLY indirect retainer — the ML ball rest resists `
+ + `rotation of the distal-extension base. No clasp arm is placed: the lingual plate `
+ + `contacts and braces the lingual surface, making a clasp arm both esthetically `
+ + `unacceptable and biomechanically redundant. `
+ + `McCracken Ch 5 + UIC Design Case II (Prelim Case 2) protocol.`,
+ tier: "strong",
+ alternativeRationale: null,
+ },
+ });
+ continue; // do NOT add to directRetainers
+ }
+
+ claimed.add(tooth);
  let mechanic;
  if (isDE) {
  mechanic = "rpi-family";

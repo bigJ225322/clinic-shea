@@ -3761,6 +3761,80 @@ describe("UIC-AUDIT — Class IV indirect retainers use bounding canines (Design
   });
 });
 
+describe("Pattern 2 — Mand canines bounding anterior TS mod span → rest-only indirect retainers (UIC Design Case II / Prelim Case 2)", () => {
+  // Answer key (Fall 2022 / Summer 2023 Prelim Case 2):
+  // Mandibular Class II Mod 2: DE #18-19 (terminal #20), anterior mod #23-26,
+  // posterior mod #29. Key: #22 + #27 = ML ball rest INDIRECT RETAINERS (no clasp arm);
+  // #28 + #30 = direct retainers; #20 = RPI.
+  function makeCase2Mand() {
+    const c = rpdMakeBlankCase("mandibular");
+    for (const n of [17, 32, 18, 19, 23, 24, 25, 26, 29]) c.teeth[n].status = "missing";
+    c.measurements.lingualSulcusDepth = 5;
+    c.measurements.interocclusalSpace = "limited";
+    return c;
+  }
+
+  it("Class II Mod 2 (Design Case II mand): #22 and #27 are indirect retainers, NOT abutments", () => {
+    const r = rpdRunEngine(makeCase2Mand());
+    const abutTeeth = r.abutmentDesigns.map(a => a.tooth);
+    const irTeeth = r.indirectRetainers.map(i => i.tooth).sort((a, b) => a - b);
+    expect(abutTeeth).not.toContain(22);
+    expect(abutTeeth).not.toContain(27);
+    expect(irTeeth).toContain(22);
+    expect(irTeeth).toContain(27);
+  });
+
+  it("Class II Mod 2: canine indirect retainers have ML ball rest and source 'mand-canine-anterior-mod-bound'", () => {
+    const r = rpdRunEngine(makeCase2Mand());
+    for (const tooth of [22, 27]) {
+      const ir = r.indirectRetainers.find(i => i.tooth === tooth);
+      expect(ir).toBeDefined();
+      expect(ir.restType).toMatch(/ML ball/i);
+      expect(ir.source).toBe("mand-canine-anterior-mod-bound");
+    }
+  });
+
+  it("Class II Mod 2: bilateral canine indirects suppress geometric IR; no additional (third) indirect retainer", () => {
+    const r = rpdRunEngine(makeCase2Mand());
+    // Exactly #22 and #27 — no geometric #28 added on top
+    expect(r.indirectRetainers).toHaveLength(2);
+    const irTeeth = r.indirectRetainers.map(i => i.tooth).sort((a, b) => a - b);
+    expect(irTeeth).toEqual([22, 27]);
+  });
+
+  it("Class II Mod 2: direct abutments are the DE terminal + span-boundary posteriors only (#20, #28, #30)", () => {
+    const r = rpdRunEngine(makeCase2Mand());
+    const abutTeeth = r.abutmentDesigns.map(a => a.tooth).sort((a, b) => a - b);
+    expect(abutTeeth).toEqual([20, 28, 30]);
+  });
+
+  it("Class II Mod 2: #20 is RPI (DE terminal), #28 and #30 are clasped (not rest-only)", () => {
+    const r = rpdRunEngine(makeCase2Mand());
+    const a20 = r.abutmentDesigns.find(a => a.tooth === 20);
+    expect(a20.claspType).toBe("RPI");
+    const a28 = r.abutmentDesigns.find(a => a.tooth === 28);
+    const a30 = r.abutmentDesigns.find(a => a.tooth === 30);
+    expect(a28.claspType).not.toBe("Rest Only (no clasp)");
+    expect(a30.claspType).not.toBe("Rest Only (no clasp)");
+  });
+
+  it("Class I + anterior mod: both canines become bilateral indirect retainers, no additional geometric IRs", () => {
+    // Class I with bilateral DE + anterior mod (both canines bound the anterior span)
+    const c = rpdMakeBlankCase("mandibular");
+    // DE both sides + anterior mod
+    for (const n of [17, 32, 18, 19, 30, 31, 23, 24, 25, 26]) c.teeth[n].status = "missing";
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("I");
+    const irTeeth = r.indirectRetainers.map(i => i.tooth).sort((a, b) => a - b);
+    expect(irTeeth).toContain(22);
+    expect(irTeeth).toContain(27);
+    // Canines should NOT be in abutmentDesigns
+    const abutTeeth = r.abutmentDesigns.map(a => a.tooth);
+    expect(abutTeeth).not.toContain(22);
+    expect(abutTeeth).not.toContain(27);
+  });
+});
+
 describe("UIC-AUDIT — Phase IV post-delivery follow-up in Axium steps", () => {
   it("axiumSteps mentions 24-hour and 1-week follow-up", () => {
     const c = rpdMakeBlankCase("mandibular");
