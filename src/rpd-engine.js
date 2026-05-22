@@ -3750,6 +3750,53 @@ function rpdRunEngine(caseInput) {
  };
  const designIntent = safeCase.patientFactors.designIntent || "definitive";
 
+ // ── Early guards: this arch is not an RPD candidate ─────────────────
+ // (a) fully edentulous arch → CD, not RPD
+ // (b) single tooth remaining → CD or overdenture, not RPD
+ // Count ALL present teeth (not just non-3rd-molars) — single-tooth
+ // arch is single-tooth arch regardless of whether that tooth is a
+ // 3rd molar. The Kennedy/Applegate-Rule-2 logic still runs at the
+ // classifier level for cases with adequate remaining dentition; these
+ // guards only fire at the absolute floor.
+ const _archTeeth = rpdArchTeeth(safeCase.arch);
+ const _isPresent = (n) => safeCase.teeth?.[n]?.status !== "missing";
+ const _presentAll = _archTeeth.filter(_isPresent);
+
+ if (_presentAll.length === 0) {
+ return {
+ kennedy: { class: null, modifications: 0, spans: [], primarySpans: [], modSpans: [] },
+ majorConnector: null, framework: null,
+ abutmentDesigns: [], indirectRetainers: [], baseDesigns: [],
+ redFlags: [{
+ severity: "blocker",
+ type: "fully-edentulous",
+ message: "This arch is fully edentulous — RPD design is not applicable. Recommend complete denture (CD) instead. If implants are planned, consider implant-retained overdenture (2-implant mandibular minimum, 4-implant maxillary minimum per McGill/York consensus).",
+ }],
+ axiumCode: null, labScript: null,
+ designIntent, nmcdDesign: null, axiumSteps: null,
+ thirdMolarEval: null, secondMolarEval: null, pdi: null,
+ retentionPlan: { directRetainers: [], indirectRetainers: [], notDesignable: { reason: "fully edentulous arch — needs CD" } },
+ };
+ }
+
+ if (_presentAll.length === 1) {
+ const _theTooth = _presentAll[0];
+ return {
+ kennedy: { class: null, modifications: 0, spans: [], primarySpans: [], modSpans: [] },
+ majorConnector: null, framework: null,
+ abutmentDesigns: [], indirectRetainers: [], baseDesigns: [],
+ redFlags: [{
+ severity: "blocker",
+ type: "single-tooth-arch",
+ message: `Only one remaining tooth (#${_theTooth}) — RPD design is not appropriate. A single abutment cannot provide bilateral retention/support. Options: (1) extract the remaining tooth and fabricate a complete denture (CD); (2) endodontically treat + reduce the remaining root and use as an overdenture abutment with a stud/locator attachment; (3) place implants and fabricate an implant-retained overdenture.`,
+ }],
+ axiumCode: null, labScript: null,
+ designIntent, nmcdDesign: null, axiumSteps: null,
+ thirdMolarEval: null, secondMolarEval: null, pdi: null,
+ retentionPlan: { directRetainers: [], indirectRetainers: [], notDesignable: { reason: `single remaining tooth (#${_theTooth}) — needs CD or overdenture` } },
+ };
+ }
+
  // Classification — unchanged
  const kennedy = rpdClassifyKennedy(safeCase);
  const majorConnector = rpdSelectMajorConnector(safeCase, kennedy);

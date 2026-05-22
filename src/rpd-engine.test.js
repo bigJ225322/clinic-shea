@@ -2287,17 +2287,24 @@ describe("EDGE: All four 2nd molars missing → Rule 4 omits all", () => {
 });
 
 // Edge case: Single remaining tooth in the arch (extreme).
+// Engine should REFUSE to design an RPD — a single abutment cannot
+// support bilateral retention. CD or overdenture is the correct
+// recommendation. Asserted by the single-tooth-arch blocker flag.
 describe("EDGE: Single remaining tooth — extreme few-teeth scenario", () => {
-  it("Engine produces output without crashing", () => {
+  it("Engine refuses to design and surfaces CD/overdenture recommendation", () => {
     const c = rpdMakeBlankCase("maxillary");
     // Missing all teeth except #8.
     const allMax = [1,2,3,4,5,6,7,9,10,11,12,13,14,15,16];
     setMissing(c, allMax);
     const r = rpdRunEngine(c);
-    expect(r.framework?.material).toBeTruthy();
-    // Engine likely falls back to interim or a CD-adjacent recommendation
-    // — the exact classification is judgment-dependent. We just assert
-    // robustness here, not a specific design.
+    // Engine returns null framework/major/abutments and a blocker red flag
+    expect(r.framework).toBeNull();
+    expect(r.majorConnector).toBeNull();
+    expect(r.abutmentDesigns).toEqual([]);
+    const blocker = r.redFlags.find(f => f.type === "single-tooth-arch");
+    expect(blocker).toBeDefined();
+    expect(blocker.severity).toBe("blocker");
+    expect(blocker.message).toMatch(/complete denture|overdenture/i);
   });
 });
 
