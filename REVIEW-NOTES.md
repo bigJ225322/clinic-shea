@@ -617,3 +617,53 @@ Pick 2-4 procedures and view them side-by-side. Common steps collapse; differenc
 
 All four UI concepts above. Pick one (or remix) when there's time. No implementation yet — Jake's call which direction is most worth building.
 
+---
+
+## Iteration 10 (2026-05-22 morning)
+
+### Morning health check — clinic-time verification
+
+Live deployment confirmed healthy at 7:50 AM (clinic start):
+- HTTP 200 root + JS bundle
+- Bundle `index-yc6sRikY.js` (fresh, post-deploy)
+- Zero broken Date patterns (crash fix in place)
+- All 6 tabs render with zero console errors
+- RPD interactive flow: mark teeth missing → 4546 chars of design output, Kennedy class detected, no errors
+- Cases pathway expand + right-TOC visible at 0.4 opacity → clinic-usable
+- Tooth selector panel input-centered with proper viewport clamping (left=17 when input is on the far left, panel still fits entirely on screen)
+
+### Tooth selector centering — corrected per Jake's clarification
+
+User clarified: "I did mean center the tooth selector on the field and not the screen. only constraint is that if the end of the tooth selector hits the edge of the screen it shouldn't become partially off screen/unusable to accommodate the centering rule."
+
+Fixed in commit e90e6c6. New logic in both `ToothSurfaceInput` and `TeethSelectorPanel`:
+```js
+const panelW = Math.min(520, vpW - 32);
+const inputCenter = r.left + r.width / 2;
+const idealLeft = inputCenter - panelW / 2;
+const clampedLeft = Math.max(16, Math.min(idealLeft, vpW - panelW - 16));
+```
+
+Position: fixed; updates on scroll/resize. Result: panel is centered on the input when there's room, shifts toward the nearer edge with 16px viewport margin when clamping kicks in.
+
+### Borderline find: ITR/ART procedure pathway
+
+Dr. Alsaleh's Week 4 Anterior Restoration lecture has a dedicated section on **ITR (Interim Therapeutic Restoration) / ART (Atraumatic Restorative Technique)** with specific clinical detail not currently in any dedicated Cases pathway:
+
+- **Indications**: young/uncooperative/special-needs patients where traditional prep isn't feasible; step-wise excavation in multiple-lesion cases; caries control prior to GA; erupting molars without isolation
+- **Technique**: hand instruments or slow speed → remove caries from walls/peripheries (not pulp) → restore with GI/RMGI/ACTIVA/Biodentine → definitive treatment within 6 months
+- **Retention rates** (from lecture):
+  - 1-surface: 94.6% at 1 mo, 50.6% at 1 yr, 43.4% at 3 yr
+  - 2-surface: 70.1% at 1 mo, 15.2% at 1 yr, 12.2% at 3 yr
+- **Failure cause**: inadequate prep compromising retention (less bulk of material)
+- **ART variant**: same technique, but used as "definitive" treatment in populations with limited access to care
+
+ITR is currently referenced in:
+- `pedo-behavior-management` keyDecisions (as a deferral option)
+- `dir-sdf` keyDecisions (as part of SMART)
+- `pedo-indirect-pulp-therapy` (warned against as defeating IPT purpose)
+
+**Suggested expansion**: dedicated `pedo-itr` pathway with the full retention table + technique. Would slot under Pediatric Dentistry alongside pedo-sdf and pedo-strip-crown.
+
+→ Save for Jake's review. Trivial to add but the user warned about over-editing — defer the call.
+
