@@ -19237,6 +19237,7 @@ const GUIDES = [
  { id: "pedo-ch1", num: 1, title: "Behavior management — tell-show-do, voice control, parental presence", stub: true },
  { id: "pedo-ch2", num: 2, title: "Local anesthesia in children — dose limits (lidocaine 4.4 mg/kg), needle phobia", stub: true },
  { id: "pedo-ch3", num: 3, title: "Isolation in primary teeth — Isodry sizing, cotton-roll backup", stub: true },
+ { id: "pedo-ch4", num: 4, title: "Nitrous oxide sedation — titration, contraindications, monitoring", stub: true },
  ],
  },
  {
@@ -19249,6 +19250,10 @@ const GUIDES = [
  { id: "pedo-ch12", num: 12, title: "Pulpotomy — formocresol vs ferric sulfate vs MTA, indications", stub: true },
  { id: "pedo-ch13", num: 13, title: "Pediatric sealant — moisture control, MI bonding when adult sealant won't work", stub: true },
  { id: "pedo-ch14", num: 14, title: "Fluoride varnish — application, dose, age-based recall interval", stub: true },
+ { id: "pedo-ch15", num: 15, title: "Strip crown — anterior primary tooth restoration (severe ECC)", stub: true },
+ { id: "pedo-ch16", num: 16, title: "Space maintainer — band-and-loop, Nance, lingual arch, distal shoe", stub: true },
+ { id: "pedo-ch17", num: 17, title: "Primary tooth trauma — do not replant, follow-up for discoloration & necrosis", stub: true },
+ { id: "pedo-ch18", num: 18, title: "Pediatric extraction — peds-specific anesthesia, clamp 14, parent communication", stub: true },
  ],
  },
  ],
@@ -19811,12 +19816,22 @@ const PATHWAY_GROUPS = {
  ]},
  ],
  pedo: [
+ { label: "Behavior & sedation", ids: [
+ "pedo-behavior-management",
+ "pedo-n2o-sedation",
+ ]},
  { label: "Restorative", ids: [
  "pedo-composite",
  "pedo-stainless-crown",
+ "pedo-strip-crown",
  ]},
  { label: "Pulp therapy", ids: [
  "pedo-pulpotomy",
+ ]},
+ { label: "Surgical & trauma", ids: [
+ "pedo-extraction",
+ "pedo-primary-trauma",
+ "pedo-space-maintainer",
  ]},
  { label: "Preventive", ids: [
  "pedo-sealant",
@@ -20084,6 +20099,56 @@ const WIZARDS = {
  { label: "Anterior single implant crown (esthetic)", pathway: "cross-anterior-implant-esthetic" },
  { label: "Existing CD → add implants (overdenture)", pathway: "cross-cd-iod-implants" },
  { label: "RPD patient → converting to implants", pathway: "cross-rpd-to-implants" },
+ ],
+ },
+ },
+ pedo: {
+ root: {
+ question: "What's the situation?",
+ options: [
+ { label: "Behavior / sedation question — not yet at a procedure", next: "behavior" },
+ { label: "Restorative — caries on a primary tooth", next: "restorative" },
+ { label: "Pulp involvement — caries to / through the pulp", next: "pulp" },
+ { label: "Surgical — extraction, space maintainer, trauma", next: "surgical" },
+ { label: "Preventive — sealant, fluoride varnish, SDF", next: "preventive" },
+ ],
+ },
+ behavior: {
+ question: "What's the issue?",
+ options: [
+ { label: "Uncooperative or anxious child (Frankl 1–2)", pathway: "pedo-behavior-management" },
+ { label: "Cooperative but needs N₂O for a longer procedure", pathway: "pedo-n2o-sedation" },
+ ],
+ },
+ restorative: {
+ question: "Where's the lesion?",
+ options: [
+ { label: "Posterior primary — Class I or II", pathway: "pedo-composite" },
+ { label: "Posterior primary — multi-surface or post-pulpotomy", pathway: "pedo-stainless-crown" },
+ { label: "Anterior primary — severe ECC, large facial lesion", pathway: "pedo-strip-crown" },
+ ],
+ },
+ pulp: {
+ question: "What's the pulp status?",
+ options: [
+ { label: "Vital pulp with carious exposure (reversible or partial irreversible pulpitis)", pathway: "pedo-pulpotomy" },
+ { label: "Necrotic pulp, fistula, or PARL — UIC extracts these", pathway: "pedo-extraction" },
+ ],
+ },
+ surgical: {
+ question: "What's needed?",
+ options: [
+ { label: "Extraction of a primary tooth", pathway: "pedo-extraction" },
+ { label: "Space maintainer after premature primary loss", pathway: "pedo-space-maintainer" },
+ { label: "Trauma to a primary tooth (luxation, intrusion, avulsion)", pathway: "pedo-primary-trauma" },
+ ],
+ },
+ preventive: {
+ question: "What's planned?",
+ options: [
+ { label: "Sealant on permanent or primary molar (no cavitation)", pathway: "pedo-sealant" },
+ { label: "Fluoride varnish at recall", pathway: "pedo-fluoride-varnish" },
+ { label: "SDF for caries arrest in an uncooperative child", pathway: "dir-sdf" },
  ],
  },
  },
@@ -22734,6 +22799,148 @@ const PATHWAYS = [
  sections: [
  { guideId: "pedo", chapterId: "pedo-ch14" },
  { guideId: "pedo", chapterId: "pedo-ch1" },
+ ],
+ },
+ {
+ id: "pedo-behavior-management",
+ domain: "pedo",
+ label: "Uncooperative or anxious child (behavior management)",
+ description: "A young patient — typically 3-7 years old, sometimes older — who is fearful, crying, refusing the chair, or otherwise not yet ready for treatment. The clinical task is not the procedure that brought them in; it's getting them cooperative enough that the procedure becomes possible. The Frankl scale (1 = definitely negative, 2 = negative, 3 = positive, 4 = definitely positive) is the shorthand for where the child is now and where the visit needs to take them. Basic behavior-shaping techniques (tell-show-do, voice modulation, positive reinforcement, distraction) handle most Frankl 2-3 children. Frankl 1 children either need advanced techniques (papoose, oral sedation) or a referral out — trying to force treatment without escalation traumatizes the child and breaks the parent's trust.",
+ keyDecisions: [
+ "Rate cooperation honestly using the Frankl scale before starting. Frankl 3 and 4 are workable; Frankl 2 is workable with active behavior management; Frankl 1 means stop and reassess before any clinical work. Document the rating in the chart at every visit so trends are trackable.",
+ "Tell-show-do is the foundation. Name every instrument in child-friendly language (\"Mr. Thirsty\" for the suction, \"sleepy juice\" for anesthetic, \"tickle bug\" for the slow-speed) before it enters the mouth. Show it on a finger or a typodont. Then do it slowly. Skipping the tell-show step is the most common cause of mid-visit deterioration.",
+ "Parental presence is age- and child-dependent, not rule-based. Under 4 — parent in operatory unless they make it worse. 4-8 — parent in operatory if the child wants them there, outside if they're undermining cooperation (talking over you, telegraphing their own anxiety). Discuss with the parent before the appointment, not in front of the child.",
+ "Escalate when basic techniques fail. The escalation ladder is: voice control (firm calm voice, not shouting) → distraction (tablet, ceiling TV, story) → N₂O if not contraindicated → protective stabilization (papoose, only with parental consent and a charted reason) → referral to pediatric specialist for oral sedation or GA. Do not skip steps; do not stay on a step that isn't working past 2-3 minutes.",
+ "Know when to stop. A Frankl 1 child who is in physical distress, vomiting, or developing a panic response will not be treated successfully this visit no matter what you do. Stop, end the visit with a small positive interaction (a sticker, a high-five), and bring them back another day. Forcing through it teaches the child that the dentist is someone who hurts them when they cry.",
+ ],
+ phases: [
+ { label: "Assess & rate", count: 1 },
+ { label: "Tell-show-do + parent setup", count: 2 },
+ { label: "Treatment or escalate", count: 2 },
+ ],
+ sections: [
+ { guideId: "pedo", chapterId: "pedo-ch1" },
+ { guideId: "pedo", chapterId: "pedo-ch4" },
+ ],
+ },
+ {
+ id: "pedo-n2o-sedation",
+ domain: "pedo",
+ label: "N₂O sedation for a pediatric procedure",
+ description: "A cooperative-but-anxious child (Frankl 2-3) facing a longer or more invasive procedure — pulpotomy + SSC, multiple restorations in one visit, an extraction — where pure tell-show-do won't sustain cooperation for the full chair time. Nitrous oxide raises the pain threshold, blunts gag reflex, and produces mild euphoria without losing consciousness. Critically, the child still responds to verbal cues throughout. Titrate up slowly from 30% over 3-5 minutes; the visual cue that you've hit the right level is the child becoming calm, slightly slow to respond, and reporting tingling in fingers and toes. Always finish with 100% O₂ for 5 minutes to prevent diffusion hypoxia.",
+ keyDecisions: [
+ "Screen for contraindications before consenting the parent. Absolute: inner-ear infection, blocked nasal passages (can't breathe through the nose), severe COPD, pre-existing nausea/vomiting, claustrophobia, bleomycin use, MTHFR deficiency, B12 deficiency, N₂O exposure in the past 7 days, pregnant guardian assisting at chairside, first trimester of pregnancy (rare but document). Relative: behavioral disorders where the dissociation could escalate panic.",
+ "Consent the parent and explain mechanism. \"It's not putting the child to sleep — they'll be awake and able to talk. It's a mix of oxygen and a gas that helps them relax and not feel pain as sharply. We give them oxygen for 5 minutes at the end to clear it out.\" Parent signs the consent form; child gets to pick the scent of the nose hood (bubblegum, strawberry, mint).",
+ "Titrate up, don't bolus. Start at 30% N₂O / 70% O₂ at 4 L/min total flow. Wait 2-3 minutes. If still anxious, step up to 40%. Most pediatric procedures sit at 30-50%. Above 50% you risk over-sedation; if you need more, refer for IV sedation instead.",
+ "Monitor throughout. Talk to the child constantly — \"can you still hear me, can you wiggle your fingers, how are your toes feeling.\" Lost verbal contact, drooping eyelids, or loss of cooperation are signs of over-sedation: turn N₂O down to 20% or off and titrate back up only if needed. Pulse ox is not mandatory at sub-50% N₂O in a healthy ASA I/II child but is good practice.",
+ "Recovery: 100% O₂ at 4 L/min for at least 5 full minutes before removing the nose. Skipping this risks diffusion hypoxia (N₂O exits the bloodstream into the alveoli and displaces O₂). Document the % used, duration, and post-op O₂ time in the note. Discharge criteria: alert, oriented, ambulatory, parent reports child seems like themselves.",
+ ],
+ phases: [
+ { label: "Screening & consent", count: 2 },
+ { label: "Titration & monitor", count: 2 },
+ { label: "100% O₂ recovery", count: 1 },
+ ],
+ sections: [
+ { guideId: "pedo", chapterId: "pedo-ch1" },
+ { guideId: "pedo", chapterId: "pedo-ch2" },
+ { guideId: "pedo", chapterId: "pedo-ch4" },
+ ],
+ },
+ {
+ id: "pedo-strip-crown",
+ domain: "pedo",
+ label: "Strip crown — anterior primary tooth (severe ECC)",
+ description: "A 2-5 year old with extensive caries on a maxillary primary incisor — typically severe early childhood caries (S-ECC) from bottle/sippy use, with multiple anterior teeth affected. The lesion is too large for a Class III or IV composite alone; the tooth needs full-coverage anterior restoration but cannot accept an SSC for esthetic reasons. A celluloid strip crown is filled with composite, seated over a prepared tooth, light-cured, and then peeled off — leaving a tooth-shaped composite restoration. The technique is fussy (moisture control on a tiny anterior tooth in a small mouth is the central challenge) but produces an esthetic result that satisfies parents and lasts until exfoliation.",
+ keyDecisions: [
+ "Indication check: extensive multi-surface caries on a primary incisor where a direct composite would not retain. Single-surface lesions get a Class III or IV composite. Pulp-involved teeth need pulpotomy + strip crown, not strip crown alone. If multiple anterior teeth are affected, plan all of them in one visit if cooperation allows.",
+ "Anesthesia and isolation: 1 carpule of 2% lidocaine with 1:100K epi, short blue needle, buccal infiltration. Isolation is the make-or-break — Isodry on anteriors sometimes interferes; rubber dam with tie-floss on the clamp is more reliable. If rubber dam: punch two holes ½ inch apart and cut between them for a slot — fast placement and removal.",
+ "Preparation: knife-edge finish line slightly subgingival on all surfaces. Interproximal reduction 1 mm, facial 1 mm, lingual 0.5 mm clearance, incisal reduction 1.5 mm with rounded corners. No shoulder, no ledge — the celluloid form needs to slide on. If the form doesn't fit, the tooth isn't reduced enough (not the form's fault).",
+ "Bonding sequence: etch enamel first, then dentin (15 sec), rinse, dry leaving dentin glossy and moist. Apply Scotchbond Universal with vigorous 20-sec scrub, thin with air for 5 sec, cure 10 sec. If saliva contamination happens — re-etch for only 5 sec and proceed. The bond window with a 3-year-old is measured in seconds; have everything pre-loaded.",
+ "Load the celluloid form with composite (Renamel nanofill or equivalent in pediatric A2-A3 shade), seat onto the prepared tooth, express excess from a vent hole, cure 40 sec from facial then 40 sec from lingual. Peel the form off with a #12 scalpel or simply tear it. Finish with fine diamond, polish with Shofu/Jiffy. Restoration should not be in occlusion, protrusion, or lateral excursion.",
+ ],
+ phases: [
+ { label: "Anesthesia & isolation", count: 2 },
+ { label: "Prep & form fit", count: 2 },
+ { label: "Bond, fill, cure", count: 2 },
+ { label: "Finish & polish", count: 1 },
+ ],
+ sections: [
+ { guideId: "pedo", chapterId: "pedo-ch1" },
+ { guideId: "pedo", chapterId: "pedo-ch2" },
+ { guideId: "pedo", chapterId: "pedo-ch3" },
+ { guideId: "pedo", chapterId: "pedo-ch15" },
+ ],
+ },
+ {
+ id: "pedo-space-maintainer",
+ domain: "pedo",
+ label: "Space maintainer — band-and-loop, Nance, lingual arch",
+ description: "A child has lost a primary tooth prematurely (caries-induced extraction, trauma, congenital absence) and the permanent successor is not ready to erupt. Without a space maintainer, adjacent teeth drift mesially into the gap and the unerupted successor either erupts ectopically, becomes impacted, or causes crowding requiring future orthodontics. The appliance choice depends on which tooth was lost and which arch: band-and-loop for single posterior, lingual arch for bilateral mandibular, Nance for bilateral maxillary, distal shoe (rarely — pre-eruption of the permanent first molar). The workflow is two visits — impression with band in place, then lab fabrication, then delivery and cementation.",
+ keyDecisions: [
+ "Indication: any premature loss of a primary tooth where the permanent successor's eruption is >6 months away. Check Bolton standards for eruption timing on a recent pano. Loss within 6 months of expected eruption — no maintainer needed; just monitor. Loss of a primary incisor where the permanent is close — usually no maintainer, the parent wants it for esthetics (use a Hawley with denture teeth instead).",
+ "Appliance selection: single posterior loss → band-and-loop (band on the abutment distal or mesial to the space, soldered loop into the space). Bilateral mandibular posterior loss → lingual arch (bands on both first permanent molars, soldered arch wire contacting the cingulum of the lower incisors). Bilateral maxillary posterior loss → Nance (acrylic button against the anterior palate, soldered to bands on the molars). Loss of primary 2nd molar before permanent 1st molar erupts → distal shoe (intra-bone extension that guides the erupting permanent molar; specialist case).",
+ "1st visit — impression: fit a stainless band on the abutment with floss tied to it (never untied; floss prevents swallowing if the band drops). Band should seat below the marginal ridge but with enough supragingival metal to solder onto. Take a pick-up alginate impression of just the involved quadrant; opposing arch usually not needed. Transfer the band into the impression and staple it in place before pouring.",
+ "Lab fabrication is a separate step (sent to lab with prescription, or fabricated in the school lab). Follow up to confirm completion before scheduling the delivery visit. Common error: scheduling the delivery before the lab work is done — child arrives, no appliance, parent frustrated.",
+ "2nd visit — delivery: try the appliance in (it should seat without force), evaluate occlusion (child should not be biting on any wire), clean the abutment tooth with non-fluoride pumice and prophy cup, dry, fill the band with FujiCem GIC, seat with band seater, clean excess with microbrushes, burnish the band. Post-op: soft diet today, soreness for 24 hours, don't pick at it with tongue, call if it comes loose. Schedule 2-4 week post-op check.",
+ ],
+ phases: [
+ { label: "Diagnosis & appliance selection", count: 2 },
+ { label: "1st visit — impression", count: 2 },
+ { label: "Lab fabrication", count: 1 },
+ { label: "2nd visit — delivery", count: 2 },
+ ],
+ sections: [
+ { guideId: "pedo", chapterId: "pedo-ch1" },
+ { guideId: "pedo", chapterId: "pedo-ch16" },
+ ],
+ },
+ {
+ id: "pedo-primary-trauma",
+ domain: "pedo",
+ label: "Trauma to a primary tooth (luxation, intrusion, avulsion)",
+ description: "A child — usually a toddler who just learned to walk — presents to clinic or urgent care with an injured primary anterior tooth. The cardinal rule that distinguishes primary trauma from permanent trauma is that you do NOT replant an avulsed primary tooth — the risk of damaging the underlying permanent successor (which sits directly above and behind the primary apex) outweighs any benefit of saving a tooth that will exfoliate in a few years anyway. The clinical work is to triage (was it just the tooth, or is there a head injury?), categorize the injury (concussion, subluxation, lateral luxation, intrusion, extrusion, avulsion, crown fracture), and choose between conservative management and extraction. Follow-up monitoring for discoloration and pulp necrosis is part of every case.",
+ keyDecisions: [
+ "Triage for non-dental injury first. Mechanism (fall, MVC, abuse), loss of consciousness, vomiting, behavior change → ER, not the dental chair. The tooth can wait; an undetected head injury cannot. Document the mechanism in the chart in the child's words and the parent's words separately.",
+ "Categorize the injury. Concussion (tender to percussion, no displacement, no mobility) → no treatment, soft diet, follow up. Subluxation (mobile, no displacement) → no treatment, soft diet, follow up. Lateral luxation (displaced but in socket) → if mild and not interfering with occlusion, reposition with finger pressure and monitor; if severe or interfering with occlusion, extract. Intrusion (driven into the bone toward the permanent successor) — re-erupts on its own in 2-6 months in most cases; if it has impinged on the permanent germ on radiograph, extract.",
+ "Avulsion (tooth out of socket): DO NOT REPLANT. The replantation procedure injures the permanent successor in the developing follicle. Tell the parent this explicitly — they will arrive expecting you to put it back. Show the radiograph if it helps explain. The space will be managed with a Hawley appliance with a denture tooth if the parent wants esthetics; otherwise leave it.",
+ "Crown fracture (enamel-dentin or pulp exposure on a primary tooth): enamel-dentin → composite restoration with selective etch on enamel only, light cure, polish. Pulp exposure on a primary tooth → pulpotomy if vital with limited exposure; extraction if necrotic, large exposure, or close to exfoliation anyway. Root fracture → almost always extraction (primary roots resorbing already, very poor prognosis).",
+ "Follow-up: tooth color and vitality testing are unreliable on primaries. Watch for gray/dark discoloration over 4-8 weeks (sign of pulp necrosis from the trauma), fistula development (sign of infection), and mobility changes. Recall at 1 week, 6-8 weeks, 6 months, then annually until exfoliation. Take a periapical at the 6-week visit to rule out periapical pathology on the permanent successor.",
+ ],
+ phases: [
+ { label: "Triage", count: 1 },
+ { label: "Categorize injury", count: 2 },
+ { label: "Treat or extract", count: 2 },
+ { label: "Follow-up schedule", count: 1 },
+ ],
+ sections: [
+ { guideId: "pedo", chapterId: "pedo-ch1" },
+ { guideId: "pedo", chapterId: "pedo-ch17" },
+ { guideId: "pedo", chapterId: "pedo-ch18" },
+ ],
+ },
+ {
+ id: "pedo-extraction",
+ domain: "pedo",
+ label: "Pediatric extraction (primary or young permanent tooth)",
+ description: "A primary tooth or a young permanent tooth needs to come out. Indications differ from adult extraction: over-retained primary blocking permanent eruption, necrotic primary with PARL (UIC's standard rather than pulpectomy), abscessed primary, primary tooth with extensive crown destruction not restorable with SSC, orthodontic serial extraction sequence (ages 8-10), traumatic injury with poor prognosis, ectopic permanent eruption requiring primary removal. The mechanics are the same as adult extraction (elevate, luxate, deliver with forceps, irrigate, compress, sometimes suture) but the dose limits, instrument selection, parental consent, and post-op communication all shift. Common surprise: primary roots are often partially resorbed and the tooth comes out faster than expected — be ready to control the trajectory.",
+ keyDecisions: [
+ "Indication confirmation: necrotic primary with PARL (UIC extracts these — pulpectomy is not the routine), over-retained primary with permanent erupting palatally/lingually, unrestorable caries, trauma with hopeless prognosis, ortho serial extraction. Get the indication and rationale documented in the chart before the appointment.",
+ "Anesthesia: AAPD maximum lidocaine dose 4.4 mg/kg. For typical pediatric weights — 1 carpule of 2% lidocaine is the limit (and the patient must weigh at least 18 lb / 8.2 kg). Maxillary: buccal infiltration + PDL is usually sufficient; primary maxillary bone is thin and permeable. Mandibular: IAN block + long buccal in older kids; in younger kids (under 5) IAN is unreliable due to mandibular foramen position — buccal + lingual infiltration + PDL often works better. Use the short blue 30G 20mm needle even for IAN, except in larger teens.",
+ "N₂O is often appropriate for extractions of this age group — see the N₂O pathway for contraindication screening and titration. If contraindicated and the child is Frankl 1-2 for a longer procedure, this becomes a sedation referral.",
+ "Mechanics: use rubber dam clamp 14 for primary molars, 14A for young permanent molars. Periosteal elevator (Molt #9) to reflect gingiva — gently, primary gingiva is thin. Straight elevator perpendicular to tooth at the mesiobuccal line angle. Use pediatric forceps if available. Luxate with slow, sustained, heavy pressure — 5-second buccal push, 5-second lingual, reseat more apically. Anterior primaries get a rotational motion. Be ready for fast delivery once the PDL releases — the resorbed root may come out with very little resistance.",
+ "Post-op: gauze pressure for 30-45 minutes (children won't hold it as long as adults — set a timer). Compress the socket walls. Suture only if the tissue is mobile or large; primary extraction sockets usually do not need sutures. Post-op instructions to the parent: soft diet for the day, no straws (clot dislodgement), no spitting forcefully, no rinsing today, Tylenol or Motrin for pain (weight-based dose). Warn the parent the child may bite their lip/tongue while still numb. Schedule recall if a space maintainer is indicated.",
+ ],
+ phases: [
+ { label: "Indication & consent", count: 2 },
+ { label: "Anesthesia & N₂O if planned", count: 2 },
+ { label: "Elevation & delivery", count: 2 },
+ { label: "Post-op & follow-up", count: 1 },
+ ],
+ sections: [
+ { guideId: "pedo", chapterId: "pedo-ch1" },
+ { guideId: "pedo", chapterId: "pedo-ch2" },
+ { guideId: "pedo", chapterId: "pedo-ch4" },
+ { guideId: "pedo", chapterId: "pedo-ch18" },
  ],
  },
  // ── Periodontics ────────────────────────────────────────────────────────
