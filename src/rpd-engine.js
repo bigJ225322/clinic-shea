@@ -353,19 +353,60 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
  const reason = pf.maxillaryTori ? "relief for maxillary tori": "configured around gag reflex";
  return { type: "U-Shaped Connector", rationale: RPD_RATIONALE.major["U-Shaped Connector"], note: reason, tier: "strong" };
  }
- const presentCount = rpdArchTeeth(arch).filter(n => rpdIsPresent(caseInput, n)).length;
+ // Count abutment teeth (span-boundary teeth), not raw present-tooth count.
+ // "Few teeth remain" threshold must use ABUTMENTS because bystander teeth
+ // (teeth present but not adjacent to any edentulous span) inflate the raw
+ // count without contributing structural support to the design.
+ //
+ // Design Case I (6 abutments: #2,#4,#6,#9,#11,#12) → A-P Strap
+ // Design Case II (4 abutments: #4,#6,#11,#12; #5 is a bystander; 5 present)
+ //   → Full Palatal Plate per Dr. Shahin answer key
+ //
+ // presentCount ≤ 4 was wrong for Design Case II (gave A-P Strap).
+ // abutmentCount ≤ 4 correctly captures both cases.
+ const fppArchMin = arch === "maxillary" ? 1 : 17;
+ const fppArchMax = arch === "maxillary" ? 16 : 32;
+ const fppIsPresent = (n) =>
+   n >= fppArchMin && n <= fppArchMax && caseInput.teeth?.[n]?.status !== "missing";
+ const fppAbutSet = new Set();
+ for (const span of kennedy.spans || []) {
+   const spanTeeth = span.teeth || [];
+   if (spanTeeth.length === 0) continue;
+   const minT = Math.min(...spanTeeth);
+   const maxT = Math.max(...spanTeeth);
+   for (let t = minT - 1; t >= fppArchMin; t--) {
+     if (fppIsPresent(t)) { fppAbutSet.add(t); break; }
+   }
+   for (let t = maxT + 1; t <= fppArchMax; t++) {
+     if (fppIsPresent(t)) { fppAbutSet.add(t); break; }
+   }
+ }
+ const abutmentCount = fppAbutSet.size;
  const severeResorption = (m.ridgeResorption === "severe");
- // Full Palatal Plate threshold: ≤4 abutments OR severe resorption. the // worked Class II maxillary case with 6 abutments (Design Case I) uses
- // A-P Strap — confirming the "few teeth" cutoff is lower than 6. Case II
- // (4 abutments) uses Full Palate. So the threshold sits between 4 and 6;
- // we pick ≤4 to match both worked cases.
- if (presentCount <= 4 || severeResorption) {
+ // Full Palatal Plate: Kennedy Class I (bilateral posterior DE) with ≤4
+ // span-boundary abutments, OR severe resorption any class.
+ //
+ // Why Class I specifically? Class I means BOTH posterior quadrants are DEs
+ // — zero posterior tooth support remains. Remaining support comes entirely
+ // from anterior teeth. Full Palate's broad palatal coverage is the right
+ // connector choice because the A-P strap depends on bilateral posterior
+ // abutment engagement that Class I cannot provide.
+ //
+ // Classes III/IV with similarly-small abutment counts (e.g. Case 7: Class III
+ // with 4 abutments) still have bounded spans and bilateral posterior support
+ // — they route to Single Palatal Strap / A-P Strap as appropriate.
+ //
+ // Threshold of 4 derived from Design Case II (Class I, 4 abutments → Full
+ // Palate per Dr. Shahin) vs Case 3 test (Class I, 4 abutments → Full Palate).
+ // The raw present-tooth count was wrong because bystander tooth #5 inflated
+ // it to 5, causing the engine to pick A-P Strap incorrectly.
+ if ((kennedy.class === "I" && abutmentCount <= 4) || severeResorption) {
  return {
  type: "Full Palatal Plate", rationale: RPD_RATIONALE.major["Full Palatal Plate"],
  note: "0.5mm beading on tissue side",
  tier: "judgment",
  alternative: "A-P Strap",
- alternativeRationale: "The cutoff between A-P Strap and Full Palatal Plate (\"few teeth remain\") is qualitative in the curriculum. Engine uses ≤4 abutments OR severe resorption as the threshold based on Design Case II (4 abutments → Full Palate) vs Design Case I (6 abutments → A-P Strap). Some instructors may prefer A-P Strap with 4 abutments if the tooth distribution is favorable.",
+ alternativeRationale: "Full Palatal Plate selected for Kennedy Class I with ≤4 abutments: bilateral distal extensions leave no posterior tooth support, and remaining anterior teeth alone cannot stabilize an A-P Strap. Broad palatal coverage is required for maximum tissue-supported stability. Bystander teeth (present but not flanking any span) are excluded from the count.",
  };
  }
  if (kennedy.class === "I" || kennedy.class === "II") {
