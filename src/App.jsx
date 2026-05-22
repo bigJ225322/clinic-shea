@@ -19922,9 +19922,8 @@ const PATHWAY_GROUPS = {
  { label: "Exam & recall", ids: [
  "pedo-poe-recall",
  ]},
- { label: "Behavior & sedation", ids: [
+ { label: "Behavior", ids: [
  "pedo-behavior-management",
- "pedo-n2o-sedation",
  ]},
  { label: "Restorative", ids: [
  "pedo-composite",
@@ -20224,7 +20223,6 @@ const WIZARDS = {
  question: "What's the issue?",
  options: [
  { label: "Uncooperative or anxious child (Frankl 1–2)", pathway: "pedo-behavior-management" },
- { label: "Cooperative but needs N₂O for a longer procedure", pathway: "pedo-n2o-sedation" },
  ],
  },
  restorative: {
@@ -22794,7 +22792,7 @@ const PATHWAYS = [
  id: "pedo-composite",
  domain: "pedo",
  label: "Composite restoration in a primary tooth",
- description: "A primary molar with a Class I or Class II carious lesion. The patient is 4-9 years old, cooperative-but-anxious, and the tooth will exfoliate naturally in 2-7 years — so the restoration only needs to last until then. Behavior management (tell-show-do, parental presence in operatory) precedes any clinical work; profound anesthesia and isolation in a small mouth are the procedural challenges. The composite itself is technique-identical to adult dentistry, just with smaller increments and less depth tolerance because primary pulp horns are higher and closer to the surface.",
+ description: "A primary molar with a Class I or Class II carious lesion. The tooth will exfoliate naturally in 2-7 years — so the restoration only needs to last until then. Behavior management (tell-show-do, parental presence in operatory) precedes any clinical work; profound anesthesia and isolation in a small mouth are the procedural challenges. The composite itself is technique-identical to adult dentistry, just with smaller increments and less depth tolerance because primary pulp horns are higher and closer to the surface.",
  keyDecisions: [
  "Behavior management first. Tell-show-do for every instrument the child will see / hear. Parent in operatory for children under 6; outside for older if cooperation is good (helps with attention).",
  "Anesthesia dose limit: lidocaine 4.4 mg/kg (max 7 mg/kg). For a 20 kg child that's roughly 90 mg = half a carpule. Use 1:100,000 epi for hemostasis; topical first to minimize needle awareness.",
@@ -22870,7 +22868,7 @@ const PATHWAYS = [
  description: "A 6-12 year old with a newly erupted permanent molar (6-year or 12-year molar) or a primary molar with deep pits and fissures but no cavitation. The procedure is identical to adult sealants but the cooperation and isolation challenges are different — primary molars in young children need cotton-roll backup because the mouth is too small for a full Isodry seat, and the bonding window is shorter because saliva contamination happens in seconds at age 6.",
  keyDecisions: [
  "Indication: deep pits and fissures with no cavitation, in a child at moderate-to-high caries risk. Cavitated lesion = PRR (Preventive Resin Restoration), not sealant.",
- "Isolation matters more than anything else for pediatric sealants. Pediatric-size Isodry for 8+, cotton rolls + saliva ejector + bite block for younger. Saliva contamination of the etched enamel is the common failure mode.",
+ "Pediatric-size Isodry for 8+, cotton rolls + saliva ejector + bite block for younger. Saliva contamination of the etched enamel is the common failure mode.",
  "Etch with 37% phosphoric acid for 30 sec on enamel only. Rinse 15 sec, dry thoroughly — frosted matte appearance confirms adequate etch.",
  "Apply unfilled sealant with a brush tip into pits and fissures. Avoid bubbles. Cure 20 sec.",
  "Check seal with explorer — any tag-back or sticky feel = redo. Recall in 6 months for re-evaluation; sealants need monitoring and repair as they wear.",
@@ -22890,10 +22888,10 @@ const PATHWAYS = [
  id: "pedo-fluoride-varnish",
  domain: "pedo",
  label: "Fluoride varnish application",
- description: "A 1-18 year old at recall — moderate-to-high caries risk patient who needs topical fluoride to remineralize incipient lesions and prevent new ones. The fastest dental procedure: 30 seconds of application, no cooperation required beyond opening the mouth, no isolation, no instrumentation. 5% sodium fluoride varnish (Duraphat, Vanish, Profluorid Varnish) is brushed onto all tooth surfaces; the varnish sets on contact with saliva and stays in place for 4-6 hours. Repeat every 3-6 months depending on caries risk.",
+ description: "A 1-18 year old at recall — moderate-to-high caries risk patient who needs topical fluoride to remineralize incipient lesions and prevent new ones. A short procedure: 30 seconds of application, no cooperation required beyond opening the mouth, no isolation, no instrumentation. 5% sodium fluoride varnish (Duraphat, Vanish, Profluorid Varnish) is brushed onto all tooth surfaces; the varnish sets on contact with saliva and stays in place for 4-6 hours. Repeat every 3-6 months depending on caries risk.",
  keyDecisions: [
  "Dose: pre-loaded unit-dose syringe (0.25 mL = 5.7 mg fluoride). One unit dose is adequate for full-arch in any age. The patient cannot overdose at this concentration with a single application.",
- "Skip the prophy. Modern evidence shows fluoride uptake is the same with or without prior cleaning. Save the time for behavior modeling or counseling instead.",
+ "Skip the prophy. Modern evidence shows fluoride uptake is the same with or without prior cleaning.",
  "Application: dry teeth lightly with gauze (not perfect dryness), brush varnish onto all tooth surfaces with the unit-dose brush. Avoid the gingiva and tongue.",
  "Post-op: soft diet for 4 hours, no brushing or flossing until the next morning, no fluoride toothpaste rinse that night. The varnish needs time to deposit fluoride into the enamel.",
  "Recall frequency: high caries risk → every 3 months; moderate risk → every 6 months; low risk in children under 6 → 6 months; school-age low risk → annual. Document risk category in the chart at each visit.",
@@ -22932,29 +22930,6 @@ const PATHWAYS = [
  ],
  },
  {
- id: "pedo-n2o-sedation",
- domain: "pedo",
- label: "N₂O sedation for a pediatric procedure",
- description: "A cooperative-but-anxious child (Frankl 2-3) facing a longer or more invasive procedure — pulpotomy + SSC, multiple restorations in one visit, an extraction — where basic communication techniques won't sustain cooperation for the full chair time. Nitrous oxide reduces anxiety, raises the pain reaction threshold, reduces gagging, and produces minor euphoria, all while the child remains conscious and responsive to verbal cues. It also potentiates other sedatives, which is one reason for the 50% ceiling at UIC. Per Dr. Hill (DAOB 321): rapid uptake and rapid elimination make it a safe inhaled sedative when used with direct supervision, correct titration, and post-op oxygen.",
- keyDecisions: [
- "Screen for contraindications before consenting the parent. Per swade: inner-ear infection, blocked nasal passages (must breathe through nose), COPD, pre-existing nausea or vomiting, claustrophobia or emotional disturbances, bleomycin sulfate (chemo), MTHFR deficiency, B12 (cobalamin) deficiency, N₂O exposure in past 7 days. Pregnant chair-side staff is also a consideration (occupational exposure).",
- "Consent the parent. \"It's not putting the child to sleep — they'll be awake and able to talk. A mix of oxygen and a gas that helps them relax and not feel pain as sharply. We give them pure oxygen at the end to clear it out.\" Child picks scent of the nose hood. Document the consent.",
- "Titrate stepwise — Hill's protocol: change PERCENTAGES, not flow rates. Keep total flow constant (typically 6 L/min, matched to the patient's tidal volume — swade's note templates use 4 L/min for smaller kids; either is acceptable if the patient breathes comfortably through the nose). Start at 100% O₂ / 0% N₂O, then increase N₂O by ~10% every minute (e.g. 100/0 → 83/17 → 75/25 → 67/33 → 58/42 → 50/50). Most patients feel the effect between 30-50%. Some feel it at 10%; some need more than 50%, but you do NOT go above 50% as a D3 because that's moderate-sedation territory — rescue drugs, vital sign monitoring, and emergency protocols are required above 50%.",
- "Direct supervision the entire time — never leave a sedated patient alone. A qualified individual stays with the patient as long as they are under nitrous. Talk to the child throughout (\"can you still hear me, wiggle your fingers, how are your toes feeling\"). Lost verbal contact, drooping eyelids, or cessation of cooperation are signs of over-sedation: reduce N₂O or go to 100% O₂ immediately.",
- "Recovery: 100% O₂ for 3-5 minutes before removing the nose hood (Hill: \"3-5 minutes\"; swade note templates: \"5 minutes at 4 L/min\"). Skipping this causes diffusion hypoxia — nitrous leaves the body faster than O₂ can replace it in the alveoli, producing headache and disorientation. Document the percentage used, duration of administration, and post-op O₂ time in the note. Discharge when alert, oriented, ambulatory, and the parent confirms the child seems like themselves.",
- ],
- phases: [
- { label: "Screening & consent", count: 2 },
- { label: "Titration & monitor", count: 2 },
- { label: "100% O₂ recovery", count: 1 },
- ],
- sections: [
- { guideId: "pedo", chapterId: "pedo-ch1" },
- { guideId: "pedo", chapterId: "pedo-ch2" },
- { guideId: "pedo", chapterId: "pedo-ch4" },
- ],
- },
- {
  id: "pedo-strip-crown",
  domain: "pedo",
  label: "Strip crown — anterior primary tooth (severe ECC)",
@@ -22963,7 +22938,7 @@ const PATHWAYS = [
  "Indication check: extensive multi-surface caries on a primary incisor where a direct composite would not retain. Single-surface lesions get a Class III or IV composite. Pulp-involved teeth need pulpotomy + strip crown, not strip crown alone. If multiple anterior teeth are affected, plan all of them in one visit if cooperation allows.",
  "Anesthesia and isolation: 1 carpule of 2% lidocaine with 1:100K epi, short blue needle, buccal infiltration. Isolation is the make-or-break — Isodry on anteriors sometimes interferes; rubber dam with tie-floss on the clamp is more reliable. If rubber dam: punch two holes ½ inch apart and cut between them for a slot — fast placement and removal.",
  "Preparation: knife-edge finish line slightly subgingival on all surfaces. Interproximal reduction 1 mm, facial 1 mm, lingual 0.5 mm clearance, incisal reduction 1.5 mm with rounded corners. No shoulder, no ledge — the celluloid form needs to slide on. If the form doesn't fit, the tooth isn't reduced enough.",
- "Bonding sequence: etch enamel first, then dentin (15 sec), rinse, dry leaving dentin glossy and moist. Apply Scotchbond Universal with vigorous 20-sec scrub, thin with air for 5 sec, cure 10 sec. If saliva contamination happens — re-etch for only 5 sec and proceed. The bond window with a 3-year-old is measured in seconds; have everything pre-loaded.",
+ "Bonding sequence: etch enamel first, then dentin (15 sec), rinse, dry leaving dentin glossy and moist. Apply Scotchbond Universal with vigorous 20-sec scrub, thin with air for 5 sec, cure 10 sec. If saliva contamination happens — re-etch for only 5 sec and proceed. Pre-load all materials before starting; the bond window in a young child is short.",
  "Load the celluloid form with composite (Renamel nanofill or equivalent in pediatric A2-A3 shade), seat onto the prepared tooth, express excess from a vent hole, cure 40 sec from facial then 40 sec from lingual. Peel the form off with a #12 scalpel or simply tear it. Finish with fine diamond, polish with Shofu/Jiffy. Restoration should not be in occlusion, protrusion, or lateral excursion.",
  ],
  phases: [
@@ -23010,7 +22985,7 @@ const PATHWAYS = [
  keyDecisions: [
  "Triage for non-dental injury first. Mechanism (fall, MVC, abuse), loss of consciousness, vomiting, behavior change → ER, not the dental chair. The tooth can wait; an undetected head injury cannot. Document the mechanism in the chart in the child's words and the parent's words separately.",
  "Categorize the injury. Concussion (tender to percussion, no displacement, no mobility) → no treatment, soft diet, follow up. Subluxation (mobile, no displacement) → no treatment, soft diet, follow up. Lateral luxation (displaced but in socket) → if mild and not interfering with occlusion, reposition with finger pressure and monitor; if severe or interfering with occlusion, extract. Intrusion (driven into the bone toward the permanent successor) — re-erupts on its own in 2-6 months in most cases; if it has impinged on the permanent germ on radiograph, extract.",
- "Avulsion (tooth out of socket): DO NOT REPLANT. The replantation procedure injures the permanent successor in the developing follicle. Tell the parent this explicitly — they will arrive expecting you to put it back. Show the radiograph if it helps explain. The space will be managed with a Hawley appliance with a denture tooth if the parent wants esthetics; otherwise leave it.",
+ "Avulsion (tooth out of socket): do NOT replant. The replantation procedure injures the permanent successor in the developing follicle. Parents often arrive expecting replantation, so explain the reasoning before they ask. The space can be managed with a Hawley appliance + denture tooth if the parent wants esthetics; otherwise leave it.",
  "Crown fracture (enamel-dentin or pulp exposure on a primary tooth): enamel-dentin → composite restoration with selective etch on enamel only, light cure, polish. Pulp exposure on a primary tooth → pulpotomy if vital with limited exposure; extraction if necrotic, large exposure, or close to exfoliation anyway. Root fracture → almost always extraction (primary roots resorbing already, very poor prognosis).",
  "Follow-up: tooth color and vitality testing are unreliable on primaries. Watch for gray/dark discoloration over 4-8 weeks (sign of pulp necrosis from the trauma), fistula development (sign of infection), and mobility changes. Recall at 1 week, 6-8 weeks, 6 months, then annually until exfoliation. Take a periapical at the 6-week visit to rule out periapical pathology on the permanent successor.",
  ],
@@ -23034,7 +23009,7 @@ const PATHWAYS = [
  keyDecisions: [
  "Indication confirmation: necrotic primary with PARL (UIC extracts these — pulpectomy is not the routine), over-retained primary with permanent erupting palatally/lingually, unrestorable caries, trauma with hopeless prognosis, ortho serial extraction. Get the indication and rationale documented in the chart before the appointment.",
  "Anesthesia: AAPD maximum lidocaine dose 4.4 mg/kg. For typical pediatric weights — 1 carpule of 2% lidocaine is the limit (and the patient must weigh at least 18 lb / 8.2 kg). Maxillary: buccal infiltration + PDL is usually sufficient; primary maxillary bone is thin and permeable. Mandibular: IAN block + long buccal in older kids; in younger kids (under 5) IAN is unreliable due to mandibular foramen position — buccal + lingual infiltration + PDL often works better. Use the short blue 30G 20mm needle even for IAN, except in larger teens.",
- "N₂O is often appropriate for extractions of this age group — see the N₂O pathway for contraindication screening and titration. If contraindicated and the child is Frankl 1-2 for a longer procedure, this becomes a sedation referral.",
+ "If basic behavior management isn't enough for the chair time, escalate per the behavior management pathway. Sedation decisions (N₂O or beyond) are made with the faculty preceptor.",
  "Mechanics: use rubber dam clamp 14 for primary molars, 14A for young permanent molars. Periosteal elevator (Molt #9) to reflect gingiva — gently, primary gingiva is thin. Straight elevator perpendicular to tooth at the mesiobuccal line angle. Use pediatric forceps if available. Luxate with slow, sustained, heavy pressure — 5-second buccal push, 5-second lingual, reseat more apically. Anterior primaries get a rotational motion. Be ready for fast delivery once the PDL releases — the resorbed root may come out with very little resistance.",
  "Post-op: gauze pressure for 30-45 minutes (children won't hold it as long as adults — set a timer). Compress the socket walls. Suture only if the tissue is mobile or large; primary extraction sockets usually do not need sutures. Post-op instructions to the parent: soft diet for the day, no straws (clot dislodgement), no spitting forcefully, no rinsing today, Tylenol or Motrin for pain (weight-based dose). Warn the parent the child may bite their lip/tongue while still numb. Schedule recall if a space maintainer is indicated.",
  ],
@@ -23061,7 +23036,7 @@ const PATHWAYS = [
  "Weigh the patient (scale by the front door); do NOT take blood pressure on a pedo patient unless there's a specific medical reason. The Pediatric Exam EPR has \"Medical History\" and \"Risk Assessment\" tabs — fill both with the guardian. Update with Ctrl+R if no changes, so the date refreshes to today.",
  "Anticipatory guidance is the peds-specific intervention and it bills as two codes: D1330 (OHI) + D1310 (Nutritional counseling). Nutritional: no juice under age 1, juice/soda one small (4-8 oz) cup once a day with meals only, snacks limited to one mid-morning and one mid-afternoon. OHI: brush 2x/day + floss 1x/day (any teeth that touch), guardian supervises every time, three brushing areas (buccal, occlusal, lingual).",
  "Send the guardian to the waiting room before prophy + radiographs + exam. Prophy uses hand instruments only — no Cavitron in peds, no perio kit, just the two scalers/curettes in the peds kit. Radiograph system depends on size: Gendex for ~7 and under, Dexis for ~7 and older. First pano at age 7 covered by Medicaid; do not double up pano + bitewings same day.",
- "Bring the guardian back at the end for the treatment-plan conversation, OHI demo with the patient, and scheduling. Fluoride varnish goes on AFTER instructor check (otherwise instructor can't see what you did). If patient needs restorative work, schedule it with you at your next open appointment; if no restorative, you cannot book the 6-month recall in advance — note in chart to call them. Codes to complete: D0150A/B/C (or D0120 for periodic), D1120 prophy-child, D0274 four bitewings or D0220+D0230 PAs as applicable, D1206 varnish, D1330 OHI, D1310 nutrition.",
+ "Bring the guardian back at the end for the treatment-plan conversation, OHI demo with the patient, and scheduling. Fluoride varnish is applied after the instructor check. If patient needs restorative work, schedule it with you at your next open appointment; if no restorative, the 6-month recall cannot be booked in advance — note in chart to call them. Codes to complete: D0150A/B/C (or D0120 for periodic), D1120 prophy-child, D0274 four bitewings or D0220+D0230 PAs as applicable, D1206 varnish, D1330 OHI, D1310 nutrition.",
  ],
  phases: [
  { label: "Pre-check & guardian intake", count: 2 },
