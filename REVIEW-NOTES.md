@@ -667,3 +667,36 @@ ITR is currently referenced in:
 
 → Save for Jake's review. Trivial to add but the user warned about over-editing — defer the call.
 
+### Borderline find: 3M ESPE vs Unitek SSC reduction differences
+
+Dr. Alsaleh's Week 2 Extracoronal Restorations lecture explicitly differentiates the two main SSC brands at UIC by required occlusal reduction:
+
+**3M ESPE (Ion)** — DEEP anatomy:
+- Original was high-nickel (72%) → metal-allergy risk
+- "New Ion" reformulated to 8-11% Ni (Fe-dominant)
+- Fully shaped: constricted cervical, pre-contoured, pre-crimped
+- Fully strain hardened, thin gingival edge
+- **Requires MORE occlusal reduction** (matches the deeper anatomy)
+
+**Unitek**:
+- 10-11% Ni, 17-19% Cr, 69% Fe
+- Slightly longer than tooth; parallel walls; festooned margins; slightly contoured
+- Some strain hardening; SHALLOW anatomy
+- **Less tooth reduction needed**; thicker occlusal; "universal, more uses"
+
+The current `pedo-stainless-crown` pathway gives a 1.5-2.0mm occlusal reduction range that accommodates both brands but doesn't differentiate. If a student prepares 1.5mm for a 3M ESPE on a small primary molar with high pulp horns, the crown may not seat → they may over-prep and expose pulp. Conversely, 1.5mm for a Unitek is more reduction than needed.
+
+**Suggested expansion**: add a key decision in `pedo-stainless-crown` like:
+> "Brand-matched reduction: 3M ESPE Ion crowns have DEEP occlusal anatomy → 2.0mm reduction needed; Unitek crowns have SHALLOW anatomy → 1.5mm reduction adequate. Check which brand your clinic stocks before prepping. If unsure, start at 1.5mm, try the crown, add reduction only if it won't seat."
+
+→ Save for Jake's review. Trivial to add. The user warned about over-editing, so I'm holding off without explicit go-ahead.
+
+### Borderline find: SSC vs amalgam outcome data
+
+The lecture cites a Randall 2002 pooled review (5 studies, 2201 amalgams + 1210 SSCs) showing:
+- Multisurface amalgam: 26% failure rate at mean 5 years
+- Preformed metal crown (SSC): 7% failure rate at mean 5 years
+- Individual study spreads: amalgam failure 12-87%; SSC failure 2-25%
+
+This evidence is referenced indirectly in the current pathway ("composite has higher replacement rates here") but the specific Randall 2002 numbers aren't cited. Worth adding if Jake wants a strict evidence trail — but the clinical conclusion is already there. Defer to Jake's preference.
+
