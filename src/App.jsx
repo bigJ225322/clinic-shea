@@ -3490,7 +3490,11 @@ const DEFAULT_FIELDS = {
  // chart's "probing depths" field — not stored here. When perioCOEDxSendToNote
  // is true, the engine output syncs into the AAP/ADA dropdowns (and the note).
  perioCOEMaxRecession: "", // mm
- perioCOEBoneLossPct: "", // "<15" | "15-33" | ">33"
+ perioCOEBoneLossPct: "", // "0" | "<15" | "15-33" | ">33"
+ // BOP: needed to differentiate Periodontally healthy from Gingivitis when
+ // there's no bone loss. Without it the engine has to hedge (AAP 2018 uses
+ // BOP as the gingivitis gate on an intact periodontium).
+ perioCOEBOP: "", // "none" | "localized" | "generalized"
  perioCOETeethLost: "", // "0" | "1-4" | "≥5"
  perioCOEComplexityFactors: [], // array of strings (chips)
  perioCOEAge: "", // years
@@ -3636,7 +3640,8 @@ function computePerioCOEDx(inputs) {
  const {
  maxIntPD, // mm, number — max interdental probing depth at worst site
  maxRecession, // mm, number — recession at same worst site
- boneLossPct, // "<15" | "15-33" | ">33"
+ boneLossPct, // "0" | "<15" | "15-33" | ">33"
+ bop, // "none" | "localized" | "generalized" (optional; only used when no bone loss)
  teethLostFromPerio, // "0" | "1-4" | "≥5"
  complexityFactors, // array of strings (see options below)
  age, // number
@@ -3654,31 +3659,62 @@ function computePerioCOEDx(inputs) {
  // is closer to 0.
  //
  // Short-circuit: if there's no radiographic bone loss (boneLossPct === "0"),
- // the patient doesn't have periodontitis — they're healthy (or gingivitis
- // if BOP is present). Return a non-periodontitis diagnosis. The naive
- // formula would over-stage a healthy 3mm-sulcus patient as Stage II.
+ // the patient doesn't have periodontitis. Use BOP to differentiate:
+ //   • no BOP                → Periodontally healthy
+ //   • localized BOP (<30%)  → Localized gingivitis on intact periodontium
+ //   • generalized BOP (≥30%) → Generalized gingivitis on intact periodontium
+ // The naive PD+R formula would over-stage a healthy 3mm-sulcus patient as
+ // Stage II — this branch returns the correct non-periodontitis diagnosis.
  const pdNum = Number(maxIntPD) || 0;
  const recNum = Number(maxRecession) || 0;
 
  if (boneLossPct === "0") {
  // CAL when there's no bone loss = recession only (if any). The PD is
  // physiologic sulcus depth, not attachment loss.
- const noPerioNarrative = recNum > 0
-? `No periodontitis. Localized recession (${recNum}mm) at a site without radiographic bone loss is typically non-periodontitis in origin — consider orthodontic recession, abrasion, anatomical thin biotype, or mechanical trauma.`
-: `Periodontally healthy or gingivitis. Probing depths (${pdNum}mm max) are within physiologic sulcus range; no radiographic bone loss; no recession — no evidence of attachment loss. If BOP is present, this is gingivitis on an intact periodontium (AAP 2018).`;
+ const bopVal = bop || ""; // empty string = "BOP not recorded"
+ const hasBOP = bopVal === "localized" || bopVal === "generalized";
+
+ let narrative;
+ let aap;
+ let ada;
+ if (recNum > 0) {
+ // Recession without bone loss = non-periodontitis recession etiology.
+ narrative = `No periodontitis. Localized recession (${recNum}mm) at a site without radiographic bone loss is typically non-periodontitis in origin — consider orthodontic recession, abrasion, anatomical thin biotype, or mechanical trauma.${
+ hasBOP ? ` Concurrent ${bopVal} gingivitis is also present (BOP recorded).` : ""
+ }`;
+ aap = hasBOP
+ ? `Recession (non-periodontitis) + ${bopVal} gingivitis on intact periodontium`
+ : "Recession (non-periodontitis origin)";
+ ada = hasBOP ? "Type I (gingivitis on intact periodontium)" : "No periodontitis";
+ } else if (bopVal === "none") {
+ narrative = `Periodontally healthy. Probing depths (${pdNum}mm max) within physiologic sulcus range; no radiographic bone loss; no recession; no bleeding on probing. Intact periodontium with no inflammation.`;
+ aap = "Periodontally healthy (intact periodontium, no inflammation)";
+ ada = "No periodontitis (Type I exclusion — no BOP)";
+ } else if (bopVal === "localized") {
+ narrative = `Localized gingivitis on intact periodontium (AAP 2018). Probing depths (${pdNum}mm max) within physiologic sulcus range; no radiographic bone loss; no attachment loss; BOP localized (<30% of sites). Reversible with improved hygiene + prophy.`;
+ aap = "Localized gingivitis on intact periodontium";
+ ada = "Type I (gingivitis, localized)";
+ } else if (bopVal === "generalized") {
+ narrative = `Generalized gingivitis on intact periodontium (AAP 2018). Probing depths (${pdNum}mm max) within physiologic sulcus range; no radiographic bone loss; no attachment loss; BOP generalized (≥30% of sites). Treatment: prophy + OHI; recheck in 6-8 weeks.`;
+ aap = "Generalized gingivitis on intact periodontium";
+ ada = "Type I (gingivitis, generalized)";
+ } else {
+ // BOP not recorded — fall back to the hedge so the student knows to fill it in.
+ narrative = `No periodontitis. Probing depths (${pdNum}mm max) within physiologic sulcus range; no radiographic bone loss; no recession. Whether this is periodontally healthy or gingivitis depends on BOP — fill in the BOP field for a definitive diagnosis.`;
+ aap = "Periodontally healthy (or gingivitis if BOP present — record BOP)";
+ ada = "No periodontitis (Type I if BOP)";
+ }
  return {
  cal: recNum,
  calBucket: recNum > 0? "≤2": "0",
  stage: null,
- stageRationale: noPerioNarrative,
+ stageRationale: narrative,
  grade: null,
  gradeRationale: null,
  extentLabel: null,
- aap: recNum > 0
-? "No periodontitis (localized recession, non-periodontitis origin)"
-: "Periodontally healthy (or gingivitis on intact periodontium if BOP present)",
- ada: "No periodontitis (Type I — gingivitis if BOP present)",
- narrative: noPerioNarrative,
+ aap,
+ ada,
+ narrative,
  };
  }
 
@@ -8220,6 +8256,7 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
  maxIntPD: String(maxPD || ""),
  maxRecession: fields.perioCOEMaxRecession || "0",
  boneLossPct: fields.perioCOEBoneLossPct,
+ bop: fields.perioCOEBOP || "",
  teethLostFromPerio: fields.perioCOETeethLost,
  complexityFactors: fields.perioCOEComplexityFactors || [],
  age: fields.perioCOEAge,
@@ -8306,12 +8343,21 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
  AAP 2018 staging
  </div>
 
- {/* Three staging fields on one row: Recession, BL %, Teeth Lost */}
- <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px" }}>
+ {/* Four staging fields on one row: Recession, BOP, BL %, Teeth Lost */}
+ <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "12px" }}>
  <Field label="Recession at max PD (mm)">
  <TextInput value={fields.perioCOEMaxRecession || ""}
  onChange={v => setField("perioCOEMaxRecession", v.replace(/[^\d.]/g, ""))}
  placeholder="0 if none" />
+ </Field>
+ <Field label="BOP">
+ <Select value={fields.perioCOEBOP || ""}
+ onChange={v => setField("perioCOEBOP", v)}>
+ <option value="">— select —</option>
+ <option value="none">None (no BOP)</option>
+ <option value="localized">Localized (&lt;30% of sites)</option>
+ <option value="generalized">Generalized (≥30% of sites)</option>
+ </Select>
  </Field>
  <Field label="BL %">
  <Select value={fields.perioCOEBoneLossPct || ""}
