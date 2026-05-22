@@ -492,3 +492,66 @@ Checked `Fall RPD 22 Non-metal clasps.pdf` against existing engine content. **Al
 
 No changes needed.
 
+---
+
+## URGENT CRASH FIX SHIPPED (2026-05-22 ~02:50 AM)
+
+**Bug:** Three instances of `new Date.foo.slice(0,10)` missing the `()` after Date — `Date.toISOString` and `Date.getMonth` are prototype methods, not constructor properties. `new (Date.toISOString.slice)(0,10)` throws `Cannot read properties of undefined (reading 'slice')`, which wipes the React tree because there's no error boundary.
+
+**Sites fixed:**
+- App.jsx:12528 `currentSemester()` — fires on EVERY render
+- App.jsx:16383 `RPDPreliminaryDesignForm` Date field
+- App.jsx:16665 Lab Rx today date stamp
+
+**Reproduced** by clicking RPD tab → marking any teeth missing. Fix verified in browser (form renders, date `2026-05-22` shows). 1012/1012 tests pass.
+
+**Deployed** to main via fast-forward (8 commits including this fix, the IR dedup fixes, Full Palate threshold fix, REVIEW-NOTES, and pedo Cases additions). Vercel will auto-deploy.
+
+---
+
+## Iteration 8 (2026-05-22, post-crash-fix)
+
+### Lab 4 case (Dr. Shahin Fall 2023) — mandibular Class II Mod 2
+
+Patient: missing #20 (single tooth gap), #22-28 (anterior), #30-31 (right DE). Present abutments: #18, #19, #21, #29.
+
+**Engine vs Lab 4 answer key:**
+
+| Component | Engine | Lab 4 Answer Key |
+|-----------|--------|------------------|
+| Major | Lingual Bar ✅ | Lingual Bar |
+| #18 | (not assigned) | Embrasure clasp pair partner |
+| #19 | Akers, mesial rest | Embrasure clasp partner, mesial rest, DB undercut |
+| #21 | Akers, distal rest | REST ONLY (mesial rest = indirect retainer) |
+| #29 | RPI (= I-bar + mesial rest + distal plate) ✅ | I-bar, mesial rest, distal proximal plate, Mid-Buccal undercut |
+| #30-31 base | Open Lattice + distal stop ✅ | Open Lattice + distal stop |
+| #22-28 base | Open Lattice | (unspecified; default likely Mesh per anterior-≥3 rule) |
+
+#### Borderline finding 1: Embrasure clasp pair recognition
+
+The engine doesn't generate embrasure clasp pairs on contiguous adjacent molars (#18-19) when they need to provide retention on the side opposite a DE. Instead it picks Akers on the boundary tooth of the nearest tooth-bounded span (#19, bounding the #20 gap).
+
+Both designs are clinically valid. The embrasure pair is more elegant (uses the natural embrasure between two adjacent molars), but the Akers solution is also fine. Adding embrasure-pair recognition for Class II is a future enhancement — for now the engine's behavior is defensible.
+
+→ Save for Jake's review.
+
+#### Borderline finding 2: Anterior-with-PM span gets Open Lattice instead of Mesh
+
+The engine's base-design rule `isAnterior = containsAnterior && !containsPosterior` is strict — a span spanning #22-28 includes #28 (1st PM in `RPD_POSTERIOR`), so it's NOT classified as anterior, so it doesn't get Mesh.
+
+This may be too strict. A span that's 6 anterior teeth + 1 PM is still primarily an "anterior" span clinically. A softer rule could be `isAnterior = anteriorCount >= 3 && anteriorCount > posteriorCount`.
+
+But: in Design Case II, the actual answer key showed Open Lattice for #7-10 anterior span (not Mesh). So Open Lattice IS what gets used in the lab in practice for these spans. Engine's current behavior (Open Lattice for mixed anterior+PM) actually matches Dr. Kim's lab practice.
+
+→ Engine behavior is more defensible than the answer-key spec suggested earlier. No change.
+
+#### Borderline finding 3: #21 should be rest-only, engine gives it Akers
+
+Per Lab 4: when the boundary tooth of an anterior span is the FAR side of the prosthesis (more anterior than the rest of the framework), it serves as an indirect retainer (rest-only), not a direct retainer. The engine currently adds an Akers clasp arm here.
+
+This is the same pattern as the canineModIndirect routing that already exists in the engine — but only the engine handles MANDIBULAR CANINES specifically. Premolars (like #21) bounding an anterior span aren't routed to rest-only IR.
+
+A fix would be: in `appendSpanBoundaryRetainers`, when the boundary tooth of an anterior span is a premolar AND it's more anterior than the DE-side abutment (geometrically serves as IR), route it to indirectRetainers as rest-only.
+
+→ This is a real engine improvement opportunity. Save for Jake's go-ahead before implementing — it changes clasp output for Class II/Class IV cases.
+
