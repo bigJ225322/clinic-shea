@@ -23476,6 +23476,8 @@ const PATHWAYS = [
  "Margin location: 0.5-1.0 mm subgingival on the buccal of anterior implants for esthetic emergence; equigingival or supragingival on posterior. Sub-gingival margin demands precise impression and cementation to avoid retained cement.",
  "Cement choice (if cement-retained): non-eugenol provisional or definitive. Resin-modified glass ionomer (RelyX Luting) is the workhorse. Avoid resin cements at the gingival margin (irretrievable if peri-implantitis develops).",
  "Occlusion: implant crowns should have lighter contact in MI than natural teeth (because implants don't have PDL to absorb force) - shimstock pulls through without holding when biting normally, holds in maximum clenching. Lateral excursions: anterior guidance on natural teeth, NOT on the implant crown.",
+ "Torque on delivery is brand-specific — Astra abutments to 25 Ncm, Straumann to 35 Ncm. Confirm the brand from the implant placement note before reaching for the torque wrench. Under-torque = abutment loosening (cement crowns work loose, screw crowns micro-rotate). Over-torque = abutment screw fracture, which is an irretrievable failure on most platforms.",
+ "Safety mechanics on any implant manipulation (healing abutment removal, impression coping, custom abutment, crown try-in): gauze THROAT PACK over the oropharynx + tie a length of floss to the hand driver. Implant components are small, smooth metal — they slip and bounce. The throat pack catches a dropped piece; the floss tether catches the driver if it pops free.",
  ],
  phases: [
  { label: "Cement vs screw decision", count: 2 },
