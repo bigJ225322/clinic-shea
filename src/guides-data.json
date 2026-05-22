@@ -11851,6 +11851,96 @@
         "body": "**Master cone won't reach working length:** debris is blocking the apex; the apical shape isn't smooth; or the cone is too large. Recapitulate, re-irrigate, try a smaller cone. **Master cone has no apical tug-back (slides too easily):** the apical shape is too wide. Drag-down a size or two; or trim the cone tip to fit. **Sealer extruded past apex on radiograph:** small extrusion is acceptable (bioceramic and AH Plus are biocompatible). Large extrusions may cause transient post-op discomfort but rarely cause persistent symptoms. **Air voids visible on PA:** insufficient compaction or sealer application. Don't re-treat for cosmetic voids; do re-treat if voids extend to a canal wall (allows bacterial re-entry)."
        }
       ]
+     },
+     {
+      "id": "endo-ch13",
+      "num": 13,
+      "title": "Necrotic pulp - pus management, calcium hydroxide intracanal medicament",
+      "verdict": "Necrotic pulp + periapical lesion = two-visit RCT with calcium hydroxide between. Drain the canal first (pus comes out during access), then thoroughly clean and shape, then place Ca(OH)2 paste for 2-4 weeks to reduce the bacterial load, then obturate at the second visit when symptoms have resolved. Antibiotics ONLY for systemic involvement.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Necrotic pulp cases differ from vital pulp RCTs in three ways: (1) the canal contains bacterial necrotic debris, not just inflamed but living pulp; (2) the periapical tissues are inflamed or infected, with potential acute swelling or fistula; (3) single-visit obturation has lower success rate because residual bacteria can survive the cleaning + shaping. The standard protocol is two-visit treatment with calcium hydroxide as intracanal medicament between visits."
+       },
+       {
+        "kind": "section",
+        "text": "Diagnosis confirmation"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Cold test:** NEGATIVE. Necrotic pulp doesn't respond to cold. (Recently-traumatized teeth can be transiently cold-negative even when vital - re-test in 4-6 weeks if injury was recent.)",
+         "**EPT:** NEGATIVE. No electrical response.",
+         "**Percussion:** often POSITIVE (acute or chronic apical periodontitis). The periodontium is inflamed.",
+         "**Palpation:** may be positive if there's a buccal fluctuant area or sinus tract.",
+         "**Radiograph:** may show periapical radiolucency (chronic), PDL widening (acute), or condensing osteitis (rare reactive pattern).",
+         "**Sinus tract or fistula:** trace with a gutta-percha point inserted into the fistula and PA radiograph to confirm the origin tooth."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Visit 1 - Drainage + cleaning"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Anesthetize** (necrotic pulps don't need anesthesia for the pulp itself, but soft tissues do - especially the marginal gingiva and apical mucosa for any subsequent percussion testing or rubber dam clamp).",
+         "**Place rubber dam.** Mandatory - NaOCl will be used.",
+         "**Access prep.** Be careful - the chamber may contain pus under pressure that releases when you penetrate. Have suction ready.",
+         "**If pus drains:** let it flow until the pressure releases. Don't aggressively curette or push debris apically. Irrigate with NaOCl 5% to flush the canal.",
+         "**Establish working length** with apex locator + PA. Standard technique (see endo-ch3).",
+         "**Clean & shape to F2 (or equivalent) with copious irrigation.** Necrotic cases need MORE irrigation than vital - 8-10 mL NaOCl between every file. The bacterial load is higher, and the file mechanically alone doesn't kill bacteria.",
+         "**Final irrigation:** 17% EDTA for 60 sec, NaOCl rinse, 2% CHX for 30 sec (extra disinfection step in necrotic cases).",
+         "**Dry the canal** with paper points.",
+         "**Place Ca(OH)2 paste** (UltraCal, Vitapex) with a syringe to working length. Compact with paper points. The paste fills the canal and sits against the dentin walls.",
+         "**Seal with Cavit + IRM or temporary glass-ionomer.** Cavit alone leaks; combine with IRM for a more robust seal.",
+         "**Schedule visit 2 at 2-4 weeks.**"
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Calcium hydroxide as intracanal medicament"
+       },
+       {
+        "kind": "paragraph",
+        "text": "Ca(OH)2 has high pH (~12.5) that creates an antibacterial environment in the canal. It dissolves residual necrotic tissue, neutralizes bacterial endotoxins, and promotes periapical healing. Some bacteria (Enterococcus faecalis, fungi) are relatively resistant to Ca(OH)2, but the overall bacterial load is significantly reduced over a 2-4 week dwell."
+       },
+       {
+        "kind": "section",
+        "text": "Visit 2 - Re-cleaning + obturation"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Confirm symptoms have resolved** (no spontaneous pain, percussion-negative or much improved, no sinus tract). If symptoms persist, re-evaluate: missed canal? Vertical root fracture? Inadequate irrigation last visit? Consider extra cleaning + another 2 weeks of Ca(OH)2 before obturation.",
+         "**Re-place rubber dam, re-access.**",
+         "**Remove the Ca(OH)2** with copious NaOCl irrigation + ultrasonic activation if available. Important - residual Ca(OH)2 reduces obturation sealer adhesion.",
+         "**Re-instrument lightly** (one size up from the previous master file, e.g., F3 if you stopped at F2). This refreshes the canal walls and ensures no debris remains.",
+         "**Final irrigation sequence:** NaOCl - EDTA - NaOCl - CHX - dry.",
+         "**Obturate** with master cone + sealer (see endo-ch5).",
+         "**Coronal seal:** definitive restoration within 4 weeks."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Antibiotic decision"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Antibiotics NOT indicated for:** localized periapical abscess that drains, asymptomatic chronic periapical lesion, sinus tract without spreading infection.",
+         "**Antibiotics ARE indicated for:** spreading cellulitis, fever >100.4F, lymphadenopathy, trismus, immunocompromised patients (diabetes, transplant, chemo).",
+         "**First-line:** Pen V K 500 mg QID x 7 days OR amoxicillin 500 mg TID x 7 days (BID dosing easier compliance).",
+         "**Penicillin-allergic:** clindamycin 300 mg QID x 7 days OR azithromycin 500 mg load + 250 mg QD x 4 days.",
+         "**Always document:** indication for antibiotics, drug + dose, duration. Antibiotic over-prescription contributes to resistance."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Necrotic pulp problems",
+        "body": "**Pus drains continuously after access - won't stop:** leave the tooth open for 24-48 hours ONLY if the patient cannot tolerate having the tooth sealed (severe pain that doesn't respond to pressure on the pus pocket). Most modern protocols close at first visit. If left open, close at 24-48 hours regardless. **Symptoms recur after Ca(OH)2 placement:** missed canal (MB2 in maxillary molars, second canal in premolars), inadequate cleaning, or vertical root fracture. Re-evaluate at second visit. **No periapical healing at 6-month recall:** lesion should reduce in size by 6 months. If unchanged or larger, consider endo retreatment or apico referral. **Fistula doesn't close after first visit:** common - fistulas can take weeks to close. Recheck at second visit; should be smaller. If persistent at 3 months post-obturation, evaluate for retreatment."
+       }
+      ]
      }
     ]
    }
@@ -12678,6 +12768,93 @@
         "body": "**Patient feels pain during palatal instrumentation despite block:** palatal mucosa wasn't infiltrated. Add palatal infiltration immediately. **Anesthesia wears off mid-quadrant:** common with lidocaine on long cases. Supplement with another 1/2 carpule or switch to bupivacaine. **Patient anxious about needles:** topical first (HurriCaine 20% benzocaine for 1 min), then slow injection with distraction. Computer-controlled syringe (The Wand) is gentler if available. **Mandibular block fails:** consider intraseptal supplementation at the affected tooth (deposits anesthetic directly into bone)."
        }
       ]
+     },
+     {
+      "id": "perio-ch11",
+      "num": 11,
+      "title": "Periodontal maintenance - every 3-4 months after SRP, what to do",
+      "verdict": "Perio maintenance is the indefinite recall interval after SRP. The procedure is between a prophy and a re-SRP: full-mouth ultrasonic + hand-instrumentation, with anesthesia for any quadrants that re-developed pockets. The clinical task is identifying which quadrants need re-SRP-level instrumentation vs which are stable enough for surface debridement. Re-charting every 12 months catches progression early.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Periodontal maintenance (D4910) is the quarterly procedure after SRP that prevents recurrence. Studies show recurrence rates of 50-70% at 5 years without maintenance vs 10-15% with consistent 3-4 month maintenance. The 3-month interval matters: biofilm matures and becomes pathogenic again within 3 months of professional cleaning."
+       },
+       {
+        "kind": "section",
+        "text": "Pre-visit chart review"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Review the patient's last perio chart** before they arrive. Note: deepest pockets, sites with prior bleeding, mobility, furcation involvement.",
+         "**Check the prior maintenance note** - any new symptoms or complaints?",
+         "**Confirm medical history changes** - new medications (especially anticoagulants), new diagnoses (diabetes, immunosuppression)."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Visit workflow"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Patient interview (5 min):** any new sensitivity, bleeding, swelling? Brushing technique? Interproximal aids being used?",
+         "**Re-chart pocket depths.** At minimum, spot-check 3-4 sites per quadrant. Annual full re-chart (every 12 months) is the gold standard.",
+         "**Assess bleeding on probing (BOP).** Sites that bleed at maintenance = unstable. Note them for instrumentation focus.",
+         "**Plaque assessment.** Disclosing solution if needed to identify areas the patient is missing.",
+         "**Ultrasonic gross debridement** of all teeth - supragingival + early subgingival. 10-15 minutes for full mouth.",
+         "**Hand instrumentation** focused on sites with bleeding or increased pocket depth. Use Gracey curettes as in SRP technique.",
+         "**Polish** with prophy paste or air-polish (depending on what's been most effective for the patient).",
+         "**OHI reinforcement.** Demonstrate technique on areas the patient is missing.",
+         "**Schedule next maintenance** at 3-4 months. Document the interval in the chart."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Quadrant-by-quadrant decision"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Stable quadrant** (no BOP, no pocket increase, no new clinical attachment loss): surface ultrasonic + hand instruments above the gingival margin. Patient may not need anesthesia.",
+         "**Unstable quadrant** (BOP, pocket increase >=1 mm, new mobility): treat as a localized re-SRP. Anesthetize the quadrant. Bill as D4341/D4342 instead of D4910 if 4+ sites in quadrant are involved.",
+         "**Refractory pocket** (5+ mm pocket that wasn't responsive to original SRP): consider local-delivery antibiotic (Arestin) or referral to perio specialist."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Patient education at maintenance"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**OHI reinforcement** - patient demonstrate technique. Watch them brush. Most patients drift from the technique they learned at SRP.",
+         "**Interdental aid review** - floss vs interdental brushes vs water flosser. The right tool depends on embrasure size.",
+         "**Smoking cessation** - smokers have 3x recurrence rate. Refer to smoking cessation services.",
+         "**Diabetes control** - poorly-controlled diabetes (HbA1c >7) worsens outcomes. Encourage patient to discuss A1c management with PCP.",
+         "**Recall interval discussion** - explain why 3 months matters. Patients who try to extend to 6 months often see recurrence."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Documentation"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Code D4910** for routine perio maintenance.",
+         "**Code D4341/D4342** instead if 4+ sites in a quadrant got SRP-level instrumentation.",
+         "**Code D1330** if OHI was provided.",
+         "**Note any sites with new BOP or pocket increase** for next visit's focus.",
+         "**Photo or PA if any concerning changes** were noted clinically or radiographically."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Maintenance challenges",
+        "body": "**Patient skipped 6+ months and pockets re-developed:** treat as a re-SRP, not maintenance. Bill accordingly. Counsel about the importance of consistent recall. **Pocket depths are getting deeper despite consistent maintenance:** evaluate for: smoking (counsel cessation), diabetes (poor control), occlusal trauma, refractory bacterial flora. Consider perio specialist referral. **Patient resistant to 3-month interval ('too expensive', 'too often'):** explain the long-term cost of tooth loss vs maintenance. Some insurance covers maintenance with no out-of-pocket. **New sensitivity at recession sites:** desensitizing toothpaste (Sensodyne, Colgate Sensitive Pro-Relief), fluoride varnish at this visit. **Patient develops new disease in a previously stable mouth:** assess for systemic risk factor change (new medication causing xerostomia, new diabetes diagnosis, etc.)."
+       }
+      ]
      }
     ]
    }
@@ -12868,6 +13045,138 @@
         "kind": "troubleshoot",
         "title": "Pediatric anesthesia problems",
         "body": "**Child cries during injection:** stop, hold pressure on the site, reassure. Don't restart immediately - wait 30 seconds, ask the child if they're ready. Most children tolerate the injection better if they have a sense of agency. **Anesthesia incomplete after IA block:** common in children. Supplement with buccal infiltration over the affected tooth (articaine works well here). **Lip-biting after appointment:** apply petroleum jelly to the lip immediately to prevent further damage. Heals in 5-7 days. Counsel parent about supervision until numbness wears off. **Child reports 'tingling' or 'spider crawling' sensation:** likely transient paresthesia from needle trauma. Document, reassure, recall in 2 weeks for vitality check. **Vasovagal reaction (pale, sweaty, dizzy):** lay child flat, raise legs, monitor pulse. Resolves in 5-10 minutes. Common in adolescents who haven't eaten before the appointment."
+       }
+      ]
+     },
+     {
+      "id": "pedo-ch11",
+      "num": 11,
+      "title": "Stainless steel crown (SSC) - sizing, festooning, crimping, cementation",
+      "verdict": "SSCs are the workhorse pediatric crown - preformed, full-coverage, glass-ionomer-cemented, ~5-7 year service life matching primary molar lifespan. Sizing is the critical decision: too small won't seat, too large won't engage contacts. Conventional preparation involves occlusal + interproximal + axial reduction; Hall technique skips prep but isn't taught at UIC. Plan 60 min for a single SSC with pulpotomy.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Stainless steel crowns are the pediatric dentistry equivalent of an adult crown but with the speed and durability appropriate to a tooth that will exfoliate in 2-7 years. The preformed crown is engineered to fit standard primary molar anatomy; chairside customization (festooning + crimping) adapts it to the patient's specific tooth. Cementation with glass ionomer creates a fluoride-releasing reservoir that helps prevent recurrent caries."
+       },
+       {
+        "kind": "section",
+        "text": "Indications"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Multi-surface caries on a primary molar (MOD).",
+         "Post-pulpotomy primary molar.",
+         "Broken cusp on a primary molar.",
+         "Child with high caries risk needing durable restoration.",
+         "Tooth needs to maintain space for an erupting permanent successor."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Materials"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**SSC kit:** sizes 2-7 for mandibular (D, DLM, E, EUL, F for maxillary; or by tooth number). UIC kits provide both sides + both arches.",
+         "**Boley gauge:** measures mesio-distal width of the tooth to determine size.",
+         "**Crown shears or scissors:** for trimming the cervical margin.",
+         "**Crown-crimping pliers (Howe utility pliers or specific crimping pliers):** for crimping the cervical band inward.",
+         "**Glass ionomer cement:** Fuji I (powder + liquid, hand-mix) or Ketac Cem (auto-mix capsule).",
+         "**Floss:** for gel-stage cement cleanup.",
+         "**Articulating paper:** for occlusal verification."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 1 - Preparation"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Anesthetize** (see pedo-ch2 for dosing).",
+         "**Rubber dam or Isodry isolation** with cotton roll backup.",
+         "**Occlusal reduction 1.5 mm** with a tapered diamond. Match the original cuspal anatomy approximately - don't flatten the table.",
+         "**Interproximal slice (mesial and distal)** with a thin tapered diamond. Break the contact without nicking the adjacent tooth. The interproximal preparation creates a featheredge margin (no chamfer or shoulder needed for SSCs).",
+         "**Axial reduction (buccal and lingual)** to a featheredge with the same tapered diamond. Goal: vertical axial walls that allow the crown to seat without binding.",
+         "**Remove all caries** with round bur or excavator. If pulpotomy was performed before crown placement, this is already complete.",
+         "**Refine the margin** to a clean featheredge at gingival level."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 2 - Sizing and try-in"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Measure the mesio-distal width** of the tooth with a Boley gauge. Match to the corresponding SSC size from the kit.",
+         "**Try the crown in** - it should seat to the gingival margin with light pressure. The cervical margin should fit snugly against the cervical featheredge without rocking.",
+         "**Try a different size if needed:** too small won't fully seat; too large allows rocking. Side-to-side play indicates oversized; resistance during seating indicates undersized.",
+         "**Check contacts** with adjacent teeth - should be tight but not separating them.",
+         "**Mark the gingival margin** with a pencil on the crown - this is where you'll trim."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 3 - Festooning and crimping"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Trim the cervical margin** with crown shears, following the pencil line. Goal: the crown extends just barely subgingival (0.5-1 mm) without overextension into the sulcus.",
+         "**Smooth the trimmed edge** with a coarse diamond bur or rotary disk. A burr that scrapes the gingival margin causes irritation.",
+         "**Crimp the cervical band** inward with crown-crimping pliers. Crimp gradually around the entire circumference - this engages the cervical undercut of the tooth and creates retention.",
+         "**Re-try in.** Should now snap into place with audible/tactile click. Re-trim or re-crimp if needed."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 4 - Cementation"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Dry the prepared tooth** with cotton roll. Don't desiccate (dehydration of dentin reduces glass ionomer bond).",
+         "**Mix glass ionomer cement** per manufacturer instructions. Fuji I: 1 scoop powder + 1 drop liquid, mix to creamy consistency.",
+         "**Apply cement to the intaglio surface** of the crown. Coat all interior surfaces; don't overfill (excess gets squeezed out during seating).",
+         "**Seat the crown** with firm finger pressure or have the child bite gently into MI position. Wait 3-4 min until cement reaches gel stage.",
+         "**Gel-stage cleanup (3-4 min after seating):** remove excess cement at margins with explorer + floss. Easier than chipping fully-set cement.",
+         "**Wait full set** (typically 6-8 min from mix).",
+         "**Final cleanup** with explorer + floss. Polish any rough cement at margins."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 5 - Occlusion check"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Have the child bite into MI** with articulating paper.",
+         "**Check for high spots** - the SSC should not be the only contact (no Class II torquing of the abutment tooth).",
+         "**Adjust** with a diamond bur if needed. Primary molars don't need precise occlusal contacts; rough function is acceptable.",
+         "**Check lateral excursions** - the SSC should disclude in lateral excursions (no balancing interference)."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Post-op"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Tell child + parent:** the silver tooth may feel weird for a day or two. The child should resume normal eating and brushing.",
+         "**Brushing instruction:** brush the SSC like any other tooth. Use child-strength fluoride toothpaste.",
+         "**Diet:** no special restrictions after cementation. Avoid hard candies and ice that could fracture the cement.",
+         "**Recall:** 6 months for routine recall + SSC integrity check."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "SSC problems",
+        "body": "**Crown won't fully seat after trimming:** check for: residual caries on the tooth, prep walls converging too much (not parallel), inadequate interproximal preparation, crown too small. Address each. **Crown rocks side-to-side:** crown is oversized OR contacts haven't been re-established. Try the next size down, OR crimp the cervical band tighter. **Cement won't set:** mixing ratio off (too much liquid). Re-mix with proper ratio. **Gingival blanching after cementation:** crown over-extended subgingivally OR margin not festooned smooth. Adjust as needed. **Child complains of pain on biting after cementation:** check for occlusal high spots; adjust with diamond bur. Pain should resolve within 24 hours. **Cement washing out at 6-month recall:** glass ionomer can wear over time. If integrity is questionable, re-cement or replace crown."
        }
       ]
      }
