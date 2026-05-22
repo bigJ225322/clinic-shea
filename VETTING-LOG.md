@@ -193,3 +193,66 @@ No fixes were necessary — both sweeps produced zero errors. The previous loop'
 Per the task spec: 2 consecutive clean sweeps → write VETTING-LOG.md entry → stop scheduling iterations. Both conditions met. Loop closed.
 
 ---
+
+## 2026-05-21 — Clean bill of health v2 (post-chapter-fills + RPD-engine fixes)
+
+Second iterative debugging loop, run after a productive set of commits between sweep v1 and v2:
+- `a96f96e` — RPD engine: single-anterior base-design fix + toUpperCase paren-strip + UIC citation restore
+- `a259c06` — Urgent care template: Frequency + Duration + quadrant placeholders
+- `d3c53ec` — Filled 14 foundational chapters across new domains (endo/surgery/perio/pedo)
+- `d38bde8` — Filled 3 case-specific chapters (necrotic pulp, perio maintenance, SSC)
+
+Two consecutive iterations of the full structured sweep returned **zero console errors** across every interactive surface.
+
+### Coverage per iteration (expanded vs v1)
+
+**Step 1 — All 6 tabs:** Note, Steps, Codes, PEs, RPD, Cases. Zero errors on each tab click.
+
+**Step 2 — Steps tab, full section × subsection × procedure sweep:** discovered (after v1) that several sections (Restorative, Peds, Dentures, Lab Scripts, Digital, Misc.) have a 2nd-level subsection dropdown between Section and Procedure. Upgraded the sweep helper to iterate subsections too. Per-section procedure counts:
+- Exams: 7
+- Perio: 5
+- Restorative: 11 (5 subsections — Amalgam, Resin Composite, Glass Ionomer, Preventive, Occlusal Guard)
+- Fixed: 7
+- Peds: 17 (8 subsections)
+- Dentures: 8 (2 subsections)
+- Lab Scripts: 16 (3 subsections)
+- Implant: 3
+- Digital: 4 (2 subsections)
+- Endo: 1
+- Misc.: 27 (3 subsections — orders, axium, lookup)
+
+**Total: 106 procedures × 2 sweeps = 212 procedure transitions, zero errors.**
+
+**Step 3 — Cases tab, full domain × first-pill sweep:** all 10 domains exercised. Pill counts unchanged from v1 (Direct 18 + Indirect 23 + Endo 9 + Surgery 9 + Perio 5 + Pedo 5 + RPD 12 + CD 8 + Cross 8 + Repair 10 = 107). First-pill body-text lengths now significantly larger due to chapter content fills:
+- Direct first pill: 33,734 chars (was ~10k before fills)
+- Indirect first pill: 67,048
+- Endo first pill: 29,081 (was ~3k before fills — biggest gain)
+- Surgery first pill: 28,718
+- Periodontics first pill: 26,358
+- Pedo first pill: 12,585
+- RPD first pill: 67,752
+- CD first pill: 87,728
+- Cross first pill: 108,785 (combination cases pull in chapter content from multiple guides)
+- Repair first pill: 35,946
+
+All well above the 1000-char threshold; zero React errors during the 107-pill clicks per sweep.
+
+**Step 4 — RPD tab:** Case Inputs popup opened + click-outside-on-header closes correctly. All 32 teeth (16 Mx + 16 Mn) clicked across both arches without errors.
+
+**Step 5 — Note tab:** v1 generated Restorative → Resin Composite Class I (1352 chars). v2 generated Perio → Prophy (1015 chars). Both passed the 1000-char threshold with zero errors.
+
+### Sweep mechanics learned
+
+- Cases sweep now reloads the page between domains because previously-clicked pathways' chapter content (now ~30-100k chars per pathway after fills) makes the page heavy enough that subsequent pill clicks slow + my domain-detection heuristic picks up chapter-section buttons as if they were pathway pills. Reload-between-domains fixes both.
+- Steps sweep needed a subsection-aware helper to correctly iterate the new 3-level dropdown structure (Section → Subsection → Procedure) for sections that have it.
+- `preview_eval` 30s timeout is the binding constraint with this much rendered content; chunking single-domain or single-section calls is necessary.
+
+### Commits in this loop (none)
+
+No fixes were necessary — both sweeps produced zero errors. The RPD engine + paren-strip fixes from `a96f96e` held. The 17 newly-filled chapters (in commits `d3c53ec` and `d38bde8`) survived the sweep cleanly.
+
+### Stopping criteria
+
+2 consecutive clean sweeps → entry written → loop closed. No further iterations scheduled.
+
+---
