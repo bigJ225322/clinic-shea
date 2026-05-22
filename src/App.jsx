@@ -5086,10 +5086,33 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
  const [tailLeft, setTailLeft] = useState(0);
  const [cardLeft, setCardLeft] = useState(0);
  const [primaryMode, setPrimaryMode] = useState(defaultPrimary);
+ const [panelTop, setPanelTop] = useState(0);
  const panelRef = useRef(null);
+ const inputRef = useRef(null);
  const gridRef = useRef(null);
  const surfCardRef = useRef(null);
  const btnRefs = useRef({}); // keyed by tooth id (number or letter)
+
+ // Position the panel just below the input. Panel is `position: fixed` so it
+ // stays viewport-centered regardless of where the input sits on the page —
+ // this gives a much better "centered" feel than left:0 anchoring, especially
+ // when the input is in a narrow column on the left side of the page.
+ useLayoutEffect(() => {
+ if (!open) return;
+ const update = () => {
+ if (inputRef.current) {
+ const r = inputRef.current.getBoundingClientRect();
+ setPanelTop(r.bottom + 2);
+ }
+ };
+ update();
+ window.addEventListener("scroll", update, true);
+ window.addEventListener("resize", update);
+ return () => {
+ window.removeEventListener("scroll", update, true);
+ window.removeEventListener("resize", update);
+ };
+ }, [open]);
 
  // Standard dental surface order: M O/I D B/F L
  const SURF_ORDER = { M: 0, O: 1, I: 1, D: 2, B: 3, F: 3, L: 4 };
@@ -5285,7 +5308,7 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
 
  return (
  <div ref={panelRef} style={{ position: "relative" }}>
- <input readOnly value={value || ""}
+ <input ref={inputRef} readOnly value={value || ""}
  placeholder={withSurfaces? "select tooth + surfaces": "select tooth"}
  onClick={() => setOpen(o =>!o)}
  onFocus={() => setFocused(true)}
@@ -5296,8 +5319,10 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
  }} />
  {open && (
  <div style={{
- position: "absolute", top: "calc(100% + 2px)", left: 0,
- minWidth: "min(100vw - 32px, 520px)",
+ position: "fixed",
+ top: panelTop,
+ left: "50vw", transform: "translateX(-50%)",
+ width: "min(100vw - 32px, 520px)",
  background: "var(--paper)", border: "1px solid var(--rule)",
  borderRadius: "4px", padding: "10px 12px 12px",
  zIndex: 200, boxShadow: "0 4px 20px rgba(0,0,0,0.16)",
@@ -6735,7 +6760,28 @@ function OdontogramField({ value, onChange, placeholder, bullet = "-", seedOnFoc
 // (replaces the in-dropdown Generalized button). Only used for bleeding on probing.
 function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG, showW }) {
  const [open, setOpen] = useState(false);
+ const [panelTop, setPanelTop] = useState(0);
  const panelRef = useRef(null);
+ const inputRef = useRef(null);
+
+ // Position the dropdown just below the input. Using `position: fixed` lets
+ // the panel be viewport-centered regardless of where the input sits.
+ useLayoutEffect(() => {
+ if (!open) return;
+ const update = () => {
+ if (inputRef.current) {
+ const r = inputRef.current.getBoundingClientRect();
+ setPanelTop(r.bottom + 2);
+ }
+ };
+ update();
+ window.addEventListener("scroll", update, true);
+ window.addEventListener("resize", update);
+ return () => {
+ window.removeEventListener("scroll", update, true);
+ window.removeEventListener("resize", update);
+ };
+ }, [open]);
 
  const isGeneralized = value.trim().toLowerCase() === "generalized";
  const isWNL = value.trim().toLowerCase() === "wnl";
@@ -6802,7 +6848,7 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG, showW 
  return (
  <div style={{ display: "flex", gap: "6px", alignItems: "stretch" }}>
  <div ref={panelRef} style={{ position: "relative", flex: 1 }}>
- <input readOnly value={displayValue}
+ <input ref={inputRef} readOnly value={displayValue}
  placeholder={placeholder || "select teeth"}
  onClick={() => setOpen(o =>!o)}
  onFocus={() => setFocused(true)}
@@ -6813,8 +6859,11 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG, showW 
  }} />
  {open && (
  <div style={{
- position: "absolute", top: "calc(100% + 2px)", left: 0, right: "auto",
- minWidth: isSplit? "auto": "min(100vw - 32px, 520px)",
+ position: "fixed",
+ top: panelTop,
+ left: "50vw", transform: "translateX(-50%)",
+ width: isSplit? "auto": "min(100vw - 32px, 520px)",
+ maxWidth: "calc(100vw - 32px)",
  background: "var(--paper)", border: "1px solid var(--rule)",
  borderRadius: "4px", padding: "10px 12px",
  zIndex: 200, boxShadow: "0 4px 20px rgba(0,0,0,0.16)",
