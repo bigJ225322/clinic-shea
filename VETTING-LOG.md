@@ -256,3 +256,32 @@ No fixes were necessary — both sweeps produced zero errors. The RPD engine + p
 2 consecutive clean sweeps → entry written → loop closed. No further iterations scheduled.
 
 ---
+
+## 2026-05-21 — Clean bill of health v3 (third pass, no changes since v2)
+
+Third iterative debugging loop, run with no commits between v2 and v3 (no
+feature changes; this is a stability re-verification pass).
+
+Both sweeps clean. Total errors across both: 0.
+
+### Per-iteration coverage (identical to v2)
+
+**Step 1 — All 6 tabs:** Note, Steps, Codes, PEs, RPD, Cases. Zero errors per tab.
+
+**Step 2 — Steps tab, full section × subsection × procedure sweep:** 11 sections, 106 procedures (with 2nd-level subsection iteration for Restorative/Peds/Dentures/Lab/Digital/Misc). Zero errors across all 212 procedure transitions (106 × 2 sweeps).
+
+**Step 3 — Cases tab, full domain sweep with reload-between-domains:** all 10 domains, all 107 pathway pills counted, first-pill content rendered correctly each time. Same exact counts as v1/v2 (18/23/9/9/5/5/12/8/8/10 = 107).
+
+**Step 4 — RPD tab:** Case Inputs popup opened → click-outside-on-header closed. 32 teeth (16 Mx + 16 Mn) clicked without errors.
+
+**Step 5 — Note tab:** v1 generated Fixed → Core Buildup (1245 chars). v2 generated Exams → POE (1381 chars). Both above threshold, zero errors. (Initial Peds attempt in v2 mis-targeted the wrong dropdown because Peds has a 2nd-level subsection — retried with Exams category for a single-level dropdown test, which is what the spec asks for.)
+
+### Commits in this loop (none)
+
+No fixes were necessary — both sweeps produced zero errors, same as v2. The cumulative fixes from earlier loops (paren-strip casualties in App.jsx + rpd-engine.js, IIFE invocation restoration, drawFixedReplacement call fix, RPD #7 single-anterior base-design fix, UIC citation restore) and the content additions (35 new pathways across 4 new domains + 1 expansion to existing, 17 newly-filled chapters) all held cleanly through this third pass.
+
+### Stopping criteria
+
+2/2 consecutive clean → entry written → loop closed. No further iterations.
+
+---
