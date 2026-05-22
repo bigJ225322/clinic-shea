@@ -16564,6 +16564,16 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false }) {
 function RPDLabRxForm({ caseInput, result }) {
  const [open, setOpen] = useState(false);
  const [copied, setCopied] = useState(false);
+ // Denture-tooth selections for the saddle pontics. UIC standard convention
+ // for the FRAMEWORK Rx is to defer these to wax-rim try-in (the lab makes
+ // the framework first, then teeth are picked chairside with the patient
+ // in front of you and added in a second processing step). These inputs
+ // let the student override that default if they've already selected, or
+ // leave blank → the Rx prints "TBD at wax-rim try-in" for each piece.
+ const [toothShade, setToothShade] = useState("");
+ const [anteriorMold, setAnteriorMold] = useState("");
+ const [posteriorMold, setPosteriorMold] = useState("");
+ const [gingivalShade, setGingivalShade] = useState("");
  if (!result || result.kennedy.class === null) return null;
  const arch = caseInput.arch === "maxillary"? "maxillary": "mandibular";
 
@@ -16571,6 +16581,7 @@ function RPDLabRxForm({ caseInput, result }) {
  const txLines = [];
  txLines.push(`Please fabricate ${result.framework.material} metal framework for ${arch} RPD.`);
  txLines.push(`Major Connector: ${result.majorConnector.type}${result.majorConnector.width? ` (${result.majorConnector.width})`: ""}. 0.5mm beading on tissue surface.`);
+ txLines.push(`Path of insertion: per surveyed cast.`);
  txLines.push("");
  txLines.push("* Undercuts to engage are marked in red.*");
  txLines.push("");
@@ -16607,8 +16618,49 @@ function RPDLabRxForm({ caseInput, result }) {
  const tStop = b.note && /distal tissue stop/i.test(b.note)? " with distal tissue stop": "";
  txLines.push(`${teeth} ${b.type}${tStop}`);
  });
+
+ // Denture-tooth selections — UIC framework Rx defers these to wax-rim
+ // try-in unless the student has already picked them at chairside.
+ const hasDentureTeeth = (result.baseDesigns || []).some(b =>
+ ["Open Lattice", "Mesh", "Tube Tooth", "Facing"].includes(b.type));
+
+ // Saddle extension rules. Distal-extension saddles (Kennedy I, II) have
+ // UIC-mandated full-sulcus engagement (Huddle 6 Q11). Tooth-bounded
+ // saddles (Kennedy III, IV) stop at the abutments and must NOT extend
+ // over the retromolar pad / buccal shelf (which would create discomfort
+ // and unseat under chewing pressure).
+ const primaryDistExt = [1, 2].includes(result.kennedy.class);
+ if (hasDentureTeeth) {
+ txLines.push("");
+ if (primaryDistExt) {
+ txLines.push(arch === "maxillary"
+? "Distal-extension saddle acrylic: must completely engage the BUCCAL sulcus (UIC Huddle 6 Q11). Palatal coverage provided by the major connector."
+: "Distal-extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — both buccally AND lingually (UIC Huddle 6 Q11)."
+ );
+ } else {
+ txLines.push(arch === "maxillary"
+? "Tooth-bounded saddle acrylic: cover the edentulous ridge between abutments; do NOT extend onto the buccal shelf or hamular notch."
+: "Tooth-bounded saddle acrylic: cover the edentulous ridge between abutments; do NOT extend onto the retromolar pad or buccal shelf."
+ );
+ }
+ }
+
+ if (hasDentureTeeth) {
+ txLines.push("");
+ const shadeText = toothShade.trim() || "TBD chairside via Vita shade guide at wax-rim try-in (match adjacent natural teeth).";
+ const antMoldText = anteriorMold.trim() || "TBD at wax-rim try-in (Trubyte Classic; match intercanine distance + high-smile line).";
+ const postMoldText = posteriorMold.trim() || "TBD at wax-rim try-in (Trubyte Classic posterior, e.g. F30 10°).";
+ const gingShadeText = gingivalShade.trim() || "TBD via UIC gingival shade guide at try-in (typically L199-OR or 50% OR + 50% DK mix).";
+ txLines.push(`Tooth shade: ${shadeText}`);
+ txLines.push(`Anterior mold: ${antMoldText}`);
+ txLines.push(`Posterior mold: ${postMoldText}`);
+ txLines.push(`Gingival shade: ${gingShadeText}`);
+ }
+
  txLines.push("");
  txLines.push("Please return for try-in. Thank you.");
+ txLines.push("");
+ txLines.push("Enclosed: master cast (mounted on Denar 320 articulator via facebow transfer; tripod marks + undercuts marked in red), opposing cast, Regisil PVS bite registration recorded at MI.");
 
  const today = new Date.toISOString.slice(0,10);
 
@@ -16716,6 +16768,56 @@ function RPDLabRxForm({ caseInput, result }) {
  Procedure Code: <strong>{result.axiumCode || "—"}</strong> &nbsp; Site: __________ &nbsp; Lab Code: __________
  </div>
 
+ {/* Denture-tooth selections (form-only — not printed on the physical
+ Rx since shade/mold are chairside decisions at wax-rim try-in).
+ Leave blank → the Rx renders "TBD at wax-rim try-in" per UIC
+ convention. Filling in is for students who've already chosen
+ chairside and want it in the framework Rx. */}
+ {hasDentureTeeth && (
+ <div className="rpd-print-hide" style={{
+ border: "1px dashed var(--ink-soft)", padding: "10px 12px",
+ marginBottom: "12px", fontSize: "11px",
+ background: "rgba(124,30,32,0.03)",
+ }}>
+ <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "8px" }}>
+ <strong style={{ fontSize: "11px" }}>Denture teeth (optional)</strong>
+ <span style={{ color: "var(--ink-soft)", fontStyle: "italic", fontSize: "10px" }}>
+ UIC standard: pick chairside at wax-rim try-in. Leave blank → Rx prints "TBD."
+ </span>
+ </div>
+ <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 12px" }}>
+ <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+ <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Tooth shade (Vita)</span>
+ <input type="text" value={toothShade} onChange={e => setToothShade(e.target.value)}
+ placeholder="e.g. A2"
+ style={{ padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
+ fontFamily: "'Geist', sans-serif", fontSize: "11px" }} />
+ </label>
+ <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+ <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Gingival shade</span>
+ <input type="text" value={gingivalShade} onChange={e => setGingivalShade(e.target.value)}
+ placeholder="e.g. L199-OR"
+ style={{ padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
+ fontFamily: "'Geist', sans-serif", fontSize: "11px" }} />
+ </label>
+ <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+ <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Anterior mold (Trubyte Classic)</span>
+ <input type="text" value={anteriorMold} onChange={e => setAnteriorMold(e.target.value)}
+ placeholder="e.g. 4H"
+ style={{ padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
+ fontFamily: "'Geist', sans-serif", fontSize: "11px" }} />
+ </label>
+ <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+ <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Posterior mold (Trubyte Classic)</span>
+ <input type="text" value={posteriorMold} onChange={e => setPosteriorMold(e.target.value)}
+ placeholder="e.g. F30 10°"
+ style={{ padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
+ fontFamily: "'Geist', sans-serif", fontSize: "11px" }} />
+ </label>
+ </div>
+ </div>
+ )}
+
  {/* Instructions box. The RPD lab Rx form is physical (sent to the lab
  with the case) but the Instructions text also goes into Axium's
  Lab Cases tab — so the COPY button lets students grab the
@@ -16752,7 +16854,7 @@ function RPDLabRxForm({ caseInput, result }) {
  ta.style.position = "fixed";
  ta.style.opacity = "0";
  document.body.appendChild(ta);
- ta.select;
+ ta.select();
  try { document.execCommand("copy"); setCopied(true); setTimeout(() => setCopied(false), 1600); }
  catch (_) {}
  document.body.removeChild(ta);
