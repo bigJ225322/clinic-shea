@@ -276,3 +276,57 @@ Engine state: vitest 998/998, build clean, no warnings beyond the pre-existing c
 **8 ship commits + 3 notes commits** since the 3-hour loop started. Tests still 998/998, build still clean.
 
 ---
+
+---
+
+## Iteration 5 — Session 2026-05-22
+
+### RPD Engine — Pattern 2 + 3 fixes (shipped)
+
+**Pattern 2** (`7fdf75c`): Mandibular canines flanking a tooth-supported anterior mod span become rest-only indirect retainers, not clasped direct retainers. Confirmed by Design Case II (Fall 2022) + Prelim Case 2 answer keys. 6 tests added; engine now produces exact match for Design Case II mandibular: `#20:RPI | #28:Akers | #30:Akers` + `IR:#22(ML ball) + #27(ML ball)`.
+
+**Pattern 3** (`712d8e6`): When a span-boundary (dual-role) candidate is more anterior to the diagonal fulcrum line than the type-priority pick, the engine now prefers it as the indirect retainer. Confirmed by Huddle 6 Case 2: `#9` (maxillary central, dual-role) is more anterior (score 29.1) than `#12` (1st premolar, type-priority pick, score 18.0) → engine now correctly picks `#9`. 4 tests added; 1012 total passing.
+
+### Remaining RPD discrepancy — for Jake's review
+
+**Design Case II maxillary — A-P Strap vs Full Palate**
+
+Engine picks A-P Strap; UIC answer key says Full Palate.
+
+Root cause: engine uses `presentCount ≤ 4` to trigger Full Palatal Plate. Design Case II maxillary has 5 PRESENT teeth (#4, #5, #6, #11, #12), but only 4 ABUTMENT teeth (#4, #6, #11, #12 — tooth #5 is a bystander, not a span boundary for any span). So `presentCount = 5 > 4` → A-P Strap.
+
+If the threshold were `abutmentCount ≤ 4` instead of `presentCount ≤ 4`, the engine would pick Full Palatal Plate for this case.
+
+**Risk of changing**: need to verify that Design Case I (the other worked maxillary case, which uses A-P Strap) has ≥5 abutments. Design Case I had 6+ abutments → threshold ≤ 4 abutments would correctly keep A-P Strap there. The change seems safe, but confirm before shipping.
+
+**Proposal**: change `presentCount ≤ 4` to compute `abutmentCount` from span boundaries and use `abutmentCount ≤ 4` as the trigger.
+
+If you want me to wire this → say "fix RPD max-connector threshold."
+
+### #28 esthetic-zone disagreement — for Jake's review
+
+Design Case II mandibular: answer key says #28 (mandibular right 1st premolar) gets I-bar esthetic; engine gives Akers. Current `RPD_ESTHETIC_ZONE` includes only canines and anterior teeth, not premolars. The engine's Akers for #28 is defensible — mandibular first premolars are not consistently visible during smiling. The answer key may reflect the instructor's preference for I-bar on the premolar adjacent to the anterior space.
+
+**Borderline**: if you want premolars included in the esthetic zone for mandibular arch (specifically 1st premolars adjacent to an anterior mod span), say "expand RPD esthetic zone to mand 1st premolars."
+
+### New peds pathways shipped (`27a078c`)
+
+- `pedo-radiograph-selection` — AAPD 2025 BWX intervals by caries risk × dentition stage; no routine shielding guidance
+- `pedo-oral-surgery` — odontogenic infection triage (with red flags for hospital escalation), mesiodens management (≥2/3 root dev, 75% spontaneous eruption, 6–12 mo watch), frenectomy (specialist-coordinated, AAPD notes no consensus on criteria)
+- `pedo-medications-reference` — weight-based APAP/ibuprofen, codeine contraindication (AAP 2016), amoxicillin/PCN-VK/clindamycin dosing, endocarditis prophylaxis (clindamycin NO longer recommended per 2021 AHA), nystatin
+
+Gap 1 (N₂O) intentionally skipped — liability.
+
+### Huddle 6 Key — findings
+
+- Case 1 (Mand Class II Mod 1): engine matches perfectly. DE #17-19, mod #29-31. #20 RPI, #28 Akers, #32 Akers. IR = #28 dual-role. Lingual Bar. ✓
+- Case 2 (Max Class II Mod 2): matched after Pattern 3 fix. #9 ball rest (dual-role, more anterior than #12). A-P Strap. ✓
+
+### Commits this session
+
+`7fdf75c` Pattern 2 (mand canines → indirect)  
+`712d8e6` Pattern 3 (dual-role IR prefers most-anterior)  
+`27a078c` Pedo Cases: 3 new AAPD-sourced pathways  
+
+Plus earlier session commits already on branch.
+
