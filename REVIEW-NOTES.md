@@ -700,3 +700,22 @@ The lecture cites a Randall 2002 pooled review (5 studies, 2201 amalgams + 1210 
 
 This evidence is referenced indirectly in the current pathway ("composite has higher replacement rates here") but the specific Randall 2002 numbers aren't cited. Worth adding if Jake wants a strict evidence trail — but the clinical conclusion is already there. Defer to Jake's preference.
 
+### Borderline find: long-span Class III + NMCD
+
+Engine probe: `setMissing([1, 16, 5, 6, 7, 8, 9, 10, 11, 12])` with `metalAllergy: true`.
+
+Engine output:
+- Kennedy: III Mod 0 (span is tooth-bounded by #4 and #13)
+- Framework: Gold
+- NMCD applicable: TRUE
+- No long-span guard fires
+
+The engine has a Class IV short-span check (`primarySpan.teeth.length > 4` → contraindicated) at `rpdDesignNMCD()`. But for a Class III span of equivalent length and clinical breadth (8 teeth crossing midline), no equivalent guard fires.
+
+**Clinical concern**: A 6-8 tooth span needs framework rigidity. NMCD (especially without metal MC) lacks that rigidity. The lecture lists "Kennedy Class I and II" as contraindications but doesn't explicitly enumerate "long Class III span." So engine behavior is technically defensible — but a long anterior span crossing midline should arguably get the same caution as Class IV.
+
+**Adjacent question — Kennedy classification edge case**:
+For span #5-#12 (8 teeth crossing midline, bounded by #4 and #13 premolars), the engine reports Class III Mod 0. Some interpretations of Applegate's rules would call this Class IV because the edentulous area crosses the midline. The engine's choice (Class III since the span is tooth-bounded with posterior teeth present bilaterally) is defensible by stricter Applegate readings but might confuse students learning the textbook definition.
+
+→ Save for Jake's review. Both findings are real but require clinical judgment on whether to encode them.
+
