@@ -19254,6 +19254,7 @@ const GUIDES = [
  { id: "pedo-ch16", num: 16, title: "Space maintainer — band-and-loop, Nance, lingual arch, distal shoe", stub: true },
  { id: "pedo-ch17", num: 17, title: "Primary tooth trauma — do not replant, follow-up for discoloration & necrosis", stub: true },
  { id: "pedo-ch18", num: 18, title: "Pediatric extraction — peds-specific anesthesia, clamp 14, parent communication", stub: true },
+ { id: "pedo-ch19", num: 19, title: "Peds initial / recall — anticipatory guidance, peds-specific codes (D0150A/B/C, D1310, D1330)", stub: true },
  ],
  },
  ],
@@ -19816,6 +19817,9 @@ const PATHWAY_GROUPS = {
  ]},
  ],
  pedo: [
+ { label: "Exam & recall", ids: [
+ "pedo-poe-recall",
+ ]},
  { label: "Behavior & sedation", ids: [
  "pedo-behavior-management",
  "pedo-n2o-sedation",
@@ -20106,6 +20110,7 @@ const WIZARDS = {
  root: {
  question: "What's the situation?",
  options: [
+ { label: "Initial exam or recall — full work-up appointment", pathway: "pedo-poe-recall" },
  { label: "Behavior / sedation question — not yet at a procedure", next: "behavior" },
  { label: "Restorative — caries on a primary tooth", next: "restorative" },
  { label: "Pulp involvement — caries to / through the pulp", next: "pulp" },
@@ -22941,6 +22946,30 @@ const PATHWAYS = [
  { guideId: "pedo", chapterId: "pedo-ch2" },
  { guideId: "pedo", chapterId: "pedo-ch4" },
  { guideId: "pedo", chapterId: "pedo-ch18" },
+ ],
+ },
+ {
+ id: "pedo-poe-recall",
+ domain: "pedo",
+ label: "Pediatric initial exam or recall (POE / prophy)",
+ description: "A scheduled comprehensive or periodic exam on a pediatric patient — typically 1-12 years old, either a new patient (initial) or returning at the 6-month recall. The structure is recognizable from adult COE/POE but the rhythm is different: you weigh instead of taking blood pressure, the guardian fills out the Pediatric Exam EPR with you before clinical work begins, anticipatory guidance (OHI + nutritional counseling) is a chargeable code in its own right (D1330 + D1310), the parent goes to the waiting room while you prophy and image, and you bring them back for the treatment-plan conversation at the end. The first pano is indicated at age 7 and covered by Medicaid. The whole visit fits in one chair time if behavior cooperates.",
+ keyDecisions: [
+ "Present to instructor before bringing the patient in: age, gender, medical history, date of last POE, date of last radiographs, date of last fluoride varnish, dental history, today's planned procedure. Skipping this front-loaded check-in is the #1 cause of mid-visit pivots when the instructor catches something you missed.",
+ "Weigh the patient (scale by the front door); do NOT take blood pressure on a pedo patient unless there's a specific medical reason. The Pediatric Exam EPR has \"Medical History\" and \"Risk Assessment\" tabs — fill both with the guardian. Update with Ctrl+R if no changes, so the date refreshes to today.",
+ "Anticipatory guidance is the peds-specific intervention and it bills as two codes: D1330 (OHI) + D1310 (Nutritional counseling). Nutritional: no juice under age 1, juice/soda one small (4-8 oz) cup once a day with meals only, snacks limited to one mid-morning and one mid-afternoon. OHI: brush 2x/day + floss 1x/day (any teeth that touch), guardian supervises every time, three brushing areas (buccal, occlusal, lingual). Skipping this step costs the codes and the prevention.",
+ "Send the guardian to the waiting room before prophy + radiographs + exam. Prophy uses hand instruments only — no Cavitron in peds, no perio kit, just the two scalers/curettes in the peds kit. Radiograph system depends on size: Gendex for ~7 and under, Dexis for ~7 and older. First pano at age 7 covered by Medicaid; do not double up pano + bitewings same day.",
+ "Bring the guardian back at the end for the treatment-plan conversation, OHI demo with the patient, and scheduling. Fluoride varnish goes on AFTER instructor check (otherwise instructor can't see what you did). If patient needs restorative work, schedule it with you at your next open appointment; if no restorative, you cannot book the 6-month recall in advance — note in chart to call them. Codes to complete: D0150A/B/C (or D0120 for periodic), D1120 prophy-child, D0274 four bitewings or D0220+D0230 PAs as applicable, D1206 varnish, D1330 OHI, D1310 nutrition.",
+ ],
+ phases: [
+ { label: "Pre-check & guardian intake", count: 2 },
+ { label: "Anticipatory guidance", count: 1 },
+ { label: "Prophy, radiographs, exam", count: 3 },
+ { label: "Treatment plan & scheduling", count: 2 },
+ ],
+ sections: [
+ { guideId: "pedo", chapterId: "pedo-ch1" },
+ { guideId: "pedo", chapterId: "pedo-ch19" },
+ { guideId: "pedo", chapterId: "pedo-ch14" },
  ],
  },
  // ── Periodontics ────────────────────────────────────────────────────────
