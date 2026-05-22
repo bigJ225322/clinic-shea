@@ -11478,6 +11478,379 @@
         "body": "**All tests inconclusive but patient is in pain:** ask the patient to come back when the pain is active. Tests during a pain-free interval often miss the diagnosis. **Periapical lesion present but tooth tests vital:** the lesion isn't endo-origin. Consider periodontal lesion, lateral canal pathology, or non-endo lesions (cyst, tumor) - get a CBCT. **Tooth tests vital but patient has clearly endo-pattern pain:** consider a missed canal (already-treated tooth that's necrotic in a missed MB2), or referred pain from an adjacent tooth. **Cold-positive on a tooth with a deep restoration but lingering:** could be reversible pulpitis from recent placement (gives time for the pulp to settle, re-test in 4-6 weeks) OR irreversible (proceed to RCT if not improving). Document the timeline and re-evaluate."
        }
       ]
+     },
+     {
+      "id": "endo-ch6",
+      "num": 6,
+      "title": "Rubber dam - the one and only endo isolation method (no Isodry)",
+      "verdict": "Rubber dam is mandatory for every endodontic procedure. Isodry does not provide the chemical seal needed for sodium hypochlorite irrigation, and a NaOCl leak onto mucosa is a chemical burn. The dam isolates the tooth, protects the patient's airway from instruments and irrigants, and keeps the field dry for adhesive procedures.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Rubber dam isolation is non-negotiable in endodontics. Three reasons drive this rule: (1) hypochlorite irrigation will burn oral mucosa on contact - severe enough to cause weeks of healing and rare cases of permanent paresthesia; (2) endodontic files are small and easily swallowed or aspirated without isolation; (3) the canal must be dry for obturation, and a single drop of saliva contaminates a sealer bond. Isodry, cotton rolls, and high-volume suction cannot replicate the chemical and airway seal of a properly placed rubber dam."
+       },
+       {
+        "kind": "section",
+        "text": "Materials"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Rubber dam sheet:** medium-gauge latex (Hygenic, Sanctuary Health) or latex-free (Hygenic Non-Latex) for allergic patients. 6\" x 6\" pre-punched or full sheet to punch chairside.",
+         "**Rubber dam clamp:** anterior (Brinker B4, W8A); premolar (W2, W2A); molar (#26, #56, W56). One winged clamp simplifies retraction; wingless clamps grip more tenaciously on broken-down teeth.",
+         "**Clamp forceps:** Brewer or Stokes. The 'beaks-down' position holds the clamp open; releasing the forceps closes it on the tooth.",
+         "**Rubber dam frame:** Young's frame (plastic, radiolucent - preferred for endo) or Nygaard-Ostby frame (metal).",
+         "**Hole punch:** dental hole punch with 5 hole sizes. Use the smallest that fits the tooth.",
+         "**Floss:** thin floss (Glide) to assist passing the dam over contacts.",
+         "**OraSeal / Cavit / wax:** caulking to seal any leaks at the dam-tooth interface."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 1 - Pre-isolation setup (5 min)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Confirm anesthesia.** Rubber dam clamping pressure can hurt - profound anesthesia first.",
+         "**Pre-check the tooth:** circumferentially probe the gingival margin to confirm there's enough sound tooth structure above the gum for the clamp to grip without slipping. If broken-down to the gum-line, plan for a buildup or orthodontic extrusion before endo.",
+         "**Select the clamp.** Try it in dry first to confirm it grips. Most-common mistake: clamp too small slips off; clamp too large pinches the gingiva.",
+         "**Floss the contacts** mesial and distal to the tooth - confirms they're open enough for the dam to pass without ripping."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 2 - Place the dam (5 min)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Punch the hole** in the dam sheet, sized to the tooth. Position the hole so the clamp wings won't tear the dam - usually 1/3 of the way down from the top edge for a maxillary tooth.",
+         "**Choose the technique:** (a) clamp-first - secure the clamp on the tooth, then stretch the dam over the clamp wings; (b) dam-first - pre-mount the clamp on the dam, then carry both as a unit; (c) split-dam - punch one hole, use a wingless clamp, drape the dam after clamping.",
+         "**Stretch the dam onto the frame.** The dam should be taut but not so tight it pulls off the clamp.",
+         "**Pass the dam through the contacts** with floss. Pull the dam interproximally on both sides; floss helps it tuck under contact points without ripping."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 3 - Test for leaks (2 min)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Squirt water from a 3-way syringe** onto the dam surface around the clamped tooth. Look for water beading up on the dam (good seal) vs water running down under the dam at the gingival margin (leak).",
+         "**Common leak sites:** the gingival aspect of the clamp and the interproximal contacts. Caulk leaks with OraSeal applied with a microbrush. For stubborn leaks, place a small bead of Cavit at the leak point.",
+         "**Test again** after caulking. The seal must hold against the volume and pressure of hypochlorite irrigation."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 4 - Surface disinfection (1 min)"
+       },
+       {
+        "kind": "paragraph",
+        "text": "Before drilling, scrub the isolated tooth surface with sodium hypochlorite or chlorhexidine for 30 sec. The dam-isolated surface is now sterile; bacteria from saliva that contacted the tooth before isolation are killed."
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Common dam problems",
+        "body": "**Dam keeps slipping off the clamp:** the clamp size is wrong (too small) or the clamp is broken. Replace. **Clamp keeps slipping off the tooth:** sound tooth structure is inadequate; build up the tooth with bonded composite before endo. **Dam tears at the punched hole:** hole was too small. Re-punch larger. **Patient feels the clamp pinching:** anesthesia hasn't reached the marginal gingiva - give buccal infiltration. **Bleeding from marginal gingiva under the clamp:** clamp jaws are biting tissue. Reposition or build the tooth up first. **NaOCl leak onto the patient's lip or cheek:** stop, irrigate with sterile saline immediately, apply vitamin E oil, document, recall at 24-48 hours. Most chemical burns heal in 7-10 days."
+       }
+      ]
+     },
+     {
+      "id": "endo-ch2",
+      "num": 2,
+      "title": "Access prep - finding the orifice, axis correction",
+      "verdict": "Access prep is the single step that most determines RCT outcome. Get the access right and the rest of the procedure flows. Get it wrong (offset, under-extended, missed canal) and you're fighting the case for the next 90 minutes. The outline depends on the tooth: triangle on lingual of anteriors, oval on occlusal of premolars, rhomboid on occlusal of molars.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Access prep has two simultaneous goals: (1) remove the entire roof of the pulp chamber so all canal orifices are visible, and (2) create straight-line access from the access cavity to the apex of each canal so files can drop in without binding on residual coronal dentin. A common error is stopping when the first orifice is found and not deroofing the chamber fully - this hides additional canals (MB2 in maxillary molars) and forces files to curve around residual dentin (file separation risk)."
+       },
+       {
+        "kind": "section",
+        "text": "Outline form by tooth type"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Anterior (#7-10 maxillary, #23-26 mandibular):** triangle on the lingual surface, base toward the incisal edge, apex at the cingulum. Single canal.",
+         "**Canine (#6, #11, #22, #27):** narrow triangle or oval, longer mesiodistally, on the lingual. Single canal but the chamber is deeper than incisors.",
+         "**Maxillary premolar (#4, #5, #12, #13):** oval, mesiodistally narrow + buccolingually long. Two canals 60-90% of the time (buccal + palatal).",
+         "**Mandibular premolar (#21, #28):** small oval or round, central groove. Usually one canal; #21 occasionally has a lingual bifurcation.",
+         "**Maxillary molar (#3, #14):** rhomboid - palatal corner, MB corner, DB corner. Hunt for MB2 mesially to MB orifice. 60-90% have MB2.",
+         "**Mandibular molar (#19, #30):** rounded triangle or rhomboid, mesial wider. MB + ML + (usually one) distal."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 1 - Caries/restoration removal first"
+       },
+       {
+        "kind": "paragraph",
+        "text": "Remove all caries and any existing restoration BEFORE making the formal access cavity. Restorative material masks the pulp chamber location, and caries-affected dentin near the pulp can hide a perforation."
+       },
+       {
+        "kind": "section",
+        "text": "Step 2 - Initial penetration"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Use a #4 round bur on slow speed** for initial penetration. Slow-speed gives tactile feedback when you drop into the chamber.",
+         "**Drill perpendicular to the surface first** (lingual on anteriors, occlusal on posteriors), then redirect to follow the long axis of the root.",
+         "**You'll feel a 'drop' or hear a change in pitch** when the bur penetrates the roof of the pulp chamber. Stop immediately.",
+         "**Confirm penetration with an endodontic explorer (DG-16).** The DG-16 tip should drop into the chamber without resistance."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 3 - Deroof the chamber"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Switch to a Endo Z bur (safety-tip carbide) on high-speed** with copious water spray. Engage the chamber walls and lift the chamber roof off.",
+         "**Outline form expansion:** trace the chamber outline with the bur to remove all residual roof. Test with explorer.",
+         "**Critical check:** flood the chamber with NaOCl 5%. Look for bubbles from the orifices - that's pulp tissue dissolving.",
+         "**Identify orifices** with the DG-16. Each canal orifice has a distinct color and tactile catch - slightly darker than surrounding dentin, slightly sticky to the explorer."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 4 - MB2 hunt (maxillary molars only)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Set up magnification:** microscope or 3.5x loupes with a headlamp. MB2 is rarely visible without.",
+         "**Drop the DG-16 explorer 1-2 mm mesial to the MB orifice.** MB2 is usually under a calcified shelf in this position.",
+         "**Trough mesially with a #2 round bur or LN bur** on slow speed, removing 1-2 mm of dentin at a time. Re-explore with DG-16 after each pass.",
+         "**The orifice is found when the apex locator catches** when an apex locator-coupled file is inserted. If you've troughed 3 mm without finding it, MB2 may be absent (10-40% of maxillary first molars don't have MB2)."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Common access problems",
+        "body": "**Can't find the chamber:** the chamber is calcified. Switch to a #2 long-neck round bur and aim for the radiographic chamber location on the PA. If still no penetration after 5 minutes, get a CBCT. **Perforated the floor of the chamber:** stop immediately. Seal with MTA or Biodentine. Continue endo if the perforation is small (<2 mm). **Found the first orifice but the patient has 3+ canal anatomy:** keep deroofing and exploring. Missed canals are the #1 cause of RCT failure in molars. **Access cavity too small to allow file movement:** widen with the Endo Z bur."
+       }
+      ]
+     },
+     {
+      "id": "endo-ch4",
+      "num": 4,
+      "title": "Cleaning & shaping - hand files, rotaries (ProTaper / WaveOne), irrigation",
+      "verdict": "Cleaning means killing the bacteria and removing the necrotic debris; shaping means creating the geometric form (apical 1/3 narrow, coronal 1/3 wide) that allows obturation to seal. Sodium hypochlorite is the irrigant that does the killing; the files create the path. Modern protocols pair hand-file scouting with rotary NiTi shaping plus copious irrigation.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Modern endodontics has three mainstream approaches to canal shaping: hand files (K-files, Hedstrom), rotary nickel-titanium systems (ProTaper Gold, WaveOne Gold), and reciprocating motion files. Pre-doctoral cases typically use a hybrid: hand files for early scouting + apex location, then rotaries for the shaping. The same irrigation protocol applies to all three: 6 mL sodium hypochlorite between every file size, 17% EDTA at the end of shaping for smear layer removal."
+       },
+       {
+        "kind": "section",
+        "text": "Step 1 - Scouting (hand files, 5-10 min per canal)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Pre-curve a #10 K-file** with a sterile gauze pad. Slight apical curve replicates the canal's anatomy and prevents transportation.",
+         "**Insert the #10 until it binds.** Note depth on the file rubber stop. Confirm with apex locator: tip should be 0.5-1 mm short of the apical foramen.",
+         "**Take a working-length radiograph** with the file in place. Working length = apex locator reading - 0.5 mm (safety margin).",
+         "**Continue with #15, then #20 K-files** to working length. Each file should rotate ~90 degrees clockwise then withdraw - the watch-winding motion.",
+         "**If a file binds before working length is reached:** irrigate with 6 mL NaOCl, recapitulate with a smaller file (e.g., back to #10), then re-advance the original size."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 2 - Rotary shaping (ProTaper Gold sequence, 15-20 min per canal)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Set rotary handpiece to 300 rpm + 5.2 N-cm torque** (ProTaper Gold manufacturer setting).",
+         "**S1 (shaper #1):** orange handle. Insert into the canal coronal-to-apical with light apical pressure. The file should advance with finger pressure alone - never push.",
+         "**S2 (shaper #2):** purple handle. Same insertion. S2 widens the coronal 1/3.",
+         "**F1 (finishing #1):** yellow handle. Take to working length. F1 sets the apical preparation to a #20/0.07 taper. Confirm WL with apex locator.",
+         "**F2 (finishing #2):** red handle. Take to working length. F2 expands the apex to #25/0.08 taper. Most pre-doctoral cases stop at F2.",
+         "**Between every file:** irrigate with 6 mL NaOCl using a side-vented needle inserted to 2 mm short of WL. Let the NaOCl sit in the canal for 30-60 seconds between irrigation cycles."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 3 - Smear layer removal"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**After final shaping, irrigate with 17% EDTA** for 60 seconds. EDTA dissolves the smear layer.",
+         "**Final NaOCl rinse** (3 mL, 30 seconds).",
+         "**Dry the canal with paper points** sized to working length. Paper points should come out dry.",
+         "**Single drop of CHX 2% (optional but recommended for necrotic cases)** for final disinfection. Dry again with fresh paper points."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Cleaning & shaping problems",
+        "body": "**File binds and rotates without advancing ('screwing in'):** apical pressure is too high. Withdraw, irrigate, advance with lighter pressure. **Working length keeps decreasing across instrumentation:** debris is packing apically. Recapitulate with the smallest file (#10), irrigate thoroughly, then resume. **Apex locator readings are erratic:** the canal isn't dry (NaOCl conducts) or the file is touching a metal restoration. Wipe the file dry, isolate from metallic contact, retest. **File separates in the canal:** see endo-ch20 chapter. **Persistent bleeding from a canal during instrumentation:** the file is past the apex (over-instrumented). Pull back 0.5 mm, irrigate, place Ca(OH)2 paste, close the visit and obturate at the next appointment."
+       }
+      ]
+     },
+     {
+      "id": "endo-ch3",
+      "num": 3,
+      "title": "Working length determination - apex locator + radiograph",
+      "verdict": "Working length defines where the obturation ends - 0.5-1 mm short of the apical foramen, at the apical constriction. Get it right and the seal is biologically sound. Get it short (under-instrumented) and bacteria persist; get it long (over-instrumented) and you damage periapical tissues. Apex locator + PA radiograph together establish working length to within 0.5 mm of true position.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Working length (WL) is the distance from a coronal reference point (cusp tip or incisal edge) to the apical end of canal instrumentation. The target is the apical constriction - the narrowest point of the canal, typically 0.5-1 mm coronal to the radiographic apex. Modern apex locators (Root ZX, Apex ID) use the canal's electrical impedance to identify this point with 90-95% accuracy when used correctly."
+       },
+       {
+        "kind": "section",
+        "text": "Materials"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Apex locator:** Morita Root ZX II or similar. 9V battery (check before each procedure).",
+         "**K-files #08, #10, #15** for working length scouting.",
+         "**Rubber stops** for file length marking.",
+         "**PA radiograph capability** (sensor + computer at chairside)."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 1 - Pre-op working length estimate"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Measure the tooth on the pre-op PA radiograph** with a digital ruler (incisal/occlusal tip to radiographic apex). Record this as the 'estimated working length' (EWL).",
+         "**Subtract 1 mm** from EWL for safety. This is the file length you'll insert initially.",
+         "**Set the rubber stop on a #10 K-file** at the EWL minus 1 mm."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 2 - Apex locator reading"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Connect the lip clip** to the patient's lower lip. Apex locator needs a body-circuit reference.",
+         "**Insert the file holder clip** onto the metal shank of the K-file (not the handle).",
+         "**Insert the K-file** to the EWL minus 1 mm depth.",
+         "**Watch the apex locator display.** Most show a 'circles' or 'bar' display: as you advance the file, indicators move toward the apex. Display reaches '0.5' (or APEX, depending on device) when the file tip is at the apical foramen.",
+         "**Withdraw 0.5 mm** from the 'APEX' reading. This is your apex locator working length (ALWL).",
+         "**Document ALWL on the chart.** This is your reference for every subsequent file."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 3 - Confirmatory radiograph"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Place a #15 or #20 K-file** at the ALWL.",
+         "**Take a PA radiograph** with the file in place.",
+         "**Measure on the radiograph:** the file tip should be 0.5-1 mm short of the radiographic apex.",
+         "**If file is too long (past the apex):** reduce ALWL by the over-extension amount and re-set the rubber stop on subsequent files.",
+         "**If file is too short (>2 mm from radiographic apex):** the apex locator may have read prematurely. Re-take with a slightly longer length and verify."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Working length stability"
+       },
+       {
+        "kind": "paragraph",
+        "text": "Working length can change during instrumentation. As coronal dentin is removed, the file 'shortens' relative to the patient's tooth - meaning the apical constriction is effectively further away. Re-verify ALWL after every 2-3 file size changes, especially in molars."
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Working length problems",
+        "body": "**Apex locator gives erratic readings:** likely causes: canal isn't dry enough (NaOCl conducts current); file is touching a metal restoration; lip clip not contacting moist mucosa; calcified canal hasn't been opened yet to allow electrical contact. **Apex locator reads 'APEX' at unexpectedly short depth:** the file is probably touching a lateral canal or accessory canal opening. Re-position the file along the long axis; try again. **PA confirms file is past the apex despite normal apex locator reading:** check that the lip clip is making good mucosal contact. Faulty contact gives premature 'APEX' readings. **Pediatric patient with open apex:** apex locators are unreliable in immature teeth. Rely on PA radiograph alone; use a periapical bleeding-zone technique for vital pulp therapy cases instead of full instrumentation."
+       }
+      ]
+     },
+     {
+      "id": "endo-ch5",
+      "num": 5,
+      "title": "Obturation - single cone vs warm vertical, sealer choice",
+      "verdict": "Obturation is the one-shot final step. The goal: fill the canal three-dimensionally with no voids, sealed against bacterial re-entry from the coronal restoration. Single cone with bioceramic sealer is the modern default (simpler, fewer steps). Warm vertical compaction is the traditional gold standard (better adaptation to canal anatomy). Both work; technique matters more than which you choose.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Obturation seals the cleaned and shaped canal against bacterial recontamination. The seal has two components: the cone of solid gutta-percha (mass) and a sealer (the chemical bond between gutta-percha and dentin walls). Most pre-doctoral cases use single cone obturation with a bioceramic sealer like BC Sealer or AH Plus. Warm vertical compaction (System B + Obtura) is the traditional alternative, more technique-sensitive but with proven outcomes."
+       },
+       {
+        "kind": "section",
+        "text": "Materials"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Gutta-percha cones:** matching the rotary file size (e.g., #25/0.08 master cone if F2 was the final shaping file).",
+         "**Bioceramic sealer:** EndoSequence BC Sealer, BioRoot RCS, or AH Plus (epoxy-based, older but proven).",
+         "**Paper points** for canal drying (sized to working length).",
+         "**Lentulo spiral or syringe applicator** for sealer placement.",
+         "**Heat source** if doing warm vertical (System B touch & heat, or EndoActivator with heated tip).",
+         "**Obtura backfill gun** (if doing warm vertical with thermoplasticized gutta-percha).",
+         "**Pluggers** (Schilder, hand pluggers in various sizes) for vertical compaction."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Single cone with bioceramic sealer (most common pre-doctoral)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Dry the canal thoroughly** with paper points. Last paper point should come out completely dry.",
+         "**Try-in the master cone.** Insert the matching-size GP cone to working length. Should feel slight tug-back resistance (apical seat). If too loose - go up a size; if won't reach WL - drag-down a size or re-instrument apically.",
+         "**Take a master cone radiograph** to confirm WL placement.",
+         "**Apply sealer** to the canal walls. Bioceramic sealer can be syringed in (BC Sealer syringe) or applied with a lentulo spiral at slow speed (rotate clockwise to push sealer apically, then withdraw while rotating slowly).",
+         "**Coat the master cone** in sealer.",
+         "**Insert master cone slowly** to working length. Don't push fast - it traps air and creates voids.",
+         "**Sear off the GP** 1-2 mm below the canal orifice with a heated instrument.",
+         "**Compact vertically** with a plugger - 2-3 firm seats."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Warm vertical compaction (traditional / alternative)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Dry canal, master cone try-in, sealer placement, master cone insertion** - same as above.",
+         "**Apical seal:** sear off the master cone 4 mm short of working length with the System B heat plugger. Heat-soften, compact apically with the matching cold plugger to set the apical 3-4 mm of GP.",
+         "**Backfill:** use the Obtura gun to inject thermoplasticized GP into the empty middle and coronal canal. Pause every 2-3 mm to compact with a cold plugger.",
+         "**Final compaction** of the coronal GP to ensure no voids.",
+         "**Take a final radiograph** to verify three-dimensional obturation."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Post-obturation"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Clean the access cavity** of all GP and sealer remnants on the chamber walls.",
+         "**Place definitive coronal seal:** glass-ionomer (Vitrebond, Fuji II LC) over the canal orifice + composite or amalgam buildup, OR Cavit + amalgam if scheduled for crown in 1-2 weeks.",
+         "**Definitive restoration within 4 weeks** of obturation. Coronal leakage is the #1 cause of long-term RCT failure.",
+         "**Schedule recall** at 6 months and 1 year for PA + clinical exam. Look for periapical healing on radiograph."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Obturation problems",
+        "body": "**Master cone won't reach working length:** debris is blocking the apex; the apical shape isn't smooth; or the cone is too large. Recapitulate, re-irrigate, try a smaller cone. **Master cone has no apical tug-back (slides too easily):** the apical shape is too wide. Drag-down a size or two; or trim the cone tip to fit. **Sealer extruded past apex on radiograph:** small extrusion is acceptable (bioceramic and AH Plus are biocompatible). Large extrusions may cause transient post-op discomfort but rarely cause persistent symptoms. **Air voids visible on PA:** insufficient compaction or sealer application. Don't re-treat for cosmetic voids; do re-treat if voids extend to a canal wall (allows bacterial re-entry)."
+       }
+      ]
      }
     ]
    }
@@ -11587,6 +11960,343 @@
         "kind": "troubleshoot",
         "title": "When the technique runs into trouble",
         "body": "**Tooth fractures during luxation:** stop. Get a radiograph to see what's retained. If the fragment is small and in the apical third, consider conversion to surgical extraction (flap + bone removal). **Adjacent tooth becomes mobile after elevator force:** apologize, document, recall in 2 weeks for vitality testing. Most cases recover; persistent mobility may need a splint. **Lingual plate fractures during mandibular molar extraction:** common with paper-thin lingual plates. Remove the fractured fragment with the tooth (it's already mobilized), smooth the edges. **Buccal plate fractures during maxillary anterior extraction:** more concerning - can affect future implant placement. Save the fragment if loose, smooth edges, consider socket preservation graft. **Sinus communication noticed after maxillary molar extraction:** test with the Valsalva maneuver (patient closes nose, gently blows - air through socket = communication). Small (2-3 mm) = primary closure, antibiotics, sinus precautions; large (>5 mm) = referral to OMFS for buccal advancement flap."
+       }
+      ]
+     },
+     {
+      "id": "surgery-ch1",
+      "num": 1,
+      "title": "Pre-op assessment - medical history, anticoagulants, bisphosphonate risk",
+      "verdict": "The pre-op assessment is what separates a routine extraction from a hospital visit. Three medical-history red flags: anticoagulants (bleeding management), bisphosphonates (MRONJ risk), and cardiac/transplant patients (antibiotic prophylaxis). Get these wrong and the patient bleeds for hours, develops osteonecrosis, or comes back with endocarditis.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Every extraction starts with a structured medical-history review focused on three categories: bleeding risk, bone-healing risk, and infection-defense risk. A 10-minute pre-op interview prevents 90% of post-op emergencies."
+       },
+       {
+        "kind": "section",
+        "text": "Bleeding risk - anticoagulants"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Warfarin (Coumadin):** INR target depends on indication. INR <=3.5 is generally safe for routine extractions with local hemostasis. INR >3.5 - consult physician. **Never** stop warfarin without physician consult.",
+         "**Direct oral anticoagulants (DOACs) - Eliquis, Xarelto, Pradaxa, Savaysa:** continue for routine single-tooth extractions; local hemostasis sufficient. For multiple extractions, consult physician about timing.",
+         "**Antiplatelets - aspirin, clopidogrel (Plavix), prasugrel (Effient), ticagrelor (Brilinta):** continue for routine extractions. Local hemostasis is usually adequate.",
+         "**Supplements that increase bleeding:** fish oil, ginkgo biloba, garlic, vitamin E, ginger. Ask explicitly.",
+         "**Bleeding disorders:** hemophilia, von Willebrand disease, ITP, liver disease. Require hospital-based extraction with hematology consult."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Bone-healing risk - bisphosphonates & antiresorptives"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Oral bisphosphonates** (alendronate/Fosamax, risedronate/Actonel, ibandronate/Boniva): MRONJ risk ~0.1-0.4%. Risk increases with: >4 years duration, concurrent corticosteroid use, diabetes, smoking.",
+         "**IV bisphosphonates** (pamidronate/Aredia, zoledronate/Reclast/Zometa): MRONJ risk 1-15% after dental surgery. Discuss alternatives to extraction (RCT, restoration, partial pulp therapy) when possible.",
+         "**Denosumab** (Prolia, Xgeva): RANKL inhibitor with similar MRONJ risk profile to IV bisphosphonates.",
+         "**Pre-op management:** consult oncologist/PCP. Surgical technique modifications: minimal trauma, primary closure of socket, antibiotic coverage (amoxicillin 7-day course), 1-week and 2-week follow-up."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Infection risk - antibiotic prophylaxis"
+       },
+       {
+        "kind": "paragraph",
+        "text": "AHA 2021 guidelines: prophylaxis indicated for: prosthetic cardiac valves, history of infective endocarditis, congenital heart disease (unrepaired cyanotic CHD; completely repaired CHD with prosthetic material within 6 months; repaired CHD with residual defects), cardiac transplant patients with valvulopathy. Orthopedic implants (knee, hip, shoulder replacements) DO NOT require prophylaxis except in specific high-risk situations per the patient's orthopedic surgeon."
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Standard regimen:** amoxicillin 2 g PO 30-60 min before procedure.",
+         "**Penicillin allergy (non-anaphylactic):** cephalexin 2 g, OR clindamycin 600 mg (clindamycin no longer first-line per 2021 update due to C. difficile risk).",
+         "**Penicillin allergy (anaphylactic):** azithromycin 500 mg or clarithromycin 500 mg."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Other key history items"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Diabetes (HbA1c):** poorly controlled (HbA1c >8) = delayed healing + infection risk. Schedule morning, post-meal, consider antibiotic coverage.",
+         "**Pregnancy:** elective procedures in second trimester. Lidocaine + epi safe (Category B). Avoid bupivacaine in third trimester.",
+         "**Immunosuppression** (transplant, chemo, biologics, high-dose steroids): consult treating physician. Often need prophylactic antibiotics.",
+         "**Recent MI or stroke (within 6 months):** defer elective procedures. Emergency only after cardiology/neurology consult.",
+         "**Hypertension (uncontrolled):** SBP >180 or DBP >110 = postpone elective; refer to PCP. SBP 160-179 = manage anxiety + epi-restricted anesthesia."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "When to defer or refer",
+        "body": "**Refer to OMFS when:** root tips overlap the IAN canal on PA; sinus communication anticipated for maxillary molars; third molars beyond simple eruption (deep impaction, distal angulation, IAN proximity); patient on IV bisphosphonates; severe bleeding disorder; multiple medical comorbidities. **Defer when:** uncontrolled HTN >180/110; recent MI/stroke within 6 months; INR >3.5 on warfarin; active acute infection (treat with antibiotics first, extract when controlled). **Document the consult in the chart:** name of physician, date, recommendation. The consult note is your medicolegal protection."
+       }
+      ]
+     },
+     {
+      "id": "surgery-ch5",
+      "num": 5,
+      "title": "Post-op instructions - bleeding, swelling, dry-socket prevention",
+      "verdict": "Post-op instructions are 80% of the long-term success of an extraction. Patients who follow the rules heal in 7-10 days; those who don't develop dry socket, prolonged bleeding, or wound dehiscence. Write instructions down, demonstrate technique, ask the patient to repeat the key three (no spitting, no smoking, no straws for 24 hr).",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Effective post-op instructions are concrete, time-bounded, and action-focused. 'Take care of the area' is vague and easily forgotten; 'Bite firmly on gauze for 30 minutes; do not check the gauze every 5 minutes' is specific. Patients vary in compliance - studies suggest 30-40% don't follow even basic post-extraction directions. Set them up for success with written instructions, demonstrated technique, and a clear escalation path."
+       },
+       {
+        "kind": "section",
+        "text": "Immediate post-op (first 60 min in clinic)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Pressure pack with gauze for 30 minutes.** Patient bites firmly on a folded gauze pack. Do not allow them to check the gauze every few minutes - constant lifting disrupts clot formation.",
+         "**Inspect the socket at 30 minutes.** A formed clot should be visible. If active bleeding continues, replace gauze, continue pressure another 30 minutes. If still bleeding after 60 minutes, consider gelatin sponge + suture.",
+         "**Pre-emptive analgesia.** Give ibuprofen 600-800 mg with the patient in the chair before they leave."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "First 24 hours - the critical window"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**No spitting, no rinsing.** Active spitting creates negative pressure that dislodges the clot.",
+         "**No straws.** Same reason - sucking creates negative pressure.",
+         "**No smoking, no vaping.** Nicotine constricts blood vessels and suction motion dislodges the clot. Dry socket risk in smokers is 3-5x non-smokers.",
+         "**No alcohol.** Anticoagulant effect prolongs bleeding; ethanol delays healing.",
+         "**No carbonated drinks.** Same suction issue.",
+         "**Soft diet only.** Yogurt, smoothies (by spoon, not straw), mashed potatoes, scrambled eggs, soup.",
+         "**Sleep with head elevated.** 2-3 pillows or a recliner."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Pain management"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Ibuprofen 600-800 mg scheduled every 6 hours for 48 hours.** Scheduled (clock-based) dosing is more effective than as-needed. Take with food.",
+         "**Add acetaminophen 500-650 mg every 6 hours** if ibuprofen alone isn't sufficient. Stagger the doses for round-the-clock coverage.",
+         "**Opioids only if absolutely necessary.** Hydrocodone 5/325 or oxycodone 5/325, 1-2 tablets every 6 hours PRN. Limit to 10-15 tablets max.",
+         "**Cold compress for first 24 hours.** 20 min on, 20 min off.",
+         "**Warm compress starting at 48 hours.** Promotes resolution of swelling."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Day 2-7 - resumption of normal activity"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Begin gentle saltwater rinses at 24 hours** (1 tsp salt in 8 oz warm water). Tilt the head; let the water roll over the site. 4-6 times per day.",
+         "**Resume gentle brushing of all teeth EXCEPT the extraction area.** Day 3-4, gently brush adjacent teeth; day 5-7, all areas.",
+         "**Activity:** light activity (walking) day 2; avoid vigorous exercise 5-7 days.",
+         "**Diet:** progress soft to semi-soft to normal over 5-7 days."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Warning signs - when to call"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Bleeding that soaks a gauze pad in 20 minutes** (after the first hour). Call clinic.",
+         "**Severe throbbing pain that started 2-4 days after extraction** - dry socket. Call for same-day or next-day appointment.",
+         "**Swelling that worsens after day 3** - infection. Call for evaluation.",
+         "**Fever >100.4F.** Call clinic.",
+         "**Numbness of lip, tongue, or chin persisting >24 hours after anesthesia wore off** - possible nerve injury.",
+         "**Inability to open mouth (trismus) worsening over days 2-4** - possible infection or muscle hematoma."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Common post-op complaints",
+        "body": "**'My socket is bleeding again after going home':** apply pressure with a damp folded tea bag (tannins cause clot formation) for 30 minutes. If unresolved, return. **'My pain peaked on day 2-3 with severe throbbing':** classic dry socket. Schedule same-day appointment for socket dressing. **'My swelling is worse on day 4 than day 1':** infection - examine, consider antibiotics. **'I can't fully open my mouth':** common day 2-3 from masseter hematoma. Warm compress + jaw exercises. **'There's a hard bump in the socket':** likely a sequestrum working its way out. Recall at 1 week."
+       }
+      ]
+     },
+     {
+      "id": "surgery-ch2",
+      "num": 2,
+      "title": "Anesthesia for extractions - block selection, supplemental infiltration",
+      "verdict": "Profound anesthesia is the difference between an atraumatic extraction and a wrestling match. Block injections (IA, PSA) anesthetize a quadrant; supplemental infiltrations cover the gaps (long buccal, palatal). Test with sharp probe BEFORE drilling or elevating - touch returns first, sharp last. Cold-test the offending tooth as the final go/no-go.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Anesthesia for extractions follows the same principles as restorative anesthesia but has higher consequences for failure - a partially-anesthetized patient cannot tolerate the pressure and forces of luxation. Plan generously: one extra carpule of anesthetic is cheaper than a patient losing trust mid-procedure."
+       },
+       {
+        "kind": "section",
+        "text": "Maxillary anesthesia"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Anterior teeth (#6-#11) - infiltration approach:** local infiltration in the buccal vestibule over the apex. 1/3 to 1/2 carpule lidocaine 2% with epi 1:100K. Add palatal infiltration (1/4 carpule) for the palatal soft tissues.",
+         "**Premolars (#4-#5, #12-#13):** buccal infiltration + palatal infiltration. 1 carpule total.",
+         "**Molars (#2-#3, #14-#15) - PSA block + buccal + palatal:** PSA targets the posterior superior alveolar nerve. Inject into the buccal vestibule distal to the 2nd molar, advance the needle 1 cm at a 45 degree angle posteriorly + medially + superiorly. Aspirate (PSA is near the pterygoid plexus - risk of hematoma). 1-2 carpules. Add buccal infiltration over the specific tooth and palatal infiltration on the lingual side.",
+         "**Greater palatine block (rarely needed):** for extensive palatal soft tissue work. 1/4 carpule slowly.",
+         "**Maxillary block (V2):** if multiple maxillary teeth need extraction. Specialist-level injection - skip in pre-doctoral chairs."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Mandibular anesthesia"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**IA (Inferior Alveolar) block - the workhorse:** patient opens wide. Palpate the coronoid notch with your thumb in the mouth, retromolar fold with your finger behind the ramus. Inject into the pterygomandibular space at the level of the mandibular foramen (about 6-10 mm above the occlusal plane of mandibular molars). Insert needle 2/3 of its length, aspirate, deposit 1 carpule. Wait 5 min for onset.",
+         "**Long buccal block:** anesthetizes the long buccal nerve (buccal soft tissues of mandibular molars). 1/4 carpule. ADD this to every IA block for mandibular molar work.",
+         "**Mental block:** anesthetizes the mental nerve (buccal mucosa of mandibular premolars and anteriors). Inject into the buccal vestibule between the apices of the 1st and 2nd mandibular premolars. 1/2 carpule.",
+         "**Gow-Gates block:** alternative when IA fails. Higher injection site (condylar neck level). Specialist-level.",
+         "**Vazirani-Akinosi (closed-mouth) block:** for trismus. Specialist-level."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Anesthesia testing - critical before starting"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Test the soft tissues with a sharp probe.** Run the explorer along the marginal gingiva. Light touch returns first; sharp prick takes longer.",
+         "**Cold-test the offending tooth with Endo Ice.** Cold response = pulpal nerves still firing. Wait 2 more minutes; if still cold-positive, supplement.",
+         "**Intraligamentary supplementation:** insert a 27G short needle into the PDL space, mesial and distal to the tooth. Inject with pressure. 0.2 mL per site. Onset 30-60 sec; duration 30-60 min.",
+         "**Intraseptal supplementation:** insert needle into the interproximal alveolar bone. Deposit 0.2 mL. Useful when IA fails on lower molars.",
+         "**Never start the extraction** until both tests are negative."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Anesthetic selection"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Lidocaine 2% with epi 1:100,000:** standard. Onset 2-5 min; duration 60-90 min pulpal, 3-5 hr soft tissue.",
+         "**Bupivacaine 0.5% with epi 1:200,000 (Marcaine):** long-acting, for >2-hour cases or post-op pain control. Onset 5-10 min; duration 5-9 hr. NOT for pediatric patients (lip-biting risk).",
+         "**Articaine 4% with epi 1:100,000 (Septocaine):** higher diffusion through bone - useful for failed IA on mandibular molars.",
+         "**Mepivacaine 3% (Carbocaine, no epi):** epi-free option for cardiac patients. Shorter duration (40 min pulpal).",
+         "**Maximum doses (adult, 70 kg):** lidocaine 2% with epi: max ~7 carpules. Bupivacaine 0.5% with epi: max ~10 carpules."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Anesthesia problems",
+        "body": "**IA block fails consistently:** accessory innervation from the mylohyoid or long buccal nerve. Supplement with long buccal block + lingual infiltration. If still fails, try Gow-Gates. **Patient gets dizzy/nauseated after injection:** vasovagal reaction or local anesthetic toxicity. Stop, recline, give oxygen, monitor vitals. **Patient develops trismus 1-2 days after IA block:** muscle hematoma. Heat, NSAIDs, gentle jaw exercises. Resolves 7-14 days. **Persistent paresthesia of lip/tongue >24 hr:** lingual nerve or IAN injury. Document, reassure, recall at 4 weeks. **Hematoma at PSA injection site:** cold compress for 24 hr, then warm. Resolves 7-10 days."
+       }
+      ]
+     },
+     {
+      "id": "surgery-ch4",
+      "num": 4,
+      "title": "Socket management - curettage, irrigation, primary closure decisions",
+      "verdict": "The 60 seconds you spend on socket management determines whether the patient heals uneventfully or comes back for dry socket. Inspect for retained tissue + root tips; curette only what needs to come out (don't strip the periosteum); irrigate; compress; suture if indicated.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Socket management is the post-delivery cleanup phase. The tooth is out; now you decide whether the socket is ready to heal as-is, needs curettage, needs grafting (for future implant), or needs primary closure with sutures. Different cases need different management - a routine simple extraction with no granulation tissue may need only compression and a gauze pack; a surgical extraction with extensive bone removal needs irrigation, hemostasis, and primary closure."
+       },
+       {
+        "kind": "section",
+        "text": "Step 1 - Visual inspection"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Suction the socket** to remove blood and debris. Use a small (#3) Frazier suction tip.",
+         "**Inspect with good lighting and loupes if available.** Look for: retained root fragments (especially at the apex), granulation tissue (yellow-tan, looks different from clot), sharp bone edges, perforated buccal/lingual plate, sinus communication (maxillary molars).",
+         "**Probe gently with a curette** to feel the contours of the socket. The walls should feel smooth; rough irregularities may indicate retained fragments or sharp bone needing filing."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 2 - Curettage (only if needed)"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Granulation tissue or chronic infection:** scoop out with a Lucas curette or molt curette. Be gentle - over-curettage strips the periosteum and slows healing.",
+         "**Retained root tip (<2 mm, in apex):** if accessible, retrieve with a small root tip pick or curette. If embedded deep near vital structures (IAN, sinus), leave it and document - retrieval risk > leaving risk.",
+         "**Apical cyst or granuloma:** enucleate with a curette, send for biopsy if appearance is unusual (large >5 mm, has clear fluid, contains hair or solid material).",
+         "**Bony sequestrum:** small piece of dead bone visible in the socket. Remove with curette or rongeur.",
+         "**Sharp bone edges:** file smooth with a bone file (Sluder or Miller file). Sharp edges create discomfort under sutures and slow healing."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 3 - Irrigation"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Use sterile saline** in a 20 mL syringe with a blunt-tip cannula or large-gauge needle.",
+         "**Irrigate the socket** thoroughly - the saline carries away any remaining debris.",
+         "**Suction the irrigation** to confirm the socket is clean.",
+         "**Avoid hydrogen peroxide** - it can drive air into the bone marrow (rare but serious complication). Saline is the standard."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 4 - Plate compression"
+       },
+       {
+        "kind": "paragraph",
+        "text": "Compress the buccal and lingual plates firmly with finger pressure for 30 seconds. This restores socket morphology that may have expanded during delivery. Particularly important for maxillary extractions where buccal plate expansion can lead to subsequent ridge collapse."
+       },
+       {
+        "kind": "section",
+        "text": "Step 5 - Hemostasis"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Gauze pressure:** primary hemostasis for most extractions. Patient bites firmly on folded gauze for 30 minutes.",
+         "**Gelatin sponge (Gelfoam, Surgicel) ONLY if needed:** persistent bleeding after gauze, anticoagulated patient, or socket preservation for future implant. The sponge provides a scaffold for clot formation.",
+         "**Hemostatic agent (HemCon, Surgicel):** for refractory bleeding. Apply to socket, hold pressure 5 minutes.",
+         "**Electrocautery (if available):** for capillary bleeding from soft tissue. Spot-cauterize 1-2 mm from the bleeding source."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 6 - Sutures (when indicated)"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Surgical extraction with flap reflection:** primary closure with sutures. 3-0 chromic gut or 4-0 Vicryl, simple interrupted.",
+         "**Anticoagulated patient:** cross-suture over a gelatin sponge to retain it in the socket.",
+         "**Socket preservation graft for future implant:** suture closed with a slow-resorbing suture (4-0 Vicryl).",
+         "**Routine simple extraction:** sutures NOT required. Gauze pressure provides adequate hemostasis.",
+         "**Suture removal:** chromic gut resorbs in 7-10 days, Vicryl in 30-60 days. Both are fine to leave alone."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Special situations"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Sinus communication (maxillary molars):** Valsalva test (patient closes nose, gently blows; air through socket = communication). Small (<2 mm) = primary closure + antibiotics + sinus precautions. Large (>5 mm) = OMFS referral for buccal advancement flap.",
+         "**Mandibular molar with paper-thin lingual plate:** lingual plate may have fractured during delivery. If fragment is loose, remove with the tooth. Smooth edges.",
+         "**Socket preservation graft (for planned implant 3-6 months later):** xenograft (Bio-Oss) or allograft (Puros) packed into socket, covered with collagen membrane, sutured closed."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Socket management problems",
+        "body": "**Can't stop bleeding from a specific spot:** identify the source (cortical bleeder = direct pressure + electrocautery; ooze = gelatin sponge + suture; visible vessel = ligate or cauterize). **Suture won't hold:** tissue is friable or too tightly stretched. Use a larger-diameter suture or place additional sutures. **Patient continues bleeding hours after leaving:** see post-op surgery-ch21 chapter for management. **Socket walls collapse after extraction:** common in maxillary anterior; preserves better with a socket graft + collagen membrane."
        }
       ]
      }
@@ -11733,6 +12443,431 @@
         "kind": "troubleshoot",
         "title": "Common SRP challenges",
         "body": "**Tenacious calculus that won't yield to ultrasonic or curette:** try a Hirschfeld or Orban file - heavier instruments designed for chunks. If still not budging, consider mineralized calculus that has fused with cementum; finer hand instrument work + multiple strokes. **Patient becoming uncomfortable mid-quadrant despite anesthesia:** check for inadequate anesthesia (re-test), consider whether the patient has anxiety-driven sensitivity (nitrous oxide may help), or whether you're treating a tooth with separate pulpal pathology (irreversible pulpitis from undetected caries). **Bleeding obscuring the field:** rinse with CHX, suction, light pressure on the area for 30 sec, resume. Excessive bleeding may indicate underlying systemic issue (uncontrolled hypertension, anticoagulant) - recheck history. **Patient won't return for maintenance:** the 3-month maintenance interval is non-negotiable for SRP outcomes. If the patient refuses, document the discussion and accept they're choosing to risk recurrence. **Pockets get deeper at re-eval despite SRP:** consider missed sites, residual calculus, occlusal trauma, host factors (smoking, diabetes), or non-plaque-induced disease (drug-induced gingival hyperplasia, aggressive periodontitis). Refer for perio specialist evaluation."
+       }
+      ]
+     },
+     {
+      "id": "perio-ch1",
+      "num": 1,
+      "title": "Perio charting - 6-point probe, mobility, furcation, recession",
+      "verdict": "Perio charting is the diagnostic core of every periodontal patient encounter. Six-point probing on every tooth, plus mobility, furcation, recession, and bleeding. Done correctly, it takes 8-12 minutes for a full mouth. Done poorly, the treatment plan that follows is built on bad data.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "A perio chart is six numbers per tooth (pocket depths) plus annotations for bleeding, mobility, furcation involvement, recession, and clinical attachment loss. Over time, serial charts show whether periodontitis is progressing, stable, or regressing under therapy."
+       },
+       {
+        "kind": "section",
+        "text": "Materials"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Periodontal probe:** UNC-15 (standard, marked in 1 mm increments to 15 mm) or Williams probe (1-2-3-5-7-8-9-10 mm markings).",
+         "**Furcation probe (Nabers):** curved probe specifically for furcation evaluation.",
+         "**Articulating paper** for mobility assessment.",
+         "**Light source + magnification:** loupes (2.5x or 3.5x) + chair light."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Six-point probing technique"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Position the probe** parallel to the long axis of the tooth.",
+         "**Insert with light pressure (10-20 g)** - if the probe creates blanching of the marginal gingiva, you're pressing too hard.",
+         "**Walk the probe** along the gingival sulcus, stepping in 1 mm increments. The deepest reading wins for each surface.",
+         "**Six surfaces per tooth:** mesiobuccal, mid-buccal, distobuccal, mesiolingual, mid-lingual, distolingual.",
+         "**Read the depth at the gingival margin** - the millimeter mark where the probe disappears under the gingival edge.",
+         "**Record immediately.** Reading 6 surfaces and then trying to recall them all is error-prone."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "What to chart on every tooth"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Pocket depths (6 per tooth).**",
+         "**Bleeding on probing (BOP):** mark each surface as bleeding within 30 sec of probing. >25% = active disease.",
+         "**Recession:** distance from the CEJ to the gingival margin. Positive value if margin is apical to CEJ.",
+         "**Clinical attachment loss (CAL):** CAL = pocket depth + recession. The 'true' measure of periodontal destruction.",
+         "**Mobility (Miller):** 0 = no mobility. 1 = horizontal <1 mm. 2 = horizontal >1 mm. 3 = horizontal + vertical (depressible).",
+         "**Furcation involvement (Glickman):** I = horizontal probe enters 1-3 mm. II = >3 mm but doesn't penetrate. III = through-and-through but soft tissue covers. IV = through-and-through, visible.",
+         "**Mucogingival defects:** keratinized gingiva width <2 mm or no attached gingiva - note these areas.",
+         "**Gingival biotype:** thin or thick."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Interpretation"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Probing depths <=3 mm, no bleeding:** healthy.",
+         "**Probing depths <=3 mm, with bleeding:** gingivitis. Prophy + improved OHI.",
+         "**Probing depths 4-5 mm with bleeding + bone loss:** Stage II periodontitis. SRP.",
+         "**Probing depths >=6 mm with bleeding + significant bone loss + CAL >=5 mm:** Stage III. SRP first, surgical referral for sites that don't respond.",
+         "**Probing depths >=6 mm + tooth loss >=5 due to perio + masticatory dysfunction:** Stage IV. Comprehensive treatment planning.",
+         "**Bleeding on probing >25% of sites:** active disease."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Charting challenges",
+        "body": "**Patient gags during posterior probing:** topical anesthetic (HurriCaine spray) before probing distal molars. Position slightly upright. **Bleeding obscures the reading:** rinse with water, blot with gauze, re-probe. **Patient complains of probing pain:** significant inflammation. Take a break, reassure, gentle re-probe. If still painful, consider 1/2 carpule lidocaine infiltration before completing that quadrant. **Probe sticks at a certain depth:** probably calculus or restoration overhang. Note the depth and the obstacle. **Patient on anticoagulants:** probe gently, expect more bleeding. Document."
+       }
+      ]
+     },
+     {
+      "id": "perio-ch2",
+      "num": 2,
+      "title": "Diagnosis - AAP stages (I-IV) and grades (A-C)",
+      "verdict": "The 2018 AAP classification uses a stage (I-IV, severity + complexity) + grade (A-C, progression rate) system. Stage tells you how bad it is now; grade tells you how fast it's getting worse. Together they drive treatment intensity.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Periodontal diagnosis since 2018 follows the AAP/EFP joint classification: every periodontitis patient gets a stage (I, II, III, IV) and a grade (A, B, C). Stage describes severity and complexity of current disease, grade describes rate of progression."
+       },
+       {
+        "kind": "section",
+        "text": "First sort - is this gingivitis or periodontitis?"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Periodontal health:** intact periodontium, no BOP, normal probing depths (<=3 mm), no bone loss.",
+         "**Gingivitis:** BOP present, probing depths usually <=3 mm, NO interdental clinical attachment loss, NO radiographic bone loss. Reversible.",
+         "**Periodontitis:** clinical attachment loss (CAL) >=1 mm at >=2 non-adjacent teeth, OR >=3 mm CAL at buccal/oral aspect of >=2 teeth. Not reversible."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Stage (current severity and complexity)"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Stage I (initial):** CAL 1-2 mm, radiographic bone loss <15%, no tooth loss due to perio, probing depths <=4 mm. Treatment: SRP usually adequate.",
+         "**Stage II (moderate):** CAL 3-4 mm, radiographic bone loss 15-33%, probing depths <=5 mm. Treatment: SRP, possibly with adjunctive antimicrobials.",
+         "**Stage III (severe, potential for additional loss):** CAL >=5 mm, radiographic bone loss >33% to middle/apical third, tooth loss due to perio <=4 teeth, probing depths >=6 mm. Furcation involvement Class II or III. Treatment: SRP first; surgical referral for non-responsive sites.",
+         "**Stage IV (severe, potential for tooth loss):** all Stage III criteria PLUS at least one of: >=5 missing teeth due to perio, masticatory dysfunction, secondary occlusal trauma, severe ridge defects, <20 remaining teeth. Treatment: comprehensive multi-disciplinary."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Grade (rate of progression)"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Grade A (slow):** no progression over 5 years; %bone loss / age <0.25.",
+         "**Grade B (moderate):** <2 mm bone loss over 5 years; %bone loss / age 0.25-1.0.",
+         "**Grade C (rapid):** >=2 mm bone loss over 5 years; %bone loss / age >1.0; aggressive risk factors."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Grade modifiers"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Smoking:** non-smoker = no modifier. <10/day = Grade B. >=10/day = Grade C.",
+         "**Diabetes:** non-diabetic = no modifier. HbA1c <7.0 = Grade B. HbA1c >=7.0 = Grade C."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Putting it together - example diagnoses"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Generalized Stage II Grade B periodontitis** - 40% of teeth have CAL 3-4 mm, BL 25%, smoker <10/day.",
+         "**Localized Stage III Grade C periodontitis** - 5 teeth have CAL 6-7 mm with vertical bone defects, HbA1c 8.2.",
+         "**Generalized gingivitis on intact periodontium** - BOP at >25% of sites, no CAL, no bone loss."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Treatment intensity by diagnosis"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Stage I/II Grade A-B:** SRP + 6-month maintenance. OHI focus.",
+         "**Stage I/II Grade C:** SRP + 3-4 month maintenance + adjunctive antimicrobial. Aggressive risk factor management.",
+         "**Stage III Grade A-B:** SRP + 3-4 month maintenance; surgical referral for non-responsive 6+ mm sites.",
+         "**Stage III Grade C:** SRP + 3 month maintenance + adjunctive antimicrobials + risk factor management + surgical referral.",
+         "**Stage IV:** comprehensive treatment planning (perio + prosth + restorative). 3 month maintenance indefinitely."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Diagnostic edge cases",
+        "body": "**Patient has good current chart but historical records show significant prior bone loss:** stage by current findings; consider stable disease (Grade A) if no progression in recent records. **Patient has primary occlusal trauma (no perio inflammation):** this is NOT periodontitis. Treatment is occlusal management. **Patient has gingival recession without periodontitis:** mucogingival defect, not periodontitis. Consider gingival graft. **Pregnancy gingivitis or medication-induced gingival overgrowth:** distinct entities."
+       }
+      ]
+     },
+     {
+      "id": "perio-ch5",
+      "num": 5,
+      "title": "Local anesthesia for perio - block + supraperiosteal infiltration choices",
+      "verdict": "Subgingival instrumentation needs anesthesia. Block for the molars (IA, PSA), infiltration for the anteriors and palatal. Bupivacaine for full-mouth SRP (long-acting), lidocaine for single-quadrant.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Periodontal anesthesia mirrors restorative anesthesia in principles but covers a quadrant of teeth at once. The key is bilateral coverage - both buccal AND palatal/lingual surfaces need to be numb because instrumentation goes around the entire tooth circumference."
+       },
+       {
+        "kind": "section",
+        "text": "Maxillary SRP anesthesia"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Posterior infiltration** at the PSA region for #2-#3 molars: 1 carpule lidocaine 2% with epi 1:100K, slowly aspirated. Provides 60-90 min of pulpal + soft tissue coverage.",
+         "**Mid-buccal infiltration** at #4-#7 premolars and canines: 1/2 carpule per side.",
+         "**Anterior buccal infiltration** at #8-#11: 1/2 carpule total.",
+         "**Palatal infiltration** is required for palatal pocket instrumentation: 1/4 carpule at the greater palatine foramen + 1/4 carpule at the incisive papilla.",
+         "**Total maxillary quadrant:** typically 2.5-3 carpules."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Mandibular SRP anesthesia"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**IA block:** 1 carpule. Provides coverage for #17-#21 (left) or #28-#32 (right) on the lingual.",
+         "**Long buccal block:** 1/4 carpule. Provides coverage for the buccal mucosa of the molars.",
+         "**Buccal infiltration** at #19-#20 premolars (some patients): 1/4 carpule.",
+         "**Mental block** (if treating only premolars and anteriors): 1/2 carpule.",
+         "**Total mandibular quadrant:** typically 1.5-2 carpules."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Long-acting choices"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Bupivacaine 0.5% with epi 1:200,000 (Marcaine):** preferred for full-mouth SRP appointments where you need anesthesia to last >2 hours. Onset 5-10 min, duration 5-9 hours.",
+         "**Lidocaine 2% with epi 1:100,000:** standard for single-quadrant SRP. Onset 2-5 min, duration 60-90 min pulpal + 3-5 hours soft tissue.",
+         "**Mixed protocol:** start with lidocaine for fast onset, supplement with bupivacaine if the appointment runs long."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Anesthesia testing for perio"
+       },
+       {
+        "kind": "paragraph",
+        "text": "Probe with a periodontal probe at the deepest pocket in the quadrant. If the patient feels pressure but not sharp pain, anesthesia is adequate for instrumentation. If they feel sharp pain, give more anesthetic - subgingival instrumentation on an inflamed pocket without adequate anesthesia is excruciating and destroys patient trust."
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Perio anesthesia problems",
+        "body": "**Patient feels pain during palatal instrumentation despite block:** palatal mucosa wasn't infiltrated. Add palatal infiltration immediately. **Anesthesia wears off mid-quadrant:** common with lidocaine on long cases. Supplement with another 1/2 carpule or switch to bupivacaine. **Patient anxious about needles:** topical first (HurriCaine 20% benzocaine for 1 min), then slow injection with distraction. Computer-controlled syringe (The Wand) is gentler if available. **Mandibular block fails:** consider intraseptal supplementation at the affected tooth (deposits anesthetic directly into bone)."
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "pedo",
+  "label": "Pedo",
+  "parts": [
+   {
+    "id": "pedo-p1",
+    "label": "Workflow fundamentals",
+    "tagline": "Foundational chapters.",
+    "chapters": [
+     {
+      "id": "pedo-ch1",
+      "num": 1,
+      "title": "Behavior management - tell-show-do, voice control, parental presence",
+      "verdict": "Behavior management is the single most important skill in pediatric dentistry. A cooperative child finishes treatment in one visit; an uncooperative child needs three visits or sedation. The toolkit is mostly verbal and visual: tell-show-do for every instrument, voice modulation for confidence, parental presence for young children (parent OUT for school-age).",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Children come to the dentist with predictable patterns of anxiety. Pre-school children (3-6) fear separation from parents more than the dental instruments themselves. School-age children (6-12) fear the unknown and fear judgment from peers. Adolescents have adult-level concerns about pain and aesthetics. Behavior management strategy must match developmental stage."
+       },
+       {
+        "kind": "section",
+        "text": "Frankl Behavior Rating Scale - assess and document"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Frankl 1 (definitely negative):** refuses treatment, cries forcefully, fearful, extreme negativism, withdrawn isolation.",
+         "**Frankl 2 (negative):** reluctance to accept treatment, uncooperative, some evidence of negative attitude (sullen, withdrawn).",
+         "**Frankl 3 (positive):** acceptance of treatment, cautious behavior at times, willingness to comply with reservation but follows directions cooperatively.",
+         "**Frankl 4 (definitely positive):** good rapport, interested in dental procedures, laughing, enjoying the situation."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Tell-Show-Do (foundational technique)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**TELL:** describe what you're about to do in age-appropriate language. Use euphemisms: 'sleepy juice' for anesthesia, 'tooth cleaner' for slow-speed handpiece, 'tooth-counter' for explorer.",
+         "**SHOW:** demonstrate the instrument on a non-threatening surface first. Show the mirror by reflecting their face; show the prophy cup by spinning it in your gloved finger.",
+         "**DO:** perform the action in the smallest unit possible. Start with the safest instrument (mirror, explorer) before noisier ones (handpiece). Praise after each successful step.",
+         "**REPEAT FOR EVERY NEW INSTRUMENT.**"
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Voice control"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Tone:** calm, confident, slightly louder than the child when getting attention.",
+         "**Pace:** slow speech when the child is anxious; normal speech when settled.",
+         "**Praise:** specific and immediate. 'You held really still - that helps me see better' beats 'Good job.'",
+         "**No false promises:** never say 'it won't hurt' or 'this is the last one.' When that promise breaks, you lose trust for the rest of the visit."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Parental presence - the rule of thumb"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Under age 6:** parent in the operatory, ideally sitting in the chair next to the child.",
+         "**Age 6-12:** parent option. School-age children often perform better with parent OUT. Discuss with parent and child.",
+         "**Age 13+:** parent in waiting room. Adolescents need autonomy.",
+         "**Always allow parents to stay if they insist.**",
+         "**Parents in the operatory have rules:** (1) don't interrupt the dentist mid-procedure, (2) reassure when prompted, (3) don't promise rewards mid-procedure, (4) silent presence is usually best."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Distraction techniques"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Visual:** ceiling-mounted TV showing cartoons, tablet videos.",
+         "**Auditory:** music (the child's choice), audiobooks.",
+         "**Imagery / storytelling:** 'Let's pretend we're on a spaceship - this is the rocket' (the suction).",
+         "**Counting / praise reinforcement:** 'I'm going to count to 5 and then we'll be done with this part.'"
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Escalation - when basic techniques aren't enough"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Reschedule.** Better to end on a positive note than push through and traumatize them.",
+         "**Nitrous oxide:** for mild-moderate anxiety. Effective in children who can keep a nasal mask on.",
+         "**Oral sedation (midazolam or hydroxyzine):** for moderate anxiety. Requires pediatric dentistry training.",
+         "**IV sedation or general anesthesia:** for severe anxiety, extensive treatment, or pre-cooperative children (under 3).",
+         "**Protective stabilization (papoose board):** last resort for emergency procedures. Requires written informed consent."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Behavior management problems",
+        "body": "**Child crying inconsolably:** stop, give the child a break, allow them to sit up. Praise any cooperation. Re-engage with a simple non-threatening task. **Child refuses to open mouth:** don't pry. Ask, model with your own mouth, count to 3, ask again. If still refusing, consider whether the procedure can be deferred or nitrous is indicated. **Child has a behavioral diagnosis (autism, ADHD, anxiety):** consult parent on what works at home. Some children with autism need consistent routine; others need extra processing time. Avoid bright lights. Schedule at the child's best time of day. **Parent argues with dentist in front of child:** the child takes their cue from the parent's distress. Step outside to have any difficult conversations. **Sibling is also being seen and influencing behavior:** schedule siblings separately."
+       }
+      ]
+     },
+     {
+      "id": "pedo-ch2",
+      "num": 2,
+      "title": "Local anesthesia in children - dose limits (lidocaine 4.4 mg/kg), needle phobia",
+      "verdict": "Pediatric local anesthesia has different rules than adult anesthesia. Weight-based dosing (lidocaine max 4.4 mg/kg of body weight), shorter-acting agents preferred (no Marcaine), and a topical-first injection sequence to minimize needle awareness. Most pediatric anesthesia failures come from rushing the injection or under-anesthetizing the soft tissues.",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Children metabolize local anesthetics faster than adults relative to body mass, but they have less total volume of distribution. The result: dose limits scale with weight, not age. A 20 kg child can safely receive lidocaine 88 mg (half a carpule); a 40 kg child can receive 176 mg (a full carpule). Exceed these and toxicity (seizures, cardiac arrest) becomes a real risk."
+       },
+       {
+        "kind": "section",
+        "text": "Dose limits by weight"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Lidocaine 2% with epi 1:100K:** max 4.4 mg/kg. Each carpule = 36 mg lidocaine. So max carpules = (weight in kg * 4.4) / 36. For a 20 kg child = 2.4 carpules; for a 30 kg child = 3.7 carpules.",
+         "**Articaine 4% with epi 1:100K:** max 7 mg/kg in children (slightly different threshold). Each carpule = 68 mg.",
+         "**Mepivacaine 3% (no epi):** max 4.4 mg/kg. Each carpule = 54 mg. Used for short procedures.",
+         "**Bupivacaine (Marcaine):** NOT recommended in children. Prolonged anesthesia (5-9 hours) means children bite their lips, tongue, or cheeks before sensation returns - causing lip-biting trauma.",
+         "**Round DOWN to be safe.** A 22 kg child should not receive more than 2 carpules of lidocaine, even though the calculation gives 2.7."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Pre-injection sequence"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Weigh the child** (scale by front door at UIC) before any anesthesia decision.",
+         "**Calculate max dose** in mg and convert to carpules. Write it on the chart.",
+         "**Apply topical (20% benzocaine, HurriCaine):** thin layer at the injection site for 1-2 minutes. Cover with cotton roll if the child resists having the gel on the gums.",
+         "**Position the child:** semi-supine, head turned slightly away from the operator. Some children prefer parent in operatory for the injection; others prefer parent in waiting room. Ask.",
+         "**Use a 27G short needle** for most pediatric injections. Smaller-diameter needle = less initial pain.",
+         "**Distract during injection:** talk to the child about something unrelated (their school, pet, favorite TV show). Some children prefer to look at a fixed point in the ceiling."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Injection technique"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Insert needle slowly** with gentle pressure on the cheek to distend the tissue. Slow insertion is the single most effective way to minimize pain.",
+         "**Deposit 1-2 drops** before advancing fully - anesthetizes the injection track.",
+         "**Advance to target depth** while continuing to deposit small drops.",
+         "**Aspirate** before main injection (children's blood vessels are closer to the surface; aspiration is critical to avoid intravascular injection).",
+         "**Deposit slowly** - 1 mL over 60 seconds. Fast injection is the #1 cause of pediatric anesthesia complaint.",
+         "**Withdraw needle quickly** at the end.",
+         "**Apply gentle pressure** at the site for 30 seconds with a cotton roll. Reduces hematoma risk."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Special considerations - mandibular block in children"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Mandibular foramen is HIGHER in children** than adults relative to the occlusal plane (because the mandible hasn't grown to full adult size). Inject at the level of the occlusal plane (NOT above it) for IA block in children 6-10.",
+         "**Children's IA blocks have higher failure rate** than adults - accessory innervation is more common. Supplement with buccal infiltration over the affected tooth.",
+         "**Articaine infiltration alternative:** for single-tooth restorative work in mandibular primary molars, articaine infiltration on the buccal alone is often sufficient (better bone penetration than lidocaine). Avoids the IA block discomfort entirely."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Managing lip-biting risk"
+       },
+       {
+        "kind": "paragraph",
+        "text": "Children, especially under age 6, often don't recognize numbness as numbness - they think their lip 'feels weird' and want to chew or pick at it. This causes lip-biting trauma in 5-10% of pediatric IA blocks. Counsel both child and parent before discharge: 'Your lip will feel puffy and weird for the next 2-3 hours. Don't bite or pick at it - that can hurt you. Eat soft foods, drink with a straw if possible, until the numbness goes away.'"
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Pediatric anesthesia problems",
+        "body": "**Child cries during injection:** stop, hold pressure on the site, reassure. Don't restart immediately - wait 30 seconds, ask the child if they're ready. Most children tolerate the injection better if they have a sense of agency. **Anesthesia incomplete after IA block:** common in children. Supplement with buccal infiltration over the affected tooth (articaine works well here). **Lip-biting after appointment:** apply petroleum jelly to the lip immediately to prevent further damage. Heals in 5-7 days. Counsel parent about supervision until numbness wears off. **Child reports 'tingling' or 'spider crawling' sensation:** likely transient paresthesia from needle trauma. Document, reassure, recall in 2 weeks for vitality check. **Vasovagal reaction (pale, sweaty, dizzy):** lay child flat, raise legs, monitor pulse. Resolves in 5-10 minutes. Common in adolescents who haven't eaten before the appointment."
        }
       ]
      }
