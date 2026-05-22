@@ -19925,8 +19925,9 @@ const PATHWAY_GROUPS = {
  { label: "Visit planning", ids: [
  "pedo-tx-sequencing",
  ]},
- { label: "Behavior", ids: [
+ { label: "Behavior & anesthesia", ids: [
  "pedo-behavior-management",
+ "pedo-local-anesthetic",
  ]},
  { label: "Restorative", ids: [
  "pedo-composite",
@@ -20226,6 +20227,7 @@ const WIZARDS = {
  question: "What's the issue?",
  options: [
  { label: "Uncooperative or anxious child (Frankl 1–2)", pathway: "pedo-behavior-management" },
+ { label: "Local anesthesia — dose, agent, technique for this patient", pathway: "pedo-local-anesthetic" },
  ],
  },
  restorative: {
@@ -22801,6 +22803,7 @@ const PATHWAYS = [
  "Anesthesia dose limit: lidocaine 4.4 mg/kg (max 7 mg/kg). For a 20 kg child that's roughly 90 mg = half a carpule. Use 1:100,000 epi for hemostasis; topical first to minimize needle awareness.",
  "Isolation: Isodry pediatric size, or cotton roll + saliva ejector + bite block. Pediatric mouth is smaller — full-arch Isodry doesn't fit until ~age 10.",
  "Increments smaller (1 mm instead of 2 mm) because primary pulp horns are higher / closer to the surface. Cure each increment per the composite manufacturer's recommended time (typically 20 sec).",
+ "Deep but vital lesion — consider partial (1-step) or stepwise (2-step) excavation over complete excavation. AAPD 2022 evidence: leaving caries-affected dentin over the pulp and sealing under a definitive restoration produces fewer pulp exposures than chasing every speck. If the lesion floor stays soft but the cavosurface is sound, a sealed restoration over partial excavation can spare the pulp and avoid a pulpotomy.",
  "UIC prep criteria: 1.0-1.5mm pulpal depth, smooth floor with rounded internal line angles, walls parallel to slightly convergent, marginal ridges + cusp tips preserved. Recommended burs: 329, 330, 55, 56, 169 (UIC Restorative + Composite Finishing kits). For Class II: isthmus width 1/4-1/3 intercuspal distance (~1mm), axial wall 1.0mm matching external contour, B/L extensions within the line angles of the tooth, no retention grooves.",
  "Carve and finish gently — primary teeth have thinner enamel that can fracture under aggressive finishing. Maintain \"sealed tooth\" anatomy on the restoration — inclines and ridges restored without recreating deep pits or grooves. Check occlusion in MI.",
  ],
@@ -22820,9 +22823,9 @@ const PATHWAYS = [
  id: "pedo-stainless-crown",
  domain: "pedo",
  label: "Stainless steel crown (SSC) on primary molar",
- description: "A primary molar with extensive caries — multi-surface (MOD), recurrent under a previous filling, pulpotomy completed, or otherwise too compromised for a direct restoration. SSC is the workhorse pediatric crown: preformed, full-coverage, cemented with glass ionomer, ~5-7 year service life (which matches the remaining lifespan of the primary molar). Hall technique (sealing in caries without prep) has become popular in young patients but UIC still uses conventional preparation. Sizing is the critical decision — too small won't seat, too large won't engage interproximal contacts.",
+ description: "A primary molar with extensive caries — multi-surface (MOD), recurrent under a previous filling, pulpotomy completed, or otherwise too compromised for a direct restoration. AAPD positions SSC as the restoration of choice for multi-surface caries in primary molars, particularly in high-caries-risk children and those requiring advanced behavior guidance — composite has higher replacement rates here. SSC is preformed, full-coverage, cemented with glass ionomer, ~5-7 year service life (matching the remaining lifespan of the primary molar). Hall technique (sealing in caries without prep or LA) is an evidence-supported alternative for very limited cooperation, but UIC teaches conventional preparation. Sizing is the critical decision — too small won't seat, too large won't engage interproximal contacts.",
  keyDecisions: [
- "Indication check: multi-surface caries, post-pulpotomy, broken cusp on a primary molar, child with high caries risk who needs durable restoration. Single-surface lesions = composite, not SSC.",
+ "Indication check: multi-surface caries, post-pulpotomy, broken cusp on a primary molar, child with high caries risk who needs durable restoration, or a child under 4 with multi-surface caries (where AAPD specifically favors SSC over composite to avoid retreatment). Single-surface lesions = composite, not SSC.",
  "Sizing: measure the mesial-distal width of the tooth with a Boley gauge or by comparison to the contralateral. Crown sizes 2-7 (mandibular 2/3/4/5/6/7, maxillary D/DLM/E/EUL/F). Try-in must seat to the gingival margin without rocking.",
  "Prep (UIC criteria): occlusal reduction 1.5-2.0mm with a diamond football, maintaining general occlusal anatomy (inclines / ridges). Interproximal slices converge 4-10° combined; reduce enough that an explorer passes freely (0.5mm clearance) without nicking the adjacent tooth. Knife-edge margins mesial and distal, just below the gingival margin, continuous and distinct. 30-40° reverse bevel to the occlusal third on buccal and lingual (straight diamond). All reduced surfaces diamond-smooth, line angles rounded.",
  "Festoon and crimp: trim the gingival margin of the crown with crown shears so it doesn't blanch tissue; crimp the cervical band inward with crown-crimping pliers to engage the gingival undercut.",
@@ -22847,10 +22850,11 @@ const PATHWAYS = [
  description: "A primary molar with caries reaching the pulp — patient reports cold-sensitivity progressing to spontaneous pain, but no signs of necrosis (no fistula, no radiographic radiolucency, no swelling). The treatment is to amputate the coronal pulp and seal the canal orifices with a fixative (formocresol, ferric sulfate) or a regenerative material (MTA, Biodentine), then immediately restore with an SSC. Primary molar canals are too narrow and curved for full RCT-style instrumentation; pulpotomy is the procedure adapted to their anatomy.",
  keyDecisions: [
  "Confirm pulp status: reversible OR partially irreversible pulpitis (sensitivity, NOT spontaneous pain at night or pulpal necrosis signs). If necrotic or with periapical changes — pulpotomy may fail; consider extraction with space maintainer.",
+ "Before committing — for a deep lesion that hasn't yet exposed the pulp, partial (1-step) or stepwise (2-step) excavation under a sealed restoration may keep the pulp vital without any pulpotomy at all. AAPD 2022 evidence favors this on teeth with normal pulp or reversible pulpitis. Pulpotomy is the answer when excavation reaches frank pulp.",
  "Behavior assessment: pulpotomy + SSC is a 45-60 min appointment in a small child. If cooperation is borderline, refer to pediatric specialist or sedation.",
- "Rubber dam isolation is required for pulp therapy (UIC standard, per Rawle isolation lecture). Even if you're not certain pulp therapy is needed at the start of the appointment, place the dam early so you're prepared. Floss every clamp and the bite block — aspiration risk.",
+ "Rubber dam isolation is required for pulp therapy (UIC standard, per Rawle isolation lecture, and AAPD positions rubber dam as the gold standard for pulp treatment). Even if you're not certain pulp therapy is needed at the start of the appointment, place the dam early so you're prepared. Floss every clamp and the bite block — aspiration risk.",
  "Caries removal until exposure, then amputate coronal pulp with a sharp #6 or #8 round bur at slow speed. Irrigate with saline; control bleeding with a moist cotton pellet.",
- "Medicament: ferric sulfate 15.5% applied to canal orifices for 15 sec, blot, then proceed. Or MTA / Biodentine over the orifices (more biologic, more expensive). UIC currently uses ferric sulfate as the standard.",
+ "Medicament — pick what your preceptor approves and chart what you used. Ferric sulfate 15.5% (15 sec to canal orifices, blot, proceed) is UIC's typical default and is well-supported. MTA and Biodentine are more biologic and report the highest success rates in AAPD's 2022 update, with the trade-off of cost and setting time. Formocresol is no longer first-line in most US programs.",
  "Restore with SSC same visit. A temporary filling over a pulpotomy leaks.",
  ],
  phases: [
@@ -22935,6 +22939,30 @@ const PATHWAYS = [
  ],
  },
  {
+ id: "pedo-local-anesthetic",
+ domain: "pedo",
+ label: "Local anesthesia in a pediatric patient (dose, agent, technique)",
+ description: "A pediatric restorative, pulp, or extraction case where you're calculating LA before you inject. Three things shift from adult dentistry: (a) max dose is calculated by body weight, not by appointment — overdose is real because kids weigh 15-40 kg and a single carpule can already be the limit; (b) agent selection narrows — articaine is not recommended under age 4, bupivacaine not under 12, prilocaine and benzocaine carry methemoglobinemia risk; (c) the mandibular cortical bone is less dense in children, so a buccal infiltration alone may achieve restorative anesthesia on a primary molar where an IAN block would have been needed in an adult. Documenting weight and the calculated max dose before drawing up the carpule is the standard, not an afterthought.",
+ keyDecisions: [
+ "Weigh the patient and calculate max dose before drawing up. AAPD lidocaine max: 4.4 mg/kg (manufacturer cap 7 mg/kg). One 1.7 mL carpule of 2% lidocaine = 34 mg. A 20 kg child → 88 mg max ≈ 2.5 carpules; a 10 kg toddler → 44 mg ≈ 1.3 carpules. Documenting weight + calculated mg-max in the chart before injecting is standard.",
+ "Agent by age: lidocaine 2% w/ epi is the default at any age. Articaine 4% — per manufacturer, not recommended under age 4. Bupivacaine — not under age 12 (long post-op numbness raises self-inflicted soft-tissue trauma risk). Benzocaine topical is contraindicated under age 2 and in anyone with methemoglobinemia history. Amide doses reduce 30% in infants under 6 months.",
+ "IAN block vs. buccal infiltration on a lower primary: children's mandibular cortical bone is less dense than adult, and systematic reviews show buccal infiltration is comparable to an IAN block for restorative work on primary molars (AAPD 2023). Articaine buccal-only is often sufficient — it diffuses through cortical bone better than lidocaine. For pulp therapy or extraction on a lower primary molar, the IAN block is still typical.",
+ "Bilateral mandibular blocks raise post-op lip/cheek biting risk — avoid unless both quadrants need treatment that visit. Phentolamine mesylate reverses soft-tissue numbness (≥ 6 years and ≥ 15 kg) in roughly half the time if biting is a real concern.",
+ "Technique: topical for ~60 sec, aspirate before injecting, deliver slowly (>30 sec per carpule). Slow injection reduces tissue distortion and post-injection pain. For a symptomatic patient where infiltrated anesthetic is failing, buffered lidocaine (sodium bicarbonate added chairside) is 2.3× more likely to achieve anesthesia and shortens onset.",
+ "Counsel the parent in plain language: numbness lasts 2-4 hours, longer in soft tissue than in tooth. Watch the child for lip / cheek / tongue biting during that window — soft diet, no hot drinks, no chewing on the numb side. A finger-touch demonstration of where the numbness is lets the parent show the child at home.",
+ ],
+ phases: [
+ { label: "Weight + max dose", count: 1 },
+ { label: "Agent + injection plan", count: 2 },
+ { label: "Topical + technique", count: 2 },
+ { label: "Post-op counsel", count: 1 },
+ ],
+ sections: [
+ { guideId: "pedo", chapterId: "pedo-ch2" },
+ { guideId: "pedo", chapterId: "pedo-ch1" },
+ ],
+ },
+ {
  id: "pedo-strip-crown",
  domain: "pedo",
  label: "Strip crown — anterior primary tooth (severe ECC)",
@@ -23015,7 +23043,9 @@ const PATHWAYS = [
  "Indication confirmation: necrotic primary with PARL (UIC extracts these — pulpectomy is not the routine), over-retained primary with permanent erupting palatally/lingually, unrestorable caries, trauma with hopeless prognosis, ortho serial extraction. Get the indication and rationale documented in the chart before the appointment.",
  "Anesthesia: AAPD maximum lidocaine dose 4.4 mg/kg. For typical pediatric weights — 1 carpule of 2% lidocaine is the limit (and the patient must weigh at least 18 lb / 8.2 kg). Maxillary: buccal infiltration + PDL is usually sufficient; primary maxillary bone is thin and permeable. Mandibular: IAN block + long buccal in older kids; in younger kids (under 5) IAN is unreliable due to mandibular foramen position — buccal + lingual infiltration + PDL often works better. Use the short blue 30G 20mm needle even for IAN, except in larger teens.",
  "If basic behavior management isn't enough for the chair time, escalate per the behavior management pathway. Sedation decisions (N₂O or beyond) are made with the faculty preceptor.",
- "Mechanics: use rubber dam clamp 14 for primary molars, 14A for young permanent molars. Periosteal elevator (Molt #9) to reflect gingiva — gently, primary gingiva is thin. Straight elevator perpendicular to tooth at the mesiobuccal line angle. Use pediatric forceps if available. Luxate with slow, sustained, heavy pressure — 5-second buccal push, 5-second lingual, reseat more apically. Anterior primaries get a rotational motion. Be ready for fast delivery once the PDL releases — the resorbed root may come out with very little resistance.",
+ "Mechanics on primary molars (AAPD): roots are smaller in diameter but more divergent than permanent — luxate with slow, continuous palatal/lingual and buccal force to expand the alveolar bone and reduce root-fracture risk. Avoid pressure into the furcation; the permanent successor sits directly under it and is dislodgeable. If a molar resists, section the crown rather than crank harder. Use rubber dam clamp 14 for primary molars, 14A for young permanent. Periosteal elevator (Molt #9) to reflect gingiva — gently, primary gingiva is thin. Anterior primaries get a rotational motion (single conical root). Be ready for fast delivery once the PDL releases — the resorbed root may come out with very little resistance.",
+ "For mandibular extractions: support the mandible with your non-dominant hand to protect the TMJ from injury — particularly when the child can't reliably hold the bite block tight.",
+ "Fractured root tip: weigh the risk of retrieval (instrumentation near the permanent follicle) against the risk of leaving it (infection, eruption interference). Small, deep, well-contained tips close to the permanent successor are often left to resorb. Accessible tips at the surface should be removed. Document the decision and chart for follow-up.",
  "Post-op: gauze pressure for 30-45 minutes (children won't hold it as long as adults — set a timer). Compress the socket walls. Suture only if the tissue is mobile or large; primary extraction sockets usually do not need sutures. Post-op instructions to the parent: soft diet for the day, no straws (clot dislodgement), no spitting forcefully, no rinsing today, Tylenol or Motrin for pain (weight-based dose). Warn the parent the child may bite their lip/tongue while still numb. Schedule recall if a space maintainer is indicated.",
  ],
  phases: [
