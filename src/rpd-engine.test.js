@@ -3761,6 +3761,50 @@ describe("UIC-AUDIT — Class IV indirect retainers use bounding canines (Design
   });
 });
 
+describe("Pattern 3 — Dual-role IR prefers most-anterior span-boundary over type-priority pick (Huddle 6 Case 2 / McCracken Fig 8-2 D)", () => {
+  // Huddle 6 Case 2 answer key (Maxillary Class II Mod 2):
+  // DE right (#1-3, terminal #4); mods: #10-11 (bounded by #9+#12), #14 (by #13+#15)
+  // IR: #9 ball rest (dual-role, NOT #12 first-premolar which is type-priority pick)
+  // Reason: #9 is more anterior to diagonal fulcrum than #12 → McCracken prefers geometry
+  function makeHuddle6Case2() {
+    const c = rpdMakeBlankCase("maxillary");
+    for (const n of [1, 16, 2, 3, 10, 11, 14]) c.teeth[n].status = "missing";
+    return c;
+  }
+
+  it("Huddle 6 Case 2: IR is #9 (ball rest, dual-role), not #12 (first premolar)", () => {
+    const r = rpdRunEngine(makeHuddle6Case2());
+    const irTeeth = r.indirectRetainers.map(i => i.tooth);
+    expect(irTeeth).toContain(9);
+    expect(irTeeth).not.toContain(12);
+  });
+
+  it("Huddle 6 Case 2: #9 IR entry has dual-role flag and distal ball rest", () => {
+    const r = rpdRunEngine(makeHuddle6Case2());
+    const ir9 = r.indirectRetainers.find(i => i.tooth === 9);
+    expect(ir9).toBeDefined();
+    expect(ir9.restType).toMatch(/ball/i);
+    expect(ir9.dualRole).toBe(true);
+  });
+
+  it("Huddle 6 Case 2: #9 is still in abutmentDesigns as Rest Only (dual-role = spans direct + indirect)", () => {
+    const r = rpdRunEngine(makeHuddle6Case2());
+    const ab9 = r.abutmentDesigns.find(a => a.tooth === 9);
+    expect(ab9).toBeDefined();
+    expect(ab9.claspType).toBe("Rest Only (no clasp)");
+  });
+
+  it("Huddle 6 Case 1: Mand Class II Mod 1 — #28 is dual-role IR (unchanged by Pattern 3 fix)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    c.teeth[32].status = "present"; // override default 3rd-molar-missing
+    for (const n of [17, 18, 19, 29, 30, 31]) c.teeth[n].status = "missing";
+    const r = rpdRunEngine(c);
+    const ir = r.indirectRetainers.find(i => i.tooth === 28);
+    expect(ir).toBeDefined();
+    expect(ir.dualRole).toBe(true);
+  });
+});
+
 describe("Pattern 2 — Mand canines bounding anterior TS mod span → rest-only indirect retainers (UIC Design Case II / Prelim Case 2)", () => {
   // Answer key (Fall 2022 / Summer 2023 Prelim Case 2):
   // Mandibular Class II Mod 2: DE #18-19 (terminal #20), anterior mod #23-26,

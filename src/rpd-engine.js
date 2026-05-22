@@ -1244,6 +1244,18 @@ function planClassIIIndirectRetainers(caseInput, kennedy) {
  candidates.filter(n => RPD_CANINES.has(n)),
  ];
 
+ // McCracken Fig 8-2 D: span boundaries on the opposite side are candidates
+ // for dual-role (direct + indirect). Build this set BEFORE pick selection
+ // so we can favour a more-anterior dual-role tooth over the type-priority
+ // pick when geometry strongly supports it.
+ const oppSpanBoundaries = new Set;
+ for (const span of (kennedy.spans || [])) {
+ for (const t of [span.beforeBound, span.afterBound]) {
+ if (!t) continue;
+ if (rpdSideOf(t) === oppositeSide) oppSpanBoundaries.add(t);
+ }
+ }
+
  // Step 5: within the highest non-empty priority class, pick the tooth
  // with the greatest anteriority. This is the geometric refinement —
  // when a priority class has multiple eligible teeth (rare in standard
@@ -1260,17 +1272,22 @@ function planClassIIIndirectRetainers(caseInput, kennedy) {
  }
  if (!pick) return [];
 
- // McCracken Fig 8-2 D: dual-role detection.
- // If the chosen tooth is also a direct retainer (span boundary on the
- // opposite side, typically the mesial-most boundary of a Class II Mod 1
- // modification span), mark as dual-role.
- const oppSpanBoundaries = new Set;
- for (const span of (kennedy.spans || [])) {
- for (const t of [span.beforeBound, span.afterBound]) {
- if (!t) continue;
- if (rpdSideOf(t) === oppositeSide) oppSpanBoundaries.add(t);
+ // McCracken Fig 8-2 D refinement (INV-18b): if a span-boundary (dual-role)
+ // candidate is MORE ANTERIOR to the fulcrum line than the type-priority
+ // pick, prefer the dual-role candidate. The "mesial-most modification-span
+ // abutment" should serve as the IR when it's geometrically further anterior
+ // — even if its tooth type has a lower conventional priority.
+ // Confirmed: Huddle 6 Case 2 — #9 (central, dual-role) is more anterior
+ // than #12 (1st premolar, type-priority pick) → instructor chose #9.
+ const dualRoleCandidates = candidates.filter(n => oppSpanBoundaries.has(n));
+ if (dualRoleCandidates.length > 0) {
+ const bestDualRole = dualRoleCandidates.reduce((a, b) =>
+ anteriority(b) > anteriority(a) ? b: a);
+ if (anteriority(bestDualRole) > anteriority(pick)) {
+ pick = bestDualRole;
  }
  }
+
  const isDualRole = oppSpanBoundaries.has(pick);
 
  // Build legacy-shape entry
