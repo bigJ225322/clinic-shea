@@ -745,3 +745,37 @@ Week 9.2 lecture explicitly states (and pedo-space-maintainer correctly implies)
 
 Current pathway covers the incisor-no-maintainer case but doesn't explicitly call out the "primary canine loss indicates tooth/arch discrepancy → ortho referral" relationship. Minor.
 
+### Borderline find: Isodry pediatric sizing table by age
+
+From `Extra Peds Texts.docx` (direct from peds instructor — Maggie/PEDDS):
+
+| Patient Age | Suggested Isodry Size |
+|-------------|----------------------|
+| 3-5 years | Pediatric / Extra Small |
+| 6-9 years | Small |
+| 10-13 years | Small or Medium |
+| 14+ years | Medium |
+| Large teens / Adults with broad arches | Large |
+
+Also from this source:
+- **Primary tooth extraction forceps**: check out from PEDDS dental assistants (Maggie / Ms. Patricia) — NOT central sterilization
+- "Age is a guide; final selection should be based on patient comfort and mouth size"
+
+The current pedo Cases pathways hardcode "Isodry (size M)" in note templates and mention "Isodry pediatric size" in keyDecisions, but don't have this specific age→size table.
+
+**Suggested expansion**: add a key decision in `pedo-poe-recall` and/or `pedo-composite` with the age table. Forceps checkout location worth a clinic-logistics callout in `pedo-extraction`.
+
+→ Save for Jake's review. Useful clinic-time reference; defer the call on adding it.
+
+### Other useful clinical details from Extra Peds Texts.docx
+
+**Pediatric anesthesia branches** (mostly already in the engine, but adds nuance):
+- Lower arch older children: IAN block + lingual/buccal infiltrations
+- Younger children: buccal + lingual infiltrations only (no IAN)
+- Upper arch: cross-innervation in the 2nd primary + 1st permanent molar region — consider infiltrations covering both superior branches
+- "Do not wave the needle in front of the patient" (rapport tip)
+- "Always consult attending first before LA"
+- "Weigh child + calculate maximum LA dose before procedure"
+
+These echo `pedo-local-anesthetic` content; no expansion needed.
+
