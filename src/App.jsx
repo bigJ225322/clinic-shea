@@ -5087,23 +5087,29 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
  const [cardLeft, setCardLeft] = useState(0);
  const [primaryMode, setPrimaryMode] = useState(defaultPrimary);
  const [panelTop, setPanelTop] = useState(0);
+ const [panelLeft, setPanelLeft] = useState(0);
  const panelRef = useRef(null);
  const inputRef = useRef(null);
  const gridRef = useRef(null);
  const surfCardRef = useRef(null);
  const btnRefs = useRef({}); // keyed by tooth id (number or letter)
 
- // Position the panel just below the input. Panel is `position: fixed` so it
- // stays viewport-centered regardless of where the input sits on the page —
- // this gives a much better "centered" feel than left:0 anchoring, especially
- // when the input is in a narrow column on the left side of the page.
+ // Position the panel centered ON THE INPUT FIELD, with viewport-edge
+ // clamping so it never goes partially off-screen. `position: fixed` so
+ // it pins to the viewport instead of inheriting an animated ancestor.
  useLayoutEffect(() => {
  if (!open) return;
  const update = () => {
- if (inputRef.current) {
+ if (!inputRef.current) return;
  const r = inputRef.current.getBoundingClientRect();
+ const vpW = window.innerWidth;
+ const panelW = Math.min(520, vpW - 32);
+ const inputCenter = r.left + r.width / 2;
+ const idealLeft = inputCenter - panelW / 2;
+ // Clamp: stay at least 16px from each viewport edge.
+ const clampedLeft = Math.max(16, Math.min(idealLeft, vpW - panelW - 16));
  setPanelTop(r.bottom + 2);
- }
+ setPanelLeft(clampedLeft);
  };
  update();
  window.addEventListener("scroll", update, true);
@@ -5321,7 +5327,7 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
  <div style={{
  position: "fixed",
  top: panelTop,
- left: "50vw", transform: "translateX(-50%)",
+ left: panelLeft,
  width: "min(100vw - 32px, 520px)",
  background: "var(--paper)", border: "1px solid var(--rule)",
  borderRadius: "4px", padding: "10px 12px 12px",
@@ -6761,18 +6767,25 @@ function OdontogramField({ value, onChange, placeholder, bullet = "-", seedOnFoc
 function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG, showW }) {
  const [open, setOpen] = useState(false);
  const [panelTop, setPanelTop] = useState(0);
+ const [panelLeft, setPanelLeft] = useState(0);
  const panelRef = useRef(null);
  const inputRef = useRef(null);
 
- // Position the dropdown just below the input. Using `position: fixed` lets
- // the panel be viewport-centered regardless of where the input sits.
+ // Position the panel centered ON THE INPUT FIELD, with viewport-edge
+ // clamping so it never goes partially off-screen.
  useLayoutEffect(() => {
  if (!open) return;
  const update = () => {
- if (inputRef.current) {
+ if (!inputRef.current) return;
  const r = inputRef.current.getBoundingClientRect();
+ const vpW = window.innerWidth;
+ const panelW = Math.min(520, vpW - 32);
+ const inputCenter = r.left + r.width / 2;
+ const idealLeft = inputCenter - panelW / 2;
+ // Clamp: stay at least 16px from each viewport edge.
+ const clampedLeft = Math.max(16, Math.min(idealLeft, vpW - panelW - 16));
  setPanelTop(r.bottom + 2);
- }
+ setPanelLeft(clampedLeft);
  };
  update();
  window.addEventListener("scroll", update, true);
@@ -6861,7 +6874,7 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG, showW 
  <div style={{
  position: "fixed",
  top: panelTop,
- left: "50vw", transform: "translateX(-50%)",
+ left: panelLeft,
  width: isSplit? "auto": "min(100vw - 32px, 520px)",
  maxWidth: "calc(100vw - 32px)",
  background: "var(--paper)", border: "1px solid var(--rule)",
