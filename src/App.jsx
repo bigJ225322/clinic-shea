@@ -19922,6 +19922,9 @@ const PATHWAY_GROUPS = {
  { label: "Exam & recall", ids: [
  "pedo-poe-recall",
  ]},
+ { label: "Visit planning", ids: [
+ "pedo-tx-sequencing",
+ ]},
  { label: "Behavior", ids: [
  "pedo-behavior-management",
  ]},
@@ -22798,7 +22801,8 @@ const PATHWAYS = [
  "Anesthesia dose limit: lidocaine 4.4 mg/kg (max 7 mg/kg). For a 20 kg child that's roughly 90 mg = half a carpule. Use 1:100,000 epi for hemostasis; topical first to minimize needle awareness.",
  "Isolation: Isodry pediatric size, or cotton roll + saliva ejector + bite block. Pediatric mouth is smaller — full-arch Isodry doesn't fit until ~age 10.",
  "Increments smaller (1 mm instead of 2 mm) because primary pulp horns are higher / closer to the surface. Cure each increment per the composite manufacturer's recommended time (typically 20 sec).",
- "Carve and finish gently — primary teeth have thinner enamel that can fracture under aggressive finishing. Check occlusion in MI; primary occlusion is more forgiving than adult.",
+ "UIC prep criteria: 1.0-1.5mm pulpal depth, smooth floor with rounded internal line angles, walls parallel to slightly convergent, marginal ridges + cusp tips preserved. Recommended burs: 329, 330, 55, 56, 169 (UIC Restorative + Composite Finishing kits). For Class II: isthmus width 1/4-1/3 intercuspal distance (~1mm), axial wall 1.0mm matching external contour, B/L extensions within the line angles of the tooth, no retention grooves.",
+ "Carve and finish gently — primary teeth have thinner enamel that can fracture under aggressive finishing. Maintain \"sealed tooth\" anatomy on the restoration — inclines and ridges restored without recreating deep pits or grooves. Check occlusion in MI.",
  ],
  phases: [
  { label: "Behavior & anesthesia", count: 2 },
@@ -22820,7 +22824,7 @@ const PATHWAYS = [
  keyDecisions: [
  "Indication check: multi-surface caries, post-pulpotomy, broken cusp on a primary molar, child with high caries risk who needs durable restoration. Single-surface lesions = composite, not SSC.",
  "Sizing: measure the mesial-distal width of the tooth with a Boley gauge or by comparison to the contralateral. Crown sizes 2-7 (mandibular 2/3/4/5/6/7, maxillary D/DLM/E/EUL/F). Try-in must seat to the gingival margin without rocking.",
- "Prep: occlusal reduction 1.5 mm, axial reduction with featheredge margin (no chamfer — the SSC's margin will be crimped into the gingival sulcus). Interproximal slice with a thin diamond — break contact without nicking the adjacent tooth.",
+ "Prep (UIC criteria): occlusal reduction 1.5-2.0mm with a diamond football, maintaining general occlusal anatomy (inclines / ridges). Interproximal slices converge 4-10° combined; reduce enough that an explorer passes freely (0.5mm clearance) without nicking the adjacent tooth. Knife-edge margins mesial and distal, just below the gingival margin, continuous and distinct. 30-40° reverse bevel to the occlusal third on buccal and lingual (straight diamond). All reduced surfaces diamond-smooth, line angles rounded.",
  "Festoon and crimp: trim the gingival margin of the crown with crown shears so it doesn't blanch tissue; crimp the cervical band inward with crown-crimping pliers to engage the gingival undercut.",
  "Cement: glass ionomer (Fuji I, Ketac Cem). Apply to the intaglio, seat with finger pressure or have the child bite, gel-stage cleanup with explorer + floss at 3-4 min, then full set in 6-8 min. Check occlusion gently; primary molars don't need precise occlusal contacts.",
  ],
@@ -22844,6 +22848,7 @@ const PATHWAYS = [
  keyDecisions: [
  "Confirm pulp status: reversible OR partially irreversible pulpitis (sensitivity, NOT spontaneous pain at night or pulpal necrosis signs). If necrotic or with periapical changes — pulpotomy may fail; consider extraction with space maintainer.",
  "Behavior assessment: pulpotomy + SSC is a 45-60 min appointment in a small child. If cooperation is borderline, refer to pediatric specialist or sedation.",
+ "Rubber dam isolation is required for pulp therapy (UIC standard, per Rawle isolation lecture). Even if you're not certain pulp therapy is needed at the start of the appointment, place the dam early so you're prepared. Floss every clamp and the bite block — aspiration risk.",
  "Caries removal until exposure, then amputate coronal pulp with a sharp #6 or #8 round bur at slow speed. Irrigate with saline; control bleeding with a moist cotton pellet.",
  "Medicament: ferric sulfate 15.5% applied to canal orifices for 15 sec, blot, then proceed. Or MTA / Biodentine over the orifices (more biologic, more expensive). UIC currently uses ferric sulfate as the standard.",
  "Restore with SSC same visit. A temporary filling over a pulpotomy leaks.",
@@ -22869,8 +22874,8 @@ const PATHWAYS = [
  keyDecisions: [
  "Indication: deep pits and fissures with no cavitation, in a child at moderate-to-high caries risk. Cavitated lesion = PRR (Preventive Resin Restoration), not sealant.",
  "Pediatric-size Isodry for 8+, cotton rolls + saliva ejector + bite block for younger. Saliva contamination of the etched enamel is the common failure mode.",
- "Etch with 37% phosphoric acid for 30 sec on enamel only. Rinse 15 sec, dry thoroughly — frosted matte appearance confirms adequate etch.",
- "Apply unfilled sealant with a brush tip into pits and fissures. Avoid bubbles. Cure 20 sec.",
+ "Etch with 35% phosphoric acid (UIC criteria) on enamel only. Rinse, dry thoroughly — frosted matte appearance confirms adequate etch.",
+ "Apply resin bonding agent first — thin with air, light cure — then the sealant on top. Manipulate sealant into grooves with the applicator tip, microbrush, or explorer. Avoid bubbles. Cure.",
  "Check seal with explorer — any tag-back or sticky feel = redo. Recall in 6 months for re-evaluation; sealants need monitoring and repair as they wear.",
  ],
  phases: [
@@ -22937,7 +22942,7 @@ const PATHWAYS = [
  keyDecisions: [
  "Indication check: extensive multi-surface caries on a primary incisor where a direct composite would not retain. Single-surface lesions get a Class III or IV composite. Pulp-involved teeth need pulpotomy + strip crown, not strip crown alone. If multiple anterior teeth are affected, plan all of them in one visit if cooperation allows.",
  "Anesthesia and isolation: 1 carpule of 2% lidocaine with 1:100K epi, short blue needle, buccal infiltration. Isolation is the make-or-break — Isodry on anteriors sometimes interferes; rubber dam with tie-floss on the clamp is more reliable. If rubber dam: punch two holes ½ inch apart and cut between them for a slot — fast placement and removal.",
- "Preparation: knife-edge finish line slightly subgingival on all surfaces. Interproximal reduction 1 mm, facial 1 mm, lingual 0.5 mm clearance, incisal reduction 1.5 mm with rounded corners. No shoulder, no ledge — the celluloid form needs to slide on. If the form doesn't fit, the tooth isn't reduced enough.",
+ "Preparation (UIC criteria): knife-edge finish line at the level of the gingiva, continuous on all surfaces. Interproximal reduction 1.0mm following tooth contour (tapered diamond / 55 / 56 / 169). Facial 1.0mm tapering toward the incisal (same burs). Lingual 0.5mm clearance from opposing dentition (diamond football). Incisal 1.5mm with rounded corners. Final gingival adjustment with flame or narrow diamond. Crown forms are fragile — if you push, they break. The form should seat passively; if it doesn't, add more reduction apical to the deepest seating point.",
  "Bonding sequence: etch enamel first, then dentin (15 sec), rinse, dry leaving dentin glossy and moist. Apply Scotchbond Universal with vigorous 20-sec scrub, thin with air for 5 sec, cure 10 sec. If saliva contamination happens — re-etch for only 5 sec and proceed. Pre-load all materials before starting; the bond window in a young child is short.",
  "Load the celluloid form with composite (Renamel nanofill or equivalent in pediatric A2-A3 shade), seat onto the prepared tooth, express excess from a vent hole, cure 40 sec from facial then 40 sec from lingual. Peel the form off with a #12 scalpel or simply tear it. Finish with fine diamond, polish with Shofu/Jiffy. Restoration should not be in occlusion, protrusion, or lateral excursion.",
  ],
@@ -23048,6 +23053,29 @@ const PATHWAYS = [
  { guideId: "pedo", chapterId: "pedo-ch1" },
  { guideId: "pedo", chapterId: "pedo-ch19" },
  { guideId: "pedo", chapterId: "pedo-ch14" },
+ ],
+ },
+ {
+ id: "pedo-tx-sequencing",
+ domain: "pedo",
+ label: "Treatment planning + visit sequencing (sextant approach)",
+ description: "A pediatric patient needs multiple restorations across the mouth, and you're deciding the order of visits. Adult dentistry sequences by appointment efficiency; peds sequences differently because children have less chair-time tolerance, lower anesthetic dose limits (lidocaine 4.4 mg/kg), and most procedures fit in one visit. UIC divides the mouth into 6 sextants and aims to finish every procedure in a sextant — composite, SSC, sealant, extraction — at one visit, anesthetizing the sextant once. The decisions: which sextant first (driven by symptoms and caries size), and whether a space maintainer can ride along with another visit or needs its own.",
+ keyDecisions: [
+ "Sextant approach: divide the mouth into 6 (right-max-posterior, max-anterior, left-max-posterior, left-mand-posterior, mand-anterior, right-mand-posterior). Each can be anesthetized together. Aim for one sextant per visit. Complete every procedure in that sextant — composite, SSC, sealant — before dismissing, even if the procedures are different.",
+ "Symptomatic patient: sextants with extractions go FIRST. Don't leave the patient in pain. Complete the rest of the work in that sextant while you're there. If a space maintainer is indicated, take impressions for the band during the extraction visit so it can be delivered at a later sextant visit without an extra appointment.",
+ "Asymptomatic patient: sextants with extractions go LAST. Extractions are unpleasant and tend to end visits on a sour note; doing them last preserves cooperation across the earlier visits. Note that this usually means the space maintainer requires its own dedicated visit after restorative is complete.",
+ "After extraction placement is decided, prioritize remaining sextants by caries size — largest lesions first. Caries moves quickly in primary teeth, so the most-progressed sextant is the one that can't wait. Smaller-lesion sextants get treated last in the sequence.",
+ "Space maintainer is the only peds procedure that can't be completed in a single visit (band impression → lab fabrication → delivery). Plan the impression visit and the delivery visit explicitly. If the extraction was done first (symptomatic case) or the patient is well-behaved, the delivery can ride along with another sextant's visit instead of needing its own.",
+ ],
+ phases: [
+ { label: "Sextant mapping & visit count", count: 2 },
+ { label: "Extraction-first vs. extraction-last by symptoms", count: 2 },
+ { label: "Caries-size priority", count: 1 },
+ { label: "Space maintainer placement", count: 1 },
+ ],
+ sections: [
+ { guideId: "pedo", chapterId: "pedo-ch1" },
+ { guideId: "pedo", chapterId: "pedo-ch19" },
  ],
  },
  // ── Periodontics ────────────────────────────────────────────────────────
