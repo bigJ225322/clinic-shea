@@ -20462,6 +20462,8 @@ const PATHWAYS = [
  "Cervical retraction clamp (212 or a butterfly clamp) plus Isodry — cotton rolls cannot keep the gingival margin dry.",
  "Selective enamel etch on the coronal margin only. Self-etch the dentinal portion to avoid post-op sensitivity from over-etched dentin.",
  "First layer: flowable composite (0.5 mm) at the gingival floor for cavity adaptation. Follow with packable composite for bulk.",
+ "If the gingival margin sits in cementum or dentin (no enamel), bevel all enamel margins AND cut a retentive groove gingivally + two retentive coves at the incisal point angles. Mechanical retention compensates for the unreliable bond at the cementum margin. Without grooves, the cervical edge is the first thing to fail.",
+ "Sandwich technique (when the gingival floor is dentin and the coronal margin is enamel): place RMGI as the bottom layer first — condition with polyacrylic acid 15 sec, light air dry without water, cure 10 sec, then place Ketac Nano RMGI as the dentin-floor base and cure 20 sec. Then etch the enamel and the RMGI surface, bond, and place composite over the top. RMGI's chemical bond to dentin + composite's polishability and color in the visible zone.",
  "Match cervical shade — usually one shade darker (higher chroma) than the body of the tooth.",
  "Polish flush with the root surface. A high or rough margin invites plaque retention and re-caries within 1–2 years.",
  ],
