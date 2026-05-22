@@ -20402,9 +20402,10 @@ const PATHWAYS = [
  description: "Interproximal caries on an anterior tooth — usually mesial of a maxillary central or distal of a lateral, accessed through a lingual window when possible to preserve the facial enamel and its shade-matching role. The case turns on shade selection done before isolation, a Mylar strip held with finger pressure or a small wedge to shape the proximal, and careful layering of opaque dentin shade beneath translucent enamel shade for natural depth.",
  keyDecisions: [
  "Take shade first, before Isodry isolation — anterior teeth desiccate quickly and shift toward higher value (whiter) within minutes of isolation.",
- "Lingual access preserves facial enamel and the shade match. Use a facial approach only if the lingual approach can't reach the lesion.",
+ "Lingual access preserves facial enamel and the shade match. Use a facial approach only if the lingual approach can't reach the lesion. Bevel the cavosurface margins 0.25-0.5 mm at 45° — the bevel exposes enamel rods end-on for a longer etch surface and disguises the restoration-tooth interface.",
+ "Two adjacent Class III lesions (common — distal of #8 + mesial of #9): prepare the LARGER lesion first, then prepare the smaller — but RESTORE the smaller first, then the larger last. Restoring the larger first locks in a contact that constrains how you can shape the smaller; doing the smaller first gives you a clean adjacent surface to build the larger contact against.",
  "Layer dentin shade first (cervical and body), then translucent enamel shade over it. A monochromatic restoration looks flat against natural enamel translucency.",
- "Mylar strip + wedge shapes the proximal. Pre-curve the strip over a mirror handle to give it natural anatomy before placement.",
+ "Mylar strip + wedge shapes the proximal. Pre-curve the strip over a mirror handle to give it natural anatomy before placement. When placing liner/base, avoid the facial wall to preserve esthetics — opaque liner showing through facial enamel ruins the result.",
  "Polish in the proximal area with a fine-grit Soflex disc on a slow handpiece. Rough proximal surface = stain, plaque, recurrent caries.",
  ],
  phases: [
