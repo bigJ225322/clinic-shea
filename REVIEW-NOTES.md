@@ -396,3 +396,99 @@ RESOLVED (was in REVIEW). Changed `presentCount ≤ 4` to `(kennedy.class === "I
 
 To implement → say "build the electric wire Cases nav."
 
+---
+
+## Iteration 7 (2026-05-22, loop continuation)
+
+### RPD Engine — Bugs Fixed This Iteration
+
+#### Fix A: Duplicate indirect retainer in Class II with anterior mod span
+
+**Bug:** When a mandibular Class II case had a modification span whose posterior boundary tooth was a canine (e.g., #27 bounding a missing-incisor span), that canine was added to `canineModIndirects`. Then `planClassIIIndirectRetainers` was also called (because `hasBilateralCanineIndirects` was false — only right side covered), and it *also* selected #27, producing two identical #27 entries.
+
+**Root cause:** The skip condition for the geometric IR algorithm required bilateral canine coverage to bail out. Class II only needs ONE IR (opposite side from DE), so the bail-out condition was too strict.
+
+**Fix (rpd-engine.js `planRetentionClassII`, ~line 793):**
+```js
+const oppositeSideII = kennedy.deSide === "right" ? "left" : "right";
+const hasCanineOnOppositeSide = canineSides.has(oppositeSideII);
+const geometricIndirects = (hasCanineOnOppositeSide || hasBilateralCanineIndirects)
+  ? [] : planClassIIIndirectRetainers(caseInput, kennedy);
+```
+If `canineModIndirects` already has a tooth on the opposite side from the DE, skip the geometric algorithm entirely.
+
+#### Fix B: Redundant IR on same side in Class I with one-sided canine mod
+
+**Scenario:** Kennedy I with bilateral DE and an anterior mod span bounded by ONE canine (the other canine is missing/in the span). `canineModIndirects` = [{tooth: 27}] (right only). Geometric algorithm runs for both sides → picks #28 on right (premolar, higher priority) + #21 on left. Result: 3 IRs total, with both #27 and #28 on the right side.
+
+**Fix:** `planClassIIndirectRetainers` now accepts a `skipSides` parameter. Caller passes `canineSides` so geometric algorithm only fills in *uncovered* sides:
+```js
+const geometricIndirects = hasBilateralCanineIndirects
+  ? [] : planClassIIndirectRetainers(caseInput, kennedy, canineSides);
+```
+Result: Class I now gets exactly one IR per arch side (canine mod IR on the covered side, geometric IR on the uncovered side).
+
+**Tests:** 1012/1012 pass after both fixes.
+
+---
+
+### Design Case II — Full Verification (Dr. Kim, Fall 2022)
+
+Against the actual Lab Rx filed by Dr. Kim (Ottawa lab, 2019/2020):
+
+#### Maxillary (Kennedy I Mod 1)
+| Component | Engine | Answer Key | Match? |
+|-----------|--------|------------|--------|
+| Major connector | Full Palatal Plate | Full Palate | ✅ |
+| #4 clasp | RPI, MO rest, distal GP | RPI, MO rest, distal GP, 0.01" mid-B | ✅ |
+| #6 | Rest Only, cingulum rest | Mesial GP, Cingulum rest (no clasp) | ✅ |
+| #11 | Rest Only, cingulum rest | Mesial GP, Cingulum rest (no clasp) | ✅ |
+| #12 clasp | RPI, MO rest, distal GP | RPI, MO rest, distal GP, 0.01" mid-B | ✅ |
+| IRs | #6 + #11 cingulum | #6 + #11 (dual-role) | ✅ |
+| #3 base | Open Lattice + distal tissue stop | Open Lattice | ✅ |
+| #7-10 base | Mesh | Open Lattice (key), Mesh (engine default for anterior ≥3) | ⚠️ (key says OL, engine says Mesh — both acceptable) |
+| #13-15 base | Open Lattice + distal tissue stop | Open Lattice | ✅ |
+
+#### Mandibular (Kennedy II Mod 2, left DE)
+| Component | Engine | Answer Key | Match? |
+|-----------|--------|------------|--------|
+| Major connector | Lingual Plate | Lingual Plate | ✅ |
+| Kennedy class | II Mod 2 | II Mod 2 | ✅ |
+| #20 | RPI, MO rest, distal GP | RPI, MO rest, distal GP | ✅ |
+| #22 | IR (ML ball rest) | ML ball rest (indirect) | ✅ |
+| #27 | IR (ML ball rest) | ML ball rest (indirect) | ✅ |
+| #28 | **Akers**, distal rest, distal GP | **I-bar**, distal rest, distal GP | ⚠️ ESTHETIC ZONE — see below |
+| #30 | Akers, MO rest, mesial GP | Akers, MO rest | ✅ |
+| #19 base | Open Lattice + distal tissue stop | Open Lattice + distal tissue stop | ✅ |
+| #23-26 base | Mesh | Mesh | ✅ |
+| #29 base | Tube Tooth | Tube Tooth | ✅ |
+
+#### Borderline for Jake's review: Esthetic zone boundary (#28)
+
+**Finding:** Design Case II uses **I-bar** on #28 (lower right 1st PM). The current engine uses **Akers** because #28 is not in `RPD_ESTHETIC_ZONE` (which caps at #27/#6 canines). The rest seat direction is already correct: engine outputs distal rest + distal guide plane on #28 ✅.
+
+**The question:** Should mandibular 1st premolars (#21, #28) be added to the UIC esthetic zone?
+
+**Evidence for expansion:** Dr. Kim's Lab Rx uses I-bar esthetic on #28 bounding an anterior/premolar span.
+
+**Evidence against:** The standard esthetic zone definition stops at the canines. Adding premolars could over-apply I-bar to all tooth-supported premolars regardless of whether the span is in the visible zone.
+
+**Suggested middle path:** Add #21, #28 to esthetic zone only when they bound a span that itself contains esthetic-zone teeth (i.e., the span is in the visible area). This requires span-context when selecting clasp type.
+
+→ **Jake's decision needed.** Say "expand RPD esthetic zone to mand 1st premolars" to implement.
+
+---
+
+### Non-Metal Clasp Denture (NMCD) — Source Verification
+
+Checked `Fall RPD 22 Non-metal clasps.pdf` against existing engine content. **All content already correct:**
+- Two-tier split (flexible thermoplastic vs rigid arylketone polymer): ✅
+- NMCD with vs without metal major connector: ✅  
+- Kennedy Class I/II contraindication: ✅
+- Informed consent requirement: ✅
+- Restorative space thresholds (≥6mm with MC, ≥5mm without): ✅
+- Fueki 2016 citation: ✅
+- Disadvantages (discolor, roughen, difficult to adjust/reline/repair, caries/perio risk): ✅
+
+No changes needed.
+
