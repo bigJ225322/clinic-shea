@@ -252,3 +252,27 @@ Read **all 16** peds PowerPoints from `/All of Peds Semester Content` across thi
 Engine state: vitest 998/998, build clean, no warnings beyond the pre-existing chunk-size note.
 
 ---
+
+## Iteration 5 — 30-min continuous peds follow-up
+
+### Shipped
+- ✅ **NEW pedo-primary-anterior-class3** (`caaa68c`) — distinct from adult dir-class3: gingival-2/3 prep limit, definitive cervical seat, MECHANICAL RETENTION LOCKS (labial dovetail across 2/3 of labial, 1mm deep; canines also get lingual). Source: Alsaleh's Class III Prep for primary anterior teeth docx. Wired into PATHWAY_GROUPS.pedo.Restorative + WIZARDS as "small Class III, mesial/distal angle intact" route.
+- ✅ **pedo-strip-crown refinements** (`caaa68c`) — clamp-free rubber dam shortcut (overlapping punches + canine clamp), vent hole on incisal/lingual not facial, polishing PRIMARILY at gingival margins (food trap zone). Source: Week 7 Anterior Composites & Strip Crowns lab.
+- ✅ **pedo-poe-recall ortho/occlusal eval** (next commit) — added Avenetti Week 8 six-axis eval (AP molar+canine class + OJ + ant crossbites; vertical OB + occlusal harmony; transverse midline + posterior crossbites; arch shape ovoid/tapered/square; arch perimeter space available vs needed + space loss; dental development vs chronological age). This is what drives referrals + space-maintainer decisions.
+
+### Sources verified this iteration
+- **Pulpotomy materials.docx** (Alsaleh) — explicitly confirms "MTA is now considered the material of choice for pulpotomy, it is what we use here at UIC cOD." Prior MTA-as-gold-standard fix in `5dc179e` was correct ✓
+- **T-band matrix system** (Week 3/5/7 Lab T band.docx) — alternative to sectional matrix for primary Class II, fold extension wings on buccal, fits below gingival margin + 1mm higher than marginal ridge. **Borderline addition** for pedo-composite — current pathway uses Garrison sectional; T-band is a real alternative when sectional doesn't fit. Flagging.
+- **Reminders before clinic.docx** (Alsaleh policy) — operational reminders (D1260 not D1260NC for fluoride; parents not in operatory for treatment visits; 4-tab EHR completion; schedule before discharge). Mostly Steps-tab territory if anywhere.
+- **Pediatric Lab Intro.pptx** — semester structure + signoffs. No clinical content gaps.
+- **Early Space Loss and Management.pdf** + **Pediatric Occlusion (Avenetti).pdf** — first 15 pages each. The occlusion content fed the pedo-poe-recall ortho-eval addition above; remaining pages (Leeway/Primate space, treatment approaches, appliance therapy) not yet processed but probably enrich `pedo-space-maintainer` and `pedo-poe-recall` if there's another iteration.
+
+### Final iteration's deferred edits (borderline)
+- **pedo-composite T-band matrix alternative** — small note that for primary Class II where the sectional matrix doesn't seat (small primary anatomy, divergent roots), T-band is the UIC alternative (self-forming, fold buccal wings, fits below gingival margin + above marginal ridge). One sentence addition.
+- **Pediatric Occlusion lecture pages 16-44** — Leeway space, Primate space, treatment approaches, ortho appliance therapy not yet read. Could justify an enhanced pedo-space-maintainer keyDecision on the WHY (space loss complications) and a NEW pedo-orthodontic-referral pathway. Borderline based on what's already covered.
+
+### Cumulative ship count (4-loop total)
+
+**8 ship commits + 3 notes commits** since the 3-hour loop started. Tests still 998/998, build still clean.
+
+---
