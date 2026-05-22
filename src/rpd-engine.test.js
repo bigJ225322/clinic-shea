@@ -568,6 +568,31 @@ describe("Edge 4 — Mandibular Class I + severe ridge + mandibular tori", () =>
   });
 });
 
+// -------- Edge 4b — Mandibular Class I + severe ridge (NO tori) --------
+// Per McCracken 12e Ch 5 indication #2 + CDEworld: severe vertical
+// resorption in a Class I arch favors Lingual Plate over Lingual Bar,
+// because the resorbed ridge no longer resists horizontal denture
+// rotation through the bases. Distinct from Edge 4 (tori-driven plate).
+describe("Edge 4b — Mandibular Class I + severe ridge resorption alone", () => {
+  const c = rpdMakeBlankCase("mandibular");
+  setMissing(c, [17, 32]);                 // 3rd molars
+  setMissing(c, [18, 19, 30, 31]);         // bilateral DE → Class I
+  c.measurements.ridgeResorption = "severe";
+  c.measurements.lingualSulcusDepth = 9;   // adequate (>8mm) — Bar would normally win
+  // No tori, no high frenum — pure ridge-resorption-driven plate switch
+  const r = rpdRunEngine(c);
+
+  it("Classified as Class I", () => {
+    expect(r.kennedy.class).toBe("I");
+  });
+  it("Major connector = Lingual Plate (severe resorption rule, not tori/sulcus)", () => {
+    expect(r.majorConnector.type).toBe("Lingual Plate");
+  });
+  it("Rationale note references the rotation-resistance reason", () => {
+    expect(r.majorConnector.note || "").toMatch(/resorption/i);
+  });
+});
+
 // -------- Edge 5 — Hopeless terminal abutment --------
 // Class II DE case where the terminal (primary) abutment has hopeless
 // perio prognosis. Engine should surface a red flag — extracting the

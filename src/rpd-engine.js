@@ -316,6 +316,29 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
  alternativeRationale: "Lingual Bar is the lighter alternative when lingual sulcus depth ≥8mm. Selected Lingual Plate here because measured sulcus depth is <8mm.",
  };
  }
+ // Severe vertical ridge resorption in Class I — switch to Lingual Plate
+ // even with adequate sulcus depth. McCracken 12e Ch 5 lists this as
+ // Linguoplate indication #2: "In those instances in which the residual
+ // ridges in Class I arch have undergone such vertical resorption that
+ // they will offer only minimal resistance to horizontal rotations of
+ // the denture through its bases." CDEworld co-equally cites "excessive
+ // vertical resorption" alongside high frenum and inadequate lingual
+ // depth as a lingual-plate trigger.
+ //
+ // Scoped to Class I because that's where McCracken specifies the
+ // rotation-resistance rationale. For Class II/III/IV with severe
+ // resorption the literature is less convergent — the engine stays
+ // conservative and uses the default lingual-bar logic there.
+ if (kennedy.class === "I" && m.ridgeResorption === "severe") {
+ return {
+ type: "Lingual Plate", rationale: RPD_RATIONALE.major["Lingual Plate"],
+ width: "8mm contact above gingival third",
+ note: "severe ridge resorption: plate adds horizontal rotation resistance the resorbed ridge can no longer provide (McCracken 12e Ch 5)",
+ tier: "common",
+ alternative: "Lingual Bar",
+ alternativeRationale: "Lingual Bar is acceptable if the resorption is mild-moderate or if the patient cannot tolerate plate contact on the anteriors. With severe resorption + Class I, McCracken Ch 5 indication #2 explicitly favors the plate for rotation resistance.",
+ };
+ }
  return {
  type: "Lingual Bar", rationale: RPD_RATIONALE.major["Lingual Bar"],
  width: "4mm + 4mm clearance from gingival margin",
