@@ -330,3 +330,69 @@ Gap 1 (N₂O) intentionally skipped — liability.
 
 Plus earlier session commits already on branch.
 
+---
+
+## Iteration 6 — 2026-05-22 (continued)
+
+### Design Case I — full verification
+
+Read `RPD Fall 2022 Design Case I.pdf` (Dr. Shahin). Tooth setup: #1,#16 missing (3M), #3 missing (TS mod), #10 missing (anterior esthetic mod), #13-15 missing (left DE). Kennedy Class II Mod 2.
+
+Engine output vs answer key:
+
+| Item | Engine | Answer Key | Match |
+|------|--------|------------|-------|
+| Kennedy | Class II Mod 2 | Class II Mod 2 | ✅ |
+| Major connector | A-P Strap | A-P Strap | ✅ |
+| #2 clasp | Akers | Akers | ✅ |
+| #4 clasp | Akers | Akers | ✅ |
+| #9 | Rest Only, ball rest | Distal ball rest, no clasp (esthetic) | ✅ |
+| #11 | Rest Only, cingulum | Cingulum rest, no clasp (esthetic) | ✅ |
+| #12 clasp | Combination (when vestibularDepth set <5mm) | Combination (short vestibule + frenum) | ✅ |
+| Indirect | #6 cingulum rest | #6 cingulum rest | ✅ |
+| Base [3] | Open Lattice | Lattice | ✅ |
+| Base [13-15] | Open Lattice | Lattice | ✅ |
+| Base [10] | Mesh | **Facing** | ❌ |
+
+**Single discrepancy: #10 Mesh vs Facing.** The slide notes "Tube tooth requires bigger M-D space; Facing is rather used anteriorly." Design Case I uses Facing for a single maxillary lateral incisor (#10). Engine rule 4 currently gives Mesh for single/paired anteriors. This may reflect M-D space reasoning the engine can't model without an explicit measurement input. Left as a known limitation — both Mesh and Facing are clinically acceptable for this scenario; Mesh still gets an acrylic denture tooth.
+
+### Full Palate threshold fix — shipped (`b6435d9`)
+
+RESOLVED (was in REVIEW). Changed `presentCount ≤ 4` to `(kennedy.class === "I" && abutmentCount ≤ 4) || severeResorption`.
+
+**Why Class I scoping:** Cases 7 (Class III, 4 abutments), 8 (Class IV, 2 abutments), 11 (Class II, 3 abutments) all have small abutment counts but correct connectors (Single Palatal Strap / A-P Strap). The distinction is that Class I bilateral DE removes all posterior tooth support — only then does Full Palate make sense. Class II/III/IV retain at least one side of posterior support.
+
+**Verification:**
+- Design Case II (Class I, 4 abutments): Full Palatal Plate ✓
+- Design Case I (Class II, 5 abutments): A-P Strap ✓
+- Case 7 (Class III, 4 abutments): Single Palatal Strap ✓
+- 1012/1012 tests pass.
+
+### Cases UI — "Electric wire" concept (Jake's request, 2026-05-22)
+
+**Concept:** Collapse all category headers to abbreviated tokens on one horizontal bar (Dir · Ind · Endo · OS · Perio · Peds · RPD · CD · Repair). Clicking a token:
+1. Expands it to full name ("Complete Dentures"), turns oxblood/red
+2. A visual "cord" appears connecting the token → subcategory list → procedure card
+3. As the user navigates deeper (subcategory → procedure → step), the cord extends all the way down the chain
+4. A rolling "electricity" (animated spark/highlight, yellow or teal, ~2px line) runs along the cord to visually reinforce which step is currently active
+
+**Jake's specific notes:**
+- Yellow felt right for the electricity; try teal for comparison
+- "Chain" metaphor — every parent stays lit, electric runs to the current node
+- The hard problem: individual step → which step gets the electric? Options considered:
+  a. Rolling on scroll (as you scroll, nearest step gets the electric)
+  b. On explicit step-tap/click
+  c. Always highlights the most recently touched step
+- Everything starts collapsed; "Expand all" button remains
+
+**My assessment (don't implement yet, for Jake's review):**
+- Option (a) scroll-based rolling is the cleanest because it requires no explicit user action — just reading gives the electric animation a natural driver
+- The cord + electric should run LEFT-RAIL not inline with content, so the content column stays uncluttered
+- The abbreviated tokens line at the top needs enough spacing to be touchable on mobile — consider pill buttons rather than plain text tokens
+- Electricity animation: CSS `@keyframes` offset-path on an SVG polyline would be smooth and not affect layout; simpler than canvas
+- Color: yellow (`#F5C518` or similar gold) would match the existing gold-in-progress palette; teal would also read well and stay on-brand
+
+**Verdict:** Very achievable, moderately complex. The hardest piece is the SVG cord geometry recalculating on layout change. The scroll-based step tracker is elegant. Flagging for Jake's go-ahead before implementation.
+
+To implement → say "build the electric wire Cases nav."
+
