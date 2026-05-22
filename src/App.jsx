@@ -12525,7 +12525,7 @@ const PE_PROCEDURE_MAP = {
 // Aug-Dec → Fall, Jan-Apr → Spring, May-Jul → Summer
 // This drives the "today line" on the timeline.
 function currentSemester() {
- const m = new Date.getMonth(); // 0-11
+ const m = new Date().getMonth(); // 0-11
  if (m >= 7 && m <= 11) return "fall"; // Aug-Dec
  if (m >= 0 && m <= 3) return "spring"; // Jan-Apr
  return "summer"; // May-Jul
@@ -16380,7 +16380,7 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false }) {
  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 140px", gap: "20px", marginBottom: "20px" }}>
  {fieldRow("Student", "")}
  {fieldRow("Patient", "")}
- {fieldRow("Date", new Date.toISOString.slice(0,10))}
+ {fieldRow("Date", new Date().toISOString().slice(0,10))}
  </div>
 
  {/* Opposing / mold / shade row */}
@@ -16662,7 +16662,7 @@ function RPDLabRxForm({ caseInput, result }) {
  txLines.push("");
  txLines.push("Enclosed: master cast (mounted on Denar 320 articulator via facebow transfer; tripod marks + undercuts marked in red), opposing cast, Regisil PVS bite registration recorded at MI.");
 
- const today = new Date.toISOString.slice(0,10);
+ const today = new Date().toISOString().slice(0,10);
 
  return (
  <div className="rpd-uic-form rpd-print-keep" style={{
