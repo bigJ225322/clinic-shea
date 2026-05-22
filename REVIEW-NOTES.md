@@ -555,3 +555,65 @@ A fix would be: in `appendSpanBoundaryRetainers`, when the boundary tooth of an 
 
 → This is a real engine improvement opportunity. Save for Jake's go-ahead before implementing — it changes clasp output for Class II/Class IV cases.
 
+---
+
+## Iteration 9 (2026-05-22, extended 3-hour loop)
+
+### Pre-clinic fixes shipped to main
+
+1. **URGENT crash fix** — three broken `new Date.foo` calls in App.jsx wiped the React tree when interacting with the RPD tab. All three fixed (currentSemester, RPDPreliminaryDesignForm Date field, Lab Rx today stamp). Live, verified.
+
+2. **IR deduplication** — Class I/II with anterior modification spans no longer produce duplicate IR entries on the same tooth (skipSides pattern). Live.
+
+3. **Tooth selector centering** — TeethSelectorPanel and ToothSurfaceInput dropdowns now use `position: fixed; left: 50vw; transform: translateX(-50%)` so they open viewport-centered rather than anchored to the input's left edge. useLayoutEffect computes panelTop from the input's bounding rect on open/scroll/resize. Surface picker positioning unaffected. Live.
+
+4. **Right-side floating TOC** — previously gated on `tocBottom <= 0` (in-page TOC fully scrolled past viewport), which never triggered on short Cases pathways. New condition: visible whenever any part of the guide content is in the viewport. Live.
+
+5. **Collapsed-by-default sections + Expand all button** — verified already working from earlier commit dde78c7. No change needed.
+
+---
+
+### Cases UI alternatives (brainstorm, no implementation)
+
+Per Jake's original loop prompt: "think about new directions for the Cases tab UI. It's really nice, but i bet there's a cooler way."
+
+Three additional concepts on top of the already-documented **Electric Wire** nav idea (Iteration 6):
+
+#### A. Visual Procedure Atlas (zoom-map alternate view)
+A spatial canvas where procedures are positioned by category AND related to each other. Zoom out shows the whole landscape (clusters of related procedures); zoom in reveals pathway details. Visual links connect procedures with shared techniques (e.g., Class II ↔ Class III composite). Already on backlog as Task #21 — this fleshes it out:
+- **Initial view**: dot-density map; categories as colored regions; procedures as nodes within regions
+- **Zoom levels**: 3 (atlas → category → procedure detail)
+- **Connections**: thin lines between procedures that share key decisions (interpolation; materials; equipment)
+- **Why it might be cooler**: makes the breadth visible at a glance instead of buried in a 9-pill nav
+
+#### B. Decision Tree View
+Instead of "pick a procedure from a list," start with "what's wrong with the tooth?" The user answers questions (lesion class? depth? dentition stage? esthetic concerns? cooperation?) and the tree narrows to the right pathway. Like 20-questions for diagnosis:
+1. Primary or permanent dentition?
+2. Carious / fractured / discolored / missing?
+3. Class I / II / III / IV / V?
+4. Caries depth?
+5. Behavior?
+6. → lands on the precise pathway with all answers pre-applied
+- **Why it might be cooler**: students learn the decision process by being walked through it, instead of jumping to a pathway they may not have correctly identified
+- **Risk**: feels slower for experienced users who already know what they want — could keep current "pick procedure" view as the fast path and add Decision Tree as an alternate mode
+
+#### C. Day View / Visit Planner
+User says "I have 3 Class II composites and a pulpotomy + SSC today." Cases tab assembles them into a visit:
+- **Auto-sequenced** per peds rules (extractions first if symptomatic, biggest lesions first, sextant grouping)
+- **Bilateral consolidation** suggested when multiple procedures fall in the same sextant
+- **Time estimate** per appointment based on procedure type + child age
+- **Codes pre-prepped** in copy-paste-ready blocks
+- **Why it might be cooler**: matches the actual clinic workflow (think about the whole day) instead of treating procedures as independent units
+
+#### D. Side-by-side comparison mode
+Pick 2-4 procedures and view them side-by-side. Common steps collapse; differences are highlighted. Useful for studying ("how does Class III differ from Class IV?") and decision-making at the chair ("should I do composite or SSC here?"):
+- **Two-pane layout** for direct compare
+- **Diff highlighting** — green for same-step, gold for procedure-specific
+- **Toggle "show only differences"** for fast review
+
+---
+
+### Save for Jake's review
+
+All four UI concepts above. Pick one (or remix) when there's time. No implementation yet — Jake's call which direction is most worth building.
+
