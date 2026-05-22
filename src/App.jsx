@@ -24562,18 +24562,17 @@ function PathwaySidebarTOC({ sections, activeIdx, collapsedSections, onToggle, o
  useEffect(() => {
  if (!firstAnchor ||!lastAnchor) return;
  const update = () => {
+ const firstEl = document.getElementById(firstAnchor);
  const lastEl = document.getElementById(lastAnchor);
- // Anchor the TOP boundary on the in-page "Reading order" TOC: don't
- // show the sidebar until that TOC has fully scrolled past the top of
- // the viewport. The two indices doing the same job at the same time
- // looks redundant.
- const tocEl = document.getElementById("pw-toc");
- if (!lastEl) return;
- const tocBottom = tocEl? tocEl.getBoundingClientRect().bottom: 0;
+ if (!firstEl ||!lastEl) return;
+ // Visible while ANY part of the guide is in the viewport — from the
+ // first section's top entering the viewport, through the last section
+ // still being partially visible. At 0.4 base opacity the sidebar is
+ // unobtrusive even when the in-page TOC is also visible; hovering
+ // brings it to full opacity for active navigation.
+ const firstTop = firstEl.getBoundingClientRect().top;
  const lastBottom = lastEl.getBoundingClientRect().bottom;
- // Visible while: in-page TOC is fully above the viewport AND any part
- // of the last section is still below the viewport top.
- setInRange(tocBottom <= 0 && lastBottom > 0);
+ setInRange(firstTop < window.innerHeight && lastBottom > 0);
  };
  update();
  window.addEventListener("scroll", update, { passive: true });
