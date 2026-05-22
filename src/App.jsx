@@ -23691,11 +23691,20 @@ function Pathways() {
 ? PATHWAYS.find(p => p.id === pathwayId)
 : null;
 
- // When the pathway changes, reset collapse + active state.
+ // When the pathway changes, start with every section collapsed so the
+ // page lands compact and the student opens what they want. The "Expand
+ // all" affordance + the floating-sidebar TOC click both flip a section
+ // (or all sections) open on demand. Empty set = everything expanded;
+ // full set of anchorIds = everything collapsed.
  useEffect(() => {
+ if (selectedPathway && selectedPathway.sections?.length) {
+ const anchorIds = selectedPathway.sections.map((_, i) => `pw-section-${i}`);
+ setCollapsedSections(new Set(anchorIds));
+ } else {
  setCollapsedSections(new Set);
+ }
  setActiveSectionIdx(0);
- }, [pathwayId]);
+ }, [pathwayId, selectedPathway]);
 
  // Reset wizard navigation when domain changes or mode toggles back to
  // wizard from pills — every fresh wizard session starts from root.
