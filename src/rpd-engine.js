@@ -2516,6 +2516,23 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
  });
  }
 
+ // Severe ridge resorption + distal extension (Class I/II) →
+ // implant-assisted RPD is a definitive alternative worth flagging.
+ // Distally-placed implants convert Class I/II biomechanics into
+ // Class III (tooth+implant-supported), eliminating the rotational
+ // axis around the fulcrum line that drives ridge resorption and
+ // abutment damage. Different from the Combination Syndrome flag
+ // (which is specific to mand Class I + opposing CD); this flag
+ // applies broadly to severe-resorption distal-extension cases.
+ if ((kennedy.class === "I" || kennedy.class === "II")
+ && caseInput.measurements?.ridgeResorption === "severe") {
+ flags.push({
+ severity: "warning",
+ type: "implant-assisted-rpd-severe-ridge",
+ message: `Severe ridge resorption + Kennedy Class ${kennedy.class} distal extension — strongly consider implant-assisted RPD as the definitive option. Distally-placed implants convert Class I/II biomechanics into a Class III (tooth + implant-supported) scenario, eliminating the rotational axis around the fulcrum line that drives further resorption and abutment trauma. Anteriorly-placed implants additionally allow removal of the retentive clasp for esthetics (locator attachment engages the implant abutment). Requirements: ≥10mm vertical restorative space, implants parallel to the RPD path of insertion in 3D (use diagnostic tooth setup + surgical guide). Workflow: diagnostic setup → IPD + surgical guide → implant placement → pick-up locators on IPD → definitive RPD after osseointegration (4-6 months). If implants are declined: altered cast impression technique is mandatory at framework try-in to compensate for the compromised tissue support.`,
+ });
+ }
+
  // CAMBRA caries-protective prescription block.
  // require the dentist to address caries risk BEFORE delivering an RPD.
  // A retained framework on a high-caries-risk mouth fails fast: abutments
