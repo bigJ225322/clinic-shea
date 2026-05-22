@@ -719,3 +719,29 @@ For span #5-#12 (8 teeth crossing midline, bounded by #4 and #13 premolars), the
 
 → Save for Jake's review. Both findings are real but require clinical judgment on whether to encode them.
 
+### Borderline find: 6-week space-loss timing window
+
+Week 9.2 lecture (Early Space Loss & Management, Alsaleh) explicitly teaches:
+- "Space loss tends to occur quickly following tooth loss, then slowly after"
+- "The FASTER PHASE is typically within the FIRST 6 WEEKS"
+- "Space loss is usually mesial, consistent — no back and forth"
+
+The current `pedo-space-maintainer` pathway says "loss within 6 months of expected eruption — no maintainer needed; just monitor." That's an indication threshold but doesn't communicate the urgency window for placement (within 6 weeks of extraction).
+
+A student looking at the pathway today won't know:
+- That delaying placement past 6 weeks risks irreversible space loss
+- That the mesial drift is unidirectional (no "wait and see if it comes back")
+
+**Suggested expansion**: add a key decision to `pedo-space-maintainer` like:
+> "Timing: place within 6 weeks of extraction. Per Alsaleh's lecture, space loss occurs in a fast phase within the first 6 weeks (then slows). The drift is unidirectional (no spontaneous correction). Schedule the impression visit at the extraction itself if possible; band/loop delivery 1-2 weeks later."
+
+Defer to Jake. Borderline edit but clinically actionable.
+
+### Confirmed: primary canine + primary incisor space-loss patterns
+
+Week 9.2 lecture explicitly states (and pedo-space-maintainer correctly implies):
+- **Primary canine loss** → ectopic incisor eruption pattern; indicates tooth/arch discrepancy (teeth too big for mouth); midline shifts; usually requires PG ortho referral
+- **Primary incisor loss** → RARELY results in space loss; permanent successor erupts in time; **no maintainer needed** (parent may want it for esthetics → Hawley with denture teeth)
+
+Current pathway covers the incisor-no-maintainer case but doesn't explicitly call out the "primary canine loss indicates tooth/arch discrepancy → ortho referral" relationship. Minor.
+
