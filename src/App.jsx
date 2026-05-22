@@ -19933,6 +19933,7 @@ const PATHWAY_GROUPS = {
  "pedo-composite",
  "pedo-stainless-crown",
  "pedo-strip-crown",
+ "pedo-primary-anterior-class3",
  "pedo-anterior-crown-selection",
  ]},
  { label: "Pulp therapy", ids: [
@@ -20240,6 +20241,7 @@ const WIZARDS = {
  options: [
  { label: "Posterior primary — Class I or II", pathway: "pedo-composite" },
  { label: "Posterior primary — multi-surface or post-pulpotomy", pathway: "pedo-stainless-crown" },
+ { label: "Anterior primary — small Class III, mesial/distal angle intact", pathway: "pedo-primary-anterior-class3" },
  { label: "Anterior primary — choosing among 5 crown options", pathway: "pedo-anterior-crown-selection" },
  { label: "Anterior primary — strip crown is the chosen route", pathway: "pedo-strip-crown" },
  ],
@@ -23068,10 +23070,10 @@ const PATHWAYS = [
  description: "A 2-5 year old with extensive caries on a maxillary primary incisor — typically severe early childhood caries (S-ECC) from bottle/sippy use, with multiple anterior teeth affected. The lesion is too large for a Class III or IV composite alone; the tooth needs full-coverage anterior restoration but cannot accept an SSC for esthetic reasons. A celluloid strip crown is filled with composite, seated over a prepared tooth, light-cured, and then peeled off — leaving a tooth-shaped composite restoration. The technique is fussy (moisture control on a tiny anterior tooth in a small mouth is the central challenge) and the result lasts until exfoliation.",
  keyDecisions: [
  "Indication check: extensive multi-surface caries on a primary incisor where a direct composite would not retain. Single-surface lesions get a Class III or IV composite. Pulp-involved teeth need pulpotomy + strip crown, not strip crown alone. If multiple anterior teeth are affected, plan all of them in one visit if cooperation allows.",
- "Anesthesia and isolation: 1 carpule of 2% lidocaine with 1:100K epi, short blue needle, buccal infiltration. Isolation is the make-or-break — Isodry on anteriors sometimes interferes; rubber dam with tie-floss on the clamp is more reliable. If rubber dam: punch two holes ½ inch apart and cut between them for a slot — fast placement and removal.",
+ "Anesthesia and isolation: 1 carpule of 2% lidocaine with 1:100K epi, short blue needle, buccal infiltration. Isolation is the make-or-break — Isodry on anteriors sometimes interferes; rubber dam with tie-floss on the clamp is more reliable. If rubber dam: punch two holes ½ inch apart and cut between them for a slot — fast placement and removal. Clamp-free shortcut for cooperative patients: punch overlapping holes for the teeth being worked on +1 in either direction, stretch the dam over, add canine clamps only if you need stability. Less stable but much easier to place and reposition.",
  "Preparation (UIC criteria): knife-edge finish line at the level of the gingiva, continuous on all surfaces. Interproximal reduction 1.0mm following tooth contour (tapered diamond / 55 / 56 / 169). Facial 1.0mm tapering toward the incisal (same burs). Lingual 0.5mm clearance from opposing dentition (diamond football). Incisal 1.5mm with rounded corners. Final gingival adjustment with flame or narrow diamond. Crown forms are fragile — if you push, they break. The form should seat passively; if it doesn't, add more reduction apical to the deepest seating point.",
  "Bonding sequence: etch enamel first, then dentin (15 sec), rinse, dry leaving dentin glossy and moist. Apply Scotchbond Universal with vigorous 20-sec scrub, thin with air for 5 sec, cure 10 sec. If saliva contamination happens — re-etch for only 5 sec and proceed. Pre-load all materials before starting; the bond window in a young child is short.",
- "Load the celluloid form with composite (Renamel nanofill or equivalent in pediatric A2-A3 shade), seat onto the prepared tooth, express excess from a vent hole, cure 40 sec from facial then 40 sec from lingual. Peel the form off with a #12 scalpel or simply tear it. Finish with fine diamond, polish with Shofu/Jiffy. Restoration should not be in occlusion, protrusion, or lateral excursion.",
+ "Load the celluloid form with composite (Renamel nanofill or equivalent in pediatric A2-A3 shade), seat onto the prepared tooth, express excess from a vent hole on the INCISAL or LINGUAL surface (avoid the facial — easier cleanup, less risk of visible vent mark), cure 40 sec from facial then 40 sec from lingual. Peel the form off with a #12 scalpel or simply tear it. Finish with fine diamond. Polish PRIMARILY at the gingival margins — that's where the food trap risk and the visible restoration-tooth interface live; the rest of the crown form gave you a glossy surface that needs very little attention. Restoration should not be in occlusion, protrusion, or lateral excursion.",
  ],
  phases: [
  { label: "Anesthesia & isolation", count: 2 },
@@ -23084,6 +23086,31 @@ const PATHWAYS = [
  { guideId: "pedo", chapterId: "pedo-ch2" },
  { guideId: "pedo", chapterId: "pedo-ch3" },
  { guideId: "pedo", chapterId: "pedo-ch15" },
+ ],
+ },
+ {
+ id: "pedo-primary-anterior-class3",
+ domain: "pedo",
+ label: "Class III composite on a primary incisor (small interproximal)",
+ description: "A primary incisor with a small interproximal lesion that doesn't undermine the mesial / distal angle of the crown — typical at the mesial of a primary central or distal of a lateral / mesial of a canine. The prep is NOT the adult Class III prep: primary anteriors are small (4-6 mm inciso-gingivally), the pulp is closer to the surface, and the restoration needs mechanical retention because the bond surface is limited. UIC's protocol uses a defined cervical seat in the gingival 2/3 of the crown PLUS a labial (and sometimes lingual) dovetail lock for retention. Done well, this is a same-visit single-surface restoration that lasts until exfoliation; done as if it were an adult Class III, the composite pops out within months.",
+ keyDecisions: [
+ "Indication: small interproximal lesion that DOES NOT undermine the mesial or distal angle of the incisor. If the angle is undermined, you've lost the bonded enamel border that holds the restoration — go strip crown instead. If the lesion is on multiple surfaces, also go strip crown. Single-surface Class III with intact angle = this pathway.",
+ "Isolation: rubber dam preferred (overlapping-punch + slot trick for fast placement, canine clamp for stability if needed). Isodry as backup. Anteriors desiccate fast — work efficiently.",
+ "Prep (UIC criteria, distinct from adult Class III): 330 bur to penetrate the interproximal carious area until dentin (~1 mm from enamel). Prep is limited to the GINGIVAL 2/3 of the incisor — do NOT extend into the incisal third. Cervical seat is definitive and follows the gingival contour, 1 mm above the gingiva. Cavity walls established by moving the bur perpendicular to the tooth, light intermittent lateral motion into sound dentin / enamel.",
+ "Retention locks (the key step that separates this from adult Class III): cut a labial DOVETAIL lock extending across 2/3 of the labial surface — include any decalcified enamel in the cervical area. 1 mm deep. Canines may need labial AND lingual locks; incisors usually just labial. The locks are mechanical retention; bonded enamel alone is not enough on a primary incisor.",
+ "Place a wedge at the cervical seat + tightly placed Mylar strip. Etch (35% phosphoric, 15 sec), bond (Scotchbond Universal scrub + cure), composite in incremental layers, cure each. Use the wedge to pull the strip into intimate proximal contact — open contact here = food trap + future caries.",
+ "Finish + polish: flame bur for contouring, sharp scalpel blade for the gingival margin (cleaner finish than a bur in that confined space). Rubber cup + fine moist abrasive (or a composite polishing system) for final polish. Restoration should NOT be in incisal occlusion — check protrusion specifically.",
+ ],
+ phases: [
+ { label: "Indication & isolation", count: 2 },
+ { label: "Prep + retention locks", count: 2 },
+ { label: "Etch, bond, fill", count: 2 },
+ { label: "Finish & polish", count: 1 },
+ ],
+ sections: [
+ { guideId: "pedo", chapterId: "pedo-ch1" },
+ { guideId: "pedo", chapterId: "pedo-ch3" },
+ { guideId: "pedo", chapterId: "pedo-ch10" },
  ],
  },
  {
