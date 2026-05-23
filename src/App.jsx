@@ -4183,15 +4183,21 @@ function renderTemplate(raw, f) {
  if (f.endoPeriapicalDx && f.endoPeriapicalDx.trim()) {
  t = t.replace(/(- Periapical dx:)\s*[^\n]*/i, `$1 ${f.endoPeriapicalDx.trim()}`);
  }
- // 12. Number of canals
+ // 12. Number of canals.
+ // Template has "Located 2 canals." (with spaces). Earlier regex was
+ // /(Located)\d+(canals\.)/ which matched "Located[N]canals" (no spaces)
+ // and never matched the template; substitution silently failed.
  if (f.endoNumCanals && String(f.endoNumCanals).trim()) {
  const n = String(f.endoNumCanals).trim();
- t = t.replace(/(Located)\d+(canals\.)/, `$1${n}$2`);
+ t = t.replace(/Located \d+ canals\./, `Located ${n} canals.`);
  }
- // 13. MAF size
+ // 13. MAF size.
+ // Template has "MAF: 35" with space after the colon. Earlier regex
+ // /(MAF:)\d+/ failed when the space was present; substitution silently
+ // failed. Tolerate either spacing.
  if (f.endoMaf && String(f.endoMaf).trim()) {
  const m = String(f.endoMaf).trim();
- t = t.replace(/(MAF:)\d+/, `$1${m}`);
+ t = t.replace(/MAF:\s*\d+/, `MAF: ${m}`);
  }
 
  // -------- 6c. Peds-specific demographics, exam, and post-Tx substitutions.
@@ -4407,9 +4413,11 @@ function renderTemplate(raw, f) {
 
  // ---- Urgent care (374) special cases ----
 
- // CC: inline in the first sentence as CC: ""
+ // CC: inline in the first sentence as CC: "" (smart quotes in the template!)
+ // Earlier regex used ASCII "" so the substitution silently failed; templates
+ // use Unicode U+201C/U+201D curly quotes.
  if (label === "cc") {
- t = t.replace(/CC: ""/, `CC: "${v}"`);
+ t = t.replace(/CC: [""]?[""]?/, `CC: "${v}"`);
  continue;
  }
 
