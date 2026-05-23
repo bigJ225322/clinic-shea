@@ -6610,12 +6610,15 @@ const EXAM_FINDINGS_CONFIG = {
  },
  ],
  // Urgent Care — full HPI, objective findings, endo testing, diagnoses, plan.
+ // Note: CC is intentionally NOT duplicated in this HPI block — the
+ // top-level "Chief Complaint" field (rendered via needsCC) writes to
+ // the same template region. Keeping both visible led to last-write-wins
+ // confusion where the user typed in one and the value got overridden
+ // by an empty second copy.
  "374": [
  {
  title: "HPI",
  rows: [
- [{ label: "cc", type: "input", displayLabel: "Chief complaint",
- placeholder: "in the patient's words" }],
  [
  { label: "location", type: "input", displayLabel: "Area / tooth",
  placeholder: "e.g. #8, #14 — or click a quadrant the pt points to",
