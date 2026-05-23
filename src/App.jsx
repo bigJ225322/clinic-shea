@@ -17418,24 +17418,18 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
  const base = spanIndex!= null? result.baseDesigns?.[spanIndex]: null;
  const mc = result.majorConnector;
 
- // ── Build the engine's per-tooth decision narrative for the clasp branch.
- // Restructured as a true DECISION TREE with explicit branch points so the
- // student can see not just what the engine picked but ALSO the alternatives
- // that were evaluated and rejected. Each node has a `kind` field:
- // "step" — Major decision header (a fork in the tree)
- // "branch-taken" — The branch the engine chose at the previous step (●)
- // "branch-skipped"— The branch NOT taken (○ — shown dimmed for context)
- // "gate" — Sub-criterion evaluated with pass/fail (✓/✕)
- // "result" — Conclusion of the previous group of gates (→)
- // "leaf" — Final clasp selection with rationale
- let decisionTree = null;
- // Show the decision tree for any clickable element on an abutment.
- // The tree explains WHY this abutment got the design it got — applies
- // whether you click the clasp, rest seat, guide plane, or undercut tick.
- // Critical for "Rest Only (no clasp)" abutments which have no
- // clasp arm to click — without this expansion the decision tree would
- // be unreachable for those teeth.
- if (abutment && ['clasp', 'reciprocal', 'iBar', 'undercut', 'rest', 'guidePlane'].includes(kind)) {
+ // Decision-tree rendering removed (it fired for every element click —
+ // clicking a guide plane returned the full clasp-selection cascade,
+ // which was off-topic AND visually over-elaborate for the per-element
+ // inspector). Inspector now shows ONLY what THIS element is:
+ // title, key/value rows, rationale paragraph. Broader clasp-selection
+ // logic remains available in the design form's Rationale/Comments
+ // column, which already toggles between compact + verbose modes.
+ // The dead-code block below is preserved as a comment for reference
+ // in case a future iteration wants to surface this reasoning via an
+ // explicit "Why this clasp?" disclosure on clasp-specific elements only.
+ const decisionTree = null;
+ if (false && abutment && ['clasp', 'reciprocal', 'iBar'].includes(kind)) {
  const attrs = {...(RPD_ABUTMENT_DEFAULTS || {}),...(caseInput.teeth?.[tooth]?.attrs || {}) };
  const m = caseInput.measurements || {};
  const isDE = abutment.spanType === "distal-extension";
