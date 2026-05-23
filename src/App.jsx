@@ -14115,7 +14115,7 @@ function RPDDecisionTree({ caseInput, result }) {
  color: "var(--ink-soft)", fontWeight: 600,
  marginBottom: "10px", marginTop: "2px",
  }}>
- Clasps · one decision per direct retainer abutment
+ Clasps
  </div>
  {/* Per-abutment sub-rows. Each sits inside decision 5's content area
  with a dashed left border indicating sub-branch. */}
@@ -19475,63 +19475,11 @@ function RPDHelper() {
  <RPDDecisionTree caseInput={caseInput} result={result} />
  </RPDCollapsibleSection>
 
- {/* ─── Applegate justifications (LAST in the list).
- Surfaces ONLY when the engine made non-trivial decisions about
- 3rd/2nd molar inclusion. Detail-oriented, not gating — students
- rarely need this on first look, so it's at the bottom. */}
- {(() => {
- const t3 = result.thirdMolarEval?.decisions || [];
- const t2 = result.secondMolarEval?.decisions || [];
- const trivialT3 = (d) => d.rule === "Applegate Rule 2"
- && /omit/i.test(d.decision);
- const trivialT2 = (d) => /\(n\/a\)/i.test(d.rule)
- && /include \(present\)/i.test(d.decision);
- const nonTrivialT3 = t3.filter(d =>!trivialT3(d));
- const nonTrivialT2 = t2.filter(d =>!trivialT2(d));
- if (nonTrivialT3.length === 0 && nonTrivialT2.length === 0) return null;
- const renderRow = (d, i, isLast) => (
- <div key={`${d.tooth}-${i}`} style={{
- fontSize: "13px", marginBottom: isLast? 0: "10px",
- paddingBottom: isLast? 0: "8px",
- borderBottom: isLast? "none": "1px solid var(--rule-soft)",
- }}>
- <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "3px" }}>
- <strong>{rpdToothName(d.tooth)}</strong>
- <span style={{ fontSize: "11px", color: "var(--ink-soft)", textTransform: "uppercase" }}>{d.rule}</span>
- </div>
- <div style={{ fontSize: "13px", color: "var(--ink)", marginBottom: "3px" }}>
- <strong>Decision:</strong> {d.decision}
- </div>
- <div style={{ fontSize: "12px", color: "var(--ink-soft)", fontStyle: "italic" }}>
- {d.rationale}
- </div>
- </div>
-);
- return (
- <RPDCollapsibleSection
- title="Applegate justifications"
- summary={`${nonTrivialT3.length + nonTrivialT2.length} rule call(s)`}
- defaultOpen={false}
- >
- {nonTrivialT3.length > 0 && (
- <div style={{ marginBottom: nonTrivialT2.length > 0? "14px": 0 }}>
- <div style={{ fontSize: "11px", color: "var(--ink-soft)", marginBottom: "8px", fontStyle: "italic" }}>
- 3rd molars (Rules 2 &amp; 3)
- </div>
- {nonTrivialT3.map((d, i) => renderRow(d, i, i === nonTrivialT3.length - 1))}
- </div>
-)}
- {nonTrivialT2.length > 0 && (
- <div>
- <div style={{ fontSize: "11px", color: "var(--ink-soft)", marginBottom: "8px", fontStyle: "italic" }}>
- 2nd molars (Rule 4)
- </div>
- {nonTrivialT2.map((d, i) => renderRow(d, i, i === nonTrivialT2.length - 1))}
- </div>
-)}
- </RPDCollapsibleSection>
-);
- })()}
+ {/* Applegate justifications collapsible removed — the engine still
+ records the 3rd/2nd molar rule decisions internally and surfaces
+ them via red-flag notices when they're non-trivially case-specific.
+ Always-on collapsible at the bottom was study-floor padding, not
+ a clinical input the student needs at design time. */}
 
  </>}
  </div>
