@@ -4042,8 +4042,12 @@ function renderTemplate(raw, f) {
  // Replaces "UR" in "for SRP of UR." and "SRP UR:" with the selected quad(s).
  if (Array.isArray(f.srpQuads) && f.srpQuads.length > 0) {
  const q = f.srpQuads.join(", ");
- t = t.replace(/(?<=for SRP of)UR(?=\.)/, q);
- t = t.replace(/(?<=\nSRP)UR(?=:)/, q);
+ // Template has "for SRP of UR." and "SRP UR:" — both with a space
+ // between "of"/"SRP" and "UR". Earlier lookbehinds (?<=for SRP of)
+ // and (?<=\nSRP) didn't include the space, so the regex silently
+ // failed to match. Include the space in the lookbehind.
+ t = t.replace(/(?<=for SRP of )UR(?=\.)/, q);
+ t = t.replace(/(?<=\nSRP )UR(?=:)/, q);
  }
 
  // -------- 6f. Perio re-eval SRP completion date. --------
