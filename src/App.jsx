@@ -11987,7 +11987,7 @@ const PE_SEMESTERS = [
 
 const PE_PARTS = [
  { id: "perio", label: "Periodontal Exams" },
- { id: "restFound", label: "Restorative Foundation" },
+ { id: "restFound", label: "Restorative" },
  { id: "operative", label: "Operative" },
  { id: "fixedProsth", label: "Fixed Prosthodontics" },
  { id: "removable", label: "Removable Prosthodontics" },
@@ -13386,43 +13386,40 @@ function PEDetail({ pe, onShowSteps }) {
  )}
  </div>
 
- {/* Prereq. Steps links live in the header now (upper-right of the
- card), so the prereq area is just the label + body text. When the
- prereq is the "None specified." placeholder both center as a pair;
- real-content prereqs stay left-aligned. */}
+ {/* Prereq / Case Selection / Protocol in a 2-col grid — label on the
+ left (right-aligned to read flush against the gutter), body on the
+ right. Roughly halves the vertical footprint vs the old stacked-
+ label-above-paragraph layout. Inline label style mirrors
+ SubsectionLabel but drops its marginBottom + leading optical-correction
+ (neither needed in a baseline-aligned grid). */}
  {(() => {
- const isPlaceholderPrereq = !pe.prereq || /^\s*none specified\.?\s*$/i.test(pe.prereq);
- if (isPlaceholderPrereq) {
+ const labelStyle = {
+ fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
+ color: "var(--accent)", fontWeight: 500,
+ fontFamily: "'Geist', sans-serif",
+ };
+ const bodyStyle = {
+ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: 0,
+ };
  return (
- <>
- <div style={{ textAlign: "center" }}>
- <SubsectionLabel>Prerequisite</SubsectionLabel>
+ <div style={{
+ display: "grid",
+ gridTemplateColumns: "140px 1fr",
+ columnGap: "20px", rowGap: "10px",
+ marginBottom: "16px",
+ alignItems: "baseline",
+ }}>
+ <div style={{ textAlign: "right", ...labelStyle }}>Prerequisite</div>
+ <p style={bodyStyle}>{pe.prereq || "None specified."}</p>
+
+ <div style={{ textAlign: "right", ...labelStyle }}>Case Selection</div>
+ <p style={bodyStyle}>{pe.caseSelect}</p>
+
+ <div style={{ textAlign: "right", ...labelStyle }}>Protocol</div>
+ <p style={bodyStyle}>{pe.protocol}</p>
  </div>
- <p style={{ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: "0 0 14px", textAlign: "center" }}>
- {pe.prereq || "None specified."}
- </p>
- </>
- );
- }
- return (
- <>
- <SubsectionLabel>Prerequisite</SubsectionLabel>
- <p style={{ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: "0 0 14px" }}>
- {pe.prereq}
- </p>
- </>
  );
  })()}
-
- <SubsectionLabel>Case Selection</SubsectionLabel>
- <p style={{ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: "0 0 14px" }}>
- {pe.caseSelect}
- </p>
-
- <SubsectionLabel>Protocol</SubsectionLabel>
- <p style={{ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: "0 0 4px" }}>
- {pe.protocol}
- </p>
 
  <div style={{ marginTop: "20px" }}>
  <SubsectionLabel>Rubric</SubsectionLabel>
