@@ -5989,7 +5989,11 @@ function ProseBlock({ text, highlight }) {
  const clean = (text || "")
 .replace(/\u200b/g, "")
 .replace(/(\S)[ \t]*\n[ \t]+([a-z(&])/g, "$1 $2")
-.replace(/(^|\n) (?!)/g, "$1");
+// Strip ONE leading space when there's exactly one space at line start;
+// preserve 2+ space sub-bullet indents. Earlier code used (?!) \u2014 a
+// negative lookahead for the EMPTY pattern, which always FAILS, so the
+// regex matched zero positions and stripped nothing (silent no-op).
+.replace(/(^|\n) (?! )/g, "$1");
  const lines = clean.split("\n");
 
  // Highlighting helper — wraps query terms in <mark>.
