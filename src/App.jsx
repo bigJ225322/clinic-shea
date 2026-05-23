@@ -4516,6 +4516,30 @@ function renderTemplate(raw, f) {
  continue;
  }
 
+ // ---- Perio Re-Evaluation (1346) special cases ----
+
+ // "Patient's periodontal health has improved —." — fill in the dash.
+ if (label === "improvement detail") {
+ if (v.trim()) {
+ t = t.replace(
+ /(periodontal health has improved) —\./,
+ `$1 — ${v}.`
+ );
+ }
+ continue;
+ }
+
+ // "perio maintenance interval of 4 months" — substitute interval.
+ if (label === "maintenance interval") {
+ if (v.trim()) {
+ t = t.replace(
+ /(perio maintenance interval of )\d+\s*months?/,
+ `$1${v}`
+ );
+ }
+ continue;
+ }
+
  // ---- end urgent care special cases ----
 
  // Special-case: caries risk — append the standard reference suffix.
@@ -6633,6 +6657,19 @@ const EXAM_FINDINGS_CONFIG = {
  hint: "Perio Chart → Clipboard → O’Leary" },
  ],
  [{ type: "gingiva-dropdowns" }],
+ ],
+ },
+ {
+ title: "Reeval outcome",
+ rows: [
+ [{ label: "improvement detail", type: "input",
+ displayLabel: "Improvement — what's better",
+ placeholder: "e.g. reduced pocket depths, BOP resolved, plaque control improved",
+ hint: "Fills in the dash after \"periodontal health has improved —\"" }],
+ [{ label: "maintenance interval", type: "select",
+ displayLabel: "Maintenance interval",
+ options: ["", "3 months", "4 months", "6 months"],
+ hint: "Standard post-SRP interval is 3–4 months; 6 months only after multiple stable visits." }],
  ],
  },
  {
