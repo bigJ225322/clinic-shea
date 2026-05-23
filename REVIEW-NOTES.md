@@ -1412,4 +1412,36 @@ The current logic returns FPD recommendation only for *unilateral-bounded* gaps 
 
 Suggested enhancement (not implemented): tighten the bilateral check to require at least one POSTERIOR abutment on each side. Single-anterior-tooth Class III/IV cases would then route to the FPD recommendation. Worth a deliberate call since it could shift behavior on edge cases.
 
-**B26. Implant codes D6086-D6117 still have generic descriptions.** Iter 21 cleaned up D6058-D6083, but the higher range (D6086-D6087 implant-supported crown variants, D6098-D6099 retainer variants, D6114-D6117 hybrid abutment retainers) still show "Initial Preparation" / "Final Impression" / "Cementation". These codes are less commonly used at UIC than D6058-D6083 so the impact is lower, but consistency would be nice. Worth checking CDT 2024 mapping before normalizing.
+**B26. Implant codes D6086-D6117 still have generic descriptions.** Iter 21 cleaned up D6058-D6083, but the higher range (D6086-D6087 implant-supported crown variants, D6098-D6099 retainer variants, D6114-D6117 hybrid abutment retainers) still show "Initial Preparation" / "Final Impression" / "Cementation". These codes are less commonly used at UIC than D6058-D6083 so the impact is lower, but consistency would be nice. Worth checking CDT 2024 mapping before normalizing. **[RESOLVED in iter 21 cont — see commits c22ffbe, 17ad188]**
+
+### Iter 21 continuation — additional commits + bug fixes
+
+After the user requested immediate continuous work (no wake-ups), continued the cleanup pass:
+
+- **8876e3c**: 22 orphan chapter stubs added (resolves B18). All Cases pathway sections now point to actual GUIDES entries — no more broken-section warnings on load.
+- **08589cf**: D2750C and D2790C added to CODE_GROUPS children arrays. The crown groupings UI was missing the Cementation sub-codes despite the codes existing in RVU_DATA.
+- **4650ca6**: Steps tab — SECTION_FOR_CATEGORY map extended with `perio: "PERIO"` and `endo: "ENDO"`. Fixes a real bug where SRP procedure (id 1272) could match chunk c021 "SRP" in EXAMS section (just an overview blurb) before c024 "SRP" in PERIO section (the actual steps + note template). Tie-broken by document order; c021 wins because it appears first. Now properly section-routed.
+- **c22ffbe, 17ad188, 67a35a3, 8d62a57, e5d07ac, 8bdb03e**: Continued the codes tab cleanup. D6086-D6117 (implant variants), D6210-D6792 (FPD pontic + retainer), D5110-D5861 (denture + interim denture + reline + overdenture), D9940-D9946 (occlusal guard), D9390 (consultation report) — all now have self-describing sub-code names instead of bare "Initial Preparation" / "Final Impression" / "Cementation". Normalized "Tryin" → "Try-in" everywhere.
+
+### Iter 21 final commit summary (14 commits, all pushed)
+- 838d261: D6058-D6083 implant code descriptions
+- c408236: perio re-eval em-dash when detail empty
+- d880d8b: RPD mand incisor ball rest
+- ee088e2: RPD fully-dentate guard
+- 672d7ee: review notes (mid-iter)
+- 8876e3c: 22 orphan chapter stubs (resolves B18)
+- 08589cf: D2750C/D2790C added to CODE_GROUPS
+- 4650ca6: perio/endo chunk routing (real bug)
+- c22ffbe: D6086-D6117 descriptions
+- 17ad188: D6210-D6792 FPD descriptions
+- 67a35a3: D5110-D5214 denture descriptions
+- 8d62a57: D5750-D5861 denture descriptions
+- e5d07ac: D9940-D9946 occlusal guard descriptions
+- 8bdb03e: D9390 consultation report description
+
+**Real bug fixes this iter: 4** (em-dash, ball rest, fully-dentate guard, perio/endo chunk routing)
+**Code description cleanups: 9 batches covering ~150 codes**
+**Borderline resolved: B18** (orphan chapter references)
+**New borderlines: B25, B26** (engine + remaining implant codes; both noted above)
+
+All 1017 tests pass throughout. Build clean.
