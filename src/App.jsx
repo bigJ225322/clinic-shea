@@ -13262,10 +13262,17 @@ function RubricGrid({ criteria }) {
  background: "var(--paper-soft)",
  borderBottom: "1px solid var(--rule)",
  };
+ // Cells render as flex containers so the content vertically centers
+ // within the row height (grid default is align-items: stretch, which
+ // keeps the cell box at row height; flex+align-items:center centers
+ // the text inside that box). Without this, shorter cells stick to the
+ // top while taller adjacent cells push the row taller, leaving the
+ // shorter ones visually orphaned.
  const cell = (i, isLast) => ({
  padding: "12px 14px",
  fontSize: "12px", lineHeight: 1.5,
  borderBottom: isLast? "none": "1px solid var(--rule-soft)",
+ display: "flex", alignItems: "center",
  });
 
  return (
