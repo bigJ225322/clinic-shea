@@ -3100,7 +3100,14 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
  const recip = rpdDescribeReciprocation(a.claspType, arch, a.attrs);
  if (recip) parts.push(recip);
  }
- perToothEntries.push({ tooth: a.tooth, text: `${rpdToothName(a.tooth)}: ${parts.join(", ")}.` });
+ // Survey crown / crown lengthening pre-requisite notation. Surfacing
+ // this in the per-tooth line (in addition to the red-flag panel) makes
+ // it impossible to send the lab Rx without addressing the pre-fab work.
+ const preTreatNotes = [];
+ if (a.surveyCrown?.indicated) preTreatNotes.push("⚠ PFM survey crown required FIRST");
+ if (a.crownLengthening?.indicated) preTreatNotes.push("⚠ Crown lengthening (Phase II) required FIRST");
+ const noteSuffix = preTreatNotes.length > 0 ? ` [${preTreatNotes.join("; ")}]` : "";
+ perToothEntries.push({ tooth: a.tooth, text: `${rpdToothName(a.tooth)}: ${parts.join(", ")}.${noteSuffix}` });
  });
 
  standaloneIndirect.forEach(r => {
