@@ -4512,8 +4512,11 @@ function renderTemplate(raw, f) {
  const efLines = v.split("\n").map(l => l.trim()).filter(l => l && l!== "-");
  const efBullets = efLines.map(l => l.startsWith("-")? l: `- ${l}`).join("\n");
  if (efBullets) {
+ // Templates ship with leading-space indents on stub lines (PDF
+ // extraction artifact, not stripped — see leading-space-stripper
+ // note in §0 cleanup). The (?: *-…) prefix tolerates this.
  t = t.replace(
- /(Endo testing:)\n(?:-[^\n]*\n?)*/,
+ /(Endo testing:)\n(?: *-[^\n]*\n?)*/,
  `$1\n${efBullets}\n`
 );
  }
@@ -4656,8 +4659,10 @@ function renderTemplate(raw, f) {
  ].join(", ");
  return `- ${toothLabel}: ${parts}`;
  });
+ // Templates ship with leading-space indents on stub lines (PDF
+ // extraction artifact, see §0 cleanup). The (?: *-…) prefix tolerates this.
  t = t.replace(
- /(Endo testing:)\n(?:-[^\n]*\n?)*/,
+ /(Endo testing:)\n(?: *-[^\n]*\n?)*/,
  `$1\n${toothRows.join("\n")}\n`
 );
  }
