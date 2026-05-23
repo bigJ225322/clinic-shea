@@ -1734,3 +1734,78 @@ Same latent risk as `.app-root` (A50). `.fade-in` wraps the Note tab procedure c
 - Plus: TOC visibility fix, chapters-collapsed UX change, `.fade-in` defensive fix (UX/correctness improvements, not "bugs" per se)
 
 
+---
+
+## Iteration 25-26 (2026-05-23) — RPD & Note builder iteration
+
+**Two background audit agents launched** found 8 issues total — 7 fixed, 1 borderline.
+
+### Real bug fixes shipped (7):
+
+**A55. Pulpotomy template now uses rubber dam, not Isodry (commit fd0b850).**
+Iter 22 fixed this in the Steps tab; template 7139 and chunk 1135 were missed.
+Pulpotomy is a pulp procedure — AAPD requires rubber dam (airway, Viscostat, pulp tissue containment).
+
+**A56. POE-only strip surgically targets prophy only (commit fd0b850).**
+Previous regex `/Prophy:.*?Treatment planned/` stripped the entire perio chart block — required POE documentation lost. New behavior strips just the "Prophy:" heading + the "Removed supragingival..." sentence; perio chart + OHI sentence stay intact.
+
+**A57. Greedy paren regex made lazy (commit fd0b850).**
+Template 3319 (PFM crown endo access fill) has three `(...)` groups; greedy `[^]*` matched from first `(` to last `)`, sealing off intermediate `#19` refs. (Subsequently superseded by commit 539a02e which is the actual correct fix — see A58.)
+
+**A58. Parens protection actually works now (commit 539a02e).**
+The "lazy" fix in A57 didn't actually solve the problem because `[^]+` outside-paren alternative is greedy across paren boundaries. Real fix uses `[^()]+` to restrict the outside alternative to non-paren characters. Now `(core buildup)` content is preserved verbatim and substitution only applies to text outside parens.
+
+**A59. Leading-space strip regex fixed (commit fd0b850).**
+`(^|\n) (?!)` used `(?!)` — negative lookahead for the empty pattern, which always FAILS. Now uses `(?! )` (negative lookahead for a second space) — strips singleton leading space while preserving 2+ space sub-bullet indents (the documented intent).
+
+**A60. RPD engine: Lingual Bar is now the default (commit 2e14c40).**
+`m.lingualSulcusDepth ?? 0 < 8` made every unset-measurement case fall to Lingual Plate. Now defaults to 99 (adequate). Lingual Plate is still picked when: explicit measurement <8mm, mandibular tori, or Class I + severe resorption.
+Verified against Huddle 6 Case 1 (Mand Class II mod 1) — now matches expected "Lingual Bar".
+
+**A61. Note builder: preserve template anesthetic when user hasn't customized (commit 84ae12c).**
+Opening a procedure without entering a tooth triggered the anesthetic rebuild with all-default injections → "Applied 20% topical benzocaine & administered 1 carpule... with 30G 25mm needle." (no block, no tooth). The template's "as IAN & long buccal block on right / buccal infiltration #19" was silently dropped. Fix: skip rebuild when all techniques flags are off; template's hardcoded sentence stays intact.
+
+**A62. RPD engine: Akers with lingual undercut now flips reciprocation to buccal (commit 2b7ee41).**
+Standard Akers branch hardcoded "Cast lingual reciprocal arm". When user set mesio-lingual undercut, retentive AND reciprocal arms were both on lingual surface — no reciprocation, framework torques during insertion. Now checks undercut location and flips reciprocation to buccal.
+
+**A63. RPD engine: mand laterals + max laterals no longer get I-bar esthetic (commit 2b7ee41).**
+Mand incisors (#23-26) and max laterals (#7, #10) have small crowns, narrow B-L, short single roots, and minimal usable buccal undercut depth. An I-bar there impinges gingiva or engages near-zero retention. Now returns Rest Only (no clasp) for these teeth; cross-arch retention comes from posterior clasps.
+
+**A64. RPD engine: Applegate Rule 8 surfaced as a flag (commit c16b42f).**
+When a 3rd molar (#1, #16, #17, #32) bounds a span with a real clasp, the engine now emits an info-level flag listing the 4 Rule 8 criteria (normal angulation, intact root, periodontal support, functional antagonist). The student verifies before sending to lab.
+
+### Borderline (not auto-fixed):
+
+**B32. Class II without mod has no contralateral retention.**
+Background-agent flagged: mand Class II R missing #29-32 → only #28 RPI; no clasp on left. Engine author's documented interpretation of McCracken Ch 10 is that the indirect retainer on the opposite side provides contralateral function (rests are vertical stops, not retention proper). Agent's interpretation differed — claimed bilateral direct retention is required. Without explicit McCracken text to settle, the engine's existing interpretation stands. Decision for Jake.
+
+### Verified-matches Design Cases:
+
+**Design Case I — Mostly matches Shahin:**
+- Major: A-P Strap ✓
+- #2/#4 Akers ✓
+- #11 cingulum rest ✓
+- Lattice: #3, #13-#15 ✓
+- Engine discrepancy: #9 mesial-ball vs Shahin's distal-ball (both clinically valid — engine picks based on assigned span; Shahin picks based on which saddle is more critical to support)
+
+**Design Case II — Mostly matches:**
+- Full Palate ✓
+- RPI bilateral ✓
+- #11 cingulum rest ✓
+- Engine discrepancy: #6 GP-distal vs Shahin's GP-mesial (similar geometric-vs-clinical-judgment difference)
+
+**Huddle 6 Case 1 — EXACT MATCH after Lingual Bar default fix.**
+**Huddle 6 Case 2 — EXACT MATCH (all clasps, rests, GPs).**
+
+### Iter 25-26 total: 7 real bug fixes, 7 commits
+1. Pulpotomy rubber dam (fd0b850)
+2. POE-only perio chart preservation (fd0b850)
+3. Paren protection (539a02e — superseding fd0b850)
+4. Leading-space strip (fd0b850)
+5. RPD Lingual Bar default (2e14c40)
+6. Anesthetic template preservation (84ae12c)
+7. Akers lingual reciprocation + mand lateral I-bar exclusion (2b7ee41)
+8. Applegate Rule 8 flag (c16b42f)
+
+### Cumulative: 45 commits since "no wake-ups", 20 real bug fixes
+
