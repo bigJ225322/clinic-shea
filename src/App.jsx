@@ -20706,7 +20706,7 @@ const PATHWAYS = [
  id: "dir-sdf",
  domain: "direct",
  label: "SDF (Silver Diamine Fluoride) — non-surgical caries arrest",
- description: "Topical liquid that arrests caries without drilling — no anesthesia, no restoration, ~5 minutes per tooth. Used when definitive treatment isn't possible: very young or anxious patients, patients with medical or behavioral barriers to operative work, palliative cases in the elderly, root caries the patient can't tolerate restorative for. The procedural piece is quick; the case turns entirely on the informed-consent conversation — SDF turns carious lesions PERMANENTLY BLACK and the parent / patient must understand and accept that before treatment.",
+ description: "Topical liquid that arrests caries without drilling — no anesthesia, no restoration, ~5 minutes per tooth. Used when definitive treatment isn't possible: very young or anxious patients, patients with medical or behavioral barriers to operative work, palliative cases in the elderly, root caries on a patient who can't tolerate restorative treatment. The procedural piece is quick; the case turns entirely on the informed-consent conversation — SDF turns carious lesions PERMANENTLY BLACK and the parent / patient must understand and accept that before treatment.",
  keyDecisions: [
  "INFORMED CONSENT FIRST — show pictures of SDF-stained lesions before doing anything else. If the parent/patient is not OK with permanent black staining, do not proceed.",
  "Apply Vaseline to lips and adjacent soft tissue before SDF to prevent transient skin staining (gauze and clinical surfaces stain too — protect what you can).",
