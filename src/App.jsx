@@ -4462,9 +4462,11 @@ function renderTemplate(raw, f) {
 .filter(Boolean)
 .join("\n");
  if (rendered) {
- // Replace every em-dash line after the heading (including the lone — stub)
+ // Replace every em-dash line after the heading (including the lone — stub).
+ // Templates ship with leading-space indents (PDF artifact); the (?: *—…)
+ // tolerates the space before the em-dash.
  t = t.replace(
- /(Specific treatments discussed:)\n(?:—[^\n]*\n?)*/,
+ /(Specific treatments discussed:)\n(?: *—[^\n]*\n?)*/,
  `$1\n${rendered}\n`
 );
  }
