@@ -18957,9 +18957,11 @@ function RPDHelper() {
  onClick={() => setVerbose(v => !v)}
  style={{
  fontSize: "10px", padding: "3px 10px",
- background: verbose ? "var(--ink-soft)" : "transparent",
- color: verbose ? "white" : "var(--ink-soft)",
- border: `1px solid ${verbose ? "var(--ink-soft)" : "var(--rule)"}`,
+ // OFF (default) = white pill with black text.
+ // ON (verbose) = oxblood-filled pill with white text.
+ background: verbose ? "var(--accent)" : "white",
+ color: verbose ? "white" : "var(--ink)",
+ border: `1px solid ${verbose ? "var(--accent)" : "var(--rule)"}`,
  borderRadius: "100px",
  cursor: "pointer",
  fontFamily: "'Geist', sans-serif",
@@ -18970,7 +18972,7 @@ function RPDHelper() {
  ? "Currently showing engine's full pedagogical detail. Click to collapse to the UIC sample format."
  : "Currently 1:1 with UIC sample PDFs. Click to expand to full pedagogical detail with page refs."}
  >
- {verbose ? "Verbose" : "Compact"}
+ Verbose
  </button>
  </div>
  <RPDPreliminaryDesignForm caseInput={caseInput} result={result} verbose={verbose} />
