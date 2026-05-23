@@ -23306,6 +23306,7 @@ const PATHWAYS = [
  id: "cd-implant-supported-lower",
  domain: "cd",
  label: "2-implant Mn Overdenture",
+ conditions: ["McGill consensus", "edentulous mandible", "implant overdenture", "IOD"],
  description: "Severely resorbed mandibular ridge where conventional CD retention is consistently inadequate. McGill Consensus statement (2002) established the 2-implant overdenture as the first-line standard of care for the edentulous mandible. Implants placed in the canine regions; attachment housings picked up in the denture at delivery or via chairside reline. The pickup step matters: failure to relieve the housings adequately before pickup yields a denture that won't seat. Schedule attachment nylon replacement at 6–12 months.",
  keyDecisions: [
  "McGill Consensus (2002): 2-implant mandibular overdenture is first-line standard.",
@@ -23373,6 +23374,7 @@ const PATHWAYS = [
  id: "cd-xerostomic",
  domain: "cd",
  label: "Xerostomic patient",
+ conditions: ["Sjögren's", "Sjogren's", "post-radiation", "xerostomia", "dry mouth"],
  description: "Patient with Sjögren's syndrome, post head-and-neck radiation, or polypharmacy-induced xerostomia. Saliva retention is the dominant mechanism for conventional CD retention via interfacial surface tension — and these patients have little to none. Strategies: maximize border seal with longer flanges where anatomy permits, extend the posterior palatal seal aggressively, consider implant-retention if the radiation field permits implants, prescribe pilocarpine or cevimeline for symptomatic relief, counsel saliva substitutes.",
  keyDecisions: [
  "Saliva retention compromised — extend posterior palatal seal aggressively.",
@@ -23915,6 +23917,7 @@ const PATHWAYS = [
  id: "cd-limited-dexterity",
  domain: "cd",
  label: "Limited dexterity",
+ conditions: ["arthritis", "stroke", "Parkinson's", "Parkinsons"],
  description: "Arthritis, post-stroke, Parkinson's, or general dexterity loss. The patient may struggle to insert and remove the denture independently — material choice (lighter weight), attachment design (lower retention force on overdentures), and caregiver involvement become primary design constraints. Avoid Locator attachments on overdentures (too much retention force); switch to ball attachments or lower-retention Locator inserts. Train a caregiver at delivery, not just the patient.",
  keyDecisions: [
  "Material choice: lighter weight (consider thermoplastic) if patient struggles with handling.",
@@ -25446,7 +25449,10 @@ function Pathways() {
  const [wizardPath, setWizardPath] = useState(["root"]);
 
  // Pathways available based on (a) domain filter and (b) search query.
- // Search matches case-insensitive substring against label + description.
+ // Search matches case-insensitive substring against label + description +
+ // the optional conditions[] field (medical conditions / alias terms that
+ // were trimmed from the visible label but should still surface the pill —
+ // e.g. "Sjögren's" finding the "Xerostomic patient" pathway).
  // Empty base when: no domain selected AND no all-domains AND no search.
  // The user has to actively pick a starting point before pills appear.
  const filteredPathways = useMemo(() => {
@@ -25462,7 +25468,8 @@ function Pathways() {
  const q = searchQuery.trim().toLowerCase();
  return base.filter(p =>
  p.label.toLowerCase().includes(q) ||
- p.description.toLowerCase().includes(q)
+ p.description.toLowerCase().includes(q) ||
+ (p.conditions?.some(c => c.toLowerCase().includes(q)) ?? false)
 );
  }, [domainId, searchQuery, showAllDomains]);
  const pathwaysInDomain = filteredPathways;
