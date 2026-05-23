@@ -19946,25 +19946,18 @@ function GuideChapter({ chapter, hideHeader }) {
  return { intro, sections };
  }, [chapter.blocks]);
 
- // Collapse state: Set of section labels that are collapsed. Initialize
- // with any section whose label starts with "Materials" — those default
- // closed since the student knows what to bring by their second case.
+ // Collapse state: Set of section labels that are collapsed. Default
+ // is everything collapsed — the user reads the chapter top-down by
+ // expanding sections as they go. The "Expand steps" toggle at the
+ // top-right of the chapter flips them all open at once.
  const [collapsedSecs, setCollapsedSecs] = useState(() => {
- const s = new Set;
- groups.sections.forEach(g => {
- if (/^materials/i.test(g.label)) s.add(g.label);
- });
- return s;
+ return new Set(groups.sections.map(g => g.label));
  });
 
  // Reset when the chapter changes (e.g., user picks a different
- // pathway / chapter).
+ // pathway / chapter). All collapsed again — same rationale as initial.
  useEffect(() => {
- const s = new Set;
- groups.sections.forEach(g => {
- if (/^materials/i.test(g.label)) s.add(g.label);
- });
- setCollapsedSecs(s);
+ setCollapsedSecs(new Set(groups.sections.map(g => g.label)));
  }, [chapter.id]);
 
  const toggleSec = (label) => {
