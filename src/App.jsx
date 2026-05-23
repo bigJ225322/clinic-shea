@@ -11986,13 +11986,13 @@ const PE_SEMESTERS = [
 ];
 
 const PE_PARTS = [
- { id: "perio", label: "Periodontal Exams" },
+ { id: "perio", label: "Periodontics" },
  { id: "restFound", label: "Restorative" },
  { id: "operative", label: "Operative" },
  { id: "fixedProsth", label: "Fixed Prosthodontics" },
  { id: "removable", label: "Removable Prosthodontics" },
  { id: "specialty", label: "Specialty" },
- { id: "rotation", label: "Rotation-Specific" },
+ { id: "rotation", label: "Rotation" },
 ];
 
 // Prereq check helpers — reach into MEE counts (which mirror the dashboard).
@@ -13305,6 +13305,9 @@ function RubricGrid({ criteria }) {
  borderLeft: "1px solid var(--rule-soft)",
  color: c.excellent? "var(--ink)": "var(--ink-faint)",
  fontStyle: c.excellent? "normal": "italic",
+ // Em-dash placeholder centers horizontally so empty cells read as
+ // intentional blanks instead of left-anchored text fragments.
+ justifyContent: c.excellent ? "flex-start" : "center",
  }}>
  {c.excellent || "—"}
  </div>,
@@ -13313,6 +13316,7 @@ function RubricGrid({ criteria }) {
  borderLeft: "1px solid var(--rule-soft)",
  color: c.acceptable? "var(--ink)": "var(--ink-faint)",
  fontStyle: c.acceptable? "normal": "italic",
+ justifyContent: c.acceptable ? "flex-start" : "center",
  }}>
  {c.acceptable || "—"}
  </div>,
@@ -13321,6 +13325,7 @@ function RubricGrid({ criteria }) {
  borderLeft: "1px solid var(--rule-soft)",
  color: c.notMet? "var(--ink)": "var(--ink-faint)",
  fontStyle: c.notMet? "normal": "italic",
+ justifyContent: c.notMet ? "flex-start" : "center",
  }}>
  {c.notMet || "—"}
  </div>,
