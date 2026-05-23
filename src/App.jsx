@@ -2495,7 +2495,7 @@ const BROWSE_CATEGORIES = CATEGORIES;
  * ==========================================================================*/
 const REF_DATA = {
  "ref-blood-pressure": {
- verdict: "Hypertension is staged by whichever number is higher — systolic or diastolic. Above stage II, dental care at is restricted.",
+ verdict: "Hypertension is staged by whichever number is higher — systolic or diastolic. BP above 160/100 restricts routine dental care to urgent only; above 180/110 sends the patient to the ER, not the chair.",
  blocks: [
  { type: "table", caption: "AHA blood pressure categories",
  headers: ["Category", "Systolic (mm Hg)", "Diastolic (mm Hg)"],
