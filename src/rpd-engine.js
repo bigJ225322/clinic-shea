@@ -1880,9 +1880,23 @@ function pickClaspMechanic({
  const akersStandardUndercut = sideToward === "mesial" ? "disto-buccal": "mesio-buccal";
  const effectiveUndercut = (userUndercut === "mid-buccal") ? akersStandardUndercut: userUndercut;
 
- // Esthetic I-bar — requires mid- or mesio-buccal undercut + no RPI contras
+ // Esthetic I-bar — requires mid- or mesio-buccal undercut + no RPI contras.
+ // EXCLUDE mandibular incisors (#23-26) and max laterals (#7, #10): these
+ // teeth have small crowns, narrow B-L width, short single roots, and
+ // minimal buccal undercut depth. An I-bar engaging mid-buccal undercut
+ // there would either impinge gingiva (no room above attached gingiva) or
+ // engage zero retention. McCracken explicitly avoids using these teeth
+ // as primary abutments; if they MUST bound a span, rest-only with
+ // cingulum/ML ball is the only acceptable design. Max lateral has the
+ // same issue (small, narrow) — engine already routes it through the
+ // RPD_MAX_LATERALS exclusion in the IR selector but the primary-abutment
+ // path didn't catch it.
+ const isMandIncisor = RPD_MAND_INCISORS.has(tooth);
+ const isMaxLateral = tooth === 7 || tooth === 10;
+ const tooSmallForIBar = isMandIncisor || isMaxLateral;
  const useEstheticIBar = inEsthetic && claspContras.length === 0
- && userUndercut !== "disto-buccal" && userUndercut !== "none";
+ && userUndercut !== "disto-buccal" && userUndercut !== "none"
+ && !tooSmallForIBar;
  if (useEstheticIBar) {
  return {
  claspType: "I-bar (esthetic)",
@@ -1892,6 +1906,24 @@ function pickClaspMechanic({
  claspTier: "judgment",
  claspAlternative: "Rest Only (no clasp)",
  claspAlternativeRationale: "Design Case II uses Rest Only on max-anterior abutments when the case already has adequate retention from other clasps (e.g., bilateral RPI on premolars). Consider Rest Only if the design has ≥2 strong retentive clasps elsewhere.",
+ };
+ }
+ // Mand incisor / max lateral fallback: Rest Only (no clasp). The
+ // restSeat is set independently by pickRestSeat — mand incisor → ML
+ // ball, max lateral → cingulum. Cross-arch retention comes from
+ // posterior clasps; the major connector (lingual plate for mand,
+ // palatal coverage for max) provides bracing. This matches Shahin
+ // Design Case I where #6 and #11 had Rest Only on max canines, and
+ // McCracken's general approach for small anterior abutments.
+ if (tooSmallForIBar && inEsthetic) {
+ return {
+ claspType: "Rest Only (no clasp)",
+ claspRationale: `${isMandIncisor ? "Mandibular incisor" : "Maxillary lateral incisor"} anatomy (small crown, narrow B-L width, short single root, minimal usable buccal undercut depth) cannot support an I-bar (esthetic) clasp. Rest-only design is the only anatomically-appropriate choice; cross-arch retention must come from posterior clasps and bracing via the major connector contact.`,
+ retentiveArm: "None — major connector contact provides bracing; retention via posterior clasps",
+ reciprocation: null,
+ claspTier: "common",
+ claspAlternative: null,
+ claspAlternativeRationale: null,
  };
  }
 
@@ -1927,12 +1959,22 @@ function pickClaspMechanic({
  };
  }
 
- // Standard Akers (default for tooth-supported)
+ // Standard Akers (default for tooth-supported).
+ // Reciprocation must be on the OPPOSITE surface from the retentive arm.
+ // Previously hardcoded "Cast lingual reciprocal arm" — wrong when the
+ // retentive arm engages a LINGUAL undercut (would have both arms on
+ // the same side, defeating reciprocation).
+ const isLingualUndercutAkers =
+ effectiveUndercut === "mesio-lingual" || effectiveUndercut === "disto-lingual";
  return {
  claspType: "Akers",
  claspRationale: RPD_RATIONALE.clasp["Akers"],
  retentiveArm: `Cast circumferential retentive arm engaging 0.01" ${effectiveUndercut} undercut`,
- reciprocation: { type: "arm", text: "Cast lingual reciprocal arm", rationale: RPD_RATIONALE.reciprocation.arm },
+ reciprocation: {
+ type: "arm",
+ text: isLingualUndercutAkers ? "Cast buccal reciprocal arm" : "Cast lingual reciprocal arm",
+ rationale: RPD_RATIONALE.reciprocation.arm,
+ },
  claspTier: "strong",
  claspAlternative: null,
  claspAlternativeRationale: null,
