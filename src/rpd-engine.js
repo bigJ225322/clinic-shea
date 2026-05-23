@@ -2780,6 +2780,24 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
  });
  }
 
+ // Zero-retention warning — case where all abutments emit "Rest Only (no clasp)"
+ // and no other retainer is present. Small Kennedy III cases bounded only by
+ // max anteriors (e.g. lone #8 missing → #7/#9 rest-only) currently produce no
+ // contralateral retention; the framework relies on guide-plane friction only.
+ // For a cast definitive RPD this is structurally insufficient — flag so the
+ // student can add an Akers/Embrasure on a posterior teeth-bounded surface or
+ // consider a unilateral fixed treatment instead.
+ const nonNullAbuts = (abutmentDesigns || []).filter(a => a && a.claspType);
+ const allRestOnly = nonNullAbuts.length > 0
+ && nonNullAbuts.every(a => a.claspType === "Rest Only (no clasp)");
+ if (allRestOnly && designIntent === "definitive") {
+ flags.push({
+ severity: "warning",
+ type: "zero-retentive-clasps",
+ message: `Design produces ZERO retentive clasps — every abutment is Rest Only. A cast definitive RPD requires real clasp retention to seat predictably; the major-connector contact and guide-plane friction alone are not enough. Options: (1) add a posterior retainer (Akers, Embrasure pair, or ball clasp on a teeth-bounded contact) to give the framework two-point retention, (2) reconsider the indication — a small isolated edentulous space may be better served by a fixed restoration (FPD or implant) than a cast RPD, or (3) if delivering as an esthetic stay-plate only, document it as an interim/transitional appliance rather than a definitive RPD.`,
+ });
+ }
+
  return flags;
 }
 

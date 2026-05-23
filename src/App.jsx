@@ -19146,7 +19146,7 @@ const GUIDES = [
  "**4c. Axial depth-cut grooves:** use the chamfer diamond. Cut 1.0 mm axial grooves on B + L + M + D.",
  "**4d. Reduce axial walls** to the depth-groove level. Maintain a 6–10° total occlusal convergence (a tapered, parallel-to-itself axial wall).",
  "**4e. Path of draw:** for multiple-unit FPDs, the most-misaligned abutment determines the path. Taper non-parallel abutments inward to achieve common path.",
- "**4f. Finish the margin** with a fine-grit chamfer diamond. Chamfer width: 0.5–1.0 mm. Margin location: 0.5–1.0 mm subgingival for esthetic zones, supragingival or equigingival otherwise.",
+ "**4f. Finish the margin** with a fine-grit chamfer diamond. Chamfer width: 1.0–1.25 mm for PFM (deep chamfer per Swade); 0.5–0.8 mm for all-metal. Margin location: 0.5–1.0 mm subgingival for esthetic zones, supragingival or equigingival otherwise.",
  "**4g. Smooth all line angles + surfaces.** Sharp angles concentrate stress; smooth flowing surfaces give the crown material adequate bulk + clean seating.",
  "**4h. Verify reduction with the putty matrix:** seat the matrix, look for 1.5–2.0 mm clearance throughout the prep tooth. **Use a 1.0 mm probe (or condenser) inside the putty** — classic error is acceptable-looking putty clearance from the outside that's actually under-reduced when measured inside.",
  "**4i.** Verify with explorer that no exposed dentin shows undercuts (undercuts trap impression material + interfere with crown seating).",
@@ -20684,7 +20684,7 @@ const PATHWAYS = [
  "Depth is typically 1.0-1.5 mm, restricted to pits unless caries dictates more.",
  "Etch the ENTIRE occlusal surface so the sealant placement step works — not just the cavitation.",
  "Code D2391 (Resin-based composite — 1 surface, posterior) covers both the composite and the sealant overlay. Do NOT bill D1351 separately on the same tooth same day (DHS won't cover both).",
- "Peds workflow: present to instructor before bringing patient back, weigh the patient, 1 carpule anesthesia limit, Isodry preferred over Isodry, 100% O2 at end if nitrous used.",
+ "Peds workflow: present to instructor before bringing patient back, weigh the patient, 1 carpule anesthesia limit, Isodry preferred for moisture control, 100% O2 at end if nitrous used.",
  ],
  phases: [
  { label: "Patient prep", count: 3 },
@@ -20710,7 +20710,7 @@ const PATHWAYS = [
  keyDecisions: [
  "INFORMED CONSENT FIRST — show pictures of SDF-stained lesions before doing anything else. If the parent/patient is not OK with permanent black staining, do not proceed.",
  "Apply Vaseline to lips and adjacent soft tissue before SDF to prevent transient skin staining (gauze and clinical surfaces stain too — protect what you can).",
- "Max dose: 1 drop (25 μL) per 10 kg body weight (~22 lb) per visit. 1 drop covers roughly 5 teeth. An 8 mL bottle ≈ 250 drops. AAPD-published dose cap.",
+ "Max dose: 1 drop (25 μL) per 10 kg body weight (~22 lb) per visit. 1 drop covers roughly 5 teeth. An 8 mL bottle ≈ 320 drops (8000 μL ÷ 25 μL/drop). AAPD-published dose cap.",
  "Dry the tooth completely (gauze then air) before applying. Apply with a micro-brush for ~2 minutes, rubbing into the lesion. Use spongy floss for interproximal lesions. Keep isolated 3 minutes after application. Then wipe excess.",
  "Re-application every 6 months for 2-3 years maintains arrest (per AAPD systematic reviews — biannual SDF outperforms fluoride varnish for cavitated lesion arrest). Recall at 2-4 weeks after first application to confirm darkening = arrest is working.",
  "Potassium iodide (KI) applied over SDF reduces the dark staining — useful for anterior teeth where esthetics matter most. Mixed evidence on staining reduction, no evidence it compromises arrest. Glutathione is an emerging alternative.",
@@ -20753,9 +20753,9 @@ const PATHWAYS = [
  id: "ind-conventional-crown",
  domain: "indirect",
  label: "Single tooth needs a crown (conventional PFM)",
- description: "Posterior tooth needing a crown via the standard PFM workflow — four clinical sessions with lab steps between. The case turns on prep geometry (1.5 mm functional cusp / 1.0 mm non-functional reduction, 0.5–1.0 mm chamfer, 6–10° taper) and an accurate impression captured the same visit. The most common error is under-reduction (the putty matrix looks right from the outside but a 1.0 mm probe inside reveals shy clearance) and on margin contamination from bleeding tissue.",
+ description: "Posterior tooth needing a crown via the standard PFM workflow — four clinical sessions with lab steps between. The case turns on prep geometry (1.5–2.0 mm occlusal reduction, 1.25–1.50 mm axial reduction, 1.0–1.25 mm chamfer per Swade PFM spec, 6–10° taper) and an accurate impression captured the same visit. The most common error is under-reduction (the putty matrix looks right from the outside but a 1.0 mm probe inside reveals shy clearance) and on margin contamination from bleeding tissue.",
  keyDecisions: [
- "Reduction targets: 1.5 mm functional cusp / 1.0 mm non-functional / 0.5–1.0 mm chamfer / 6–10° total occlusal convergence.",
+ "Reduction targets (PFM, Swade clinic guide): 1.5–2.0 mm occlusal / 1.25–1.50 mm axial / 1.0–1.25 mm deep chamfer finish line / 6–10° total occlusal convergence. (All-metal uses shallower 0.5–0.8 mm chamfer + 1.0–1.25 mm axial; all-ceramic same as PFM.)",
  "Verify reduction with the putty matrix AND a 1.0 mm probe inside the putty — outside-only check misses inner under-reduction.",
  "Cord retraction for subgingival margins (#00 or #0; soak in hemostatic 3–5 min).",
  "Tempbond NE on the provisional; gel-stage cleanup 3–4 min after seating.",
@@ -22892,6 +22892,7 @@ const PATHWAYS = [
  "Increments smaller (1 mm instead of 2 mm) because primary pulp horns are higher / closer to the surface. Cure each increment per the composite manufacturer's recommended time (typically 20 sec).",
  "Deep but vital lesion — consider partial (1-step) or stepwise (2-step) excavation over complete excavation. AAPD 2022 evidence: leaving caries-affected dentin over the pulp and sealing under a definitive restoration produces fewer pulp exposures than chasing every speck. If the lesion floor stays soft but the cavosurface is sound, a sealed restoration over partial excavation can spare the pulp and avoid a pulpotomy.",
  "UIC prep criteria: 1.0-1.5mm pulpal depth, smooth floor with rounded internal line angles, walls parallel to slightly convergent, marginal ridges + cusp tips preserved. Recommended burs: 329, 330, 55, 56, 169 (UIC Restorative + Composite Finishing kits). For Class II: isthmus width 1/4-1/3 intercuspal distance (~1mm), axial wall 1.0mm matching external contour, B/L extensions within the line angles of the tooth, no retention grooves.",
+ "Class II matrix selection: T-band (stainless steel pre-formed band) is the conventional UIC choice for primary molars — the band is wrapped buccal-to-lingual around the tooth, the T-fold tightened over a wooden wedge to lock the band, then trimmed flush with crown scissors. A sectional matrix (pedo-size Garrison ring or Triodent V3 Pedi) is acceptable when the contact area is small and the prep stays within one line angle, but T-band re-establishes contour more reliably on wider primary contacts. Tofflemire with a universal band is generally too tall for primary molars and tends to overflare — avoid unless nothing else fits.",
  "Carve and finish gently — primary teeth have thinner enamel that can fracture under aggressive finishing. Maintain \"sealed tooth\" anatomy on the restoration — inclines and ridges restored without recreating deep pits or grooves. Check occlusion in MI.",
  ],
  phases: [
