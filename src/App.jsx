@@ -4483,10 +4483,14 @@ function renderTemplate(raw, f) {
  // ---- Urgent care (374) special cases ----
 
  // CC: inline in the first sentence as CC: "" (smart quotes in the template!)
- // Earlier regex used ASCII "" so the substitution silently failed; templates
- // use Unicode U+201C/U+201D curly quotes.
+ // Templates 374/448/573 use Unicode U+201C/U+201D curly quotes.
+ // Match the smart-quote pair (possibly with content like "." between them),
+ // then replace the whole CC: ".....": phrase with CC: "{user value}".
+ // The earlier "fixed" regex actually used ASCII "" — confirmed via xxd —
+ // and silently left the smart-quote placeholder in the rendered note,
+ // appending the user's CC ASCII-quoted before it.
  if (label === "cc") {
- t = t.replace(/CC: [""]?[""]?/, `CC: "${v}"`);
+ t = t.replace(/CC: “[^”]*”/, `CC: “${v}”`);
  continue;
  }
 
