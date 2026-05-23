@@ -4544,16 +4544,10 @@ function renderTemplate(raw, f) {
 
  // ---- Perio Re-Evaluation (1346) special cases ----
 
- // "Patient's periodontal health has improved —." — fill in the dash.
- if (label === "improvement detail") {
- if (v.trim()) {
- t = t.replace(
- /(periodontal health has improved) —\./,
- `$1 — ${v}.`
- );
- }
- continue;
- }
+ // Note: "improvement detail" used to live here as a form field, but its
+ // top-level Assessment UI (perioImproved + perioImprovementDetail) is the
+ // canonical entry point and handles substitution above. Duplicate form
+ // field removed to avoid double-input UI confusion.
 
  // "perio maintenance interval of 4 months" — substitute interval.
  if (label === "maintenance interval") {
@@ -6691,12 +6685,11 @@ const EXAM_FINDINGS_CONFIG = {
  ],
  },
  {
+ // The "Improvement — what's better" input lives in the top-level
+ // Assessment section above (perioImproved + perioImprovementDetail
+ // dropdown/textinput pair). Keeping only maintenance interval here.
  title: "Reeval outcome",
  rows: [
- [{ label: "improvement detail", type: "input",
- displayLabel: "Improvement — what's better",
- placeholder: "e.g. reduced pocket depths, BOP resolved, plaque control improved",
- hint: "Fills in the dash after \"periodontal health has improved —\"" }],
  [{ label: "maintenance interval", type: "select",
  displayLabel: "Maintenance interval",
  options: ["", "3 months", "4 months", "6 months"],
