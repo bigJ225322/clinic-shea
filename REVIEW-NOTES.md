@@ -1363,3 +1363,53 @@ All commits pushed to origin/main. 1017/1017 tests pass throughout. Build clean.
 - 38c02d2: clarify D3346/D3347/D3348 endo retreatment access/fill descriptions
 
 Tests passing 1017/1017. Build clean. Pushed to origin/main.
+
+---
+
+## Iteration 21 (2026-05-23) — Immediate continuation (user requested no wake-up delays)
+
+### Codes tab — bulk implant description clarification
+
+**A38. D6058-D6083 implant crown/FPD sub-codes (commit 838d261).** All 25 implant abutment/crown/FPD sub-codes had generic descriptions ("Initial Preparation" / "Final Impression" / "Cementation"). Updated each per CDT 2024:
+- D6058: Porc/cer crown on abutment
+- D6059-D6061: PFM crown on abutment (high noble / base / noble)
+- D6062-D6064: Cast crown on abutment (high noble / base / noble)
+- D6065-D6067: Implant-supported crowns (porc/cer / PFM / cast)
+- D6068-D6074: FPD retainers on abutment
+- D6075-D6077: FPD retainers on implant
+- D6082/D6083: PFM crown on implant (titanium / noble)
+
+Mirrors the digital DD6058/DD6065 description style.
+
+### Note builder — perio re-eval cleanup
+
+**A39. Perio re-eval em-dash when detail empty (commit c408236).** Template 1346 ships with "Patient's periodontal health has improved —." The substitution always added "— {detail}." after status, producing "has improved — ." (stray space before period) when detail field was empty. Now drops the em-dash entirely when detail is blank, rendering just "has improved." Cleaner reading when student doesn't write any explanation.
+
+### RPD engine — two real bugs found and fixed
+
+**A40. Mandibular incisor bounding abutments now use ML ball rest (commit d880d8b).** The rpdSelectRestSeat fallback at line 1738 for "Other anteriors (incisors as bounding abutments — rare)" returned cingulum rest for any anterior incisor regardless of arch. Mandibular incisors lack a prominent cingulum (it's nearly flat), so a cingulum rest can't form a positive seat. Now differentiates by arch: mandibular incisors → ML ball rest (matching the existing pattern used at lines 1001, 1352, 1445, 2205); maxillary incisors keep cingulum rest. Verified by re-running the Mand Class II Mod 2 scenario — #24 and #25 (lower centrals as bounding abutments for #23/#26 mod spans) correctly show ball rest now.
+
+**A41. Fully-dentate guard for cases with only 3rd molars missing (commit ee088e2).** When Applegate Rule 2 excludes the only missing teeth (most commonly 3rd molars #1, #16, #17, #32), Kennedy classifier correctly returned class=null. But the engine continued to call rpdSelectMajorConnector which defaulted to "A-P Strap" — producing a spurious RPD design for a patient who doesn't need one. Added a guard: when kennedy.class === null, return early with a "fully-dentate" info flag and null major/framework. Still runs rpdCheckRedFlags to surface hopeless-tooth / poor-abutment / combination-syndrome warnings for existing teeth (those checks don't depend on edentulous spans). Verified by re-running scenarios — Max #1+#16 missing now returns Major: undefined with a clean fully-dentate info flag instead of fake "A-P Strap".
+
+### Iter 21 commit summary
+- 838d261: clarify D6058-D6083 implant crown/FPD sub-code descriptions
+- c408236: drop em-dash from perio re-eval prose when detail field is empty
+- d880d8b: RPD mandibular incisor bounding abutments use ML ball rest
+- ee088e2: RPD engine guard for fully-dentate cases
+
+All commits pushed to origin/main. 1017/1017 tests pass throughout. Build clean.
+
+### Iter 21 — additional borderlines
+
+**B25. RPD engine — single max central missing (#9 only) has zero-retentive-clasps warning but no FPD recommendation.** Tested scenario: single #9 missing. Engine produces:
+- Kennedy III, Major Single Palatal Strap
+- Abutments #8 (Rest Only ball) + #10 (Rest Only cingulum) — both anterior, both no clasp
+- Warning fires: "Design produces ZERO retentive clasps"
+
+The warning is correct, but the engine doesn't auto-suggest the cleaner alternative: 3-unit FPD #8-9-10 is the standard treatment, not an RPD. The isBilateral check passes because #8 is on the right side and #10 on the left, but they're literally adjacent across the midline — there's no real bilateral support, only midline-crossing.
+
+The current logic returns FPD recommendation only for *unilateral-bounded* gaps (Class III with totalMissing ≤3 on one side). For midline-crossing-only gaps, it's still classified as bilateral and routed to RPD design.
+
+Suggested enhancement (not implemented): tighten the bilateral check to require at least one POSTERIOR abutment on each side. Single-anterior-tooth Class III/IV cases would then route to the FPD recommendation. Worth a deliberate call since it could shift behavior on edge cases.
+
+**B26. Implant codes D6086-D6117 still have generic descriptions.** Iter 21 cleaned up D6058-D6083, but the higher range (D6086-D6087 implant-supported crown variants, D6098-D6099 retainer variants, D6114-D6117 hybrid abutment retainers) still show "Initial Preparation" / "Final Impression" / "Cementation". These codes are less commonly used at UIC than D6058-D6083 so the impact is lower, but consistency would be nice. Worth checking CDT 2024 mapping before normalizing.
