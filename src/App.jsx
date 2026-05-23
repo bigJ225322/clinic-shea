@@ -3479,14 +3479,11 @@ const DEFAULT_FIELDS = {
  // Names (signature line)
  names: "",
  // Crown / provisional procedure options.
- // crownIsNew: "New?" checkbox — inserts "new" before "provisional" in note.
- // Defaults to true (new provisional is the standard).
  // cordPlaced: "Placed cord?" checkbox — when true, shows cord size selector.
  //   Default = true: every template ships with the cord-placement sentence;
  //   unchecking strips it from the rendered note (renderTemplate 6c2).
  // cordSize: the selected cord size (replaces #0 in template).
  // crownType: PFM or all-ceramic dropdown (replaces "PFM" in template).
- crownIsNew: true,
  cordPlaced: true,
  cordSize: "0",
  crownType: "PFM",
@@ -4120,6 +4117,23 @@ function renderTemplate(raw, f) {
  t = t.replace(/\s*Patient is provisionally accepted for[^.]+\.\s*/g, " ");
  t = t.replace(/\s*Patient is provisionally accepted to[^.]+\.\s*/g, " ");
  t = t.replace(/\n{3,}/g, "\n\n");
+ }
+
+ // -------- 6f2. Denture-tooth mould codes (wax-rim template). --------
+ // The ToothMouldSelector in the Note builder writes Portrait/Bioform IPN
+ // codes into f.anteriorMold + f.mandibularMold. Template 3954 (wax rims)
+ // ships with placeholder codes "tooth mold 32E" / "tooth mold: C" —
+ // substitute the student's actual selection. Previously these fields
+ // had setters but no template logic, so the picker was a no-op.
+ if (f.anteriorMold && f.anteriorMold.trim()) {
+ const v = f.anteriorMold.trim();
+ // "anterior maxillary tooth mold 32E" — replace just the code at the end
+ t = t.replace(/(anterior maxillary tooth mold )[A-Z0-9]+/gi, `$1${v}`);
+ }
+ if (f.mandibularMold && f.mandibularMold.trim()) {
+ const v = f.mandibularMold.trim();
+ // "Corresponding mandibular tooth mold: C" — replace just the code
+ t = t.replace(/(mandibular tooth mold:\s*)[A-Z0-9]+/gi, `$1${v}`);
  }
 
  // -------- 6e2. SRP quadrant(s). --------
