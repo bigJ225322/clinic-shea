@@ -2399,23 +2399,32 @@ const CATEGORIES = [
  { id: "misc-photos-xrays", label: "Adding Photos & Radiographs" },
  { id: "misc-booking-chair", label: "Booking a Chair" },
  { id: "misc-calling-patients", label: "Calling Patients" },
- { id: "misc-phone-numbers", label: "Phone Numbers" },
  ]},
+ // Lookup re-ordered into a thematic flow (was scrambled): patient
+ // evaluation → anesthesia → medical context → rx/materials/extraction →
+ // contacts. Phone Numbers moved here from Axium Workflow — it's reference
+ // data (address book), not a workflow.
  { id: "misc-lookup", label: "Lookup", procedures: [
+ // Patient evaluation
  { id: "ref-blood-pressure", label: "Blood Pressure" },
- { id: "ref-common-meds", label: "Common Medications" },
- { id: "ref-materials", label: "Materials" },
  { id: "ref-endo-dx", label: "Endodontic Diagnosis" },
  { id: "ref-endo-testing", label: "Endodontic Testing" },
+ { id: "ref-caries-dx", label: "Caries Diagnosis" },
+ // Anesthesia
  { id: "ref-local-anes", label: "Local Anesthetic" },
  { id: "ref-max-anes", label: "Maxillary Anesthesia" },
  { id: "ref-mand-anes", label: "Mandibular Anesthesia" },
+ // Medical context
+ { id: "ref-common-meds", label: "Common Medications" },
  { id: "ref-antibiotic-proph", label: "Antibiotic Prophylaxis" },
  { id: "ref-mronj", label: "Bisphosphonates / MRONJ" },
  { id: "ref-pregnant", label: "Pregnant Patients" },
+ // Rx, materials, procedures
  { id: "ref-prescriptions", label: "Common Prescriptions" },
+ { id: "ref-materials", label: "Materials" },
  { id: "ref-extraction", label: "Extraction" },
- { id: "ref-caries-dx", label: "Caries Diagnosis" },
+ // Contacts
+ { id: "misc-phone-numbers", label: "Phone Numbers" },
  ]},
  ]},
 ];
