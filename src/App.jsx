@@ -18832,19 +18832,25 @@ function RPDHelper() {
 
  return (
  <>
- {/* Honesty banner — italic, red, serif (Fraunces). Sits above the
- white RPD card so it reads as a footnote on the whole tool. */}
- <div className="serif rpd-print-hide" style={{
- fontStyle: "italic",
- fontSize: "0.85rem",
- color: "var(--accent)",
- marginBottom: "8px",
- letterSpacing: "0.01em",
- textAlign: "left",
- }}>
- *Not super accurate yet
- </div>
  <div style={{...cardStyle, padding: "26px 28px" }}>
+ {/* Diagnosis label — upper-left of the builder card, small Fraunces
+ oxblood roman. Replaces the old below-the-chart verdict block.
+ Cutting the engine's design-summary sentence ("Designed as a
+ definitive RPD with…") encourages students to read the lab form
+ directly, which is the source of truth and where every choice is
+ spelled out in clinical convention. */}
+ {hasContent && result.kennedy?.class != null && (
+ <div className="rpd-print-hide" style={{
+ fontFamily: "'Fraunces', serif",
+ fontSize: "13px",
+ color: "var(--accent)",
+ marginBottom: "10px",
+ letterSpacing: "0.01em",
+ }}>
+ {result.kennedy.description}.
+ </div>
+ )}
+
  {/* Top action bar — all three controls on one horizontal line.
  Clear all (left), Mx/Mn toggle (center), Case inputs (right).
  The "RPD Design Helper" h2 title was cut; the tab label "RPD"
@@ -18948,39 +18954,24 @@ function RPDHelper() {
  </div>
  </div>
 
- {/* ─── Classification verdict (only when a case is built and it's
- an actual RPD, not a fixed-replacement case). Split into two
- elements per verdict-first principle:
- • Short italic Fraunces oxblood line = the clinical diagnosis.
- The eye lands here first.
- • Regular ink-soft sentence below = engine's design summary
- (side, design intent, major connector, framework material).
- Demoting the summary to regular prose keeps the italic working
- as a one-line punchline instead of slogging across two lines. */}
- {hasContent &&!isFixedTreatmentRecommendedCase && (
- <>
- <div style={{...verdict, marginTop: "14px", marginBottom: "4px" }}>
- {result.kennedy.description}.
- </div>
+ {/* Diagnosis verdict moved to the upper-left of the card (above the
+ action bar). Old below-the-chart Kennedy + design-summary block
+ was cut to encourage students to read the lab form directly,
+ which carries the full design narrative in clinical convention.
+ Fixed-treatment cases still get their FPD-recommendation rationale
+ via the red-flag panel below (the engine emits a warning-tier flag
+ when majorConnector.recommendsFixed is true). */}
+ {hasContent && isFixedTreatmentRecommendedCase &&!isSingleToothFixedCase && (
  <div style={{
  fontSize: "13px", color: "var(--ink-soft)",
- lineHeight: 1.5, marginBottom: "12px",
+ lineHeight: 1.5, marginTop: "12px", marginBottom: "12px",
+ padding: "10px 12px",
+ background: "rgba(122,30,30,0.04)",
+ border: "1px solid var(--accent)",
+ borderRadius: "2px",
  }}>
- {result.kennedy.deSide
- ? `Distal extension on the patient's ${result.kennedy.deSide}. `
- : ""}
- Designed as {result.designIntent === "definitive" ? "a definitive" : `an ${result.designIntent}`} RPD with {result.majorConnector.type} major connector and {result.framework.material} framework.
- </div>
- </>
-)}
- {/* ─── Fixed-treatment verdict (multi-tooth case where engine
- recommends FPD instead of RPD). Single-tooth cases handle
- their own verdict elsewhere; this fires for short unilateral
- Class III with ≥2 missing teeth. */}
- {hasContent && isFixedTreatmentRecommendedCase &&!isSingleToothFixedCase && (
- <div style={{...verdict, marginTop: "14px", marginBottom: "12px" }}>
- {result.kennedy.description}.
- {" "}{result.majorConnector.rationale}
+ <strong style={{ color: "var(--accent)" }}>⚠ FPD recommended.</strong>{" "}
+ {result.majorConnector.rationale}
  </div>
 )}
 
