@@ -24899,14 +24899,15 @@ function PathwaySidebarTOC({ sections, activeIdx, collapsedSections, onToggle, o
  const firstEl = document.getElementById(firstAnchor);
  const lastEl = document.getElementById(lastAnchor);
  if (!firstEl ||!lastEl) return;
- // Visible while ANY part of the guide is in the viewport — from the
- // first section's top entering the viewport, through the last section
- // still being partially visible. At 0.4 base opacity the sidebar is
- // unobtrusive even when the in-page TOC is also visible; hovering
- // brings it to full opacity for active navigation.
- const firstTop = firstEl.getBoundingClientRect().top;
+ // Visible whenever the user is anywhere within the customized-guide
+ // content area. The previous logic only triggered once the first
+ // section anchor was in view, but landing on a pathway puts the
+ // sections way below the fold (after description + keyDecisions +
+ // phases) — so the TOC stayed hidden on page load. New logic: show
+ // as soon as the user has scrolled down past the page top, AND
+ // through the last section still being partially visible.
  const lastBottom = lastEl.getBoundingClientRect().bottom;
- setInRange(firstTop < window.innerHeight && lastBottom > 0);
+ setInRange(lastBottom > 0);
  };
  update();
  window.addEventListener("scroll", update, { passive: true });
