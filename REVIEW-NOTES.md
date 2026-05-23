@@ -2077,4 +2077,6 @@ The RPD engine audit agent ran a 13-tool-use deep check against Dr. Shahin's Int
 
 10. **`rest seat seat passively` duplicate-word typo in RPD engine action text (dfe2a1c).** Delivery-day intaglio-fit-check step said `verify proximal plate + rest seat seat passively`. Fixed to `rest seat sit passively` (plural subject agreement).
 
-### Iter 31 cumulative: 9 commits, 10 substantive fixes (1 RPD test), all live. Tests 1023/1023 pass. B35 borderline resolved.
+11. **RPD engine CDT codes swapped in repair decision tree (78f9408).** Big find. The post-delivery maintenance action text (step 11) had three CDT codes mis-mapped: D5640 was on the CLASP fracture line (correct: D5630), D5650 was on the TOOTH fracture line (correct: D5640), D5630 was on the ACRYLIC flange chip line (correct: D5611 mand / D5612 max). Direct billing accuracy issue — student following the engine would have submitted wrong codes. Verified against the CODES table in App.jsx (1838-1846) and CDT 2024. Also clarified D5640 vs D5650 distinction in the text.
+
+### Iter 31 cumulative: 10 commits, 11 substantive fixes (1 RPD test), all live. Tests 1023/1023 pass. B35 borderline resolved. CDT code swap caught as biggest find of this iter.
