@@ -22420,7 +22420,7 @@ const PATHWAYS = [
  {
  id: "cd-iid",
  domain: "cd",
- label: "Has remaining teeth, needs them extracted + temporary denture (IID)",
+ label: "Needs remaining teeth extracted before CD (IID)",
  description: "Most common CD scenario. Patient has anteriors still present (and often posteriors with poor prognosis); the surgeon extracts at the same visit as denture insertion. The prosthesis is fabricated before extraction using a cast prepared with the to-be-extracted teeth filed off the cast — so the immediate denture has the right tissue contour but no try-in over the actual ridge is possible. Plan a soft reline at 2–4 weeks and a hard reline at 3–6 months as the ridge remodels.",
  keyDecisions: [
  "Pre-extraction records + diagnostic impression include the to-be-extracted teeth.",
@@ -22457,7 +22457,7 @@ const PATHWAYS = [
  {
  id: "cd-conventional",
  domain: "cd",
- label: "Fully edentulous for years, conventional CD",
+ label: "Fully edentulous (Conventional CD)",
  description: "Patient has been edentulous for years, ridges are healed and stable. The canonical 7-appointment workflow applies: diagnostic impression, custom tray + border molding, final impression, mount + wax rims, tooth selection + setup, wax try-in, processing, delivery. The two highest-yield sessions are border molding (region-by-region with green/red compound) and the wax try-in (where you commit to esthetics + VDO + CR before processing). The single most common adult failure is a wax try-in that's never actually evaluated phonetically.",
  keyDecisions: [
  "Pre-prosthetic surgical evaluation at COE — before committing to standard impressions, screen for conditions that need surgery first: hyperplastic resorbed ridges, epulis fissuratum, papillomatosis, unfavorable frenum, enlarged maxillary tuberosities, bony prominences / undercuts, jaw-size discrepancies, pressure on mental foramen, limited restorative space, inflammatory papillary hyperplasia, inadequate vestibular depth. Any of these → fill out the Pre-Prosthetic Surgery Form (Axium Links menu) and refer / schedule before the denture workflow proceeds. Skipping this step means the new denture rocks on an unmodified bony undercut or sits on hyperplastic tissue that doesn't support it.",
@@ -23022,7 +23022,7 @@ const PATHWAYS = [
  {
  id: "cd-iod-canine-roots",
  domain: "cd",
- label: "Sound canine roots — overdenture candidate (IOD)",
+ label: "Sound canine roots (IOD)",
  description: "Patient has 2–4 sound canine or premolar roots remaining, with good periodontal support and no significant mobility. Retain the roots, do RCT if not already done, build copings or attachments (ball, magnet, Locator), and process the overdenture around them. Roots provide proprioception and slow alveolar bone resorption — overdenture retention is dramatically better than a conventional CD on the same arch. Hygiene counseling is critical because retained roots accumulate caries fast if uncleaned.",
  keyDecisions: [
  "Endo on retained roots BEFORE prosthesis fabrication.",
@@ -23058,7 +23058,7 @@ const PATHWAYS = [
  {
  id: "cd-implant-supported-lower",
  domain: "cd",
- label: "Implant-supported mandibular denture (2-implant overdenture)",
+ label: "2-implant Mn Overdenture",
  description: "Severely resorbed mandibular ridge where conventional CD retention is consistently inadequate. McGill Consensus statement (2002) established the 2-implant overdenture as the first-line standard of care for the edentulous mandible. Implants placed in the canine regions; attachment housings picked up in the denture at delivery or via chairside reline. The pickup step matters: failure to relieve the housings adequately before pickup yields a denture that won't seat. Schedule attachment nylon replacement at 6–12 months.",
  keyDecisions: [
  "McGill Consensus (2002): 2-implant mandibular overdenture is first-line standard.",
@@ -23095,7 +23095,7 @@ const PATHWAYS = [
  {
  id: "cd-anxious-firsttime",
  domain: "cd",
- label: "Anxious / first-time denture patient",
+ label: "First-time denture patient",
  description: "Patient has never worn a denture and is anxious about appearance, function, or social acceptance — often after recent tooth loss from periodontal disease or trauma. Behavioral and expectation management dominates the technical workflow. Spend extra time at the diagnostic visit walking through the steps, show example dentures, share before/after photos with patient permission. The wax try-in is where you build trust; involve a family member or friend if the patient wants validation. Process only after explicit patient sign-off.",
  keyDecisions: [
  "Behavioral management dominates technical workflow.",
@@ -23125,7 +23125,7 @@ const PATHWAYS = [
  {
  id: "cd-xerostomic",
  domain: "cd",
- label: "Xerostomic patient (Sjögren's, post-radiation)",
+ label: "Xerostomic patient",
  description: "Patient with Sjögren's syndrome, post head-and-neck radiation, or polypharmacy-induced xerostomia. Saliva retention is the dominant mechanism for conventional CD retention via interfacial surface tension — and these patients have little to none. Strategies: maximize border seal with longer flanges where anatomy permits, extend the posterior palatal seal aggressively, consider implant-retention if the radiation field permits implants, prescribe pilocarpine or cevimeline for symptomatic relief, counsel saliva substitutes.",
  keyDecisions: [
  "Saliva retention compromised — extend posterior palatal seal aggressively.",
@@ -23635,7 +23635,7 @@ const PATHWAYS = [
  {
  id: "cd-rapid-need",
  domain: "cd",
- label: "Patient needs a denture quickly (event-driven timeline)",
+ label: "Patient needs a denture quickly",
  description: "Patient has a hard deadline — wedding, job interview, holiday — and the conventional 7-appointment timeline doesn't fit. Compress where you safely can: double up the mount + tooth selection visit, combine wax try-in with extended counseling, use a faster processing technique (SR Ivocap or microwave-cured) at the lab. Don't compress border molding or the final impression; those are where fit is determined. Communicate with the patient that fit may need post-event refinement.",
  keyDecisions: [
  "Compress where safe — combine mount + tooth selection, or wax try-in + counseling.",
@@ -23667,7 +23667,7 @@ const PATHWAYS = [
  {
  id: "cd-limited-dexterity",
  domain: "cd",
- label: "Patient with limited dexterity (arthritis / stroke)",
+ label: "Limited dexterity",
  description: "Arthritis, post-stroke, Parkinson's, or general dexterity loss. The patient may struggle to insert and remove the denture independently — material choice (lighter weight), attachment design (lower retention force on overdentures), and caregiver involvement become primary design constraints. Avoid Locator attachments on overdentures (too much retention force); switch to ball attachments or lower-retention Locator inserts. Train a caregiver at delivery, not just the patient.",
  keyDecisions: [
  "Material choice: lighter weight (consider thermoplastic) if patient struggles with handling.",
