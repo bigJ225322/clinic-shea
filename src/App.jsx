@@ -4269,13 +4269,25 @@ function renderTemplate(raw, f) {
  if (f.pedsMotherHelps === false) {
  t = t.replace(/,\s*mother helps with brushing & flossing\b/, "");
  }
- // Peds brushing/flossing — peds templates use "brushes X" / "flosses Y" prose.
- // Different from POE/COE which use "brushing X" / "flossing Y".
+ // Brushing/flossing — three distinct template patterns across the codebase:
+ //   • Peds (5985): "brushes 2x a day, flosses 1x a week"
+ //   • COE/POE (573, 703, 1091): "brushing 2x a day & flossing 1x a day"
+ //   • Hygiene (1196 prophy, 1272 SRP, 1346 perio re-eval, 1425 perio
+ //     maintenance): "brushing 2x per day and flossing 1x per week"
+ // Previously only the peds pattern got the substitution, so the
+ // brushing/flossing form field was silently no-op for COE/POE/hygiene
+ // templates — a 7-out-of-8 silent failure. Cover all three patterns.
  if (f.brushing && f.brushing.trim()) {
- t = t.replace(/\bbrushes 2x a day\b/, `brushes ${f.brushing.trim()}`);
+ const v = f.brushing.trim();
+ t = t.replace(/\bbrushes 2x a day\b/, `brushes ${v}`);            // peds
+ t = t.replace(/\bbrushing 2x a day\b/, `brushing ${v}`);          // COE/POE
+ t = t.replace(/\bbrushing 2x per day\b/, `brushing ${v}`);        // hygiene
  }
  if (f.flossing && f.flossing.trim()) {
- t = t.replace(/\bflosses 1x a week\b/, `flosses ${f.flossing.trim()}`);
+ const v = f.flossing.trim();
+ t = t.replace(/\bflosses 1x a week\b/, `flosses ${v}`);           // peds
+ t = t.replace(/\bflossing 1x a day\b/, `flossing ${v}`);          // COE/POE
+ t = t.replace(/\bflossing 1x per week\b/, `flossing ${v}`);       // hygiene
  }
  // Peds caries risk: "- caries risk: HIGH" → user value
  if (f.pedsCariesRisk && f.pedsCariesRisk!== "High") {
