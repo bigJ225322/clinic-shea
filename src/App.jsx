@@ -3853,7 +3853,10 @@ function renderTemplate(raw, f) {
  t = t.replace(/(^|\n) (?!)/g, "$1");
 
  // Normalize Cavitron assistant language to "isodry" everywhere.
- t = t.replace(/\(with (?:an)?assistant using HVE\)/g, "(with isodry)");
+ // Two templates use "(with an assistant using HVE)" (POE 1091, SRP 1272)
+ // and two use "(with assistant using HVE)" (prophy 1196, perio maintenance
+ // 1425). Tolerate either by making "(an )?" optional with its space.
+ t = t.replace(/\(with (?:an )?assistant using HVE\)/g, "(with isodry)");
 
  // -------- 0b. Strip the treatment plan section when the user checks
  // "No treatments planned" on the exam findings form. The
