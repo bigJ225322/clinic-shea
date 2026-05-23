@@ -7049,8 +7049,60 @@ function OdontogramField({ value, onChange, placeholder, bullet = "-", seedOnFoc
 );
 }
 
+// Compress an array of tooth numbers into UIC-style spans with consecutive
+// runs joined by a dash. E.g. [3,4,5,7] → "#3-5, #7". Numerically consecutive
+// teeth that cross the 16↔17 arch boundary (max 3rd molar → mand 3rd molar)
+// are NOT joined since they're anatomically in different arches.
+function formatToothSpans(toothNums) {
+ if (!toothNums || toothNums.length === 0) return "";
+ const sorted = [...new Set(toothNums)].sort((a, b) => a - b);
+ const groups = [];
+ let start = sorted[0];
+ let prev = sorted[0];
+ for (let i = 1; i < sorted.length; i++) {
+ const cur = sorted[i];
+ if (cur === prev + 1 && !(prev === 16 && cur === 17)) {
+ prev = cur;
+ } else {
+ groups.push(start === prev ? `#${start}` : `#${start}-${prev}`);
+ start = cur;
+ prev = cur;
+ }
+ }
+ groups.push(start === prev ? `#${start}` : `#${start}-${prev}`);
+ return groups.join(", ");
+}
+
+// Parse a tooth-selection string back to a Set of numbers. Handles plain
+// "#3, #4" and span syntax "#3-5, #7" (and unprefixed "3-5, 7"). Used as the
+// round-trip companion to formatToothSpans so the selector input + dropdown
+// stay in sync when spans are re-displayed.
+function parseToothSelection(value) {
+ if (!value) return new Set();
+ const lc = value.trim().toLowerCase();
+ if (lc === "generalized" || lc === "wnl") return new Set();
+ const teeth = new Set();
+ for (const part of value.split(",")) {
+ const trimmed = part.trim().replace(/^#/, "");
+ const rangeMatch = trimmed.match(/^(\d+)\s*-\s*#?(\d+)$/);
+ if (rangeMatch) {
+ const a = parseInt(rangeMatch[1], 10);
+ const b = parseInt(rangeMatch[2], 10);
+ if (!isNaN(a) && !isNaN(b)) {
+ const lo = Math.min(a, b);
+ const hi = Math.max(a, b);
+ for (let n = lo; n <= hi; n++) teeth.add(n);
+ }
+ } else {
+ const n = parseInt(trimmed, 10);
+ if (!isNaN(n)) teeth.add(n);
+ }
+ }
+ return teeth;
+}
+
 // Mini odontogram teeth selector — opens as a dropdown-like panel.
-// Value is "" | "generalized" | "#3, #14, #20" etc.
+// Value is "" | "generalized" | "#3-5, #7" etc.
 // `teeth`: optional array of tooth numbers to show; others are invisible placeholders.
 // `showG`: when true, renders a "G" toggle button to the right of the input
 // (replaces the in-dropdown Generalized button). Only used for bleeding on probing.
@@ -7088,12 +7140,9 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG, showW 
 
  const isGeneralized = value.trim().toLowerCase() === "generalized";
  const isWNL = value.trim().toLowerCase() === "wnl";
- const selectedTeeth = new Set(
- (isGeneralized || isWNL)? []:
- value.split(",")
-.map(t => parseInt(t.trim().replace(/^#/, ""), 10))
-.filter(n =>!isNaN(n))
-);
+ // Parser handles both plain "#3, #4" and span syntax "#3-5, #7" so the
+ // dropdown re-opens to the correct selection state after spans are written.
+ const selectedTeeth = (isGeneralized || isWNL) ? new Set() : parseToothSelection(value);
 
  // Close on outside click (panelRef covers input + dropdown only, not G button)
  useEffect(() => {
@@ -7109,7 +7158,10 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG, showW 
  const next = new Set(selectedTeeth);
  if (next.has(num)) next.delete(num); else next.add(num);
  if (next.size === 0) onChange("");
- else onChange([...next].sort((a, b) => a - b).map(n => `#${n}`).join(", "));
+ // Compress consecutive runs into spans (#3-5, #7) instead of writing
+ // every tooth individually (#3, #4, #5, #7). Cleaner in perio fields
+ // where 10+ teeth at a time is common.
+ else onChange(formatToothSpans([...next]));
  };
 
  const setGeneralized = () => onChange(isGeneralized? "": "generalized");
@@ -16516,12 +16568,14 @@ function RPDPaperFormArchDrawing({
 // Design form layout, pre-filled from the engine output. Designed to be
 // printable / screenshot-able so it can be copied directly to the paper
 // form.
-function RPDPreliminaryDesignForm({ caseInput, result, compact = false }) {
+function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose = false }) {
  const [drawingOpen, setDrawingOpen] = useState(false);
- // Rationale verbosity mode. Default = compressed (form-style, 1-line per
- // decision, deduped per clasp type). Toggle reveals the educational
- // paragraph-length rationale with page references.
- const [showFullRationale, setShowFullRationale] = useState(false);
+ // Rationale verbosity is controlled by the parent's `verbose` prop so a
+ // single toggle drives both the Preliminary Design Form rationale column
+ // AND the Lab Rx spec callouts. Default OFF = compressed (form-style,
+ // 1-line per decision, deduped per clasp type, 1:1 with UIC sample forms).
+ // ON = expands to full educational paragraph with page refs.
+ const showFullRationale = verbose;
  if (!result || result.kennedy.class === null) return null;
  const arch = caseInput.arch === "maxillary"? "MAXILLARY": "MANDIBULAR";
  const pf = caseInput.patientFactors || {};
@@ -16920,26 +16974,16 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false }) {
  <span style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>
  Rationale / Comments
  </span>
- <button
- type="button"
- onClick={() => setShowFullRationale(v =>!v)}
- style={{
- fontSize: "10px", padding: "3px 8px",
- background: showFullRationale? "var(--accent)": "transparent",
- color: showFullRationale? "white": "var(--ink-soft)",
- border: `1px solid ${showFullRationale? "var(--accent)": "var(--rule)"}`,
- borderRadius: "100px",
- cursor: "pointer",
- fontFamily: "'Geist', sans-serif",
- fontWeight: 500, letterSpacing: "0.04em",
- textTransform: "uppercase",
- }}
- title={showFullRationale
-? "Currently showing full educational rationale with page refs. Click for compressed."
-: "Currently showing compressed form-style rationale. Click for full educational text with page refs."}
- >
- {showFullRationale? "Compressed": "Full detail"}
- </button>
+ {/* Toggle moved to the parent RPDHelper (above the forms) so a single
+ control drives both this form's rationale verbosity AND the Lab Rx
+ spec callouts. The mode label here echoes the current state. */}
+ <span style={{
+ fontSize: "9px", color: "var(--ink-faint)",
+ fontFamily: "'Geist', sans-serif", letterSpacing: "0.04em",
+ textTransform: "uppercase", fontStyle: "italic",
+ }}>
+ {showFullRationale ? "verbose" : "compact (1:1 UIC)"}
+ </span>
  </div>
  <div style={{ fontSize: "11px", lineHeight: 1.55 }}>
  {visibleRationaleLines.map((line, i) => (
@@ -16967,7 +17011,7 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false }) {
 // ─── Laboratory Prescription Form ─────────────────────────────────────
 // Recreates the lab Rx form layout with the engine's lab script filled
 // into the Instructions box.
-function RPDLabRxForm({ caseInput, result }) {
+function RPDLabRxForm({ caseInput, result, verbose = false }) {
  const [open, setOpen] = useState(false);
  const [copied, setCopied] = useState(false);
  // Denture-tooth selections for the saddle pontics. UIC standard convention
@@ -16994,7 +17038,9 @@ function RPDLabRxForm({ caseInput, result }) {
  // connector type at the source. Falls back to no note if absent.
  const connectorNote = result.majorConnector.note? ` ${result.majorConnector.note}.`: "";
  txLines.push(`Major Connector: ${result.majorConnector.type}${result.majorConnector.width? ` (${result.majorConnector.width})`: ""}.${connectorNote}`);
- txLines.push(`Path of insertion: per surveyed cast.`);
+ // Path-of-insertion line is engine-added (not in UIC sample Lab Rx
+ // examples — the lab infers it from the marked cast). Verbose only.
+ if (verbose) txLines.push(`Path of insertion: per surveyed cast.`);
  txLines.push("");
  txLines.push("* Undercuts to engage are marked in red.*");
  txLines.push("");
@@ -17049,9 +17095,10 @@ function RPDLabRxForm({ caseInput, result }) {
  // UIC-mandated full-sulcus engagement (Huddle 6 Q11). Tooth-bounded
  // saddles (Kennedy III, IV) stop at the abutments and must NOT extend
  // over the retromolar pad / buccal shelf (which would create discomfort
- // and unseat under chewing pressure).
+ // and unseat under chewing pressure). Engine-added pedagogical content
+ // — NOT in the source Lab Rx PDFs. Verbose only.
  const primaryDistExt = [1, 2].includes(result.kennedy.class);
- if (hasDentureTeeth) {
+ if (verbose && hasDentureTeeth) {
  txLines.push("");
  if (primaryDistExt) {
  txLines.push(arch === "maxillary"
@@ -17066,7 +17113,14 @@ function RPDLabRxForm({ caseInput, result }) {
  }
  }
 
- if (hasDentureTeeth) {
+ // Denture mold + shade callouts. Per UIC convention these are chairside
+ // selections at wax-rim try-in, AFTER the framework is made — so they're
+ // NOT in the source framework Rx PDFs. We show them when (a) verbose
+ // mode is on OR (b) the student has explicitly typed something (override
+ // for cases where the chair has already picked). Pure compact mode with
+ // no user input = omit entirely, matching the source format.
+ const anyShadeFilled = toothShade.trim() || anteriorMold.trim() || posteriorMold.trim() || gingivalShade.trim();
+ if ((verbose || anyShadeFilled) && hasDentureTeeth) {
  txLines.push("");
  const shadeText = toothShade.trim() || "TBD chairside via Vita shade guide at wax-rim try-in (match adjacent natural teeth).";
  const antMoldText = anteriorMold.trim() || "TBD at wax-rim try-in (Trubyte Classic; match intercanine distance + high-smile line).";
@@ -17080,8 +17134,12 @@ function RPDLabRxForm({ caseInput, result }) {
 
  txLines.push("");
  txLines.push("Please return for try-in. Thank you.");
+ // Enclosed-casts manifest is engine-added — not in source Lab Rx PDFs.
+ // The lab knows what's being sent from the order packing slip. Verbose only.
+ if (verbose) {
  txLines.push("");
  txLines.push("Enclosed: master cast (mounted on Denar 320 articulator via facebow transfer; tripod marks + undercuts marked in red), opposing cast, Regisil PVS bite registration recorded at MI.");
+ }
 
  const today = new Date().toISOString().slice(0,10);
 
@@ -18617,6 +18675,16 @@ function RPDHelper() {
  const [caseInput, setCaseInput] = useState(() => rpdMakeBlankCase("maxillary"));
  const [selectedTooth, setSelectedTooth] = useState(null);
  const [selectedDesignEl, setSelectedDesignEl] = useState(null);
+ // Verbose mode toggle. Default OFF = 1:1 with UIC source examples (Design
+ // Case I/II, Lab Rx Examples A/B, framework Case 1) — engine emits ONLY
+ // the content that appears in those PDFs. ON = adds the engine's
+ // pedagogically-explicit spec callouts (major connector relief landmarks,
+ // strap dimensions, lingual bar clearance, clasp 1/3 rule reminder,
+ // saddle engagement rule, denture mold/shade TBD details, enclosed-casts
+ // closing line) AND expands the design form rationale column from
+ // compressed first-sentence form to full paragraph-length text with
+ // page references. One toggle, both forms.
+ const [verbose, setVerbose] = useState(false);
  const result = useMemo(() => rpdRunEngine(caseInput), [caseInput]);
 
  const clearAll = () => {
@@ -18847,8 +18915,46 @@ function RPDHelper() {
  it's already at the top of this page. */}
  {hasContent &&!isFixedTreatmentRecommendedCase && (
  <div style={{ marginTop: "12px", marginBottom: "20px" }}>
- <RPDPreliminaryDesignForm caseInput={caseInput} result={result} />
- <RPDLabRxForm caseInput={caseInput} result={result} />
+ {/* Verbose toggle — controls both the Preliminary Design Form
+ rationale column AND the Lab Rx spec callouts. OFF = matches
+ UIC source PDFs (Design Case I/II, LabRx Examples A/B, framework
+ Case 1) 1:1. ON = expands rationales to full educational text
+ with page refs + adds engine's explicit spec callouts.
+ Class name `rpd-print-hide` keeps the chip off the printed Rx. */}
+ <div className="rpd-print-hide" style={{
+ display: "flex", justifyContent: "flex-end",
+ marginBottom: "8px", gap: "8px", alignItems: "center",
+ }}>
+ <span style={{
+ fontSize: "10px", color: "var(--ink-soft)",
+ fontFamily: "'Geist', sans-serif", letterSpacing: "0.04em",
+ textTransform: "uppercase",
+ }}>
+ {verbose ? "Verbose detail" : "1:1 with UIC sample forms"}
+ </span>
+ <button
+ type="button"
+ onClick={() => setVerbose(v => !v)}
+ style={{
+ fontSize: "10px", padding: "3px 10px",
+ background: verbose ? "var(--accent)" : "transparent",
+ color: verbose ? "white" : "var(--ink-soft)",
+ border: `1px solid ${verbose ? "var(--accent)" : "var(--rule)"}`,
+ borderRadius: "100px",
+ cursor: "pointer",
+ fontFamily: "'Geist', sans-serif",
+ fontWeight: 500, letterSpacing: "0.04em",
+ textTransform: "uppercase",
+ }}
+ title={verbose
+ ? "Currently showing engine's full pedagogical detail. Click to collapse to the UIC sample format."
+ : "Currently 1:1 with UIC sample PDFs (terse). Click to expand to full pedagogical detail with page refs."}
+ >
+ {verbose ? "Verbose" : "Compact"}
+ </button>
+ </div>
+ <RPDPreliminaryDesignForm caseInput={caseInput} result={result} verbose={verbose} />
+ <RPDLabRxForm caseInput={caseInput} result={result} verbose={verbose} />
  </div>
 )}
 
