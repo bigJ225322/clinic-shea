@@ -17196,6 +17196,85 @@ function rpdMouldWidthLetter(mm) {
  return "J";
 }
 
+// Explain how a closest-match mould code differs from the requested code,
+// in plain language. Used in the (i) popover when the requested combination
+// isn't in the chart. Returns a short sentence per axis that differs.
+function explainMouldDiff(want, have) {
+ if (!want || !have || want === have) return null;
+ const parts = [];
+ const wForm = want[0], hForm = have[0];
+ const wProp = want[1], hProp = have[1];
+ const wWidth = want.slice(2), hWidth = have.slice(2);
+ if (wForm !== hForm) {
+ const wL = TOOTH_MOULD_FORMS.find(f => f.id === wForm)?.label || wForm;
+ const hL = TOOTH_MOULD_FORMS.find(f => f.id === hForm)?.label || hForm;
+ parts.push(`Facial form is ${hL} instead of ${wL}`);
+ }
+ if (wProp !== hProp) {
+ const wL = TOOTH_MOULD_PROPORTIONS.find(p => p.id === wProp)?.label || wProp;
+ const hL = TOOTH_MOULD_PROPORTIONS.find(p => p.id === hProp)?.label || hProp;
+ parts.push(`Proportion is ${hL} instead of ${wL}`);
+ }
+ if (wWidth !== hWidth) {
+ const wR = TOOTH_MOULD_WIDTHS.find(w => w.letter === wWidth)?.range || wWidth;
+ const hR = TOOTH_MOULD_WIDTHS.find(w => w.letter === hWidth)?.range || hWidth;
+ const wider = "BCDEFGHJ".indexOf(hWidth) > "BCDEFGHJ".indexOf(wWidth);
+ parts.push(`Width ${hWidth} (${hR}) — ${wider ? "wider" : "narrower"} than the ${wWidth} (${wR}) you entered`);
+ }
+ return parts.join("; ") + ".";
+}
+
+// "Code not in chart" panel: shows the closest available codes as
+// click-to-pick chips with a circled-(i) info icon next to each that
+// reveals plain-language adjustment instructions on click.
+function ToothMouldNoMatchHint({ requested, suggestions }) {
+ const [openIdx, setOpenIdx] = useState(null);
+ return (
+ <div style={{ fontSize: "12px", color: "var(--ink-soft)" }}>
+ <div style={{ marginBottom: "8px" }}>
+ <strong style={{ color: "var(--ink)" }}>{requested}</strong> is not in the chart.
+ </div>
+ <div style={{ marginBottom: "4px" }}>Closest available:</div>
+ <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+ {suggestions.map((s, i) => {
+ const open = openIdx === i;
+ const diff = explainMouldDiff(requested, s);
+ return (
+ <div key={s} style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+ <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+ <strong style={{ color: "var(--accent)", fontSize: "13px" }}>{s}</strong>
+ <button type="button"
+ onClick={() => setOpenIdx(open ? null : i)}
+ aria-label={open ? "Hide details" : "Show how this differs"}
+ style={{
+ width: "16px", height: "16px", borderRadius: "50%",
+ border: `1px solid ${open ? "var(--accent)" : "var(--ink-faint)"}`,
+ background: open ? "var(--accent)" : "transparent",
+ color: open ? "white" : "var(--ink-soft)",
+ fontSize: "10px", fontFamily: "'Fraunces', serif",
+ fontStyle: "italic", lineHeight: 1, cursor: "pointer",
+ display: "inline-flex", alignItems: "center", justifyContent: "center",
+ padding: 0,
+ }}>i</button>
+ </div>
+ {open && diff && (
+ <div style={{
+ fontSize: "11px", color: "var(--ink)",
+ padding: "8px 10px", background: "var(--paper)",
+ border: "1px solid var(--rule-soft)", borderRadius: "2px",
+ lineHeight: 1.5,
+ }}>
+ {diff}
+ </div>
+ )}
+ </div>
+ );
+ })}
+ </div>
+ </div>
+ );
+}
+
 // Compact embeddable tooth-mould picker. Top half: facial form / proportion
 // / width / cusp angle inputs. Bottom half: computed maxillary mould +
 // suggested mandibular + recommended posterior, with an optional callback
@@ -17364,11 +17443,7 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  )}
  </>
  ) : (
- <div style={{ fontSize: "12px", color: "var(--ink-soft)" }}>
- <strong style={{ color: "var(--ink)" }}>{code}</strong> not in the chart.
- Closest available: {suggestions.map(s => <strong key={s} style={{ marginLeft: "6px", color: "var(--accent)" }}>{s}</strong>)}.
- Pick one of these or adjust the inputs.
- </div>
+ <ToothMouldNoMatchHint requested={code} suggestions={suggestions} />
  )}
  </div>
  )}
@@ -17626,25 +17701,23 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  convention. Filling in is for students who've already chosen
  chairside and want it in the framework Rx. */}
  {hasDentureTeeth && (
+ <>
+ {/* Portrait/Bioform IPN tooth-mould picker — own panel, sibling
+ to the Denture teeth inputs below. "Apply to form" populates
+ the Anterior + Posterior mold fields. */}
+ <div className="rpd-print-hide" style={{ marginBottom: "12px" }}>
+ <ToothMouldSelector compact onApply={(sel) => {
+ setAnteriorMold(prev => prev || `${sel.anterior} (mand ${sel.mandibular})`);
+ setPosteriorMold(prev => prev || `${sel.posterior} ${sel.cuspAngle} ${sel.brand.split(" ")[0]}`);
+ }} />
+ </div>
  <div className="rpd-print-hide" style={{
  border: "1px dashed var(--ink-soft)", padding: "10px 12px",
  marginBottom: "12px", fontSize: "11px",
  background: "rgba(124,30,32,0.03)",
  }}>
- <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "8px" }}>
- <strong style={{ fontSize: "11px" }}>Denture teeth (optional)</strong>
- <span style={{ color: "var(--ink-soft)", fontStyle: "italic", fontSize: "10px" }}>
- UIC standard: pick chairside at wax-rim try-in. Leave blank → Rx prints "TBD."
- </span>
- </div>
- {/* Portrait/Bioform IPN mould picker — feeds the Anterior + Posterior
- mold text fields below via "Apply to form". Students can also
- hand-type the fields directly. */}
- <div style={{ marginBottom: "10px" }}>
- <ToothMouldSelector compact onApply={(sel) => {
- setAnteriorMold(prev => prev || `${sel.anterior} (mand ${sel.mandibular})`);
- setPosteriorMold(prev => prev || `${sel.posterior} ${sel.cuspAngle} ${sel.brand.split(" ")[0]}`);
- }} />
+ <div style={{ marginBottom: "8px" }}>
+ <strong style={{ fontSize: "11px" }}>Denture teeth</strong>
  </div>
  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 12px" }}>
  <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
@@ -17677,6 +17750,7 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  </label>
  </div>
  </div>
+ </>
  )}
 
  {/* Instructions box. The RPD lab Rx form is physical (sent to the lab
