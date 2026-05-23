@@ -1746,7 +1746,7 @@ const RVU_DATA = [
  { code: "D3110", desc: "Direct Pulp Cap", rvu: 0.5 },
  { code: "D3120", desc: "Indirect Pulp Cap", rvu: 0.5 },
  { code: "D3220", desc: "Therapeutic pulpotomy", rvu: 3 },
- { code: "D3220LS", desc: "Theraputic pulpotomy", rvu: 3 },
+ { code: "D3220LS", desc: "Therapeutic pulpotomy", rvu: 3 },
  { code: "D3230", desc: "Pulpal therapy (resorbable filling) - anterior, primary", rvu: 3 },
  { code: "D3240", desc: "Pulpal therapy (resorbable filling) - posterior, primary", rvu: 3 },
  { code: "D3310A", desc: "Access — anterior", rvu: 5 },

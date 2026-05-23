@@ -3041,8 +3041,16 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
  lines.push("");
 
  // Major connector (no Kennedy line — that's on the Preliminary Design Form)
+ // When recommendsFixed is true, the engine's majorConnector.type is the
+ // sentinel value "FPD" (flag, not a real connector). For the fallback RPD
+ // section, substitute the actual connector that would be used if the
+ // patient declines FPD — per the rationale, that's Full Palatal Plate for
+ // unilateral short-bounded maxillary spans, Lingual Plate for mandibular.
+ const mcDisplayType = majorConnector.recommendsFixed
+ ? (arch === "maxillary" ? "Full Palatal Plate": "Lingual Plate")
+ : majorConnector.type;
  const mcModifier = majorConnector.note ? ` with ${majorConnector.note.replace("on tissue side", "on the tissue side")}`: "";
- lines.push(`Major connector: ${majorConnector.type}${mcModifier}.`);
+ lines.push(`Major connector: ${mcDisplayType}${mcModifier}.`);
  lines.push("");
  // standard convention: standard notice about undercut color-coding on the surveyed cast
  lines.push("* Exact undercuts to engage are marked in red. *");
