@@ -1319,4 +1319,24 @@ Two possible fixes:
 
 Fix 1 is more conservative — preserves the hygiene template's clinical default assumption while fixing both bugs. Recommend fix 1 if you'd like the perio-pattern preserved; fix 2 if you'd rather always match form to rendered note.
 
-Not auto-applied — clinical-default decision belongs to you.
+~~Not auto-applied~~ **UPDATE: Applied combined fix (commit 5071f13).** I went with both fixes — extended the existing peds useEffect to also cover the four hygiene templates (sets `f.flossing = "1x a week"` on entry, matching template intent), AND removed the `!== "1x a day"` / `!== "2x a day"` guards from the substitution. Side effect: hygiene templates now render "flossing 1x a week" instead of "flossing 1x per week" by default (cosmetic only — identical meaning, matches form's dropdown wording).
+
+### Iter 19 — additional silent bugs found + fixed (leading-space regex bugs)
+
+The leading-space-stripper at line 3853 (`(?!)` regex bug — see B16) means PDF-artifact leading spaces remain in templates. Substitutions anchored to `\n-` (newline-immediately-then-dash) silently fail. Found two more cases:
+
+**A35. Endo testing substitution (commits bef05de).** Both the simple "endo findings" odontogram field (urgent care 374) and the structured per-tooth form regex used `/(Endo testing:)\n(?:-[^\n]*\n?)*/`. Template ships with `\n - #: percussion +++...` (space-dash). Regex matched 0 dash lines and PREPENDED new rows above the placeholder lines, leaving them visible alongside user input. Fix: `(?: *-…)` tolerates the space.
+
+**A36. Specific treatments substitution (commit de1874c).** Template 807 (Treatment Plan) has em-dash bullets with leading space: `\n — Pt understands crown on #18...`. Regex `/(Specific treatments discussed:)\n(?:—[^\n]*\n?)*/` matched 0 em-dash lines. Same bug pattern as endo testing — new lines were prepended above placeholder lines. Fix: `(?: *—…)` tolerates the space.
+
+### Cumulative silent regex bugs found + fixed: 13 (iter 16 + 17 + 19)
+- iter 16: 6 silent bugs (perio improved em-dash, RCT consult date ×2, endo two-line block, SRP header, peds prophy strip)
+- iter 17: 4 silent bugs (isodry "an" space, cord-size word order ×2, endoRadioFinding2 placeholder, brushing/flossing word forms ×3)
+- iter 19: 3 silent bugs (brushing/flossing guard, endo testing leading-space, specific treatments leading-space)
+
+### Iter 19 commit summary
+- 5071f13: extend hygiene template form-default sync + remove brush/floss substitution guard
+- bef05de: fix endo testing leading-space (2 regexes)
+- de1874c: fix Specific treatments leading-space
+
+All commits pushed to origin/main. 1017/1017 tests pass throughout. Build clean.
