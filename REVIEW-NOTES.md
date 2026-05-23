@@ -960,5 +960,31 @@ C5. **Scenario probe library button** — a "load test scenario" dropdown in the
 
 **A4. cross-cd-rpd Combination Syndrome note (commit b07eea7).** The Upper CD + Lower RPD pathway (cross-cd-rpd) didn't explicitly call out Combination Syndrome — but this is THE textbook trigger configuration per Kelly 1972. Added a keyDecision covering: the 5 classic consequences (anterior max ridge resorption, posterior mand ridge resorption, mand anterior supra-eruption, max tuberosity downgrowth, papillary hyperplasia), prevention (bilateral balanced occlusion, altered-cast impression, 1-year remount, 3-month perio recall, reline), and the implant-assisted alternative for severe cases. Mirrors the existing `combination-syndrome` red flag in the RPD engine so students see the risk in the Cases pathway during treatment planning.
 
+---
+
+## Iteration 15 (2026-05-22) — Lab Rx + cross-domain content audit
+
+### Applied (committed this iteration)
+
+**A5. RPD engine lab Rx now leads with FPD recommendation (commit 55fca1d).** Real bug: when `majorConnector.recommendsFixed === true` (short unilateral tooth-bounded gap), the lab Rx was silently generating a full RPD prescription anyway with "Major connector: FPD" pasted in the middle. A student could plausibly send that to the lab without realizing the engine was telling them to plan a bridge instead. Now leads with "⚠ FPD RECOMMENDED — definitive RPD is not indicated for this configuration" plus the engine's full rationale, then explicitly marks the RPD design as a fallback.
+
+**A6. Acute apical abscess antibiotic dosing clarified (commit 9018210).** Old description said "amoxicillin if the patient prefers BID dosing" — no dose specified. Updated to: pen V K 500 mg QID × 7 days, OR amoxicillin 500 mg TID × 7 days, OR amoxicillin 875 mg BID × 7 days (when adherence is a concern). Added penicillin-allergy alternative: clindamycin 300 mg QID × 7 days.
+
+**A7. Pedo-pulpotomy cross-references pulpectomy + extraction for necrotic teeth (commit 7091f78).** Key decision 1 said necrotic primary → "consider extraction with space maintainer" but didn't mention pulpectomy as the UIC tooth-saving alternative. Now lists both with cross-references and the criteria for choosing.
+
+**A8. Anterior implant abutment + crown materials clarified (commit 98f3222).** Old description was confusingly worded — "Material is e.max for the abutment and crown if cementation" implied e.max abutments, but UIC's source lab Rx examples specify titanium / gold-hue / zirconia as the abutment material options. Rewrote to match: titanium default, zirconia for thin biotype esthetic gain, gold-hue for warm tissues. Crown material e.max CAD/CAM typical.
+
+**A9. BP reference verdict cleanup (commit b4a6667).** Verdict had a leftover word: "Above stage II, dental care at is restricted" — that "at" doesn't parse. ALSO the "Above stage II" was inaccurate (the actual threshold is 160/100, which is within Stage II range). Rewrote with explicit numeric thresholds.
+
+**A10. Prescription reference verdict cleanup (commit 1471c7c).** Same leftover-word artifact: "Standard prescription formulations used at for common dental conditions" — dropped the dangling "at".
+
+**A11. SDF dangling preposition fix (commit d3fd85c).** Description ended with "root caries the patient can't tolerate restorative for" — trailing "for" leaves the noun phrase dangling. Rewrote to "root caries on a patient who can't tolerate restorative treatment."
+
+### New borderlines (for your review)
+
+**B12. Survey-crown red flag severity may be too soft.** Engine emits `severity: "info"` for survey-crown indications, but a survey crown is a 4-appointment workflow addition — arguably should be `severity: "warning"` to make sure the student notices. Counter-argument: info-tier matches the "you'll need to do extra work" nature rather than "this is wrong." Pick one?
+
+**B13. Survey-crown indication is in red flags but not in the lab Rx body.** When the engine flags a tooth as needing a survey crown, the lab Rx itself doesn't include any mention — the survey-crown indication only appears via the red-flags panel. For workflow clarity, the lab Rx might benefit from a note line like "NOTE: #20 requires PFM survey crown before framework fabrication; see survey-crown red flag for spec." Worth doing or stay informational-only?
+
 
 
