@@ -2533,6 +2533,22 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
  });
  }
 
+ // Implant-assisted RPD for Class IV with severe anterior ridge resorption.
+ // Different biomechanics from the Class I/II flag above: the resorbed ridge
+ // IS the prosthetic span, so the support compromise is in the anterior. Two
+ // anteriorly-placed implants at the canine sites can act as the primary
+ // load-bearing structure for the anterior denture teeth and eliminate the
+ // need for clasps on the natural canines — a substantial esthetic win in
+ // the smile zone where I-bar esthetic clasps are otherwise the compromise.
+ if (kennedy.class === "IV"
+ && caseInput.measurements?.ridgeResorption === "severe") {
+ flags.push({
+ severity: "warning",
+ type: "implant-assisted-rpd-severe-ridge",
+ message: `Severe anterior ridge resorption + Kennedy Class IV — strongly consider implant-assisted RPD as the definitive option. Two anteriorly-placed implants (canine sites or canine-and-lateral) act as the primary load-bearing structure for the anterior denture teeth, offload the natural canines, AND eliminate the need for visible retainers in the smile zone (locator attachments engage the implant abutments under the prosthetic teeth). Requirements: ≥10mm vertical restorative space, implants parallel to RPD path of insertion in 3D (use diagnostic tooth setup + surgical guide), 4-6 month healing. Bone graft to the resorbed anterior ridge likely required as a preliminary step; CBCT to confirm available bone. If implants are declined: altered cast impression technique with selective-pressure load on the residual ridge during framework try-in.`,
+ });
+ }
+
  // CAMBRA caries-protective prescription block.
  // require the dentist to address caries risk BEFORE delivering an RPD.
  // A retained framework on a high-caries-risk mouth fails fast: abutments
