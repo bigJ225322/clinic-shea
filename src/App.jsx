@@ -17847,16 +17847,42 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
  color: "var(--ink-soft)", fontSize: "16px", lineHeight: 1, padding: "2px 6px",
  }} aria-label="Close">×</button>
  </div>
+ {/* Key/value list + rationale paragraph sit SIDE BY SIDE to save
+ vertical space. flex-wrap kicks in at narrow widths so they
+ fall to a single column when the inspector is squeezed (mobile
+ or split-screen). flex: "1 1 280px" gives each child a 280 px
+ desired minimum but lets them grow to share remaining space.
+ The rationale gets a soft left rule to read as "side note." */}
+ {(lines.length > 0 || rationale) && (
+ <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", marginBottom: "10px" }}>
  {lines.length > 0 && (
- <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "4px 12px", fontSize: "12px", marginBottom: "10px" }}>
+ <div style={{
+ flex: "1 1 280px",
+ display: "grid", gridTemplateColumns: "auto 1fr",
+ gap: "4px 12px", fontSize: "12px",
+ alignContent: "start",
+ }}>
  {lines.map(([k, v], i) => (
  <Fragment key={i}>
  <div style={{ color: "var(--ink-soft)", textTransform: "uppercase", fontSize: "10px", letterSpacing: "0.1em", alignSelf: "center" }}>{k}</div>
  <div>{v}</div>
  </Fragment>
-))}
+ ))}
  </div>
-)}
+ )}
+ {rationale && (
+ <div style={{
+ flex: "1 1 280px",
+ fontSize: "12px", color: "var(--ink-soft)",
+ fontStyle: "italic", lineHeight: 1.5,
+ paddingLeft: "16px",
+ borderLeft: "1px solid var(--rule-soft)",
+ }}>
+ {rationale}
+ </div>
+ )}
+ </div>
+ )}
 
  {/* ─── Categorical confidence callout ─────────────────────────────
  Surfaces when the engine's decision is a "common default" (mild
@@ -18102,15 +18128,9 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
  </div>
 );
  })()}
- {rationale && (
- <div style={{
- fontSize: "12px", color: "var(--ink-soft)", fontStyle: "italic",
- lineHeight: 1.5, paddingTop: "8px", marginTop: "8px",
- borderTop: "1px solid var(--rule-soft)",
- }}>
- {rationale}
- </div>
-)}
+ {/* Rationale paragraph now renders side-by-side with the key/value
+ list above (see the flex container near the top of the component).
+ The old bottom-of-card placement was removed to save vertical space. */}
  </div>
 );
 }
