@@ -879,5 +879,43 @@ C2. **Cases pathway preview cards** — instead of the current list-of-labels gr
 
 C3. **Perio Dx ambiguity badges** — when the engine returns ambiguity notes, surface them as small caution-color chips next to the Stage/Grade values rather than buried in the rationale. The "AAP allows X" notes are the most clinically relevant output and should be visible without expanding.
 
+---
+
+## Iteration 13 (2026-05-22) — Engine scenario sweep + Class IV flag extension
+
+Ran ~16 scenarios (`/tmp/probe-rpd-scenarios.mjs`, `/tmp/probe-rpd-edge.mjs`, `/tmp/probe-complex.mjs`, plus single-case follow-ups) covering standard Kennedy classes, edge cases, and complex multi-factor scenarios. Most outputs are clinically correct or defensibly conservative. Findings:
+
+### Applied (committed this iteration, b714864)
+
+**Class IV severe ridge → implant-assisted flag** (engine). The `implant-assisted-rpd-severe-ridge` warning previously only fired for Kennedy I/II — but Class IV with severe anterior ridge resorption is also a strong implant-assisted indication. Two anteriorly-placed implants act as the primary load-bearing structure, offload the natural canines, and eliminate visible smile-zone retainers. New message tailored to the anterior-implant rationale (vs the original Class I/II distal-implant rationale). 1012/1012 tests still pass.
+
+### Borderlines for your review (new)
+
+**B6. Mandibular Class III with single tooth-bounded gap doesn't recommend FPD.** The maxillary engine returns `majorConnector.type === "FPD"` with `recommendsFixed: true` and a clear "this should be a bridge" rationale when there's a short unilateral tooth-bounded span (≤3 missing teeth, no contralateral abutments). The mandibular branch lacks this — it falls through to Lingual Bar and emits an RPD design with contralateral retention via Embrasure pair. Example: mand missing #30 only → engine outputs Lingual Bar + #18-19 Embrasure + #29/#31 Akers + base #30, when the textbook treatment is a 3-unit FPD #29-31.
+
+Why not auto-fixed: changing the mandibular major-connector function adds a new branch and likely shifts at least one test snapshot. Recommend reading the source intent (`rpdSelectMajorConnector` lines 415–491 for max equivalent) and either porting the FPD-recommendation logic to mand or documenting the asymmetry as intentional.
+
+**B7. Hopeless tooth flag requires explicit `attrs.perioPrognosis === "hopeless"` — doesn't auto-derive from mobility + PD numerics.** The engine code at line 2647 cites Lab 6 p. 2 hopeless definition as "probing depth ≥8 mm + Miller class III mobility" — but the engine only checks the categorical `perioPrognosis` field. A case with `mobility=3, probingDepth=9` on a tooth but no explicit perioPrognosis set will not fire the hopeless-tooth blocker.
+
+Two ways to read this:
+- Conservative (current): require user to set the categorical prognosis explicitly. Avoids false positives from mid-treatment mobility data.
+- Helpful (proposed): auto-set perioPrognosis = "hopeless" when mobility ≥3 AND PD ≥8. Surfaces the issue without requiring extra clicks.
+
+If the UI already has a mobility + PD entry for each tooth, the helpful option is essentially free.
+
+**B8. Class IV + severe ridge → Full Palatal Plate (not A-P Strap).** Line 403 of the engine triggers Full Palatal Plate on `severeResorption` for ANY Kennedy class, not just Class I. For Class IV the textbook major is A-P Strap (rigid cross-arch); switching to Full Palatal Plate gives more tissue support at the cost of palatal coverage. Defensible (resorbed ridge + maximum tissue support) but unusual. Worth confirming this is intentional vs. an over-broad branch.
+
+**B9. RPI on anterior abutments uses cingulum rest but keeps "RPI" name.** When the terminal abutment of a DE is an anterior tooth (e.g. 5-tooth mouth with #6-10 only present, both canines as terminal abutments), the engine emits `claspType: "RPI"` with `restSeat.type: "cingulum"`. The cingulum is correctly substituted (anteriors don't have occlusal rests), but "RPI" is technically a Krol designation for posterior teeth (Rest-Proximal-I-bar with mesial occlusal rest). On an anterior, the design is more accurately a CL-I (Cingulum-Lingual plate-I-bar) or just "I-bar with cingulum rest." Terminology nuance only — the physical design is correct.
+
+### Scenarios that worked correctly (no action needed)
+
+- Standard Kennedy I/II/III/IV configurations
+- Mandibular sulcus-depth-driven Lingual Bar / Plate switch (≥8mm vs <8mm)
+- Combination Syndrome flag (mand Class I + opposing `complete_denture`)
+- Tilted molar with disto-lingual undercut → Reverse Akers with Huddle 6 Q10 carve-out (tier "common")
+- Hopeless tooth with explicit `attrs.perioPrognosis = "hopeless"` → blocker red flag
+- Healing-period blocker when `monthsSinceExtraction < 6` and definitive intent
+- Interim design switches all clasps to WW C-clasp
+
 
 
