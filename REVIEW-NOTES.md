@@ -2067,4 +2067,14 @@ The RPD engine audit agent ran a 13-tool-use deep check against Dr. Shahin's Int
 - Tooth-supported vs tooth-and-tissue support classifications correct
 - Diagnostic workflow (Sabbagh) covered by Axium Steps 1-3 with FMX + PANX + mounted casts
 
-### Iter 31 cumulative: 6 commits, 6 substantive clinical content fixes, all live. Tests 1021/1021 pass.
+### Iter 31 additions after initial summary:
+
+7. **B35 borderline resolved (b098dda).** Added Case 10b RPD engine test — Class I + maxillary tori still routes to U-Shaped (not Full Palatal Plate). Locks down the intentional precedence so a future major-connector refactor can't silently flip it. Tests went 1021 → 1023.
+
+8. **`lab lab burs` duplicate-word typo in Steps body (e9e254a).** Occlusal guard delivery equipment list had `exam kit, lab lab burs, lab handpiece` — fixed to `lab burs`.
+
+9. **`azithromycin 10-12 mg/kg/day day 1` awkward phrasing (e9e254a).** Same commit. Pedo med reference had `mg/kg/day day 1` where the unit and ordinal collided. Now reads `azithromycin 10-12 mg/kg on day 1`.
+
+10. **`rest seat seat passively` duplicate-word typo in RPD engine action text (dfe2a1c).** Delivery-day intaglio-fit-check step said `verify proximal plate + rest seat seat passively`. Fixed to `rest seat sit passively` (plural subject agreement).
+
+### Iter 31 cumulative: 10 commits, 10 substantive fixes, all live. Tests 1023/1023 pass. B35 borderline resolved.
