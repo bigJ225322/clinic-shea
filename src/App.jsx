@@ -10637,6 +10637,14 @@ function findChunkForProcedure(procedure, chunks, role, opts = {}) {
  implant: "IMPLANT",
  dentures: "DENTURES",
  digital: "DIGITAL",
+ // perio added in iter 21 — without this, SRP procedure (id 1272) would
+ // match c021 "SRP" in the EXAMS section (an overview blurb) before
+ // c024 "SRP" in the PERIO section (the actual equipment + steps +
+ // note template), because both share the same title and the fallback
+ // returns the first chunk by document order. With perio → "PERIO"
+ // the EXAMS overview is filtered out and the PERIO chunk wins.
+ perio: "PERIO",
+ endo: "ENDO",
  };
  const expectedSection = SECTION_FOR_CATEGORY[procedure.categoryId];
 
