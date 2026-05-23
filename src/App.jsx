@@ -19044,24 +19044,33 @@ function RPDHelper() {
  omitted by Rule 2 and all 2nd molars present — are folded into
  the verdict line itself.) */}
 
- {/* PDI Classification — ACP Prosthodontic Diagnostic Index */}
+ {/* PDI Classification — ACP Prosthodontic Diagnostic Index.
+ Section header already names the system; inside, refer to the
+ class alone (no repeated "PDI Class N"). The verdict + care
+ recommendation are merged into a single descriptive line below
+ the Roman-numeral class number. */}
  {result.pdi && (
  <RPDCollapsibleSection
  title="PDI Classification (ACP)"
  summary={`Class ${result.pdi.class}`}
  defaultOpen={false}
  >
+ {/* Class number = Fraunces oxblood verdict (no "PDI Class" prefix;
+ the section header already establishes the system). */}
  <div style={{
-...verdict, fontSize: "15px", marginBottom: "12px",
+...verdict, fontSize: "15px", marginBottom: "4px",
  }}>
- PDI Class {result.pdi.class} — driven by {result.pdi.drivers.join(", ")}.
+ Class {result.pdi.class}
  </div>
+ {/* Combined descriptive line: drivers + care recommendation,
+ PDI-Class prefix stripped from the engine string so the
+ sentence reads as continuous prose. */}
  <div style={{
- fontSize: "12px", color: "var(--ink-soft)", marginBottom: "12px",
- padding: "8px 10px", background: "rgba(216,206,186,0.18)",
- borderLeft: "2px solid var(--rule)",
+ fontSize: "13px", color: "var(--ink-soft)",
+ lineHeight: 1.5, marginBottom: "16px",
  }}>
- {result.pdi.careRecommendation}
+ Driven by {result.pdi.drivers.join(", ")}.
+ {" "}{(result.pdi.careRecommendation || "").replace(/^PDI Class [IVX]+ — /, "")}
  </div>
  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", fontSize: "12px" }}>
  {[
