@@ -13339,7 +13339,9 @@ function PEDetail({ pe, onShowSteps }) {
  };
  return (
  <div style={{...cardStyle, padding: "20px 22px" }}>
- {/* Header */}
+ {/* Header — PE code (left), name (middle, flex-grow), Steps link(s)
+ right-aligned at the top corner. Links are bare hyperlinks with
+ no "Steps:" prefix — the arrow + position communicate purpose. */}
  <div style={{ marginBottom: "18px", paddingBottom: "14px", borderBottom: "1px solid var(--rule-soft)" }}>
  <div style={{ display: "flex", alignItems: "baseline", gap: "12px", marginBottom: "5px", flexWrap: "wrap" }}>
  <span className="mono" style={{
@@ -13351,32 +13353,13 @@ function PEDetail({ pe, onShowSteps }) {
  <span style={{ fontSize: "15px", fontWeight: 500, color: "var(--ink)", flex: "1 1 auto" }}>
  {pe.name}
  </span>
- </div>
- {pe.deadline.text && (
- <div style={{ fontSize: "11px", color: "var(--ink-soft)", fontStyle: "italic" }}>
- {pe.deadline.text}
- </div>
- )}
- </div>
-
- {/* Prereq. When the prereq is empty / "None specified." the label +
- paragraph get centered as a pair and the Steps links move to their
- own centered row below so the whole block reads as a tidy stack.
- Real-content prereqs (long prose) stay left-aligned with the Steps
- links right-justified opposite the label. */}
- {(() => {
- const isPlaceholderPrereq = !pe.prereq || /^\s*none specified\.?\s*$/i.test(pe.prereq);
- const stepsLinks = procedures.length > 0 && onShowSteps ? (
- procedures.length === 1 ? (
+ {procedures.length > 0 && onShowSteps && (
+ <div style={{ display: "flex", alignItems: "baseline", gap: "8px", flexWrap: "wrap" }}>
+ {procedures.length === 1 ? (
  <button onClick={() => onShowSteps(procedures[0].id)} style={showStepsLinkStyle}>
- Show Steps →
+ Steps →
  </button>
- ) : (
- <div style={{ display: "flex", alignItems: "baseline", gap: "8px", flexWrap: "wrap", justifyContent: "center" }}>
- <span style={{ fontSize: "11px", color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif" }}>
- Steps:
- </span>
- {procedures.map((p, i) => (
+ ) : procedures.map((p, i) => (
  <Fragment key={p.id}>
  {i > 0 && (
  <span style={{ fontSize: "11px", color: "var(--ink-faint)" }}>·</span>
@@ -13387,31 +13370,36 @@ function PEDetail({ pe, onShowSteps }) {
  </Fragment>
  ))}
  </div>
- )
- ) : null;
+ )}
+ </div>
+ {pe.deadline.text && (
+ <div style={{ fontSize: "11px", color: "var(--ink-soft)", fontStyle: "italic" }}>
+ {pe.deadline.text}
+ </div>
+ )}
+ </div>
+
+ {/* Prereq. Steps links live in the header now (upper-right of the
+ card), so the prereq area is just the label + body text. When the
+ prereq is the "None specified." placeholder both center as a pair;
+ real-content prereqs stay left-aligned. */}
+ {(() => {
+ const isPlaceholderPrereq = !pe.prereq || /^\s*none specified\.?\s*$/i.test(pe.prereq);
  if (isPlaceholderPrereq) {
  return (
  <>
  <div style={{ textAlign: "center" }}>
  <SubsectionLabel>Prerequisite</SubsectionLabel>
  </div>
- <p style={{ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: "0 0 10px", textAlign: "center" }}>
+ <p style={{ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: "0 0 14px", textAlign: "center" }}>
  {pe.prereq || "None specified."}
  </p>
- {stepsLinks && (
- <div style={{ display: "flex", justifyContent: "center", marginBottom: "14px" }}>
- {stepsLinks}
- </div>
- )}
  </>
  );
  }
  return (
  <>
- <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "12px", marginBottom: "6px" }}>
  <SubsectionLabel>Prerequisite</SubsectionLabel>
- {stepsLinks}
- </div>
  <p style={{ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: "0 0 14px" }}>
  {pe.prereq}
  </p>
