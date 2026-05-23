@@ -95,7 +95,7 @@ const TEMPLATES = {
  "6759": " - y/o female presents to UG Peds with mother for #E-B composite\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Titrated to 40% nitrous oxide / 60% oxygen at 4L/min. Administered for 60 minutes. Applied 20% topical benzocaine & administered 1 carpule of\n 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal block on right / buccal infiltration #A.\n\n #E-B\n Placed Isodry (size P). Removed existing failing B RMGI restoration. Excavated decay using high & slow speed burs. Prepared cavity preparation to\n ideal form. Etched with 35% phosphoric acid for 15s, rinsed 5s, gently dried leaving dentin moist. Applied Scotchbond Universal 20s, air dried 5s,\n cured 10s. Applied shade A2 Renamel nanofill composite in increments, each cured 20s, with 40s final cure. Finished restoration with finishing\n diamond burs, polished with Shofu & Jiffy brush.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Informed mother that pt is still numb, monitor lip & soft\n tissue biting.\n\n - behavior: F4 --\n - NV:\n - Sarah Swade / Dr.",
  "6880": " - y/o female presents to UG Peds with mother for #A-O amalgam\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Titrated to 40% nitrous oxide / 60% oxygen at 4L/min. Administered for 90 minutes. Applied 20% topical benzocaine & administered 1 carpule of\n 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal block on right / buccal infiltration #A.\n\n #A-O\n Placed Isodry (size P). Completely removed failing existing O amalgam restoration and excavated decay using high & slow speed burs. Prepared\n cavity preparation to ideal form. Applied Gluma in scrubbing motion for 10s then rinsed thoroughly. Placed gold matrix band. Delivered,\n overfilled, & condensed amalgam. Removed excess & carved amalgam to ideal anatomic form. Interproximal contact evaluated with floss &\n adjusted to ideal. Occlusion evaluated with articulating paper & adjusted to ideal.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Mother was informed that patient is still numb & to\n monitor lip and soft tissue biting.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr.",
  "6991": " - y/o female presents to UG Peds with mother for #A SSC\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Titrated to 40% nitrous oxide / 60% oxygen at 4L/min. Administered for 90 minutes. Applied 20% topical benzocaine & administered 1 carpule of\n 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal block on right / buccal infiltration #A.\n\n #A SSC\n Placed bite block & Isodry placed (size P). Completely removed failing existing MOD composite restoration & excavated D decay\n using high & slow speed burs. Completed crown prep to ideal form. Tried on SSC #5; trimmed & crimped to ideal fit. Confirmed occlusion.\n Confirmed crown margins with BW radiograph. Cemented crown with GIC FujiCEM & seated using a bite stick. Excess cement cleaned, flossed.\n Re-confirmed occlusion.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Informed mother that pt is still numb, monitor lip & soft\n tissue biting.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr.",
- "7139": " - y/o female presents to UG Peds with mother for #A pulpotomy & SSC\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Titrated to 40% nitrous oxide / 60% oxygen at 4L/min. Administered for 90 minutes. Applied 20% topical benzocaine & administered 1 carpule of\n 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal block on right / buccal infiltration #A.\n\n #A pulpotomy\n Placed bite block & Isodry. Completely removed failing existing MOD composite restoration and excavated decay using high & slow speed\n burs. Pulp chamber accessed & unroofed completely. Amputated coronal pulp tissue. Hemostasis achieved via moist cotton pellet followed by\n Viscostat for 10s & thorough rinsing. Hemostasis confirmed. IRM placed.\n\n #A-SSC\n Completed crown prep to ideal form. Tried on SSC #5; trimmed & crimped to ideal fit. Confirmed occlusion. Cemented crown with GIC FujiCEM &\n seated using a bite stick. Excess cement cleaned, flossed. Re-confirmed occlusion.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Informed mother that pt is still numb, monitor lip & soft\n tissue biting.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr.",
+ "7139": " - y/o female presents to UG Peds with mother for #A pulpotomy & SSC\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Titrated to 40% nitrous oxide / 60% oxygen at 4L/min. Administered for 90 minutes. Applied 20% topical benzocaine & administered 1 carpule of\n 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal block on right / buccal infiltration #A.\n\n #A pulpotomy\n Placed bite block. Rubber dam placed for airway protection & pulp tissue containment. Completely removed failing existing MOD composite restoration and excavated decay using high & slow speed\n burs. Pulp chamber accessed & unroofed completely. Amputated coronal pulp tissue. Hemostasis achieved via moist cotton pellet followed by\n Viscostat for 10s & thorough rinsing. Hemostasis confirmed. IRM placed.\n\n #A-SSC\n Completed crown prep to ideal form. Tried on SSC #5; trimmed & crimped to ideal fit. Confirmed occlusion. Cemented crown with GIC FujiCEM &\n seated using a bite stick. Excess cement cleaned, flossed. Re-confirmed occlusion.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Informed mother that pt is still numb, monitor lip & soft\n tissue biting.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr.",
  "7242": " - y/o female presents to UG Peds with mother for #F composite strip crown\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Titrated to 40% nitrous oxide / 60% oxygen at 4L/min. Administered for 90 minutes. Applied 20% topical benzocaine & administered 1 carpule of\n 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal block / buccal infiltration #F.\n\n #F composite strip crown\n Placed Isodry (size P). Removed existing failing ML composite restoration. Excavated decay using high & slow speed burs. Completed crown prep to\n ideal form. Strip crown selected & fitted to tooth. Etched with 35% phosphoric acid for 15s, rinsed 5s, gently dried leaving dentin moist. Applied\n Scotchbond Universal 20s, air dried 5s, cured 10s. Loaded shade A2 Renamel nanofill into strip crown, seated crown, cured 60s. Finished\n restoration with finishing diamond burs, polished with Shofu, Jiffy brush, Cosmedent discs. Evaluated interproximal contact with floss, adjusted to\n ideal. Evaluated occlusion with articulating paper, adjusted to ideal.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Informed mother that pt is still numb, monitor lip & soft\n tissue biting.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr.",
  "7306": " - y/o female presents to UG Peds with mother for band & loop impression\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Size 36 band fit to #30 with band seater. Pick-up impression taken in alginate.\n\n - behavior: F4 --\n - NV:\n - Sarah Swade / Dr.",
  "7399": " - y/o female presents to UG Peds with mother for #30, #S band & loop cementation\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n #30, #S band & loop cementation\n Band & loop #30, #S tried in. Occlusion evaluated with articulating & is satisfactory; band & loop does not interfere with occlusion. #30, #S\n cleaned with prophy cup & pumice. Band & loop cemented with FujiCem.\n\n Post-op instructions reviewed with mother — soft diet today, soreness for 24hr, excess saliva, temporary speech disturbance, OHI, loss of\n appliance. Pt released in good condition.\n\n - behavior: F4 --\n - NV:\n - Sarah Swade / Dr.",
@@ -1132,7 +1132,7 @@ const CHUNKS = [
 "id": "c074.3",
 "section": "PEDS",
 "title": "PULPOTOMY — pulpotomy: note template",
-"body": "pulpotomy: note template\n - y/o female presents to UG Peds with mother for #A pulpotomy & SSC\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Titrated to 40% nitrous oxide / 60% oxygen at 4L/min. Administered for 90 minutes. Applied 20% topical benzocaine & administered 1 carpule of\n 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal block on right / buccal infiltration #A.\n\n #A pulpotomy\n Placed bite block & Isodry. Completely removed failing existing MOD composite restoration and excavated decay using high & slow speed\n burs. Pulp chamber accessed & unroofed completely. Amputated coronal pulp tissue. Hemostasis achieved via moist cotton pellet followed by\n Viscostat for 10s & thorough rinsing. Hemostasis confirmed. IRM placed.\n\n #A-SSC\n Completed crown prep to ideal form. Tried on SSC #5; trimmed & crimped to ideal fit. Confirmed occlusion. Cemented crown with GIC FujiCEM &\n seated using a bite stick. Excess cement cleaned, flossed. Re-confirmed occlusion.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Informed mother that pt is still numb, monitor lip & soft\n tissue biting.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr."
+"body": "pulpotomy: note template\n - y/o female presents to UG Peds with mother for #A pulpotomy & SSC\n - RMH with mother. No changes.\n - allergies???, no medications, IUTD\n\n Titrated to 40% nitrous oxide / 60% oxygen at 4L/min. Administered for 90 minutes. Applied 20% topical benzocaine & administered 1 carpule of\n 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35 mm ] needle as IAN & long buccal block on right / buccal infiltration #A.\n\n #A pulpotomy\n Placed bite block. Rubber dam placed for airway protection & pulp tissue containment. Completely removed failing existing MOD composite restoration and excavated decay using high & slow speed\n burs. Pulp chamber accessed & unroofed completely. Amputated coronal pulp tissue. Hemostasis achieved via moist cotton pellet followed by\n Viscostat for 10s & thorough rinsing. Hemostasis confirmed. IRM placed.\n\n #A-SSC\n Completed crown prep to ideal form. Tried on SSC #5; trimmed & crimped to ideal fit. Confirmed occlusion. Cemented crown with GIC FujiCEM &\n seated using a bite stick. Excess cement cleaned, flossed. Re-confirmed occlusion.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Informed mother that pt is still numb, monitor lip & soft\n tissue biting.\n\n - behavior: F4 --\n - NV: 6 month recall\n - Sarah Swade / Dr."
 },
 {
 "id": "c075.0",
@@ -3849,8 +3849,13 @@ function renderTemplate(raw, f) {
  // those signal intentional structure.
  // (b) Strip exactly one leading space from each line (preserve two-or-
  // more space indentation for any sub-bullet hierarchy).
+ // NOTE: previous regex used (?!) which is a negative lookahead for the
+ // EMPTY pattern — the empty pattern matches every position, so (?!)
+ // always fails. The strip was a silent no-op. Using (?! ) instead —
+ // negative lookahead for a second space — strips ONE leading space
+ // only when it's a singleton (preserves 2+ space sub-bullet indents).
  t = t.replace(/(\S)[ \t]*\n[ \t]+([a-z(&])/g, "$1 $2");
- t = t.replace(/(^|\n) (?!)/g, "$1");
+ t = t.replace(/(^|\n) (?! )/g, "$1");
 
  // Normalize Cavitron assistant language to "isodry" everywhere.
  // Two templates use "(with an assistant using HVE)" (POE 1091, SRP 1272)
@@ -3989,7 +3994,12 @@ function renderTemplate(raw, f) {
  const escaped = oldBase.replace(/[.*+?^${}|[\]\\]/g, "\\$&");
  const baseRegex = new RegExp(escaped + "(?![-A-Za-z0-9])", "g");
  const multiToothRe = /#[A-Z0-9]+(?:-[A-Z]+)?(?:,\s*#[A-Z0-9]+(?:-[A-Z]+)?)+/g;
- t = t.replace(/\(([^]*)\)|([^]+)/g, (_m, inside, outside) => {
+ // IMPORTANT: the paren capture must be LAZY (*?). With greedy *, on a
+ // template like "...(core buildup)... #19 ... (core buildup) ... #19 ...
+ // (size M)..." the alternation matches from the FIRST `(` to the LAST `)`,
+ // sealing off all #19 references between them and skipping substitution.
+ // Lazy match captures each individual `(...)` group as intended.
+ t = t.replace(/\(([^]*?)\)|([^]+)/g, (_m, inside, outside) => {
  if (outside!== undefined) {
  let chunk = outside.replace(baseRegex, bareReplacement);
  if (refs.length > 1) {
@@ -4875,12 +4885,23 @@ function renderTemplate(raw, f) {
  }
  }
 
- // -------- 7b-poe. POE-only: strip the Prophy section. --------
- // When "POE only — no prophy this visit" is checked, remove everything from
- // the "Prophy:" heading through the OHI sentence, leaving the treatment-plan
- // section intact.
+ // -------- 7b-poe. POE-only: strip just the prophy work, keep perio chart + OHI. --------
+ // When "POE only — no prophy this visit" is checked, the student still did
+ // the perio charting and OHI as part of the exam — only the actual scaling/
+ // cleaning was skipped. Previous regex stripped from "Prophy:" through
+ // "Treatment planned", which deleted the entire perio chart block (probing
+ // depths, BOP, recession, etc.) — required POE documentation. Now we
+ // surgically strip only the heading + the "Removed supragingival..."
+ // sentence; perio chart + OHI sentence stay intact.
  if (f.poeOnly === true) {
- t = t.replace(/\n+\s*Prophy:[\s\S]*?(?=\n+\s*Treatment planned)/, "\n\n");
+ // 1. Strip the "Prophy:" heading line (perio chart no longer needs to live under it).
+ t = t.replace(/\n+\s*Prophy:\s*\n+/, "\n\n");
+ // 2. Strip the scaling/cleaning sentence (the actual prophy work). The
+ // sentence spans two source lines: "Removed... Flossed. Polished with\nprophy paste."
+ t = t.replace(
+ /\n\s*Removed supragingival[^]*?prophy paste\.\s*/i,
+ "\n\n"
+ );
  }
 
  // -------- 7c. Nitrous (peds). --------
