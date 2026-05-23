@@ -2495,7 +2495,7 @@ const BROWSE_CATEGORIES = CATEGORIES;
  * ==========================================================================*/
 const REF_DATA = {
  "ref-blood-pressure": {
- verdict: "Hypertension is staged by whichever number is higher — systolic or diastolic. BP above 160/100 restricts routine dental care to urgent only; above 180/110 sends the patient to the ER, not the chair.",
+ verdict: "Hypertension is staged by whichever number is higher — systolic or diastolic. BP above 160/90 restricts routine dental care to urgent only; above 180/110 sends the patient to the ER, not the chair.",
  blocks: [
  { type: "table", caption: "AHA blood pressure categories",
  headers: ["Category", "Systolic (mm Hg)", "Diastolic (mm Hg)"],
@@ -2508,7 +2508,7 @@ const REF_DATA = {
  ],
  },
  { type: "prose", heading: "the protocol — blood pressure", lines: [
- "If systolic > 160 or diastolic > 100, routine dental care is contraindicated; only urgent care can be provided.",
+ "If systolic > 160 or diastolic > 90, routine dental care is contraindicated; only urgent care can be provided.",
  "If systolic > 180 or diastolic > 110, no dental care can be provided (even emergency); refer the patient to the emergency room.",
  ]},
  { type: "prose", heading: "the protocol — blood glucose", lines: [
