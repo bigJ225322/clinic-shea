@@ -17702,9 +17702,10 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  color: "var(--ink)", flex: 1,
  }}>
  Tooth Mould Picker <span style={{
- fontSize: "10px", color: "var(--ink-faint)", fontStyle: "italic",
+ fontSize: "9px", color: "var(--ink-faint)", opacity: 0.65,
  fontFamily: "'Geist', sans-serif", marginLeft: "8px",
- }}>Dentsply Portrait IPN · Bioform IPN (Combination Table, p. 24)</span>
+ letterSpacing: "0.02em",
+ }}>Portrait / Bioform IPN · p. 24</span>
  </span>
  <span aria-hidden="true" style={{
  marginLeft: "12px", flexShrink: 0,
@@ -18098,12 +18099,18 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  <GingivalShadeInput value={gingivalShade} onChange={setGingivalShade} />
  </label>
  <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
- <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Anterior mold (Portrait/Bioform IPN)</span>
- <AnteriorMouldSelect value={anteriorMold} onChange={setAnteriorMold} />
+ <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Anterior mold</span>
+ <input type="text" value={anteriorMold} onChange={e => setAnteriorMold(e.target.value)}
+ placeholder="e.g. 22E"
+ style={{ padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
+ fontFamily: "'Geist', sans-serif", fontSize: "11px" }} />
  </label>
  <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
- <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Posterior mold (Portrait/Bioform IPN)</span>
- <PosteriorMouldSelect value={posteriorMold} onChange={setPosteriorMold} />
+ <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Posterior mold</span>
+ <input type="text" value={posteriorMold} onChange={e => setPosteriorMold(e.target.value)}
+ placeholder="e.g. 330 10° Portrait"
+ style={{ padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
+ fontFamily: "'Geist', sans-serif", fontSize: "11px" }} />
  </label>
  </div>
  </div>
