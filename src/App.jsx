@@ -4971,6 +4971,22 @@ function renderTemplate(raw, f) {
 ? f.injections
 : [DEFAULT_INJECTION];
 
+ // Skip the rebuild entirely when the user hasn't configured any
+ // injection techniques AND there's only one (default) injection.
+ // Otherwise the rebuild produces a stub "Applied 20% topical benzocaine
+ // & administered 1 carpule... with 30G 25mm needle." with NO `as IAN /
+ // buccal infiltration #N` portion, which is clinically incomplete.
+ // The template's hardcoded anesthetic sentence (which DOES include the
+ // block + tooth ref) is preserved in that case. Once the user sets a
+ // tooth — which triggers the useEffect at line ~9197 to auto-populate
+ // techIAN or techBuccalInfil based on tooth position — the rebuild
+ // engages and the engine takes over.
+ const allDefaults = injections.length === 1 &&
+!injections[0].techIAN &&!injections[0].techBuccalInfil &&
+!injections[0].techGreaterPalatine &&!injections[0].techNasopalatine &&
+!injections[0].techMaxInfil;
+
+ if (!allDefaults) {
  // First injection includes the topical benzocaine prefix; subsequent
  // injections are joined with " Then administered ".
  const sentences = injections.map((inj, i) => {
@@ -4983,6 +4999,7 @@ function renderTemplate(raw, f) {
 
  if (anesSentenceRe.test(t)) {
  t = t.replace(anesSentenceRe, newAnes);
+ }
  }
 
  // -------- 9. Liner / sealer toggles. --------
