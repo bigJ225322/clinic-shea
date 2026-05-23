@@ -917,5 +917,42 @@ If the UI already has a mobility + PD entry for each tooth, the helpful option i
 - Healing-period blocker when `monthsSinceExtraction < 6` and definitive intent
 - Interim design switches all clasps to WW C-clasp
 
+---
+
+## Iteration 14 (2026-05-22 evening) — Canine-mod IR rationale fix + 5 new tests
+
+### Applied (committed this iteration)
+
+**A1. Canine-mod IR rationale tailored to actual major connector (commit 2257751).** The mandibular-canine-anterior-mod-bound IR rule emitted a rationale citing "the lingual plate contacts and braces the lingual surface" — but the engine routinely selects this design with a Lingual Bar major (default sulcus 9mm). The bar doesn't contact the canine's lingual surface, so the rationale was misleading.
+
+The design itself stays defensible without lingual plate: ML ball rest provides rotational counterpoise + bilateral RPI + ring-rigid bar across the arch supplies retention. Engine output (canine-as-IR-only, no clasp) is preserved; only the rationale text now correctly describes WHY no clasp is needed in each case:
+- Lingual Plate: "the lingual plate contacts and braces the lingual surface, making a clasp arm both esthetically unacceptable and biomechanically redundant."
+- Lingual Bar: "with a lingual bar (no plate contact on the canine), the ball rest alone provides the rotational counterpoise — bilateral RPI on the DE terminals + ring-rigid bar across the arch supplies the retention…"
+
+Threaded `majorConnector` through `rpdPlanRetention → planRetentionClass{I,II} → appendSpanBoundaryRetainers` as `hasLingualPlate` flag.
+
+**A2. Added 5 tests locking in iteration 12-14 behaviors (commit 9c43152):**
+- zero-retentive-clasps fires for small max anterior gap; doesn't fire for normal Class III
+- Class IV + severe ridge → implant-assisted-rpd-severe-ridge with Class IV-specific message
+- Canine-mod IR rationale matches actual major (Bar vs Plate)
+
+1017/1017 tests pass.
+
+### Borderlines (new)
+
+**B10. Engine has inconsistent "is tooth present" semantics.** Line 134 defines `rpdIsPresent = (c, n) => c.teeth[n]?.status === "present"` (strict) — used by `rpdGetEdentulousSpans` (classifier). But the early guards at lines 370, 429, 2442, and 3823 use `status !== "missing"` (permissive). For a tooth with `status === undefined`:
+- Classifier treats it as missing (because not strictly "present")
+- Guards treat it as present (because not "missing")
+
+For real cases (created via `rpdMakeBlankCase`), all teeth get explicit status — the inconsistency doesn't manifest. But malformed/partial input could create cases where the fully-edentulous guard fails to fire on an arch the classifier treats as all-missing. Fix: unify all "isPresent" checks to use `rpdIsPresent` (the strict definition).
+
+**B11. Engine emits a Major Connector for fully-dentate cases (kennedy.class === null).** When no teeth are missing, the engine still runs through `rpdSelectMajorConnector` and returns a default value (A-P Strap for maxillary). UI is gated on `kennedy.class !== null` so the value isn't displayed, but the engine output is technically inconsistent. Low priority.
+
+### UI brainstorms — Engine debug surface
+
+C4. **Engine "what fired" inspector** — a dev-mode panel that lists which engine rules fired for the current case (e.g. "Kennedy Class I (bilateral DE)", "Lingual Bar via sulcus depth ≥8mm", "Bilateral canine indirects per anterior-mod rule"). Right now this reasoning is buried in the rationale text per-component. Useful for debugging weird outputs — would have caught the rationale/major-connector mismatch in B6/B11 immediately.
+
+C5. **Scenario probe library button** — a "load test scenario" dropdown in the RPD builder that auto-fills known cases (Design Case I, Case II, Huddle 6 Q10, etc.) so you can re-verify engine outputs against the answer key after engine changes. Currently the only way to reproduce test scenarios is via `/tmp/probe-*.mjs` scripts.
+
 
 
