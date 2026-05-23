@@ -4166,14 +4166,19 @@ function renderTemplate(raw, f) {
  `${affLine}\n${ctlLine}`
 );
  }
- // 9. Radiographic findings — two free-form lines under "Radiographic exam:"
+ // 9. Radiographic findings — two free-form lines under "Radiographic exam:".
+ // Template has "- Periapical radiolucency #12" (space before #) and
+ // "\n - #12 large DO composite..." (leading space, then dash). Earlier
+ // regexes missed both space variants; substitutions silently failed.
  if (f.endoRadioFinding1 && f.endoRadioFinding1.trim()) {
- t = t.replace(/(- Periapical radiolucency)#[^\n]*/i, `$1${f.endoRadioFinding1.trim()}`);
+ t = t.replace(/(- Periapical radiolucency)\s*#[^\n]*/i, `$1 ${f.endoRadioFinding1.trim()}`);
  }
  if (f.endoRadioFinding2 && f.endoRadioFinding2.trim()) {
  // Match the line: "- #X large DO composite approaching pulp, recurrent decay"
  // We replace everything after the leading "- " with the user's text.
- t = t.replace(/(\n-)#?\d*\s*large DO composite[^\n]*/i, `$1${f.endoRadioFinding2.trim()}`);
+ // Allow optional leading whitespace before "-" and tolerate the
+ // optional "#X " prefix that may or may not have spaces.
+ t = t.replace(/(\n\s*-\s*)#?\d*\s*large DO composite[^\n]*/i, `$1${f.endoRadioFinding2.trim()}`);
  }
  // 10. Pulpal Dx
  if (f.endoPulpalDx && f.endoPulpalDx.trim()) {
