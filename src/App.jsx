@@ -25437,16 +25437,17 @@ function Pathways() {
  enough signal that the user needs to pick something. */}
  {nothingSelected ? null : (
  <div style={{ marginBottom: "20px" }}>
+ {/* "Specific situation" eyebrow removed — the "N scenarios" count
+ on the right already describes what's below, and the dotted top-
+ rule provides the visual separation from the domain pills above.
+ Layout switches from space-between to flex-end so the count +
+ toggle sit at the right edge as before. */}
  <div style={{
- display: "flex", justifyContent: "space-between", alignItems: "center",
+ display: "flex", justifyContent: "flex-end", alignItems: "center",
  marginBottom: "10px", paddingTop: "4px",
  borderTop: "1px dotted var(--rule-soft, var(--rule))",
  gap: "12px", flexWrap: "wrap",
  }}>
- <span style={{
-...labelStyle,
- margin: 0,
- }}>Specific situation</span>
  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
  {/* Pills | Wizard segmented toggle — only shown when a wizard
  tree exists for this domain and we're not searching/all-domain.
