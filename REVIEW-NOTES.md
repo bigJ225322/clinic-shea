@@ -1896,4 +1896,37 @@ Configuration is rare (only max laterals #7+#10 present anteriorly). `tooSmallFo
 - 4 background audit agents ran, 8 total findings → 7 fixed, 1 deferred as borderline
 - No regressions detected
 
+---
+
+## Iter 28 (2026-05-23) — More polish, hunting silent regex bugs
+
+**A70. Steps tab Browse cleaner had same `(?!)` silent regex bug (commit 1b53d03).**
+Iter 26 fixed `(?!)` in renderTemplate; this is the second instance — same fix at line 5992 in the Browse text cleaner. Same fix: `(?!)` → `(?! )`.
+
+**A71. Template 1549 "left IAN ... right" anatomical contradiction (commit 1051b35).**
+Agent's borderline finding (#5 from iter 25). Template said "as left IAN & long buccal block on right" — IAN is left, block on right is anatomically impossible. Removed redundant "left" prefix. Template now matches the format of all other amalgam/composite templates.
+
+**A72. Class II without mod surfaces educational flag (commit a08655a).**
+Resolves borderline B32. Engine now emits info-level flag explaining why Class II without modification has only ONE retentive clasp — the IR's mesial rest + the major connector contact on the opposite side provide contralateral stabilization per McCracken Ch 10. No engine logic change; just educational visibility.
+
+**A73. 8 regression tests added (commit 3e139de).**
+Locks in iter 25-28 fixes against future regression:
+- Lingual Bar default when sulcus unspecified
+- Lingual Plate when sulcus explicitly <8mm
+- Akers with lingual undercut → buccal reciprocal
+- Mand lateral I-bar exclusion
+- Class II contralateral-stabilization flag
+- Applegate Rule 8 flag for 3rd molar
+- Severe-resorption Class I scope (both ways)
+
+Tests: 1017 → 1025 (8 new).
+
+### Iter 28 total: 3 real fixes + 8 new tests
+1. Second `(?!)` silent regex (1b53d03)
+2. Template 1549 typo (1051b35)
+3. Class II contralateral flag (a08655a)
+4. 8 regression tests (3e139de)
+
+### Cumulative: 56 commits since "no wake-ups", 28 real bug fixes, 1025 tests pass
+
 
