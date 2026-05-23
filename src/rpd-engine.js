@@ -2985,7 +2985,7 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
  // wastes lab work. Prepend the warning so a student copying the Rx text
  // can't miss it (otherwise the blocker only shows in the red-flags panel).
  const blockers = (redFlags || []).filter(f => f.severity === "blocker");
- if (blockers.length > 0 && !isInterim) {
+ if (blockers.length > 0) {
  lines.push("⚠ BLOCKER — resolve before sending to lab.");
  for (const b of blockers) {
  lines.push(`• ${b.message}`);
