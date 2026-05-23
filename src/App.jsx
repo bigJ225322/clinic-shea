@@ -4200,11 +4200,21 @@ function renderTemplate(raw, f) {
  t = t.replace(/(- Periapical radiolucency)\s*#[^\n]*/i, `$1 ${f.endoRadioFinding1.trim()}`);
  }
  if (f.endoRadioFinding2 && f.endoRadioFinding2.trim()) {
- // Match the line: "- #X large DO composite approaching pulp, recurrent decay"
- // We replace everything after the leading "- " with the user's text.
- // Allow optional leading whitespace before "-" and tolerate the
- // optional "#X " prefix that may or may not have spaces.
- t = t.replace(/(\n\s*-\s*)#?\d*\s*large DO composite[^\n]*/i, `$1${f.endoRadioFinding2.trim()}`);
+ // The original regex targeted a "- #X large DO composite approaching
+ // pulp" placeholder phrase that doesn't exist in the current template —
+ // template 5472 only has TWO bullets ("BW & PA taken..." and
+ // "Periapical radiolucency #..."), no third placeholder for finding 2.
+ // So finding2 substitution silently failed.
+ //
+ // Fix: append finding2 as a new bullet right after the Periapical
+ // radiolucency line. That matches the form's intent (two free-form
+ // findings) without needing a placeholder phrase in the template.
+ // If finding1 wasn't filled, we still append after the (still-empty)
+ // Periapical radiolucency line — student manually fills line 1.
+ t = t.replace(
+ /((?:- Periapical radiolucency)[^\n]*\n)/i,
+ `$1 - ${f.endoRadioFinding2.trim()}\n`
+);
  }
  // 10. Pulpal Dx
  if (f.endoPulpalDx && f.endoPulpalDx.trim()) {
