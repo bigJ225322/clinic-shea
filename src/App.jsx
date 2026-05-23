@@ -2600,7 +2600,7 @@ const REF_DATA = {
  },
 
  "ref-prescriptions": {
- verdict: "Standard prescription formulations used at for common dental conditions.",
+ verdict: "Standard prescription formulations used for common dental conditions.",
  blocks: [
  { type: "cards", cards: [
  { title: "Antibiotic prophylaxis", rows: [
