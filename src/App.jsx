@@ -6262,7 +6262,9 @@ const EXAM_FINDINGS_CONFIG = {
  placeholder: "in the patient's words" }],
  [
  { label: "location", type: "input", displayLabel: "Area / tooth",
- placeholder: "e.g. #8, #14, UL, UR, LL, LR" },
+ placeholder: "e.g. #8, #14 — or click a quadrant the pt points to",
+ chips: ["UR", "UL", "LR", "LL"],
+ hint: "Patients often point to a quadrant rather than a specific tooth; chips skip the typing." },
  { label: "inception", type: "input", placeholder: "e.g. 3 days ago" },
  ],
  [
@@ -6318,7 +6320,8 @@ const EXAM_FINDINGS_CONFIG = {
  title: "Diagnoses",
  rows: [
  [{ label: "diagnosis tooth", type: "input", displayLabel: "Tooth #",
- placeholder: "e.g. 8, 14, UL, UR, LL, LR" }],
+ placeholder: "e.g. 8, 14 — diagnosis requires a specific tooth",
+ hint: "Unlike the HPI location field, a diagnosis must name a tooth — not a quadrant. If you only know a quadrant, the diagnosis is still pending." }],
  [
  { label: "pulpal diagnosis", type: "select",
  options: ["", "Normal pulp", "Reversible pulpitis",
@@ -7889,10 +7892,42 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  <ProbingDepthsField value={value}
  onChange={(v) => update(field.label, v)} />
 ): (
+ <>
  <input type="text" value={value}
  onChange={e => update(field.label, e.target.value)}
  placeholder={field.placeholder}
  style={{...inputStyle, fontSize: "13px" }} />
+ {field.chips && field.chips.length > 0 && (
+ <div style={{
+ display: "flex", gap: "6px", flexWrap: "wrap",
+ marginTop: "5px",
+ }}>
+ {field.chips.map(chip => {
+ const active = value === chip;
+ return (
+ <button key={chip}
+ type="button"
+ onClick={() => update(field.label, active ? "" : chip)}
+ style={{
+ padding: "3px 9px",
+ fontSize: "11px",
+ fontFamily: "'Geist', sans-serif",
+ fontWeight: active ? 600 : 400,
+ background: active ? "var(--accent)" : "var(--paper)",
+ color: active ? "#fff" : "var(--ink-soft)",
+ border: `1px solid ${active ? "var(--accent)" : "var(--rule)"}`,
+ borderRadius: "2px",
+ cursor: "pointer",
+ letterSpacing: "0.04em",
+ transition: "background 140ms, color 140ms, border-color 140ms",
+ }}>
+ {chip}
+ </button>
+ );
+ })}
+ </div>
+ )}
+ </>
 )}
  {field.hint && (
  <div style={{
