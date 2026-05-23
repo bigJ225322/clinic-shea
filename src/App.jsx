@@ -4017,10 +4017,18 @@ function renderTemplate(raw, f) {
  // -------- 6c. Cord size (crown prep, provisional crown). --------
  // When the "Placed cord?" checkbox is checked and a size other than "0"
  // is selected, replace "#0" in the standard cord sentence.
+ // The original regex /Placed #0 gingival retraction cord soaked in
+ // Hemodent/g never matched ANY template — templates use either
+ // "cord #0" or "cords #0" order (not "#0 ... cord"), and use either
+ // "soaked with" or "soaked in" Hemodent. The substitution was silently
+ // broken since this code was added. Now matches all four template
+ // variants: cord #0 with, cords #0 in, cord #0 with, cords #00 & #0 with.
+ // For dual-cord (#00 & #0), only the larger #0 is replaced — that's the
+ // size the form's cordSize field controls.
  if (f.cordPlaced && f.cordSize) {
  t = t.replace(
- /Placed #0 gingival retraction cord soaked in Hemodent/g,
- `Placed #${f.cordSize} gingival retraction cord soaked in Hemodent`
+ /(Placed gingival retraction cords?\s+(?:#00 & )?)#0(?=\s+soaked)/g,
+ `$1#${f.cordSize}`
 );
  }
 
