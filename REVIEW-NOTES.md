@@ -1807,5 +1807,39 @@ Background-agent flagged: mand Class II R missing #29-32 → only #28 RPI; no cl
 7. Akers lingual reciprocation + mand lateral I-bar exclusion (2b7ee41)
 8. Applegate Rule 8 flag (c16b42f)
 
-### Cumulative: 45 commits since "no wake-ups", 20 real bug fixes
+---
+
+## Iteration 27 (2026-05-23) — Lab Rx polish + Cases-engine alignment
+
+Third audit agent ran and surfaced 5 more findings. Fixed 4, deferred 1 borderline.
+
+**A65. Lab Rx: beading note only when applicable (commit 828c5f1).**
+Hardcoded "0.5mm beading on tissue surface" appended to every major connector — even Lingual Bar, Lingual Plate, Sublingual Bar (where beading isn't applicable). Fix uses `result.majorConnector.note` directly so palatal connectors keep their beading note, mandibular ones don't get the spurious line. Verified live in both Mand Class I (no beading) and Max Class II (beading retained).
+
+**A66. Lab Rx: occlusal rest type now spelled out (commit 3af4f3f).**
+Previous shorthand collapsed "occlusal" rests to just "Mesial rest"/"Distal rest" — ambiguous against incisal/ball/cingulum. Now always outputs the full descriptor (e.g., "Mesial occlusal rest").
+
+**A67. Lab Rx: mand canine ML ball rest no longer mislabeled "Distal" (commit f21d70c).**
+The standaloneIndirect formatter hardcoded "Distal ball rest" for ANY ball-type restType — but mand canine IRs carry `restType: "ML ball rest"` (mesio-lingual line angle). Lab would prep the wrong surface if student copied verbatim. Now: detects ML/mesial/distal in the restType string; defaults to "Distal ball rest" only when no surface specified (preserves historic max-central-IR behavior).
+
+**A68. Cases pathway: "altered cast is MANDATORY" → engine-aligned conditional language (commit f21d70c).**
+The rpd-distal-extension pathway said altered cast is MANDATORY for all Class I/II — but the engine's refined red flag says it's MAY-needed, with specific indications (disclosing-wax discrepancy or flabby ridge). Updated Cases content to match the engine's refined stance.
+
+**A69. Cases pathway: Class IV major connector matches engine (commit f21d70c).**
+The rpd-kennedy4-anterior pathway said "A-P palatal strap or full palatal coverage" — but the engine unconditionally returns A-P Strap for Class IV (Full Palatal Plate scoped to Class I per McCracken). Updated text to match engine + cite the rationale.
+
+### Borderlines deferred (rare configurations):
+
+**B33. Class IV bounded only by max laterals → zero retentive clasps.**
+Configuration is rare (only max laterals #7+#10 present anteriorly). `tooSmallForIBar` downgrades both to Rest Only; no fallback retentive mechanism for the now-clasp-less anterior span. The `zero-retentive-clasps` flag catches it informationally. Engine could route to a wrought-wire C-clasp fallback for this specific configuration, but the case is rare enough to defer.
+
+**B34. Multi-injection buccal infiltration always uses first tooth.**
+`buildInjectionTail` references `f.tooth.split(",")[0]` for techBuccalInfil — so multiple manually-added infiltration injections all reference the same tooth. Latent: SRP quad workflows use techMaxInfil/techIAN, not techBuccalInfil. Multi-tooth manual infiltration is rare; defer.
+
+### Iter 27 total: 5 real fixes, 4 commits
+1. Lab Rx beading scope (828c5f1)
+2. Lab Rx occlusal rest label (3af4f3f)
+3. Lab Rx ML ball rest label + Cases alignment x2 (f21d70c)
+
+### Cumulative: 50 commits since "no wake-ups", 25 real bug fixes
 
