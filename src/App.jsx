@@ -16974,16 +16974,9 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  <span style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>
  Rationale / Comments
  </span>
- {/* Toggle moved to the parent RPDHelper (above the forms) so a single
- control drives both this form's rationale verbosity AND the Lab Rx
- spec callouts. The mode label here echoes the current state. */}
- <span style={{
- fontSize: "9px", color: "var(--ink-faint)",
- fontFamily: "'Geist', sans-serif", letterSpacing: "0.04em",
- textTransform: "uppercase", fontStyle: "italic",
- }}>
- {showFullRationale ? "verbose" : "compact (1:1 UIC)"}
- </span>
+ {/* Verbose toggle lives in the parent RPDHelper (top-right above the
+ forms); no secondary mode label here — the toggle itself is the
+ single source of state truth. */}
  </div>
  <div style={{ fontSize: "11px", lineHeight: 1.55 }}>
  {visibleRationaleLines.map((line, i) => (
@@ -18952,27 +18945,21 @@ function RPDHelper() {
  rationale column AND the Lab Rx spec callouts. OFF = matches
  UIC source PDFs (Design Case I/II, LabRx Examples A/B, framework
  Case 1) 1:1. ON = expands rationales to full educational text
- with page refs + adds engine's explicit spec callouts.
+ with page refs + adds engine's explicit spec callouts. Quiet
+ gray styling so it doesn't compete with the form content below.
  Class name `rpd-print-hide` keeps the chip off the printed Rx. */}
  <div className="rpd-print-hide" style={{
  display: "flex", justifyContent: "flex-end",
- marginBottom: "8px", gap: "8px", alignItems: "center",
+ marginBottom: "8px",
  }}>
- <span style={{
- fontSize: "10px", color: "var(--ink-soft)",
- fontFamily: "'Geist', sans-serif", letterSpacing: "0.04em",
- textTransform: "uppercase",
- }}>
- {verbose ? "Verbose detail" : "1:1 with UIC sample forms"}
- </span>
  <button
  type="button"
  onClick={() => setVerbose(v => !v)}
  style={{
  fontSize: "10px", padding: "3px 10px",
- background: verbose ? "var(--accent)" : "transparent",
+ background: verbose ? "var(--ink-soft)" : "transparent",
  color: verbose ? "white" : "var(--ink-soft)",
- border: `1px solid ${verbose ? "var(--accent)" : "var(--rule)"}`,
+ border: `1px solid ${verbose ? "var(--ink-soft)" : "var(--rule)"}`,
  borderRadius: "100px",
  cursor: "pointer",
  fontFamily: "'Geist', sans-serif",
@@ -18981,7 +18968,7 @@ function RPDHelper() {
  }}
  title={verbose
  ? "Currently showing engine's full pedagogical detail. Click to collapse to the UIC sample format."
- : "Currently 1:1 with UIC sample PDFs (terse). Click to expand to full pedagogical detail with page refs."}
+ : "Currently 1:1 with UIC sample PDFs. Click to expand to full pedagogical detail with page refs."}
  >
  {verbose ? "Verbose" : "Compact"}
  </button>
