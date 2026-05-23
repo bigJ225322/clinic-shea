@@ -11846,6 +11846,7 @@ function RVUs() {
  display: "grid", gridTemplateColumns: cols, gap: "12px",
  fontSize: "13px", lineHeight: 1.45, padding: "10px 18px",
  borderBottom: "1px solid var(--rule-soft)", alignItems: "center",
+ transition: "background 120ms ease",
  };
  const codeCell = (code, swadeFlag) => (
  <ClickToCopyCode code={code}
@@ -11894,7 +11895,7 @@ function RVUs() {
 
  if (r._type === "parent") {
  const parentRow = (
- <div key={r.code} style={rowStyle}>
+ <div key={r.code} className="codes-row" style={rowStyle}>
  <button onClick={() => toggleGroup(r.code, isOpen)} style={{
  background: "none", border: "none", padding: 0, cursor: "pointer",
  color: "var(--ink)", textAlign: "left", fontFamily: "inherit",
@@ -11922,7 +11923,7 @@ function RVUs() {
  </div>
 );
  const childRows = isOpen? r.children.map(child => (
- <div key={child.code} style={{
+ <div key={child.code} className="codes-row codes-row--child" style={{
 ...rowStyle,
  padding: "7px 18px 7px 36px",
  background: "var(--paper-soft)",
@@ -11947,7 +11948,7 @@ function RVUs() {
 
  // Single (non-grouped) row
  return [(
- <div key={r.code} style={rowStyle}>
+ <div key={r.code} className="codes-row" style={rowStyle}>
  <div style={{ color: "var(--ink)", textAlign: "left" }}>{r.desc}</div>
  <div style={{
  textAlign: "right",
@@ -26311,6 +26312,14 @@ export default function App() {
 
 .hairline { border-top: 1px solid var(--rule); }
 .hairline-soft { border-top: 1px solid var(--rule-soft); }
+
+ /* Codes-table row hover tint — very subtle oxblood wash that helps
+    the eye track a row's description across to its code/RVU/MEE
+    cells without dominating the page. Child (sub-code) rows get a
+    slightly stronger wash since their paper-soft baseline would
+    swallow the lighter tint. */
+.codes-row:hover { background: rgba(124, 30, 32, 0.035); }
+.codes-row.codes-row--child:hover { background: rgba(124, 30, 32, 0.06); }
 
 .fade-in { animation: fadeIn 320ms cubic-bezier(.2,.6,.2,1) both; }
  @keyframes fadeIn {
