@@ -25742,7 +25742,7 @@ function Pathways() {
  <div style={{
  fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.08em",
  color: "var(--accent)", fontWeight: 600,
- }}>Reading order</div>
+ }}>Sequence</div>
  {(() => {
  // Collapse-all / Expand-all toggle. Single button whose label
  // reflects the current state: if any section is expanded, the
