@@ -4464,8 +4464,9 @@ function renderTemplate(raw, f) {
  if (label === "diagnosis tooth") continue;
 
  // "Pt opts for." — fill in the patient's choice.
+ // Source has "Pt opts for." (no space); tolerate either spacing.
  if (label === "pt opts for") {
- t = t.replace(/Pt opts for \./, `Pt opts for ${v}.`);
+ t = t.replace(/Pt opts for\s*\./, `Pt opts for ${v}.`);
  continue;
  }
 
@@ -4708,9 +4709,11 @@ function renderTemplate(raw, f) {
  }
  // Non-heavy, no area → leave "with heavy plaque on." as placeholder
 
- // Emphasis: fill in the tail of the OHI sentence
+ // Emphasis: fill in the tail of the OHI sentence.
+ // Same issue as the plaque-area regex above — source has "needs to."
+ // with no space, earlier regex required a space and silently failed.
  if (emphasis) {
- t = t.replace(/Emphasized that patient needs to \./, `Emphasized that patient needs to ${emphasis}.`);
+ t = t.replace(/Emphasized that patient needs to\s*\./, `Emphasized that patient needs to ${emphasis}.`);
  }
  }
 
