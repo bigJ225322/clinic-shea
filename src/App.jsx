@@ -3994,12 +3994,18 @@ function renderTemplate(raw, f) {
  const escaped = oldBase.replace(/[.*+?^${}|[\]\\]/g, "\\$&");
  const baseRegex = new RegExp(escaped + "(?![-A-Za-z0-9])", "g");
  const multiToothRe = /#[A-Z0-9]+(?:-[A-Z]+)?(?:,\s*#[A-Z0-9]+(?:-[A-Z]+)?)+/g;
- // IMPORTANT: the paren capture must be LAZY (*?). With greedy *, on a
- // template like "...(core buildup)... #19 ... (core buildup) ... #19 ...
- // (size M)..." the alternation matches from the FIRST `(` to the LAST `)`,
- // sealing off all #19 references between them and skipping substitution.
- // Lazy match captures each individual `(...)` group as intended.
- t = t.replace(/\(([^]*?)\)|([^]+)/g, (_m, inside, outside) => {
+ // Parens protection: substitute outside `(...)` groups only; leave the
+ // paren-content untouched. Earlier version used `[^]+` for the outside
+ // alternative, which is greedy across paren boundaries — so the outside
+ // alternative gobbled the entire string in one shot at position 0 and
+ // the inside-paren branch was never taken. (The end-user impact was
+ // mild because parens content like "(core buildup)" rarely contains a
+ // tooth ref, but a non-target tooth ref inside a paren — e.g. "see #5
+ // in chart" — would get unintentionally substituted.) Fix: restrict
+ // the outside alternative to non-paren characters `[^()]+` so the
+ // alternation properly cycles between paren groups and gaps between
+ // them.
+ t = t.replace(/\(([^)]*)\)|([^()]+)/g, (m, inside, outside) => {
  if (outside!== undefined) {
  let chunk = outside.replace(baseRegex, bareReplacement);
  if (refs.length > 1) {
@@ -4007,7 +4013,7 @@ function renderTemplate(raw, f) {
  }
  return chunk;
  }
- return `(${inside})`;
+ return m; // paren content preserved verbatim
  });
  }
  }
