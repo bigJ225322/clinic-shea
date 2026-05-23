@@ -17224,6 +17224,255 @@ function explainMouldDiff(want, have) {
  return parts.join("; ") + ".";
 }
 
+// Gingival (Lucitone 199 / HIPA) shade options. UIC commonly uses
+// Original + Dark Pink + the 50/50 mix; Light, Light Reddish Pink, and
+// Original Opaque (HIPA-only) round out the set. Colors are visual
+// approximations for the swatch — actual shade selection is chairside.
+const GINGIVAL_SHADES = [
+ { code: "L199-OR", label: "Original",             color: "#D58E83" },
+ { code: "50/50 OR+DK", label: "50% OR + 50% DK",  color: "#B57367" },
+ { code: "L199-DK", label: "Dark Pink",            color: "#8D5950" },
+ { code: "L199-LT", label: "Light",                color: "#E7B5AB" },
+ { code: "L199-LR", label: "Light Reddish Pink",   color: "#CC8B80" },
+ { code: "L199-OPQ", label: "Original Opaque",     color: "#C49A8E" },
+];
+
+// Visual gingival-shade picker modeled on the Vita ShadeInput. Pink
+// swatches keyed to the Lucitone 199 / HIPA palette. Click input → pop
+// swatch grid → pick → close.
+function GingivalShadeInput({ value, onChange }) {
+ const [open, setOpen] = useState(false);
+ const [focused, setFocused] = useState(false);
+ const panelRef = useRef(null);
+ useEffect(() => {
+ if (!open) return;
+ const h = (e) => {
+ if (panelRef.current && !panelRef.current.contains(e.target)) setOpen(false);
+ };
+ document.addEventListener("mousedown", h);
+ return () => document.removeEventListener("mousedown", h);
+ }, [open]);
+ return (
+ <div ref={panelRef} style={{ position: "relative" }}>
+ <input readOnly value={value || ""}
+ placeholder="e.g. L199-OR"
+ onClick={() => setOpen(o => !o)}
+ onFocus={() => setFocused(true)}
+ onBlur={() => setFocused(false)}
+ style={{
+ padding: "5px 8px", width: "100%", boxSizing: "border-box",
+ border: `1px solid ${(open || focused) ? "var(--accent)" : "var(--rule)"}`,
+ borderRadius: "2px",
+ fontFamily: "'Geist', sans-serif", fontSize: "11px",
+ cursor: "pointer",
+ boxShadow: (open || focused) ? "0 0 0 3px rgba(122,26,26,0.08)" : "none",
+ }} />
+ {open && (
+ <div style={{
+ position: "absolute", top: "calc(100% + 2px)", left: 0,
+ background: "var(--paper)", border: "1px solid var(--rule)",
+ borderRadius: "4px", padding: "10px 12px",
+ zIndex: 200, boxShadow: "0 4px 20px rgba(0,0,0,0.16)",
+ minWidth: "260px",
+ }}>
+ <div style={{
+ fontSize: "9px", letterSpacing: "0.16em",
+ textTransform: "uppercase", color: "var(--ink-faint)",
+ fontFamily: "'Geist', sans-serif", marginBottom: "8px",
+ }}>Gingival shade (Lucitone 199 / HIPA)</div>
+ <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "6px" }}>
+ {GINGIVAL_SHADES.map(s => {
+ const isActive = value === s.code;
+ return (
+ <button key={s.code}
+ onClick={() => { onChange(s.code); setOpen(false); }}
+ style={{
+ display: "flex", flexDirection: "column",
+ alignItems: "center", gap: "4px",
+ background: isActive ? "rgba(122,26,26,0.07)" : "transparent",
+ border: `1.5px solid ${isActive ? "var(--accent)" : "var(--rule)"}`,
+ borderRadius: "3px", padding: "6px 4px",
+ cursor: "pointer", transition: "border-color 100ms",
+ }}>
+ <div style={{
+ width: "28px", height: "18px",
+ background: s.color,
+ borderRadius: "9px 9px 3px 3px",
+ border: "1px solid rgba(0,0,0,0.12)",
+ }} />
+ <span style={{
+ fontSize: "9px",
+ fontFamily: "'JetBrains Mono', monospace",
+ color: isActive ? "var(--accent)" : "var(--ink-soft)",
+ letterSpacing: "-0.2px", lineHeight: 1.1,
+ textAlign: "center",
+ }}>{s.code}</span>
+ <span style={{
+ fontSize: "8px", color: "var(--ink-faint)",
+ textAlign: "center", lineHeight: 1.1,
+ }}>{s.label}</span>
+ </button>
+ );
+ })}
+ </div>
+ </div>
+ )}
+ </div>
+ );
+}
+
+// Mould-outline preview. Draws 6 anterior teeth at proportions implied by
+// the mould code (width letter → mm range; proportion digit → long/medium/
+// short + straight/curved). Stylized — not anatomically exact, but the
+// shape + curve cues match the chart silhouettes well enough for a glance.
+function MouldOutlinePreview({ code }) {
+ if (!code || code.length < 3) return null;
+ const formId = code[0];
+ const propId = code[1];
+ const widthLetter = code.slice(2);
+ // Width letter → midpoint of mm range
+ const widthMm = ({
+ B: 42.5, C: 44.75, D: 46.75, E: 48.5, F: 50.25, G: 52.75, H: 55, J: 57,
+ })[widthLetter] || 50;
+ // Proportion 1,4 = long; 2,5 = medium; 3,6 = short
+ const propNum = parseInt(propId, 10);
+ const isLong = propNum === 1 || propNum === 4;
+ const isShort = propNum === 3 || propNum === 6;
+ const heightMm = isLong ? 11.5 : isShort ? 9.5 : 10.5;
+ const isCurved = propNum >= 4;
+ // Form character roughly maps to overall arch shape:
+ // 1 Square / 4 Tapering: straight-sided; 3/5/6 Ovoid families: rounded.
+ const isTapering = formId === "2" || formId === "4" || formId === "7";
+ const isOvoid = formId === "3" || formId === "5" || formId === "6";
+ // SVG scaled at 7 px per mm
+ const SCALE = 7;
+ const W = widthMm * SCALE + 16;
+ const H = heightMm * SCALE + 28;
+ const cx = W / 2;
+ const toothW = (widthMm * SCALE) / 6;
+ // Slight curvature: central incisors longer than canines on curved moulds;
+ // canines slope outward on tapering moulds.
+ const teeth = [-2.5, -1.5, -0.5, 0.5, 1.5, 2.5].map((slot, i) => {
+ const x = cx + slot * toothW;
+ // Curved moulds: subtle parabolic offset down (anterior teeth bow forward)
+ const yOffset = isCurved ? Math.pow(slot, 2) * 1.6 : 0;
+ // Position offset: outer teeth (canines) sit slightly more cervically on
+ // tapering forms (visual cue for the wedge)
+ const tapeOffset = isTapering ? Math.abs(slot) * 1.2 : 0;
+ // Tooth-shape variation: outer 2 teeth (canines) narrower
+ const isCanine = i === 0 || i === 5;
+ const isCentral = i === 2 || i === 3;
+ const widthMul = isCanine ? 0.78 : isCentral ? 1.05 : 0.92;
+ const wThis = toothW * widthMul;
+ // Ovoid forms: rounded incisal edges
+ const rIncisal = isOvoid ? wThis * 0.45 : isTapering ? wThis * 0.2 : wThis * 0.3;
+ const top = 10 + yOffset + tapeOffset;
+ const bottom = top + heightMm * SCALE;
+ // Trapezoidal-with-rounded-incisal shape
+ const taperPx = isTapering ? wThis * 0.12 : wThis * 0.06;
+ return (
+ <path key={i} d={`
+ M ${x - wThis/2 + taperPx} ${top}
+ L ${x + wThis/2 - taperPx} ${top}
+ L ${x + wThis/2} ${bottom - rIncisal}
+ Q ${x + wThis/2} ${bottom}, ${x + wThis/2 - rIncisal} ${bottom}
+ L ${x - wThis/2 + rIncisal} ${bottom}
+ Q ${x - wThis/2} ${bottom}, ${x - wThis/2} ${bottom - rIncisal}
+ Z
+ `} fill="#FCFAF4" stroke="#3A332A" strokeWidth={0.9} strokeLinejoin="round" />
+ );
+ });
+ return (
+ <div style={{
+ display: "flex", flexDirection: "column", alignItems: "center",
+ padding: "10px", background: "rgba(0,0,0,0.015)",
+ borderRadius: "3px", border: "1px solid var(--rule-soft)",
+ }}>
+ <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ maxWidth: "100%" }}>
+ {teeth}
+ </svg>
+ <div style={{
+ fontSize: "9px", color: "var(--ink-faint)",
+ marginTop: "4px", fontFamily: "'JetBrains Mono', monospace",
+ letterSpacing: "0.04em",
+ }}>
+ ~{widthMm.toFixed(1)} mm × {heightMm.toFixed(1)} mm
+ </div>
+ </div>
+ );
+}
+
+// Anterior mould list grouped by facial form, derived from TOOTH_MOULD_TABLE
+// so the dropdown is always in sync with the chart data.
+const ANTERIOR_MOULDS_BY_FORM = (() => {
+ const groups = {};
+ for (const code of Object.keys(TOOTH_MOULD_TABLE)) {
+ const f = code[0];
+ (groups[f] = groups[f] || []).push(code);
+ }
+ // Sort within each form by proportion then width
+ for (const f of Object.keys(groups)) groups[f].sort();
+ return groups;
+})();
+
+// Dropdown for selecting an anterior mould — grouped by facial form,
+// labels the suggested mandibular pairing inline so the student doesn't
+// have to cross-reference the chart.
+function AnteriorMouldSelect({ value, onChange }) {
+ return (
+ <select value={value || ""} onChange={e => onChange(e.target.value)}
+ style={{
+ padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
+ fontFamily: "'Geist', sans-serif", fontSize: "11px",
+ background: "white", cursor: "pointer", width: "100%",
+ }}>
+ <option value="">Select…</option>
+ {TOOTH_MOULD_FORMS.map(f => (
+ <optgroup key={f.id} label={`${f.id} · ${f.label}`}>
+ {(ANTERIOR_MOULDS_BY_FORM[f.id] || []).map(code => {
+ const entry = TOOTH_MOULD_TABLE[code];
+ return (
+ <option key={code} value={code}>
+ {code} (mand {entry.lower.join("/")})
+ </option>
+ );
+ })}
+ </optgroup>
+ ))}
+ </select>
+ );
+}
+
+// Posterior mould options grouped by cusp angle category.
+const POSTERIOR_MOULDS_BY_ANGLE = [
+ { label: "0° Portrait IPN (Non-Anatomical)", moulds: ["630","632","634"] },
+ { label: "0° Bioform IPN Monoline (Non-Anatomical)", moulds: ["429","431","433"] },
+ { label: "10° Portrait IPN / Bioform Anatoline (Semi)", moulds: ["330","332","334","336"] },
+ { label: "20° Bioform IPN (Semi)", moulds: ["29S","29M","29L","31S","31M","31L","33M","33L","35M"] },
+ { label: "22° Portrait IPN (Semi)", moulds: ["530","532","533","536"] },
+ { label: "30° Bioform IPN PT (Anatomical)", moulds: ["230S","230M","230L","230LS","233M","233L"] },
+ { label: "33° Portrait / Bioform IPN (Anatomical)", moulds: ["30M","30L","32M","32L","34M","34L"] },
+ { label: "40° Portrait IPN EuroLine (Anatomical)", moulds: ["730","732","734"] },
+];
+
+function PosteriorMouldSelect({ value, onChange }) {
+ return (
+ <select value={value || ""} onChange={e => onChange(e.target.value)}
+ style={{
+ padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
+ fontFamily: "'Geist', sans-serif", fontSize: "11px",
+ background: "white", cursor: "pointer", width: "100%",
+ }}>
+ <option value="">Select…</option>
+ {POSTERIOR_MOULDS_BY_ANGLE.map(g => (
+ <optgroup key={g.label} label={g.label}>
+ {g.moulds.map(m => <option key={m} value={m}>{m}</option>)}
+ </optgroup>
+ ))}
+ </select>
+ );
+}
+
 // "Code not in chart" panel: shows the closest available codes as
 // click-to-pick chips with a circled-(i) info icon next to each that
 // reveals plain-language adjustment instructions on click.
@@ -17453,6 +17702,15 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  <div>{formatLowers(entry.lower)}</div>
  <div style={{ color: "var(--ink-soft)", textTransform: "uppercase", fontSize: "10px", letterSpacing: "0.1em" }}>Posteriors</div>
  <div>{posteriorMould} <span style={{ color: "var(--ink-faint)", fontSize: "10px" }}>({angleMeta?.label} {angleMeta?.brand})</span></div>
+ </div>
+ {/* Stylized outline preview of the picked maxillary anterior
+ mould. Derived parametrically from the code (width letter →
+ mm range, proportion digit → long/medium/short × straight/
+ curved, form digit → tapering vs ovoid silhouette). Not
+ anatomically exact, but the proportions match the chart
+ silhouettes well enough to glance-confirm a selection. */}
+ <div style={{ marginTop: "10px" }}>
+ <MouldOutlinePreview code={code} />
  </div>
  {onApply && (
  <div style={{ marginTop: "10px" }}>
@@ -17753,31 +18011,19 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 12px" }}>
  <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
  <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Tooth shade (Vita)</span>
- <input type="text" value={toothShade} onChange={e => setToothShade(e.target.value)}
- placeholder="e.g. A2"
- style={{ padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
- fontFamily: "'Geist', sans-serif", fontSize: "11px" }} />
+ <ShadeInput value={toothShade} onChange={setToothShade} />
  </label>
  <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
  <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Gingival shade</span>
- <input type="text" value={gingivalShade} onChange={e => setGingivalShade(e.target.value)}
- placeholder="e.g. L199-OR"
- style={{ padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
- fontFamily: "'Geist', sans-serif", fontSize: "11px" }} />
+ <GingivalShadeInput value={gingivalShade} onChange={setGingivalShade} />
  </label>
  <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
- <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Anterior mold (Trubyte Classic)</span>
- <input type="text" value={anteriorMold} onChange={e => setAnteriorMold(e.target.value)}
- placeholder="e.g. 4H"
- style={{ padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
- fontFamily: "'Geist', sans-serif", fontSize: "11px" }} />
+ <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Anterior mold (Portrait/Bioform IPN)</span>
+ <AnteriorMouldSelect value={anteriorMold} onChange={setAnteriorMold} />
  </label>
  <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
- <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Posterior mold (Trubyte Classic)</span>
- <input type="text" value={posteriorMold} onChange={e => setPosteriorMold(e.target.value)}
- placeholder="e.g. F30 10°"
- style={{ padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
- fontFamily: "'Geist', sans-serif", fontSize: "11px" }} />
+ <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Posterior mold (Portrait/Bioform IPN)</span>
+ <PosteriorMouldSelect value={posteriorMold} onChange={setPosteriorMold} />
  </label>
  </div>
  </div>
