@@ -1998,3 +1998,42 @@ Iter 30 fix: when crownType=all-ceramic, "RelyX" → "Panavia" in the cement sen
 - ~190 lines dead mould-selector code removed (db90908)
 
 **Cumulative iter 30**: 16 commits, 30+ substitution sites fixed across clinical accuracy + UX. Tests 1021/1021 pass throughout. No regressions.
+
+---
+
+### Iter 30 final additions (deployed after the initial iter 30 summary above)
+
+**Additional fixes after the first REVIEW-NOTES write-up:**
+
+1. **Cavitron→Isodry substitution REMOVED (real clinical bug).** Earlier
+   renderTemplate line 3863 converted "(with assistant using HVE)" →
+   "(with Isodry)" for all 4 scaling templates (POE 1091, SRP 1272,
+   prophy 1196, perio maintenance 1425). But Isodry physically does NOT
+   fit during cavitron use — the water spray needs an open mouth + HVE.
+   The student would chart the wrong isolation method. Reverted to
+   templates' original clinically-correct "(with assistant using HVE)".
+   This was the iter's most impactful clinical correction. (commit 6c3cd92)
+
+2. **Implant impression template (4574) default NV** — was empty; now
+   chains to "#13 STI custom abutment try-in" matching the always-next
+   visit. (commit 8fedaed)
+
+3. **vertical bitewing bitewing** duplicate (3 sites in Steps bodies)
+   (commit b95536f)
+
+4. **FujiCem → FujiCEM brand casing normalization** (13 sites) (da4b47f)
+
+5. **isodry → Isodry casing** in substitution helper (f23b4fe)
+
+### Iter 30 total: 23 distinct fixes deployed live across:
+- 8 pattern-A no-op control fixes
+- 6 pattern-B hardcoded-template substitutions  
+- 6 clinical accuracy corrections (Gluma protocol, FujiCEM material class,
+  palatal vs lingual cusp, wrong-quadrant infiltration, SDF blot vs rinse,
+  Cavitron isolation method)
+- 6 typo/normalization fixes
+- 3 cleanup commits (dead code, vitest config, REVIEW-NOTES)
+
+Tests 1021/1021 pass throughout. No regressions.
+
+**Borderlines saved for review (4 new this iter): B35-B38 above.**
