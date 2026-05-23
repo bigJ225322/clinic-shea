@@ -3921,6 +3921,35 @@ function rpdRunEngine(caseInput) {
 
  // Classification — unchanged
  const kennedy = rpdClassifyKennedy(safeCase);
+ // ── Guard: fully dentate (Applegate-classified) ──────────────────
+ // When Kennedy classification returns null (only 3rd molars missing,
+ // or zero edentulous spans after Applegate exclusions), the patient
+ // doesn't have an edentulous area that needs an RPD. Without this
+ // guard the engine spuriously returns "A-P Strap" as a default
+ // major connector despite having no spans to address.
+ if (kennedy.class === null) {
+ // Still run red-flag checks for things that don't depend on edentulous
+ // spans — hopeless / poor / questionable abutments, combination
+ // syndrome, etc. — so the student gets useful warnings even when
+ // the engine can't design a partial.
+ const lateralFlags = rpdCheckRedFlags(safeCase, kennedy, []);
+ return {
+ kennedy, majorConnector: null, framework: null,
+ abutmentDesigns: [], indirectRetainers: [], baseDesigns: [],
+ redFlags: [
+ {
+ severity: "info",
+ type: "fully-dentate",
+ message: "No edentulous spans require RPD design — the patient is fully dentate after applying Applegate Rule 2 exclusions. No partial denture is indicated. If a case has an edentulous space that's been overlooked, verify the tooth status entries.",
+ },
+...lateralFlags,
+ ],
+ axiumCode: null, labScript: null,
+ designIntent, nmcdDesign: null, axiumSteps: null,
+ thirdMolarEval: null, secondMolarEval: null, pdi: null,
+ retentionPlan: { directRetainers: [], indirectRetainers: [], notDesignable: { reason: "fully dentate (no Applegate-relevant edentulous spans)" } },
+ };
+ }
  const majorConnector = rpdSelectMajorConnector(safeCase, kennedy);
  const framework = rpdSelectFrameworkMaterial(safeCase);
 
