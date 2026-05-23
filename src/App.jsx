@@ -4018,6 +4018,31 @@ function renderTemplate(raw, f) {
  }
  }
 
+ // -------- 5b. Sealant tooth list inside parens (carve-out). --------
+ // Template 2308 (adult sealants) has the tooth list in TWO places:
+ //   "Sealants — #2, #3, #14, #15, #18, #19, #30, #31"  (substituted)
+ //   "Repeated for all molars (#2, #3, #14, #15, #18, #19, #30, #31)"
+ // The second list sits inside parens, which the general tooth
+ // substitution above intentionally skips (parens-protection at line
+ // ~4007 preserves clinical-context parens like "(core buildup)").
+ // For the "Repeated for all molars (...)" phrase, the parens list IS
+ // the same tooth set, so we substitute it explicitly here.
+ if (f.tooth && f.tooth.trim()) {
+ const refs = f.tooth.split(",").map(token => {
+ const m = token.trim().match(/^#?([A-Za-z0-9]+)(?:-([A-Za-z]+))?$/);
+ if (!m) return null;
+ const surf = (m[2] || "").toUpperCase();
+ return surf ? `#${m[1]}-${surf}` : `#${m[1]}`;
+ }).filter(Boolean);
+ if (refs.length > 0) {
+ const joined = refs.join(", ");
+ t = t.replace(
+ /(Repeated for all molars )\(#[^)]+\)/g,
+ `$1(${joined})`
+);
+ }
+ }
+
  // -------- 6. Shade. --------
  if (f.shade.trim() && f.shade.trim().toUpperCase()!== "A2") {
  t = t.replace(/\bA2\b/g, f.shade.trim().toUpperCase());
