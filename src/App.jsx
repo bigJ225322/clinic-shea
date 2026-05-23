@@ -21887,7 +21887,7 @@ const PATHWAYS = [
  label: "Class I composite",
  description: "A single-surface restoration in a pit or fissure — almost always occlusal on a posterior tooth, occasionally the lingual pit (cingulum) of a maxillary lateral incisor. The simplest restorative case and the one most likely to be over-prepared. Modern adhesion lets you preserve every millimetre of sound tooth structure; the prep is whatever the caries demands, not a geometric textbook outline. Most Class I failures come from over-reduction during prep or from leaving the occlusal anatomy flat instead of carving cusp tips, fossae, and developmental grooves back in.",
  keyDecisions: [
- "Minimum cavity prep — remove caries-affected dentin only, leave caries-affected enamel that is structurally sound. No prophylactic extension.",
+ "Minimum cavity prep — remove caries-infected dentin only (soft, wet, bacteria-laden), leave caries-affected dentin that is firm and structurally sound. No prophylactic extension.",
  "Selective enamel etch is sufficient. Total-etch on a small Class I adds nothing.",
  "Increment in 2 mm layers with 20 sec cure, or use bulk-fill at up to 4 mm if the material is rated for it.",
  "Carve anatomy with a small instrument (IPC, hollenback) before final cure — composite stays sculptable for 20–30 seconds.",
@@ -24013,7 +24013,7 @@ const PATHWAYS = [
  description: "A maxillary central, lateral, or canine with irreversible pulpitis but not yet necrotic. Single straight canal makes this the simplest RCT — most failures here aren't anatomic, they're isolation slips and access-prep errors that leave the lingual shoulder of pulp tissue uncleaned. Rubber dam is non-negotiable: this is the one procedure in the clinic where Isodry is not an option, because hypochlorite irrigation must not contact mucosa. Single-visit obturation is reasonable for vital cases; multi-visit with intracanal calcium hydroxide is the protocol if the pulp is necrotic.",
  keyDecisions: [
  "Confirm pulp status — cold test, EPT, percussion, palpation, radiograph. Irreversible pulpitis with vital pulp = single visit possible; necrotic with periapical lesion = two visits with Ca(OH)2 between.",
- "Rubber dam mandatory. Place a single-tooth clamp (Brinker B4 or W8A on an anterior). Test the seal with water before starting — sodium hypochlorite leak onto mucosa is a chemical burn.",
+ "Rubber dam mandatory. Place a single-tooth subgingival anterior clamp (Brinker B4, B5, or B6 — the pointed-jaw designs sized for anteriors). Test the seal with water before starting — sodium hypochlorite leak onto mucosa is a chemical burn.",
  "Access on the lingual surface. The bur enters perpendicular to the lingual, then redirects to follow the long axis of the root. Outline form is a triangle with the base toward the incisal — opens the pulp horn region for the orifice locator.",
  "Working length: apex locator first, then confirm with PA radiograph showing the file 0.5–1 mm short of the radiographic apex. Re-establish length after each instrument change.",
  "Obturate with single cone + bioceramic sealer or warm vertical compaction. The lingual access cavity gets composite over Vitrebond / Cavit. Schedule the patient for definitive restoration within 4 weeks — coronal leakage is the #1 cause of RCT failure.",
@@ -24280,7 +24280,7 @@ const PATHWAYS = [
  "Pre-op PA radiograph: assess root divergence, dilaceration, root-to-sinus proximity (maxillary molars), root-to-IAN proximity (mandibular molars). Refer to oral surgery if root tips overlap the IAN canal.",
  "Anesthesia: PSA + buccal infiltration + palatal infiltration for maxillary; IA block + buccal infiltration + long buccal for mandibular. Verify with cold and percussion before starting.",
  "Sectioning decision: if roots are clearly divergent and the crown is intact, section through the furcation with a 702 surgical-length carbide bur before extraction. Each root delivered individually = faster, less fracture risk.",
- "Forceps for un-sectioned molars: cowhorn (#23 / #16) for mandibular molars (engages the furcation directly); 53R / 53L for maxillary first molars (palatal root engagement). Rock buccolingually with steady pressure, no twisting.",
+ "Forceps for un-sectioned molars: cowhorn (#23 / #16) for mandibular molars (engages the furcation directly); 53R / 53L for maxillary first molars (pointed buccal beak engages the MB–DB furcation; rounded palatal beak cups the single palatal root). Rock buccolingually with steady pressure, no twisting.",
  "Post-op socket inspection is critical — check for retained root tips at the apex of each socket. A small tip (< 2 mm) deeply embedded near vital structures can be left and monitored; larger tips should be retrieved.",
  ],
  phases: [
