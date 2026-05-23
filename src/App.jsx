@@ -18670,68 +18670,52 @@ function RPDInputsForm({ caseInput, onUpdate }) {
 // click-accessible, and shows an optional one-line `summary` when closed
 // so the user can scan without expanding.
 function RPDCollapsibleSection({ title, summary, defaultOpen = false, children }) {
- // `summary` prop is accepted for backward compat but no longer displayed —
- // titles render alone, centered, so the row of collapsibles reads as a
- // clean uniform list rather than a ragged tree of italic descriptions.
+ // `summary` prop is accepted for backward compat but no longer displayed.
+ // Header styling now matches the Cases tab collapsible pattern:
+ // sentence-case Fraunces left-aligned title + a ▾ triangle that rotates
+ // -90° when collapsed. The old centered all-caps spaced-letter header
+ // read as a "section banner" rather than a clickable dropdown.
  const [open, setOpen] = useState(defaultOpen);
  return (
  <section style={{ marginBottom: open? "20px": "0" }}>
- {/* When the section is CLOSED, its bottom border is the only thing
- separating it from the next collapsible — so we drop the
- section margin so adjacent button-borders stack as one
- continuous divider instead of two parallel lines with a gap.
- When OPEN, restore the 20px margin so the content has room
- below it before the next collapsible's header begins. */}
  <button
  type="button"
  onClick={() => setOpen(!open)}
  aria-expanded={open}
+ aria-label={open ? "Collapse section" : "Expand section"}
  className="rpd-collapsible-header"
  style={{
  all: "unset",
  cursor: "pointer",
- display: "grid",
- gridTemplateColumns: "1fr auto 1fr",
- width: "100%",
+ display: "flex",
  alignItems: "baseline",
- padding: "8px 0",
+ width: "100%",
+ padding: "10px 0",
  borderBottom: open? "1px solid var(--rule)": "1px solid var(--rule-soft)",
  marginBottom: open? "14px": "0",
  transition: "border-color 160ms ease",
  }}
  >
- {/* Left spacer keeps the title centered within the row. */}
- <span aria-hidden="true" />
  <span style={{
  fontFamily: "'Fraunces', serif",
- fontSize: "13px",
- letterSpacing: "0.18em",
- textTransform: "uppercase",
+ fontSize: "1.05rem",
+ fontWeight: 400,
  color: open? "var(--ink)": "var(--ink-soft)",
- fontWeight: 500,
- textAlign: "center",
+ flex: 1,
  }}>
  {title}
  </span>
- {/* Right cell holds the +/× indicator, right-aligned. */}
- <span style={{
- display: "flex",
- alignItems: "baseline",
- justifyContent: "flex-end",
- }}>
- <span style={{
- fontFamily: "'JetBrains Mono', monospace",
- fontSize: "13px",
- color: "var(--ink-soft)",
- display: "inline-block",
- width: "12px",
- textAlign: "center",
+ <span
+ aria-hidden="true"
+ style={{
+ marginLeft: "12px", flexShrink: 0,
+ fontSize: "1.2rem", lineHeight: 1,
+ color: "var(--ink-faint)",
  transition: "transform 160ms ease",
- transform: open? "rotate(45deg)": "rotate(0deg)",
- }}>
- +
- </span>
- </span>
+ transform: open ? "rotate(0deg)" : "rotate(-90deg)",
+ opacity: 0.7,
+ }}
+ >▾</span>
  </button>
  {open && <div>{children}</div>}
  </section>
@@ -19464,8 +19448,6 @@ function RPDHelper() {
  </div>
  </div>
 )}
-
- <Hairline />
 
  {/* Axium Clinic Workflow — friendly expandable steps with concept icons */}
  <RPDCollapsibleSection
