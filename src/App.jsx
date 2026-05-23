@@ -18949,15 +18949,29 @@ function RPDHelper() {
  </div>
 
  {/* ─── Classification verdict (only when a case is built and it's
- an actual RPD, not a fixed-replacement case). The "no teeth
- marked yet" prompt was removed — the empty chart is
- self-explanatory. */}
+ an actual RPD, not a fixed-replacement case). Split into two
+ elements per verdict-first principle:
+ • Short italic Fraunces oxblood line = the clinical diagnosis.
+ The eye lands here first.
+ • Regular ink-soft sentence below = engine's design summary
+ (side, design intent, major connector, framework material).
+ Demoting the summary to regular prose keeps the italic working
+ as a one-line punchline instead of slogging across two lines. */}
  {hasContent &&!isFixedTreatmentRecommendedCase && (
- <div style={{...verdict, marginTop: "14px", marginBottom: "12px" }}>
- {result.kennedy.description}
- {result.kennedy.deSide? ` (distal extension on patient's ${result.kennedy.deSide})`: ""}.
- {" "}Designed as {result.designIntent} RPD with {result.majorConnector.type} major connector and {result.framework.material} framework.
+ <>
+ <div style={{...verdict, marginTop: "14px", marginBottom: "4px" }}>
+ {result.kennedy.description}.
  </div>
+ <div style={{
+ fontSize: "13px", color: "var(--ink-soft)",
+ lineHeight: 1.5, marginBottom: "12px",
+ }}>
+ {result.kennedy.deSide
+ ? `Distal extension on the patient's ${result.kennedy.deSide}. `
+ : ""}
+ Designed as {result.designIntent === "definitive" ? "a definitive" : `an ${result.designIntent}`} RPD with {result.majorConnector.type} major connector and {result.framework.material} framework.
+ </div>
+ </>
 )}
  {/* ─── Fixed-treatment verdict (multi-tooth case where engine
  recommends FPD instead of RPD). Single-tooth cases handle
