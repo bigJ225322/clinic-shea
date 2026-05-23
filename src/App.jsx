@@ -17889,6 +17889,12 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
  inline note) or "judgment call" (prominent oxblood-bordered box).
  "Strong" tier shows nothing — the answer is the answer. */}
  {tier === "common" && alternativeRationale && (
+ // Tier-1 callout: the engine made a defensible choice but reasonable
+ // alternatives exist. Distinguished visually by gray fill + soft
+ // left rule; no badge — content itself ("Engine selected X; alt: Y…")
+ // is self-explanatory. The old "Common default ·" prefix was
+ // misleading since the body text describes when to deviate, not
+ // the default itself.
  <div style={{
  fontSize: "11px", color: "var(--ink-soft)", fontStyle: "italic",
  lineHeight: 1.5, padding: "6px 10px",
@@ -17897,11 +17903,6 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
  borderLeft: "2px solid var(--ink-faint)",
  borderRadius: "2px",
  }}>
- <span style={{
- fontStyle: "normal", fontWeight: 600, fontSize: "9px",
- letterSpacing: "0.14em", textTransform: "uppercase",
- color: "var(--ink-soft)", marginRight: "6px",
- }}>Common default ·</span>
  {alternative? <>Engine selected <strong>{lines[0]?.[1] || title}</strong>; alternative: <strong>{alternative}</strong>. </>: null}
  {alternativeRationale}
  </div>
