@@ -4510,14 +4510,16 @@ describe("UIC-AUDIT — Lecture 3 MI primary / CR fallback + Class I balanced st
     // Mandibular Class I does NOT fire the max-balanced-required flag
     expect(rMand.redFlags.find(f => f.type === "max-class-i-balanced-required")).toBeUndefined();
   });
-  it("Class III on natural opposing does NOT fire balanced-required flag (only group function)", () => {
+  it("Class III on natural opposing does NOT fire balanced-required flag", () => {
     const c = rpdMakeBlankCase("maxillary");
     setMissing(c, [1, 16]);
     setMissing(c, [3]); // Class III
     c.patientFactors.opposingArch = "natural";
     const r = rpdRunEngine(c);
     expect(r.redFlags.find(f => f.type === "max-class-i-balanced-required")).toBeUndefined();
-    expect(r.redFlags.find(f => f.type === "occlusion-scheme-group-function")).toBeDefined();
+    // (group-function occlusion notice retired — fired on every definitive
+    // RPD opposing natural dentition, redundant noise; delivery-protocol
+    // content moved to the Cases tab.)
   });
 });
 
@@ -4751,34 +4753,20 @@ describe("UIC-AUDIT — Step 3 surveying protocol + Block-out callout", () => {
   });
 });
 
-describe("UIC-AUDIT — Occlusion scheme red flag (Lecture 3)", () => {
-  it("Natural opposing arch → group function scheme flag fires", () => {
-    const c = rpdMakeBlankCase("mandibular");
-    setMissing(c, [17, 32]);
-    setMissing(c, [30, 31]);
-    c.patientFactors.opposingArch = "natural";
-    const r = rpdRunEngine(c);
-    const occlFlag = r.redFlags.find(f => f.type === "occlusion-scheme-group-function");
-    expect(occlFlag).toBeDefined();
-    expect(occlFlag.message).toMatch(/GROUP FUNCTION/);
-    expect(occlFlag.message).toMatch(/NON-WORKING.*NO contact/i);
-  });
-  it("Existing partial opposing → group function scheme flag fires", () => {
-    const c = rpdMakeBlankCase("mandibular");
-    setMissing(c, [17, 32]);
-    setMissing(c, [30, 31]);
-    c.patientFactors.opposingArch = "existing_partial";
-    const r = rpdRunEngine(c);
-    expect(r.redFlags.find(f => f.type === "occlusion-scheme-group-function")).toBeDefined();
-  });
-  it("CD opposing → bilateral balanced fires, NOT group function", () => {
+// Occlusion-scheme group-function notice retired — the flag fired on
+// every definitive RPD opposing natural dentition (i.e. nearly every
+// case) and the body was a multi-sentence delivery-protocol dump that
+// belongs in the Cases tab, not in the design-stage red-flag panel.
+// Kept the CD-opposing bilateral-balanced check (separate flag, still
+// fires) as a focused single test below.
+describe("UIC-AUDIT — Bilateral balanced for CD-opposing RPD (Lecture 3)", () => {
+  it("CD opposing → bilateral balanced occlusion flag fires", () => {
     const c = rpdMakeBlankCase("mandibular");
     setMissing(c, [17, 32]);
     setMissing(c, [30, 31]);
     c.patientFactors.opposingArch = "complete_denture";
     const r = rpdRunEngine(c);
     expect(r.redFlags.find(f => f.type === "bilateral-balanced-occlusion")).toBeDefined();
-    expect(r.redFlags.find(f => f.type === "occlusion-scheme-group-function")).toBeUndefined();
   });
 });
 

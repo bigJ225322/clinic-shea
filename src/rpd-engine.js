@@ -2815,22 +2815,13 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
  });
  }
 
- // Group function scheme for RPD opposing natural dentition. When opposing arch is intact natural teeth or
- // an existing RPD, the standard is GROUP FUNCTION on the working side
- // with no balancing-side interferences. Canine guidance is acceptable if
- // the patient's natural dentition exhibits it. Bilateral balanced is
- // SPECIFIC to CD-opposing-RPD; do not apply it to natural-opposing-RPD.
- // EXCEPTION: Class I cases ALSO strive for bilateral balanced — handled
- // in the class-i-balanced-strived flag above.
- if ((pf.opposingArch === "natural" || pf.opposingArch === "existing_partial" || !pf.opposingArch)
- && designIntent === "definitive"
- && kennedy.class !== null) {
- flags.push({
- severity: "info",
- type: "occlusion-scheme-group-function",
- message: "Occlusion scheme: GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — the convention. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
- });
- }
+ // Group-function occlusion notice removed — it fired on every
+ // definitive RPD opposing natural dentition (i.e. nearly every case),
+ // and the body was a multi-sentence delivery-protocol dump that belongs
+ // in the Cases tab (delivery / wax-rim try-in pathway), not in the
+ // design-stage red-flag panel. Left the comment as a marker so a future
+ // iteration can re-surface this info via a Delivery pathway link
+ // instead of an always-on notice.
 
  // "Always close the anterior edentulous area" — // (red text, hard rule). Engine surfaces this as an info-tier confirmation
  // whenever the case includes an anterior span (#7-10 max or #23-26 mand),

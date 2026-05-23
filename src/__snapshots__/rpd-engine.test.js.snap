@@ -261,11 +261,6 @@ Please return for try-in. Thank you.",
       "severity": "info",
       "type": "altered-cast",
     },
-    {
-      "message": "Occlusion scheme: GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — the convention. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
-      "severity": "info",
-      "type": "occlusion-scheme-group-function",
-    },
   ],
 }
 `;
@@ -569,11 +564,6 @@ Please return for try-in. Thank you.",
       "severity": "info",
       "type": "altered-cast",
     },
-    {
-      "message": "Occlusion scheme: GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — the convention. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
-      "severity": "info",
-      "type": "occlusion-scheme-group-function",
-    },
   ],
 }
 `;
@@ -838,11 +828,6 @@ Please return for try-in. Thank you.",
       "message": "Nesbit (unilateral cantilever) RPD is PROHIBITED per Final RPD Huddle 2 answer key Q2 — aspiration risk. The span-derived abutments alone would have been unilateral, so the engine satisfied the bilateral direct-retention invariant by adding cross-arch retention. Engine added Embrasure clasp pair on #30 + #31 for the required contralateral retention. Confirm RPD is the appropriate modality for this short unilateral span; a fixed solution (FPD or implant) is often preferable for Class III mod 0. If the patient declines fixed treatment, this RPD design is acceptable.",
       "severity": "info",
       "type": "nesbit-prohibition",
-    },
-    {
-      "message": "Occlusion scheme: GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — the convention. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
-      "severity": "info",
-      "type": "occlusion-scheme-group-function",
     },
   ],
 }
@@ -1361,11 +1346,6 @@ Please return for try-in. Thank you.",
       "type": "altered-cast",
     },
     {
-      "message": "Occlusion scheme: GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — the convention. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
-      "severity": "info",
-      "type": "occlusion-scheme-group-function",
-    },
-    {
       "message": "Anterior edentulous area present (#7, #8, #10). UIC Lecture 2 hard rule: "Always close the anterior edentulous area." Replacement options (in order of preference): FPD (if abutments allow), implant-supported crown(s), RPD with appropriate base design (Mesh for ≥3 anterior teeth, Facing for extremely limited vertical space + non-resorbed ridge), or IPD with denture teeth bonded to acrylic base if transitional. Leaving the gap open is never an acceptable definitive outcome.",
       "severity": "info",
       "type": "always-close-anterior",
@@ -1789,11 +1769,6 @@ Please return for try-in. Thank you.",
       "message": "Maxillary Kennedy Class I distal extension: Occlusion — REQUIRES balancing contacts (in addition to group function on remaining natural teeth). Set posterior denture teeth LATERAL to the residual alveolar ridge (cross-arch loading consideration — distributes occlusal force across the palate). At wax-rim try-in, verify simultaneous bilateral contacts in lateral excursions on denture teeth; natural-tooth side maintains group function with no interferences.",
       "severity": "info",
       "type": "max-class-i-balanced-required",
-    },
-    {
-      "message": "Occlusion scheme: GROUP FUNCTION on the working side. Denture teeth on the NON-WORKING (balancing) side MUST have NO contact during excursion — the convention. Excursive movement should happen on natural teeth whenever possible; only balance forces on denture teeth if natural-tooth guidance is unavailable. Canine guidance is acceptable if patient's natural dentition exhibits it. At delivery, verify with AccuFilm II: working-side contacts at premolar + molar denture teeth, balancing-side fully clear during lateral excursions. Adjust premature contacts on the DENTURE TEETH, never on natural teeth.",
-      "severity": "info",
-      "type": "occlusion-scheme-group-function",
     },
     {
       "message": "Anterior edentulous area present (#7, #8, #9, #10). UIC Lecture 2 hard rule: "Always close the anterior edentulous area." Replacement options (in order of preference): FPD (if abutments allow), implant-supported crown(s), RPD with appropriate base design (Mesh for ≥3 anterior teeth, Facing for extremely limited vertical space + non-resorbed ridge), or IPD with denture teeth bonded to acrylic base if transitional. Leaving the gap open is never an acceptable definitive outcome.",
