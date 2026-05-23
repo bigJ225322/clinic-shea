@@ -25827,7 +25827,10 @@ function Pathways() {
  letterSpacing: "0.12em", color: "var(--ink-faint)",
  fontWeight: 500, marginBottom: "4px", opacity: 0.85,
  }}>Phase {pi + 1} — {phase.label}</div>
- <ol start={startNum} style={{ margin: 0, paddingLeft: "20px", lineHeight: 1.6 }}>
+ {/* Steps indented under the phase header — marginLeft offsets
+ the whole list (numbers + text) right of the header's left
+ edge so the hierarchy reads at a glance. */}
+ <ol start={startNum} style={{ margin: "0 0 0 16px", paddingLeft: "20px", lineHeight: 1.6 }}>
  {slice.map(renderRow)}
  </ol>
  </div>
