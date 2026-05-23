@@ -1645,3 +1645,75 @@ Iter 23 commit: 044fb0b (1 commit). 1017/1017 tests pass.
 **10 code-description cleanup batches** (~170 sub-codes total)
 **1 borderline resolved** (B18 chapter stubs)
 **2 new borderlines** (B25 single max central FPD recommendation, B26 D6086+ codes — now resolved in c22ffbe)
+
+---
+
+## Iteration 24 (2026-05-23) — Tooth selector dropdown invisible
+
+**A50. CRITICAL: TeethSelectorPanel dropdown rendered off-screen on any scrolled view (commit 4e6f0eb).**
+
+User report: "tooth selector isn't working anywhere" + screenshots showing the perio chart input focused (accent border visible) but no dropdown opening. The dropdown was actually rendering — but at a position offset by `-scrollY` pixels from where it should be, making it appear above the visible area for any non-zero scroll.
+
+**Root cause**: `.app-root` had a fade-in keyframe animation:
+```css
+@keyframes appFadeIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to   { opacity: 1; transform: none; }
+}
+```
+Per CSS spec, **any** `transform` declaration on an ancestor — even a temporary one in a keyframe — creates a new containing block for `position: fixed` descendants. The browser keeps the `matrix(1,0,0,1,0,0)` identity transform after animation ends, so `.app-root` perpetually acts as the fixed-positioning container instead of the viewport. The dropdown's `top: 524px` was correct relative to viewport but rendered at `524 - scrollY` because `.app-root` had scrolled with the page.
+
+**Verified via preview**: With `scrollY=389`, dropdown's `style.top=524.328px` but actual `getBoundingClientRect().top=135.328px`. Delta exactly matches scrollY. After removing the transform from the animation, both values matched (524.625 = 524.625).
+
+**Fix**: dropped `transform` from the keyframe; kept only `opacity: 0 → 1`. The 2px translate was barely perceptible. Added an inline comment explaining why future devs shouldn't reintroduce it.
+
+This bug had been latent since at least the e90e6c6 commit (centering the dropdown on the input), and probably much earlier — the centering change just exposed it more obviously. Anyone scrolling the page would have seen this. **It's possible this was the unspoken cause of the original "tooth selector clunky" complaints from earlier iterations** — the panels would have appeared in random spots on long-scroll perio forms.
+
+### Running tally — 31 commits since "no wake-ups", 12 real bug fixes
+12. **CRITICAL**: Tooth selector dropdown positioning (4e6f0eb)
+
+**A51. Right-side floating TOC: invisible on pathway-page load (commit 01b356d).**
+User reported "the right hand-side index is currently not working." Bug: visibility gate required `firstSection.top < viewport.bottom`, but pathway pages put the section anchors well below the fold (after description + keyDecisions + phases timeline). With scrollY=0, no anchor satisfied the gate → `opacity:0`. Changed the gate to just `lastSection.bottom > 0`, so the TOC stays visible from page load through "we've scrolled past the entire pathway."
+
+**A52. GuideChapter: collapse all sections by default (commit 91779f4).**
+User wanted "all the chapters, and subchapters, open collapsed by default, but keep the 'Expand all' option." Previously only `Materials` sections were collapsed by default; everything else expanded. Changed initial state to `new Set(groups.sections.map(g => g.label))` so every section starts collapsed. Existing "Expand steps" button still flips them all open at once. This affects every chapter rendered inside Cases pathway sections (since the Guides tab itself is hidden from nav).
+
+**A53. RPD engine: severe-resorption Full Palatal Plate scoped to Class I only (commit 670e268). 13th real bug fix.**
+Found by background agent. Condition `if ((kennedy.class === "I" && abutmentCount <= 4) || severeResorption)` had a parenthesization bug — the `severeResorption` clause leaked to all classes via `||`. Result: a Class III with a short bounded span (#4-5) returned Full Palatal Plate when ridgeResorption was "severe," as did Class IV (#7-10) and Class II — all clinically wrong. McCracken Ch 5 scopes the resorption→broad-coverage argument to Class I (rotation resistance against bilateral DEs); for Class II/III/IV with severe resorption the literature is less convergent, so the engine should keep default strap logic.
+
+### Background agent findings — borderlines (NOT auto-fixed)
+
+**B28. Mand Class III "anterior span only" picks I-bar (esthetic) on canines instead of Rest-Only.**
+Engine output for {#23-26 missing, mand}: classifies as Kennedy IV (correct — anterior span crosses midline), picks Lingual Plate + I-bar (esthetic) clasps on #22 and #27 with "Rest Only" listed as alternative. Many UIC instructors prefer "cingulum/ML ball rest + no clasp, retention from lingual plate contact" for these tooth-supported anterior spans (less invasive, doesn't require ≥5mm vestibular depth / undercut prep). The engine offers it as alternative; debatable whether it should be primary. Decision for Jake.
+
+**B29. Mand Class I bilateral DE: only one IR placed when one side's canine is the primary abutment.**
+Mand Class I with primary abutments at #21 (L 1st PM) and #27 (R canine): engine places IR on #22 (L canine, anterior to #21) but NOT on the right side, because the right side's #25/#26 are mand incisors (excluded as too weak) and #27 itself is being used as a direct retainer. Clinically the Lingual Plate's tissue contact across the mand incisors does provide indirect retention, but the engine output doesn't make this dual-role explicit. Worth a small enhancement: emit a "dual-role: #27 mesial cingulum rest also functions as right-side IR" marker (similar to existing kennedy-iv-bounding-dual-role). Decision for Jake.
+
+**B30. Engine has no `anteriorMobility` input.**
+Mand Class I with shallow sulcus → Lingual Plate. But Lingual Plate's own rationale notes it's contraindicated for "healthy mobile anteriors" (the plate creates ortho-style lingual force on mobile incisors). Engine has `perioPrognosis` but no `anteriorMobility` input, so a perio-good but mobile incisor will still route to Lingual Plate. Add as an explicit input toggle. Decision for Jake.
+
+**B31. Reverse Akers on molars: engine flags off-label but still emits the prohibited clasp label.**
+Reverse Akers is curricularly prohibited on molars (aspiration risk). Engine notes the off-label nature and downgrades tier to "judgment" but still uses the label "Reverse Akers" in the lab Rx output. Should refuse and emit "Akers engaging 0.01" DB undercut" instead. Decision for Jake.
+
+### Background agent findings — Cases tab content gaps (5 top + 7 notable)
+
+Currently 124 top-level pathway labels. Background agent identified procedures described in `/Users/jakeshea/Documents/Dentistry Files/` and `/Users/jakeshea/Desktop/All of Peds Semester Content/` that have NO corresponding pathway. **All flagged as borderline for Jake's review — not auto-added.**
+
+**G1. Vital bleaching (in-office + take-home tray).**
+Source: `Tooth Bleaching 2024 BB Echo.pdf`. Zero esthetic-non-restorative coverage currently. Students get bleaching requests routinely; bleach-vs-restore sequencing, peroxide concentration, sensitivity management, ≥2 wk post-bleach bond delay — none covered. Veneers/single crown pathways skip this whole pre-step.
+
+**G2. Open-apex management — apexification / apexogenesis / Cvek pulpotomy / revascularization.**
+Source: `Vital pulp therapy 2025.pdf`. Existing endo pathways assume mature roots. 9-15 yo with traumatized permanent incisor needs MTA apical plug or regenerative endo. Five separate decision branches in the lecture.
+
+**G3. Pre-prosthetic surgery — when to refer (alveoloplasty, torus removal, vestibuloplasty, frenectomy).**
+Source: `Pre-Prosthetic Surgery.pdf`. CD/RPD delivery has no pathway for "evaluate torus palatinus, sharp mylohyoid ridge, undercut tuberosity, high frenum, flabby ridge — refer vs proceed BEFORE impressions." Direct prosthetic decision point currently missing.
+
+**G4. Combination Syndrome (Kelly).**
+Source: `Fall RPD 22 Combination Syndrome.pdf`. THE high-yield combo case (max CD opposing mand Kennedy I RPD). Five distinct findings, each demanding intervention. "Upper CD + lower RPD" pathway exists but treats it as a normal case, not as the failure-mode-with-prevention case it is.
+
+**G5. Chairside reline (hard/soft) for loose denture.**
+Source: `Reline rebase and repair - Bin Yang.pdf`. Existing pathway only references Lab Reline. Chairside reline is a different procedure (acrylic chemistry, mucostatic vs functional impression, tissue conditioner staging, soft liner indications) done at chair without sending out.
+
+**G6-G12 (notable, not top 5)**: STI surgical phase, Locator pickup workflow for 2-implant overdenture, pediatric interceptive ortho, peds N₂O administration, intraoral I&D, medical emergency in chair, Hall technique on primary molar.
+
+
