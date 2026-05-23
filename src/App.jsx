@@ -4278,25 +4278,28 @@ function renderTemplate(raw, f) {
  //   • COE/POE (573, 703, 1091): "brushing 2x a day & flossing 1x a day"
  //   • Hygiene (1196 prophy, 1272 SRP, 1346 perio re-eval, 1425 perio
  //     maintenance): "brushing 2x per day and flossing 1x per week"
- // Substitution always fires when a value is set. (Earlier the substitution
- // was guarded with a "!== global default" check to preserve hygiene
- // templates' "per day"/"per week" prose when the user kept defaults — but
- // that broke peds + user-picks-"1x a day" cases. The fix is upstream:
- // per-procedure form-default overrides in EXAM_FINDINGS_CONFIG's useEffect
- // ensure form display matches template intent for hygiene/peds templates.
- // With that in place, the guard is unnecessary — any substitution either
- // matches the template prose (no-op) or correctly rewrites it.)
+ // f.brushing / f.flossing are populated by:
+ //   • Peds: peds-dental-history widget (line ~7546)
+ //   • COE/POE: global Brushing/Flossing dropdowns (line ~9701, gated by
+ //     needsBrushing/needsFlossing which check for "X 2x a day"/"X 1x a day"
+ //     patterns — only present in COE/POE/peds, NOT hygiene)
+ // Hygiene templates have a SEPARATE brushing-flossing widget inside
+ // EXAM_FINDINGS_CONFIG that writes to ef["brushing frequency"] /
+ // ef["flossing frequency"]; those are handled by step 7d-frequency below
+ // (line ~4753). The hygiene patterns are intentionally NOT touched here —
+ // doing so would race with the ef-based substitution and break the user's
+ // widget input.
  if (f.brushing && f.brushing.trim()) {
  const v = f.brushing.trim();
  t = t.replace(/\bbrushes 2x a day\b/, `brushes ${v}`);            // peds
  t = t.replace(/\bbrushing 2x a day\b/, `brushing ${v}`);          // COE/POE
- t = t.replace(/\bbrushing 2x per day\b/, `brushing ${v}`);        // hygiene
+ // hygiene "brushing 2x per day" handled by ef substitution below
  }
  if (f.flossing && f.flossing.trim()) {
  const v = f.flossing.trim();
  t = t.replace(/\bflosses 1x a week\b/, `flosses ${v}`);           // peds
  t = t.replace(/\bflossing 1x a day\b/, `flossing ${v}`);          // COE/POE
- t = t.replace(/\bflossing 1x per week\b/, `flossing ${v}`);       // hygiene
+ // hygiene "flossing 1x per week" handled by ef substitution below
  }
  // Peds caries risk: "- caries risk: HIGH" → user value
  if (f.pedsCariesRisk && f.pedsCariesRisk!== "High") {
