@@ -12839,7 +12839,7 @@ const PES_PART7 = [
  {
  id: "PEDO_EXAM", code: "D9107", part: "rotation",
  name: "Pediatric Examination & Treatment Planning",
- deadline: { semester: "D3-spring", text: "By end of pediatric rotation" },
+ deadline: { semester: "D3-spring", text: "" },
  tracks: { dmd: "D3-spring", as: "D4-summer" },
  prereq: "2 comprehensive oral examinations & treatment planning on pediatric patients.",
  prereqCheck: null, // peds COE not separately tracked from adult COE in MEE
@@ -12884,7 +12884,7 @@ const PES_PART7 = [
  {
  id: "PEDO_REST", code: "D9106", part: "rotation",
  name: "Pediatric Primary Tooth Restorative Exam",
- deadline: { semester: "D3-spring", text: "By end of pediatric rotation" },
+ deadline: { semester: "D3-spring", text: "" },
  tracks: { dmd: "D3-spring", as: "D4-summer" },
  prereq: "None specified.",
  prereqCheck: null,
@@ -13359,16 +13359,20 @@ function PEDetail({ pe, onShowSteps }) {
  )}
  </div>
 
- {/* Prereq */}
- <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "12px", marginBottom: "6px" }}>
- <SubsectionLabel>Prerequisite</SubsectionLabel>
- {procedures.length > 0 && onShowSteps && (
- procedures.length === 1? (
+ {/* Prereq. When the prereq is empty / "None specified." the label +
+ paragraph get centered as a pair and the Steps links move to their
+ own centered row below so the whole block reads as a tidy stack.
+ Real-content prereqs (long prose) stay left-aligned with the Steps
+ links right-justified opposite the label. */}
+ {(() => {
+ const isPlaceholderPrereq = !pe.prereq || /^\s*none specified\.?\s*$/i.test(pe.prereq);
+ const stepsLinks = procedures.length > 0 && onShowSteps ? (
+ procedures.length === 1 ? (
  <button onClick={() => onShowSteps(procedures[0].id)} style={showStepsLinkStyle}>
  Show Steps →
  </button>
-): (
- <div style={{ display: "flex", alignItems: "baseline", gap: "8px", flexWrap: "wrap" }}>
+ ) : (
+ <div style={{ display: "flex", alignItems: "baseline", gap: "8px", flexWrap: "wrap", justifyContent: "center" }}>
  <span style={{ fontSize: "11px", color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif" }}>
  Steps:
  </span>
@@ -13376,19 +13380,44 @@ function PEDetail({ pe, onShowSteps }) {
  <Fragment key={p.id}>
  {i > 0 && (
  <span style={{ fontSize: "11px", color: "var(--ink-faint)" }}>·</span>
-)}
+ )}
  <button onClick={() => onShowSteps(p.id)} style={showStepsLinkStyle}>
  {p.label} →
  </button>
  </Fragment>
-))}
+ ))}
  </div>
-)
-)}
+ )
+ ) : null;
+ if (isPlaceholderPrereq) {
+ return (
+ <>
+ <div style={{ textAlign: "center" }}>
+ <SubsectionLabel>Prerequisite</SubsectionLabel>
+ </div>
+ <p style={{ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: "0 0 10px", textAlign: "center" }}>
+ {pe.prereq || "None specified."}
+ </p>
+ {stepsLinks && (
+ <div style={{ display: "flex", justifyContent: "center", marginBottom: "14px" }}>
+ {stepsLinks}
+ </div>
+ )}
+ </>
+ );
+ }
+ return (
+ <>
+ <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "12px", marginBottom: "6px" }}>
+ <SubsectionLabel>Prerequisite</SubsectionLabel>
+ {stepsLinks}
  </div>
  <p style={{ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: "0 0 14px" }}>
  {pe.prereq}
  </p>
+ </>
+ );
+ })()}
 
  <SubsectionLabel>Case Selection</SubsectionLabel>
  <p style={{ fontSize: "13px", color: "var(--ink-soft)", lineHeight: 1.55, margin: "0 0 14px" }}>
