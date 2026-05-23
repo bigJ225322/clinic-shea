@@ -4050,7 +4050,9 @@ function renderTemplate(raw, f) {
  // and (?<=\nSRP) didn't include the space, so the regex silently
  // failed to match. Include the space in the lookbehind.
  t = t.replace(/(?<=for SRP of )UR(?=\.)/, q);
- t = t.replace(/(?<=\nSRP )UR(?=:)/, q);
+ // Template has leading-space artifact on every line ("\n SRP UR:"), so
+ // the lookbehind must tolerate optional whitespace between \n and SRP.
+ t = t.replace(/(?<=\n\s*SRP )UR(?=:)/, q);
  }
 
  // -------- 6f. Perio re-eval SRP completion date. --------
@@ -4266,9 +4268,12 @@ function renderTemplate(raw, f) {
  t = t.replace(/(-[ \t]*occlusal assessment:)[ \t]*$/im, `$1 ${occlusal}`);
  }
  // Peds prophy section: strip "Prophy completed." block when false.
+ // Template has leading-space artifact on every line — both "Prophy
+ // completed." and the bullet lines start with a leading space. The
+ // earlier regex required no leading space, so substitution failed.
  if (f.pedsProphyCompleted === false) {
  t = t.replace(
- /\n+Prophy completed\.\n(?:-[ \t][^\n]*\n)+/,
+ /\n+\s*Prophy completed\.\n(?:\s*-[ \t][^\n]*\n)+/,
  "\n\n"
 );
  }
