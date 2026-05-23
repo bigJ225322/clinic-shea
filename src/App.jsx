@@ -9187,6 +9187,12 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  // True when the template's tooth reference includes surfaces (e.g. #19-MOD, not just #19)
  const needsSurfaces = useMemo(() => /#[A-Z0-9]+-[A-Z]+/.test(rawTemplate), [rawTemplate]);
  const needsShade = useMemo(() => /\bshade\b/i.test(rawTemplate), [rawTemplate]);
+ // True when the template mentions denture-tooth mould selection (wax-rim
+ // try-in, IPD lab Rx, RPD lab Rx). Surfaces the Portrait/Bioform IPN
+ // Tooth Mould Picker as a chair-side reference panel inside the note form.
+ const needsMould = useMemo(() =>
+ /\btooth mol[dn]\b|\bdenture tooth\b|\bTrubyte\b|\bwax[- ]rim\b/i.test(rawTemplate),
+ [rawTemplate]);
  const needsMedHistory = useMemo(() => /medical history:/i.test(rawTemplate), [rawTemplate]);
  const needsMedications = useMemo(() => /medications:/i.test(rawTemplate), [rawTemplate]);
  const needsAllergies = useMemo(() => /allergies:/i.test(rawTemplate), [rawTemplate]);
@@ -9709,6 +9715,22 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </div>
  </>
 )}
+ {/* Portrait/Bioform IPN tooth-mould picker — surfaces only when the
+ selected template mentions denture-tooth selection (wax-rim try-in
+ templates, IPD lab Rx, RPD lab Rx). Chair-side reference; computed
+ codes go into fields.toothMold for templates that read it. */}
+ {needsMould && (
+ <>
+ <Hairline />
+ <ToothMouldSelector compact onApply={(sel) => {
+ const summary = `${sel.anterior} (mand ${sel.mandibular}) anterior; ${sel.posterior} ${sel.cuspAngle} posterior`;
+ setField("toothMold", summary);
+ setField("anteriorMold", sel.anterior);
+ setField("mandibularMold", sel.mandibular);
+ setField("posteriorMold", `${sel.posterior} ${sel.cuspAngle}`);
+ }} />
+ </>
+ )}
  {/* Crown-specific controls: New?, Placed cord?, Crown Type */}
  {["2742","2821","3002"].includes(procedureId) && (
  <>
@@ -10670,6 +10692,29 @@ function Browse({
  about it.
  </div>
 )}
+
+ {/* Portrait/Bioform IPN tooth-mould picker — surfaces under the
+ procedure body when the procedure relates to denture/RPD/wax-rim
+ work (mentions tooth mould or denture-tooth selection in either
+ its steps body or its note template). Chair-side reference; the
+ student can copy the resulting mould codes into their note. */}
+ {(() => {
+ const idLabel = (currentProcedure?.label || "").toLowerCase();
+ const idCat = (currentProcedure?.categoryId || "").toLowerCase();
+ const templ = TEMPLATES[currentProcedure?.id] || "";
+ const matchesMould =
+ /denture|wax[- ]rim|partial|\bipd\b|\brpd\b/i.test(idLabel) ||
+ /denture|wax[- ]rim|partial|\bipd\b|\brpd\b/i.test(idCat) ||
+ /tooth mol[dn]|denture tooth|trubyte|wax[- ]rim/i.test(stepsBody || "") ||
+ /tooth mol[dn]|denture tooth|trubyte|wax[- ]rim/i.test(templ);
+ if (!matchesMould) return null;
+ return (
+ <div style={{ marginTop: "24px" }}>
+ <div className="hairline-soft" style={{ marginBottom: "14px" }} />
+ <ToothMouldSelector compact />
+ </div>
+ );
+ })()}
 
  {TEMPLATES[currentProcedure.id] && (<>
  <div className="hairline" style={{ margin: "32px 0 22px" }} />
@@ -17024,6 +17069,313 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
 // ─── Laboratory Prescription Form ─────────────────────────────────────
 // Recreates the lab Rx form layout with the engine's lab script filled
 // into the Instructions box.
+// ─── Portrait/Bioform IPN tooth-mould selector ────────────────────────────
+// Source: Dentsply Sirona Portrait IPN & Bioform IPN Mould Chart (Form
+// #905473 Rev 10, 2018) — specifically the "Combination Table" on p. 24.
+//
+// Mould code = [Facial Form 1-7][Proportion 1-6][Width Letter B-J].
+// Each maxillary mould pairs with a recommended mandibular anterior letter
+// (1-3 options) and a recommended posterior mould per cusp angle column.
+//
+// Cusp-angle keys map to brand+angle combinations on the chart:
+//   p0  = Portrait IPN 0°  (Non-Anatomical)
+//   b0  = Bioform IPN 0° Monoline (Non-Anatomical)
+//   a10 = Portrait IPN 10° / Bioform IPN Anatoline (Semi-Anatomical)
+//   a20 = Portrait IPN / Bioform IPN 20° (Semi-Anatomical)
+//   p22 = Portrait IPN 22° (Semi-Anatomical)
+//   b30 = Bioform IPN PT 30° (Anatomical)
+//   a33 = Portrait IPN / Bioform IPN 33° (Anatomical)
+//   p40 = Portrait IPN 40° EuroLine (Anatomical)
+const TOOTH_MOULD_TABLE = {
+ "11G": { lower: ["R"],            post: { p0: "632", b0: "433", a10: "332",        a20: "33M",        p22: "532",      b30: "233L",        a33: "32L",      p40: "732" } },
+ "11H": { lower: ["S","W"],        post: { p0: "634", b0: "433", a10: "334, 336",   a20: "33M, 35M",   p22: "533, 536", b30: "233M, 233L",  a33: "34M",      p40: "734" } },
+ "12E": { lower: ["M","N"],        post: { p0: "632", b0: "431", a10: "332",        a20: "31M",        p22: "532",      b30: "230L, 233M",  a33: "32L",      p40: "732" } },
+ "12F": { lower: ["N"],            post: { p0: "632", b0: "431", a10: "332",        a20: "31M, 31L",   p22: "532",      b30: "233M",        a33: "32L",      p40: "732" } },
+ "12G": { lower: ["G","R","V"],    post: { p0: "634", b0: "433", a10: "334",        a20: "33M",        p22: "533",      b30: "233M",        a33: "34M",      p40: "734" } },
+ "13D": { lower: ["B","C"],        post: { p0: "630", b0: "431", a10: "330",        a20: "31S, 31M",   p22: "530",      b30: "230M",        a33: "30L, 30LS",p40: "730" } },
+ "13E": { lower: ["H"],            post: { p0: "630", b0: "431", a10: "330",        a20: "31M",        p22: "530",      b30: "230L",        a33: "30L",      p40: "730" } },
+ "21C": { lower: ["C"],            post: { p0: "630", b0: "429", a10: "330",        a20: "29M, 29L",   p22: "530",      b30: "230L",        a33: "30L",      p40: "730" } },
+ "21D": { lower: ["F"],            post: { p0: "630", b0: "429", a10: "330",        a20: "29L",        p22: "530",      b30: "230L",        a33: "30L",      p40: "730" } },
+ "21E": { lower: ["O"],            post: { p0: "632", b0: "431", a10: "332",        a20: "31L, 33L",   p22: "532",      b30: "233L",        a33: "32L",      p40: "732" } },
+ "21F": { lower: ["L"],            post: { p0: "632", b0: "431", a10: "332",        a20: "31M, 31L",   p22: "532",      b30: "230L",        a33: "30L",      p40: "732" } },
+ "21G": { lower: ["W"],            post: { p0: "632", b0: "431", a10: "332",        a20: "33L",        p22: "532",      b30: "233L",        a33: "32L",      p40: "732" } },
+ "21J": { lower: ["I","K1","Rx"],  post: { p0: "634", b0: "433", a10: "334",        a20: "33M, 35M",   p22: "533",      b30: "233M, 233L",  a33: "34M, 34L", p40: "734" } },
+ "21X": { lower: ["P"],            post: { p0: "632", b0: "431", a10: "332",        a20: "31M",        p22: "532",      b30: "233M",        a33: "32M",      p40: "732" } },
+ "22C": { lower: ["C"],            post: { p0: "630", b0: "429", a10: "330",        a20: "29M",        p22: "530",      b30: "230M",        a33: "30M",      p40: "730" } },
+ "22E": { lower: ["H"],            post: { p0: "630", b0: "429", a10: "330",        a20: "29L",        p22: "530",      b30: "230L",        a33: "30L",      p40: "730" } },
+ "22G": { lower: ["O","P"],        post: { p0: "632", b0: "431", a10: "332",        a20: "31M",        p22: "532",      b30: "233M",        a33: "32M",      p40: "732" } },
+ "22H": { lower: ["P"],            post: { p0: "634", b0: "433", a10: "334",        a20: "33M",        p22: "533",      b30: "233L",        a33: "34L",      p40: "734" } },
+ "24F": { lower: ["F","G","H"],    post: { p0: "632", b0: "431", a10: "332",        a20: "31M",        p22: "532",      b30: "230L",        a33: "32L",      p40: "732" } },
+ "25G": { lower: ["R"],            post: { p0: "634", b0: "433", a10: "334",        a20: "33M",        p22: "533",      b30: "233M",        a33: "34L",      p40: "734" } },
+ "31F": { lower: ["J","O","P","S"],post: { p0: "632", b0: "433", a10: "332",        a20: "31L, 33L",   p22: "532",      b30: "233L",        a33: "32L",      p40: "732" } },
+ "32B": { lower: ["C"],            post: { p0: "630", b0: "429", a10: "330",        a20: "29M",        p22: "530",      b30: "230M",        a33: "30M",      p40: "730" } },
+ "32E": { lower: ["H"],            post: { p0: "632", b0: "431", a10: "332",        a20: "31M",        p22: "532",      b30: "230M",        a33: "30M",      p40: "730" } },
+ "32G": { lower: ["S"],            post: { p0: "634", b0: "433", a10: "334",        a20: "33M",        p22: "533",      b30: "233M",        a33: "34L",      p40: "734" } },
+ "35E": { lower: ["G"],            post: { p0: "632", b0: "431", a10: "332",        a20: "31M, 31L",   p22: "532",      b30: "230L",        a33: "30L",      p40: "732" } },
+ "36F": { lower: ["N","X"],        post: { p0: "632", b0: "433", a10: "332",        a20: "33M",        p22: "532",      b30: "233M",        a33: "32L",      p40: "732" } },
+ "41J": { lower: ["I","K1","Rx"],  post: { p0: "634", b0: "433", a10: "336",        a20: "35M",        p22: "536",      b30: "233L",        a33: "34L",      p40: "734" } },
+ "42D": { lower: ["F"],            post: { p0: "630", b0: "429", a10: "330",        a20: "29M, 29L",   p22: "530",      b30: "230L",        a33: "30L",      p40: "730" } },
+ "42F": { lower: ["H"],            post: { p0: "632", b0: "431", a10: "332",        a20: "31M",        p22: "532",      b30: "230L",        a33: "32L",      p40: "732" } },
+ "42G": { lower: ["O","P"],        post: { p0: "632", b0: "431", a10: "332",        a20: "31M, 33M",   p22: "532",      b30: "233M",        a33: "32L",      p40: "732" } },
+ "43D": { lower: ["C"],            post: { p0: "630", b0: "429", a10: "330",        a20: "29M, 29L",   p22: "530",      b30: "230L",        a33: "30L",      p40: "730" } },
+ "43F": { lower: ["M","N","X"],    post: { p0: "632", b0: "431", a10: "332",        a20: "31M",        p22: "532",      b30: "230L",        a33: "32M",      p40: "732" } },
+ "45F": { lower: ["J","O"],        post: { p0: "632", b0: "431", a10: "332",        a20: "31L",        p22: "532",      b30: "233M",        a33: "32L",      p40: "732" } },
+ "45H": { lower: ["R","V"],        post: { p0: "634", b0: "433", a10: "334",        a20: "33M",        p22: "533",      b30: "233L",        a33: "34L",      p40: "734" } },
+ "52C": { lower: ["C","D"],        post: { p0: "630", b0: "429", a10: "330",        a20: "29M",        p22: "530",      b30: "230M",        a33: "30M",      p40: "730" } },
+ "54F": { lower: ["J","N"],        post: { p0: "632", b0: "431", a10: "332",        a20: "31L",        p22: "532",      b30: "230L",        a33: "32L",      p40: "732" } },
+ "55D": { lower: ["E"],            post: { p0: "630", b0: "429", a10: "330",        a20: "29M",        p22: "530",      b30: "230M",        a33: "30M",      p40: "730" } },
+ "55F": { lower: ["M"],            post: { p0: "632", b0: "431", a10: "332",        a20: "31M",        p22: "532",      b30: "230L",        a33: "32L",      p40: "732" } },
+ "56G": { lower: ["P","V"],        post: { p0: "632", b0: "433", a10: "332",        a20: "31M, 33M",   p22: "533",      b30: "233M",        a33: "32M",      p40: "732" } },
+ "62D": { lower: ["F"],            post: { p0: "630", b0: "429", a10: "330",        a20: "29L",        p22: "530",      b30: "230L",        a33: "30L",      p40: "730" } },
+ "62E": { lower: ["F"],            post: { p0: "630", b0: "431", a10: "330",        a20: "31M, 31L",   p22: "530",      b30: "230L",        a33: "30L",      p40: "730" } },
+ "62G": { lower: ["K1","R","Rx"],  post: { p0: "634", b0: "433", a10: "334, 336",   a20: "33M, 35M",   p22: "533",      b30: "233L",        a33: "34L",      p40: "734" } },
+ "65G": { lower: ["J","O"],        post: { p0: "634", b0: "433", a10: "334",        a20: "33M",        p22: "533",      b30: "233M",        a33: "34L",      p40: "734" } },
+ "65H": { lower: ["S","U"],        post: { p0: "634", b0: "433", a10: "334",        a20: "33M, 33L",   p22: "533",      b30: "233M, 233L",  a33: "32L",      p40: "734" } },
+ "74E": { lower: ["L"],            post: { p0: "630", b0: "429", a10: "330",        a20: "29M, 29L",   p22: "530",      b30: "230L",        a33: "30L",      p40: "730" } },
+ "74H": { lower: ["K1"],           post: { p0: "634", b0: "433", a10: "334, 336",   a20: "33M, 33L",   p22: "533",      b30: "233M",        a33: "34L",      p40: "734" } },
+ "75E": { lower: ["N"],            post: { p0: "630", b0: "429", a10: "330",        a20: "29L",        p22: "530",      b30: "230L",        a33: "30L",      p40: "730" } },
+ "75G": { lower: ["R","V"],        post: { p0: "632", b0: "431", a10: "332",        a20: "31M",        p22: "532",      b30: "230L",        a33: "32L",      p40: "732" } },
+ "76D": { lower: ["C"],            post: { p0: "630", b0: "429", a10: "330",        a20: "29M",        p22: "530",      b30: "230M",        a33: "30M",      p40: "730" } },
+ "A84": { lower: ["N"],            post: { p0: "632", b0: "431", a10: "332",        a20: "31M",        p22: "532",      b30: "230L",        a33: "32L",      p40: "732" } },
+};
+
+const TOOTH_MOULD_FORMS = [
+ { id: "1", label: "Square" },
+ { id: "2", label: "Square Tapering" },
+ { id: "3", label: "Square Ovoid" },
+ { id: "4", label: "Tapering" },
+ { id: "5", label: "Tapering Ovoid" },
+ { id: "6", label: "Ovoid" },
+ { id: "7", label: "Square Tapering Ovoid" },
+];
+
+// Proportion of tooth (long / medium / short) × facial contour (straight / curved)
+const TOOTH_MOULD_PROPORTIONS = [
+ { id: "1", label: "Long · Straight" },
+ { id: "2", label: "Medium · Straight" },
+ { id: "3", label: "Short · Straight" },
+ { id: "4", label: "Long · Curved" },
+ { id: "5", label: "Medium · Curved" },
+ { id: "6", label: "Short · Curved" },
+];
+
+// Width of upper six anterior teeth on curve, distal-to-distal
+const TOOTH_MOULD_WIDTHS = [
+ { letter: "B", range: "<44.00 mm" },
+ { letter: "C", range: "44.00–45.50 mm" },
+ { letter: "D", range: "45.50–48.00 mm" },
+ { letter: "E", range: "48.00–49.00 mm" },
+ { letter: "F", range: "49.00–51.50 mm" },
+ { letter: "G", range: "51.50–54.00 mm" },
+ { letter: "H", range: "54.00–56.00 mm" },
+ { letter: "J", range: "≥56.00 mm" },
+];
+
+const TOOTH_MOULD_CUSP_ANGLES = [
+ { key: "p0",  label: "0°",  brand: "Portrait IPN", category: "Non-anatomical (flat plane)" },
+ { key: "b0",  label: "0°",  brand: "Bioform IPN Monoline", category: "Non-anatomical (flat plane)" },
+ { key: "a10", label: "10°", brand: "Portrait IPN / Bioform Anatoline", category: "Semi-anatomical (modified cusp)" },
+ { key: "a20", label: "20°", brand: "Portrait / Bioform IPN", category: "Semi-anatomical (modified cusp)" },
+ { key: "p22", label: "22°", brand: "Portrait IPN", category: "Semi-anatomical (modified cusp)" },
+ { key: "b30", label: "30°", brand: "Bioform IPN PT", category: "Anatomical (deep cusp)" },
+ { key: "a33", label: "33°", brand: "Portrait / Bioform IPN", category: "Anatomical (deep cusp)" },
+ { key: "p40", label: "40°", brand: "Portrait IPN EuroLine", category: "Anatomical (deep cusp)" },
+];
+
+// Translate a measured upper-six-anterior-curve width (mm) → letter range.
+function rpdMouldWidthLetter(mm) {
+ const n = parseFloat(mm);
+ if (isNaN(n)) return null;
+ if (n < 44.0) return "B";
+ if (n < 45.5) return "C";
+ if (n < 48.0) return "D";
+ if (n < 49.0) return "E";
+ if (n < 51.5) return "F";
+ if (n < 54.0) return "G";
+ if (n < 56.0) return "H";
+ return "J";
+}
+
+// Compact embeddable tooth-mould picker. Top half: facial form / proportion
+// / width / cusp angle inputs. Bottom half: computed maxillary mould +
+// suggested mandibular + recommended posterior, with an optional callback
+// to inject the selection into a parent form (lab Rx, note builder, etc).
+function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) {
+ const [form, setForm] = useState("");
+ const [prop, setProp] = useState("");
+ const [widthLetter, setWidthLetter] = useState("");
+ const [widthMm, setWidthMm] = useState("");
+ const [angle, setAngle] = useState(initialAngle);
+ // Width can be entered numerically (auto-resolves the letter) or by
+ // picking a letter directly. The two stay in sync.
+ const setWidthFromMm = (v) => {
+ setWidthMm(v);
+ const letter = rpdMouldWidthLetter(v);
+ if (letter) setWidthLetter(letter);
+ };
+ const code = form && prop && widthLetter ? `${form}${prop}${widthLetter}` : "";
+ const entry = code ? TOOTH_MOULD_TABLE[code] : null;
+ // Closest-match suggestions when the exact code isn't in the chart.
+ // Strategy: pick the same first character (facial form) + adjacent width
+ // letter or proportion. Most close matches exist in the same form family.
+ const findNearestCodes = (target) => {
+ if (!target) return [];
+ const targetForm = target[0];
+ const targetProp = target[1];
+ const targetWidth = target[2];
+ const allKeys = Object.keys(TOOTH_MOULD_TABLE);
+ const scored = allKeys
+ .map(k => {
+ const dForm = k[0] === targetForm ? 0 : 8;
+ const dProp = Math.abs(parseInt(k[1], 10) - parseInt(targetProp, 10));
+ const widths = "BCDEFGHJ";
+ const dWidth = Math.abs(widths.indexOf(k.slice(2,3)) - widths.indexOf(targetWidth));
+ return { k, score: dForm + dProp + dWidth };
+ })
+ .sort((a, b) => a.score - b.score)
+ .slice(0, 3);
+ return scored.map(s => s.k);
+ };
+ const suggestions = code && !entry ? findNearestCodes(code) : [];
+
+ const formatLowers = (arr) => arr.join(" or ");
+ const angleMeta = TOOTH_MOULD_CUSP_ANGLES.find(a => a.key === angle);
+ const posteriorMould = entry ? entry.post[angle] : null;
+
+ // Mini button row helper
+ const PillRow = ({ items, value, onChange, getLabel, getKey }) => (
+ <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+ {items.map(item => {
+ const k = getKey(item);
+ const active = value === k;
+ return (
+ <button key={k} type="button" onClick={() => onChange(k)} style={{
+ padding: "4px 10px", fontSize: "11px",
+ background: active ? "var(--accent)" : "white",
+ color: active ? "white" : "var(--ink-soft)",
+ border: `1px solid ${active ? "var(--accent)" : "var(--rule)"}`,
+ borderRadius: "12px", cursor: "pointer",
+ fontFamily: "'Geist', sans-serif",
+ }}>{getLabel(item)}</button>
+ );
+ })}
+ </div>
+ );
+
+ return (
+ <div style={{
+ border: "1px solid var(--rule)", borderRadius: "3px",
+ padding: compact ? "10px 12px" : "14px 16px",
+ background: "var(--paper)",
+ fontFamily: "'Geist', sans-serif",
+ fontSize: "12px",
+ }}>
+ <div style={{
+ fontFamily: "'Fraunces', serif", fontSize: "14px",
+ color: "var(--ink)", marginBottom: "10px",
+ }}>
+ Tooth Mould Picker <span style={{
+ fontSize: "10px", color: "var(--ink-faint)", fontStyle: "italic",
+ fontFamily: "'Geist', sans-serif", marginLeft: "8px",
+ }}>Dentsply Portrait IPN · Bioform IPN (Combination Table, p. 24)</span>
+ </div>
+
+ <div style={{ display: "grid", gap: "10px" }}>
+ <div>
+ <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)", marginBottom: "4px" }}>
+ 1 · Facial form
+ </div>
+ <PillRow items={TOOTH_MOULD_FORMS} value={form} onChange={setForm}
+ getKey={i => i.id} getLabel={i => `${i.id} · ${i.label}`} />
+ </div>
+
+ <div>
+ <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)", marginBottom: "4px" }}>
+ 2 · Tooth proportion & facial contour
+ </div>
+ <PillRow items={TOOTH_MOULD_PROPORTIONS} value={prop} onChange={setProp}
+ getKey={i => i.id} getLabel={i => `${i.id} · ${i.label}`} />
+ </div>
+
+ <div>
+ <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)", marginBottom: "4px" }}>
+ 3 · Upper six anterior curve width
+ </div>
+ <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
+ <input type="text" inputMode="decimal" placeholder="mm (e.g. 49.5)"
+ value={widthMm} onChange={e => setWidthFromMm(e.target.value)}
+ style={{
+ padding: "4px 8px", fontSize: "11px", width: "100px",
+ border: "1px solid var(--rule)", borderRadius: "2px",
+ fontFamily: "'JetBrains Mono', monospace",
+ }} />
+ <span style={{ fontSize: "10px", color: "var(--ink-faint)" }}>or</span>
+ <PillRow items={TOOTH_MOULD_WIDTHS} value={widthLetter}
+ onChange={(v) => { setWidthLetter(v); setWidthMm(""); }}
+ getKey={i => i.letter} getLabel={i => `${i.letter} · ${i.range}`} />
+ </div>
+ </div>
+
+ <div>
+ <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)", marginBottom: "4px" }}>
+ 4 · Posterior cusp angle
+ </div>
+ <PillRow items={TOOTH_MOULD_CUSP_ANGLES} value={angle} onChange={setAngle}
+ getKey={i => i.key}
+ getLabel={i => `${i.label} ${i.brand.includes("Bioform") ? "Bioform" : i.brand.includes("Portrait IPN EuroLine") ? "EuroLine" : "Portrait"}`} />
+ <div style={{ fontSize: "10px", color: "var(--ink-faint)", marginTop: "4px", fontStyle: "italic" }}>
+ {angleMeta?.brand} — {angleMeta?.category}
+ </div>
+ </div>
+ </div>
+
+ {/* Result */}
+ {code && (
+ <div style={{
+ marginTop: "12px", padding: "10px 12px",
+ border: "1px solid var(--accent)", borderRadius: "2px",
+ background: "white",
+ }}>
+ {entry ? (
+ <>
+ <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: "4px 14px", fontSize: "12px" }}>
+ <div style={{ color: "var(--ink-soft)", textTransform: "uppercase", fontSize: "10px", letterSpacing: "0.1em" }}>Anteriors (max)</div>
+ <div style={{ fontWeight: 600 }}>{code}</div>
+ <div style={{ color: "var(--ink-soft)", textTransform: "uppercase", fontSize: "10px", letterSpacing: "0.1em" }}>Anteriors (mand)</div>
+ <div>{formatLowers(entry.lower)}</div>
+ <div style={{ color: "var(--ink-soft)", textTransform: "uppercase", fontSize: "10px", letterSpacing: "0.1em" }}>Posteriors</div>
+ <div>{posteriorMould} <span style={{ color: "var(--ink-faint)", fontSize: "10px" }}>({angleMeta?.label} {angleMeta?.brand})</span></div>
+ </div>
+ {onApply && (
+ <div style={{ marginTop: "10px" }}>
+ <button type="button" onClick={() => onApply({
+ anterior: code,
+ mandibular: entry.lower.join(", "),
+ posterior: posteriorMould,
+ cuspAngle: angleMeta?.label,
+ brand: angleMeta?.brand,
+ })} style={{
+ padding: "5px 12px", fontSize: "10px", letterSpacing: "0.12em",
+ textTransform: "uppercase", background: "var(--accent)",
+ color: "white", border: "none", borderRadius: "2px",
+ cursor: "pointer", fontFamily: "'Geist', sans-serif",
+ }}>Apply to form</button>
+ </div>
+ )}
+ </>
+ ) : (
+ <div style={{ fontSize: "12px", color: "var(--ink-soft)" }}>
+ <strong style={{ color: "var(--ink)" }}>{code}</strong> not in the chart.
+ Closest available: {suggestions.map(s => <strong key={s} style={{ marginLeft: "6px", color: "var(--accent)" }}>{s}</strong>)}.
+ Pick one of these or adjust the inputs.
+ </div>
+ )}
+ </div>
+ )}
+ </div>
+ );
+}
+
 function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null, onSelectTooth }) {
  const [open, setOpen] = useState(false);
  const [copied, setCopied] = useState(false);
@@ -17284,6 +17636,15 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  <span style={{ color: "var(--ink-soft)", fontStyle: "italic", fontSize: "10px" }}>
  UIC standard: pick chairside at wax-rim try-in. Leave blank → Rx prints "TBD."
  </span>
+ </div>
+ {/* Portrait/Bioform IPN mould picker — feeds the Anterior + Posterior
+ mold text fields below via "Apply to form". Students can also
+ hand-type the fields directly. */}
+ <div style={{ marginBottom: "10px" }}>
+ <ToothMouldSelector compact onApply={(sel) => {
+ setAnteriorMold(prev => prev || `${sel.anterior} (mand ${sel.mandibular})`);
+ setPosteriorMold(prev => prev || `${sel.posterior} ${sel.cuspAngle} ${sel.brand.split(" ")[0]}`);
+ }} />
  </div>
  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 12px" }}>
  <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
