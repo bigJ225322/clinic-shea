@@ -407,6 +407,34 @@ describe("Case 10 — Maxillary tori → U-Shaped Connector", () => {
 });
 
 // =========================================================================
+// CASE 10b — Maxillary Class I + tori → U-Shaped (not Full Palatal Plate)
+// =========================================================================
+// Locks down the intentional trade-off for the Class I + tori combination:
+// Class I cases with few abutments normally route to Full Palatal Plate for
+// broad tissue-supported stability. But the tori-relief branch fires first
+// (it's the dominant clinical constraint — the patient physically cannot
+// tolerate palatal coverage over the tori). McCracken accepts U-Shaped as
+// the right compromise for this combination, even though it sacrifices some
+// rigidity vs Full Palate. This test exists so that any future refactor of
+// the major-connector logic doesn't silently flip the precedence order.
+// (Borderline B35 in REVIEW-NOTES iter 30.)
+// =========================================================================
+describe("Case 10b — Class I + maxillary tori (precedence: tori beats Class I)", () => {
+  const c = rpdMakeBlankCase("maxillary");
+  setMissing(c, [1, 2, 3, 14, 15, 16]); // Bilateral DE = Class I
+  c.patientFactors.maxillaryTori = true;
+  const r = rpdRunEngine(c);
+
+  it("Class I confirmed", () => {
+    expect(r.kennedy.class).toBe("I");
+  });
+
+  it("Tori still routes to U-Shaped (not Full Palatal Plate)", () => {
+    expect(r.majorConnector.type).toBe("U-Shaped Connector");
+  });
+});
+
+// =========================================================================
 // CASE 6 — Huddle Week 6 Case 2 (Maxillary Class II Mod 2)
 // =========================================================================
 // Per huddle answer key:
