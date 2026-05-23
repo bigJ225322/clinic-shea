@@ -135,7 +135,11 @@ const rpdIsPresent = (caseInput, n) => caseInput.teeth[n]?.status === "present";
 const rpdGetAttrs = (caseInput, n) => ({...RPD_ABUTMENT_DEFAULTS,...(caseInput.teeth[n]?.attrs || {}) });
 
 // ============================================================================
-// KENNEDY CLASSIFIER — Applegate's Rules 1–6
+// KENNEDY CLASSIFIER — Applegate's Rules 1–8
+// (Rules 1, 2, 3, 4, 5, 6 explicit; Rule 7 via modification count without
+//  extent measurement; Rule 8 via the `isAnteriorOnly` single-span check
+//  in rpdClassifyKennedy at line ~252 — Class IV requires the anterior
+//  span to be the ONLY span, so modifications are structurally impossible.)
 // ============================================================================
 
 /**
