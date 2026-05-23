@@ -1539,6 +1539,58 @@ The Cases tab endo-anterior-rct pathway already correctly says "rubber dam manda
 
 23 commits total in iter 21+22.
 
+### Iter 22 final cleanup — 5 more commits
+
+**A48. Iter 12 scrub artifact cleanups (commits 6b7bbd2, b634694, 0222aae, 7533992).** The iter 12 "Rubber dam → Isodry" scrub had left ~20 duplicate Isodry entries across equipment chunks where both "rubber dam kit" (sterilization) and "rubber dam" (in clinic) were both scrubbed to "Isodry" — creating redundancies. Cleaned up:
+
+- Strip crown (in-clinic "Isodry, Isodry") — 6b7bbd2
+- 8 equipment chunks (amalgam, composite Class I-IV, crown prep, core buildup, digital prep): removed sterilization-side duplicate "kit, Isodry, handpieces" pattern — b634694
+- 5 peds composite Class I-V chunks ("Isodry, composite, Isodry" → "Isodry, composite") — 0222aae
+- 6 in-clinic Isodry trailing entries removed (amalgam + composite Class I-IV + crown prep + core buildup) — 7533992
+
+Items tab equipment lists are now clean. No more spurious "Isodry x2" entries that students would see in their checklist.
+
+### Iter 21+22 absolute final tally — 28 commits
+
+**Critical safety fixes (2)**:
+- RCT (endo) restored to rubber dam — iter 12 scrub had over-applied to endo despite "except endo" intent (0d66c23)
+- Peds pulpotomy contradiction fixed — chunk said "use a Isodry... (no Isodry!)" — restored to rubber dam (2e72df5)
+
+**RPD engine fixes (3)**:
+- Fully-dentate guard prevents spurious A-P Strap (ee088e2)
+- Mandibular incisor bounding abutments use ML ball rest, not cingulum (d880d8b)
+- Grammar pluralization for hopeless-tooth/questionable-abutment flags (24d3996)
+
+**Note builder fixes (4)**:
+- Perio re-eval em-dash dropped when detail empty (c408236)
+- Blank-to-omit HPI fields now respect the placeholder semantic (e5752be)
+- Brushing/flossing race condition between f.brushing and ef widget (f2db779)
+- OHI chunk moved to PERIO section (cc43f53)
+
+**Steps tab routing (1)**:
+- perio/endo procedures routed to dedicated chunk sections (4650ca6)
+
+**Code descriptions cleaned (~170 sub-codes)**:
+- Implant + FPD pontic + retainer codes (D6058-D6792): 838d261, c22ffbe, 17ad188
+- Denture codes (D5110-D5861): 67a35a3, 8d62a57
+- Occlusal guard (D9940-D9946): e5d07ac
+- Consultation report (D9390): 8bdb03e
+- Endo retreatment (D3346-D3348): 38c02d2
+- D2750C/D2790C added to CODE_GROUPS (08589cf)
+
+**Content additions**:
+- 22 orphan chapter stubs (resolves B18 from iter 18) (8876e3c)
+
+**Content cleanups**:
+- 20+ Isodry deduplications across equipment chunks (6b7bbd2, b634694, 0222aae, 7533992)
+
+**4 borderlines documented** for your review:
+- B25: single max central FPD recommendation gap in RPD engine
+- B26: implant codes D6086-D6117 lower-priority cleanup (now resolved)
+- B27: pulpotomy template (7139) still says "Placed bite block & Isodry" — may reflect UIC practice vs AAPD recommendations
+
+1017/1017 tests pass throughout. Build clean. All commits pushed to origin/main.
+
 ### Iter 21+22 running tallies (immediate continuous mode)
 
 **16 commits pushed since the user requested no wake-ups**:
