@@ -4091,10 +4091,14 @@ function renderTemplate(raw, f) {
  if (f.perioImproved!== undefined || f.perioImprovementDetail!== undefined) {
  const status = (f.perioImproved || "improved");
  const detail = (f.perioImprovementDetail || "").trim();
- t = t.replace(
- /has improved —\s*\./,
- `has ${status} — ${detail? detail + ".": "."}`
-);
+ // When detail is empty, render "has improved." (drop the em-dash) to
+ // avoid the awkward "has improved — ." with a stray space before period.
+ // When detail is filled, render "has improved — {detail}." as the
+ // student-styled prose.
+ const replacement = detail
+ ? `has ${status} — ${detail}.`
+ : `has ${status}.`;
+ t = t.replace(/has improved —\s*\./, replacement);
  }
 
  // -------- 6h. Endo (RCT, template 5472). --------
