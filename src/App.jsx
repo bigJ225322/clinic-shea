@@ -1138,7 +1138,7 @@ const CHUNKS = [
 "id": "c075.0",
 "section": "PEDS",
 "title": "STRIP CROWN — strip crown: equipment",
-"body": "strip crown: equipment\n ●​ from sterilization: peds restorative kit, peds Isodry, handpieces, peds burs, restorative burs, composite finishing\n burs, composite gun, curing light, Vita shade guide, nitrous nose, peds goggles\n ●​ from locker: loupes and/or eye protection\n ●​ in clinic: Isodry, Isodry, wedget, composite, etch, ScotchBond, Shofu, enamelize, articulating paper, floss\n ○​ in UG adult clinic: discs, finishing strips, #12 scalpel\n ●​ in unit: anesthetic needle/carpule/shield/topical"
+"body": "strip crown: equipment\n ●​ from sterilization: peds restorative kit, peds Isodry, handpieces, peds burs, restorative burs, composite finishing\n burs, composite gun, curing light, Vita shade guide, nitrous nose, peds goggles\n ●​ from locker: loupes and/or eye protection\n ●​ in clinic: Isodry, wedget, composite, etch, ScotchBond, Shofu, enamelize, articulating paper, floss\n ○​ in UG adult clinic: discs, finishing strips, #12 scalpel\n ●​ in unit: anesthetic needle/carpule/shield/topical"
 },
 {
 "id": "c075.1",
