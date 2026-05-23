@@ -13197,17 +13197,25 @@ function PETimeline({ pes, selectedId, onSelect }) {
  const peBtn = (pe) => {
  const isPast = semesterStatus(pe, current) === "past";
  const isSelected = selectedId === pe.id;
+ // Resting + hover background per state. Selected stays full
+ // accent (no hover bump). Past keeps its light oxblood resting tint
+ // but darkens on hover. Default is paper resting → very subtle
+ // oxblood wash on hover (mirrors the Codes-table row-hover style).
+ const restBg = isSelected ? "var(--accent)" : isPast ? "rgba(122,30,30,0.07)" : "var(--paper)";
+ const hoverBg = isSelected ? "var(--accent)" : isPast ? "rgba(122,30,30,0.14)" : "rgba(122,30,30,0.05)";
  return (
  <button key={pe.id} onClick={() => onSelect(pe.id)} title={pe.name}
+ onMouseEnter={(e) => { e.currentTarget.style.background = hoverBg; }}
+ onMouseLeave={(e) => { e.currentTarget.style.background = restBg; }}
  style={{
  width: "100%",
- background: isSelected? "var(--accent)": isPast? "rgba(122,30,30,0.07)": "var(--paper)",
+ background: restBg,
  border: `1px solid ${isSelected || isPast? "var(--accent)": "var(--rule)"}`,
  borderRadius: "2px", padding: "4px 6px",
  fontSize: "10px", fontFamily: "'Geist', sans-serif", fontWeight: 500,
  color: isSelected? "var(--paper)": isPast? "var(--accent)": "var(--ink)",
  cursor: "pointer", textAlign: "left",
- transition: "background 80ms, color 80ms",
+ transition: "background 120ms ease, color 80ms",
  }}>
  <span className="mono" style={{ fontVariantNumeric: "tabular-nums" }}>{pe.code}</span>
  </button>
@@ -24094,14 +24102,17 @@ const PATHWAYS = [
  phases: [
  { label: "Assessment & hemostasis", count: 2 },
  { label: "Cap & restore", count: 2 },
- { label: "Recall", count: 1 },
  ],
  sections: [
  { guideId: "endo", chapterId: "endo-ch1" },
  { guideId: "endo", chapterId: "endo-ch14" },
  { guideId: "direct", chapterId: "dir-ch1" },
  { guideId: "direct", chapterId: "dir-ch3" },
- { guideId: "direct", chapterId: "dir-ch11" },
+ // dir-ch11 (Class II proximal-contact technique deep-dive) used to
+ // sit here as a "Recall" step, which made no sense — it's a
+ // restoration-technique chapter, not a recall protocol. Removed.
+ // Recall guidance is in keyDecisions above; for the actual Class II
+ // technique reference, the dir-class2 pathway is the right entry point.
  ],
  },
  {
@@ -24118,14 +24129,16 @@ const PATHWAYS = [
  ],
  phases: [
  { label: "Assessment & caries removal", count: 2 },
- { label: "Cap & restore", count: 2 },
- { label: "Recall", count: 1 },
+ { label: "Cap & restore", count: 1 },
  ],
  sections: [
  { guideId: "endo", chapterId: "endo-ch1" },
  { guideId: "endo", chapterId: "endo-ch14" },
  { guideId: "direct", chapterId: "dir-ch3" },
- { guideId: "direct", chapterId: "dir-ch11" },
+ // dir-ch11 (Class II proximal-contact technique) removed — wrong
+ // pathway for it (was mislabeled "Recall"). Same correction as the
+ // sibling endo-direct-pulp-cap pathway. Recall guidance lives in
+ // keyDecisions; restoration technique is in dir-class2.
  ],
  },
  {
