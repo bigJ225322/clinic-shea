@@ -19639,7 +19639,7 @@ const GUIDES = [
  { id: "rpd-ch3", num: 3, title: "How to survey a cast", stub: true },
  { id: "rpd-ch4", num: 4, title: "Custom tray fabrication", stub: true },
  { id: "rpd-ch5", num: 5, title: "Single-step final impression (tooth-supported, no altered cast)", stub: true },
- { id: "rpd-ch6", num: 6, title: "Altered cast impression — required for distal-extension cases", stub: true },
+ { id: "rpd-ch6", num: 6, title: "Altered cast impression — when indicated for distal-extension cases", stub: true },
  { id: "rpd-ch7", num: 7, title: "Design form — components, undercut gauge, drawing the design", stub: true },
  { id: "rpd-ch8", num: 8, title: "Survey crown prep specifics", stub: true },
  { id: "rpd-ch9", num: 9, title: "Lab Rx — framework specifications + material choices", stub: true },
