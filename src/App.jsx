@@ -15946,6 +15946,15 @@ function RPDPaperFormArchDrawing({
  const abutTeethSet = new Set((result.abutmentDesigns || []).map(a => a.tooth));
  const inActiveArch = (n) => isMax? (n >= 1 && n <= 16): (n >= 17 && n <= 32);
  const archAbutments = [...abutTeethSet].filter(inActiveArch);
+ // Indirect retainer teeth ALSO have a minor connector strut drawn (see
+ // line ~16423) — so the major connector must pass through THEIR lingual
+ // anchor too, or there's a visible gap between the indirect retainer's
+ // rest seat and the strap. Union with abutments to form the full set of
+ // strap perimeter anchor points. Used only for strap path building;
+ // abutTeethSet itself is unchanged so downstream "is this an abutment?"
+ // checks still mean abutment-with-clasp (or rest-only), not just an IR.
+ const indirectTeethSet = new Set((result.indirectRetainers || []).map(r => r.tooth));
+ const strapAnchorSet = new Set([...abutTeethSet, ...indirectTeethSet]);
 
  if (isAP) {
  // A-P (Anterior-Posterior) Strap: rectangular FRAME around the
@@ -16041,10 +16050,13 @@ function RPDPaperFormArchDrawing({
  // with single terminal per side), synthesize a posterior corner by
  // projecting from the abutment toward the back of the palate. This
  // ensures the strap always has a proper 4+ vertex closed perimeter.
- const rightAbutsByArch = [...abutTeethSet].filter(isRight).sort((a, b) =>
+ // Include indirect retainers (strapAnchorSet) so the strap polygon
+ // traces through their lingual point too — guarantees their minor
+ // connector strut visibly terminates inside the strap fill.
+ const rightAbutsByArch = [...strapAnchorSet].filter(isRight).sort((a, b) =>
  // Most anterior first (closer to midline = smaller |ord - midOrd|).
  Math.abs(ordOf(a) - midOrd) - Math.abs(ordOf(b) - midOrd));
- const leftAbutsByArch = [...abutTeethSet].filter(isLeft).sort((a, b) =>
+ const leftAbutsByArch = [...strapAnchorSet].filter(isLeft).sort((a, b) =>
  Math.abs(ordOf(a) - midOrd) - Math.abs(ordOf(b) - midOrd));
  // Synthesize an extra posterior corner for any side with only one
  // abutment. The corner is positioned at the same arch position as
@@ -16159,7 +16171,11 @@ function RPDPaperFormArchDrawing({
  // makes the connectivity property structural — by construction
  // the strap passes through every abutment anchor, so the struts
  // always meet the strap.
- const abutAnchors = [...abutTeethSet]
+ // Include indirect retainer teeth as anchors so the strap centerline
+ // passes through their lingual point too — guarantees their minor
+ // connector strut meets the strap (otherwise the strap interpolates
+ // between abutments only, leaving an IR-only tooth's strut hanging).
+ const abutAnchors = [...strapAnchorSet]
 .filter(n => inActiveArch(n))
 .map(n => palatalAt(n, 1.0))
 .sort((a, b) => a.x - b.x);
