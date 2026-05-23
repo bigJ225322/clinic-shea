@@ -4061,7 +4061,7 @@ describe("UIC-AUDIT — Existing RPD decision tree (reline/rebase/remake)", () =
     const decisionFlag = r.redFlags.find(f => f.type === "existing-rpd-decision");
     expect(decisionFlag).toBeDefined();
     expect(decisionFlag.message).toMatch(/RELINE/);
-    expect(decisionFlag.message).toMatch(/D5751/); // mandibular reline code
+    expect(decisionFlag.message).toMatch(/D5761/); // mandibular partial-denture lab reline (D5760/D5761 not D5750/D5751 — those are complete-denture codes)
   });
   it("Existing RPD + framework broken → REMAKE recommendation", () => {
     const c = rpdMakeBlankCase("maxillary");
@@ -4105,7 +4105,7 @@ describe("UIC-AUDIT — Phase IV long-term recall + maintenance decision tree", 
     expect(r.axiumSteps).toMatch(/RELINE/);
     expect(r.axiumSteps).toMatch(/REBASE/);
     expect(r.axiumSteps).toMatch(/REMAKE/);
-    expect(r.axiumSteps).toMatch(/D5750/);
+    expect(r.axiumSteps).toMatch(/D5760/); // partial-denture lab reline (was D5750 complete-denture code — corrected)
     expect(r.axiumSteps).toMatch(/D5710/);
     expect(r.axiumSteps).toMatch(/3-month recall/);
   });
