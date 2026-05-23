@@ -5364,7 +5364,13 @@ function ShadeInput({ value, onChange, compact = false }) {
  if (panelRef.current &&!panelRef.current.contains(e.target)) setOpen(false);
  };
  document.addEventListener("mousedown", h);
- return () => document.removeEventListener("mousedown", h);
+ // Escape key closes the shade panel — keyboard parity with click-outside.
+ const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+ document.addEventListener("keydown", onKey);
+ return () => {
+ document.removeEventListener("mousedown", h);
+ document.removeEventListener("keydown", onKey);
+ };
  }, [open]);
 
  return (
@@ -5539,7 +5545,17 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
  }
  };
  document.addEventListener("mousedown", h);
- return () => document.removeEventListener("mousedown", h);
+ // Escape key closes the panel — keyboard parity with click-outside.
+ // Previously a popover with no escape handler trapped keyboard users
+ // who couldn't find a way out without clicking.
+ const onKey = (e) => {
+ if (e.key === "Escape") { setOpen(false); setActiveTooth(null); }
+ };
+ document.addEventListener("keydown", onKey);
+ return () => {
+ document.removeEventListener("mousedown", h);
+ document.removeEventListener("keydown", onKey);
+ };
  }, [open]);
 
  // ── Update tail arrow position whenever activeTooth changes ──────────
@@ -7300,7 +7316,13 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG, showW 
  if (panelRef.current &&!panelRef.current.contains(e.target)) setOpen(false);
  };
  document.addEventListener("mousedown", handler);
- return () => document.removeEventListener("mousedown", handler);
+ // Escape key closes the panel — keyboard parity with click-outside.
+ const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+ document.addEventListener("keydown", onKey);
+ return () => {
+ document.removeEventListener("mousedown", handler);
+ document.removeEventListener("keydown", onKey);
+ };
  }, [open]);
 
  const toggleTooth = (num) => {
