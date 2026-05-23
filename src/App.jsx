@@ -4691,17 +4691,20 @@ function renderTemplate(raw, f) {
  t = t.replace(/moderate generalized plaque/, `${plaqueLevel} generalized plaque`);
  }
 
- // Area-specific plaque phrase
+ // Area-specific plaque phrase.
+ // Source templates have "heavy plaque on." (no space before the period);
+ // earlier regex versions required a space and silently failed to match.
+ // Pattern \s*\.|\.$ tolerates both spacing variants.
  if (plaqueLevel === "heavy") {
  // Heavy overall → "especially on [area]" or strip the clause
  if (plaqueArea) {
- t = t.replace(/with heavy plaque on \./, `especially on ${plaqueArea}.`);
+ t = t.replace(/with heavy plaque on\s*\./, `especially on ${plaqueArea}.`);
  } else {
- t = t.replace(/ with heavy plaque on \./, ".");
+ t = t.replace(/ with heavy plaque on\s*\./, ".");
  }
  } else if (plaqueArea) {
  // Non-heavy, area provided → fill in the area
- t = t.replace(/heavy plaque on \./, `heavy plaque on ${plaqueArea}.`);
+ t = t.replace(/heavy plaque on\s*\./, `heavy plaque on ${plaqueArea}.`);
  }
  // Non-heavy, no area → leave "with heavy plaque on." as placeholder
 
