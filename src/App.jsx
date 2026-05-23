@@ -21635,7 +21635,7 @@ const WIZARDS = {
  options: [
  { label: "Extraction of a primary tooth", pathway: "pedo-extraction" },
  { label: "Space maintainer after premature primary loss", pathway: "pedo-space-maintainer" },
- { label: "Trauma to a primary tooth (luxation, intrusion, avulsion)", pathway: "pedo-primary-trauma" },
+ { label: "Primary tooth trauma", pathway: "pedo-primary-trauma" },
  { label: "Soft-tissue lesion / developmental finding — recognize + triage", pathway: "pedo-oral-pathology" },
  ],
  },
@@ -21690,7 +21690,7 @@ const PATHWAYS = [
  {
  id: "dir-class2",
  domain: "direct",
- label: "Class II composite (posterior, interproximal)",
+ label: "Class II composite",
  description: "The workhorse of operative dentistry. A posterior tooth with proximal caries needs a composite restoration that reproduces the original contact, contour, and occlusion in a single visit. The case turns on three things — a tight proximal contact (sectional matrix with wedge and ring, never a flat band alone), a moisture-free bonding field (Isodry, not cotton rolls), and adequate light cure energy reaching the gingival floor. Most failures trace back to a weak proximal contact (food trap, recurrent caries) or to inadequate cure at the box floor.",
  keyDecisions: [
  "Use a sectional matrix system (Palodent, Composi-Tight) with a contoured band, wedge, and separator ring. Tofflemire alone gives flat contacts and open margins.",
@@ -21719,7 +21719,7 @@ const PATHWAYS = [
  {
  id: "dir-class1",
  domain: "direct",
- label: "Class I composite (pit and fissure)",
+ label: "Class I composite",
  description: "A single-surface restoration in a pit or fissure — almost always occlusal on a posterior tooth, occasionally the lingual pit (cingulum) of a maxillary lateral incisor. The simplest restorative case and the one most likely to be over-prepared. Modern adhesion lets you preserve every millimetre of sound tooth structure; the prep is whatever the caries demands, not a geometric textbook outline. Most Class I failures come from over-reduction during prep or from leaving the occlusal anatomy flat instead of carving cusp tips, fossae, and developmental grooves back in.",
  keyDecisions: [
  "Minimum cavity prep — remove caries-affected dentin only, leave caries-affected enamel that is structurally sound. No prophylactic extension.",
@@ -21746,7 +21746,7 @@ const PATHWAYS = [
  {
  id: "dir-amalgam",
  domain: "direct",
- label: "Amalgam restoration (Class I / Class II)",
+ label: "Class I/II amalgam",
  description: "Legacy posterior restorative — non-adhesive, mechanically retained. Still indicated where bonding is unreliable: Class II preps with deep subgingival margins, cases where a clean dry field can't be reliably maintained, and patients with significant cost barriers to composite. The case turns on Black's prep parameters (the 5 specs in the chapter), a properly burnished Tofflemire band + wedge for Class II, condensation that overfills then carves to anatomy, and a mandatory Gluma sealer step that replaces the bonding step and prevents post-op sensitivity.",
  keyDecisions: [
  "Amalgam needs Black's prep geometry — convergent buccal/lingual walls, parallel-or-divergent proximal walls, ≥1.5mm deep, flat pulpal floor with rounded line angles + beveled axiopulpal walls, and no undermined marginal ridges. These are NOT optional — amalgam retains by mechanical undercut.",
@@ -21774,7 +21774,7 @@ const PATHWAYS = [
  {
  id: "dir-class3",
  domain: "direct",
- label: "Class III composite (anterior interproximal)",
+ label: "Class III composite",
  description: "Interproximal caries on an anterior tooth — usually mesial of a maxillary central or distal of a lateral, accessed through a lingual window when possible to preserve the facial enamel and its shade-matching role. The case turns on shade selection done before isolation, a Mylar strip held with finger pressure or a small wedge to shape the proximal, and careful layering of opaque dentin shade beneath translucent enamel shade for natural depth.",
  keyDecisions: [
  "Take shade first, before Isodry isolation — anterior teeth desiccate quickly and shift toward higher value (whiter) within minutes of isolation.",
@@ -21803,7 +21803,7 @@ const PATHWAYS = [
  {
  id: "dir-class4",
  domain: "direct",
- label: "Class IV composite (incisal corner fracture)",
+ label: "Class IV composite",
  description: "An incisal corner is missing, usually from trauma or a long-standing Class III that broke through to the incisal edge. The aesthetic stakes are the highest in operative dentistry — the restoration sits in the smile line and must reproduce the translucency, halo, and opalescence of natural enamel. A silicone palatal index made from a diagnostic wax-up is the difference between a corner that looks built and one that looks original.",
  keyDecisions: [
  "Diagnostic wax-up + putty palatal index. The index becomes a stop for the lingual shell — without it, the proportions are guesswork.",
@@ -21832,7 +21832,7 @@ const PATHWAYS = [
  {
  id: "dir-class5-composite",
  domain: "direct",
- label: "Class V composite (cervical, enamel margin available)",
+ label: "Class V composite",
  description: "Cervical caries or non-carious cervical lesion (NCCL) where the gingival margin still has enamel — the upper margin sits coronal to the CEJ. Composite is the material of choice here because it bonds reliably to enamel and gives a polishable surface that handles the cervical brushing forces. The case turns on isolation (a cervical clamp or 212 retractor clamp is non-negotiable for a moisture-free field) and on selecting a flowable composite for the cavosurface adaptation followed by a packable composite for bulk.",
  keyDecisions: [
  "Cervical retraction clamp (212 or a butterfly clamp) plus Isodry — cotton rolls cannot keep the gingival margin dry.",
@@ -21860,7 +21860,7 @@ const PATHWAYS = [
  {
  id: "dir-class5-rmgi",
  domain: "direct",
- label: "Class V RMGI (cervical, no enamel margin — root-surface lesion)",
+ label: "Class V RMGI (root surface)",
  description: "Cervical or root-surface caries where the gingival margin sits apical to the CEJ — there is no enamel to bond to. Resin-modified glass ionomer (RMGI, Ketac Nano or Fuji II LC) is the material of choice here because it bonds chemically to dentin without an adhesive step and continuously releases fluoride into the surrounding tooth. Composite over an exposed root surface is a setup for failure; the bond strength to root dentin alone is unreliable.",
  keyDecisions: [
  "If the lesion margin is fully on root surface (no enamel), RMGI is the default. Composite needs an enamel margin to anchor the bond.",
@@ -21886,7 +21886,7 @@ const PATHWAYS = [
  {
  id: "dir-direct-veneer",
  domain: "direct",
- label: "Direct composite veneer (single tooth shape correction)",
+ label: "Direct composite veneer",
  description: "A single anterior tooth needs a shape or position correction — a peg lateral, a diastema closure, or a fractured edge that doesn't justify full porcelain veneers. Direct composite veneers are completed chairside in a single visit, are entirely additive (no tooth reduction in most cases), and are repairable if they chip. The trade-off is technique-sensitive layering and a shorter lifespan (5–7 years versus 10–15 for porcelain).",
  keyDecisions: [
  "No prep or minimal prep — confirm with the patient that this is the goal (versus full porcelain veneers, which require reduction).",
@@ -21914,7 +21914,7 @@ const PATHWAYS = [
  {
  id: "dir-sedative",
  domain: "direct",
- label: "Sedative restoration (D2940 — emergency interim)",
+ label: "Sedative restoration (D2940)",
  description: "An emergency visit for pain or a fractured restoration where definitive treatment isn't possible today — the patient needs to leave the chair without pain and without exposed dentin. A sedative restoration places IRM (intermediate restorative material) over the affected surface to seal the dentin and palliate symptoms for 2–6 weeks while definitive treatment is scheduled. Not intended to last; the patient must return.",
  keyDecisions: [
  "Anesthesia only if the tooth is symptomatic. A sedative restoration on a non-symptomatic tooth (e.g. a fractured Class II awaiting indirect treatment) often doesn't need block.",
@@ -21937,7 +21937,7 @@ const PATHWAYS = [
  {
  id: "dir-core-buildup",
  domain: "direct",
- label: "Core buildup (D2950 — foundation for a crown)",
+ label: "Core buildup (D2950)",
  description: "A heavily damaged tooth — usually post-endodontic, or with extensive caries — needs a foundation under the crown that will follow. The core replaces missing tooth structure and creates the bulk that the crown prep will be cut into. Modern cores are dual-cure resin composite (Bisco Light-Core, Build-It FR) bonded with a dual-cure adhesive to dentin. The key is that the core must support the crown ferrule — at least 1.5–2 mm of sound tooth structure should remain coronal to the margin after the crown prep.",
  keyDecisions: [
  "Confirm 1.5–2 mm of sound tooth structure remains for the crown ferrule before committing to the core-and-crown plan. Without ferrule, consider extraction over heroic core build.",
@@ -21960,7 +21960,7 @@ const PATHWAYS = [
  {
  id: "dir-sealant",
  domain: "direct",
- label: "Sealant — caries prevention or incipient-lesion arrest",
+ label: "Sealant",
  description: "Pit-and-fissure sealant placed on a caries-free or non-cavitated occlusal surface — preventive (most common indication, first/second molars in young patients) or therapeutic (arresting an enamel-limited carious lesion). Single visit, no anesthesia, code D1351 per tooth. The case turns on absolutely dry isolation (Isodry — saliva contamination kills the bond), pumice cleaning with fluoride-free pumice, etch, optional bond, sealant material, light cure. Material is thick; over-application causes occlusal interference. Sealants are routinely batched — four molars or all eight posterior teeth in a single visit.",
  keyDecisions: [
  "Indication check: caries-free OR enamel-limited non-cavitated lesion. If lesion has progressed into dentin (cavitated, radiolucency on bitewing), it's a Class I composite case (see dir-ch10), not a sealant.",
@@ -21984,7 +21984,7 @@ const PATHWAYS = [
  {
  id: "dir-prr",
  domain: "direct",
- label: "PRR (Preventive Resin Restoration) — small cavitation + sealable surface",
+ label: "PRR (Preventive Resin Restoration)",
  description: "The case in between a sealant and a Class I composite — a small cavitation that needs restoration AND surrounding pits/fissures that are still sealable. Restore the cavitation with composite, seal the rest of the occlusal at the same visit. One visit, one tooth, one code (D2391 — cannot bill sealant separately on the same tooth same day). Most often a peds case; minimal-prep philosophy applies. The case turns on knowing when to expand to a full Class I composite (if caries extends into grooves) vs staying minimal (if cavitation is localized to one or two pits).",
  keyDecisions: [
  "PRR is the minimal-prep case — drill only the cavitation, seal everything else on the occlusal. If caries follows the grooves and you find yourself extending the prep, the case has become a Class I composite, not a PRR.",
@@ -22012,7 +22012,7 @@ const PATHWAYS = [
  {
  id: "dir-sdf",
  domain: "direct",
- label: "SDF (Silver Diamine Fluoride) — non-surgical caries arrest",
+ label: "SDF (Silver Diamine Fluoride)",
  description: "Topical liquid that arrests caries without drilling — no anesthesia, no restoration, ~5 minutes per tooth. Used when definitive treatment isn't possible: very young or anxious patients, patients with medical or behavioral barriers to operative work, palliative cases in the elderly, root caries on a patient who can't tolerate restorative treatment. The procedural piece is quick; the case turns entirely on the informed-consent conversation — SDF turns carious lesions PERMANENTLY BLACK and the parent / patient must understand and accept that before treatment.",
  keyDecisions: [
  "INFORMED CONSENT FIRST — show pictures of SDF-stained lesions before doing anything else. If the parent/patient is not OK with permanent black staining, do not proceed.",
@@ -22038,7 +22038,7 @@ const PATHWAYS = [
  {
  id: "dir-la-reference",
  domain: "direct",
- label: "Local anesthesia reference (max + mand blocks, dosing)",
+ label: "Local anesthesia reference",
  description: "Chairside lookup for every block technique used in restorative dentistry: 8 maxillary blocks (buccal infiltration, palatal infiltration, PSA, MSA, ASA, greater palatine, nasopalatine, infraorbital) and 3 mandibular blocks (IAN + lingual, long buccal, mental). Plus the innervation table (tooth/soft tissue → recommended block) and the max-dose table for every anesthetic-vasoconstrictor combination. Use when a routine infiltration didn't take, when the procedure crosses an anatomic boundary, or when you need to verify max-dose safety for a long appointment.",
  keyDecisions: [
  "Default to infiltration (maxillary) or IAN block (mandibular) for most restorative work — the named blocks come up only when the routine approach won't reach.",
@@ -22059,7 +22059,7 @@ const PATHWAYS = [
  {
  id: "ind-conventional-crown",
  domain: "indirect",
- label: "Single tooth needs a crown (conventional PFM)",
+ label: "PFM crown",
  description: "Posterior tooth needing a crown via the standard PFM workflow — four clinical sessions with lab steps between. The case turns on prep geometry (1.5–2.0 mm occlusal reduction, 1.25–1.50 mm axial reduction, 1.0–1.25 mm chamfer per Swade PFM spec, 6–10° taper) and an accurate impression captured the same visit. The most common error is under-reduction (the putty matrix looks right from the outside but a 1.0 mm probe inside reveals shy clearance) and on margin contamination from bleeding tissue.",
  keyDecisions: [
  "Reduction targets (PFM, Swade clinic guide): 1.5–2.0 mm occlusal / 1.25–1.50 mm axial / 1.0–1.25 mm deep chamfer finish line / 6–10° total occlusal convergence. (All-metal uses shallower 0.5–0.8 mm chamfer + 1.0–1.25 mm axial; all-ceramic same as PFM.)",
@@ -22087,7 +22087,7 @@ const PATHWAYS = [
  {
  id: "ind-digital-emax",
  domain: "indirect",
- label: "Same-day chairside crown (e.max digital workflow)",
+ label: "Same-day e.max crown",
  description: "Patient wants the crown delivered in one appointment, and the tooth is suitable for monolithic lithium disilicate. The chairside e.max workflow compresses prep → scan → design → mill → crystallize → glaze → adhesive bond into a single visit, typically 2.5–3 hours. Decision points: is the prep cleanly captured by the scanner (subgingival margins need cord), and is the patient OK sitting through the mill+crystallize gap. e.max needs hydrofluoric acid etch + silane on the intaglio; skip that step and the crown will debond.",
  keyDecisions: [
  "Margin must be cleanly visible to the scanner — pack cord even if supragingival.",
@@ -22115,7 +22115,7 @@ const PATHWAYS = [
  {
  id: "ind-veneers",
  domain: "indirect",
- label: "Anterior veneers (esthetic case)",
+ label: "Anterior veneers",
  description: "Six maxillary anterior veneers, usually feldspathic stacked on refractory dies or pressed e.max. The case is dominated by a diagnostic wax-up, a putty mock-up the patient gets to preview in their mouth, and an adhesive bonding protocol that is unforgiving of moisture. Expect to spend the first appointment on records + photos + mock-up — and to bring the lab into the case early. Most veneer failures at delivery trace back to an inadequate wax-up or a bonding step rushed under poor isolation.",
  keyDecisions: [
  "Diagnostic wax-up + putty mock-up the patient gets to preview before any tooth reduction.",
@@ -22144,7 +22144,7 @@ const PATHWAYS = [
  {
  id: "ind-bridge",
  domain: "indirect",
- label: "Missing single posterior tooth (3-unit bridge / FPD)",
+ label: "3-unit posterior FPD",
  description: "Single missing molar or premolar with healthy adjacent teeth that can support a 3-unit FPD as the fixed alternative to an implant. The bridge introduces two complications over a single crown: a shared path of draw between the abutments, and a pontic design that must allow the patient to floss under cleanly (modified ridge lap is the default). Framework try-in is the highest-stakes appointment — a non-passive metal substructure cannot be made to fit by adjustment, and proceeding to porcelain stage means the lab restarts.",
  keyDecisions: [
  "Single path of draw between the two abutments — taper non-parallel abutments inward.",
@@ -22172,7 +22172,7 @@ const PATHWAYS = [
  {
  id: "ind-survey-crown",
  domain: "indirect",
- label: "RPD abutment needs a crown (survey crown)",
+ label: "Survey crown for RPD abutment",
  description: "Patient is planned for an RPD, and a key abutment lacks a usable undercut, a parallel guide plane, or a stable rest seat. The crown gets surveyed contours built into it: a defined survey line, a 1.5 mm undercut for the clasp tip, a flat guide plane on the proximal toward the edentulous span, and a positive rest seat preparation. This is one of the few crown cases where the RPD design must be finalized BEFORE the crown is prepped, so the lab knows what contours to give you.",
  keyDecisions: [
  "Finalize the RPD design form BEFORE crown prep — the crown contours follow the partial design.",
@@ -22202,7 +22202,7 @@ const PATHWAYS = [
  {
  id: "ind-endo-treated",
  domain: "indirect",
- label: "Endo-treated tooth needs a crown",
+ label: "Crown after RCT",
  description: "Tooth has completed RCT and is now restoratively ready. The mandate is cuspal protection — an endo-treated posterior tooth without coverage will fracture, often catastrophically. Material choice usually defaults to PFM or zirconia for posterior load; e.max acceptable if occlusal stress is light. Build-up first (composite core directly on the floor if there's adequate coronal structure), then prep through the build-up as if it were natural tooth. Cementation can be conventional RMGI if ferrule + retention form are good.",
  keyDecisions: [
  "Cuspal protection mandatory on posterior teeth — endo-treated teeth fracture without coverage.",
@@ -22230,7 +22230,7 @@ const PATHWAYS = [
  {
  id: "ind-recement",
  domain: "indirect",
- label: "Patient lost their crown / bridge",
+ label: "Lost crown or bridge",
  description: "Patient walks in with a crown or bridge in hand. Decision tree before any cement opens: is the crown intact (margin chips, porcelain chips, missing pontic facing)? Is the prep intact (no recurrent caries, no fracture below margin, sufficient ferrule remains)? Is the cement on the intaglio retained or clean? If all three answers are favorable, you have a candidate for re-cement; otherwise you're on a path to remake. The single most common mistake is re-cementing onto a contaminated prep without sandblasting the intaglio first.",
  keyDecisions: [
  "Three-way evaluation before cementing: crown intact? prep intact (no recurrent caries)? cement layer clean?",
@@ -22253,7 +22253,7 @@ const PATHWAYS = [
  {
  id: "ind-bruxer-crown",
  domain: "indirect",
- label: "Heavy bruxer needs a crown",
+ label: "Crown for heavy bruxer",
  description: "Significant occlusal wear, joint symptoms, fractured cusps on other teeth, or a patient who admits to clenching/grinding. Material selection becomes the dominant decision — porcelain alone will fracture, e.max is borderline, zirconia (3Y monolithic) is the first-line non-metal answer, and cast gold remains the most durable choice when patients accept it. Plan to deliver a nightguard concurrent with the crown — otherwise the next crown will be on the contralateral tooth six months from now.",
  keyDecisions: [
  "First-line material: monolithic 3Y zirconia (strongest non-metal option).",
@@ -22282,7 +22282,7 @@ const PATHWAYS = [
  {
  id: "rpd-kennedy3",
  domain: "rpd",
- label: "Kennedy III gap (tooth-bounded edentulous span)",
+ label: "Kennedy III (tooth-bounded)",
  description: "Tooth-bounded edentulous span with abutments on both sides — the most straightforward RPD case. Tooth-supported throughout (the framework rests on the natural teeth, not the tissue), so no altered cast technique is needed. The design typically uses circumferential clasps on the major abutments with proximal plates and rest seats. Single-step impression is sufficient. The reading order matches the actual visit sequence: mount diagnostic casts, survey, design, custom tray, impression, lab Rx, delivery.",
  keyDecisions: [
  "Single-step impression sufficient (no altered cast).",
@@ -22374,7 +22374,7 @@ const PATHWAYS = [
  {
  id: "rpd-broken-denture-tooth",
  domain: "rpd",
- label: "Existing RPD — broken or lost denture tooth",
+ label: "Existing RPD — broken denture tooth",
  description: "Patient walks in with a denture tooth missing from the saddle or fractured at the cervical. The tooth-add is chairside in cold-cure PMMA. If you have the broken piece, you can sometimes rebond it; if not, select a replacement tooth from the same mold/shade and bond it into the saddle. The case turns on isolating the framework saddle, removing residual acrylic from the prior bond surface, and shaping the new acrylic to match adjacent occlusal anatomy.",
  keyDecisions: [
  "If the broken piece is intact, attempt to rebond — sandblast both surfaces, light-cure adhesive, cold-cure PMMA. Faster than a full replacement and matches mold automatically.",
@@ -22396,7 +22396,7 @@ const PATHWAYS = [
  {
  id: "rpd-broken-framework",
  domain: "rpd",
- label: "Existing RPD — framework fracture (Co-Cr broken)",
+ label: "Existing RPD — framework fracture",
  description: "Co-Cr framework fractured at a major connector, minor connector, or clasp origin. This is a lab repair or a remake decision, not a chairside fix — soldering Co-Cr rarely holds long-term and the soldered area becomes a stress riser for the next fracture. The decision tree: small clean break with both fragments and the framework geometry intact → lab solder attempt acceptable. Larger fracture, distorted geometry, or framework already on its second repair → remake.",
  keyDecisions: [
  "Chairside soldering of Co-Cr is NOT recommended — it doesn't hold and creates a stress riser. Send to the lab or remake.",
@@ -23893,7 +23893,7 @@ const PATHWAYS = [
  {
  id: "endo-molar-rct",
  domain: "endo",
- label: "Molar RCT (3-4 canals, possible MB2)",
+ label: "Molar RCT",
  description: "Mandibular first molar is the most-extracted tooth, and the most-frequent RCT — typically MB, ML, and a single distal canal (occasionally distobuccal + distolingual). Maxillary first molar is the hardest case in the chairside: three roots, three named canals (MB, DB, P), and an MB2 canal present in 60-90% of cases (depending on the population) that is the most-missed canal in dentistry. Plan two visits unless you're working with a faculty preceptor and have a reliable scope. Rubber dam, scope or high-mag loupes, and pre-op CBCT are the equipment that separates competent molar endo from a guessed-at procedure.",
  keyDecisions: [
  "Pre-op CBCT is justified for any maxillary molar — MB2 incidence is high enough that flat-radiograph 'two-canal MB' often misses the smaller orifice.",
@@ -23920,7 +23920,7 @@ const PATHWAYS = [
  {
  id: "endo-necrotic-acute",
  domain: "endo",
- label: "Acute apical abscess (swelling, percussion-positive)",
+ label: "Acute apical abscess",
  description: "Patient presents with throbbing pain, often facial swelling, percussion-positive on the offending tooth, and a tooth that does not respond to cold. The pulp is necrotic and the periapical tissues are colonizing the bone. This is an urgent visit: the priority is drainage (through the canal preferably, through a soft-tissue incision if a fluctuant abscess is accessible), then debridement, then intracanal medicament. Do NOT obturate the same visit. Antibiotics are indicated only if there's systemic involvement (fever, lymphadenopathy, trismus) or rapidly spreading cellulitis — pen V K 500 mg QID × 7 days, or amoxicillin 500 mg TID × 7 days (alternatively 875 mg BID × 7 days if QID/TID adherence is a concern). Penicillin allergy → clindamycin 300 mg QID × 7 days.",
  keyDecisions: [
  "Confirm diagnosis: necrotic pulp + acute periapical inflammation. Cold-negative, EPT-negative, percussion-positive, often radiographic widening of the PDL or frank lesion. Other diagnoses (cracked tooth syndrome, periodontal abscess) require different management.",
@@ -23947,7 +23947,7 @@ const PATHWAYS = [
  {
  id: "endo-necrotic-chronic",
  domain: "endo",
- label: "Chronic apical periodontitis (lesion on radiograph, mild symptoms)",
+ label: "Chronic apical periodontitis",
  description: "An asymptomatic or mildly tender tooth with a radiographic periapical lesion — discovered on a routine bitewing or PA. The pulp has been necrotic for months or years. There's no acute swelling, no severe pain, often just a mild percussion sensitivity or 'feels different' awareness. The clinical task is conventional RCT, but the diagnostic task is making sure the lesion is endodontic in origin (not periodontal, not a cyst, not a tumor). A lesion that doesn't fit endo anatomy or that's larger than expected for the canal anatomy needs a CBCT and possibly a biopsy referral.",
  keyDecisions: [
  "Confirm endo origin: necrotic pulp testing (cold-negative, EPT-negative), lesion at the apex (not lateral), tooth percussion-mildly-positive. A periapical lesion with a vital pulp is NOT endodontic in origin and should not be treated with RCT.",
@@ -23974,7 +23974,7 @@ const PATHWAYS = [
  {
  id: "endo-direct-pulp-cap",
  domain: "endo",
- label: "Direct pulp cap (vital exposure, asymptomatic)",
+ label: "Direct pulp cap",
  description: "During caries removal you uncover the pulp — a small (< 1 mm) bleeding spot in a tooth that was asymptomatic with no spontaneous pain. If the exposure is in a young patient (open apex, good blood supply), or a tooth with previously vital pulp and no signs of irreversible pulpitis, vital pulp therapy is the better choice than starting endo. The decision hinges on three things: bleeding control under sodium hypochlorite irrigation, age of the patient, and exposure size. MTA or Biodentine over the exposure, glass-ionomer over that, then composite or amalgam definitive — same visit.",
  keyDecisions: [
  "Pulp must be vital. Asymptomatic OR reversible pulpitis ONLY. Spontaneous pain, lingering cold response, or radiographic periapical changes = full RCT, not vital pulp therapy.",
@@ -23999,7 +23999,7 @@ const PATHWAYS = [
  {
  id: "endo-indirect-pulp-cap",
  domain: "endo",
- label: "Indirect pulp cap (deep caries, no exposure)",
+ label: "Indirect pulp cap",
  description: "Deep carious lesion encroaching on the pulp but no actual exposure during excavation. The decision is whether to push for complete caries removal (risking exposure) or leave a thin layer of caries-affected dentin (not infected, not soft) and seal it under a glass-ionomer + composite. Modern evidence favors the latter when symptoms are reversible — the residual dentin remineralizes, the pulp lays down tertiary dentin, and a tooth that would have been an RCT survives as a vital tooth.",
  keyDecisions: [
  "Patient must be asymptomatic or have reversible pulpitis ONLY. Lingering pain to cold, spontaneous pain at night, or radiographic periapical changes = the pulp is too inflamed for indirect cap. Go to RCT or stepwise excavation.",
@@ -24023,7 +24023,7 @@ const PATHWAYS = [
  {
  id: "endo-retreatment",
  domain: "endo",
- label: "RCT retreatment (failed previous endo)",
+ label: "RCT retreatment",
  description: "A tooth with previous RCT that now has a periapical lesion, recurring symptoms, or has been deemed non-restorable without re-treatment. Causes are missed canals (MB2 in maxillary molars, second canal in premolars), under-filled obturation, coronal leakage from a delayed crown, or a procedural complication (perforation, broken instrument). Re-treatment success rate is roughly 70-80% — lower than initial RCT (90%+) — and depends entirely on identifying and addressing the cause of the original failure. CBCT is almost always justified before opening the tooth.",
  keyDecisions: [
  "Pre-op CBCT to identify the cause: missed canal (most common), under-filled apex, ledge or perforation, vertical root fracture (untreatable — extract). The CBCT changes the plan; a flat PA misses too much.",
@@ -24048,7 +24048,7 @@ const PATHWAYS = [
  {
  id: "endo-broken-instrument",
  domain: "endo",
- label: "Broken file in canal (separation)",
+ label: "Separated file",
  description: "Rotary or hand file separates inside the canal — almost always in the apical third, almost always rotary nickel-titanium under torque, almost always in a curved canal. Three options: bypass and continue (leave the fragment in place, complete RCT around it), retrieve (ultrasonic tip + microscope, time-consuming, perforation risk), or accept and seal (obturate to the fragment as the apical stop, monitor radiographically). Refer to endo if the fragment is past the curve, if it's blocking access to a periapical lesion, or if the patient becomes symptomatic.",
  keyDecisions: [
  "Stop immediately when you feel the file separate or hear the change in pitch. Don't push further — the fragment can extrude apically and become impossible to retrieve.",
@@ -24073,7 +24073,7 @@ const PATHWAYS = [
  {
  id: "surgery-simple-ext",
  domain: "surgery",
- label: "Simple single-rooted extraction (anterior, premolar)",
+ label: "Single-rooted extraction",
  description: "An anterior tooth or single-rooted premolar slated for extraction — usually for non-restorability (vertical fracture, extensive caries below crestal bone, hopeless perio), pre-prosthetic planning, or patient preference. The clinical work is straightforward when the tooth is intact and the surrounding bone is normal: anesthetize, sever the periodontal ligament with a periotome, luxate with a straight elevator from the mesial line angle, deliver with forceps using rotation (anterior teeth) or buccolingual rocking (premolars). Atraumatic technique preserves bone for future implant or RPD planning.",
  keyDecisions: [
  "Pre-op assessment: medical history (anticoagulants, bisphosphonates), pre-op radiograph to evaluate root anatomy / divergence / dilaceration, plan socket-management approach (clean vs grafted).",
@@ -24099,7 +24099,7 @@ const PATHWAYS = [
  {
  id: "surgery-multi-rooted-ext",
  domain: "surgery",
- label: "Multi-rooted molar extraction (intact crown)",
+ label: "Molar extraction",
  description: "A molar (maxillary or mandibular) with an intact crown, slated for extraction. The challenge is the multi-root anatomy: maxillary molars have three divergent roots (palatal, MB, DB) that need expansion in three directions; mandibular molars have two roots (mesial, distal), often fused at the furcation. A periotome around the entire crown, luxation with a small straight elevator into each interproximal area, then forceps with controlled buccolingual rocking. Sectioning is the right move if the roots are clearly divergent on the pre-op radiograph — saves time, saves bone, and prevents root fracture.",
  keyDecisions: [
  "Pre-op PA radiograph: assess root divergence, dilaceration, root-to-sinus proximity (maxillary molars), root-to-IAN proximity (mandibular molars). Refer to oral surgery if root tips overlap the IAN canal.",
@@ -24125,7 +24125,7 @@ const PATHWAYS = [
  {
  id: "surgery-surgical-ext",
  domain: "surgery",
- label: "Surgical extraction (flap + bone removal)",
+ label: "Surgical extraction",
  description: "The tooth cannot be delivered by simple technique — broken crown below the gumline, ankylosed root, dilacerated root, hypercementosis, or root tip retained from a previous extraction. A mucoperiosteal flap exposes the buccal bone, a fissure bur removes the buccal plate over the root, and the root is then sectioned and elevated. Suturing closes the flap primarily over a debrided socket. Plan extra time (45-60 min total), pre-op antibiotic consideration in immunocompromised patients, and post-op analgesia (scheduled NSAID + acetaminophen, not opioids).",
  keyDecisions: [
  "Flap design: full-thickness mucoperiosteal flap with intrasulcular incision + vertical releasing incision distal to the tooth. Reflect minimally — just enough to access the buccal plate.",
@@ -24150,7 +24150,7 @@ const PATHWAYS = [
  {
  id: "surgery-third-molar",
  domain: "surgery",
- label: "Third molar extraction (Pell-Gregory / Winter classification)",
+ label: "Third molar extraction",
  description: "Wisdom tooth extraction — either fully erupted (treated like any other molar), partially erupted (operculitis risk, pericoronitis driver, often impacted distally on the second molar), or fully impacted (requires flap + bone removal + sectioning). The decision to refer to OMFS hinges on three things: angulation and depth (Pell-Gregory I/II/III + Winter mesial/distal/horizontal/vertical), proximity to the inferior alveolar nerve (IAN — visible on PA as the canal crossing the root), and the dental student's training level / faculty oversight. Most UIC pre-doctoral cases are referred unless the third molar is fully erupted.",
  keyDecisions: [
  "Pell-Gregory class: A (occlusal plane at or above the second molar), B (between occlusal plane and CEJ), C (below CEJ). Winter: mesial / distal / horizontal / vertical angulation. Combined classification dictates difficulty.",
@@ -24174,7 +24174,7 @@ const PATHWAYS = [
  {
  id: "surgery-retained-root",
  domain: "surgery",
- label: "Retained root tip (previous extraction)",
+ label: "Retained root tip",
  description: "A small root fragment was left behind from a previous extraction — discovered on a routine radiograph or because the patient developed a symptom (mild pain, sinus communication, draining sinus tract). Options: leave it (if small, deeply embedded, near vital structures, and asymptomatic) or retrieve it (if symptomatic, accessible, larger than 3-4 mm, or interfering with prosthetic planning). The retrieval decision rests on accessibility and proximity to risk structures (IAN, sinus, mental nerve).",
  keyDecisions: [
  "Get a current PA + consider CBCT if the fragment is near the IAN canal, maxillary sinus floor, or mental foramen. CBCT determines retrievability before opening.",
@@ -24198,7 +24198,7 @@ const PATHWAYS = [
  {
  id: "surgery-dry-socket",
  domain: "surgery",
- label: "Dry socket (alveolar osteitis)",
+ label: "Dry socket",
  description: "Patient returns 2-4 days after extraction with severe throbbing pain that radiates to the ear, often worse than the day of extraction. The socket appears empty — the blood clot has dissolved or never formed — and the exposed bone is exquisitely tender. Risk factors: mandibular molar extraction (especially third molars), smokers, oral contraceptives, traumatic extraction, prior dry-socket history. Treatment is mechanical (gentle irrigation to remove debris) + medicated dressing (eugenol-impregnated gauze, Alvogyl, or similar) that provides immediate pain relief. Recall every 1-2 days until pain subsides (usually 5-7 days total).",
  keyDecisions: [
  "Diagnosis: post-extraction pain peaking at day 2-4, socket appearing empty / clot dissolved, foul taste, exposed bone tender to touch. Not associated with fever or swelling (those suggest infection, not dry socket).",
@@ -24220,7 +24220,7 @@ const PATHWAYS = [
  {
  id: "surgery-post-op-bleed",
  domain: "surgery",
- label: "Post-op bleeding (returning patient)",
+ label: "Post-op bleeding",
  description: "Patient returns within 24-48 hours of an extraction with continued bleeding — usually a slow ooze that's been going for hours, occasionally a brisk bleed. The first move is to identify the source (socket vs gingival cuff vs torn flap) and to assess for systemic causes (anticoagulant misuse, hypertension, undisclosed bleeding disorder). Local measures (pressure, gelatin sponge, suturing, electrocautery) almost always control it; systemic management (vitamin K, fresh frozen plasma) is the OMFS / hospital escalation if local measures fail.",
  keyDecisions: [
  "First: stop the active bleeding. Have the patient bite firmly on a folded gauze pack for 20 min uninterrupted. 80% of post-op bleeds stop with sustained pressure alone.",
@@ -24244,7 +24244,7 @@ const PATHWAYS = [
  {
  id: "pedo-composite",
  domain: "pedo",
- label: "Composite restoration in a primary tooth",
+ label: "Primary composite",
  description: "A primary molar with a Class I or Class II carious lesion. The tooth will exfoliate naturally in 2-7 years — so the restoration only needs to last until then. Behavior management (tell-show-do, parental presence in operatory) precedes any clinical work; profound anesthesia and isolation in a small mouth are the procedural challenges. The composite itself is technique-identical to adult dentistry, just with smaller increments and less depth tolerance because primary pulp horns are higher and closer to the surface.",
  keyDecisions: [
  "Behavior management first. Tell-show-do for every instrument the child will see / hear. Parent in operatory for children under 6; outside for older if cooperation is good (helps with attention).",
@@ -24271,7 +24271,7 @@ const PATHWAYS = [
  {
  id: "pedo-stainless-crown",
  domain: "pedo",
- label: "Stainless steel crown (SSC) on primary molar",
+ label: "Primary SSC",
  description: "A primary molar with extensive caries — multi-surface (MOD), recurrent under a previous filling, pulpotomy completed, or otherwise too compromised for a direct restoration. AAPD positions SSC as the restoration of choice for multi-surface caries in primary molars, particularly in high-caries-risk children and those requiring advanced behavior guidance — composite has higher replacement rates here. SSC is preformed, full-coverage, cemented with glass ionomer, ~5-7 year service life (matching the remaining lifespan of the primary molar). Hall technique (sealing in caries without prep or LA) is an evidence-supported alternative for very limited cooperation, but UIC teaches conventional preparation. Sizing is the critical decision — too small won't seat, too large won't engage interproximal contacts.",
  keyDecisions: [
  "Indication check: multi-surface caries, post-pulpotomy, broken cusp on a primary molar, child with high caries risk who needs durable restoration, or a child under 4 with multi-surface caries (where AAPD specifically favors SSC over composite to avoid retreatment). Single-surface lesions = composite, not SSC.",
@@ -24295,7 +24295,7 @@ const PATHWAYS = [
  {
  id: "pedo-pulpotomy",
  domain: "pedo",
- label: "Pulpotomy on primary molar (irreversible pulpitis)",
+ label: "Primary pulpotomy",
  description: "A primary molar with caries reaching the pulp — patient reports cold-sensitivity progressing to spontaneous pain, but no signs of necrosis (no fistula, no radiographic radiolucency, no swelling). The treatment is to amputate the coronal pulp and seal the canal orifices with a fixative (formocresol, ferric sulfate) or a regenerative material (MTA, Biodentine), then immediately restore with an SSC. Primary molar canals are too narrow and curved for full RCT-style instrumentation; pulpotomy is the procedure adapted to their anatomy.",
  keyDecisions: [
  "Confirm pulp status: reversible OR partially irreversible pulpitis (sensitivity, NOT spontaneous pain at night or pulpal necrosis signs). If necrotic or with periapical changes — pulpotomy will fail; the choice becomes extraction + space maintainer (UIC default per pedo-extraction pathway) OR pulpectomy if tooth retention is preferred (no permanent successor, ortho space matters, extraction behavior is worse than pulpectomy — see pedo-pulpectomy pathway).",
@@ -24322,7 +24322,7 @@ const PATHWAYS = [
  {
  id: "pedo-indirect-pulp-therapy",
  domain: "pedo",
- label: "Indirect pulp therapy (IPT) on a primary tooth with deep caries",
+ label: "Primary IPT",
  description: "A primary molar with deep caries approaching the pulp, but no signs or symptoms of irreversible pulpitis — no spontaneous pain, no fistula, no PARL. The traditional move is to keep excavating until clean and then pulpotomy if you expose. IPT instead leaves a thin layer of stained, caries-affected dentin over the pulp and seals it under a definitive restoration. Per Dr. Alsaleh's Week 7 lecture, IPT achieves >90% success at 3 years — higher than pulpotomy in long-term studies — because sparing the pulp avoids the surgical insult entirely. The decision turns on certainty of vitality before starting and a definitive restoration immediately after.",
  keyDecisions: [
  "Indication: deep caries near the pulp, no spontaneous pain history, no nocturnal pain, no PARL on radiograph, no fistula, no internal/external resorption. Pain that's purely cold-provoked and stops with the stimulus = reversible pulpitis = candidate. Sensitivity at night or unprovoked = exclude.",
@@ -24348,7 +24348,7 @@ const PATHWAYS = [
  {
  id: "pedo-pulpectomy",
  domain: "pedo",
- label: "Pulpectomy on a primary tooth (nonvital with restorable crown)",
+ label: "Primary pulpectomy",
  description: "A primary tooth with necrotic or irreversibly inflamed radicular pulp where the crown is restorable and the patient (or family) prefers tooth retention over extraction — particularly when no permanent successor exists, when arch space matters orthodontically, or when an extraction would create a behavior bigger than the pulpectomy itself. UIC's operational default for necrotic primary with PARL is extraction (per the pedo-extraction pathway), but pulpectomy is a real option per Dr. Alsaleh's Week 7 lecture when conditions are right: minimal intra-radicular bone loss, no perforation, no cyst, no cellulitis, and a cooperative or sedated patient. Hand or rotary NiTi files, 2-3 mm short of the radiographic apex (apex locators are not reliable in primary), resorbable fill.",
  keyDecisions: [
  "Indication: radicular pulp chronically inflamed or necrotic, spontaneous/persistent pain history, no internal resorption, intra-radicular bone loss minimal, abscess/fistula may be present (local infection only). The judgment call: tooth-saving worth the longer visit vs. extracting and placing a space maintainer.",
@@ -24374,7 +24374,7 @@ const PATHWAYS = [
  {
  id: "pedo-lstr",
  domain: "pedo",
- label: "Lesion Sterilization & Tissue Repair (LSTR / triple-antibiotic pulpotomy)",
+ label: "LSTR (triple antibiotic)",
  description: "An alternative to pulpectomy for a primary tooth with irreversible pulpitis or necrosis — particularly useful when the patient won't tolerate the chair time for full canal instrumentation, when the tooth has root resorption that makes filing risky, or when the tooth needs to be maintained less than 12 months until exfoliation. Per Dr. Alsaleh's Week 7 lecture: instead of mechanically debriding the canals, a triple-antibiotic paste (clindamycin + metronidazole + ciprofloxacin in polyethylene glycol + macrogol vector) is placed directly into enlarged canal orifices and sealed under GIC + SSC. The antibiotics diffuse and sterilize the radicular pulp space chemically.",
  keyDecisions: [
  "Indication: primary tooth with irreversible pulpitis or necrosis where mechanical instrumentation isn't feasible — short retention need (<12 months to exfoliation), root resorption present, or behavior makes a full pulpectomy unrealistic. AAPD-supported but not first-line; an alternative when the operational decision is between LSTR and extraction.",
@@ -24400,7 +24400,7 @@ const PATHWAYS = [
  {
  id: "pedo-sealant",
  domain: "pedo",
- label: "Sealant on a primary or young permanent molar",
+ label: "Pediatric sealant",
  description: "A 6-12 year old with a newly erupted permanent molar (6-year or 12-year molar) or a primary molar with deep pits and fissures but no cavitation. The procedure is identical to adult sealants but the cooperation and isolation challenges are different — primary molars in young children need cotton-roll backup because the mouth is too small for a full Isodry seat, and the bonding window is shorter because saliva contamination happens in seconds at age 6.",
  keyDecisions: [
  "Indication: deep pits and fissures with no cavitation, in a child at moderate-to-high caries risk. Cavitated lesion = PRR (Preventive Resin Restoration), not sealant.",
@@ -24423,7 +24423,7 @@ const PATHWAYS = [
  {
  id: "pedo-fluoride-varnish",
  domain: "pedo",
- label: "Fluoride varnish application",
+ label: "Fluoride varnish",
  description: "A 1-18 year old at recall — moderate-to-high caries risk patient who needs topical fluoride to remineralize incipient lesions and prevent new ones. A short procedure: 30 seconds of application, no cooperation required beyond opening the mouth, no isolation, no instrumentation. 5% sodium fluoride varnish (Duraphat, Vanish, Profluorid Varnish) is brushed onto all tooth surfaces; the varnish sets on contact with saliva and stays in place for 4-6 hours. Repeat every 3-6 months depending on caries risk.",
  keyDecisions: [
  "Dose: pre-loaded unit-dose syringe (0.25 mL = 5.7 mg fluoride). One unit dose is adequate for full-arch in any age. The patient cannot overdose at this concentration with a single application.",
@@ -24445,7 +24445,7 @@ const PATHWAYS = [
  {
  id: "pedo-behavior-management",
  domain: "pedo",
- label: "Uncooperative or anxious child (behavior management)",
+ label: "Behavior management",
  description: "A young patient who is fearful, crying, refusing the chair, or otherwise not yet ready for treatment. Behavior guidance has two goals that sometimes pull against each other: (a) facilitate the dental treatment the child needs, and (b) teach the child the skills to cooperate and manage stress. Decisions depend on which goal matters more for this visit. The Frankl scale (1 = definitely negative, 2 = negative, 3 = positive, 4 = definitely positive) is the shorthand for where the child is now. Cooperation is shaped less by the child's personality than by the communication triangle (provider, staff, parent) all aimed at the child as patient.",
  keyDecisions: [
  "Rate cooperation using the Frankl scale and document it. Frankl 3-4 are workable with routine technique; Frankl 2 is workable with active behavior management; Frankl 1 means stop and reassess. The 9 basic techniques UIC teaches (per Desai, DAOB 321) are: tell-show-do, ask-tell-ask, voice control, positive reinforcement, distraction, non-verbal communication, modeling, parental presence/absence, and memory restructuring. General dentists can use all of them; everything past nitrous oxide is specialty territory.",
@@ -24470,7 +24470,7 @@ const PATHWAYS = [
  {
  id: "pedo-local-anesthetic",
  domain: "pedo",
- label: "Local anesthesia in a pediatric patient (dose, agent, technique)",
+ label: "Pediatric local anesthesia",
  description: "A pediatric restorative, pulp, or extraction case where you're calculating LA before you inject. Three things shift from adult dentistry: (a) max dose is calculated by body weight, not by appointment — overdose is real because kids weigh 15-40 kg and a single carpule can already be the limit; (b) agent selection narrows — articaine is not recommended under age 4, bupivacaine not under 12, prilocaine and benzocaine carry methemoglobinemia risk; (c) the mandibular cortical bone is less dense in children, so a buccal infiltration alone may achieve restorative anesthesia on a primary molar where an IAN block would have been needed in an adult. Documenting weight and the calculated max dose before drawing up the carpule is the standard, not an afterthought.",
  keyDecisions: [
  "Weigh the patient and calculate max dose before drawing up. AAPD lidocaine max: 4.4 mg/kg (manufacturer cap 7 mg/kg). One carpule of 2% lidocaine = 34 mg (1.7 mL) or 36 mg (1.8 mL). Articaine max 7 mg/kg, carpule 68 mg (1.7 mL) or 72 mg (1.8 mL). A 20 kg child → 88 mg lido max ≈ 2.5 carpules; a 15 kg child → 66 mg lido / 105 mg articaine. Documenting weight + calculated mg-max in the chart before injecting is standard. Recognize overdose early — biphasic, 5-10 min from administration: excitation first (dizziness, anxiety, confusion, diplopia, tinnitus), then depression (drowsiness, muscle twitches, slurred speech, unconsciousness, seizure).",
@@ -24495,7 +24495,7 @@ const PATHWAYS = [
  {
  id: "pedo-strip-crown",
  domain: "pedo",
- label: "Strip crown — anterior primary tooth (severe ECC)",
+ label: "Strip crown (primary anterior)",
  description: "A 2-5 year old with extensive caries on a maxillary primary incisor — typically severe early childhood caries (S-ECC) from bottle/sippy use, with multiple anterior teeth affected. The lesion is too large for a Class III or IV composite alone; the tooth needs full-coverage anterior restoration but cannot accept an SSC for esthetic reasons. A celluloid strip crown is filled with composite, seated over a prepared tooth, light-cured, and then peeled off — leaving a tooth-shaped composite restoration. The technique is fussy (moisture control on a tiny anterior tooth in a small mouth is the central challenge) and the result lasts until exfoliation.",
  keyDecisions: [
  "Indication check: extensive multi-surface caries on a primary incisor where a direct composite would not retain. Single-surface lesions get a Class III or IV composite. Pulp-involved teeth need pulpotomy + strip crown, not strip crown alone. If multiple anterior teeth are affected, plan all of them in one visit if cooperation allows.",
@@ -24520,7 +24520,7 @@ const PATHWAYS = [
  {
  id: "pedo-primary-anterior-class3",
  domain: "pedo",
- label: "Class III composite on a primary incisor (small interproximal)",
+ label: "Primary Class III composite",
  description: "A primary incisor with a small interproximal lesion that doesn't undermine the mesial / distal angle of the crown — typical at the mesial of a primary central or distal of a lateral / mesial of a canine. The prep is NOT the adult Class III prep: primary anteriors are small (4-6 mm inciso-gingivally), the pulp is closer to the surface, and the restoration needs mechanical retention because the bond surface is limited. UIC's protocol uses a defined cervical seat in the gingival 2/3 of the crown PLUS a labial (and sometimes lingual) dovetail lock for retention. Done well, this is a same-visit single-surface restoration that lasts until exfoliation; done as if it were an adult Class III, the composite pops out within months.",
  keyDecisions: [
  "Indication: small interproximal lesion that DOES NOT undermine the mesial or distal angle of the incisor. If the angle is undermined, you've lost the bonded enamel border that holds the restoration — go strip crown instead. If the lesion is on multiple surfaces, also go strip crown. Single-surface Class III with intact angle = this pathway.",
@@ -24545,7 +24545,7 @@ const PATHWAYS = [
  {
  id: "pedo-anterior-crown-selection",
  domain: "pedo",
- label: "Choosing an anterior primary crown (5 options)",
+ label: "Primary anterior crown selection",
  description: "A child needs full-coverage on a primary maxillary incisor and you're picking between five materials: composite strip crown, conventional SSC, open-faced SSC, pre-veneered SSC, and zirconia. Each trades esthetics vs. retention vs. tooth-structure cost vs. chair time. Dr. Alsaleh's Week 4 lecture: the best material for one case is wrong for another — anterior primary teeth are small, behavior windows are short, and most options require pre-formed components that don't accommodate atypical anatomy. The decision is shaped by remaining enamel for bonding, isolation quality you can achieve, the parent's esthetic expectations, and how close the tooth is to exfoliation.",
  keyDecisions: [
  "Indication for full coverage (per Alsaleh + AAPD 2024): multiple-surface caries, extensive cervical decalcification or developmental defects, after pulp therapy, multiple failures of intracoronal restorations, high-caries-risk child, or treatment under GA/sedation (where pulling the patient back is expensive). Single-surface lesion = Class III/V intracoronal, not a crown.",
@@ -24569,7 +24569,7 @@ const PATHWAYS = [
  {
  id: "pedo-space-maintainer",
  domain: "pedo",
- label: "Space maintainer — band-and-loop, Nance, lingual arch",
+ label: "Space maintainer",
  description: "A child has lost a primary tooth prematurely (caries-induced extraction, trauma, congenital absence) and the permanent successor is not ready to erupt. Without a space maintainer, adjacent teeth drift mesially into the gap and the unerupted successor either erupts ectopically, becomes impacted, or causes crowding requiring future orthodontics. The appliance choice depends on which tooth was lost and which arch: band-and-loop for single posterior, lingual arch for bilateral mandibular, Nance for bilateral maxillary, distal shoe (rarely — pre-eruption of the permanent first molar). The workflow is two visits — impression with band in place, then lab fabrication, then delivery and cementation.",
  keyDecisions: [
  "Indication: any premature loss of a primary tooth where the permanent successor's eruption is >6 months away. Check Bolton standards for eruption timing on a recent pano. Loss within 6 months of expected eruption — no maintainer needed; just monitor. Loss of a primary incisor where the permanent is close — usually no maintainer, the parent wants it for esthetics (use a Hawley with denture teeth instead).",
@@ -24594,7 +24594,7 @@ const PATHWAYS = [
  {
  id: "pedo-primary-trauma",
  domain: "pedo",
- label: "Trauma to a primary tooth (luxation, intrusion, avulsion)",
+ label: "Primary tooth trauma",
  description: "A child — usually a toddler who just learned to walk — presents to clinic or urgent care with an injured primary anterior tooth. The cardinal rule that distinguishes primary trauma from permanent trauma is that you do NOT replant an avulsed primary tooth — the risk of damaging the underlying permanent successor (which sits directly above and behind the primary apex) outweighs any benefit of saving a tooth that will exfoliate in a few years anyway. The clinical work is to triage (was it just the tooth, or is there a head injury?), categorize the injury (concussion, subluxation, lateral luxation, intrusion, extrusion, avulsion, crown fracture), and choose between conservative management and extraction. Follow-up monitoring for discoloration and pulp necrosis is part of every case.",
  keyDecisions: [
  "Triage for non-dental injury first. Mechanism (fall, MVC, abuse), loss of consciousness, vomiting, behavior change → ER, not the dental chair. The tooth can wait; an undetected head injury cannot. Document the mechanism in the chart in the child's words and the parent's words separately.",
@@ -24618,7 +24618,7 @@ const PATHWAYS = [
  {
  id: "pedo-oral-pathology",
  domain: "pedo",
- label: "Pediatric oral pathology — recognize, monitor, refer",
+ label: "Pediatric oral pathology",
  description: "A pediatric patient presents with a soft-tissue lesion, an eruption irregularity, or a developmental finding that isn't a caries / pulp / restorative issue. The job is to recognize the common entities, separate the self-resolving from the actionable, and know when to biopsy or refer. Per Alsaleh Week 10: the bar for biopsy in children is lower for lesions that don't resolve on their own timeline, and the parent's anxiety is a real factor — a clear name and a clear plan calms the room. Most pediatric soft-tissue lesions are benign and self-limiting; the diagnostic move is pattern recognition first, biopsy second.",
  keyDecisions: [
  "Neonatal / infant findings — usually monitor: Epstein's pearls (midline hard palate, white-yellow nodules, keratin-filled), Bohn's nodules (alveolar ridge, salivary gland remnants), dental lamina cysts (alveolar ridge, often mandibular lingual) — all self-resolve within weeks; reassure, no treatment. Natal teeth (present at birth) or neonatal teeth (erupt in first 30 days) are usually normal mandibular incisors with a superficial tooth germ — extract only if excessively mobile (aspiration risk) or causing feeding problems. Congenital epulis of the newborn — rare, pedunculated mesenchymal cell growth, more in females — shrinks over time but managed with surgical excision; rarely affects underlying tooth or tissue.",
@@ -24645,7 +24645,7 @@ const PATHWAYS = [
  {
  id: "pedo-extraction",
  domain: "pedo",
- label: "Pediatric extraction (primary or young permanent tooth)",
+ label: "Pediatric extraction",
  description: "A primary tooth or a young permanent tooth needs to come out. Indications differ from adult extraction: over-retained primary blocking permanent eruption, necrotic primary with PARL (UIC's standard rather than pulpectomy), abscessed primary, primary tooth with extensive crown destruction not restorable with SSC, orthodontic serial extraction sequence (ages 8-10), traumatic injury with poor prognosis, ectopic permanent eruption requiring primary removal. The mechanics are the same as adult extraction (elevate, luxate, deliver with forceps, irrigate, compress, sometimes suture) but the dose limits, instrument selection, parental consent, and post-op communication all shift. Note that primary roots are often partially resorbed, so the tooth can come out faster than expected.",
  keyDecisions: [
  "Indication confirmation: necrotic primary with PARL (UIC extracts these — pulpectomy is not the routine), over-retained primary with permanent erupting palatally/lingually, unrestorable caries, trauma with hopeless prognosis, ortho serial extraction. Get the indication and rationale documented in the chart before the appointment.",
@@ -24674,7 +24674,7 @@ const PATHWAYS = [
  {
  id: "pedo-poe-recall",
  domain: "pedo",
- label: "Pediatric initial exam or recall (POE / prophy)",
+ label: "Pediatric POE / prophy",
  description: "A scheduled comprehensive or periodic exam on a pediatric patient — either a new patient (initial) or returning at the 6-month recall. The structure is recognizable from adult COE/POE but the rhythm is different: you weigh instead of taking blood pressure, the guardian fills out the Pediatric Exam EPR with you before clinical work begins, anticipatory guidance (OHI + nutritional counseling) is a chargeable code in its own right (D1330 + D1310), the parent goes to the waiting room while you prophy and image, and you bring them back for the treatment-plan conversation at the end. The first pano is indicated at age 7 and covered by Medicaid.",
  keyDecisions: [
  "Present to instructor before bringing the patient in: age, gender, medical history, date of last POE, date of last radiographs, date of last fluoride varnish, dental history, today's planned procedure.",
@@ -24699,7 +24699,7 @@ const PATHWAYS = [
  {
  id: "pedo-tx-sequencing",
  domain: "pedo",
- label: "Treatment planning + visit sequencing (sextant approach)",
+ label: "Pediatric treatment planning",
  description: "A pediatric patient needs multiple restorations across the mouth, and you're deciding the order of visits. Adult dentistry sequences by appointment efficiency; peds sequences differently because children have less chair-time tolerance, lower anesthetic dose limits (lidocaine 4.4 mg/kg), and most procedures fit in one visit. UIC divides the mouth into 6 sextants and aims to finish every procedure in a sextant — composite, SSC, sealant, extraction — at one visit, anesthetizing the sextant once. The decisions: which sextant first (driven by symptoms and caries size), and whether a space maintainer can ride along with another visit or needs its own.",
  keyDecisions: [
  "Sextant approach: divide the mouth into 6 (right-max-posterior, max-anterior, left-max-posterior, left-mand-posterior, mand-anterior, right-mand-posterior). Each can be anesthetized together. Aim for one sextant per visit. Complete every procedure in that sextant — composite, SSC, sealant — before dismissing, even if the procedures are different.",
@@ -24722,7 +24722,7 @@ const PATHWAYS = [
  {
  id: "pedo-radiograph-selection",
  domain: "pedo",
- label: "Radiograph prescribing — intervals by caries risk and dentition stage",
+ label: "Radiograph prescribing",
  description: "At every peds appointment you must decide whether radiographs are indicated. The AAPD (2025) radiograph guidelines base selection on two axes: caries risk and dentition stage. The key shift from adult prescribing is that the interval is shorter for high-risk patients and changes as the child moves from primary → transitional → adolescent permanent dentition. Routine lead/thyroid shielding is no longer recommended — modern beam collimation and digital sensors reduce scatter more effectively, and misplaced shields require repeat exposures. The guiding principle is ALARA: the lowest radiation dose that still achieves a diagnostic image.",
  keyDecisions: [
  "Caries risk assessment first. High/increased risk = shorter intervals; low risk = longer. Classify using AAPD caries risk assessment form before prescribing (ask about diet, fluoride exposure, plaque, saliva, caries history). CAMBRA done at exam → feeds directly into this decision.",
@@ -24745,7 +24745,7 @@ const PATHWAYS = [
  {
  id: "pedo-oral-surgery",
  domain: "pedo",
- label: "Peds oral surgery — odontogenic infections, mesiodens, frenectomy",
+ label: "Pediatric oral surgery",
  description: "Three pediatric surgical scenarios that come up at different points in clinic: recognizing when an odontogenic infection has crossed into facial cellulitis requiring hospital-level care; managing supernumerary teeth (especially mesiodens) that block central incisor eruption; and frenectomy for ankyloglossia or restrictive labial frenum, which is heavily specialist-coordinated. The common thread is knowing your scope — most of these begin in your chair but may escalate.",
  keyDecisions: [
  "Odontogenic infection — local vs. systemic. A simple dentoalveolar abscess localizes, fluctuates, and responds to drainage + antibiotics. Facial cellulitis (diffuse, firm, non-fluctuant swelling) means the infection is spreading through fascial planes. RED FLAGS requiring same-day hospital referral: fever + malaise + tachycardia; progressive facial swelling spreading to eye or neck; difficulty breathing or swallowing; trismus (limited mouth opening <3 cm); lymphadenopathy; dehydration the patient won't drink fluids. If ANY of these is present, call the hospital NOW — do not prescribe antibiotics and send home. Complications include Ludwig's angina, cavernous sinus thrombosis, brain abscess, necrotizing fasciitis.",
@@ -24764,7 +24764,7 @@ const PATHWAYS = [
  {
  id: "pedo-medications-reference",
  domain: "pedo",
- label: "Peds medication reference — analgesics, antibiotics, antifungals, prophylaxis",
+ label: "Pediatric medication reference",
  description: "Weight-based dosing lookup for the medications a predoctoral student encounters most often in pediatric dentistry. This is a reference, not a prescription tool — always verify the chart weight, confirm allergies, and consult your attending before prescribing. The most important rule: codeine and opioid alternatives are NOT recommended for children as analgesics (AAP 2016 statement citing Tobias et al.). Use ibuprofen + acetaminophen alternating instead.",
  keyDecisions: [
  "ACETAMINOPHEN. Children <12 years: 10–15 mg/kg/dose q4–6h; max daily 75 mg/kg, not to exceed 4,000 mg/24h. Children ≥12 years / adolescents: 325–650 mg q4–6h or 1,000 mg q6–8h; max 4,000 mg/day. Formulations: liquid (160 mg/5 mL), chewables (80 mg), suppositories. Note: liquid Tylenol concentration changed in 2012 — confirm the concentration on the bottle with the parent before dosing.",
@@ -24787,7 +24787,7 @@ const PATHWAYS = [
  {
  id: "perio-srp",
  domain: "perio",
- label: "Scaling & root planing (D4341/D4342)",
+ label: "SRP (D4341/D4342)",
  description: "A patient with Stage II–III periodontitis (4-5 mm pockets with bleeding, calculus, or 5 mm+ pockets) needs definitive non-surgical therapy. SRP differs from a prophy in three ways: anesthesia is required (subgingival instrumentation hurts), the endpoint is calculus-free root surfaces (not plaque-free crowns), and you bill by quadrant (D4341 if 4+ teeth involved per quadrant, D4342 if 1-3 teeth). UIC typically schedules SRP in two visits — Mx in one visit, Mn in the next — to balance anesthesia and patient tolerance. Maintenance interval converts from 6 months to 3-4 months after SRP.",
  keyDecisions: [
  "Confirm staging: pocket depths ≥4 mm with bleeding, radiographic bone loss > 15% of root length, or clinical attachment loss ≥3 mm. Stage I (3 mm pockets, gingivitis-level) = prophy + OHI, not SRP.",
@@ -24814,7 +24814,7 @@ const PATHWAYS = [
  {
  id: "perio-maintenance",
  domain: "perio",
- label: "Periodontal maintenance (D4910, post-SRP)",
+ label: "Perio maintenance (D4910)",
  description: "A patient with previous SRP returning at the 3-4 month maintenance interval. The procedure is in between a prophy and a re-SRP: full-mouth ultrasonic + hand-instrumentation, with anesthesia for any quadrants that re-developed pockets. The clinical task is to identify the quadrants where instrumentation needs to go subgingival again vs the quadrants stable enough for surface debridement. Re-charting every 12 months (full 6-point probe) is the trigger for deciding whether to escalate back to SRP.",
  keyDecisions: [
  "Re-chart pocket depths at the maintenance visit. Sites that have increased >1 mm or developed new bleeding = quadrant gets anesthesia + sub-gingival instrumentation. Stable sites = surface debridement only.",
@@ -24838,7 +24838,7 @@ const PATHWAYS = [
  {
  id: "perio-acute-abscess",
  domain: "perio",
- label: "Acute periodontal abscess (localized swelling, pocket-origin)",
+ label: "Acute periodontal abscess",
  description: "Patient presents with localized swelling and pain at the gingival margin or attached gingiva of one or two teeth. The tooth is vital (cold-positive, EPT-positive — differentiating from acute apical abscess), the pocket is deep (often a single 8-10 mm pocket on the affected tooth), and pus may be expressed from the sulcus on probing. Treatment is immediate drainage (through the pocket with curettage, or with a small incision if a fluctuant pointing abscess is present), thorough debridement of the involved root surface, and warm saline rinses. Antibiotics are reserved for systemic involvement.",
  keyDecisions: [
  "Vital-pulp test first to differentiate from acute apical abscess. Cold + EPT positive on the affected tooth = perio origin; negative = endo origin. Treatment paths diverge here.",
@@ -24861,7 +24861,7 @@ const PATHWAYS = [
  {
  id: "perio-crown-lengthening",
  domain: "perio",
- label: "Crown lengthening (biologic width, ferrule)",
+ label: "Crown lengthening",
  description: "A tooth needs a crown but there's not enough sound supragingival tooth structure for a ferrule (the 1.5-2 mm of axial wall the crown engages above the prep margin). The decision tree: gummy smile / esthetic short tooth → esthetic crown lengthening (often gingivectomy only); subgingival caries or fracture violating biologic width → functional crown lengthening (osseous resection required to restore the 3 mm of supracrestal tissue attachment). Most cases are functional and require flap + osseous + 6-week healing before crown prep.",
  keyDecisions: [
  "Confirm need: pre-prep evaluation shows less than 1.5 mm of supragingival tooth structure on the cervical aspect, OR the prep margin will be within 3 mm of bone (violating biologic width).",
@@ -24883,7 +24883,7 @@ const PATHWAYS = [
  {
  id: "perio-gingival-graft",
  domain: "perio",
- label: "Gingival graft (CTG for root coverage, FGG for keratinized tissue)",
+ label: "Gingival graft (CTG / FGG)",
  description: "A tooth with gingival recession exposing root surface, plus inadequate keratinized tissue, plus a patient who's symptomatic (sensitivity, esthetic concern) or at risk of progression (high frenum pull, RPD-clasp engagement zone). Two main techniques: connective tissue graft (CTG) tunneled or coronally advanced for root coverage in the esthetic zone; free gingival graft (FGG) for thickening keratinized tissue when esthetics don't dominate. Donor site is the palate; graft is harvested, sutured to the recipient site, and a periodontal pack covers both sites for 7-10 days.",
  keyDecisions: [
  "Indication: Miller / Cairo Class I-II recession with adequate interdental bone, ≥2 mm of attached gingiva loss, symptomatic patient (sensitivity, esthetic, RPD compatibility), or progressive recession on serial photos.",
@@ -24907,7 +24907,7 @@ const PATHWAYS = [
  {
  id: "dir-deep-caries-decision",
  domain: "direct",
- label: "Deep caries near pulp (excavation decision tree)",
+ label: "Deep caries near pulp",
  description: "On caries excavation, you've reached the point where deeper progress will likely expose the pulp. The patient was asymptomatic or had reversible pulpitis. The decision tree: (1) complete excavation + direct cap if you expose, (2) selective excavation leaving caries-affected dentin + RMGI cap (indirect pulp cap), or (3) stepwise excavation (leave some caries, seal, return 3-6 months to re-excavate). Modern evidence favors options 2 and 3 for asymptomatic teeth — preserve the pulp, don't push for textbook caries-free dentin in the deepest area.",
  keyDecisions: [
  "Patient symptom check first. Asymptomatic OR reversible pulpitis = vital pulp therapy options open. Lingering pain to cold, spontaneous night pain, or radiographic periapical changes = full RCT, skip the preservation attempts.",
@@ -24934,7 +24934,7 @@ const PATHWAYS = [
  {
  id: "dir-large-mod",
  domain: "direct",
- label: "Large MOD composite (cuspal coverage decision)",
+ label: "Large MOD composite",
  description: "A posterior tooth with a large MOD lesion or fractured filling — the cusps are undermined or the isthmus is wider than half the buccolingual width. Direct composite is the cheaper, faster option but has a 5-year failure rate of ~30% for these large restorations; indirect onlay or crown has 5-year failure of ~5-10% but requires two visits + lab fees. The decision is part clinical (how undermined are the cusps?), part financial (insurance coverage, patient budget), and part patient-factor (bruxer? cuspal proximity to occlusal contacts?). UIC predoctoral often does the direct restoration as the interim and refers for definitive indirect later.",
  keyDecisions: [
  "Cusp involvement assessment: if the isthmus (B-L) is more than half the intercuspal distance, OR if cusps are unsupported (no dentin underneath), OR if the tooth has any vertical crack — direct composite has poor long-term prognosis; recommend onlay or crown.",
@@ -24962,7 +24962,7 @@ const PATHWAYS = [
  {
  id: "dir-replacing-failing-composite",
  domain: "direct",
- label: "Replacing a failing composite (recurrent caries, marginal stain)",
+ label: "Replacing a failing composite",
  description: "An existing composite needs replacement — marginal staining, recurrent caries at the margin, or fracture / chip. The decision tree: (1) repair the existing restoration if defect is limited and the rest is intact, (2) remove + replace if recurrent caries underneath or wholesale failure. Repair is faster, preserves tooth structure, and is well-supported by evidence for small defects. Removal + replacement loses 1-2 mm of additional tooth structure each cycle and accelerates the restoration spiral.",
  keyDecisions: [
  "Diagnose the failure: marginal stain alone (no caries) = surface re-finish + repair. Recurrent caries detected by tactile catch + radiograph = remove + replace. Bulk fracture or open contact = remove + replace.",
@@ -24989,7 +24989,7 @@ const PATHWAYS = [
  {
  id: "ind-single-implant-crown",
  domain: "indirect",
- label: "Single implant crown (cement vs screw-retained)",
+ label: "Single implant crown",
  description: "A patient who had an implant placed 3-6 months ago returns for the restoration phase. The crown will sit on a custom or stock abutment connected to the implant fixture. The first big decision is cement-retained (esthetic, but residual cement is the #1 cause of peri-implantitis) vs screw-retained (retrievable, no cement risk, requires access hole). The second is anterior (where esthetic dominates, often cement-retained with esthetic abutment) vs posterior (where retrievability dominates, often screw-retained).",
  keyDecisions: [
  "Cement vs screw: anterior + esthetic priority + 0° angled access NOT possible = cement-retained. Posterior + retrievability + easy access angle = screw-retained. The angled-screw-channel (ASC) abutments can shift the decision toward screw when the access angle is up to 25° off ideal.",
@@ -25015,7 +25015,7 @@ const PATHWAYS = [
  {
  id: "ind-cracked-tooth-syndrome",
  domain: "indirect",
- label: "Cracked tooth syndrome (diagnose + treat)",
+ label: "Cracked tooth syndrome",
  description: "Patient reports sharp pain on biting, especially on release, often only on certain foods or only at certain bite positions. No obvious caries or restoration failure on exam. The tooth tests vital + cold-positive + percussion-mildly-positive. This is the diagnostic + therapeutic challenge of cracked tooth syndrome: the crack is present but often invisible without methylene blue + transillumination. Treatment depends on crack depth and propagation: shallow enamel crack = monitor; crack reaches dentin = onlay or crown; crack reaches pulp or root = RCT + crown or extraction.",
  keyDecisions: [
  "Diagnostic workup: bite-stick test (Tooth Slooth) on individual cusps - pain on RELEASE (not bite) on one specific cusp = positive. Methylene blue stain applied to suspected area then rinsed - residual blue in the crack confirms. Transillumination with a fiber-optic light from buccal/lingual - crack stops light propagation, creating a dark line.",
@@ -25039,7 +25039,7 @@ const PATHWAYS = [
  {
  id: "ind-onlay-vs-crown-decision",
  domain: "indirect",
- label: "Onlay vs crown decision (borderline cuspal coverage)",
+ label: "Onlay vs crown",
  description: "A posterior tooth with extensive prior restoration, fractured cusp, or cracked tooth syndrome where you need cuspal coverage. The question: does this need an onlay (partial coverage, preserves more tooth structure) or a full crown (complete coverage, more retentive)? Onlay is preferred when adequate axial wall height remains (≥3 mm buccal + lingual + interproximal) and the patient is not a heavy bruxer. Crown is preferred when axial walls are short or there's vertical fracture risk. Modern ceramics (e.max, lithium disilicate) have made onlays more durable, expanding their indication range.",
  keyDecisions: [
  "Measure axial wall height with a probe. ≥3 mm of remaining tooth structure circumferentially = onlay candidate. <3 mm = full crown for retention.",
@@ -25064,7 +25064,7 @@ const PATHWAYS = [
  {
  id: "surgery-avulsed-tooth",
  domain: "surgery",
- label: "Avulsed permanent tooth (emergency replantation)",
+ label: "Avulsed permanent tooth",
  description: "Patient calls or arrives within hours of trauma — a permanent tooth has been knocked out entirely. This is one of the few true dental emergencies: replantation success drops dramatically after 60 minutes of extraoral time, and after 2 hours the periodontal ligament cells are non-viable. The clinical priority is rinse the tooth (without scrubbing — preserve PDL cells), replant immediately if at all possible, splint for 7-14 days, and start RCT in 7-10 days (the pulp is necrotic but the periodontal ligament can survive if cells are preserved).",
  keyDecisions: [
  "TIME is the dominant factor. Replantation within 60 min has the best prognosis. After 60 min outside the mouth, PDL viability decreases; after 2 hours dry the PDL is non-viable and ankylosis is expected.",
@@ -25088,7 +25088,7 @@ const PATHWAYS = [
  {
  id: "surgery-fractured-anterior",
  domain: "surgery",
- label: "Fractured anterior tooth (vital exposure or near-exposure)",
+ label: "Fractured anterior tooth",
  description: "A young patient (usually 7-15 years old, but can be adult) presents within hours of trauma with a fractured maxillary central incisor — Ellis Class II (enamel + dentin) or Class III (enamel + dentin + pulp exposure). The immediate clinical decision: vital pulp therapy + restoration (if small exposure, recent injury, asymptomatic), or RCT + crown later. In a young patient with an open apex (under age 12 typically), vital pulp therapy preserves apex maturation and gives a much better long-term prognosis.",
  keyDecisions: [
  "Assess pulp status: bleeding from exposure = vital pulp. Cold-test if no exposure but deep fracture into dentin. Determine fracture extent radiographically — root fracture is a different problem (different treatment).",
@@ -25113,7 +25113,7 @@ const PATHWAYS = [
  {
  id: "dir-bruxer-management",
  domain: "direct",
- label: "Bruxer management (restorations + occlusal appliance)",
+ label: "Bruxer management",
  description: "A patient with parafunction — clenching, grinding, masseter hypertrophy, wear facets on canines and posterior teeth, and often a history of failed restorations. The restorative work isn't different (composite or crown technique-identical) but the OCCLUSAL PLANNING is different: lighter contacts, reduce posterior interferences in protrusion/laterotrusion, and ALWAYS include a night guard (Michigan splint or NTI) in the treatment plan. Without the splint, restorations have a 3-5 year survival in heavy bruxers vs 10+ years in normal patients.",
  keyDecisions: [
  "Diagnosis: wear facets on canine tips, attrition on cusp tips of posteriors, masseter hypertrophy (palpate the muscle in clench position), patient or partner reports of grinding sounds, morning jaw pain.",
