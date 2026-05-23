@@ -6336,6 +6336,7 @@ const EXAM_FINDINGS_CONFIG = {
  placeholder: "WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx" },
  { label: "TMJ conditions", type: "input", placeholder: "WNL" },
  { label: "soft tissue conditions", type: "input", placeholder: "WNL" },
+ { label: "hard tissue conditions", type: "input", placeholder: "WNL" },
  { label: "pulpal diagnosis", type: "input", placeholder: "WNL" },
  { label: "occlusal conditions", type: "input", placeholder: "WNL" },
  { label: "esthetic considerations", type: "input", placeholder: "WNL" },
