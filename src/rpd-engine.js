@@ -2973,10 +2973,27 @@ function rpdDescribeReciprocation(claspType, arch, abutmentAttrs) {
  return null;
 }
 
-function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns, indirectRetainers, baseDesigns, designIntent, axiumCode, kennedy }) {
+function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns, indirectRetainers, baseDesigns, designIntent, axiumCode, kennedy, redFlags = [] }) {
  const archLc = arch === "maxillary" ? "maxillary": "mandibular";
  const isInterim = designIntent === "interim";
  const lines = [];
+
+ // ── Blocker-tier red flags lead the lab Rx ──
+ // If any blocker red flag fires (hopeless tooth, single-tooth arch, fully
+ // edentulous, etc.) the student should resolve the issue before sending
+ // the Rx to the lab — designing on a tooth that's about to be extracted
+ // wastes lab work. Prepend the warning so a student copying the Rx text
+ // can't miss it (otherwise the blocker only shows in the red-flags panel).
+ const blockers = (redFlags || []).filter(f => f.severity === "blocker");
+ if (blockers.length > 0 && !isInterim) {
+ lines.push("⚠ BLOCKER — resolve before sending to lab.");
+ for (const b of blockers) {
+ lines.push(`• ${b.message}`);
+ }
+ lines.push("");
+ lines.push("─── Design preview below (do NOT fabricate until blocker is resolved) ───");
+ lines.push("");
+ }
 
  // ── Interim RPD lab Rx ─────────────────────────────────────────────────
  // Per Summer 2023 IPD lecture + IPD lab Rx template (lab-ii-rpd):
@@ -3964,7 +3981,7 @@ function rpdRunEngine(caseInput) {
  const labScript = rpdGenerateLabScript({
  arch: safeCase.arch,
  framework, majorConnector, abutmentDesigns, indirectRetainers, baseDesigns,
- designIntent, axiumCode, kennedy,
+ designIntent, axiumCode, kennedy, redFlags,
  });
 
  // Phase 2 mechanical backfill — unchanged
