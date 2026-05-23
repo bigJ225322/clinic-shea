@@ -805,5 +805,79 @@ Includes vertical-space requirement (≥10mm), parallelism guidance, and the sta
 #### 3. Lab Rx typo fix (commit 52c3e3f)
 The block-out instruction read `(per protocol surveyor protocol,)` — duplicated word and orphan comma. Now reads `(per surveyor protocol)`.
 
+---
+
+## Iteration 12 (2026-05-22) — Parallel agent synthesis: 4 read-only audits
+
+Spawned 4 parallel `general-purpose` subagents (worktree-isolated, read-only). Returned 4 substantive reports across RPD engine, peds Cases gaps, clinical accuracy, and perio engine. Synthesized below; fixes already applied this iteration are noted, borderlines are flagged for your review.
+
+### A. Applied fixes (committed this iteration)
+
+#### A1. RPD engine — zero-retentive-clasps warning flag (new)
+Agent 1 reported: a Kennedy III with a small isolated max anterior gap (e.g. lone #8 missing) outputs `#7` and `#9` as `Rest Only (no clasp)` with no contralateral retention anywhere — the prosthesis has ZERO clasps. That's a real structural problem for a cast definitive RPD (relies only on guide-plane friction).
+
+Engine fix is *additive* — a new `warning`-tier red flag `zero-retentive-clasps` fires when **all** non-null abutment designs come back as `Rest Only (no clasp)` and `designIntent === "definitive"`. Message lists three options: (1) add a posterior retainer (Akers / Embrasure pair / ball on a tooth-bounded contact), (2) reconsider RPD vs FPD or implant, (3) document as interim/transitional appliance. No existing snapshots broke.
+
+Why additive and not a structural design change: forcing the engine to materialize extra abutments outside the span-derived set would change every test snapshot. The warning surfaces the issue to the student and lets them decide.
+
+#### A2. Cases — SDF bottle math correction
+Line 20713 said "8 mL bottle ≈ 250 drops" while the same line states "1 drop (25 μL)". Math: 8000 μL ÷ 25 μL = 320 drops. Fixed to "≈ 320 drops" with the math shown inline. (250 drops would be correct if each drop were ~32 μL, which is a different brand's formulation — but inconsistent with our stated drop volume.)
+
+#### A3. Cases — Isodry copy/paste artifact
+Line 20687 PRR `keyDecisions`: "Isodry preferred over Isodry" — clear find-and-replace artifact. Now reads "Isodry preferred for moisture control" without the broken comparison.
+
+#### A4. Cases — PFM chamfer per Swade clinic guide
+Cross-checked the Swade source content (line 481, 871 in App.jsx — the canonical reduction table):
+- All-metal: axial 1.00–1.25 mm, occlusal 1.25–1.50 mm, finish line 0.5–0.8 mm chamfer.
+- **PFM: axial 1.25–1.50 mm, occlusal 1.5–2.0 mm, finish line 1.0–1.25 mm deep chamfer.**
+- All-ceramic: axial 1.25–1.50 mm, occlusal 1.5–2.0 mm, finish line 1.0–1.25 mm deep chamfer.
+
+Three places said "0.5–1.0 mm chamfer" for the PFM workflow — these were under-specified vs Swade:
+- `ind-conventional-crown` description (line 20756) — updated to Swade-correct ranges and added the all-metal vs PFM distinction.
+- `ind-conventional-crown` keyDecisions[0] — same update; full reduction targets restated.
+- Indirect chapter 19149 — updated chamfer width to "1.0–1.25 mm for PFM; 0.5–0.8 mm for all-metal."
+
+#### A5. Cases — Peds Class II matrix selection note
+`pedo-composite` keyDecisions only covered prep specs, not matrix choice. Added a new bullet covering T-band (UIC's standard for primary molars — band wraps B-to-L, T-fold tightens over wedge, trimmed flush with crown scissors), sectional matrix as the smaller-contact alternative, and explicit "avoid Tofflemire on primary molars" (overflare risk).
+
+### B. Borderlines — for your review (NOT auto-applied)
+
+#### B1. RPD engine — Reverse Akers on non-tilted molars
+Agent 1 flagged: when user sets distal undercut on a non-tilted molar, engine emits `claspType: "Reverse Akers"` (with `claspTier: "judgment"` and a note saying it's outside Retainers PDF p.27 scope). Strictly per the source, Reverse Akers on molars is contraindicated (aspiration risk) — engine SHOULD downgrade the clasp type itself, not just attach a tier-tag.
+
+Counter-argument: the engine's note explicitly says "lab Rx convention writes 'Akers clasp engaging 0.01\" [DL/DB] undercut' rather than 'Reverse Akers' explicitly — same physical design, different name." So the *output* might be defensible if the student reads the tier + note; only the *label* is wrong.
+
+Recommended decision: switch the clasp label to "Akers" (with distal undercut) for non-tilted molars and keep the alternative-Ring rationale. Side-effect: changes one or two test snapshots. Confirm before applying.
+
+#### B2. RPD engine — Kennedy IV vs III when premolars included in span
+Agent 1: a #5–#12 span (premolar-to-premolar including all maxillary anteriors) is classified as Kennedy III, not IV. The classic McCracken/Carr definition restricts Class IV to *pure* anterior edentulous areas; #5 and #12 are premolars, so engine output (III) is the textbook-correct call. Agent's claim of "Applegate Rule 8 violation" doesn't map cleanly to this scenario.
+
+Recommended decision: leave engine alone. The McCracken interpretation is the US-standard reading. If UIC teaches a different rule, override.
+
+#### B3. Perio engine — Stage III complexity modifiers do not elevate from Stage II
+Agent 4 confirmed what the engine source already documents (line 8286–8288): when `furcation-23` / `vertical-3mm` / `ridge-moderate` are checked but CAL+bone loss only support Stage II, the engine defaults to Stage II AND surfaces an `ambiguity` note explaining AAP 2018 allows elevation.
+
+This is a documented design choice ("engine defaults to the more conservative reading"). Most US periodontists I've seen interpret these as elevating modifiers (Stage III when ANY complexity modifier present). If UIC teaches "modifiers elevate," flip the engine; if UIC teaches "modifiers are documentation only," keep current behavior. Either way, the ambiguity flag stays in place.
+
+#### B4. Perio engine — bone-loss/age ratio uses midpoint 50 for ">33%" bucket
+Line 3769: `const blMid = boneLossPct === "<15"? 10: boneLossPct === "15-33"? 25: 50;`. The ">33%" bucket gets midpoint 50, but actual bone loss can be 35% or 75%. Using 50 underestimates ratio for severe loss, can keep edge cases at Grade B that AAP would call Grade C.
+
+Fix would require an input shape change: either add an optional "max bone loss %" numeric input (read when present, fall back to bucket midpoint), or split ">33%" into ">33–50%" and ">50%" buckets with midpoints 40 and 70. Either is a UI change — flagging for your review per the no-UI-changes rule this loop.
+
+#### B5. Peds — pathway gaps Agent 2 flagged
+- **N₂O pathway**: 52-slide source from Week 6 exists. **OUT per your earlier directive** (liability concerns). Not adding.
+- **Class II T-band matrix pathway**: Addressed inline (A5 above) as a keyDecision rather than a full new pathway. Lower-stakes than a new tab.
+- **Isolation selection**: There's already coverage scattered across Isodry / rubber dam / cotton-roll discussions but not a unified "which isolation when" reference. Possible new BACKLOG pathway: `pedo-isolation-selection`.
+- **Eruption reference**: Source has eruption sequence tables. Currently lives in the long-form pedo chapters. Consider a one-page reference pathway `pedo-eruption-reference` (BACKLOG).
+- **Frankl scale**: Low priority per Agent 2 — useful but the source content is brief and a pathway would be sparse.
+
+### C. UI ideas (NOT implementing per directive — design notes only)
+
+C1. **RPD design assertions panel** — a sticky right-side rail in the RPD builder that lists the design's structural assertions (e.g. "≥2 retentive clasps", "no anterior single-tooth no-clasp", "guide planes complete on every abutment") and ticks them off as the user enters teeth. Would catch the zero-retentive-clasps case earlier in the workflow before the red flag fires.
+
+C2. **Cases pathway preview cards** — instead of the current list-of-labels grid, show pathway cards with: (a) the verdict italic at top, (b) the phases as compact dots/numbers, (c) the keyDecisions count as a chip. Helps Jake scan the Cases tab faster on clinic prep mornings.
+
+C3. **Perio Dx ambiguity badges** — when the engine returns ambiguity notes, surface them as small caution-color chips next to the Stage/Grade values rather than buried in the rationale. The "AAP allows X" notes are the most clinically relevant output and should be visible without expanding.
+
 
 
