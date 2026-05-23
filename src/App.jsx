@@ -334,7 +334,7 @@ const CHUNKS = [
 "id": "c027.0",
 "section": "RESTORATIVE",
 "title": "AMALGAM — amalgam: equipment",
-"body": "amalgam: equipment\n ●​ from sterilization: amalgam kit, Isodry, handpieces, restorative burs, composite finishing burs, Isodry, septocaine,\n patient goggles, blood glucose kit\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: articulating paper, matrix band, wooden wedges, wedget, amalgamator, amalgam capsules, Gluma, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, floss"
+"body": "amalgam: equipment\n ●​ from sterilization: amalgam kit, handpieces, restorative burs, composite finishing burs, Isodry, septocaine,\n patient goggles, blood glucose kit\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: articulating paper, matrix band, wooden wedges, wedget, amalgamator, amalgam capsules, Gluma, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, floss"
 },
 {
 "id": "c027.1",
@@ -352,7 +352,7 @@ const CHUNKS = [
 "id": "c028.0",
 "section": "RESTORATIVE",
 "title": "COMPOSITE — CLASS I — composite — class I: equipment",
-"body": "composite — class I: equipment\n ●​ from sterilization: composite kit, Isodry, handpieces, restorative burs, composite finishing burs, composite gun,\n curing light, Vita shade guide, Isodry, septocaine, patient goggles, blood glucose kit\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: composite, microbrushes, articulating paper, wedget, etch, ScotchBond, Gluma, Consepsis, Shofu, Vitrebond +\n mixing pad, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical"
+"body": "composite — class I: equipment\n ●​ from sterilization: composite kit, handpieces, restorative burs, composite finishing burs, composite gun,\n curing light, Vita shade guide, Isodry, septocaine, patient goggles, blood glucose kit\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: composite, microbrushes, articulating paper, wedget, etch, ScotchBond, Gluma, Consepsis, Shofu, Vitrebond +\n mixing pad, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical"
 },
 {
 "id": "c028.1",
@@ -370,7 +370,7 @@ const CHUNKS = [
 "id": "c029.0",
 "section": "RESTORATIVE",
 "title": "COMPOSITE — CLASS II — composite — class II: equipment",
-"body": "composite — class II: equipment\n ●​ from sterilization: composite kit, Isodry, handpieces, restorative burs, composite finishing burs, Garrison kit (1-2),\n composite gun, curing light, Vita shade guide, Isodry, septocaine, patient goggles, blood glucose kit\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: composite, microbrushes, articulating paper, matrix bands, wedget, wooden wedges, plastic wedges, etch,\n ScotchBond, Gluma, Consepsis, Shofu, finishing strips, #12 scalpel, Vitrebond + mixing pad, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, floss"
+"body": "composite — class II: equipment\n ●​ from sterilization: composite kit, handpieces, restorative burs, composite finishing burs, Garrison kit (1-2),\n composite gun, curing light, Vita shade guide, Isodry, septocaine, patient goggles, blood glucose kit\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: composite, microbrushes, articulating paper, matrix bands, wedget, wooden wedges, plastic wedges, etch,\n ScotchBond, Gluma, Consepsis, Shofu, finishing strips, #12 scalpel, Vitrebond + mixing pad, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, floss"
 },
 {
 "id": "c029.1",
@@ -382,7 +382,7 @@ const CHUNKS = [
 "id": "c030.0",
 "section": "RESTORATIVE",
 "title": "COMPOSITE — CLASS III — composite — class III: equipment",
-"body": "composite — class III: equipment\n ●​ from sterilization: composite kit, Isodry, handpieces, restorative burs, composite finishing burs, composite gun,\n curing light, Vita shade guide, Isodry, septocaine, patient goggles, blood glucose kit\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: composite, microbrushes, articulating paper, clear mylar strip, wedget, wooden wedges, etch, ScotchBond, Gluma,\n Consepsis, Shofu, finishing strips, #12 scalpel, discs, enamelize, Vitrebond + mixing pad, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, floss"
+"body": "composite — class III: equipment\n ●​ from sterilization: composite kit, handpieces, restorative burs, composite finishing burs, composite gun,\n curing light, Vita shade guide, Isodry, septocaine, patient goggles, blood glucose kit\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: composite, microbrushes, articulating paper, clear mylar strip, wedget, wooden wedges, etch, ScotchBond, Gluma,\n Consepsis, Shofu, finishing strips, #12 scalpel, discs, enamelize, Vitrebond + mixing pad, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, floss"
 },
 {
 "id": "c030.1",
@@ -394,7 +394,7 @@ const CHUNKS = [
 "id": "c031.0",
 "section": "RESTORATIVE",
 "title": "COMPOSITE — CLASS IV — composite — class IV: equipment",
-"body": "composite — class IV: equipment\n ●​ from sterilization: composite kit, Isodry, handpieces, restorative burs, composite finishing burs, composite gun,\n curing light, Vita shade guide, Isodry, septocaine, patient goggles, blood glucose kit\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: composite, microbrushes, articulating paper, clear mylar strip, wedget, wooden wedges, etch, ScotchBond, Gluma,\n Consepsis, Shofu, finishing strips, #12 scalpel, discs, enamelize, Vitrebond + mixing pad, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, floss"
+"body": "composite — class IV: equipment\n ●​ from sterilization: composite kit, handpieces, restorative burs, composite finishing burs, composite gun,\n curing light, Vita shade guide, Isodry, septocaine, patient goggles, blood glucose kit\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: composite, microbrushes, articulating paper, clear mylar strip, wedget, wooden wedges, etch, ScotchBond, Gluma,\n Consepsis, Shofu, finishing strips, #12 scalpel, discs, enamelize, Vitrebond + mixing pad, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, floss"
 },
 {
 "id": "c031.1",
@@ -472,7 +472,7 @@ const CHUNKS = [
 "id": "c037.1",
 "section": "FIXED",
 "title": "FIXED — crown prep: equipment",
-"body": "crown prep: equipment\n ●​ from sterilization: composite kit, fixed prosth kit, Isodry, handpieces, fixed prosth burs, restorative burs, extra-oral\n provisional burs, composite finishing burs, Integrity gun, PVS gun (2), composite gun, curing light, Garrison kit (1-2), Vita\n shade guide, Isodry, septocaine, patient goggles, blood glucose kit\n ●​ from locker: patient casts with wax-up completed, putty matrix, blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: composite (lighter/darker shade) or core-buildup material (Bisco Blue or White), articulating paper, microbrushes,\n etch, ScotchBond, Gluma, Shofu, TempBond + mixing pad or UltraTemp + tips, cords + Hemodent + dappen dish, Integrity +\n tip, impression trays, PVS adhesive + dappen dish + brushes, light body PVS + tips, heavy body PVS + tips, lab putty &\n activator, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, floss, vaseline"
+"body": "crown prep: equipment\n ●​ from sterilization: composite kit, fixed prosth kit, handpieces, fixed prosth burs, restorative burs, extra-oral\n provisional burs, composite finishing burs, Integrity gun, PVS gun (2), composite gun, curing light, Garrison kit (1-2), Vita\n shade guide, Isodry, septocaine, patient goggles, blood glucose kit\n ●​ from locker: patient casts with wax-up completed, putty matrix, blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: composite (lighter/darker shade) or core-buildup material (Bisco Blue or White), articulating paper, microbrushes,\n etch, ScotchBond, Gluma, Shofu, TempBond + mixing pad or UltraTemp + tips, cords + Hemodent + dappen dish, Integrity +\n tip, impression trays, PVS adhesive + dappen dish + brushes, light body PVS + tips, heavy body PVS + tips, lab putty &\n activator, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, floss, vaseline"
 },
 {
 "id": "c037.2",
@@ -484,7 +484,7 @@ const CHUNKS = [
 "id": "c038.0",
 "section": "FIXED",
 "title": "CORE BUILDUP — core buildup: equipment",
-"body": "core buildup: equipment\n ●​ from sterilization: composite kit, Isodry, handpieces, restorative burs, composite finishing burs, composite gun,\n curing light, Garrison kit (1-2), Vita shade guide, Isodry, septocaine, patient goggles, blood glucose kit\n ●​ from locker: patient casts with wax-up completed, putty matrix, blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: composite (lighter/darker shade) or core-buildup material (Bisco Blue or White), articulating paper, microbrushes,\n wooden wedges, plastic wedges, matrix band, wedget, Consepsis, etch, ScotchBond, Gluma, Shofu, cords + Hemodent +\n dappen dish, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, floss"
+"body": "core buildup: equipment\n ●​ from sterilization: composite kit, handpieces, restorative burs, composite finishing burs, composite gun,\n curing light, Garrison kit (1-2), Vita shade guide, Isodry, septocaine, patient goggles, blood glucose kit\n ●​ from locker: patient casts with wax-up completed, putty matrix, blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: composite (lighter/darker shade) or core-buildup material (Bisco Blue or White), articulating paper, microbrushes,\n wooden wedges, plastic wedges, matrix band, wedget, Consepsis, etch, ScotchBond, Gluma, Shofu, cords + Hemodent +\n dappen dish, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, floss"
 },
 {
 "id": "c038.1",
@@ -826,7 +826,7 @@ const CHUNKS = [
 "id": "c054.0",
 "section": "DIGITAL",
 "title": "DIGITAL PREP & SCAN — digital prep & scan: equipment",
-"body": "digital prep & scan: equipment\n ●​ from sterilization: fixed prosth kit, Isodry, handpieces, fixed prosth burs, composite finishing burs, digital prep burs,\n Integrity gun, composite gun, curing light, extraoral camera, cheek retractors + mirrors, Isodry, patient goggles, blood\n glucose kit -- ask for extraoral provisional burs (they always forget them!)\n ●​ from locker: patient casts with wax-up completed, putty matrix, blood pressure cuff, loupes and/or eye protection\n ●​ from Chicago office: digital e.max shade guide, Telio (for inlays/onlays)\n ●​ in clinic: articulating paper, microbrushes, Gluma, TempBond + mixing pad or UltraTemp + tips, cords + Hemodent + dappen\n dish, Integrity + tip (for onlays, crowns), lab putty + activator\n ●​ in unit: anesthetic needle/carpule/shield/topical, floss"
+"body": "digital prep & scan: equipment\n ●​ from sterilization: fixed prosth kit, handpieces, fixed prosth burs, composite finishing burs, digital prep burs,\n Integrity gun, composite gun, curing light, extraoral camera, cheek retractors + mirrors, Isodry, patient goggles, blood\n glucose kit -- ask for extraoral provisional burs (they always forget them!)\n ●​ from locker: patient casts with wax-up completed, putty matrix, blood pressure cuff, loupes and/or eye protection\n ●​ from Chicago office: digital e.max shade guide, Telio (for inlays/onlays)\n ●​ in clinic: articulating paper, microbrushes, Gluma, TempBond + mixing pad or UltraTemp + tips, cords + Hemodent + dappen\n dish, Integrity + tip (for onlays, crowns), lab putty + activator\n ●​ in unit: anesthetic needle/carpule/shield/topical, floss"
 },
 {
 "id": "c054.1",
