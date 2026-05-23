@@ -18816,7 +18816,7 @@ function RPDHelper() {
  color: "var(--ink-soft)", fontWeight: 500, marginBottom: "10px",
  };
  const verdict = {
- fontFamily: "'Fraunces', serif", fontStyle: "italic",
+ fontFamily: "'Fraunces', serif",
  fontSize: "16px", color: "var(--accent)", lineHeight: 1.5,
  marginBottom: "16px",
  };
