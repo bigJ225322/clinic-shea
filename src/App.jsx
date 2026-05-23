@@ -4470,9 +4470,12 @@ function renderTemplate(raw, f) {
  if (label === "pulpal diagnosis" || label === "periapical diagnosis") {
  const tooth = ((f.examFindings || {})["diagnosis tooth"] || "").trim() || "#";
  const type = label === "pulpal diagnosis"? "Pulpal": "Periapical";
+ // Template has "- Pulpal diagnosis #:" with a space between
+ // "diagnosis" and "#". Earlier regex required no space and
+ // silently failed. Tolerate either spacing.
  t = t.replace(
- new RegExp(`^([ \\t]*-[ \\t]*${type} diagnosis)#:[ \\t]*$`, "im"),
- `$1#${tooth}: ${v}`
+ new RegExp(`^([ \\t]*-[ \\t]*${type} diagnosis)\\s*#:[ \\t]*$`, "im"),
+ `$1 #${tooth}: ${v}`
 );
  continue;
  }
