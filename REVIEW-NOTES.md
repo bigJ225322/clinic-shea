@@ -1502,6 +1502,43 @@ All 1017 tests pass throughout. Build clean. No regressions.
 ### Iter 22 verification of resolved B18
 Re-ran orphan chapter detection across all domains: 150 chapter definitions, 143 references — zero orphans. The iter 21 stubs at commit 8876e3c completely resolved the B18 borderline.
 
+### Iter 22 cont — two more critical content fixes
+
+**A46. Peds pulpotomy steps chunk (commit 2e72df5).** Found contradiction: "use a Isodry for pulpotomies (no Isodry!) — don't forget to tie floss to the clamp". The "(no Isodry!)" parenthetical and "tie floss to the clamp" both indicated the original Swade content was about rubber dam. Iter 12's "Rubber dam → Isodry scrub" over-applied here — pulpotomy is pulp therapy (not direct restoration), and AAPD positions rubber dam as gold standard for pulp procedures. Restored "rubber dam". The pulpotomy template (7139) still says "Placed bite block & Isodry" — left as borderline (B27) since UIC clinic may actually use Isodry + bite block in practice.
+
+**A47. CRITICAL: Endo (RCT) chunks + template wrongly scrubbed to Isodry (commit 0d66c23).** This is a clinical safety issue. Iter 12 stated scope was "except endo" but the diff shows ALL of these were scrubbed:
+- Chunk c059.0 (RCT equipment): "rubber dam kit" → "Isodry" (sterilization); "rubber dam" → "Isodry" (in clinic)
+- Chunk c059.1 (RCT steps): "isolate with rubber dam" → "isolate with Isodry"
+- Chunk c059.2 (RCT note template): "Rubber dam placed" → "Isodry placed"
+- Template 5472 (RCT note template, used by Note Builder): "Rubber dam placed" → "Isodry placed"
+
+For endo, rubber dam is non-negotiable:
+- Sodium hypochlorite (NaOCl) irrigation MUST be contained — leakage causes chemical burns on mucosa (documented serious complication)
+- Aspiration of small endo files / paper points / cones — rubber dam is the only reliable airway barrier
+- AAPD, AAE, and UIC's own endo curriculum all teach rubber dam as mandatory for RCT
+- Isodry alone does not prevent NaOCl leakage; does not provide airway protection equivalent to rubber dam
+
+Students writing RCT notes with the old content would document "Isodry placed" — clinically inaccurate, potentially medico-legally risky if a complication occurred. Now all RCT chunks + the template are restored to "rubber dam".
+
+The Cases tab endo-anterior-rct pathway already correctly says "rubber dam mandatory for endo" — Cases tab respected the "except endo" rule, while Steps/Chunks/Templates didn't.
+
+### Iter 21+22 running tally — 10 real bug fixes
+
+1. Perio re-eval em-dash when detail empty (c408236)
+2. RPD mand incisor bounding abutments → ML ball rest (d880d8b)
+3. RPD fully-dentate guard (ee088e2)
+4. Perio/endo Steps tab chunk routing (4650ca6)
+5. Hopeless-tooth/questionable-abutment grammar (24d3996)
+6. Strip "other symptoms" / "anything else?" stub lines when blank (e5752be)
+7. OHI chunk → PERIO section (cc43f53)
+8. Brushing/flossing race condition (f2db779)
+9. Peds pulpotomy chunk contradiction (2e72df5)
+10. **CRITICAL**: Endo (RCT) restored to rubber dam (0d66c23)
+
+**New borderline B27**: Pulpotomy template 7139 still says "Placed bite block & Isodry". May reflect actual UIC clinic practice (Isodry + bite block instead of rubber dam for pulpotomy) despite AAPD recommendations. Worth your review.
+
+23 commits total in iter 21+22.
+
 ### Iter 21+22 running tallies (immediate continuous mode)
 
 **16 commits pushed since the user requested no wake-ups**:
