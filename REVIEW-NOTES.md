@@ -2037,3 +2037,34 @@ Iter 30 fix: when crownType=all-ceramic, "RelyX" → "Panavia" in the cement sen
 Tests 1021/1021 pass throughout. No regressions.
 
 **Borderlines saved for review (4 new this iter): B35-B38 above.**
+
+---
+
+## Iter 31 (2026-05-23) — Post-compact continuation, agent-driven clinical sweep
+
+Spawned a parallel agent to audit PATHWAYS data for clinical inaccuracies. Agent flagged 3 high-confidence errors, all shipped this iter. Also caught 3 additional content errors in self-review.
+
+### Iter 31 commits: 6 commits, all deployed live, 1021/1021 tests pass
+
+1. **`dir-class1` caries terminology inverted (7b1466b).** Said "remove caries-affected dentin, leave caries-affected enamel" — backwards. Modern MI dentistry leaves caries-AFFECTED dentin (firm, leathery), removes caries-INFECTED dentin (soft, wet). The rest of the codebase uses the correct terminology — this was the single outlier.
+
+2. **`endo-anterior-rct` W8A clamp wrong for anterior (7b1466b).** W8A is a maxillary molar clamp — far too large for an anterior tooth. Replaced with correct subgingival anterior options (Brinker B4 / B5 / B6).
+
+3. **`surgery-multi-rooted-ext` 53R/L beak engagement inverted (7b1466b).** Listed "palatal root engagement" — but the design point of 53R/L is the POINTED BUCCAL beak engaging the MB–DB furcation. The palatal beak is rounded for the single palatal root.
+
+4. **`pedo-space-maintainer` FujiCEM mislabeled as GIC (16b593a).** Materials table correctly says "FujiCEM, RMGI"; templates correctly say "RMGI FujiCEM". One outlier said "FujiCEM GIC". Functionally identical (RMGI is fine for band cementation), labeling correction only.
+
+5. **`ind-bridge` Ante's law mis-attribution (f560d63).** "Connector dimensions per Ante's law: ≥9 mm² posterior" — but Ante's law is about periodontal area ratio, NOT connector geometry. Decoupled into two statements; the `ind-large-span-fpd` pathway already used Ante's law correctly.
+
+6. **`dir-sealant` confused wording (392776d).** "Isodry is the standard isolation — no anesthesia needed since Isodry isn't placed" read as if Isodry isn't placed at all. Reworded: "no anesthesia needed because there's no clamp to seat."
+
+### Iter 31 borderlines (none flagged this iter)
+
+The RPD engine audit agent ran a 13-tool-use deep check against Dr. Shahin's Intro to RPD slides and Dr. Sabbagh's Diagnosis & TP slides. **No high-confidence mismatches found** — engine logic aligns with both slide decks. Specifically verified:
+- Applegate Rules 1-8 (engine implements 1-7 explicitly + 8 implicitly via `isAnteriorOnly` check at line 252)
+- Kennedy Class IV with posterior gap correctly routes to Class III + mod (Rule 5)
+- 5 RPD components (Major/Minor Connector, Direct Retainer, Denture Base, Prosthetic Teeth) match Shahin slide definitions
+- Tooth-supported vs tooth-and-tissue support classifications correct
+- Diagnostic workflow (Sabbagh) covered by Axium Steps 1-3 with FMX + PANX + mounted casts
+
+### Iter 31 cumulative: 6 commits, 6 substantive clinical content fixes, all live. Tests 1021/1021 pass.
