@@ -20580,7 +20580,7 @@ const WIZARDS = {
  question: "Kennedy class / patient context?",
  options: [
  { label: "Class III — tooth-bounded edentulous span", pathway: "rpd-kennedy3" },
- { label: "Class I or II — distal extension (altered cast)", pathway: "rpd-distal-extension" },
+ { label: "Class I or II — distal extension", pathway: "rpd-distal-extension" },
  { label: "Class IV — anterior single tooth", pathway: "rpd-kennedy4-anterior" },
  { label: "Any class — first-time partial wearer", pathway: "rpd-first-time-patient" },
  ],
