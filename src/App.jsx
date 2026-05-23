@@ -22126,7 +22126,7 @@ const PATHWAYS = [
  ],
  phases: [
  { label: "Workflow + shade", count: 2 },
- { label: "Material options", count: 2 },
+ { label: "Material choice", count: 2 },
  { label: "Wax-up planning", count: 1 },
  { label: "Cementation", count: 1 },
  { label: "Reference", count: 1 },
@@ -22213,7 +22213,7 @@ const PATHWAYS = [
  ],
  phases: [
  { label: "Workflow + endo-tooth specifics", count: 2 },
- { label: "Material options", count: 2 },
+ { label: "Material choice", count: 2 },
  { label: "Cementation + follow-up", count: 2 },
  { label: "Reference", count: 1 },
  ],
@@ -22594,7 +22594,7 @@ const PATHWAYS = [
  ],
  phases: [
  { label: "Workflow + onlay specifics", count: 2 },
- { label: "Material options", count: 2 },
+ { label: "Material choice", count: 2 },
  { label: "Cementation", count: 1 },
  { label: "Reference", count: 1 },
  ],
@@ -22697,9 +22697,9 @@ const PATHWAYS = [
  "Don't proceed if a crack line is detected during prep — convert to onlay or full crown.",
  ],
  phases: [
- { label: "Workflow options", count: 2 },
+ { label: "Workflow choice", count: 2 },
  { label: "Inlay prep specifics", count: 1 },
- { label: "Material options", count: 2 },
+ { label: "Material choice", count: 2 },
  { label: "Cementation + reference", count: 2 },
  ],
  sections: [
@@ -22725,9 +22725,9 @@ const PATHWAYS = [
  "Counsel: longevity depends on bond integrity — flossing must be daily, contact must be checked annually.",
  ],
  phases: [
- { label: "Workflow options", count: 2 },
+ { label: "Workflow choice", count: 2 },
  { label: "Onlay prep specifics", count: 1 },
- { label: "Material options", count: 2 },
+ { label: "Material choice", count: 2 },
  { label: "Cementation + reference", count: 2 },
  ],
  sections: [
@@ -22754,7 +22754,7 @@ const PATHWAYS = [
  ],
  phases: [
  { label: "Workflow + shade", count: 2 },
- { label: "Material options", count: 2 },
+ { label: "Material choice", count: 2 },
  { label: "Wax-up planning", count: 1 },
  { label: "Cementation + follow-up", count: 2 },
  { label: "Reference", count: 1 },
@@ -22785,7 +22785,7 @@ const PATHWAYS = [
  phases: [
  { label: "Ferrule + post planning", count: 1 },
  { label: "Workflow", count: 1 },
- { label: "Material options", count: 2 },
+ { label: "Material choice", count: 2 },
  { label: "Cementation + follow-up", count: 2 },
  { label: "Reference", count: 1 },
  ],
@@ -22813,7 +22813,7 @@ const PATHWAYS = [
  ],
  phases: [
  { label: "Workflow + FPD biomechanics", count: 2 },
- { label: "Material options", count: 2 },
+ { label: "Material choice", count: 2 },
  { label: "Framework try-in", count: 1 },
  { label: "Cementation + reference", count: 2 },
  ],
@@ -23240,7 +23240,7 @@ const PATHWAYS = [
  { label: "RPD interim modification", count: 2 },
  { label: "Implant workflow", count: 1 },
  { label: "Multi-unit option", count: 1 },
- { label: "Material options", count: 2 },
+ { label: "Material choice", count: 2 },
  { label: "Cementation + reference", count: 2 },
  { label: "Implant fundamentals", count: 2 },
  ],
@@ -23361,7 +23361,7 @@ const PATHWAYS = [
  ],
  phases: [
  { label: "Diagnose", count: 1 },
- { label: "Repair options", count: 2 },
+ { label: "Repair plan", count: 2 },
  { label: "Seal check", count: 1 },
  { label: "Delivery recheck", count: 1 },
  { label: "Complaints + patient management", count: 2 },
@@ -23618,7 +23618,7 @@ const PATHWAYS = [
  phases: [
  { label: "Digital workflow + scan", count: 2 },
  { label: "Inlay / onlay specifics", count: 2 },
- { label: "Material options", count: 2 },
+ { label: "Material choice", count: 2 },
  { label: "Cementation + reference", count: 2 },
  ],
  sections: [
@@ -25175,6 +25175,11 @@ function Pathways() {
  // Section collapse state — Set of anchorIds that are collapsed. Empty by
  // default (everything expanded). Resets when a new pathway is picked.
  const [collapsedSections, setCollapsedSections] = useState(() => new Set);
+ // Sequence box (the in-page TOC enumerating phases + numbered steps) is
+ // closed by default. Visible "Sequence ▾" header in the TOC card acts
+ // as the toggle. Right-side floating chapter sidebar still gives quick
+ // jumps, so the in-card sequence is supplementary detail.
+ const [sequenceOpen, setSequenceOpen] = useState(false);
  // Floating sidebar TOC — track which section is the active one based on
  // scroll position, so we can highlight it in the sidebar.
  const [activeSectionIdx, setActiveSectionIdx] = useState(0);
@@ -25733,18 +25738,34 @@ function Pathways() {
  <div id="pw-toc" style={{
  background: "var(--card, white)",
  border: "1px solid var(--rule-soft)",
- padding: "14px 18px", borderRadius: "2px",
+ padding: sequenceOpen ? "14px 18px" : "10px 18px", borderRadius: "2px",
  marginBottom: "20px",
+ transition: "padding 160ms ease",
  }}>
  <div style={{
  display: "flex", justifyContent: "space-between", alignItems: "baseline",
- marginBottom: "8px",
+ marginBottom: sequenceOpen ? "8px" : "0",
  }}>
- <div style={{
+ <button
+ type="button"
+ onClick={() => setSequenceOpen(o => !o)}
+ aria-expanded={sequenceOpen}
+ aria-label={sequenceOpen ? "Collapse sequence" : "Expand sequence"}
+ style={{
+ all: "unset", cursor: "pointer",
+ display: "flex", alignItems: "baseline", gap: "8px",
  fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.08em",
  color: "var(--accent)", fontWeight: 600,
- }}>Sequence</div>
- {(() => {
+ }}
+ >
+ <span>Sequence</span>
+ <span aria-hidden="true" style={{
+ fontSize: "0.85rem", lineHeight: 1, opacity: 0.75,
+ transition: "transform 160ms ease",
+ transform: sequenceOpen ? "rotate(0deg)" : "rotate(-90deg)",
+ }}>▾</span>
+ </button>
+ {sequenceOpen && (() => {
  // Collapse-all / Expand-all toggle. Single button whose label
  // reflects the current state: if any section is expanded, the
  // button collapses everything; if everything is already collapsed,
@@ -25784,7 +25805,7 @@ function Pathways() {
  );
  })()}
  </div>
- {(() => {
+ {sequenceOpen && (() => {
  // Phase-aware TOC rendering. If the pathway has a `phases` array, render
  // each phase as a sub-section with its own ordered list (numbering keeps
  // running across phases so the section card numbers match the card-side
