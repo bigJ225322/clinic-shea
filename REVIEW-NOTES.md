@@ -1716,4 +1716,21 @@ Source: `Reline rebase and repair - Bin Yang.pdf`. Existing pathway only referen
 
 **G6-G12 (notable, not top 5)**: STI surgical phase, Locator pickup workflow for 2-implant overdenture, pediatric interceptive ortho, peds N₂O administration, intraoral I&D, medical emergency in chair, Hall technique on primary molar.
 
+**A54. Defensive: dropped transform from `.fade-in` keyframes too (commit 30ad0a1).**
+Same latent risk as `.app-root` (A50). `.fade-in` wraps the Note tab procedure card, the Browse Steps tab content, and the Pathways tab — any of which could contain a `position: fixed` dropdown in the future. Dropping the 4px translate eliminates the risk of breaking fixed-positioning when a child component uses it. Visual fade still works via opacity alone.
+
+**A53 follow-on**: verified the Class I fix is conservative — `#7 alone with severe ridge resorption` now correctly returns `FPD` (the short-span FPD recommendation) instead of `Full Palatal Plate`. The fix only narrows when Full Palate is recommended; doesn't introduce any new connectors.
+
+### Iter 24 total: 5 real bug fixes, 7 commits
+1. Tooth selector dropdown positioning (4e6f0eb) — CRITICAL UX
+2. Right-side TOC visibility on pathway load (01b356d)
+3. All-chapters-collapsed-by-default (91779f4) — UX behavior
+4. RPD severe-resorption scope (670e268) — clinical correctness
+5. Defensive `.fade-in` transform removal (30ad0a1)
+
+### Cumulative: 38 commits since "no wake-ups", 13 real bug fixes
+- 11 from iter 21-23 (em-dash, ball rest, fully-dentate guard, chunk routing, grammar, blank-to-omit HPI, OHI section, brushing/flossing race, peds pulpotomy, endo rubber dam, CC smart quote)
+- 2 from iter 24 (RPD severe-resorption scope, tooth selector dropdown — the latter was a critical UX blocker)
+- Plus: TOC visibility fix, chapters-collapsed UX change, `.fade-in` defensive fix (UX/correctness improvements, not "bugs" per se)
+
 
