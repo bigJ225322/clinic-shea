@@ -2238,6 +2238,7 @@ const CATEGORIES = [
  { id: "273", label: "Screening" },
  { id: "1091", label: "POE (Periodic Oral Exam)" },
  { id: "374", label: "Urgent Care" },
+ { id: "448", label: "Urgent Care — Wisdom Tooth" },
  { id: "573", label: "Perio COE" },
  { id: "703", label: "Restorative COE" },
  { id: "807", label: "Treatment Plan Presentation" },
@@ -4459,6 +4460,53 @@ function renderTemplate(raw, f) {
  continue;
  }
 
+ // ---- Urgent care wisdom tooth (448) special cases ----
+
+ // IOE reveals — append to the "- IOE reveals" line.
+ if (label === "wt-ioe") {
+ t = t.replace(/(- IOE reveals)\s*(?=\n|$)/, `$1 ${v}`);
+ continue;
+ }
+
+ // Pano findings — insert between "reveals." and "Radiograph otherwise"
+ if (label === "wt-pano") {
+ t = t.replace(
+ /(Panoramic radiograph taken & reveals)\.\s*(Radiograph otherwise)/,
+ `$1 ${v}. $2`
+ );
+ continue;
+ }
+
+ // Pericoronitis severity — replace the "[mild/moderate/severe]" bracket.
+ if (label === "pericoronitis severity") {
+ if (v) {
+ t = t.replace(/\[mild\/moderate\/severe\]/, v);
+ }
+ continue;
+ }
+
+ // Extraction teeth — replace the "extraction #1, #16, #17, #32" list.
+ if (label === "extraction teeth") {
+ if (v.trim()) {
+ // Normalize: ensure # prefix on each tooth, allow user to enter
+ // "1, 16, 32" or "#1, #16, #32" or "1,16,32"
+ const teeth = v.split(/[,\s]+/).filter(Boolean).map(tok => {
+ const num = tok.replace(/^#/, "").trim();
+ return num ? `#${num}` : "";
+ }).filter(Boolean).join(", ");
+ if (teeth) {
+ t = t.replace(/extraction #1, #16, #17, #32/, `extraction ${teeth}`);
+ }
+ }
+ continue;
+ }
+
+ // Consult appointment scheduled for — append to that line.
+ if (label === "wt-consult-date") {
+ t = t.replace(/(Consult appointment scheduled for)\.\s*(?=\n|$)/, `$1 ${v}.`);
+ continue;
+ }
+
  // ---- end urgent care special cases ----
 
  // Special-case: caries risk — append the standard reference suffix.
@@ -6339,6 +6387,44 @@ const EXAM_FINDINGS_CONFIG = {
  rows: [
  [{ label: "pt opts for", type: "input", displayLabel: "Pt opts for",
  placeholder: "e.g. RCT, extraction, no treatment at this time" }],
+ ],
+ },
+ ],
+ // Urgent Care — Wisdom Tooth: short SOAP focused on pericoronitis dx
+ // + OS referral. Template stubs that need form input:
+ // - "IOE reveals" → text input
+ // - "Panoramic radiograph taken & reveals." → text input
+ // - "[mild/moderate/severe] pericoronitis" → dropdown
+ // - "Pt referred to PGOS for extraction #1, #16, #17, #32" → tooth list
+ // - "Consult appointment scheduled for." → date/text
+ "448": [
+ {
+ title: "Findings",
+ rows: [
+ [{ label: "wt-ioe", type: "input", displayLabel: "IOE reveals",
+ placeholder: "e.g. distal operculum on #32 inflamed, pus expression, partial eruption" }],
+ [{ label: "wt-pano", type: "input", displayLabel: "Panoramic radiograph reveals",
+ placeholder: "e.g. impacted #1, #16, #17, #32 with #32 mesioangular" }],
+ ],
+ },
+ {
+ title: "Assessment",
+ rows: [
+ [{ label: "pericoronitis severity", type: "select",
+ displayLabel: "Pericoronitis severity",
+ options: ["", "mild", "moderate", "severe"] }],
+ ],
+ },
+ {
+ title: "Plan",
+ rows: [
+ [{ label: "extraction teeth", type: "input",
+ displayLabel: "Teeth referred for extraction",
+ placeholder: "e.g. #1, #16, #17, #32 (or just #32)",
+ hint: "Comma-separated tooth numbers. Defaults to all four 3rd molars if blank." }],
+ [{ label: "wt-consult-date", type: "input",
+ displayLabel: "Consult appointment scheduled for",
+ placeholder: "e.g. 6/1/2026, 3:00 PM" }],
  ],
  },
  ],
