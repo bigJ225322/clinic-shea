@@ -1445,3 +1445,48 @@ After the user requested immediate continuous work (no wake-ups), continued the 
 **New borderlines: B25, B26** (engine + remaining implant codes; both noted above)
 
 All 1017 tests pass throughout. Build clean.
+
+---
+
+## Iteration 22 (2026-05-23) — Immediate continuous mode
+
+### Real bug fixes
+
+**A42. RPD engine: grammar in hopeless-tooth and questionable-abutment flags (commit 24d3996).** Both flag messages started with "Tooth #X, #Y has hopeless prognosis" — singular noun + verb even when the list contained multiple teeth. Now pluralizes correctly: "Teeth #2, #15 have hopeless prognosis" for 2+ teeth, "Tooth #20 has" for single.
+
+**A43. Note builder: respect "blank to omit" placeholder for urgent care HPI fields (commit e5752be).** Two HPI form fields had placeholders saying "blank to omit" but the substitution didn't honor that contract:
+- "other symptoms"
+- "anything else?"
+
+When the user left them blank, the stub lines `- other symptoms:` and `- anything else?:` stayed in the rendered note, contradicting the placeholder's promise. Now both get stripped when blank, mirroring the existing endo-testing strip at line 4796. Form fields with "blank to omit" placeholders should all behave consistently.
+
+### Iter 22 commit summary
+- 24d3996: pluralize hopeless-tooth/questionable-abutment flag messages
+- e5752be: strip "other symptoms" and "anything else?" stub lines when blank
+
+All 1017 tests pass. Build clean. Pushed to origin/main.
+
+### Iter 21+22 running tallies (immediate continuous mode)
+
+**16 commits pushed since the user requested no wake-ups**:
+1. 838d261 — D6058-D6083 implant code descriptions
+2. c408236 — perio em-dash fix
+3. d880d8b — mand incisor ML ball rest
+4. ee088e2 — fully-dentate guard
+5. 672d7ee — review notes
+6. 8876e3c — 22 orphan chapter stubs (resolves B18)
+7. 08589cf — D2750C/D2790C in CODE_GROUPS
+8. 4650ca6 — perio/endo chunk routing
+9. c22ffbe — D6086-D6117 codes
+10. 17ad188 — D6210-D6792 FPD codes
+11. 67a35a3 — D5110-D5214 denture codes
+12. 8d62a57 — D5750-D5861 denture codes
+13. e5d07ac — D9940-D9946 occlusal guard
+14. 8bdb03e — D9390 consultation report
+15. 24d3996 — pluralize flag messages
+16. e5752be — blank-to-omit HPI fields
+
+**6 real bug fixes** (em-dash, ball rest, fully-dentate guard, chunk routing, grammar, blank-to-omit HPI)
+**10 code-description cleanup batches** (~170 sub-codes total)
+**1 borderline resolved** (B18 chapter stubs)
+**2 new borderlines** (B25 single max central FPD recommendation, B26 D6086+ codes — now resolved in c22ffbe)
