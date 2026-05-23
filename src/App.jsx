@@ -21203,6 +21203,7 @@ const PATHWAYS = [
  "Wax try-in: evaluate occlusal scheme across both prostheses simultaneously.",
  "Plan for 1.5× the chair time of a single prosthesis.",
  "Counsel patient: adaptation is harder for combined cases.",
+ "COMBINATION SYNDROME RISK: maxillary CD + mandibular Class I RPD is the textbook trigger configuration (Kelly 1972). Anticipate the 5 classic consequences over time — anterior max ridge resorption, posterior mand ridge resorption, mand anterior supra-eruption, maxillary tuberosity downgrowth, papillary hyperplasia of hard palate. Prevention: bilateral balanced occlusion at delivery, altered-cast impression for the mand RPD, 1-year clinical remount, 3-month perio recall for remaining mand teeth, reline as needed. Consider implant-assisted mandibular RPD or maxillary OD as the definitive long-term plan — explicitly recommended when the mandibular ridge is already showing severe resorption.",
  ],
  phases: [
  { label: "CD — Records", count: 2 },
