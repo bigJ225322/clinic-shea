@@ -17280,6 +17280,10 @@ function ToothMouldNoMatchHint({ requested, suggestions }) {
 // suggested mandibular + recommended posterior, with an optional callback
 // to inject the selection into a parent form (lab Rx, note builder, etc).
 function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) {
+ // Collapsed by default in all integration points (lab Rx, note builder,
+ // steps). The picker is a chair-side reference, not the primary form
+ // content — it should sit quietly until the student needs it.
+ const [open, setOpen] = useState(false);
  const [form, setForm] = useState("");
  const [prop, setProp] = useState("");
  const [widthLetter, setWidthLetter] = useState("");
@@ -17349,16 +17353,41 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  fontFamily: "'Geist', sans-serif",
  fontSize: "12px",
  }}>
- <div style={{
+ {/* Collapsible header. Click to expand the picker. Triangle rotates
+ -90° when collapsed, same chevron pattern as the RPD design-output
+ collapsibles. */}
+ <button
+ type="button"
+ onClick={() => setOpen(o => !o)}
+ aria-expanded={open}
+ aria-label={open ? "Collapse Tooth Mould Picker" : "Expand Tooth Mould Picker"}
+ style={{
+ all: "unset", cursor: "pointer",
+ display: "flex", alignItems: "baseline",
+ width: "100%",
+ marginBottom: open ? "10px" : 0,
+ }}
+ >
+ <span style={{
  fontFamily: "'Fraunces', serif", fontSize: "14px",
- color: "var(--ink)", marginBottom: "10px",
+ color: "var(--ink)", flex: 1,
  }}>
  Tooth Mould Picker <span style={{
  fontSize: "10px", color: "var(--ink-faint)", fontStyle: "italic",
  fontFamily: "'Geist', sans-serif", marginLeft: "8px",
  }}>Dentsply Portrait IPN · Bioform IPN (Combination Table, p. 24)</span>
- </div>
+ </span>
+ <span aria-hidden="true" style={{
+ marginLeft: "12px", flexShrink: 0,
+ fontSize: "1.05rem", lineHeight: 1,
+ color: "var(--ink-faint)", opacity: 0.7,
+ transition: "transform 160ms ease",
+ transform: open ? "rotate(0deg)" : "rotate(-90deg)",
+ }}>▾</span>
+ </button>
 
+ {open && (
+ <>
  <div style={{ display: "grid", gap: "10px" }}>
  <div>
  <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)", marginBottom: "4px" }}>
@@ -17446,6 +17475,8 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  <ToothMouldNoMatchHint requested={code} suggestions={suggestions} />
  )}
  </div>
+ )}
+ </>
  )}
  </div>
  );
