@@ -1735,7 +1735,18 @@ function pickRestSeat({ tooth, isDE, sideToward, arch }) {
  dimensions: "V-shaped (teardrop) depression on cingulum; 1.5 mm deep × 2.5 mm M-D × 2 mm I-G; perpendicular to long axis of tooth; floor-to-axial-wall angle <90° (Lab 5 p. 9 — sharp inner angle for positive seating, prevents lateral displacement)",
  };
  }
- // Other anteriors (incisors as bounding abutments — rare)
+ // Other anteriors (incisors as bounding abutments — rare).
+ // Mandibular incisors lack a prominent cingulum, so a cingulum rest is
+ // unreliable — switch to ML ball rest (same approach used elsewhere for
+ // mand anteriors at lines 1001, 1352, 1445, 2205). For maxillary
+ // incisors, cingulum rest works because the cingulum is anatomically
+ // adequate.
+ if (arch === "mandibular") {
+ return {
+ surface: "mesio-lingual", type: "ball", bur: "inverted cone",
+ dimensions: "1.5 mm diameter hemispherical depression on mesio-lingual line angle; positioned at mesial 1/3 of lingual surface above cingulum (mandibular incisor cingulum is too flat for a positive cingulum rest stop)",
+ };
+ }
  return {
  surface: sideToward, type: "cingulum", bur: "inverted cone",
  dimensions: "V-shaped depression on cingulum; 1.5 mm deep × 2 mm M-D × 1.5 mm I-G",
