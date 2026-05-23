@@ -1930,3 +1930,71 @@ Tests: 1017 → 1025 (8 new).
 ### Cumulative: 56 commits since "no wake-ups", 28 real bug fixes, 1025 tests pass
 
 
+
+---
+
+## Iter 30 (2026-05-23) — Clinical accuracy sweep + pattern fixes
+
+**Borderlines flagged (not yet acted on):**
+
+**B35. Maxillary Class I with maxillary tori — engine picks U-Shaped Connector.**
+The current major-connector logic (rpdSelectMajorConnector line ~360) returns U-Shaped Connector unconditionally for ANY case with `maxillaryTori === true`, before the Class I + ≤4 abutments check fires. For Class I (bilateral DE), U-Shaped opens the palate (tori relief) but provides less rigidity than Full Palatal Plate. McCracken says U-Shaped is the right call for Class I + prominent tori (compromise: tori relief + bilateral spanning), but engine could be more explicit that this is a trade-off. The test at line 2698 only verifies Class III + tori → U-Shaped. No test covers Class I + tori. **Action**: add a test case or flag, not a behavior change.
+
+**B36. Sealant template post-op boilerplate when not all teeth are mandibular.**
+Sealant template 6095 (peds) had "Patient given 100% oxygen for 5 minutes... pt is still numb" boilerplate left over from peds-restorative templates. Sealants are non-invasive so this was obviously wrong. Fixed this iter (b477114). But similar boilerplate may exist in other peds templates that don't actually use anesthesia (e.g., #6038 SDF — checked, this one is OK since SDF templates don't include the recovery text).
+
+**B37. F/F adjustment template 4374 — "Sore spot on buccal of anterior mandibular residual ridge" hardcoded.**
+The sore-spot location is specific. The student would edit based on actual sore-spot location every visit. Could be parameterized via a free-text field. Currently student edits inline. Acceptable but verbose.
+
+**B38. Crown delivery 3204 cement chemistry — partial fix.**
+Iter 30 fix: when crownType=all-ceramic, "RelyX" → "Panavia" in the cement sentence. But the actual all-ceramic protocol is multi-step (HF etch + silane + primer + Panavia paste), which the simple crown delivery template doesn't include. The student gets "Cemented crown with Panavia following proper manufacturer's instructions" — they still need to manually add the etch/silane steps for true e.max protocol. A future improvement would conditionally swap in the full protocol when crownType=all-ceramic, but the risk of getting that wrong is higher than the value.
+
+---
+
+### Iter 30 commits (this loop): 16 commits, all deployed live
+
+**Pattern A (no-op UI controls) — 6 fixes:**
+1. Mould-selector wiring → wax-rim template substitution (1a4e08c)
+2. `crownIsNew` dead field removed (1a4e08c)
+3. Pulpal/Periapical Dx fall-through to generic stub handler (1c95531)
+4. Crown Type + Cord toggle gates derived from template content (1c95531)
+5. Duplicate CC field in urgent care HPI removed (3b2e380)
+6. 4 popovers + RPD Case Inputs popup gained Escape key (40f3eaf, eccc60a)
+
+**Pattern B (hardcoded template content) — 5 fixes:**
+1. Existing-restoration surface auto-matches new prep surfaces (83114ac)
+2. Cement chemistry follows crownType (RelyX → Panavia for all-ceramic) (83114ac)
+3. Sealant slash collapses per-arch when all teeth share an arch (83114ac)
+4. Sealant tooth list in parens substitutes (f7d875b)
+5. Sealant template 6095 leftover N2O recovery boilerplate removed (b477114)
+
+**Pattern C (inconsistent hover/feedback) — none this loop** (already done iter 29)
+
+**Pattern D (bad naming) — 1 fix:**
+1. "Endo Access Fill" → "Crown Access Fill" (iter 29)
+
+**Pattern E (centering) — none this loop** (PE title done iter 29)
+
+**Clinical accuracy sweep (b477114) — 6 substantive fixes (12 templates touched):**
+1. Wrong-quadrant infiltration #4→#19 (12 occurrences across 6 templates + 6 Steps bodies)
+2. SDF "rinsed" → "blotted" (2)
+3. FujiCEM "GIC" → "RMGI" (3)
+4. RCT lingual cusp → palatal cusp on max #12 (2)
+5. Gluma "10s rinsed" → "45s air dried" (2)
+6. "Place place Tofflemire" duplicate-word (3)
+
+**Typos + naming normalization:**
+- "Drilled relief hold" → "hole" (b477114, 2)
+- "dentin hypersensitiviy" → "hypersensitivity" (eabc06f)
+- "RTC" → "RCT" (root canal treatment) (417b0d0, 2)
+- "Thomson stick" → "Thompson stick" (fe7611b)
+- PRR cure time + etch scope clarified (9ed3dd4)
+- FujiCem → FujiCEM (brand casing, da4b47f, 13)
+- isodry → Isodry (substitution helper, f23b4fe)
+- "vertical bitewing bitewing" duplicate → "vertical bitewing" (b95536f, 3)
+
+**Engineering:**
+- vitest config excludes .claude/worktrees (6034→1021 tests, ~6× faster) (ace4201)
+- ~190 lines dead mould-selector code removed (db90908)
+
+**Cumulative iter 30**: 16 commits, 30+ substitution sites fixed across clinical accuracy + UX. Tests 1021/1021 pass throughout. No regressions.
