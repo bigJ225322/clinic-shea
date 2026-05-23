@@ -16664,12 +16664,16 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  if (!s) return "";
  return String(s)
  // Inline parenthetical page refs: "(Retainers PDF p. 14)", "(p. 12)",
- // "(Lecture 4A pp. 7-14)", "(Design Case II p. 8)" — drop them.
+ // "(Lecture 4A pp. 7-14)", "(Design Case II p. 8)",
+ // "(default per Final Impressions p. 18)" — drop them.
 .replace(/\s*\([^)]*\bp{1,2}\.\s*\d[^)]*\)/g, "")
  // Collapse repeated whitespace + trim.
 .replace(/\s+/g, " ")
 .trim();
  };
+ // Verbose mode: full prose, page refs stripped (they break flow visually
+ // and the engine's source-of-truth is the docs file, not these chips).
+ const cleanVerbose = (s) => stripPageRefs(s);
  const compress = (s) => stripPageRefs(firstSentence(s));
 
  const rationaleLines = [];
@@ -16677,12 +16681,12 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  // Framework + major connector (always one line each; cheap to compress)
  rationaleLines.push({
  key: "framework",
- verbose: `Framework: ${result.framework.material} — ${result.framework.rationale}`,
+ verbose: `Framework: ${result.framework.material} — ${cleanVerbose(result.framework.rationale)}`,
  compressed: `Framework: ${result.framework.material} — ${compress(result.framework.rationale)}`,
  });
  rationaleLines.push({
  key: "major",
- verbose: `Major connector: ${result.majorConnector.rationale}`,
+ verbose: `Major connector: ${cleanVerbose(result.majorConnector.rationale)}`,
  compressed: `Major connector: ${compress(result.majorConnector.rationale)}`,
  });
 
@@ -16708,7 +16712,7 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  group.teeth.forEach(tooth => {
  rationaleLines.push({
  key: `clasp-${tooth}`,
- verbose: `#${tooth} (${claspType}): ${group.verboseRationale}`,
+ verbose: `#${tooth} (${claspType}): ${cleanVerbose(group.verboseRationale)}`,
  // Compressed mode entries are deduped — see filter below.
  compressed: null,
  });
@@ -16736,7 +16740,7 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  group.teeth.forEach(tooth => {
  rationaleLines.push({
  key: `ind-${tooth}`,
- verbose: `#${tooth} indirect: ${group.verboseRationale}`,
+ verbose: `#${tooth} indirect: ${cleanVerbose(group.verboseRationale)}`,
  compressed: null,
  });
  });
@@ -16762,7 +16766,7 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  if (!b.rationale) return;
  rationaleLines.push({
  key: `base-v-${b.type}-${(b.spanTeeth || []).join("-")}`,
- verbose: `${b.type}: ${b.rationale}`,
+ verbose: `${b.type}: ${cleanVerbose(b.rationale)}`,
  compressed: null,
  });
  });
