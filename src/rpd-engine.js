@@ -2897,6 +2897,29 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
  });
  }
 
+ // Applegate Rule 8 — 3rd molars as primary abutments require verification.
+ // Per Applegate's classification rules, a 3rd molar can serve as a primary
+ // abutment ONLY when ALL of: (a) normal angulation, (b) intact root form,
+ // (c) adequate periodontal support, (d) a functional opposing antagonist.
+ // If ANY criterion fails, the 3rd molar should not be the abutment —
+ // either use the next-most-distal tooth, or re-classify the case to
+ // include this site as a distal extension.
+ //
+ // The engine doesn't currently model 3rd-molar acceptability inputs, so
+ // we surface a flag every time a 3rd molar bounds a span — instructing
+ // the student to verify before sending the design to lab.
+ const RPD_3RD_MOLARS_SET = new Set([1, 16, 17, 32]);
+ const thirdMolarAbutments = (abutmentDesigns || [])
+ .filter(a => a && RPD_3RD_MOLARS_SET.has(a.tooth) && a.claspType !== "Rest Only (no clasp)")
+ .map(a => `#${a.tooth}`);
+ if (thirdMolarAbutments.length > 0) {
+ flags.push({
+ severity: "info",
+ type: "third-molar-applegate-rule-8",
+ message: `Third molar(s) ${thirdMolarAbutments.join(", ")} used as primary abutment(s). Per Applegate Rule 8, verify ALL of: (a) normal angulation (not severely mesially tilted), (b) intact root form (no resorption, no fused roots that compromise function), (c) adequate periodontal support (no severe bone loss, no mobility >grade 1), (d) functional opposing antagonist (a tooth or denture that occludes properly). If any criterion fails, the 3rd molar should NOT be the abutment — either use the next-most-distal tooth or extract this 3rd molar and re-classify the case as a distal extension. 3rd molars often have unusual root anatomy, distal tilt, and limited functional load history; clinical reassessment is essential before committing to them as abutments.`,
+ });
+ }
+
  return flags;
 }
 
