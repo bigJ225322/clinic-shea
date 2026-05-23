@@ -21241,21 +21241,18 @@ const PATHWAY_GROUPS = {
  // top-level "Reference" domain. See PATHWAY_GROUPS.indirect / .ref below.
  ],
  endo: [
- { label: "Diagnosis & testing", ids: [
+ // By pulp condition (vital conservation → vital RCT → necrotic, in
+ // diagnosis-driven order). Diagnosis workflow leads into all of these
+ // so it sits up top.
+ { label: "By pulp condition", ids: [
  "endo-diagnosis-workflow",
- ]},
- { label: "Initial RCT (vital pulp)", ids: [
+ "endo-direct-pulp-cap",
+ "endo-indirect-pulp-cap",
  "endo-anterior-rct",
  "endo-premolar-rct",
  "endo-molar-rct",
- ]},
- { label: "Necrotic / abscessed", ids: [
  "endo-necrotic-acute",
  "endo-necrotic-chronic",
- ]},
- { label: "Vital pulp therapy", ids: [
- "endo-direct-pulp-cap",
- "endo-indirect-pulp-cap",
  ]},
  { label: "Retreatment & complications", ids: [
  "endo-retreatment",
@@ -21263,43 +21260,30 @@ const PATHWAY_GROUPS = {
  ]},
  ],
  surgery: [
- { label: "Simple extractions", ids: [
+ // Extractions in difficulty order, then everything that goes wrong.
+ { label: "Extractions", ids: [
  "surgery-simple-ext",
  "surgery-multi-rooted-ext",
- ]},
- { label: "Surgical extractions", ids: [
  "surgery-surgical-ext",
  "surgery-third-molar",
  "surgery-retained-root",
  ]},
- { label: "Trauma & emergencies", ids: [
+ { label: "Trauma & complications", ids: [
  "surgery-avulsed-tooth",
  "surgery-fractured-anterior",
- ]},
- { label: "Post-op complications", ids: [
  "surgery-dry-socket",
  "surgery-post-op-bleed",
  ]},
  ],
  pedo: [
- { label: "Exam & recall", ids: [
- "pedo-poe-recall",
- ]},
- { label: "Visit planning", ids: [
- "pedo-tx-sequencing",
- ]},
- { label: "Behavior & anesthesia", ids: [
- "pedo-behavior-management",
- "pedo-local-anesthetic",
- ]},
- { label: "Restorative", ids: [
+ // Restorative covers operative work in primary teeth (composite, SSC,
+ // crowns, classes) — pulp therapy nests in clinical-severity order.
+ { label: "Restorative & pulp therapy", ids: [
  "pedo-composite",
  "pedo-stainless-crown",
  "pedo-strip-crown",
  "pedo-primary-anterior-class3",
  "pedo-anterior-crown-selection",
- ]},
- { label: "Pulp therapy", ids: [
  "pedo-indirect-pulp-therapy",
  "pedo-pulpotomy",
  "pedo-pulpectomy",
@@ -21312,7 +21296,13 @@ const PATHWAY_GROUPS = {
  "pedo-oral-pathology",
  "pedo-oral-surgery",
  ]},
- { label: "Preventive", ids: [
+ // Visits + behavior + preventive grouped — these are the non-restorative
+ // parts of a typical pedo appointment block.
+ { label: "Visit, behavior & preventive", ids: [
+ "pedo-poe-recall",
+ "pedo-tx-sequencing",
+ "pedo-behavior-management",
+ "pedo-local-anesthetic",
  "pedo-sealant",
  "pedo-fluoride-varnish",
  ]},
@@ -21356,16 +21346,16 @@ const PATHWAY_GROUPS = {
  "ind-veneers",
  "ind-onlay-vs-crown-decision",
  ]},
- { label: "Diagnostic challenges", ids: [
- "ind-cracked-tooth-syndrome",
- ]},
- { label: "Bridges & re-treatment", ids: [
+ // Bridges + retreatment + diagnostic challenges merged — they're all
+ // "something complex with an existing or planned indirect restoration."
+ { label: "Bridges, retreatment & diagnostics", ids: [
  "ind-bridge",
  "ind-large-span-fpd",
  "ind-recement",
  "ind-failing-existing-crown",
  "ind-crown-removal",
  "ind-crown-endo-access-fill",
+ "ind-cracked-tooth-syndrome",
  ]},
  ],
  rpd: [
@@ -21403,36 +21393,33 @@ const PATHWAY_GROUPS = {
  ]},
  ],
  cross: [
- { label: "Combination prostheses", ids: [
+ // Multi-discipline cases (combination prostheses + implant interfaces)
+ // are essentially the same conceptual bucket: prostheses that touch
+ // multiple disciplines. Trauma + records folded together at the bottom.
+ { label: "Multi-discipline cases", ids: [
  "cross-cd-rpd",
  "cross-survey-crown",
  "cross-full-mouth-rehab",
- ]},
- { label: "Implant interfaces", ids: [
  "cross-anterior-implant-esthetic",
  "cross-cd-iod-implants",
  "cross-rpd-to-implants",
  ]},
- { label: "Trauma & medical context", ids: [
+ { label: "Trauma, medical & records", ids: [
  "cross-anterior-trauma",
  "cross-pre-radiation-extractions",
- ]},
- { label: "Records & documentation", ids: [
  "cross-dental-photo-composite",
  ]},
  ],
+ // All repairs flattened into one "By prosthesis" list — the user reads
+ // them in a single eyeline rather than scanning three labels first.
  repair: [
- { label: "CD repairs", ids: [
+ { label: "By prosthesis", ids: [
  "repair-cd-fracture",
  "repair-loose-cd",
- ]},
- { label: "RPD repairs", ids: [
  "repair-rpd-clasp",
  "repair-rpd-denture-tooth",
  "repair-rpd-framework",
  "repair-tooth-loss-after-rpd",
- ]},
- { label: "Indirect repairs", ids: [
  "repair-crown-bridge-loss",
  "repair-veneer-debond",
  "repair-fractured-porcelain-pfm",
@@ -25500,12 +25487,8 @@ function Pathways() {
  })}
  </div>
 )}
- <span style={{
- fontSize: "0.75rem", textTransform: "none", letterSpacing: 0,
- color: "var(--ink-faint)", fontWeight: 400,
- }}>
- {pathwaysInDomain.length} {pathwaysInDomain.length === 1? "scenario": "scenarios"}
- </span>
+ {/* "N scenarios" count removed — sub-category headers below already
+ communicate the breakdown, the raw count was filler. */}
  </div>
  </div>
  {viewMode === "wizard" && wizardAvailable && wizardCurrentNode? (
