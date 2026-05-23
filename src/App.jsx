@@ -17002,7 +17002,15 @@ function RPDLabRxForm({ caseInput, result }) {
  }
  if (a.restSeat) {
  const surfaceCap = a.restSeat.surface[0].toUpperCase() + a.restSeat.surface.slice(1);
- parts.push(`${surfaceCap} ${a.restSeat.type === "cingulum"? "cingulum rest": a.restSeat.type === "ball"? "ball rest": "rest"}`);
+ // Always include the rest type explicitly — "Mesial occlusal rest"
+ // rather than just "Mesial rest", which was ambiguous (could be
+ // mistaken for incisal/ball/cingulum). Cingulum + ball already had
+ // their type spelled out; occlusal was the missing case.
+ const restTypeStr = a.restSeat.type === "cingulum" ? "cingulum rest"
+ : a.restSeat.type === "ball" ? "ball rest"
+ : a.restSeat.type === "occlusal" ? "occlusal rest"
+ : `${a.restSeat.type} rest`;
+ parts.push(`${surfaceCap} ${restTypeStr}`);
  }
  if (!a.claspType?.includes("Rest Only")) {
  const ucShort = (attrs.undercutLocation === "mesio-buccal")? "MB"
