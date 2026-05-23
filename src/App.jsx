@@ -988,7 +988,7 @@ const CHUNKS = [
 "id": "c067.1",
 "section": "PEDS",
 "title": "PEDS COMPOSITE — CLASS I — peds composite — class I: equipment",
-"body": "peds composite — class I: equipment\n ●​ from sterilization: peds restorative kit, composite kit, peds Isodry, handpieces, restorative burs, composite finishing\n burs, composite gun, curing light, nitrous nose, patient goggles\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: etch, ScotchBond, sealant, Shofu, Isodry, composite, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, wedget, articulating paper"
+"body": "peds composite — class I: equipment\n ●​ from sterilization: peds restorative kit, composite kit, peds Isodry, handpieces, restorative burs, composite finishing\n burs, composite gun, curing light, nitrous nose, patient goggles\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: etch, ScotchBond, sealant, Shofu, Isodry, composite\n ●​ in unit: anesthetic needle/carpule/shield/topical, wedget, articulating paper"
 },
 {
 "id": "c067.2",
@@ -1006,7 +1006,7 @@ const CHUNKS = [
 "id": "c068.1",
 "section": "PEDS",
 "title": "PEDS COMPOSITE — CLASS II — peds composite — class II: equipment",
-"body": "peds composite — class II: equipment\n ●​ from sterilization: peds restorative kit, composite kit, peds Isodry, handpieces, restorative burs, composite finishing\n burs, Garrison kit, composite gun, curing light, plastic wedges, sectional matrix, nitrous nose, patient goggles\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: etch, ScotchBond, sealant, Shofu, gold matrix band, wooden wedges, Isodry, composite, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, wedget, articulating paper"
+"body": "peds composite — class II: equipment\n ●​ from sterilization: peds restorative kit, composite kit, peds Isodry, handpieces, restorative burs, composite finishing\n burs, Garrison kit, composite gun, curing light, plastic wedges, sectional matrix, nitrous nose, patient goggles\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: etch, ScotchBond, sealant, Shofu, gold matrix band, wooden wedges, Isodry, composite\n ●​ in unit: anesthetic needle/carpule/shield/topical, wedget, articulating paper"
 },
 {
 "id": "c068.2",
@@ -1024,7 +1024,7 @@ const CHUNKS = [
 "id": "c069.1",
 "section": "PEDS",
 "title": "PEDS COMPOSITE — CLASS III — peds composite — class III: equipment",
-"body": "peds composite — class III: equipment\n ●​ from sterilization: peds restorative kit, composite kit, peds Isodry, handpieces, restorative burs, composite finishing\n burs, composite gun, curing light, Vita shade guide, nitrous nose, patient goggles\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: etch, ScotchBond, Shofu, clear mylar strip, wooden wedges, Isodry, composite, Isodry\n ○​ from UG adult clinic: finishing strips, #12 scalpel\n ●​ in unit: anesthetic needle/carpule/shield/topical, wedget, articulating paper"
+"body": "peds composite — class III: equipment\n ●​ from sterilization: peds restorative kit, composite kit, peds Isodry, handpieces, restorative burs, composite finishing\n burs, composite gun, curing light, Vita shade guide, nitrous nose, patient goggles\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: etch, ScotchBond, Shofu, clear mylar strip, wooden wedges, Isodry, composite\n ○​ from UG adult clinic: finishing strips, #12 scalpel\n ●​ in unit: anesthetic needle/carpule/shield/topical, wedget, articulating paper"
 },
 {
 "id": "c069.2",
@@ -1042,7 +1042,7 @@ const CHUNKS = [
 "id": "c070.1",
 "section": "PEDS",
 "title": "PEDS COMPOSITE — CLASS IV — peds composite — class IV: equipment",
-"body": "peds composite — class IV: equipment\n ●​ from sterilization: peds restorative kit, composite kit, peds Isodry, handpieces, restorative burs, composite finishing\n burs, composite gun, curing light, Vita shade guide, nitrous nose, patient goggles\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: etch, ScotchBond, Shofu, clear mylar strip, wooden wedges, finishing strips, Isodry, composite, Isodry\n ○​ from UG adult clinic: #12 scalpel, Cosmedent discs\n ●​ in unit: anesthetic needle/carpule/shield/topical, wedget, articulating paper"
+"body": "peds composite — class IV: equipment\n ●​ from sterilization: peds restorative kit, composite kit, peds Isodry, handpieces, restorative burs, composite finishing\n burs, composite gun, curing light, Vita shade guide, nitrous nose, patient goggles\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: etch, ScotchBond, Shofu, clear mylar strip, wooden wedges, finishing strips, Isodry, composite\n ○​ from UG adult clinic: #12 scalpel, Cosmedent discs\n ●​ in unit: anesthetic needle/carpule/shield/topical, wedget, articulating paper"
 },
 {
 "id": "c070.2",
@@ -1060,7 +1060,7 @@ const CHUNKS = [
 "id": "c071.1",
 "section": "PEDS",
 "title": "PEDS COMPOSITE — CLASS V — peds composite — class V: equipment",
-"body": "peds composite — class V: equipment\n ●​ from sterilization: peds restorative kit, composite kit, peds Isodry, handpieces, restorative burs, composite finishing\n burs, composite gun, curing light, Vita shade guide, nitrous nose, patient goggles\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: etch, ScotchBond, Shofu, Isodry, composite, Isodry\n ●​ in unit: anesthetic needle/carpule/shield/topical, wedget"
+"body": "peds composite — class V: equipment\n ●​ from sterilization: peds restorative kit, composite kit, peds Isodry, handpieces, restorative burs, composite finishing\n burs, composite gun, curing light, Vita shade guide, nitrous nose, patient goggles\n ●​ from locker: blood pressure cuff, loupes and/or eye protection\n ●​ in clinic: etch, ScotchBond, Shofu, Isodry, composite\n ●​ in unit: anesthetic needle/carpule/shield/topical, wedget"
 },
 {
 "id": "c071.2",
