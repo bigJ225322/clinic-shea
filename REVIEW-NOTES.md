@@ -1591,6 +1591,36 @@ Items tab equipment lists are now clean. No more spurious "Isodry x2" entries th
 
 1017/1017 tests pass throughout. Build clean. All commits pushed to origin/main.
 
+---
+
+## Iteration 23 (2026-05-23) — Smart quote silent regex bug
+
+**A49. CC examFindings substitution used ASCII quotes despite comment claiming smart quotes (commit 044fb0b).** The substitution at line 4489 had a comment saying "Earlier regex used ASCII '' so the substitution silently failed; templates use Unicode U+201C/U+201D curly quotes." — but the actual regex still used ASCII double quotes. Confirmed via xxd: the character class bytes were `22 22` (ASCII), not `e2 80 9c / e2 80 9d` (smart quotes).
+
+Templates (374 urgent care, 448 urgent care wisdom tooth, 573 perio COE) all use smart quotes: `CC: "."` with U+201C / period / U+201D bytes. The ASCII regex didn't match the smart-quote portion. Result: when user filled CC field via examFindings widget, substitution matched only `CC: ` literal prefix, prepended user's CC value with ASCII quotes, and left the original smart-quote `"."` placeholder behind. Rendered note read:
+  `CC: "{user value}"".".`
+
+Verified the bug via node REPL test before fixing.
+
+Replaced with proper smart-quote regex: `/CC: "[^"]*"/` (matches the entire smart-quote-delimited content) → replacement also uses smart quotes for style consistency with the rest of the template.
+
+Note: there are TWO CC substitutions in renderTemplate — one at line 4046 (f.cc top-level field) and one at line 4489 (examFindings.cc widget for urgent care). The line 4046 handler already correctly used smart quotes. Only the line 4489 handler was broken.
+
+Iter 23 commit: 044fb0b (1 commit). 1017/1017 tests pass.
+
+### Cumulative running tally — 30 commits since "no wake-ups", 11 real bug fixes
+1. Perio re-eval em-dash (c408236)
+2. RPD mand incisor ML ball rest (d880d8b)
+3. RPD fully-dentate guard (ee088e2)
+4. Perio/endo chunk routing (4650ca6)
+5. Hopeless/questionable abutment grammar (24d3996)
+6. Blank-to-omit HPI fields (e5752be)
+7. OHI chunk in PERIO section (cc43f53)
+8. Brushing/flossing race condition (f2db779)
+9. Peds pulpotomy contradiction (2e72df5)
+10. **CRITICAL**: Endo (RCT) rubber dam restored (0d66c23)
+11. CC examFindings smart quote regex (044fb0b)
+
 ### Iter 21+22 running tallies (immediate continuous mode)
 
 **16 commits pushed since the user requested no wake-ups**:
