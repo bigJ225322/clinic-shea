@@ -296,7 +296,15 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
  // sit — used when Lingual Plate is contraindicated (e.g., healthy
  // mobile anteriors that shouldn't be braced by a plate).
  const highFrenum = !!pf.highLingualFrenum;
- const shallowSulcus = (m.lingualSulcusDepth ?? 0) < 8;
+ // Sulcus depth defaults to "adequate" (sentinel 99) when not specified.
+ // Previous default was 0, which made every unset-measurement case fall
+ // into the shallow-sulcus branch and incorrectly route to Lingual Plate.
+ // The textbook convention is Lingual Bar by default; we only switch to
+ // Lingual Plate when an EXPLICIT measurement < 8mm is entered, or when
+ // mandibular tori / high frenum + shallow combo / severe Class I
+ // resorption is set. Matches Huddle 6 Case 1 expected output (Lingual
+ // Bar for unmeasured sulcus).
+ const shallowSulcus = (m.lingualSulcusDepth ?? 99) < 8;
  if (highFrenum && shallowSulcus) {
  return {
  type: "Sublingual Bar", rationale: RPD_RATIONALE.major["Sublingual Bar"],
