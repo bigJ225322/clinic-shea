@@ -12199,7 +12199,7 @@ const PES_PART2 = [
  {
  id: "DXTX2", code: "DXTX2", part: "restFound",
  name: "Single Tooth Replacement Dx & Tx Planning",
- deadline: { semester: "D3-spring", text: "After prerequisites met" },
+ deadline: { semester: "D3-spring", text: "" },
  prereq: "DMD: 1 crown completed. AS: 2 crowns completed.",
  prereqCheck: (counts) => checkCount(counts, "indirectRestSU", 1, "crowns"),
  caseSelect: "Partially edentulous patient in need of a single tooth implant and/or fixed partial denture.",
@@ -13346,9 +13346,11 @@ function PEDetail({ pe, onShowSteps }) {
  {pe.name}
  </span>
  </div>
+ {pe.deadline.text && (
  <div style={{ fontSize: "11px", color: "var(--ink-soft)", fontStyle: "italic" }}>
  {pe.deadline.text}
  </div>
+ )}
  </div>
 
  {/* Prereq */}
