@@ -2920,6 +2920,26 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
  });
  }
 
+ // Class II without modification — explain contralateral stabilization.
+ // When a Class II has NO modification spaces, only the DE-side abutment
+ // gets a retentive clasp. The opposite side has no clasp at all, which
+ // may look like a design omission to students. Per McCracken Ch 10, the
+ // indirect retainer + the major connector contact on the opposite side
+ // collectively provide the contralateral function (the IR's mesial rest
+ // is a vertical stop against lifting forces; the lingual bar/plate
+ // braces against the lingual surface of all remaining teeth). Surfacing
+ // this explicitly so the student understands why the asymmetric clasp
+ // placement isn't a mistake.
+ if (kennedy.class === "II" && (kennedy.modifications || 0) === 0
+ && (kennedy.spans || []).filter(s => s.type === "distal-extension").length === 1) {
+ const oppositeSide = kennedy.deSide === "right" ? "left" : "right";
+ flags.push({
+ severity: "info",
+ type: "class-ii-contralateral-stabilization",
+ message: `Class II without modification — only ONE retentive clasp (on the distal-extension abutment). The opposite side (${oppositeSide}) has no clasp because there's no edentulous span on that side to retain to. Contralateral stabilization is still provided: (1) the indirect retainer's mesial rest acts as a vertical stop against lifting forces during chewing/excursion, (2) the major connector (Lingual Bar or A-P Strap) contacts the lingual surface of all remaining teeth, providing bracing against lateral displacement. Per McCracken Ch 10, this is the correct design for Class II without mod — adding a second retentive clasp on the contralateral side is unnecessary and would be over-retention.`,
+ });
+ }
+
  return flags;
 }
 
