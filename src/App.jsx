@@ -4802,6 +4802,18 @@ function renderTemplate(raw, f) {
  t = t.replace(/\n[ \t]*-[ \t]*endo testing:[^\n]*/g, "");
  }
 
+ // Other symptoms (urgent care HPI): omit "- other symptoms:" line when blank.
+ // The form field's placeholder says "blank to omit" so users expect this.
+ if (!(ef["other symptoms"] || "").trim()) {
+ t = t.replace(/\n[ \t]*-[ \t]*other symptoms:[^\n]*/g, "");
+ }
+
+ // Anything else? (urgent care HPI): omit "- anything else?:" line when blank.
+ // Same placeholder semantic.
+ if (!(ef["anything else?"] || "").trim()) {
+ t = t.replace(/\n[ \t]*-[ \t]*anything else\?:[^\n]*/g, "");
+ }
+
  // Mucogingival defects: substitute WNL if the stub is still empty
  // (The form pre-fills it, but if somehow it's empty, keep the note clean.)
  if (!ef["mucogingival defects"]?.trim()) {
