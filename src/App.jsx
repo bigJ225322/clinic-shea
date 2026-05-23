@@ -20317,6 +20317,9 @@ const PATHWAY_GROUPS = {
  ]},
  ],
  endo: [
+ { label: "Diagnosis & testing", ids: [
+ "endo-diagnosis-workflow",
+ ]},
  { label: "Initial RCT (vital pulp)", ids: [
  "endo-anterior-rct",
  "endo-premolar-rct",
@@ -20486,6 +20489,9 @@ const PATHWAY_GROUPS = {
  { label: "Trauma & medical context", ids: [
  "cross-anterior-trauma",
  "cross-pre-radiation-extractions",
+ ]},
+ { label: "Records & documentation", ids: [
+ "cross-dental-photo-composite",
  ]},
  ],
  repair: [
@@ -22362,6 +22368,31 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "ind-ch30" }, // Maryland / RBFPD as a less-invasive bridge alternative // Common pitfalls
  ],
  },
+ {
+ id: "cross-dental-photo-composite",
+ domain: "cross",
+ label: "Dental photo composite (records + tx planning)",
+ description: "A standardized photo set assembled at COE, before/after treatment, or for medico-legal documentation. The composite is 9 photos arranged on a single page: 3 extraoral (frontal repose, smile, profile) + 6 intraoral (MI center, right buccal, left buccal, max occlusal, mand occlusal, ... with patient name + doctor name + date in the center). The case turns on standardized framing — chin parallel to floor on every shot, both ears visible on facial frontal, occlusal plane horizontal + centered on MI shots, and retractor technique that pulls anteriorly (not just laterally — failure collapses lips into the field). Mirror photos for occlusals require heating the mirror (torch / hot water / air-water syringe) to prevent fogging; patient breathes through nose. Materials per the UIC lecture (Liu/Chang/Galang-Boquiren): digital SLR (Canon T5i with ring flash is common) OR iPad / Olympus Tough rugged camera OR intraoral camera (IntraOral with disposable sheath) — all are pass/fail acceptable for the D1 composite assignment. Source: 'Dental Photography 2022' (DAOB D1 Fall, Liu / Chang / Galang-Boquiren).",
+ keyDecisions: [
+ "Extraoral working distance ~60–80 inches (5 ft) with light-colored, non-distracting background; remove hair from face, large jewelry, eyeglasses. Center the photo and check focus before retake.",
+ "Intraoral working distance 10–15 inches so all teeth render the same size; retract cheeks ANTERIORLY (not just laterally — anterior pull prevents lip + buccal mucosa collapse into the field). Patient swallows saliva first to clear the photo field.",
+ "Frontal repose: chin parallel to floor, lips relaxed (closed or slightly open), both ears visible. Smile: chin parallel + full natural smile + both ears visible. Profile: turn ENTIRE BODY to the (patient's) left, look forward, chin parallel — common mistake is turning the head only, which torques the cervical anatomy.",
+ "MI (maximum intercuspation) intraoral: patient upright in chair, occlusal plane parallel to floor + centered in frame, patient bites in MI. Use the LARGER cheek retractor for MI. Common mistake: patient pushes retractors into cheeks instead of out + anterior.",
+ "Lateral (right + left): patient upright, biting in MI. Use small cheek retractor on the side you're shooting, pull cheek FAR back; the contralateral midline retractor has slack and gently pulls anteriorly. Aim focus at the premolar; include the first molar AND canine relationships in the frame.",
+ "Occlusal max + mand: recline patient. Position occlusal mirror posterior to last teeth at a 45° angle. Heat mirror with torch / hot water / air-water syringe (optional, prevents fog); patient breathes through nose. For MAX: retractors angled UPWARD + backward (smiling face). For MAND: retractors angled DOWNWARD + backward (frowning face). Capture entire arch in a 'birds-eye view'. Output: max arch appears upside-down U; mand arch appears upright U.",
+ "Photo set deliverable: 1 printed full-page composite (BW or color) showing 9-photo grid with patient name + doctor name + date in center. Pass/fail; can retake without faculty supervision.",
+ ],
+ phases: [
+ { label: "Setup + materials", count: 1 },
+ { label: "Extraoral photos (3)", count: 3 },
+ { label: "Intraoral photos (6)", count: 6 },
+ { label: "Composite assembly", count: 1 },
+ ],
+ sections: [
+ // Use existing guide chapters for related content
+ { guideId: "indirect", chapterId: "ind-ch22" }, // Shade taking (related — photos document shade)
+ ],
+ },
 
  // ── Repair situations ──────────────────────────────────────────────────
  {
@@ -22851,6 +22882,33 @@ const PATHWAYS = [
  ],
  },
  // ── Endodontics ─────────────────────────────────────────────────────────
+ {
+ id: "endo-diagnosis-workflow",
+ domain: "endo",
+ label: "Endo diagnosis workflow — pulp + periapical testing",
+ description: "Patient has a tooth complaint that may or may not be endodontic in origin. Before reaching for the handpiece, you build a working hypothesis from subjective data (CC + HPI + PMH) and then test it with objective data (visual, radiograph, percussion, palpation, thermal, EPT, mobility, perio probing, bite test, transillumination, selective anesthesia). The diagnosis is made by the DOCTOR, not by the can of Endo Ice or the EPT — every test has shortcomings, and a single result doesn't make a diagnosis. The case turns on ALWAYS testing controls (adjacent, contralateral, opposing) before the suspect tooth, on whether the test reproduces the chief complaint, and on the etiology being PLAUSIBLE before treatment is recommended. Source: Dr. Steve Weeks, DAOB 311 'Evaluation of Pulpal and Periapical Health' (2023).",
+ keyDecisions: [
+ "Subjective FIRST: CC in patient's own words; HPI (intensity, duration, spontaneity, exacerbating / ameliorating factors); PMH. Generate a Provisional Diagnosis / 'Working Hypothesis' BEFORE you start objective testing.",
+ "Diagnosis BEFORE Treatment. Treatment without a diagnosis risks failure to resolve the problem, loss of patient confidence, and litigation.",
+ "Stimulation tests need CONTROLS. Always test ADJACENT, CONTRALATERAL, and OPPOSING teeth BEFORE the suspect tooth — establishes the patient's normal response. Without controls, a 'positive' on the suspect tooth means nothing.",
+ "Record three things on every thermal test: seconds to respond, seconds to return to normal, AND whether the CC is reproduced. 'Rebound' (pain lingers after stimulus removed) is the classic irreversible-pulpitis finding. Thermal testing CAN be done on crowned teeth.",
+ "Cold test (Endo Ice, -26°C / -15°F) is the most sophisticated routine test; saturate a cotton pellet or Q-tip, apply to mid-facial enamel. MAJOR SHORTCOMING: failure to respond is NOT pathognomonic for pulp necrosis — calcified canals, recent trauma, and intact restorations can all blunt the response. Cover nozzle with plastic film + short piece of tubing for asepsis; don't fumigate the clinic.",
+ "Heat test (rarely indicated, reserved when CC is 'heat sensitivity'): coat tooth with petroleum jelly or cocoa butter FIRST, then apply heated gutta-percha stick until it slumps. Burlew wheel in low-speed handpiece (8-O) is the alternative.",
+ "EPT (Kerr Endo Analyzer FS=80 or Parkell Digitest 3 FS=64): explain the procedure to the patient FIRST. Requires enamel contact + good moisture isolation + complete circuit (patient holds the metal handle WITHOUT a glove between fingers and metal — this is NOT a 'lip contact'). Set rate-of-rise to ~3-4 (Kerr) or 'medium' (Parkell). Record the highest number reached; repeat 2-3x per tooth; reset to 0 before next tooth. **NOT for pacemaker patients.** Digital readouts do NOT indicate degree of heat — they're response thresholds, not severity scales.",
+ "Periapical / periradicular testing: Percussion (mirror handle, axial + lateral taps) detects PDL inflammation — must rule out occlusal trauma 1° or 2°, and sinusitis on max posteriors. Palpation (finger pressure on buccal + lingual mucosa adjacent to root apices) detects periosteal inflammation, abscess, cellulitis. Mobility (rule out perio, trauma — check fremitus). Tooth Slooth for suspected fractures.",
+ "Reflect on the diagnosis: WHERE is the problem (location → reproduce CC), WHAT is the problem (diagnosis), WHY does it exist (etiology — must be PLAUSIBLE — this is the 'safety net'). Does it MAKE SENSE? Are the data consistent? Consider false-positive and false-negative results.",
+ ],
+ phases: [
+ { label: "Subjective (CC, HPI, PMH)", count: 1 },
+ { label: "Provisional diagnosis", count: 1 },
+ { label: "Objective tests with controls", count: 4 },
+ { label: "Reflection + final dx", count: 1 },
+ ],
+ sections: [
+ { guideId: "endo", chapterId: "endo-ch1" },
+ { guideId: "endo", chapterId: "endo-ch10" },
+ ],
+ },
  {
  id: "endo-anterior-rct",
  domain: "endo",
