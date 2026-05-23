@@ -4382,13 +4382,12 @@ function renderTemplate(raw, f) {
  `last time at dentist: ${f.lastDentist.trim()};`
 );
  }
- // brushing / flossing: only substitute when the value differs from template default.
- if (f.brushing && f.brushing.trim() && f.brushing.trim()!== "2x a day") {
- t = t.replace(/\bbrushing 2x a day\b/g, `brushing ${f.brushing.trim()}`);
- }
- if (f.flossing && f.flossing.trim() && f.flossing.trim()!== "1x a day") {
- t = t.replace(/\bflossing 1x a day\b/g, `flossing ${f.flossing.trim()}`);
- }
+ // Note: brushing/flossing substitution moved up to step 6c.2 (Peds-specific
+ // section, ~line 4274) which now handles all THREE template patterns: peds
+ // "brushes/flosses", COE/POE "brushing X a day", and hygiene "brushing X per
+ // day". The redundant block that used to live here only covered one pattern
+ // (COE/POE) and is now dead code — the upstream block already handled this
+ // case before execution reached here.
 
  // -------- 7d. Intraoral photos. --------
  // Strip "- Took intraoral photos." when the checkbox is unchecked (default off).
