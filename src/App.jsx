@@ -9922,9 +9922,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  accentColor: "var(--accent)", cursor: "pointer",
  }} />
  <span>Removed existing restoration?</span>
- <span style={{ color: "var(--ink-soft)", fontSize: "11px", fontStyle: "italic" }}>
- uncheck if this is a new prep, no existing restoration
- </span>
  </label>
  </>
 )}
