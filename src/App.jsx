@@ -21195,6 +21195,7 @@ const PATHWAY_DOMAINS = [
  { id: "cd", label: "Complete Dentures" },
  { id: "cross", label: "Cross-disciplinary" },
  { id: "repair", label: "Repair situations" },
+ { id: "ref", label: "Reference" },
 ];
 
 // Loose visual sub-grouping inside a domain — used only when there are enough
@@ -21210,38 +21211,34 @@ const PATHWAY_DOMAINS = [
 // guided-decision mode.
 const PATHWAY_GROUPS = {
  direct: [
- { label: "Class I & II", ids: [
- "dir-class2",
+ // All restoration classes ordered numerically — composite + amalgam +
+ // RMGI sit together since the student's actual decision tree starts at
+ // "what Black class is this?" not "what material am I using?"
+ { label: "By class", ids: [
  "dir-class1",
+ "dir-class2",
  "dir-amalgam",
- ]},
- { label: "Class III, IV & direct veneer", ids: [
  "dir-class3",
  "dir-class4",
- "dir-direct-veneer",
- ]},
- { label: "Class V — composite vs RMGI", ids: [
  "dir-class5-composite",
  "dir-class5-rmgi",
+ "dir-direct-veneer",
  ]},
- { label: "Foundational & interim", ids: [
- "dir-sedative",
- "dir-core-buildup",
- ]},
- { label: "Decision-driven cases", ids: [
+ { label: "Decisions", ids: [
  "dir-deep-caries-decision",
  "dir-large-mod",
  "dir-replacing-failing-composite",
  "dir-bruxer-management",
+ "dir-sedative",
  ]},
  { label: "Preventive", ids: [
  "dir-sealant",
  "dir-prr",
  "dir-sdf",
  ]},
- { label: "Reference & adjunctive", ids: [
- "dir-la-reference",
- ]},
+ // Core buildup moved to Indirect — it's foundational for a crown, lives
+ // in the indirect workflow. Local anesthesia reference moved to the new
+ // top-level "Reference" domain. See PATHWAY_GROUPS.indirect / .ref below.
  ],
  endo: [
  { label: "Diagnosis & testing", ids: [
@@ -21344,6 +21341,9 @@ const PATHWAY_GROUPS = {
  "ind-zirconia-posterior",
  "ind-endo-treated",
  "ind-post-and-core",
+ // Core buildup is technically a direct restoration (D2950) but it
+ // exists to receive a crown, so it lives here next to its successor.
+ "dir-core-buildup",
  "ind-survey-crown",
  "ind-single-implant-crown",
  ]},
@@ -21437,6 +21437,15 @@ const PATHWAY_GROUPS = {
  "repair-veneer-debond",
  "repair-fractured-porcelain-pfm",
  "repair-zirconia-chip",
+ ]},
+ ],
+ // "Reference" domain — adjunctive lookup material that isn't tied to a
+ // specific clinical case but supports any of them. Local anesthesia
+ // started here; future additions could be radiograph prescribing,
+ // tissue-management agent reference, anesthetic dose tables, etc.
+ ref: [
+ { label: "Anesthesia & adjunctive", ids: [
+ "dir-la-reference",
  ]},
  ],
 };
@@ -21936,7 +21945,9 @@ const PATHWAYS = [
  },
  {
  id: "dir-core-buildup",
- domain: "direct",
+ // Lives under Indirect Restorations even though D2950 is technically a
+ // direct restoration code — the workflow exists to support a crown.
+ domain: "indirect",
  label: "Core buildup (D2950)",
  description: "A heavily damaged tooth — usually post-endodontic, or with extensive caries — needs a foundation under the crown that will follow. The core replaces missing tooth structure and creates the bulk that the crown prep will be cut into. Modern cores are dual-cure resin composite (Bisco Light-Core, Build-It FR) bonded with a dual-cure adhesive to dentin. The key is that the core must support the crown ferrule — at least 1.5–2 mm of sound tooth structure should remain coronal to the margin after the crown prep.",
  keyDecisions: [
@@ -22037,7 +22048,10 @@ const PATHWAYS = [
  },
  {
  id: "dir-la-reference",
- domain: "direct",
+ // Reference material — not a standalone case workflow. Lives under the
+ // new "Reference" top-level domain so it doesn't pollute Direct
+ // Restorations (where it's not exclusive — LA is used everywhere).
+ domain: "ref",
  label: "Local anesthesia reference",
  description: "Chairside lookup for every block technique used in restorative dentistry: 8 maxillary blocks (buccal infiltration, palatal infiltration, PSA, MSA, ASA, greater palatine, nasopalatine, infraorbital) and 3 mandibular blocks (IAN + lingual, long buccal, mental). Plus the innervation table (tooth/soft tissue → recommended block) and the max-dose table for every anesthetic-vasoconstrictor combination. Use when a routine infiltration didn't take, when the procedure crosses an anatomic boundary, or when you need to verify max-dose safety for a long appointment.",
  keyDecisions: [
