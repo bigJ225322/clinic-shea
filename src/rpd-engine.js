@@ -383,8 +383,8 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
  }
  const abutmentCount = fppAbutSet.size;
  const severeResorption = (m.ridgeResorption === "severe");
- // Full Palatal Plate: Kennedy Class I (bilateral posterior DE) with ≤4
- // span-boundary abutments, OR severe resorption any class.
+ // Full Palatal Plate: Kennedy Class I (bilateral posterior DE) with EITHER
+ // ≤4 span-boundary abutments OR severe ridge resorption.
  //
  // Why Class I specifically? Class I means BOTH posterior quadrants are DEs
  // — zero posterior tooth support remains. Remaining support comes entirely
@@ -396,11 +396,19 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
  // with 4 abutments) still have bounded spans and bilateral posterior support
  // — they route to Single Palatal Strap / A-P Strap as appropriate.
  //
+ // Severe resorption is scoped to Class I per McCracken 12e Ch 5 (severe
+ // vertical resorption → broad coverage for rotation resistance). For
+ // Classes II/III/IV the literature is less convergent, so the engine stays
+ // conservative and uses default strap logic there. (A previous version of
+ // this condition leaked `severeResorption` to all classes via `||`, which
+ // produced Full Palatal Plate for short Class III bounded spans and for
+ // tooth-supported Class IV — both clinically wrong.)
+ //
  // Threshold of 4 derived from Design Case II (Class I, 4 abutments → Full
  // Palate per Dr. Shahin) vs Case 3 test (Class I, 4 abutments → Full Palate).
  // The raw present-tooth count was wrong because bystander tooth #5 inflated
  // it to 5, causing the engine to pick A-P Strap incorrectly.
- if ((kennedy.class === "I" && abutmentCount <= 4) || severeResorption) {
+ if (kennedy.class === "I" && (abutmentCount <= 4 || severeResorption)) {
  return {
  type: "Full Palatal Plate", rationale: RPD_RATIONALE.major["Full Palatal Plate"],
  note: "0.5mm beading on tissue side",
