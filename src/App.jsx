@@ -25379,13 +25379,17 @@ export default function App() {
  }
 
  /* First-paint fade — small but noticeable; signals "this is a
- crafted thing" rather than a default-styled web page. Runs once. */
+ crafted thing" rather than a default-styled web page. Runs once.
+ NOTE: animating only opacity here is deliberate. Any transform on
+ .app-root (even after the animation ends) creates a new containing
+ block for position:fixed descendants, which breaks the
+ TeethSelectorPanel dropdown positioning when the page is scrolled. */
 .app-root {
  animation: appFadeIn 360ms cubic-bezier(.2,.6,.2, 1) both;
  }
  @keyframes appFadeIn {
- from { opacity: 0; transform: translateY(2px); }
- to { opacity: 1; transform: none; }
+ from { opacity: 0; }
+ to { opacity: 1; }
  }
  `}</style>
 
