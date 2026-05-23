@@ -6545,3 +6545,90 @@ describe("UIC-AUDIT — Iteration 12-14 new behaviors", () => {
     expect(canineIR.rationale).not.toMatch(/with a lingual bar/);
   });
 });
+
+// ============================================================================
+// REGRESSION TESTS — iter 25-28 fixes that must not regress
+// ============================================================================
+describe("Iter 25-28 regression tests", () => {
+  it("Lingual Bar is the default when sulcus depth is not specified (was Lingual Plate before fix)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    for (const n of [17, 18, 19, 30, 31, 32]) c.teeth[n].status = "missing";
+    // NO lingualSulcusDepth set — should default to adequate (≥8mm)
+    const r = rpdRunEngine(c);
+    expect(r.majorConnector.type).toBe("Lingual Bar");
+  });
+
+  it("Lingual Plate still picked when sulcus depth is explicitly <8mm", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    for (const n of [17, 18, 19, 30, 31, 32]) c.teeth[n].status = "missing";
+    c.measurements.lingualSulcusDepth = 5;
+    const r = rpdRunEngine(c);
+    expect(r.majorConnector.type).toBe("Lingual Plate");
+  });
+
+  it("Standard Akers with mesio-lingual undercut → buccal reciprocal arm (was lingual before fix)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    for (const n of [3, 4, 5]) c.teeth[n].status = "missing";
+    c.teeth[2].attrs = { ...(c.teeth[2].attrs || {}), undercutLocation: "mesio-lingual" };
+    const r = rpdRunEngine(c);
+    const tooth2 = r.abutmentDesigns.find(a => a.tooth === 2);
+    expect(tooth2.claspType).toBe("Akers");
+    // Retentive arm engages mesio-lingual → reciprocal MUST be buccal
+    expect(tooth2.reciprocation.text).toMatch(/buccal reciprocal/i);
+    expect(tooth2.reciprocation.text).not.toMatch(/lingual reciprocal/i);
+  });
+
+  it("Mand lateral incisor #23 does NOT get I-bar esthetic (anatomically inappropriate)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    // Class II Mod 1: missing #17-19 (left DE) + #24-25 (anterior centrals)
+    // #23 is bounding the anterior mod space (between #22 canine and #24 central)
+    for (const n of [17, 18, 19, 24, 25]) c.teeth[n].status = "missing";
+    const r = rpdRunEngine(c);
+    const tooth23 = r.abutmentDesigns.find(a => a.tooth === 23);
+    if (tooth23) {
+      expect(tooth23.claspType).not.toBe("I-bar (esthetic)");
+      expect(tooth23.claspType).toBe("Rest Only (no clasp)");
+    }
+  });
+
+  it("Class II without mod surfaces contralateral-stabilization flag", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    for (const n of [29, 30, 31, 32]) c.teeth[n].status = "missing";
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("II");
+    expect(r.kennedy.modifications).toBe(0);
+    const flag = r.redFlags.find(f => f.type === "class-ii-contralateral-stabilization");
+    expect(flag).toBeDefined();
+    expect(flag.severity).toBe("info");
+  });
+
+  it("Third molar primary abutment surfaces Applegate Rule 8 flag", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    // #17, #32 (3rd molars) present + #18, #31 missing → bilateral tooth-bounded
+    for (const n of [18, 19, 30, 31]) c.teeth[n].status = "missing";
+    const r = rpdRunEngine(c);
+    const flag = r.redFlags.find(f => f.type === "third-molar-applegate-rule-8");
+    expect(flag).toBeDefined();
+    expect(flag.severity).toBe("info");
+    expect(flag.message).toMatch(/Applegate Rule 8/);
+  });
+
+  it("Severe resorption Full Palatal Plate is scoped to Class I only (Class III stays FPD/strap)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    for (const n of [4, 5]) c.teeth[n].status = "missing";
+    c.measurements.ridgeResorption = "severe";
+    const r = rpdRunEngine(c);
+    // Class III with severe resorption — should NOT be Full Palatal Plate
+    expect(r.kennedy.class).toBe("III");
+    expect(r.majorConnector.type).not.toBe("Full Palatal Plate");
+  });
+
+  it("Severe resorption Full Palatal Plate IS picked for Class I", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    for (const n of [1, 2, 3, 14, 15, 16]) c.teeth[n].status = "missing";
+    c.measurements.ridgeResorption = "severe";
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("I");
+    expect(r.majorConnector.type).toBe("Full Palatal Plate");
+  });
+});
