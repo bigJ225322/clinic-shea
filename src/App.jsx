@@ -21381,12 +21381,12 @@ const PATHWAYS = [
  id: "rpd-distal-extension",
  domain: "rpd",
  label: "Kennedy I or II (distal extension)",
- description: "Edentulous span extends distally past the last natural tooth — Kennedy I (bilateral) or II (unilateral). Tissue-supported posteriorly, so altered cast technique is MANDATORY: the framework is fabricated first, then a final impression is taken with the framework in place to capture the displaced tissue. Skip the altered cast and the distal extension will rock under load, causing tissue trauma and abutment torque. The most common student error is taking a static (non-altered-cast) impression and trying to deliver it as-is.",
+ description: "Edentulous span extends distally past the last natural tooth — Kennedy I (bilateral) or II (unilateral). Tissue-supported posteriorly, so the framework rotates against the residual ridge under occlusal load. UIC default is a single-step PVS impression; altered cast technique becomes indicated when (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby or compressible. Skip the altered-cast call entirely and the distal extension can rock under load on those compromised tissues, causing trauma and abutment torque. The most common student error is taking a static impression on a clearly-flabby ridge and not flagging it for altered cast.",
  keyDecisions: [
- "Altered cast technique is MANDATORY — pickup the displaced tissue with the framework in place.",
+ "Altered cast technique MAY be needed at framework try-in — UIC default is single-step PVS. Indications: (a) disclosing-wax shows framework seats differently on cast vs intraorally, OR (b) distal-extension ridge tissue is visibly flabby/compressible.",
  "Design typically uses RPI clasp on the distal abutment (rotation accommodates ridge resorption).",
  "Mesial rest on the terminal abutment (not distal) for the stress-breaking design.",
- "Framework + wax try-in MUST verify altered-cast accuracy before processing.",
+ "Framework + wax try-in MUST verify cast accuracy before processing — disclosing wax is the standard check.",
  "Counsel patient: distal extension prostheses load tissue; reline likely at 12–24 months.",
  ],
  phases: [
@@ -21925,7 +21925,7 @@ const PATHWAYS = [
  keyDecisions: [
  "Pontic shade matched to natural adjacent tooth via denture-tooth shade guide (not Vita).",
  "Clasps concealed in smile zone — I-bar or wrought-wire on the abutments rather than visible cast.",
- "Major connector: A-P palatal strap or full palatal coverage for stability under anterior load.",
+ "Major connector: A-P palatal strap is the engine's default for Kennedy IV — provides anterior + posterior bracing across the palate without the bulk of full coverage. (Full palatal plate is scoped exclusively to Class I per McCracken; Class IV doesn't get auto-routed there.)",
  "Modified ridge-lap pontic; verify floss passes cleanly.",
  "7 esthetic parameters checked at wax try-in before processing — last reversible moment.",
  ],

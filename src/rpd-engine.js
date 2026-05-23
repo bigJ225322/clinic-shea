@@ -3207,9 +3207,21 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
  });
 
  standaloneIndirect.forEach(r => {
+ // Surface-aware label: preserve the actual rest surface from restType.
+ // Previous behavior hardcoded "Distal ball rest" for ANY ball-type rest
+ // — but mand canine IRs carry `restType: "ML ball rest"` (mesio-lingual
+ // line angle), so the lab would prep the wrong surface if it copied the
+ // Rx verbatim. Now: detect ML/mesial/distal in the restType string and
+ // pass it through; default to "Distal ball" only when the restType
+ // doesn't specify a surface.
  let desc;
  if (/cingulum/i.test(r.restType)) desc = "Cingulum rest";
- else if (/ball/i.test(r.restType)) desc = "Distal ball rest";
+ else if (/ball/i.test(r.restType)) {
+ if (/ML\b|mesio-lingual/i.test(r.restType)) desc = "ML ball rest";
+ else if (/mesial/i.test(r.restType)) desc = "Mesial ball rest";
+ else if (/distal/i.test(r.restType)) desc = "Distal ball rest";
+ else desc = "Distal ball rest"; // historical default for max central IR
+ }
  else if (/additional/i.test(r.restType)) desc = "Occlusal rest (additional, for indirect retention)";
  else if (/mesial/i.test(r.restType)) desc = "Mesial rest";
  else if (/distal/i.test(r.restType)) desc = "Distal rest";
