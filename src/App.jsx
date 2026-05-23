@@ -13426,6 +13426,24 @@ function PEDetail({ pe, onShowSteps }) {
  <RubricGrid criteria={pe.criteria} />
  </div>
 
+ {/* Critical deficiencies — the boilerplate "Standard six" set
+ (Case Selection / Professionalism / Patient Management /
+ Time Management / Preparedness / Instructor Intervention) is
+ implied across every UIC PE, so we filter those out and only
+ render this section when a PE has truly PE-specific autofails
+ (e.g. "Topic not approved prior to presentation."). */}
+ {(() => {
+ const isStandardSix = (s) =>
+ /^\s*standard six\b/i.test(s) ||
+ /^\s*case selection\b/i.test(s) ||
+ /^\s*professionalism\b/i.test(s) ||
+ /^\s*patient management/i.test(s) ||
+ /^\s*time management\b/i.test(s) ||
+ /^\s*preparedness/i.test(s) ||
+ /^\s*instructor intervention/i.test(s);
+ const specific = (pe.criticalDeficiencies || []).filter(d => !isStandardSix(d));
+ if (specific.length === 0) return null;
+ return (
  <div style={{ marginTop: "20px" }}>
  <SubsectionLabel>Critical deficiencies (auto-fail)</SubsectionLabel>
  <ul style={{
@@ -13433,11 +13451,13 @@ function PEDetail({ pe, onShowSteps }) {
  fontSize: "12px", color: "var(--ink-soft)",
  lineHeight: 1.55,
  }}>
- {pe.criticalDeficiencies.map((d, i) => (
+ {specific.map((d, i) => (
  <li key={i} style={{ marginBottom: "3px" }}>{d}</li>
-))}
+ ))}
  </ul>
  </div>
+ );
+ })()}
  </div>
 );
 }
