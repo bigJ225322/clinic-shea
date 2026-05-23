@@ -4651,19 +4651,28 @@ function renderTemplate(raw, f) {
  continue;
  }
 
- // Pulpal / periapical diagnosis: replace "- Pulpal diagnosis #:" stubs,
- // substituting the actual tooth number from the companion "diagnosis tooth" field.
+ // Pulpal / periapical diagnosis. Two template formats exist:
+ //   374 (urgent care): "- Pulpal diagnosis #:" — uppercase + #-form,
+ //     paired with a "diagnosis tooth" field so we can inject "#N".
+ //   703 (Restorative COE): "- pulpal diagnosis: WNL" — lowercase,
+ //     no #-form, no separate tooth field. Just a typed assessment.
+ // Try the #-form first; if the template doesn't have it, fall
+ // THROUGH to the generic stub handler below (no `continue`). The
+ // previous version always `continue`d, so 703 silently no-op'd
+ // when the student typed a pulpal diagnosis — the most common
+ // observable form of a "no-op control" bug in the COE form.
  if (label === "pulpal diagnosis" || label === "periapical diagnosis") {
  const tooth = ((f.examFindings || {})["diagnosis tooth"] || "").trim() || "#";
- const type = label === "pulpal diagnosis"? "Pulpal": "Periapical";
- // Template has "- Pulpal diagnosis #:" with a space between
- // "diagnosis" and "#". Earlier regex required no space and
- // silently failed. Tolerate either spacing.
- t = t.replace(
- new RegExp(`^([ \\t]*-[ \\t]*${type} diagnosis)\\s*#:[ \\t]*$`, "im"),
- `$1 #${tooth}: ${v}`
+ const type = label === "pulpal diagnosis" ? "Pulpal" : "Periapical";
+ const hashFormRegex = new RegExp(
+ `^([ \\t]*-[ \\t]*${type} diagnosis)\\s*#:[ \\t]*$`, "im"
 );
+ if (hashFormRegex.test(t)) {
+ t = t.replace(hashFormRegex, `$1 #${tooth}: ${v}`);
  continue;
+ }
+ // No #-form in this template — fall through to generic
+ // "- pulpal diagnosis:" handler below.
  }
 
  // Skip the helper field used only to build diagnosis lines above.
@@ -9843,12 +9852,23 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  }} />
  </>
  )}
- {/* Crown-specific controls: New?, Placed cord?, Crown Type */}
- {["2742","2821","3002"].includes(procedureId) && (
+ {/* Crown-specific controls: Placed cord?, Crown Type.
+     Gates are now derived from the template body itself — if the
+     template contains the cord-placement sentence, show the cord
+     toggle; if it mentions "PFM", show the Crown Type dropdown.
+     Previously the gates were ID-allowlists ("2821","3002" for cord;
+     "2742","2821" for Crown Type), which missed several templates
+     that DO contain those phrases (2046 Class V, 2156 Veneers, 2243
+     RMGI, 3076 Final Impression, 3204 Crown Delivery). */}
+ {(() => {
+ const showCord = /Placed (?:#\d+\s+)?gingival retraction cords?/i.test(rawTemplate);
+ const showCrownType = /\bPFM\b/.test(rawTemplate);
+ if (!showCord && !showCrownType) return null;
+ return (
  <>
  <Hairline />
  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
- {["2821","3002"].includes(procedureId) && (
+ {showCord && (
  <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
  <label style={{
  display: "flex", alignItems: "center", gap: "8px",
@@ -9872,20 +9892,21 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <option value="3">3 — Extra Thick</option>
  </Select>
  </div>
-)}
+ )}
  </div>
-)}
- {["2742","2821"].includes(procedureId) && (
+ )}
+ {showCrownType && (
  <Field label="Crown Type">
  <Select value={fields.crownType || "PFM"} onChange={v => setField("crownType", v)}>
  <option value="PFM">PFM</option>
  <option value="all-ceramic">All-Ceramic</option>
  </Select>
  </Field>
-)}
+ )}
  </div>
  </>
-)}
+ );
+ })()}
  {(needsMedHistory || needsMedications || needsAllergies || needsPedsAllergies ||
  needsBP || needsBG) && (
  <>
