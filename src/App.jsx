@@ -11407,7 +11407,10 @@ function MEEProgress() {
 // navigator.clipboard.
 function ClickToCopyCode({ code, showSwadeFlag }) {
  const [copied, setCopied] = useState(false);
- const onClick = async () => {
+ const onClick = async (e) => {
+ // Stop bubble so a parent row's expand-toggle (the entire row is a
+ // click target for parent groups in the Codes table) doesn't fire.
+ e?.stopPropagation?.();
  try {
  await navigator.clipboard.writeText(code);
  } catch (_) {
@@ -11455,7 +11458,10 @@ function ClickToCopyCode({ code, showSwadeFlag }) {
 
 function RVUs() {
  const [search, setSearch] = useState("");
- const [activeCategory, setActiveCategory] = useState("all");
+ // Default to "Diagnostic" — first practical category, much smaller
+ // landing set than "All" (23 vs 92 codes). Students typically start
+ // looking up a specific procedure type, not browse the whole CDT book.
+ const [activeCategory, setActiveCategory] = useState("diag");
  const [sortBy, setSortBy] = useState("relevance");
  const [sortDir, setSortDir] = useState("asc");
  // Hide codes that aren't referenced in the Swade manual. The full table is
@@ -11663,7 +11669,7 @@ function RVUs() {
  <input type="checkbox" checked={swadeOnly}
  onChange={e => setSwadeOnly(e.target.checked)}
  style={{ accentColor: "var(--accent)", cursor: "pointer" }} />
- Hide codes not in <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual
+ Hide codes not in <em className="serif" style={{ fontStyle: "italic", margin: "0 -2px" }}>(swade)</em> manual
  </label>
  {/* MEE contribution % toggles */}
  {[["D3", showD3Pct, setShowD3Pct], ["D4", showD4Pct, setShowD4Pct]].map(([lbl, val, set]) => (
@@ -11894,12 +11900,19 @@ function RVUs() {
 ): null;
 
  if (r._type === "parent") {
+ // Whole row is the toggle target for parent groups — students were
+ // hitting the margins above/below the ▶ chevron and getting no
+ // response. Row-level onClick triggers expand/collapse; the inner
+ // chevron button is now a passive visual cue (still tab-focusable
+ // via the row for accessibility).
  const parentRow = (
- <div key={r.code} className="codes-row" style={rowStyle}>
- <button onClick={() => toggleGroup(r.code, isOpen)} style={{
- background: "none", border: "none", padding: 0, cursor: "pointer",
- color: "var(--ink)", textAlign: "left", fontFamily: "inherit",
- fontSize: "inherit", display: "flex", alignItems: "center", gap: "6px",
+ <div key={r.code} className="codes-row" role="button" tabIndex={0}
+ onClick={() => toggleGroup(r.code, isOpen)}
+ onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleGroup(r.code, isOpen); } }}
+ style={{ ...rowStyle, cursor: "pointer" }}>
+ <div style={{
+ color: "var(--ink)", textAlign: "left",
+ display: "flex", alignItems: "center", gap: "6px",
  }}>
  <span style={{
  fontSize: "10px", color: "var(--ink-soft)",
@@ -11907,7 +11920,7 @@ function RVUs() {
  transform: isOpen? "rotate(90deg)": "rotate(0deg)",
  }}>▶</span>
  {r.desc}
- </button>
+ </div>
  <div style={{
  textAlign: "right",
  color: fee? "var(--ink-soft)": "var(--ink-faint)",
