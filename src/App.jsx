@@ -22320,7 +22320,7 @@ const PATHWAYS = [
  "Single path of draw between the two abutments — taper non-parallel abutments inward.",
  "Pontic = modified ridge lap (allows floss to pass under cleanly); NOT saddle.",
  "Framework try-in is the highest-stakes appointment — non-passive metal cannot be made to fit later.",
- "Connector dimensions per Ante's law: ≥9 mm² cross-section for posterior.",
+ "Connector dimensions: ≥9 mm² cross-section for posterior, ≥6 mm² for anterior. Separately, Ante's law applies — total periodontal area of abutments ≥ replaced tooth's periodontal area.",
  "Cement with resin cement on enamel margins, RMGI on dentin margins.",
  ],
  phases: [
