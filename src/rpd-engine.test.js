@@ -6488,3 +6488,60 @@ describe("INV-18 — Class II diagonal fulcrum-line geometry", () => {
     expect(ir.anteriority).toBeLessThan(25);
   });
 });
+
+// ─── Iteration 12-14 additions: lock in newly-added red flags + rationale ──
+describe("UIC-AUDIT — Iteration 12-14 new behaviors", () => {
+  it("Zero-retentive-clasps warning fires for small max anterior gap (only #8 missing)", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    for (const n of [1, 16, 8]) c.teeth[n].status = "missing";
+    const r = rpdRunEngine(c);
+    const flag = r.redFlags.find(f => f.type === "zero-retentive-clasps");
+    expect(flag).toBeDefined();
+    expect(flag.severity).toBe("warning");
+    expect(flag.message).toMatch(/ZERO retentive clasps/);
+  });
+
+  it("Zero-retentive-clasps does NOT fire for normal Class III with real clasps", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    for (const n of [1, 16, 14]) c.teeth[n].status = "missing";
+    const r = rpdRunEngine(c);
+    const flag = r.redFlags.find(f => f.type === "zero-retentive-clasps");
+    expect(flag).toBeUndefined();
+  });
+
+  it("Class IV + severe ridge resorption fires implant-assisted-rpd-severe-ridge flag", () => {
+    const c = rpdMakeBlankCase("maxillary");
+    for (const n of [1, 16, 7, 8, 9, 10]) c.teeth[n].status = "missing";
+    c.measurements.ridgeResorption = "severe";
+    const r = rpdRunEngine(c);
+    const flag = r.redFlags.find(f => f.type === "implant-assisted-rpd-severe-ridge");
+    expect(flag).toBeDefined();
+    expect(flag.severity).toBe("warning");
+    expect(flag.message).toMatch(/Class IV/);
+    expect(flag.message).toMatch(/anteriorly-placed implants/i);
+  });
+
+  it("Canine-mod IR rationale mentions LINGUAL BAR when major is Lingual Bar", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    // Class II Mod 2 with anterior modification; default sulcus 9mm → Lingual Bar
+    for (const n of [17, 32, 18, 19, 23, 28]) c.teeth[n].status = "missing";
+    const r = rpdRunEngine(c);
+    expect(r.majorConnector.type).toBe("Lingual Bar");
+    const canineIR = r.indirectRetainers.find(i => i.tooth === 22);
+    expect(canineIR).toBeDefined();
+    expect(canineIR.rationale).toMatch(/with a lingual bar/i);
+    expect(canineIR.rationale).not.toMatch(/the lingual plate contacts and braces/);
+  });
+
+  it("Canine-mod IR rationale mentions LINGUAL PLATE when major is Lingual Plate", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    for (const n of [17, 32, 18, 19, 23, 28]) c.teeth[n].status = "missing";
+    c.measurements.lingualSulcusDepth = 6; // forces Lingual Plate
+    const r = rpdRunEngine(c);
+    expect(r.majorConnector.type).toBe("Lingual Plate");
+    const canineIR = r.indirectRetainers.find(i => i.tooth === 22);
+    expect(canineIR).toBeDefined();
+    expect(canineIR.rationale).toMatch(/the lingual plate contacts and braces/i);
+    expect(canineIR.rationale).not.toMatch(/with a lingual bar/);
+  });
+});
