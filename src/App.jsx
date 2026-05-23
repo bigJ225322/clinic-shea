@@ -16982,7 +16982,14 @@ function RPDLabRxForm({ caseInput, result }) {
  // Build the per-tooth prescription lines + base design lines
  const txLines = [];
  txLines.push(`Please fabricate ${result.framework.material} metal framework for ${arch} RPD.`);
- txLines.push(`Major Connector: ${result.majorConnector.type}${result.majorConnector.width? ` (${result.majorConnector.width})`: ""}. 0.5mm beading on tissue surface.`);
+ // Beading note is only relevant for maxillary palatal connectors (A-P
+ // Strap, Single Palatal Strap, Full Palatal Plate) — those have a
+ // tissue-side bead for border seal. Mandibular connectors (Lingual Bar,
+ // Lingual Plate, Sublingual Bar) don't get beading. Use the major
+ // connector's own `note` field, which is already correctly set per
+ // connector type at the source. Falls back to no note if absent.
+ const connectorNote = result.majorConnector.note? ` ${result.majorConnector.note}.`: "";
+ txLines.push(`Major Connector: ${result.majorConnector.type}${result.majorConnector.width? ` (${result.majorConnector.width})`: ""}.${connectorNote}`);
  txLines.push(`Path of insertion: per surveyed cast.`);
  txLines.push("");
  txLines.push("* Undercuts to engage are marked in red.*");
