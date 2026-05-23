@@ -5195,13 +5195,20 @@ function TextInput({ value, onChange, placeholder }) {
 // ── ShadeInput ─────────────────────────────────────────────────────────────
 // Popup shade picker using VITA classical A–D groups.
 // Colors are CSS-approximated from published spectral data — no copyrighted imagery.
-function ShadeInput({ value, onChange }) {
+function ShadeInput({ value, onChange, compact = false }) {
  const [open, setOpen] = useState(false);
  const [focused, setFocused] = useState(false);
  const panelRef = useRef(null);
 
  // Treat empty/unset as A2 (template default)
  const effective = value || "A2";
+
+ // Compact mode shrinks the input bar to match smaller surrounding form
+ // contexts (e.g. RPD Lab Rx Denture-teeth grid). Popup swatches stay
+ // the same so the picker UX is unchanged.
+ const compactOverride = compact ? {
+ padding: "5px 8px", fontSize: "11px", background: "white",
+ } : {};
 
  const GROUPS = [
  { id: "A", shades: ["A1","A2","A3","A3.5","A4"] },
@@ -5234,7 +5241,7 @@ function ShadeInput({ value, onChange }) {
  onFocus={() => setFocused(true)}
  onBlur={() => setFocused(false)}
  style={{
-...inputStyle, cursor: "pointer",
+...inputStyle, ...compactOverride, cursor: "pointer",
  borderColor: (open || focused)? "var(--accent)": "var(--rule)",
  boxShadow: (open || focused)? "0 0 0 3px rgba(122,26,26,0.08)": "none",
  }} />
@@ -18092,7 +18099,7 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 12px" }}>
  <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
  <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Tooth shade (Vita)</span>
- <ShadeInput value={toothShade} onChange={setToothShade} />
+ <ShadeInput value={toothShade} onChange={setToothShade} compact />
  </label>
  <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
  <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Gingival shade</span>
@@ -18102,15 +18109,19 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Anterior mold</span>
  <input type="text" value={anteriorMold} onChange={e => setAnteriorMold(e.target.value)}
  placeholder="e.g. 22E"
- style={{ padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
- fontFamily: "'Geist', sans-serif", fontSize: "11px" }} />
+ style={{ padding: "5px 8px", width: "100%", boxSizing: "border-box",
+ border: "1px solid var(--rule)", borderRadius: "2px",
+ fontFamily: "'Geist', sans-serif", fontSize: "11px",
+ background: "white" }} />
  </label>
  <label style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
  <span style={{ fontSize: "10px", color: "var(--ink-soft)" }}>Posterior mold</span>
  <input type="text" value={posteriorMold} onChange={e => setPosteriorMold(e.target.value)}
  placeholder="e.g. 330 10° Portrait"
- style={{ padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
- fontFamily: "'Geist', sans-serif", fontSize: "11px" }} />
+ style={{ padding: "5px 8px", width: "100%", boxSizing: "border-box",
+ border: "1px solid var(--rule)", borderRadius: "2px",
+ fontFamily: "'Geist', sans-serif", fontSize: "11px",
+ background: "white" }} />
  </label>
  </div>
  </div>
