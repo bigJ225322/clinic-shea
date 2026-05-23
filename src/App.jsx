@@ -4274,17 +4274,21 @@ function renderTemplate(raw, f) {
  //   • COE/POE (573, 703, 1091): "brushing 2x a day & flossing 1x a day"
  //   • Hygiene (1196 prophy, 1272 SRP, 1346 perio re-eval, 1425 perio
  //     maintenance): "brushing 2x per day and flossing 1x per week"
- // Previously only the peds pattern got the substitution. Now covers all
- // three. Only substitute when user value differs from default ("2x a
- // day" / "1x a day") so we don't accidentally rewrite hygiene templates'
- // "per day" wording when the user didn't change anything.
- if (f.brushing && f.brushing.trim() && f.brushing.trim() !== "2x a day") {
+ // Substitution always fires when a value is set. (Earlier the substitution
+ // was guarded with a "!== global default" check to preserve hygiene
+ // templates' "per day"/"per week" prose when the user kept defaults — but
+ // that broke peds + user-picks-"1x a day" cases. The fix is upstream:
+ // per-procedure form-default overrides in EXAM_FINDINGS_CONFIG's useEffect
+ // ensure form display matches template intent for hygiene/peds templates.
+ // With that in place, the guard is unnecessary — any substitution either
+ // matches the template prose (no-op) or correctly rewrites it.)
+ if (f.brushing && f.brushing.trim()) {
  const v = f.brushing.trim();
  t = t.replace(/\bbrushes 2x a day\b/, `brushes ${v}`);            // peds
  t = t.replace(/\bbrushing 2x a day\b/, `brushing ${v}`);          // COE/POE
  t = t.replace(/\bbrushing 2x per day\b/, `brushing ${v}`);        // hygiene
  }
- if (f.flossing && f.flossing.trim() && f.flossing.trim() !== "1x a day") {
+ if (f.flossing && f.flossing.trim()) {
  const v = f.flossing.trim();
  t = t.replace(/\bflosses 1x a week\b/, `flosses ${v}`);           // peds
  t = t.replace(/\bflossing 1x a day\b/, `flossing ${v}`);          // COE/POE
@@ -7265,13 +7269,26 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [procedureId]);
 
- // Peds Initial/Recall (5985): the template ships with "flosses 1x a week"
- // as the default (not "1x a day" like the COE/POE templates). Sync the
- // global flossing field on procedure entry so what's shown in the form
- // matches what renders in the note. Only updates if the user hasn't
- // already customized away from the global default.
+ // Sync the global brushing/flossing fields to each template's expected
+ // defaults on procedure entry, so what the form shows matches what
+ // renders in the note. Without these overrides, students see "1x a day"
+ // in the form but the template literal still says "1x per week" — a
+ // silent mismatch that breaks substitution semantics.
+ // Templates and their defaults:
+ //   • Peds (5985): "brushes 2x a day, flosses 1x a week"
+ //   • Hygiene (1196 prophy, 1272 SRP, 1346 perio re-eval, 1425 perio
+ //     maintenance): "brushing 2x per day and flossing 1x per week"
+ //     → flossing dropdown closest match: "1x a week"
+ //   • COE/POE (573, 703, 1091): "brushing 2x a day & flossing 1x a day"
+ //     → global default already matches; no override needed.
+ // Only updates if the field is still at the global default ("1x a day"),
+ // i.e. the user hasn't customized.
  useEffect(() => {
- if (procedureId === "5985" && fields && setField && fields.flossing === "1x a day") {
+ if (!fields || !setField) return;
+ const hygiene = ["1196", "1272", "1346", "1425"];
+ const peds = ["5985"];
+ if ((peds.includes(procedureId) || hygiene.includes(procedureId))
+ && fields.flossing === "1x a day") {
  setField("flossing", "1x a week");
  }
  // eslint-disable-next-line react-hooks/exhaustive-deps

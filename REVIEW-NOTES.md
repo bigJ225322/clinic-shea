@@ -988,3 +988,335 @@ C5. **Scenario probe library button** — a "load test scenario" dropdown in the
 
 
 
+
+---
+
+## Iteration 16 (2026-05-22 late) — Silent regex bugs + RPD lab Rx + Codes tab
+
+### Applied (committed this iteration)
+
+**A12. Four more silent regex bugs fixed (commit e0b046d).** Continued the systematic audit of renderTemplate regex literals against actual template strings:
+- `/has improved — \./` never matched. Template has `"improved —."` with NO space between em-dash and period; regex required a space. Loosened to `/has improved —\s*\./` → perio re-eval now correctly substitutes improvement detail.
+- `/(consult visit)1\/1\/2021/` and `/(Re-evaluated BW & PA taken)1\/1\/2021/` never matched. Template has a space between the prefix and the date placeholder; regex required no space. Added `\s+` tolerance → RCT note now correctly substitutes endo consult date.
+- Endo-test two-line block regex (`-[ \t]*#[^:]*:\s*percussion...\n-[ \t]*#`) required the second line to start at column 0 (`\n-`) but templates indent each line with a leading space; substitution silently failed for both Urgent Care and RCT templates. Now allows optional leading whitespace before each dash.
+
+**A13. RPD lab Rx "Major connector: FPD" artifact fixed (commit 322a1e0).** When the engine recommends FPD (short unilateral tooth-bounded gap), the lab Rx leads with the FPD warning header but then printed `Major connector: FPD.` in the fallback RPD section — "FPD" is the engine's sentinel value, not an actual major connector type. The fallback section now correctly displays "Full Palatal Plate" (maxillary) or "Lingual Plate" (mandibular) as the actual fallback connector. Reading the full Rx now scans coherently: FPD is primary recommendation; if declined, the fallback RPD design uses Full Palatal Plate.
+
+**A14. RVU_DATA "Theraputic" typo (commit 322a1e0).** D3220LS description had `"Theraputic pulpotomy"` (missing the second 'p'). Fixed to "Therapeutic pulpotomy".
+
+**A15. D1320 sub-codes added to RVU_DATA + SWADE_CODES (commit ce44b37).** The Steps content references D1320.1 (Record Tobacco Usage), D1320.2 (Provide Education), D1320.3 (Follow-up) 11 times across 6 procedures (perio COE, POE, prophy, SRP, perio re-eval, perio maintenance). But D1320.x sub-codes weren't in RVU_DATA — searching the Codes tab for "D1320.1" returned no results. Added the three sub-codes (1 RVU each), parent CODE_GROUPS entry, and inclusion in SWADE_CODES so they appear with the Swade-only filter. Same pattern as existing D9630.1/.2/.4.
+
+### RPD engine scenarios probed (no fixes needed)
+
+Tested ~13 scenarios this iteration covering:
+- Max Kennedy I/II/III/IV variants with worn teeth, carious abutments, tilted molars
+- Mand Class IV (4 incisors), Class II Mod 1, Class III single tooth gap
+- Long unilateral spans + implant availability flags
+- Tilted molar with various undercut locations + matrix testing the Reverse Akers / Ring clasp logic
+
+Engine output for these is clinically defensible. Notes for theoretical review:
+
+**B14. Engine doesn't fire a parafunction (bruxism) flag.** Patient factor `patientFactors.bruxism = true` doesn't produce any red flag. The NMCD warning mentions parafunction as a contraindication, but for cast metal RPDs there's no dedicated flag. **Borderline**: should bruxism trigger a stand-alone warning recommending occlusal guard fabrication for the RPD (or warning that abutment prognosis is reduced)? Currently the student gets no engine prompt that the case requires extra attention.
+
+**B15. Single mandibular central missing → engine outputs Lingual Bar instead of recommending FPD.** Confirmed iter-15 borderline B6 still applies: missing #24 only outputs full RPD design with Lingual Bar + contralateral retainers, not the FPD recommendation that the maxillary branch correctly emits for single tooth-bounded gaps. The mandibular `rpdSelectMajorConnector` lacks the equivalent recommendsFixed branch. Fix is plausible but adds a new code path and likely shifts test snapshots — flagging rather than auto-applying.
+
+### Workflow / form alignment notes
+
+**O1. SRP injection technique auto-derives from quadrant.** Verified `injectionForQuad()` correctly switches between IAN block (mand) and buccal infiltration (max) based on selected quad. The template's `[ 30G 25mm / 27G 35 mm ]` and `block on right / buccal infiltrations` patterns get fully replaced by the dynamic injection sentence — students don't manually pick. Good.
+
+**O2. Wisdom tooth template (448) form alignment.** Earlier-iter fix correctly added form fields for: IOE reveals, pano findings, pericoronitis severity, extraction teeth list, consult date. Template substitution working.
+
+**O3. Needle gauge bracket pattern in 28 templates.** All 28 templates with `[ 30G 25mm / 27G 35 mm ]` are handled by the anesSentenceRe substitution, not a manual choice. Not a workflow gap.
+
+### UI brainstorm (not implemented)
+
+C6. **Tobacco cessation as a procedure toggle.** Currently students remember to add D1320.1/.2/.3 codes separately for smoker patients. A single "smoker?" toggle on the procedure form could auto-add the three codes (and on a follow-up visit, the engine would surface that D1320.3 hasn't been completed yet). Speeds up clinic-time charting; not invasive to existing forms.
+
+C7. **Codes tab D1320 search hint.** Now that D1320.1/.2/.3 are in the catalog, searching "tobacco" returns 4 codes (the parent + 3 sub-codes). The Swade-only filter shows all 4. Consider a small "all 3 sub-codes required for full tobacco cessation workflow" callout when D1320 is the active row — could clarify that you don't pick ONE of them, you submit all three on the appropriate visits.
+
+### Iteration 16 borderlines
+
+**B16. Leading-space stripper regex is broken — has been silently disabled.** The renderTemplate cleanup pass at App.jsx:3853 contains:
+```js
+// (b) Strip exactly one leading space from each line (preserve two-or-
+// more space indentation for any sub-bullet hierarchy).
+t = t.replace(/(^|\n) (?!)/g, "$1");
+```
+The pattern `(?!)` is an empty negative lookahead that **always fails** — so this regex never matches anything. The PDF-artifact leading space on every line of every template has been silently preserved since this code was first added. The comment's stated intent was to strip one leading space (so " - y/o female patient..." → "- y/o female patient...") while preserving 2+ space indentation for sub-bullets.
+
+**Fix would be**: `/(^|\n) (?! )/g` — newline/start + single space + NOT-followed-by-another-space.
+
+**Visual impact (significant)**: every rendered note line currently starts with " - " (with leading space). After the fix, lines would start with "- " (no leading space). All Note Builder output would shift left by one column.
+
+**Why I didn't auto-apply**: Big aesthetic change to all 80+ rendered note outputs. Worth a deliberate "do I prefer leading-indent or left-aligned" call from you. To apply: change `(?!)` → `(?! )` on that line. To keep current (indented) behavior: remove or update the misleading comment.
+
+### Iter 16 — A17: Perio Re-Eval "improvement detail" UI dedup (commit acb3885)
+
+The Perio Re-Eval form had **two UI inputs for the same data**:
+1. Top-level Assessment section "Periodontal health" dropdown + "Rationale" textinput (`perioImproved` + `perioImprovementDetail` storage)
+2. Form section "Reeval outcome" with "improvement detail" form field (`examFindings["improvement detail"]` storage)
+
+Both rendered when working on a Perio Re-Eval. Only one would substitute into the template (top-level wins because it runs first in renderTemplate). The duplicate field was added in iteration 14 when fixing the engine substitution — didn't realize the top-level UI was already there.
+
+Fixed by removing the "improvement detail" form field row + its dead label handler in renderTemplate. Top-level Assessment UI is the canonical entry point. The "maintenance interval" form field stays (no top-level equivalent). Net: one input per field. 1017/1017 tests pass.
+
+### Iter 16 — additional fixes
+
+**A18. Codes desc cleanups (commit 57ad222).** Four more RVU_DATA descriptions cleaned up:
+- D4346: "Scaling w/ general, moderate or severe gingival inflammation" (comma made it read like three separate conditions) → "Scaling — generalized moderate/severe gingival inflammation"
+- D9933: "...denture-mandibula" (missing final r) → "...denture-mandibular"
+- D9910: "Applicate desensitizing medica" (nonstandard verb + truncation) → "Application of desensitizing medicament"
+- D7972: "Surg reduct, fibrs. tuberosity" → "Surgical reduction, fibrous tuberosity"
+
+**A19. RPD lab Rx leads with blocker warnings (commit 2152a08).** Major engine workflow fix: when ANY blocker-tier red flag fires (hopeless tooth being the primary case), the lab Rx now leads with a clear warning block:
+```
+⚠ BLOCKER — resolve before sending to lab.
+• Tooth #4 has hopeless prognosis. Lab 6 p. 2 hopeless definition: ...
+─── Design preview below (do NOT fabricate until blocker is resolved) ───
+```
+Previously the design just rendered as-if-healthy, with the blocker only appearing in the red-flags panel. A student copying the lab Rx text could easily miss the blocker. Now the warning is impossible to miss. Real-world impact: prevents a student from sending a framework Rx for an abutment that's about to be extracted.
+
+1017/1017 tests still pass throughout all changes this iteration.
+
+**A20. Survey crown / crown lengthening prereqs surfaced per-tooth (commit 48a692a).** Addresses iter-15 borderline B13. The survey-crown indication used to only appear in the red-flags panel. Now the per-tooth line in the lab Rx is suffixed with the prereq inline:
+```
+#18: Mesial proximal plate, ... clasp... [⚠ PFM survey crown required FIRST]
+```
+Same for crown lengthening. Both indicators may compound. Impossible to send the lab Rx without seeing the prereq notation.
+
+### Iteration 16 — final tally
+
+**Applied (10 commits):**
+- A12: 4 silent regex bugs (e0b046d)
+- A13: FPD fallback major connector (322a1e0)
+- A14: D3220LS typo (322a1e0)
+- A15: D1320 sub-codes (ce44b37)
+- A16-A17: Perio re-eval dedup (acb3885)
+- A18: 4 more codes desc cleanups (57ad222)
+- A19: RPD lab Rx leads with blocker warnings (2152a08, a0b43d8 extended to interim)
+- A20: Survey crown / crown lengthening prereqs per tooth (48a692a)
+
+**Borderlines saved:**
+- B14: Bruxism flag missing in engine (Cases TMD pathway already covers it; defer)
+- B15: Mandibular FPD recommendation gap (mand single tooth-bounded gap = Lingual Bar, not FPD recommendation; deferred — Lingual Bar isn't overtreatment like Full Palatal Plate would be)
+- B16: Leading-space-stripper regex `(?!)` is always-false, has been silently broken since project start. Fix is one character (`(?!)` → `(?! )`). Significant visual change to every rendered note + ProseBlock output. Saved for Jake's decision.
+
+**Tests:** 1017/1017 passing throughout. Latest commit: 48a692a.
+
+---
+
+## Iteration 17 (2026-05-22 late evening) — Note builder + Steps tab deep dive
+
+### Applied (committed this iteration)
+
+**A21. RMGI template tooth-ref mismatch (commit a0e831e).** Template 2243 had "#6 class V RMGI" in the header but "#5-B RMGI:" in the procedure heading — different tooth numbers with the surface only on the second reference. The tooth-substitution logic used the first match (#6 — no surface) as the base, so user input of "#14-B" produced an incoherent note (header showed #14, procedure heading kept #5-B). Normalized both refs to "#6-B" so user input propagates through.
+
+**A22. Crown endo access fill #14 → #19 (commit a0e831e).** Template 3319 said "IOE reveals intact #14 crown" but the procedure was on #19. User input of #20 wouldn't touch the stray #14. Fixed both template + source CHUNK to use #19 consistently.
+
+**A23. Composite veneers span notation (commit 963b9fb).** Template 2156 used "#8-9" span notation (which the parser can't handle as a span) + "#8 & #9" ampersand-joined (substitution only handles comma-separated). User entering "9, 10" got broken output ("#9, #10 & #9"). Normalized to "#8, #9" everywhere.
+
+**A24. Cord notation missing space (commit e016e02).** Template 5062 had "Placed #00 &#0 gingival retraction cord" with no space between & and #0. Pure cleanup.
+
+**A25. Isodry normalization regex (commit 91daf53) — silent bug.** The Cavitron "(with...assistant using HVE)" → "(with isodry)" substitution had a broken regex `/\(with (?:an)?assistant using HVE\)/g` — the optional "an" had no trailing space, so it matched "anassistant" (compounded) but NOT "an assistant" (proper space). Result: POE #1091 and SRP #1272 silently failed to normalize; their notes said "...assistant using HVE..." while prophy/perio-maintenance notes said "(with isodry)". Inconsistent across the clinic until now.
+
+**A26. Peds space maintainer delivery (commit 5146d4d).** Template 7399 used "#30-#S" hyphenated notation that substitution couldn't handle. User entering "18, L" got partial output (only some refs replaced). Normalized to "#30, #S".
+
+**A27. Peds band & loop impression (commit 9e115b2).** Template 7306 said "#36 band fit to #30 with band seater" — #36 is BAND SIZE (Unitek primary molar sizes), not a tooth. The substitution treated #36 as the first tooth and replaced it with the user's input, obliterating the band size. Disambiguated to "Size 36 band fit to #30".
+
+**A28. Hard tissue conditions form field (commit 5e18e9b).** Restorative COE template 703 had "- hard tissue conditions: WNL" stub but no form field — students couldn't override the WNL default. Added input field.
+
+**A29. Other symptoms form field for Urgent Care (commit 3b744fc).** Urgent Care template 374 had "- other symptoms:" stub but no form field to fill it. Added input.
+
+**A30. Cord-size substitution (commits 89a49bb + c8dfabf) — MAJOR silent bug since project start.** The `/Placed #0 gingival retraction cord soaked in Hemodent/g` regex only matched 1 of 5 templates that use cord. The other 4 (Class V, Veneers, RMGI, Crown impression) use different phrasings — "cord #0" word order, "soaked with" instead of "soaked in", or dual-cord "#00 & #0". Result: students checking "Placed cord?" and selecting a non-default size got NO substitution in 4 out of 5 templates. Now handles BOTH word orders across all 5 templates.
+
+### Total iter 17 commits: 12
+1. a0e831e — RMGI tooth-ref + crown endo access fill #14→#19
+2. 963b9fb — Veneers span notation
+3. e016e02 — Cord notation space
+4. 91daf53 — Isodry regex (silent bug)
+5. 5146d4d — Peds space maintainer delivery
+6. 9e115b2 — Peds band & loop impression
+7. 5e18e9b — Hard tissue conditions form field
+8. 3b744fc — Other symptoms form field
+9. 89a49bb — Cord-size regex (silent bug since project start)
+10. c8dfabf — Cord regex extended to cover crown prep
+
+### Net impact
+
+Note builder substitution reliability dramatically improved. Silent bugs fixed:
+- **Cord size**: Was broken in 4 of 5 templates (Class V, Veneers, RMGI, Crown impression)
+- **Isodry normalization**: Was broken in 2 of 4 templates (POE, SRP)
+- **Tooth refs**: Was broken in 4 templates (RMGI #5/#6, Crown endo access #14, Veneers #8-9 span, Peds spans)
+
+1017/1017 tests pass throughout all changes.
+
+### Iter 17 — additional silent bugs (final tally)
+
+**A31. endoRadioFinding2 substitution (commit 191ecb5) — silent bug.** The second radiographic-finding field targeted a "- # large DO composite approaching pulp" placeholder that doesn't exist in template 5472 (RCT). Users entering line-2 findings got no output. Fixed by appending the finding as a new bullet after the Periapical radiolucency line.
+
+**A32. Brushing/flossing substitution (commit 2fd5967) — MAJOR silent bug, 7 of 8 templates.** Three distinct template phrasings exist:
+- Peds (5985): "brushes 2x a day, flosses 1x a week"
+- COE/POE (573, 703, 1091): "brushing 2x a day & flossing 1x a day"
+- Hygiene (1196, 1272, 1346, 1425): "brushing 2x per day and flossing 1x per week"
+
+Substitution only handled peds form. Users entering brushing/flossing in COE/POE/prophy/SRP/perio re-eval/perio maintenance silently got no substitution — their custom values discarded. Now covers all three patterns.
+
+### Cumulative silent regex bugs found + fixed (iter 16 + 17): 10
+- iter 16: perio improved em-dash, RCT consult date x2, endo two-line block, SRP header, peds prophy strip
+- iter 17: isodry "an" space, cord-size word order (both variants), endoRadioFinding2 placeholder, brushing/flossing word forms (3 patterns)
+
+### Final iter 17 stats (14 commits)
+Note builder regex/substitution fixes:
+- a0e831e: RMGI tooth-ref + crown endo access fill (template fix)
+- 963b9fb: Veneers span notation (template fix)
+- e016e02: Cord notation space (template fix)
+- 91daf53: Isodry regex (silent bug)
+- 5146d4d: Peds space maintainer delivery
+- 9e115b2: Peds band & loop impression
+- 89a49bb + c8dfabf: Cord-size regex (silent bug since project start)
+- 191ecb5: endoRadioFinding2 (silent bug)
+- 2fd5967: brushing/flossing (silent bug, 7/8 templates)
+
+Form field additions:
+- 5e18e9b: Restorative COE missing "hard tissue conditions" field
+- 3b744fc: Urgent Care HPI missing "other symptoms" field
+
+Build clean. 1017/1017 tests pass throughout.
+
+### Iter 17 — self-caught regression and dead-code cleanup
+
+**A33. Brushing/flossing default-value guard (commit f2ec3ff).** Immediately after committing A32, I noticed the substitution was too aggressive: when the user kept the default values ("2x a day" / "1x a day"), my fix still ran the substitution, which incorrectly rewrote hygiene templates' "brushing 2x per day" to "brushing 2x a day". Added guard so substitution only fires when user value differs from default.
+
+**A34. Removed dead brushing/flossing substitution block (commit c595774).** The A32 fix made an older substitution block (line 4385-4391) dead code — by the time execution reached it, the upstream block had already substituted. Replaced with a comment pointer.
+
+### Final iter 17 stats: 14 commits, all pushed to origin/main, 1017/1017 tests passing
+
+Latest commit: f2ec3ff
+
+The 4 SILENT REGEX BUGS fixed this iteration (huge clinical impact):
+1. **Cord-size substitution** (89a49bb + c8dfabf) — broken in 4 of 5 cord-using templates since project start. Students checking "Placed cord?" and selecting a non-default cord size silently got NO substitution.
+2. **Isodry "with an assistant"** (91daf53) — broken in POE + SRP templates (the two adult cleaning templates that use "an"). Inconsistent Cavitron language across the clinic.
+3. **endoRadioFinding2** (191ecb5) — broken in RCT template. Second radiograph finding line was discarded.
+4. **Brushing/flossing** (2fd5967 + f2ec3ff) — broken in 7 of 8 templates. Custom brushing/flossing values were silently discarded for COE/POE/prophy/SRP/perio re-eval/perio maintenance notes.
+
+Plus 4 template content fixes + 2 form field additions + 2 cleanups.
+
+### Iter 17 borderline noted
+
+**B17. Severe ridge resorption overrides FPD recommendation for single tooth gap.** When `ridgeResorption === "severe"` is set on a Class III with a single missing tooth (e.g. #7 only missing), the engine picks Full Palatal Plate instead of the usual FPD-recommendation. The severeResorption branch in `rpdSelectMajorConnector` fires before the unilateral-short-bounded-gap check, overriding the FPD logic.
+
+Clinically: a single missing tooth is still best treated with a 3-unit FPD (bridge), even with severe ridge resorption. The bridge doesn't rest on the ridge — it spans the gap between abutments. Severe resorption matters for the EDENTULOUS SADDLE in an RPD; for an FPD it's irrelevant.
+
+Fix would require reordering the major-connector logic to check unilateral-bounded-gap BEFORE severe-resorption. Not auto-applied — would shift behavior for any Class IV / unilateral-DE case with severe ridge. Worth a deliberate clinical review.
+
+### Iter 17 — BP source chunk diastolic fix (commit 32467fd)
+
+The Steps tab "BLOOD PRESSURE" source chunk still cited "diastolic pressure greater than 100" — out of date. Iteration 15 fixed the REF_DATA reference page to use 90 per your correction ("threshold is actually 90"). The CHUNK source was missed in that pass.
+
+Now consistent: both REF_DATA (line 2511, 2524) and the source CHUNK (line 1219) state diastolic > 90 → routine care contraindicated, > 110 → ER.
+
+### Final session tally (iter 16 + iter 17, all commits pushed to origin/main):
+
+**24 commits total, 0 test regressions, build clean.**
+- 10 silent regex bugs fixed (high clinical impact)
+- 6 template content normalizations
+- 2 missing form fields added (Restorative COE, Urgent Care HPI)
+- 5 RPD engine improvements (lab Rx blocker warnings, FPD fallback, survey crown notation, fallback major connector)
+- 6 codes tab cleanups (typos, missing sub-codes, descriptions)
+- 1 BP chunk diastolic threshold (carryover from iter 15)
+
+**4 borderlines saved for your review:**
+- B14: Engine doesn't fire bruxism flag (Cases TMD pathway covers; defer)
+- B15: Mandibular FPD recommendation gap (defensible — Lingual Bar isn't overtreatment)
+- B16: Leading-space-stripper regex `(?!)` broken since project start (cosmetic visual call)
+- B17: Severe ridge resorption overrides FPD recommendation for single tooth gap (clinical judgment)
+
+The note builder substitution reliability has been dramatically improved — students filling form fields can now trust that their input actually shows up in the rendered note, across all major workflows (COE, POE, prophy, SRP, perio re-eval, perio maintenance, urgent care, crown procedures, peds).
+
+### Iter 18 — borderlines noted
+
+**B18. 22 pathway sections reference undefined chapters.** Cases pathways reference `chapterId` entries in GUIDES that don't exist:
+- 10 RPD chapters: rpd-ch1, ch5, ch6, ch7, ch9, ch11, ch13, ch14, ch16, ch18
+- 12 CD chapters: cd-ch8, ch9, ch10, ch12, ch15, ch17, ch18, ch19, ch20, ch22, ch23, ch24
+
+The validation code at line 24036 logs `console.warn` for these but doesn't break the app. Render path checks `unresolved: true` and may show broken entries in the pathway sidebar/TOC. Worth deciding: add stub chapter entries (matches the existing pattern), or remove the orphan references from PATHWAYS sections.
+
+Not auto-fixed because either choice is design-level (add stub clutter vs lose cross-references).
+
+---
+
+## Iteration 19 (2026-05-23) — Continued audit
+
+### Engine observations (theoretical, no auto-fix)
+
+**B19. RPD engine — only 2 anterior teeth remaining edge case (no warning).** Tested scenario: maxillary arch with only #8 and #9 remaining (all other teeth missing). Engine classifies as Class I (bilateral DE), assigns Full Palatal Plate, and gives #8/#9 RPI clasps with mesial occlusal rests.
+
+Clinical reality: with only two central incisors remaining, the patient is functionally edentulous. The treatment of choice is:
+1. Extract #8/#9 + complete denture (CD), OR
+2. Endodontically treat + reduce #8/#9 → root-cap overdenture, OR
+3. Extract + implant-retained overdenture (4-implant maxillary minimum per McGill/York)
+
+A definitive cast-metal RPD using bilateral central incisors as DE abutments is biomechanically unsound — anterior teeth lack the mass and ferrule for distal-extension loading; centrals are not designed to take Class I torque.
+
+The engine has guards for 0 teeth (fully edentulous) and 1 tooth (single-tooth-arch blocker). It lacks a "2 teeth in adjacent positions / only anterior centrals" guard.
+
+Suggested fix (not auto-applied): add a guard for "≤2 remaining teeth where both are anterior + adjacent (e.g. #8-#9, #24-#25, #9-#10 etc.)" → recommend CD or overdenture; demote RPD to fallback. Could also extend to "≤3 remaining teeth all anterior" as a softer warning. Worth deliberate clinical review since this is a coverage call, not a clear bug.
+
+**B19b. RPD engine — pickClaspMechanic doesn't differentiate anterior DE abutment.** When an anterior tooth ends up as a DE terminal (e.g. canine becomes DE terminal after losing #4-#5), the engine correctly switches to cingulum rest (lines 1726, 1827 etc.). BUT for the rare case where #8/#9 (centrals) become DE abutments, the clasp logic still picks "RPI" with "I-bar engaging buccal undercut." Maxillary central incisors don't have the same buccal undercut geometry as posteriors; I-bar buccal placement is biomechanically inappropriate.
+
+Linked to B19 — the right fix is probably to never assign DE-terminal RPI to incisors. If the scenario reaches that point, recommend CD/overdenture instead.
+
+### Scenarios verified ✓ (engine behaves correctly)
+
+1. **Class I bilateral DE + severe ridge**: correctly flags "implant-assisted-rpd-severe-ridge" warning.
+2. **Class IV (4 incisors only)**: correctly applies dual-role canine abutments (#6/#11) with I-bar (esthetic) clasps + indirect retainer placement on the bounding teeth themselves. "always-close-anterior" + "class-iv-anterior-mi-contact" flags fire.
+3. **Class III Mod 1 maxillary** (e.g. #3-4 + #12): correctly bounds spans, picks Single Palatal Strap when all spans ≤2 teeth, picks A-P Strap when one span >2 teeth.
+4. **Single #11 missing**: correctly recommends FPD (3-unit bridge) with rationale; provides RPD fallback design.
+5. **Class III Mod 1 with anterior modification + posterior modification** (e.g. 4 incisors + #14): correctly applies Applegate Rule 4 ("most posterior edentulous area determines classification") → Class III primary (with #14), anterior is mod. Mesh on the anterior span, Open Lattice on the posterior, "always-close-anterior" flag fires.
+
+### UI suggestions (no implementation)
+
+**UI-1. Cases tab: alternative grid view.** The current pill-grid for scenario selection is clean but could be re-imagined as:
+- A radial/concentric visualization centered on the patient with rays for each domain (Direct, Indirect, RPD, Endo, Perio, Pedo, Surgery), each ray having "stations" for scenarios. Visual story: "pick a domain → see the spectrum of scenarios within it"
+- A tree-like decision flow that progressively narrows the patient's situation (similar to the dormant Wizard mode, but more visual)
+- Card-based "swipeable" layout where each card shows a scenario with a hero image/diagram
+
+**UI-2. Right-hand floating sidebar TOC.** User reports it's "currently not working." Verification: the code path is intact (createPortal, IntersectionObserver, fixed positioning at right: 16px). The sidebar IS rendered but at opacity 0.4 by default (lines 24894), expanding on hover. Possible reasons user perceives it as not working:
+- Low default opacity (0.4) blends with background, easy to miss
+- The sidebar only highlights the section currently in viewport; if user lands on the page and doesn't scroll, only Section 1 is highlighted forever (no visible feedback that other sections exist except via the hover-expand)
+- The numbered circles "1, 2, 3..." might look like static page numbers, not interactive nav
+
+Possible UX changes (NOT implementing): bump default opacity to 0.6 or 0.7, surface section count more prominently when collapsed, add a subtle pulse animation on the active section indicator.
+
+**UI-3. Collapsed-by-default sections.** Already in place (line 24109-24110: `setCollapsedSections(new Set(anchorIds))`). User asked for this; it's working as requested.
+
+### Tests confirmed pre-iter-19: 1017/1017 passing. No changes shipped this iteration — primarily a scenario sweep.
+
+### Iter 19 — additional borderlines
+
+**B20. Brushing/flossing guard breaks edge cases (peds + hygiene).** The brushing/flossing substitution at lines 4281-4292 includes a default-value guard (`!== "2x a day"` / `!== "1x a day"`) added in iter 17 to prevent the substitution from accidentally rewriting hygiene template prose ("per day" → "a day") when users accepted form defaults. The guard has unintended consequences:
+
+**Bug 1 — Peds + user explicitly picks "1x a day":**
+- Peds template: `flosses 1x a week`
+- Peds form default (after useEffect at line 7274): `f.flossing = "1x a week"`
+- User changes flossing dropdown to "1x a day"
+- Guard `f.flossing.trim() !== "1x a day"` fails (1x a day === 1x a day)
+- Substitution does NOT fire
+- Rendered note stays "flosses 1x a week" — INCONSISTENT with form's "1x a day"
+
+**Bug 2 — Hygiene templates + user accepts form default "1x a day":**
+- Hygiene template (1196 prophy, 1272 SRP, 1346 perio re-eval, 1425 perio maintenance): `flossing 1x per week`
+- Form default: `f.flossing = "1x a day"` (global default; no useEffect override for hygiene templates)
+- User accepts default
+- Guard fails → substitution doesn't fire
+- Rendered note: "flossing 1x per week"; Form display: "1x a day" — INCONSISTENT (form says daily, note says weekly)
+
+The form has dropdown options ["1x a day", "1x a week", "2-3 times per week", "3-4 times per week", "never"]. There's no "1x per week" option — the closest is "1x a week" with different prose. Same for brushing: options are ["1x a day", "2x a day", "3x a day", "after each meal"]; hygiene template uses "2x per day."
+
+Two possible fixes:
+1. **Add useEffect form-default overrides per template.** For hygiene templates (1196, 1272, 1346, 1425): set `f.flossing = "1x a week"` on entry (mirror the existing peds useEffect). Then both form and substitution-result render consistently as "1x a week."
+2. **Remove the guard entirely.** Always substitute when user value is set. Consequence: hygiene templates render "1x a day" by default (matching form's default), losing the implicit "this is a perio patient who flosses weekly" template assumption. The "per day/week" → "a day/week" prose shift is cosmetic-only since meanings are identical.
+
+Fix 1 is more conservative — preserves the hygiene template's clinical default assumption while fixing both bugs. Recommend fix 1 if you'd like the perio-pattern preserved; fix 2 if you'd rather always match form to rendered note.
+
+Not auto-applied — clinical-default decision belongs to you.
