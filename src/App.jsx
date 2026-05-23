@@ -1438,7 +1438,7 @@ const CHUNKS = [
 "id": "c118",
 "section": "MISC",
 "title": "TOBACCO CESSATION STEPS",
-"body": "1. complete the 2 codes:\n ○ D1230.1 (Record Tobacco Usage)\n ○ D1230.2 (Provide Tobacco Cessation Education)\n 2. follow the pop-up prompts after completing D1230.1 to add the tobacco form\n 3. complete the form\n ○ if pt is interested in quitting, tobacco cessation materials are on the Intranet under \"Tobacco/Smoking Cessation Resources\"\n 4. at the next visit, complete the last section of the form (\"Follow-Up\") then complete code D1230.3 (Tobacco Cessation Follow Up with Patient)"
+"body": "1. complete the 2 codes:\n ○ D1320.1 (Record Tobacco Usage)\n ○ D1320.2 (Provide Tobacco Cessation Education)\n 2. follow the pop-up prompts after completing D1320.1 to add the tobacco form\n 3. complete the form\n ○ if pt is interested in quitting, tobacco cessation materials are on the Intranet under \"Tobacco/Smoking Cessation Resources\"\n 4. at the next visit, complete the last section of the form (\"Follow-Up\") then complete code D1320.3 (Tobacco Cessation Follow Up with Patient)"
 },
 {
 "id": "c119",
