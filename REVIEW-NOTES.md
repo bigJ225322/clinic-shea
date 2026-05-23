@@ -1340,3 +1340,26 @@ The leading-space-stripper at line 3853 (`(?!)` regex bug — see B16) means PDF
 - de1874c: fix Specific treatments leading-space
 
 All commits pushed to origin/main. 1017/1017 tests pass throughout. Build clean.
+
+---
+
+## Iteration 20 (2026-05-23) — Continued audit
+
+### Codes tab fix
+
+**A37. D3346/D3347/D3348 endo retreatment descriptions (commit 38c02d2).** These UIC sub-codes for endo retreatment Access/Fill steps had vague descriptions of just "Access" or "Fill" — visually identical to D3310/D3320/D3330 primary RCT sub-codes. Now self-describing: "Access — endo retreatment, anterior", etc.
+
+### Iter 20 — borderlines / observations (no auto-fix)
+
+**B21. REF_DATA missing for `ref-mronj` and `ref-pregnant`.** Two Lookup-section reference pages have no structured REF_DATA entries (only the existing `ref-blood-pressure`, `ref-caries-dx`, `ref-endo-dx`, `ref-antibiotic-proph`, etc. have them). The rendering fallback in `MainStepsArticle` (line 10535) detects the missing REF_DATA and falls back to the chunk's ProseBlock, so MRONJ content (chunk c092) and Pregnant Patients content (chunk c093) DOES render — just as raw PDF-extracted text instead of nicely-formatted cards. Functional but less polished. Worth a future enhancement to add structured `verdict + blocks` arrays mirroring the other refs.
+
+**B22. Sealants template "still numb" inconsistency.** Templates 6095 (peds sealants) and the matching source CHUNK both say "Informed mother that pt is still numb, monitor lip & soft tissue biting" at the end — but sealants are typically done WITHOUT local anesthesia, so the warning doesn't apply. The line is copy-pasted Swade boilerplate from peds composite templates. Could be removed, but it's also in Swade's source so removing it diverges from her canonical wording. Borderline.
+
+**B23. Implant abutment-supported crown sub-codes (D6058-D6073) have generic descriptions.** All 16 implant abutment-supported crown/FPD sub-codes show just "Initial Preparation", "Final Impression", or "Cementation" — no indication of which restoration type (porcelain/ceramic vs PFM high noble vs cast metal vs base metal vs FPD retainer variants). Students can't tell D6058A from D6065A from D6066A from the description alone. The CDT parent codes differ: D6058 (abutment supported porc/cer crown), D6065 (implant supported porc/cer crown), D6066 (implant supported PFM crown), etc. Compare to digital codes DD6058 / DD6065 (line 2093+) which already have proper descriptions like "All porc/cer crown on abutment — Initial Preparation". Worth normalizing the non-digital ones to match. Not auto-fixed — 16 sub-codes × 3 (A/B/C) = 48 description edits; would benefit from your review of CDT 2024 vs UIC's actual usage.
+
+**B24. D4243 duplicates D4342 description "Sc/Rp 1-3 teeth/quad".** Both codes exist with the same description. D4342 is the standard CDT code for SRP 1-3 teeth/quad. D4243 isn't in standard CDT 2024 — it's a UIC-specific variant (possibly an old billing alias). Not a bug if intentional, but worth confirming with billing.
+
+### Iter 20 commit summary
+- 38c02d2: clarify D3346/D3347/D3348 endo retreatment access/fill descriptions
+
+Tests passing 1017/1017. Build clean. Pushed to origin/main.
