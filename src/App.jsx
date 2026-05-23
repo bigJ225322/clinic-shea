@@ -11399,6 +11399,60 @@ function MEEProgress() {
  return null;
 }
 
+// Click-to-copy CDT code chip. Renders identically to the previous static
+// code cell (oxblood mono numerics, centered, optional Swade dot prefix)
+// but the whole cell is now a button: click → copy the bare code to the
+// clipboard, flash a green ✓ for ~1.2s as confirmation. Falls back to
+// the hidden-textarea + execCommand path on browsers without
+// navigator.clipboard.
+function ClickToCopyCode({ code, showSwadeFlag }) {
+ const [copied, setCopied] = useState(false);
+ const onClick = async () => {
+ try {
+ await navigator.clipboard.writeText(code);
+ } catch (_) {
+ const ta = document.createElement("textarea");
+ ta.value = code;
+ ta.style.position = "fixed"; ta.style.opacity = "0";
+ document.body.appendChild(ta); ta.select();
+ try { document.execCommand("copy"); } catch (__) {}
+ document.body.removeChild(ta);
+ }
+ setCopied(true);
+ setTimeout(() => setCopied(false), 1200);
+ };
+ return (
+ <button
+ type="button"
+ onClick={onClick}
+ title={copied ? "Copied" : `Click to copy ${code}`}
+ className="mono"
+ style={{
+ color: copied ? "var(--teal)" : "var(--accent)",
+ fontWeight: 500,
+ fontVariantNumeric: "tabular-nums",
+ display: "flex", alignItems: "center", justifyContent: "center", gap: "4px",
+ background: "transparent", border: "none",
+ padding: "2px 8px", margin: 0,
+ borderRadius: "3px", cursor: "pointer",
+ fontSize: "inherit",
+ transition: "color 120ms ease, background 120ms ease",
+ }}
+ onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(124,30,32,0.06)"; }}
+ onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+ >
+ {showSwadeFlag && (
+ <span title="Used in the Swade guide" style={{
+ width: "5px", height: "5px", borderRadius: "50%",
+ background: copied ? "var(--teal)" : "var(--accent)",
+ display: "inline-block", flexShrink: 0,
+ }} />
+ )}
+ {copied ? `${code} ✓` : code}
+ </button>
+ );
+}
+
 function RVUs() {
  const [search, setSearch] = useState("");
  const [activeCategory, setActiveCategory] = useState("all");
@@ -11794,19 +11848,8 @@ function RVUs() {
  borderBottom: "1px solid var(--rule-soft)", alignItems: "center",
  };
  const codeCell = (code, swadeFlag) => (
- <div className="mono" style={{
- color: "var(--accent)", fontWeight: 500,
- fontVariantNumeric: "tabular-nums",
- display: "flex", alignItems: "center", justifyContent: "center", gap: "4px",
- }}>
- {swadeFlag &&!swadeOnly && (
- <span title="Used in the Swade guide" style={{
- width: "5px", height: "5px", borderRadius: "50%",
- background: "var(--accent)", display: "inline-block", flexShrink: 0,
- }} />
-)}
- {code}
- </div>
+ <ClickToCopyCode code={code}
+ showSwadeFlag={swadeFlag && !swadeOnly} />
 );
 
  const fmtPct = n => n == null || n === 0? null: (n < 1? n.toFixed(1): n.toFixed(0)) + "%";
