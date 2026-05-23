@@ -3018,7 +3018,25 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
  }
 
  // ── Definitive RPD lab Rx (Axium format, per primary-source examples) ──
+ // If the major connector flagged this as an FPD-recommended case (short
+ // unilateral tooth-bounded gap), lead with that recommendation so the
+ // student doesn't accidentally send the lab a compromised RPD when a
+ // bridge is the clean answer. The full RPD design is preserved below as
+ // a fallback if the patient declines FPD.
  const material = framework.material === "Co-Cr" ? "Co-Cr": framework.material;
+ if (majorConnector?.recommendsFixed) {
+ lines.push("⚠ FPD RECOMMENDED — definitive RPD is not indicated for this configuration.");
+ if (majorConnector.rationale) {
+ lines.push(majorConnector.rationale);
+ }
+ if (majorConnector.alternativeRationale) {
+ lines.push("");
+ lines.push("If patient declines FPD: " + majorConnector.alternativeRationale);
+ }
+ lines.push("");
+ lines.push("─── Fallback RPD design (if FPD declined and IPD/RPD chosen anyway) ───");
+ lines.push("");
+ }
  lines.push(`Please fabricate ${material} metal framework for ${archLc} RPD.`);
  lines.push("");
 
