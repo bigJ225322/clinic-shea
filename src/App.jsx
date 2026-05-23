@@ -1569,7 +1569,7 @@ const RVU_DATA = [
  { code: "D1310", desc: "Nutritional counseling", rvu: 1 },
  { code: "D1320", desc: "Tobacco counseling", rvu: 1 },
  { code: "D1320.1", desc: "Tobacco counseling — record tobacco usage", rvu: 1 },
- { code: "D1320.2", desc: "Tobacco counseling — provide cessation education", rvu: 1 },
+ { code: "D1320.2", desc: "Tobacco counseling — provide cessation education", rvu: 2 },
  { code: "D1320.3", desc: "Tobacco counseling — follow-up with patient", rvu: 1 },
  { code: "D1330", desc: "Oral hygiene instructions", rvu: 1 },
  { code: "D1351", desc: "Sealant - per tooth", rvu: 1 },
