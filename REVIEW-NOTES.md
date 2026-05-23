@@ -954,5 +954,11 @@ C4. **Engine "what fired" inspector** — a dev-mode panel that lists which engi
 
 C5. **Scenario probe library button** — a "load test scenario" dropdown in the RPD builder that auto-fills known cases (Design Case I, Case II, Huddle 6 Q10, etc.) so you can re-verify engine outputs against the answer key after engine changes. Currently the only way to reproduce test scenarios is via `/tmp/probe-*.mjs` scripts.
 
+### Additional iteration-14 fixes (committed)
+
+**A3. Pedo-composite LA dose math (commit 7a6f092).** keyDecisions[1] said "20 kg child = 90 mg = half a carpule" — but 1 carpule of 2% lidocaine = 36 mg, so 88 mg is ~2.4 carpules, not half. The pedo-anesthesia pathway already states this correctly. Updated to "88 mg ≈ 2.4 carpules" plus the 15 kg datapoint and the UIC practical convention ("1 carpule for routine peds restorative — check with instructor before exceeding").
+
+**A4. cross-cd-rpd Combination Syndrome note (commit b07eea7).** The Upper CD + Lower RPD pathway (cross-cd-rpd) didn't explicitly call out Combination Syndrome — but this is THE textbook trigger configuration per Kelly 1972. Added a keyDecision covering: the 5 classic consequences (anterior max ridge resorption, posterior mand ridge resorption, mand anterior supra-eruption, max tuberosity downgrowth, papillary hyperplasia), prevention (bilateral balanced occlusion, altered-cast impression, 1-year remount, 3-month perio recall, reline), and the implant-assisted alternative for severe cases. Mirrors the existing `combination-syndrome` red flag in the RPD engine so students see the risk in the Cases pathway during treatment planning.
+
 
 
