@@ -4023,10 +4023,19 @@ function renderTemplate(raw, f) {
  t = t.replace(/\bA2\b/g, f.shade.trim().toUpperCase());
  }
 
- // -------- 6b. Crown type (core buildup, crown prep). --------
- // When the user selects All-Ceramic, replace every "PFM" occurrence.
- if (f.crownType && f.crownType!== "PFM") {
+ // -------- 6b. Crown type (core buildup, crown prep, delivery). --------
+ // When the user selects All-Ceramic, replace every "PFM" occurrence
+ // PLUS swap the cement brand from RelyX (the PFM/cast default at UIC)
+ // to Panavia (the all-ceramic / resin-cement standard). RelyX Unicem
+ // would technically work for ceramics too, but the conventional UIC
+ // teaching is Panavia F2.0 for e.max, so the note should reflect that.
+ // The crown-delivery template (3204) is the primary site of "RelyX" —
+ // template 5305 already uses Panavia explicitly so no swap needed.
+ if (f.crownType && f.crownType !== "PFM") {
  t = t.replace(/\bPFM\b/g, f.crownType);
+ if (f.crownType === "all-ceramic") {
+ t = t.replace(/\bRelyX\b/g, "Panavia");
+ }
  }
 
  // -------- 6c. Cord size (crown prep, provisional crown). --------
@@ -4117,6 +4126,36 @@ function renderTemplate(raw, f) {
  t = t.replace(/\s*Patient is provisionally accepted for[^.]+\.\s*/g, " ");
  t = t.replace(/\s*Patient is provisionally accepted to[^.]+\.\s*/g, " ");
  t = t.replace(/\n{3,}/g, "\n\n");
+ }
+
+ // -------- 6f1b. Sealant pit/groove (per-arch resolution). --------
+ // Templates 2308 (adult sealants) + 6095 (peds sealants) ship with a
+ // slash either/or:  "buccal pit of mandibular molars / lingual groove
+ // of maxillary molars". The slash is misleading — for any single tooth,
+ // only ONE applies (mand → buccal pit; max → lingual groove). When all
+ // selected teeth share an arch, collapse to just that arch's phrase.
+ // Mixed arches keep the slash form (both apply across the set).
+ if (f.tooth && f.tooth.trim() &&
+ /occlusal surface & buccal pit of mandibular molars \/ lingual groove of maxillary molars/.test(t)) {
+ const nums = f.tooth.split(",")
+.map(s => parseInt(s.trim().replace(/^#?/, "").split("-")[0], 10))
+.filter(n => n >= 1 && n <= 32);
+ if (nums.length > 0) {
+ const allMax = nums.every(n => n >= 1 && n <= 16);
+ const allMand = nums.every(n => n >= 17 && n <= 32);
+ if (allMax) {
+ t = t.replace(
+ /occlusal surface & buccal pit of mandibular molars \/ lingual groove of maxillary molars/g,
+ "occlusal surface & lingual groove of maxillary molars"
+);
+ } else if (allMand) {
+ t = t.replace(
+ /occlusal surface & buccal pit of mandibular molars \/ lingual groove of maxillary molars/g,
+ "occlusal surface & buccal pit of mandibular molars"
+);
+ }
+ // Mixed: keep the slash (both apply in the same visit).
+ }
  }
 
  // -------- 6f2. Denture-tooth mould codes (wax-rim template). --------
