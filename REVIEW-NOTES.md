@@ -2077,4 +2077,4 @@ The RPD engine audit agent ran a 13-tool-use deep check against Dr. Shahin's Int
 
 10. **`rest seat seat passively` duplicate-word typo in RPD engine action text (dfe2a1c).** Delivery-day intaglio-fit-check step said `verify proximal plate + rest seat seat passively`. Fixed to `rest seat sit passively` (plural subject agreement).
 
-### Iter 31 cumulative: 10 commits, 10 substantive fixes, all live. Tests 1023/1023 pass. B35 borderline resolved.
+### Iter 31 cumulative: 9 commits, 10 substantive fixes (1 RPD test), all live. Tests 1023/1023 pass. B35 borderline resolved.
