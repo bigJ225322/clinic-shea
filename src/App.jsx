@@ -5816,10 +5816,16 @@ function Checkbox({ checked, onChange, label, hint }) {
 
 // Small section label inside a card (between Hairlines).
 function SubsectionLabel({ children }) {
+ // Letter-spacing 0.16em adds space after every character including the
+ // first, which visually pushes the leading glyph ~1px right of where
+ // a non-letter-spaced paragraph would start. Compensate with a small
+ // negative marginLeft so this label and the body text below it line
+ // up at the same x edge (common typography correction for tracked caps).
  return (
  <div style={{
  fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
  color: "var(--accent)", fontWeight: 500, marginBottom: "10px",
+ marginLeft: "-0.08em",
  fontFamily: "'Geist', sans-serif",
  }}>{children}</div>
 );
