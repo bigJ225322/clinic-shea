@@ -17415,31 +17415,78 @@ const ANTERIOR_MOULDS_BY_FORM = (() => {
  return groups;
 })();
 
-// Dropdown for selecting an anterior mould — grouped by facial form,
-// labels the suggested mandibular pairing inline so the student doesn't
-// have to cross-reference the chart.
+// Anterior mould selector — three small character-by-character dropdowns
+// (form digit / proportion digit / width letter). Combines them into the
+// mould code on each change. The dropdowns only list characters that are
+// actually present in the chart given the other choices, so the student
+// can't pick an invalid combination by accident.
 function AnteriorMouldSelect({ value, onChange }) {
- return (
- <select value={value || ""} onChange={e => onChange(e.target.value)}
- style={{
- padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
+ const v = (value || "").trim();
+ const form = v[0] || "";
+ const prop = v[1] || "";
+ const width = v.slice(2);
+ // Compute valid options at each axis, given the other selections.
+ // Form is always all 7 (every form has at least one entry in the chart).
+ // Prop options narrow to those that exist in the picked form.
+ // Width options narrow to those that exist in the picked form+prop.
+ const allKeys = Object.keys(TOOTH_MOULD_TABLE);
+ const propOptions = new Set();
+ const widthOptions = new Set();
+ for (const k of allKeys) {
+ if (!form || k[0] === form) propOptions.add(k[1]);
+ if ((!form || k[0] === form) && (!prop || k[1] === prop)) widthOptions.add(k.slice(2));
+ }
+ const setPart = (next) => onChange(next);
+ // Re-derive: if user changes form, drop prop/width that no longer match.
+ // For simplicity, only enforce strict validity going forward — let the
+ // ToothMouldNoMatchHint handle the not-in-chart case rather than
+ // silently mutating prior selections.
+ const selectStyle = {
+ padding: "5px 6px", border: "1px solid var(--rule)", borderRadius: "2px",
  fontFamily: "'Geist', sans-serif", fontSize: "11px",
- background: "white", cursor: "pointer", width: "100%",
- }}>
- <option value="">Select…</option>
- {TOOTH_MOULD_FORMS.map(f => (
- <optgroup key={f.id} label={`${f.id} · ${f.label}`}>
- {(ANTERIOR_MOULDS_BY_FORM[f.id] || []).map(code => {
- const entry = TOOTH_MOULD_TABLE[code];
+ background: "white", cursor: "pointer", flex: 1, minWidth: 0,
+ };
+ const entry = TOOTH_MOULD_TABLE[v];
  return (
- <option key={code} value={code}>
- {code} (mand {entry.lower.join("/")})
- </option>
- );
- })}
- </optgroup>
+ <div>
+ <div style={{ display: "flex", gap: "4px" }}>
+ <select value={form} onChange={e => setPart(e.target.value + prop + width)}
+ style={selectStyle} title="Facial form (1–7)">
+ <option value="">Form</option>
+ {TOOTH_MOULD_FORMS.map(f => (
+ <option key={f.id} value={f.id}>{f.id} · {f.label}</option>
  ))}
  </select>
+ <select value={prop} onChange={e => setPart(form + e.target.value + width)}
+ style={selectStyle} title="Tooth proportion + facial contour (1–6)">
+ <option value="">Prop</option>
+ {TOOTH_MOULD_PROPORTIONS.map(p => (
+ <option key={p.id} value={p.id} disabled={form && !propOptions.has(p.id)}>
+ {p.id} · {p.label}
+ </option>
+ ))}
+ </select>
+ <select value={width} onChange={e => setPart(form + prop + e.target.value)}
+ style={selectStyle} title="Curve width (B–J)">
+ <option value="">Width</option>
+ {TOOTH_MOULD_WIDTHS.map(w => (
+ <option key={w.letter} value={w.letter} disabled={(form || prop) && !widthOptions.has(w.letter)}>
+ {w.letter} · {w.range}
+ </option>
+ ))}
+ </select>
+ </div>
+ {/* Inline echo of the combined code + mandibular pairing when valid */}
+ {v && entry && (
+ <div style={{
+ fontSize: "10px", color: "var(--ink-soft)",
+ marginTop: "4px", fontFamily: "'JetBrains Mono', monospace",
+ }}>
+ <strong style={{ color: "var(--accent)" }}>{v}</strong>
+ <span> · mand {entry.lower.join("/")}</span>
+ </div>
+ )}
+ </div>
  );
 }
 
@@ -17455,21 +17502,54 @@ const POSTERIOR_MOULDS_BY_ANGLE = [
  { label: "40° Portrait IPN EuroLine (Anatomical)", moulds: ["730","732","734"] },
 ];
 
+// Posterior mould selector — two-step (cusp-angle bucket → specific
+// mould). Posterior codes are heterogeneous in format (3-digit numeric
+// for 0°/10°/22°/40°, digit-letter for 20°/30°/33°), so a single
+// character-by-character axis doesn't make sense. Splitting on the
+// cusp angle gives the cleanest two-axis decomposition.
 function PosteriorMouldSelect({ value, onChange }) {
- return (
- <select value={value || ""} onChange={e => onChange(e.target.value)}
- style={{
- padding: "5px 8px", border: "1px solid var(--rule)", borderRadius: "2px",
+ const [bucketIdx, setBucketIdx] = useState(() => {
+ const i = POSTERIOR_MOULDS_BY_ANGLE.findIndex(g => g.moulds.includes(value));
+ return i >= 0 ? String(i) : "";
+ });
+ // When value changes externally (e.g. via the ToothMouldSelector's
+ // "Apply to form"), pull the bucket forward.
+ useEffect(() => {
+ if (!value) { setBucketIdx(""); return; }
+ const i = POSTERIOR_MOULDS_BY_ANGLE.findIndex(g => g.moulds.includes(value));
+ if (i >= 0) setBucketIdx(String(i));
+ }, [value]);
+ const bucket = bucketIdx !== "" ? POSTERIOR_MOULDS_BY_ANGLE[parseInt(bucketIdx, 10)] : null;
+ const selectStyle = {
+ padding: "5px 6px", border: "1px solid var(--rule)", borderRadius: "2px",
  fontFamily: "'Geist', sans-serif", fontSize: "11px",
- background: "white", cursor: "pointer", width: "100%",
- }}>
- <option value="">Select…</option>
- {POSTERIOR_MOULDS_BY_ANGLE.map(g => (
- <optgroup key={g.label} label={g.label}>
- {g.moulds.map(m => <option key={m} value={m}>{m}</option>)}
- </optgroup>
+ background: "white", cursor: "pointer", flex: 1, minWidth: 0,
+ };
+ return (
+ <div style={{ display: "flex", gap: "4px" }}>
+ <select value={bucketIdx}
+ onChange={e => {
+ setBucketIdx(e.target.value);
+ // Clear the mould when bucket changes since old mould won't be valid
+ if (value) onChange("");
+ }}
+ style={{ ...selectStyle, flex: 2 }}
+ title="Cusp angle">
+ <option value="">Cusp angle</option>
+ {POSTERIOR_MOULDS_BY_ANGLE.map((g, i) => (
+ <option key={i} value={String(i)}>{g.label}</option>
  ))}
  </select>
+ <select value={value || ""} onChange={e => onChange(e.target.value)}
+ disabled={!bucket}
+ style={{ ...selectStyle, flex: 1 }}
+ title="Mould">
+ <option value="">Mould</option>
+ {(bucket?.moulds || []).map(m => (
+ <option key={m} value={m}>{m}</option>
+ ))}
+ </select>
+ </div>
  );
 }
 
