@@ -18248,7 +18248,7 @@ function RPDInputsForm({ caseInput, onUpdate }) {
  display: "inline-flex", alignItems: "center", gap: "10px",
  }}
  aria-expanded={open}>
- <span>Case inputs</span>
+ <span>Inputs</span>
  <span style={{
  fontSize: "11px", color: "var(--ink-faint)",
  transform: open? "rotate(90deg)": "none",
@@ -18730,7 +18730,7 @@ function RPDHelper() {
  fontFamily: "'Geist', sans-serif", fontSize: "10px", letterSpacing: "0.16em",
  textTransform: "uppercase", cursor: "pointer", borderRadius: "2px" }}
  title="Reset all teeth to present, default measurements and patient factors">
- Clear all
+ Clear
  </button>
  </div>
  {/* Mx/Mn segmented toggle, centered */}
