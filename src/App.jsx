@@ -19300,7 +19300,13 @@ function RPDInputsForm({ caseInput, onUpdate }) {
  }
  };
  document.addEventListener("mousedown", handleOutside);
- return () => document.removeEventListener("mousedown", handleOutside);
+ // Escape closes the Case Inputs popup — keyboard parity with click-outside.
+ const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+ document.addEventListener("keydown", onKey);
+ return () => {
+ document.removeEventListener("mousedown", handleOutside);
+ document.removeEventListener("keydown", onKey);
+ };
  }, [open]);
  const archLabel = caseInput.arch === "maxillary"? "Max": "Mand";
  const oppLabel = pf.opposingArch === "complete_denture"? "vs CD"
