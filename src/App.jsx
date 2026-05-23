@@ -13255,24 +13255,25 @@ function PETimeline({ pes, selectedId, onSelect }) {
 // no per-row sub-grids that could drift.
 function RubricGrid({ criteria }) {
  const COLS = "140px 1fr 1fr 1fr";
+ // Every rubric cell — headers + data — centers content both
+ // horizontally and vertically. Flex container with center alignment
+ // on both axes; text-align: center also kicks in for multi-line
+ // descriptions so wrapped lines stack centered too.
  const hdr = {
  padding: "10px 14px",
  fontSize: "10px", letterSpacing: "0.16em",
  textTransform: "uppercase", fontWeight: 500,
  background: "var(--paper-soft)",
  borderBottom: "1px solid var(--rule)",
+ display: "flex", alignItems: "center", justifyContent: "center",
+ textAlign: "center",
  };
- // Cells render as flex containers so the content vertically centers
- // within the row height (grid default is align-items: stretch, which
- // keeps the cell box at row height; flex+align-items:center centers
- // the text inside that box). Without this, shorter cells stick to the
- // top while taller adjacent cells push the row taller, leaving the
- // shorter ones visually orphaned.
  const cell = (i, isLast) => ({
  padding: "12px 14px",
  fontSize: "12px", lineHeight: 1.5,
  borderBottom: isLast? "none": "1px solid var(--rule-soft)",
- display: "flex", alignItems: "center",
+ display: "flex", alignItems: "center", justifyContent: "center",
+ textAlign: "center",
  });
 
  return (
@@ -13305,9 +13306,6 @@ function RubricGrid({ criteria }) {
  borderLeft: "1px solid var(--rule-soft)",
  color: c.excellent? "var(--ink)": "var(--ink-faint)",
  fontStyle: c.excellent? "normal": "italic",
- // Em-dash placeholder centers horizontally so empty cells read as
- // intentional blanks instead of left-anchored text fragments.
- justifyContent: c.excellent ? "flex-start" : "center",
  }}>
  {c.excellent || "—"}
  </div>,
@@ -13316,7 +13314,6 @@ function RubricGrid({ criteria }) {
  borderLeft: "1px solid var(--rule-soft)",
  color: c.acceptable? "var(--ink)": "var(--ink-faint)",
  fontStyle: c.acceptable? "normal": "italic",
- justifyContent: c.acceptable ? "flex-start" : "center",
  }}>
  {c.acceptable || "—"}
  </div>,
@@ -13325,7 +13322,6 @@ function RubricGrid({ criteria }) {
  borderLeft: "1px solid var(--rule-soft)",
  color: c.notMet? "var(--ink)": "var(--ink-faint)",
  fontStyle: c.notMet? "normal": "italic",
- justifyContent: c.notMet ? "flex-start" : "center",
  }}>
  {c.notMet || "—"}
  </div>,
