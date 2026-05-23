@@ -6402,6 +6402,8 @@ const EXAM_FINDINGS_CONFIG = {
  { label: "triggers", type: "input", placeholder: "e.g. cold, biting, heat" },
  { label: "relief", type: "input", placeholder: "e.g. ibuprofen, nothing" },
  ],
+ [{ label: "other symptoms", type: "input",
+ placeholder: "e.g. swelling, bad taste, jaw stiffness — blank to omit" }],
  [
  { label: "treatment/evaluation thus far", type: "input", placeholder: "e.g. none" },
  { label: "last pain medication taken & effectiveness", type: "input",
