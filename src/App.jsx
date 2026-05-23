@@ -22132,7 +22132,7 @@ const PATHWAYS = [
  keyDecisions: [
  "Indication check: caries-free OR enamel-limited non-cavitated lesion. If lesion has progressed into dentin (cavitated, radiolucency on bitewing), it's a Class I composite case (see dir-ch10), not a sealant.",
  "Use fluoride-free pumice for the prophy step — fluoride interferes with the etch and bond.",
- "Isodry is the standard isolation — no anesthesia needed since Isodry isn't placed.",
+ "Isodry is the standard isolation — no anesthesia needed because there's no clamp to seat.",
  "Etch 30 sec, optional bond step (faculty usually want it done), sealant material (thick — apply sparingly), 20-sec cure.",
  "Check occlusion with articulating paper before dismissing — sealant high on occlusion needs adjustment with a fine finishing bur.",
  ],
