@@ -2288,7 +2288,7 @@ const CATEGORIES = [
  { id: "3076", label: "Final Impression" },
  { id: "3204", label: "Crown Delivery" },
  { id: "3268", label: "Crown Removal" },
- { id: "3319", label: "Endo Access Fill" },
+ { id: "3319", label: "Crown Access Fill" },
  ]},
  ]},
  { id: "peds", label: "Peds", groups: [
@@ -3482,10 +3482,12 @@ const DEFAULT_FIELDS = {
  // crownIsNew: "New?" checkbox — inserts "new" before "provisional" in note.
  // Defaults to true (new provisional is the standard).
  // cordPlaced: "Placed cord?" checkbox — when true, shows cord size selector.
+ //   Default = true: every template ships with the cord-placement sentence;
+ //   unchecking strips it from the rendered note (renderTemplate 6c2).
  // cordSize: the selected cord size (replaces #0 in template).
  // crownType: PFM or all-ceramic dropdown (replaces "PFM" in template).
  crownIsNew: true,
- cordPlaced: false,
+ cordPlaced: true,
  cordSize: "0",
  crownType: "PFM",
  // cc: Chief complaint — typed text inserted into the CC: curly-quote placeholder.
@@ -4054,6 +4056,50 @@ function renderTemplate(raw, f) {
  /(Placed gingival retraction cords?\s+(?:#00 & )?)#0(?=\s+soaked)/g,
  `$1#${f.cordSize}`
 );
+ }
+ // -------- 6c2. Cord stripping when "Placed cord?" is unchecked. --------
+ // When the student explicitly toggles the cord OFF, strip the cord
+ // placement + removal sentences entirely. Default is true (templates
+ // ship with cord); false = user opted out.
+ if (f.cordPlaced === false) {
+ // Removal sentence variations:
+ //   "Placed #0 gingival retraction cord soaked in Hemodent."
+ //   "Placed gingival retraction cord #0 soaked with Hemodent."
+ //   "Placed gingival retraction cords #00 & #0 soaked with Hemodent."
+ t = t.replace(
+ /Placed (?:#\d+\s+)?gingival retraction cords?(?:\s+(?:#\d+(?:\s*&\s*#\d+)?))?\s+soaked\s+(?:in|with)\s+Hemodent\.\s*/gi,
+ ""
+);
+ // "Removed cord(s)."  /  "Removed cord. " — including the leading space
+ t = t.replace(/\s*Removed cords?\.\s*/g, " ");
+ // Collapse any leftover double-spaces and orphan blank lines
+ t = t.replace(/[ \t]{2,}/g, " ").replace(/\n[ \t]+\n/g, "\n\n");
+ }
+
+ // -------- 6c3. Existing-restoration surface match. --------
+ // When the student picked surfaces for the NEW restoration (e.g.
+ // "#27-MI"), default the surface designation of the "existing failing
+ // X composite/amalgam/RMGI" phrase to match. Template hardcodes a
+ // sample surface ("B composite", "MOD amalgam"), but in practice the
+ // existing resto's surfaces almost always match the new prep — so
+ // defaulting saves a manual edit. Student can still type over it.
+ // Only fires when removedExistingRestoration is truthy (default).
+ if (f.removedExistingRestoration !== false && f.tooth && f.tooth.trim()) {
+ const firstRef = f.tooth.split(",")[0].trim();
+ const surfMatch = firstRef.match(/^#?[A-Za-z0-9]+-([A-Za-z]+)$/);
+ const newSurf = (surfMatch && surfMatch[1] || "").toUpperCase();
+ if (newSurf) {
+ // Pattern A: "Removed existing failing [SURF] (composite|amalgam|RMGI) restoration"
+ t = t.replace(
+ /(Removed existing failing )[A-Z]+(\s+(?:composite|amalgam|RMGI)\s+restoration)/gi,
+ `$1${newSurf}$2`
+);
+ // Pattern B: "Completely removed (existing )?failing( existing)? [SURF] (composite|amalgam|RMGI) restoration"
+ t = t.replace(
+ /(Completely removed (?:existing )?failing(?: existing)? )[A-Z]+(\s+(?:composite|amalgam|RMGI)\s+restoration)/gi,
+ `$1${newSurf}$2`
+);
+ }
  }
 
  // -------- 6e. CC (chief complaint). --------
@@ -13236,18 +13282,22 @@ function PETimeline({ pes, selectedId, onSelect }) {
  }}>
  {trackPes.map((pe, i) => {
  const isSelected = selectedId === pe.id;
+ const restBg = isSelected ? "var(--accent)" : "var(--paper)";
+ const hoverBg = isSelected ? "var(--accent)" : "rgba(122,30,30,0.05)";
  return (
  <button key={pe.id} onClick={() => onSelect(pe.id)} title={pe.name}
+ onMouseEnter={(e) => { e.currentTarget.style.background = hoverBg; }}
+ onMouseLeave={(e) => { e.currentTarget.style.background = restBg; }}
  style={{
  flex: 1,
- background: isSelected? "var(--accent)": "var(--paper)",
+ background: restBg,
  border: "none",
  borderLeft: i > 0? "1px solid var(--rule)": "none",
  padding: "4px 0",
  fontSize: "9px", fontFamily: "'Geist', sans-serif", fontWeight: 500,
  color: isSelected? "var(--paper)": "var(--ink)",
  cursor: "pointer", textAlign: "center",
- transition: "background 80ms, color 80ms",
+ transition: "background 120ms ease, color 80ms",
  }}>
  <span className="mono" style={{ fontVariantNumeric: "tabular-nums" }}>{pe.code}</span>
  </button>
@@ -13279,18 +13329,22 @@ function PETimeline({ pes, selectedId, onSelect }) {
  {row.pes.map((pe, i) => {
  const isPast = semesterStatus(pe, current) === "past";
  const isSelected = selectedId === pe.id;
+ const restBg = isSelected ? "var(--accent)" : isPast ? "rgba(122,30,30,0.07)" : "var(--paper)";
+ const hoverBg = isSelected ? "var(--accent)" : isPast ? "rgba(122,30,30,0.14)" : "rgba(122,30,30,0.05)";
  return (
  <button key={pe.id} onClick={() => onSelect(pe.id)} title={pe.name}
+ onMouseEnter={(e) => { e.currentTarget.style.background = hoverBg; }}
+ onMouseLeave={(e) => { e.currentTarget.style.background = restBg; }}
  style={{
  flex: 1,
- background: isSelected? "var(--accent)": isPast? "rgba(122,30,30,0.07)": "var(--paper)",
+ background: restBg,
  border: "none",
  borderLeft: i > 0? "1px solid var(--rule)": "none",
  padding: "4px 0",
  fontSize: "9px", fontFamily: "'Geist', sans-serif", fontWeight: 500,
  color: isSelected? "var(--paper)": isPast? "var(--accent)": "var(--ink)",
  cursor: "pointer", textAlign: "center",
- transition: "background 80ms, color 80ms",
+ transition: "background 120ms ease, color 80ms",
  }}>
  <span className="mono" style={{ fontVariantNumeric: "tabular-nums" }}>{pe.code}</span>
  </button>
@@ -13403,15 +13457,18 @@ function PEDetail({ pe, onShowSteps }) {
 ? []
 : (typeof mapped === "string"? [{ id: mapped }]: mapped);
  const showStepsLinkStyle = {
- fontSize: "11px", color: "var(--accent)", cursor: "pointer",
+ fontSize: "10px", color: "var(--accent)", cursor: "pointer",
  background: "none", border: "none", textDecoration: "underline",
  fontFamily: "'Geist', sans-serif", padding: 0,
  };
  return (
  <div style={{...cardStyle, padding: "20px 22px" }}>
- {/* Header — PE code (left), name (middle, flex-grow), Steps link(s)
- right-aligned at the top corner. Links are bare hyperlinks with
- no "Steps:" prefix — the arrow + position communicate purpose. */}
+ {/* Header — PE code (left), name (middle, flex-grow + text-center),
+ Steps link(s) right-aligned at the top corner. Links are bare
+ hyperlinks with no "Steps:" prefix. Title text-centers within
+ its flex cell so the eye reads it as the focal element.
+ Links are slightly smaller + tighter so the right side doesn't
+ weigh too heavily against center. */}
  <div style={{ marginBottom: "18px", paddingBottom: "14px", borderBottom: "1px solid var(--rule-soft)" }}>
  <div style={{ display: "flex", alignItems: "baseline", gap: "12px", marginBottom: "5px", flexWrap: "wrap" }}>
  <span className="mono" style={{
@@ -13420,11 +13477,11 @@ function PEDetail({ pe, onShowSteps }) {
  }}>
  {pe.code}
  </span>
- <span style={{ fontSize: "15px", fontWeight: 500, color: "var(--ink)", flex: "1 1 auto" }}>
+ <span style={{ fontSize: "15px", fontWeight: 500, color: "var(--ink)", flex: "1 1 auto", textAlign: "center" }}>
  {pe.name}
  </span>
  {procedures.length > 0 && onShowSteps && (
- <div style={{ display: "flex", alignItems: "baseline", gap: "8px", flexWrap: "wrap" }}>
+ <div style={{ display: "flex", alignItems: "baseline", gap: "5px", flexWrap: "wrap" }}>
  {procedures.length === 1 ? (
  <button onClick={() => onShowSteps(procedures[0].id)} style={showStepsLinkStyle}>
  Steps →
@@ -13432,7 +13489,7 @@ function PEDetail({ pe, onShowSteps }) {
  ) : procedures.map((p, i) => (
  <Fragment key={p.id}>
  {i > 0 && (
- <span style={{ fontSize: "11px", color: "var(--ink-faint)" }}>·</span>
+ <span style={{ fontSize: "10px", color: "var(--ink-faint)" }}>·</span>
  )}
  <button onClick={() => onShowSteps(p.id)} style={showStepsLinkStyle}>
  {p.label} →
@@ -26490,6 +26547,11 @@ export default function App() {
  /* RPD tooth chart hover + side-by-side layout */
 .rpd-tooth-active.rpd-circle { transition: stroke 140ms ease, stroke-width 140ms ease, fill 140ms ease; }
 .rpd-tooth-active:hover.rpd-circle { stroke: var(--accent); stroke-width: 1.8; }
+ /* Subtle oxblood drop-shadow on hover — mirrors the row-hover tint in
+    the Codes tab and PE timeline. Cues "this tooth is hover-toggleable"
+    without adding chrome. */
+.rpd-tooth-active { transition: filter 120ms ease; }
+.rpd-tooth-active:hover { filter: drop-shadow(0 0 4px rgba(122, 26, 26, 0.28)); }
 
  /* Design-element annotation labels — hidden by default, revealed on
  hover, when the element is selected, or when its tooth is selected. */
