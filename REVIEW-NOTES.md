@@ -1843,3 +1843,57 @@ Configuration is rare (only max laterals #7+#10 present anteriorly). `tooSmallFo
 
 ### Cumulative: 50 commits since "no wake-ups", 25 real bug fixes
 
+---
+
+## Iter 24-27 grand summary (this session)
+
+**Real bug fixes (25):**
+
+*Critical UX (1):*
+- Tooth selector dropdown positioning (transform on .app-root) — 4e6f0eb
+
+*RPD engine clinical correctness (8):*
+- Severe-resorption Full Palatal Plate scoped to Class I (670e268)
+- Lingual Bar is now the default (sulcus ?? 99) (2e14c40)
+- Akers with lingual undercut → buccal reciprocation (2b7ee41)
+- Mand laterals + max laterals no longer get I-bar esthetic (2b7ee41)
+- Applegate Rule 8 surfaced as flag (c16b42f)
+- Cases pathway "altered cast MANDATORY" → engine-aligned (f21d70c)
+- Cases pathway Class IV major connector → engine-aligned (f21d70c)
+- Mand canine ML ball rest no longer mislabeled "Distal ball" (f21d70c)
+
+*Lab Rx output (3):*
+- Beading note only when applicable (palatal connectors) (828c5f1)
+- Occlusal rest type spelled out (3af4f3f)
+- (above ML ball fix is also a Lab Rx fix)
+
+*Note builder (8):*
+- Pulpotomy template uses rubber dam (fd0b850)
+- POE-only strip surgically targets prophy work (preserves perio chart) (fd0b850)
+- Paren protection (proper [^()]+ alternative) (539a02e)
+- Leading-space strip regex actually works (fd0b850)
+- Anesthetic template preserved when user hasn't customized (84ae12c)
+- (template-content fix: pulpotomy chunk too)
+
+*UX behavior (3):*
+- Right-side TOC visibility on pathway load (01b356d)
+- All chapters collapsed by default (91779f4)
+- Defensive .fade-in transform removal (30ad0a1)
+
+**Borderlines saved for review (10):** B25-B34, see entries above.
+
+**Cases content gaps documented (12):** G1-G12, see entry above.
+
+**Source verifications:**
+- Design Case I + II: engine matches Shahin's expected output with minor geometric vs clinical-judgment differences for #9 ball direction
+- Huddle 6 Case 1 + Case 2: EXACT MATCH post-fix
+- Lab 4 color convention: red ovals on undercut + tissue stop T-shape verified
+
+**Cumulative across iters 24-27:**
+- 50 commits, all pushed to origin/main + deployed live
+- 25 real bug fixes
+- 1017/1017 tests pass throughout
+- 4 background audit agents ran, 8 total findings → 7 fixed, 1 deferred as borderline
+- No regressions detected
+
+
