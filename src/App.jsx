@@ -4018,14 +4018,22 @@ function renderTemplate(raw, f) {
  // When the "Placed cord?" checkbox is checked and a size other than "0"
  // is selected, replace "#0" in the standard cord sentence.
  // The original regex /Placed #0 gingival retraction cord soaked in
- // Hemodent/g never matched ANY template — templates use either
- // "cord #0" or "cords #0" order (not "#0 ... cord"), and use either
- // "soaked with" or "soaked in" Hemodent. The substitution was silently
- // broken since this code was added. Now matches all four template
- // variants: cord #0 with, cords #0 in, cord #0 with, cords #00 & #0 with.
- // For dual-cord (#00 & #0), only the larger #0 is replaced — that's the
- // size the form's cordSize field controls.
+ // Hemodent/g matched only ONE template (2821, crown prep). The other
+ // four templates use different phrasings — "cord #0" or "cords #0"
+ // order, and "soaked with" or "soaked in" Hemodent. Result: cord size
+ // substitution silently failed in 4 of 5 templates (Class V, Veneers,
+ // RMGI, Crown impression). Now matches BOTH word orders:
+ //   2821: "Placed #0 gingival retraction cord soaked in Hemodent"
+ //   others: "Placed gingival retraction cord(s) #0 soaked with/in"
+ // For dual-cord (#00 & #0, template 3076), only the larger #0 is
+ // replaced — that's the size the form's cordSize field controls.
  if (f.cordPlaced && f.cordSize) {
+ // Variant A: 2821-style ("Placed #0 gingival retraction cord")
+ t = t.replace(
+ /Placed #0(\s+gingival retraction cords?)/g,
+ `Placed #${f.cordSize}$1`
+);
+ // Variant B: post-cord ("Placed gingival retraction cord(s) #0")
  t = t.replace(
  /(Placed gingival retraction cords?\s+(?:#00 & )?)#0(?=\s+soaked)/g,
  `$1#${f.cordSize}`
