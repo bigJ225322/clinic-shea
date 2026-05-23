@@ -25151,9 +25151,12 @@ export default function App() {
 
 .fade-in { animation: fadeIn 320ms cubic-bezier(.2,.6,.2,1) both; }
  @keyframes fadeIn {
- from { opacity: 0; transform: translateY(4px); }
- to { opacity: 1; transform: none; }
+ from { opacity: 0; }
+ to { opacity: 1; }
  }
+ /* Note: same reasoning as .app-root — any transform on a parent of a
+ position:fixed element creates a new containing block and breaks the
+ fixed-positioning behavior. Keep this animation opacity-only. */
 
  textarea { font-family: 'JetBrains Mono', ui-monospace, monospace; }
 
