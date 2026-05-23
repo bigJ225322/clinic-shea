@@ -1568,6 +1568,9 @@ const RVU_DATA = [
  { code: "D1208NC", desc: "Topical application of fluoride-excluding varnish-NoCharge", rvu: 2 },
  { code: "D1310", desc: "Nutritional counseling", rvu: 1 },
  { code: "D1320", desc: "Tobacco counseling", rvu: 1 },
+ { code: "D1320.1", desc: "Tobacco counseling — record tobacco usage", rvu: 1 },
+ { code: "D1320.2", desc: "Tobacco counseling — provide cessation education", rvu: 1 },
+ { code: "D1320.3", desc: "Tobacco counseling — follow-up with patient", rvu: 1 },
  { code: "D1330", desc: "Oral hygiene instructions", rvu: 1 },
  { code: "D1351", desc: "Sealant - per tooth", rvu: 1 },
  { code: "D1354", desc: "Interim caries arresting medicament application-SDF", rvu: 2 },
@@ -10710,7 +10713,7 @@ const SWADE_CODES = new Set([
  "D0330","D0350","D0365L","D0366U","D0460","D0475",
  "D0601","D0602","D0603","D0604",
  // Preventive
- "D1110","D1120","D1206","D1310","D1330","D1351",
+ "D1110","D1120","D1206","D1310","D1320","D1320.1","D1320.2","D1320.3","D1330","D1351",
  // Restorative
  "D2140","D2150","D2160","D2161",
  "D2330","D2331","D2332","D2335","D2390","D2391","D2392","D2393",
@@ -10908,6 +10911,7 @@ const CODE_GROUPS = {
  "D5120": { desc: "Complete denture — mandibular", children: ["D5120A","D5120B","D5120C"] },
  "D9390": { desc: "Consultation report", children: ["D9390A","D9390B"] },
  "D9630": { desc: "Other drugs/medicaments", children: ["D9630.1","D9630.2","D9630.4"] },
+ "D1320": { desc: "Tobacco counseling (3-step UIC workflow)", children: ["D1320.1","D1320.2","D1320.3"] },
  "D9940": { desc: "Occlusal guard — hard, full arch", children: ["D9940A","D9940B"] },
  "D9944": { desc: "Occlusal guard — hard, partial arch", children: ["D9944A","D9944B"] },
  "D9945": { desc: "Occlusal guard — soft, full arch", children: ["D9945A","D9945B"] },
