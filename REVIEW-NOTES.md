@@ -1463,8 +1463,44 @@ When the user left them blank, the stub lines `- other symptoms:` and `- anythin
 ### Iter 22 commit summary
 - 24d3996: pluralize hopeless-tooth/questionable-abutment flag messages
 - e5752be: strip "other symptoms" and "anything else?" stub lines when blank
+- cc43f53: move OHI chunk from ORAL SURGERY → PERIO section (companion to 4650ca6)
+- f2db779: split brushing/flossing substitution — stop f.brushing/f.flossing from touching hygiene templates (race condition with ef-based substitution)
 
-All 1017 tests pass. Build clean. Pushed to origin/main.
+### A44. OHI chunk section fix (commit cc43f53)
+Companion to commit 4650ca6 which added `perio: "PERIO"` to SECTION_FOR_CATEGORY. The OHI chunk (c090) was tagged "ORAL SURGERY" section, but the OHI procedure (id "ohi", categoryId "perio") now strictly filters to PERIO chunks. Re-tagged c090 to PERIO — the brushing/flossing/denture-care content belongs there clinically.
+
+### A45. Brushing/flossing race condition (commit f2db779)
+A significant bug introduced by my own iter 19 commit (5071f13). Iter 19 extended the global f.brushing/f.flossing substitution to match hygiene template patterns ("brushing X per day" / "flossing X per week"). But hygiene templates ALREADY had a separate brushing-flossing widget inside EXAM_FINDINGS_CONFIG that writes to ef["brushing frequency"] / ef["flossing frequency"], substituted separately at line 4755-4756.
+
+The two substitutions raced: f.brushing/f.flossing fired first (step 1, line 4283-4291), rewriting "brushing 2x per day" → "brushing 1x a week" (useEffect default value). Then the ef-based substitution (step 2) tried to match "brushing \d+x per day" — couldn't find it because step 1 had already changed the pattern. Silent — user's widget input was discarded.
+
+The global Brushing/Flossing fields are gated by needsBrushing / needsFlossing (line 9108-9109) which test for "brushing 2x a day" / "flossing 1x a day" patterns. Hygiene templates have "per day" / "per week" instead, so needsBrushing/needsFlossing are FALSE — the global fields aren't even shown for hygiene. Only the ef widget is.
+
+Fix: drop the hygiene-pattern substitutions from step 1. The ef-based substitution is the sole source of truth for hygiene brushing/flossing prose.
+
+### Iter 21+22 final running tally
+**20 commits pushed since the user requested no wake-ups.** All pushed to origin/main.
+
+**8 real bug fixes**:
+1. Perio re-eval em-dash when detail empty (c408236)
+2. RPD mand incisor bounding abutments → ML ball rest (d880d8b)
+3. RPD fully-dentate guard (ee088e2)
+4. Perio/endo Steps tab chunk routing (4650ca6)
+5. Hopeless-tooth/questionable-abutment grammar (24d3996)
+6. Strip "other symptoms" / "anything else?" stub lines when blank (e5752be)
+7. OHI chunk in PERIO section (cc43f53)
+8. Brushing/flossing race condition fix (f2db779)
+
+**10 code-description cleanup batches** covering ~170 sub-codes (D6058-D6083, D6086-D6117, D6210-D6792, D5110-D5214, D5750-D5861, D9940-D9946, D9390, D3346-D3348, D2750C/D2790C in CODE_GROUPS, plus D0150/D9390 prefixes).
+
+**Content additions**: 22 orphan chapter stubs (resolves B18).
+
+**Borderlines documented**: B25 (single max central FPD recommendation gap), B26 (lower-priority D6086+ codes — resolved).
+
+All 1017 tests pass throughout. Build clean. No regressions.
+
+### Iter 22 verification of resolved B18
+Re-ran orphan chapter detection across all domains: 150 chapter definitions, 143 references — zero orphans. The iter 21 stubs at commit 8876e3c completely resolved the B18 borderline.
 
 ### Iter 21+22 running tallies (immediate continuous mode)
 
