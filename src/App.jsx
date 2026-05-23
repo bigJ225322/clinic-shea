@@ -4068,7 +4068,7 @@ function renderTemplate(raw, f) {
  const status = (f.perioImproved || "improved");
  const detail = (f.perioImprovementDetail || "").trim();
  t = t.replace(
- /has improved — \./,
+ /has improved —\s*\./,
  `has ${status} — ${detail? detail + ".": "."}`
 );
  }
@@ -4110,8 +4110,8 @@ function renderTemplate(raw, f) {
  // "Re-evaluated BW & PA taken __". Single field for both.
  if (f.endoConsultDate && f.endoConsultDate.trim()) {
  const d = f.endoConsultDate.trim();
- t = t.replace(/(consult visit)1\/1\/2021/g, `$1${d}`);
- t = t.replace(/(Re-evaluated BW & PA taken)1\/1\/2021/g, `$1${d}`);
+ t = t.replace(/(consult visit)\s+1\/1\/2021/g, `$1 ${d}`);
+ t = t.replace(/(Re-evaluated BW & PA taken)\s+1\/1\/2021/g, `$1 ${d}`);
  }
  // 2. Consult timing ("1 month ago")
  if (f.endoConsultMonthsAgo && f.endoConsultMonthsAgo.trim()) {
@@ -4160,9 +4160,11 @@ function renderTemplate(raw, f) {
  const ctlLine = buildLine(ctlTooth, f.endoCtlPercussion, f.endoCtlPalpation,
  f.endoCtlProbing, f.endoCtlMobility, f.endoCtlColdTest);
  // Replace the two-line block as a unit so we don't have to worry about
- // matching the right occurrence of each value separately.
+ // matching the right occurrence of each value separately. Templates may
+ // indent the lines with a leading space (PDF artifact), so allow optional
+ // leading whitespace before each dash.
  t = t.replace(
- /-[ \t]*#[^:]*:\s*percussion[^\n]*\n-[ \t]*#[^:]*:\s*percussion[^\n]*/i,
+ /[ \t]*-[ \t]*#[^:]*:\s*percussion[^\n]*\n[ \t]*-[ \t]*#[^:]*:\s*percussion[^\n]*/i,
  `${affLine}\n${ctlLine}`
 );
  }
