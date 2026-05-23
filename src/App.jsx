@@ -17011,7 +17011,7 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
 // ─── Laboratory Prescription Form ─────────────────────────────────────
 // Recreates the lab Rx form layout with the engine's lab script filled
 // into the Instructions box.
-function RPDLabRxForm({ caseInput, result, verbose = false }) {
+function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null, onSelectTooth }) {
  const [open, setOpen] = useState(false);
  const [copied, setCopied] = useState(false);
  // Denture-tooth selections for the saddle pontics. UIC standard convention
@@ -17028,8 +17028,12 @@ function RPDLabRxForm({ caseInput, result, verbose = false }) {
  const arch = caseInput.arch === "maxillary"? "maxillary": "mandibular";
 
  // Build the per-tooth prescription lines + base design lines
+ // Lab Rx lines carry optional `tooth` or `teeth` metadata so click-to-
+ // highlight can wire each per-tooth line back to its tooth on the SVG
+ // chart above. Plain strings (no metadata) render as static text.
  const txLines = [];
- txLines.push(`Please fabricate ${result.framework.material} metal framework for ${arch} RPD.`);
+ const addLine = (text, meta = null) => txLines.push(meta ? { text, ...meta } : { text });
+ addLine(`Please fabricate ${result.framework.material} metal framework for ${arch} RPD.`);
  // Beading note is only relevant for maxillary palatal connectors (A-P
  // Strap, Single Palatal Strap, Full Palatal Plate) — those have a
  // tissue-side bead for border seal. Mandibular connectors (Lingual Bar,
@@ -17037,13 +17041,13 @@ function RPDLabRxForm({ caseInput, result, verbose = false }) {
  // connector's own `note` field, which is already correctly set per
  // connector type at the source. Falls back to no note if absent.
  const connectorNote = result.majorConnector.note? ` ${result.majorConnector.note}.`: "";
- txLines.push(`Major Connector: ${result.majorConnector.type}${result.majorConnector.width? ` (${result.majorConnector.width})`: ""}.${connectorNote}`);
+ addLine(`Major Connector: ${result.majorConnector.type}${result.majorConnector.width? ` (${result.majorConnector.width})`: ""}.${connectorNote}`);
  // Path-of-insertion line is engine-added (not in UIC sample Lab Rx
  // examples — the lab infers it from the marked cast). Verbose only.
- if (verbose) txLines.push(`Path of insertion: per surveyed cast.`);
- txLines.push("");
- txLines.push("* Undercuts to engage are marked in red.*");
- txLines.push("");
+ if (verbose) addLine(`Path of insertion: per surveyed cast.`);
+ addLine("");
+ addLine("* Undercuts to engage are marked in red.*");
+ addLine("");
  (result.abutmentDesigns || []).forEach(a => {
  const attrs = a.attrs || {};
  const parts = [];
@@ -17077,13 +17081,17 @@ function RPDLabRxForm({ caseInput, result, verbose = false }) {
  if (recipText) parts.push(recipText);
  }
  }
- txLines.push(`${a.tooth}: ${parts.join(", ")}`);
+ // Tag per-tooth lines with the abutment tooth number so the lab Rx ↔
+ // chart two-way binding can highlight both sides on click.
+ addLine(`${a.tooth}: ${parts.join(", ")}`, { tooth: a.tooth });
  });
- txLines.push("");
+ addLine("");
  (result.baseDesigns || []).forEach(b => {
  const teeth = (b.spanTeeth || []).map(t => `#${t}`).join(", ");
  const tStop = b.note && /distal tissue stop/i.test(b.note)? " with distal tissue stop": "";
- txLines.push(`${teeth} ${b.type}${tStop}`);
+ // Webbing/saddle lines carry their full span so clicking one selects
+ // the corresponding base-design element on the chart (not a tooth).
+ addLine(`${teeth} ${b.type}${tStop}`, { teeth: b.spanTeeth || [] });
  });
 
  // Denture-tooth selections — UIC framework Rx defers these to wax-rim
@@ -17099,14 +17107,14 @@ function RPDLabRxForm({ caseInput, result, verbose = false }) {
  // — NOT in the source Lab Rx PDFs. Verbose only.
  const primaryDistExt = [1, 2].includes(result.kennedy.class);
  if (verbose && hasDentureTeeth) {
- txLines.push("");
+ addLine("");
  if (primaryDistExt) {
- txLines.push(arch === "maxillary"
+ addLine(arch === "maxillary"
 ? "Distal-extension saddle acrylic: must completely engage the BUCCAL sulcus (UIC Huddle 6 Q11). Palatal coverage provided by the major connector."
 : "Distal-extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — both buccally AND lingually (UIC Huddle 6 Q11)."
  );
  } else {
- txLines.push(arch === "maxillary"
+ addLine(arch === "maxillary"
 ? "Tooth-bounded saddle acrylic: cover the edentulous ridge between abutments; do NOT extend onto the buccal shelf or hamular notch."
 : "Tooth-bounded saddle acrylic: cover the edentulous ridge between abutments; do NOT extend onto the retromolar pad or buccal shelf."
  );
@@ -17121,24 +17129,24 @@ function RPDLabRxForm({ caseInput, result, verbose = false }) {
  // no user input = omit entirely, matching the source format.
  const anyShadeFilled = toothShade.trim() || anteriorMold.trim() || posteriorMold.trim() || gingivalShade.trim();
  if ((verbose || anyShadeFilled) && hasDentureTeeth) {
- txLines.push("");
+ addLine("");
  const shadeText = toothShade.trim() || "TBD chairside via Vita shade guide at wax-rim try-in (match adjacent natural teeth).";
  const antMoldText = anteriorMold.trim() || "TBD at wax-rim try-in (Trubyte Classic; match intercanine distance + high-smile line).";
  const postMoldText = posteriorMold.trim() || "TBD at wax-rim try-in (Trubyte Classic posterior, e.g. F30 10°).";
  const gingShadeText = gingivalShade.trim() || "TBD via UIC gingival shade guide at try-in (typically L199-OR or 50% OR + 50% DK mix).";
- txLines.push(`Tooth shade: ${shadeText}`);
- txLines.push(`Anterior mold: ${antMoldText}`);
- txLines.push(`Posterior mold: ${postMoldText}`);
- txLines.push(`Gingival shade: ${gingShadeText}`);
+ addLine(`Tooth shade: ${shadeText}`);
+ addLine(`Anterior mold: ${antMoldText}`);
+ addLine(`Posterior mold: ${postMoldText}`);
+ addLine(`Gingival shade: ${gingShadeText}`);
  }
 
- txLines.push("");
- txLines.push("Please return for try-in. Thank you.");
+ addLine("");
+ addLine("Please return for try-in. Thank you.");
  // Enclosed-casts manifest is engine-added — not in source Lab Rx PDFs.
  // The lab knows what's being sent from the order packing slip. Verbose only.
  if (verbose) {
- txLines.push("");
- txLines.push("Enclosed: master cast (mounted on Denar 320 articulator via facebow transfer; tripod marks + undercuts marked in red), opposing cast, Regisil PVS bite registration recorded at MI.");
+ addLine("");
+ addLine("Enclosed: master cast (mounted on Denar 320 articulator via facebow transfer; tripod marks + undercuts marked in red), opposing cast, Regisil PVS bite registration recorded at MI.");
  }
 
  const today = new Date().toISOString().slice(0,10);
@@ -17308,20 +17316,51 @@ function RPDLabRxForm({ caseInput, result, verbose = false }) {
  position: "relative",
  }}>
  <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "8px" }}>Instructions:</div>
- <pre style={{
+ <div style={{
  margin: 0, fontFamily: "'JetBrains Mono', monospace",
  fontSize: "11px", lineHeight: 1.55, whiteSpace: "pre-wrap",
  color: "var(--ink)",
  paddingRight: "56px", /* keep text clear of the copy button */
  }}>
- {txLines.join("\n")}
- </pre>
+ {txLines.map((line, i) => {
+ // Interactive line: tagged with a tooth → click toggles the selected
+ // tooth on the SVG chart above (same state used by tooth-click in
+ // the chart, so the highlight is two-way). Hover/selected styles
+ // mimic the chart's accent so the visual binding is obvious.
+ if (line.tooth != null && onSelectTooth) {
+ const isHl = selectedTooth === line.tooth;
+ return (
+ <span
+ key={i}
+ className="rpd-print-hide-bg"
+ onClick={() => onSelectTooth(isHl ? null : line.tooth)}
+ title={`Click to highlight #${line.tooth} on the chart above`}
+ style={{
+ display: "block", cursor: "pointer",
+ background: isHl ? "rgba(124,30,32,0.14)" : "transparent",
+ borderLeft: isHl ? "2px solid var(--accent)" : "2px solid transparent",
+ paddingLeft: "6px", marginLeft: "-8px",
+ transition: "background 80ms ease, border-color 80ms ease",
+ }}
+ onMouseEnter={e => { if (!isHl) e.currentTarget.style.background = "rgba(0,0,0,0.04)"; }}
+ onMouseLeave={e => { if (!isHl) e.currentTarget.style.background = "transparent"; }}
+ >
+ {line.text}
+ </span>
+ );
+ }
+ // Plain line — keep the empty-line spacing by emitting a non-
+ // breaking space so the line height renders.
+ return <span key={i} style={{ display: "block" }}>{line.text || " "}</span>;
+ })}
+ </div>
  <button
  className="primary rpd-print-hide"
  type="button"
  onClick={async () => {
+ const copyText = txLines.map(l => l.text).join("\n");
  try {
- await navigator.clipboard.writeText(txLines.join("\n"));
+ await navigator.clipboard.writeText(copyText);
  setCopied(true);
  setTimeout(() => setCopied(false), 1600);
  } catch (_) {
@@ -17329,7 +17368,7 @@ function RPDLabRxForm({ caseInput, result, verbose = false }) {
  // hidden textarea + execCommand for older / permission-
  // restricted browsers.
  const ta = document.createElement("textarea");
- ta.value = txLines.join("\n");
+ ta.value = copyText;
  ta.style.position = "fixed";
  ta.style.opacity = "0";
  document.body.appendChild(ta);
@@ -18954,7 +18993,11 @@ function RPDHelper() {
  </button>
  </div>
  <RPDPreliminaryDesignForm caseInput={caseInput} result={result} verbose={verbose} />
- <RPDLabRxForm caseInput={caseInput} result={result} verbose={verbose} />
+ <RPDLabRxForm
+ caseInput={caseInput} result={result} verbose={verbose}
+ selectedTooth={selectedTooth}
+ onSelectTooth={(n) => { setSelectedDesignEl(null); setSelectedTooth(n); }}
+ />
  </div>
 )}
 
