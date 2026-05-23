@@ -663,7 +663,7 @@ function rpdFindContralateralAkers(caseInput, side) {
 // - INV-15 (cross-arch stabilization): McCracken p. 27
 // - INV-18 (Class II diagonal fulcrum): McCracken Fig 8-2
 
-function rpdPlanRetention(caseInput, kennedy) {
+function rpdPlanRetention(caseInput, kennedy, majorConnector) {
  // Dispatch by Kennedy class. Each per-class planner encodes its OWN
  // retention pattern explicitly. The mechanics differ structurally:
  // - Class I has bilateral DE terminals → 2 direct + 2 indirect retainers
@@ -678,10 +678,16 @@ function rpdPlanRetention(caseInput, kennedy) {
  const arch = caseInput.arch;
  const teethList = rpdArchTeeth(arch);
 
+ // Major-connector flag used by per-class planners to tailor the
+ // canine-mod IR rationale (Lingual Plate gives lingual bracing; Lingual
+ // Bar relies on the ML ball rest alone for rotational resistance).
+ const hasLingualPlate = !!majorConnector
+ && (majorConnector.type === "Lingual Plate" || majorConnector.type === "Sublingual Bar");
+
  let plan;
  switch (kennedy.class) {
- case "I": plan = planRetentionClassI(caseInput, kennedy); break;
- case "II": plan = planRetentionClassII(caseInput, kennedy); break;
+ case "I": plan = planRetentionClassI(caseInput, kennedy, { hasLingualPlate }); break;
+ case "II": plan = planRetentionClassII(caseInput, kennedy, { hasLingualPlate }); break;
  case "III": plan = planRetentionClassIII(caseInput, kennedy); break;
  case "IV": plan = planRetentionClassIV(caseInput, kennedy); break;
  default: plan = { directRetainers: [], indirectRetainers: [], notDesignable: null };
@@ -707,7 +713,7 @@ function rpdPlanRetention(caseInput, kennedy) {
  * - PLUS span-boundary direct retainers for any modification spans
  * - Major connector spans the arch (cross-arch stability)
  */
-function planRetentionClassI(caseInput, kennedy) {
+function planRetentionClassI(caseInput, kennedy, { hasLingualPlate = false } = {}) {
  const directRetainers = [];
  const claimed = new Set;
 
@@ -734,6 +740,7 @@ function planRetentionClassI(caseInput, kennedy) {
  span, kennedy, arch: caseInput.arch,
  directRetainers, claimed,
  mandibularCanineAnteriorIndirects: caseInput.arch === "mandibular" ? canineModIndirects : null,
+ hasLingualPlate,
  });
  }
 
@@ -761,7 +768,7 @@ function planRetentionClassI(caseInput, kennedy) {
  * - NO bilateral-direct-retention enforcement (Class II uses indirect
  * on opposite side, not extra direct — McCracken Ch 10)
  */
-function planRetentionClassII(caseInput, kennedy) {
+function planRetentionClassII(caseInput, kennedy, { hasLingualPlate = false } = {}) {
  const directRetainers = [];
  const claimed = new Set;
 
@@ -787,6 +794,7 @@ function planRetentionClassII(caseInput, kennedy) {
  span, kennedy, arch: caseInput.arch,
  directRetainers, claimed,
  mandibularCanineAnteriorIndirects: caseInput.arch === "mandibular" ? canineModIndirects : null,
+ hasLingualPlate,
  });
  }
 
@@ -1058,6 +1066,7 @@ function appendSpanBoundaryRetainers({
  span, kennedy, arch, directRetainers, claimed,
  forceMechanicForClassIV = false,
  mandibularCanineAnteriorIndirects = null,
+ hasLingualPlate = false,
 }) {
  for (const tooth of [span.beforeBound, span.afterBound]) {
  if (!tooth) continue;
@@ -1091,9 +1100,10 @@ function appendSpanBoundaryRetainers({
  rationale:
  `Mandibular canine #${tooth} flanks the anterior modification span (teeth ${spanDesc}). `
  + `It functions as a REST-ONLY indirect retainer — the ML ball rest resists `
- + `rotation of the distal-extension base. No clasp arm is placed: the lingual plate `
- + `contacts and braces the lingual surface, making a clasp arm both esthetically `
- + `unacceptable and biomechanically redundant. `
+ + `rotation of the distal-extension base. No clasp arm is placed: `
+ + (hasLingualPlate
+ ? `the lingual plate contacts and braces the lingual surface, making a clasp arm both esthetically unacceptable and biomechanically redundant. `
+ : `with a lingual bar (no plate contact on the canine), the ball rest alone provides the rotational counterpoise — bilateral RPI on the DE terminals + ring-rigid bar across the arch supplies the retention, while a canine clasp would be esthetically prominent and biomechanically duplicative. Note: with shallow sulcus or mand tori a lingual plate is the cleaner choice. `)
  + `McCracken Ch 5 + UIC Design Case II (Prelim Case 2) protocol.`,
  tier: "strong",
  alternativeRationale: null,
@@ -3854,7 +3864,11 @@ function rpdRunEngine(caseInput) {
  const framework = rpdSelectFrameworkMaterial(safeCase);
 
  // ── Plan retention top-down ────────────────────────────────────────
- const retentionPlan = rpdPlanRetention(safeCase, kennedy);
+ // Pass the already-computed major connector so the canine-mod IR rule
+ // (which assumes lingual plate bracing) only fires when the major
+ // actually IS a Lingual Plate. With Lingual Bar, those canines need
+ // normal clasps instead.
+ const retentionPlan = rpdPlanRetention(safeCase, kennedy, majorConnector);
 
  // ── Hydrate each direct retainer ───────────────────────────────────
  const abutmentDesigns = [];
