@@ -2678,20 +2678,24 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
  // extracted for classification purposes per Applegate Rule 1).
  const hopeless = rpdArchTeeth(caseInput.arch).filter(n => rpdIsPresent(caseInput, n) && caseInput.teeth[n]?.attrs?.perioPrognosis === "hopeless");
  if (hopeless.length) {
+ const noun = hopeless.length === 1 ? "Tooth" : "Teeth";
+ const verb = hopeless.length === 1 ? "has" : "have";
  flags.push({
  severity: "blocker",
  type: "hopeless-tooth",
- message: `Tooth ${rpdToothList(hopeless)} has hopeless prognosis. Lab 6 p. 2 hopeless definition: probing depth ≥8 mm + Miller class III mobility. Per standard practice, extract during Phase I: Active Disease Control. Re-classify arch after extraction (Applegate's Rule 1). Mark these teeth as "to be extracted" in the engine so the Kennedy classifier produces the post-extraction class — designing around a hopeless tooth wastes lab work when the tooth fails 6-12 months post-delivery.`,
+ message: `${noun} ${rpdToothList(hopeless)} ${verb} hopeless prognosis. Lab 6 p. 2 hopeless definition: probing depth ≥8 mm + Miller class III mobility. Per standard practice, extract during Phase I: Active Disease Control. Re-classify arch after extraction (Applegate's Rule 1). Mark these teeth as "to be extracted" in the engine so the Kennedy classifier produces the post-extraction class — designing around a hopeless tooth wastes lab work when the tooth fails 6-12 months post-delivery.`,
  });
  }
 
  // Poor / questionable abutments
  const poor = rpdArchTeeth(caseInput.arch).filter(n => rpdIsPresent(caseInput, n) && caseInput.teeth[n]?.attrs?.perioPrognosis === "poor");
  if (poor.length && designIntent === "definitive") {
+ const noun = poor.length === 1 ? "Tooth" : "Teeth";
+ const verb = poor.length === 1 ? "has" : "have";
  flags.push({
  severity: "warning",
  type: "questionable-abutment",
- message: `Tooth ${rpdToothList(poor)} has questionable periodontal prognosis. Consider Interim RPD (IPD) for transient reassessment phase before committing to definitive framework.`,
+ message: `${noun} ${rpdToothList(poor)} ${verb} questionable periodontal prognosis. Consider Interim RPD (IPD) for transient reassessment phase before committing to definitive framework.`,
  });
  }
 
