@@ -3863,7 +3863,7 @@ function renderTemplate(raw, f) {
  // modern UIC clinic practice. The Isodry has built-in HVE suction
  // that handles the cavitron's water spray. The "with assistant using
  // HVE" phrasing in Swade's templates reflects an older workflow where
- // an assistant held the suction tip; in current UIC practice the
+ // an assistant held the suction tip; in current clinic practice the
  // Isodry replaces that need.
  //
  // (Iter 30 incorrectly reverted this substitution under the false
@@ -4058,9 +4058,9 @@ function renderTemplate(raw, f) {
 
  // -------- 6b. Crown type (core buildup, crown prep, delivery). --------
  // When the user selects All-Ceramic, replace every "PFM" occurrence
- // PLUS swap the cement brand from RelyX (the PFM/cast default at UIC)
+ // PLUS swap the cement brand from RelyX (the PFM/cast default)
  // to Panavia (the all-ceramic / resin-cement standard). RelyX Unicem
- // would technically work for ceramics too, but the conventional UIC
+ // would technically work for ceramics too, but the conventional
  // teaching is Panavia F2.0 for e.max, so the note should reflect that.
  // The crown-delivery template (3204) is the primary site of "RelyX" —
  // template 5305 already uses Panavia explicitly so no swap needed.
@@ -7222,7 +7222,7 @@ function OdontogramField({ value, onChange, placeholder, bullet = "-", seedOnFoc
 );
 }
 
-// Compress an array of tooth numbers into UIC-style spans with consecutive
+// Compress an array of tooth numbers into spans with consecutive
 // runs joined by a dash. E.g. [3,4,5,7] → "#3-5, #7". Numerically consecutive
 // teeth that cross the 16↔17 arch boundary (max 3rd molar → mand 3rd molar)
 // are NOT joined since they're anatomically in different arches.
@@ -11341,7 +11341,7 @@ const CODE_GROUPS = {
  "D5120": { desc: "Complete denture — mandibular", children: ["D5120A","D5120B","D5120C"] },
  "D9390": { desc: "Consultation report", children: ["D9390A","D9390B"] },
  "D9630": { desc: "Other drugs/medicaments", children: ["D9630.1","D9630.2","D9630.4"] },
- "D1320": { desc: "Tobacco counseling (3-step UIC workflow)", children: ["D1320.1","D1320.2","D1320.3"] },
+ "D1320": { desc: "Tobacco counseling (3-step workflow)", children: ["D1320.1","D1320.2","D1320.3"] },
  "D9940": { desc: "Occlusal guard — hard, full arch", children: ["D9940A","D9940B"] },
  "D9944": { desc: "Occlusal guard — hard, partial arch", children: ["D9944A","D9944B"] },
  "D9945": { desc: "Occlusal guard — soft, full arch", children: ["D9945A","D9945B"] },
@@ -13681,7 +13681,7 @@ function PEDetail({ pe, onShowSteps }) {
  {/* Critical deficiencies — the boilerplate "Standard six" set
  (Case Selection / Professionalism / Patient Management /
  Time Management / Preparedness / Instructor Intervention) is
- implied across every UIC PE, so we filter those out and only
+ implied across every PE, so we filter those out and only
  render this section when a PE has truly PE-specific autofails
  (e.g. "Topic not approved prior to presentation."). */}
  {(() => {
@@ -16942,7 +16942,7 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  // Rationale verbosity is controlled by the parent's `verbose` prop so a
  // single toggle drives both the Preliminary Design Form rationale column
  // AND the Lab Rx spec callouts. Default OFF = compressed (form-style,
- // 1-line per decision, deduped per clasp type, 1:1 with UIC sample forms).
+ // 1-line per decision, deduped per clasp type, 1:1 with sample forms).
  // ON = expands to full educational paragraph with page refs.
  const showFullRationale = verbose;
  if (!result || result.kennedy.class === null) return null;
@@ -17554,7 +17554,7 @@ function explainMouldDiff(want, have) {
  return parts.join("; ") + ".";
 }
 
-// Gingival (Lucitone 199 / HIPA) shade options. UIC commonly uses
+// Gingival (Lucitone 199 / HIPA) shade options. we commonly use
 // Original + Dark Pink + the 50/50 mix; Light, Light Reddish Pink, and
 // Original Opaque (HIPA-only) round out the set. Colors are visual
 // approximations for the swatch — actual shade selection is chairside.
@@ -18056,9 +18056,11 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
 }
 
 function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null, onSelectTooth }) {
- const [open, setOpen] = useState(false);
+ // Iter 34: removed the open/closed collapse mechanic per user — the lab Rx
+ // is always visible. The previous "click header to expand" pattern hid the
+ // most-clicked element behind a chevron; the form now opens by default.
  const [copied, setCopied] = useState(false);
- // Denture-tooth selections for the saddle pontics. UIC standard convention
+ // Denture-tooth selections for the saddle pontics. standard convention
  // for the FRAMEWORK Rx is to defer these to wax-rim try-in (the lab makes
  // the framework first, then teeth are picked chairside with the patient
  // in front of you and added in a second processing step). These inputs
@@ -18086,7 +18088,7 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  // connector type at the source. Falls back to no note if absent.
  const connectorNote = result.majorConnector.note? ` ${result.majorConnector.note}.`: "";
  addLine(`Major Connector: ${result.majorConnector.type}${result.majorConnector.width? ` (${result.majorConnector.width})`: ""}.${connectorNote}`);
- // Path-of-insertion line is engine-added (not in UIC sample Lab Rx
+ // Path-of-insertion line is engine-added (not in sample Lab Rx
  // examples — the lab infers it from the marked cast). Verbose only.
  if (verbose) addLine(`Path of insertion: per surveyed cast.`);
  addLine("");
@@ -18138,13 +18140,13 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  addLine(`${teeth} ${b.type}${tStop}`, { teeth: b.spanTeeth || [] });
  });
 
- // Denture-tooth selections — UIC framework Rx defers these to wax-rim
+ // Denture-tooth selections — framework Rx defers these to wax-rim
  // try-in unless the student has already picked them at chairside.
  const hasDentureTeeth = (result.baseDesigns || []).some(b =>
  ["Open Lattice", "Mesh", "Tube Tooth", "Facing"].includes(b.type));
 
  // Saddle extension rules. Distal-extension saddles (Kennedy I, II) have
- // UIC-mandated full-sulcus engagement (Huddle 6 Q11). Tooth-bounded
+ // mandated full-sulcus engagement (Huddle 6 Q11). Tooth-bounded
  // saddles (Kennedy III, IV) stop at the abutments and must NOT extend
  // over the retromolar pad / buccal shelf (which would create discomfort
  // and unseat under chewing pressure). Engine-added pedagogical content
@@ -18154,8 +18156,8 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  addLine("");
  if (primaryDistExt) {
  addLine(arch === "maxillary"
-? "Distal-extension saddle acrylic: must completely engage the BUCCAL sulcus (UIC Huddle 6 Q11). Palatal coverage provided by the major connector."
-: "Distal-extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — both buccally AND lingually (UIC Huddle 6 Q11)."
+? "Distal-extension saddle acrylic: must completely engage the BUCCAL sulcus (RPD curriculum convention). Palatal coverage provided by the major connector."
+: "Distal-extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — both buccally AND lingually (RPD curriculum convention)."
  );
  } else {
  addLine(arch === "maxillary"
@@ -18165,7 +18167,7 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  }
  }
 
- // Denture mold + shade callouts. Per UIC convention these are chairside
+ // Denture mold + shade callouts. Per convention these are chairside
  // selections at wax-rim try-in, AFTER the framework is made — so they're
  // NOT in the source framework Rx PDFs. We show them when (a) verbose
  // mode is on OR (b) the student has explicitly typed something (override
@@ -18177,7 +18179,7 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  const shadeText = toothShade.trim() || "TBD chairside via Vita shade guide at wax-rim try-in (match adjacent natural teeth).";
  const antMoldText = anteriorMold.trim() || "TBD at wax-rim try-in (Trubyte Classic; match intercanine distance + high-smile line).";
  const postMoldText = posteriorMold.trim() || "TBD at wax-rim try-in (Trubyte Classic posterior, e.g. F30 10°).";
- const gingShadeText = gingivalShade.trim() || "TBD via UIC gingival shade guide at try-in (typically L199-OR or 50% OR + 50% DK mix).";
+ const gingShadeText = gingivalShade.trim() || "TBD via gingival shade guide at try-in (typically L199-OR or 50% OR + 50% DK mix).";
  addLine(`Tooth shade: ${shadeText}`);
  addLine(`Anterior mold: ${antMoldText}`);
  addLine(`Posterior mold: ${postMoldText}`);
@@ -18199,7 +18201,6 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  <div className="rpd-uic-form rpd-print-keep" style={{
  background: "white",
  border: "1.5px solid var(--ink)",
- borderTop: open? "1.5px solid var(--ink)": "1.5px solid var(--ink)",
  marginTop: "-1.5px", /* fuse border with preliminary form above */
  marginBottom: "20px",
  fontFamily: "'Geist', sans-serif",
@@ -18207,52 +18208,9 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  fontSize: "12px",
  lineHeight: 1.45,
  }}>
- {/* Header — clickable strip that visually attaches to the preliminary
- form above. Closed state: inviting accent-colored prompt with a +
- icon. Open state: filled accent bar so it reads as a section header. */}
- <button
- type="button"
- onClick={() => setOpen(o =>!o)}
- className="rpd-print-hide"
- style={{
- width: "100%", display: "flex", justifyContent: "space-between",
- alignItems: "center",
- padding: "14px 20px",
- /* Closed = inviting (accent text on white, draws the eye).
- Open = quiet header (dark ink on cream, doesn't compete for
- attention with the form content below). */
- background: open? "var(--paper)": "white",
- color: open? "var(--ink)": "var(--accent)",
- border: "none", borderBottom: open? "1.5px solid var(--ink)": "none",
- cursor: "pointer",
- fontFamily: "'Fraunces', serif",
- fontSize: "14px", fontWeight: 700, letterSpacing: "0.01em",
- textAlign: "left",
- }}
- onMouseEnter={e => { if (!open) e.currentTarget.style.background = "rgba(124,30,32,0.06)"; }}
- onMouseLeave={e => { if (!open) e.currentTarget.style.background = "white"; }}
- >
- <span style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
- <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "16px", lineHeight: 1, fontWeight: 400 }}>
- {open? "−": "+"}
- </span>
- <span>RPD Laboratory Prescription</span>
- <span style={{
- fontFamily: "'Geist', sans-serif", fontWeight: 400,
- fontSize: "11px", letterSpacing: "0.06em", textTransform: "uppercase",
- opacity: 0.7,
- }}>
- {/* CDT code for the procedure: D5213 = maxillary cast-metal RPD,
- D5214 = mandibular. Drives the Axium procedure code on the
- lab Rx form. */}
- {result.axiumCode || "D5213"}
- </span>
- </span>
- </button>
-
- {/* Form body — collapsed by default. Indent everything inside a wrapper
- with the original 20px padding so existing children layout unchanged. */}
- {open && (
+ {/* Iter 34: collapse/expand button removed per user — form is always
+ open. The form body itself uses 20px padding around the original
+ children (preserved unchanged from the collapsed-state markup). */}
  <div style={{ padding: "20px" }}>
  {/* Original header row (still useful when printed; hidden when closed) */}
  <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "16px", alignItems: "start", marginBottom: "12px" }}>
@@ -18451,7 +18409,6 @@ function RPDLabRxForm({ caseInput, result, verbose = false, selectedTooth = null
  </div>
  </div>
  </div>
-)}
  </div>
 );
 }
@@ -19769,7 +19726,7 @@ function RPDHelper() {
  const [caseInput, setCaseInput] = useState(() => rpdMakeBlankCase("maxillary"));
  const [selectedTooth, setSelectedTooth] = useState(null);
  const [selectedDesignEl, setSelectedDesignEl] = useState(null);
- // Verbose mode toggle. Default OFF = 1:1 with UIC source examples (Design
+ // Verbose mode toggle. Default OFF = 1:1 with source examples (Design
  // Case I/II, Lab Rx Examples A/B, framework Case 1) — engine emits ONLY
  // the content that appears in those PDFs. ON = adds the engine's
  // pedagogically-explicit spec callouts (major connector relief landmarks,
@@ -20016,7 +19973,7 @@ function RPDHelper() {
  <div style={{ marginTop: "12px", marginBottom: "20px" }}>
  {/* Verbose toggle — controls both the Preliminary Design Form
  rationale column AND the Lab Rx spec callouts. OFF = matches
- UIC source PDFs (Design Case I/II, LabRx Examples A/B, framework
+ source PDFs (Design Case I/II, LabRx Examples A/B, framework
  Case 1) 1:1. ON = expands rationales to full educational text
  with page refs + adds engine's explicit spec callouts. Quiet
  gray styling so it doesn't compete with the form content below.
@@ -20042,8 +19999,8 @@ function RPDHelper() {
  textTransform: "uppercase",
  }}
  title={verbose
- ? "Currently showing engine's full pedagogical detail. Click to collapse to the UIC sample format."
- : "Currently 1:1 with UIC sample PDFs. Click to expand to full pedagogical detail with page refs."}
+ ? "Currently showing engine's full pedagogical detail. Click to collapse to the sample format."
+ : "Currently 1:1 with sample PDFs. Click to expand to full pedagogical detail with page refs."}
  >
  Verbose
  </button>
@@ -21865,7 +21822,7 @@ const WIZARDS = {
  { label: "Vital pulp with carious exposure (reversible or partial irreversible pulpitis)", pathway: "pedo-pulpotomy" },
  { label: "Necrotic but salvageable (no successor, ortho-significant, or extraction-averse)", pathway: "pedo-pulpectomy" },
  { label: "Nonvital + behavior/resorption rules out pulpectomy", pathway: "pedo-lstr" },
- { label: "Necrotic with PARL — UIC default is extraction", pathway: "pedo-extraction" },
+ { label: "Necrotic with PARL — default is extraction", pathway: "pedo-extraction" },
  ],
  },
  surgical: {
@@ -21933,7 +21890,7 @@ const PATHWAYS = [
  keyDecisions: [
  "Pre-wedge BEFORE prepping (Swade Class II step 6, p.39) — wooden wedge mesial and distal for MOD, expands the PDL and makes restoring contact easier.",
  "Matrix system (Swade allows either, p.39 step 9): Garrison sectional kit (contoured band + plastic wedge + Garrison ring, burnish) is preferred for proximal contact, OR Tofflemire universal matrix + wooden wedge + burnish if sectional unavailable. The Garrison ring + wedge combination is critical — a flat Tofflemire band alone gives open contacts.",
- "Isolation: Isodry (UIC default) or rubber dam — both are acceptable per Swade; tie floss to the clamp if using rubber dam.",
+ "Isolation: Isodry (default) or rubber dam — both are acceptable per Swade; tie floss to the clamp if using rubber dam.",
  "Swade etch + bond sequence (p.39 step 12): etch enamel first, then dentin with 35% phosphoric acid → wait 15s → rinse 5s → lightly dry (dentin glossy without pooling). Apply Gluma 45s → wait 15s → air dry → rinse 15s → lightly dry. Apply ScotchBond Universal in vigorous scrub for 20s → air thin 5s → light cure 10s. The Gluma desensitization step is non-negotiable for posterior composite — skip it and the patient returns with post-op sensitivity within 24h.",
  "Place gingival increment first (1.5–2 mm), light cure 20–40 sec, then build incrementally up the box. Cure the final increment 60 sec.",
  "Check the contact with floss before dismissing — floss should snap through with resistance. A loose contact is a redo, not a polish. Codes: D2392 (2-surface) or D2393 (3-surface).",
@@ -21994,7 +21951,7 @@ const PATHWAYS = [
  "Overfill the prep — cavosurface margins must be covered. Condense with the small condenser into line angles first, then the large condenser. Carve back to anatomy with 5T, Cleoid-Discoid, ½ Hollenback, anatomic burnisher.",
  "Amalgamation (Swade p.35): 9-12 seconds on medium speed (3600 cpm). Mix should be consistent, shiny, smooth — too short = crumbly, too long = excess setting heat + reduced strength.",
  "Check occlusion gently with articulating paper — if the patient bites hard before the amalgam fully sets, it can fracture. Adjust high spots with a high-speed bur, lightly.",
- "Codes per Swade p.36: D2140 (amalgam 1 surface, posterior), D2150 (2 surface), D2160 (3 surface), D2161 (4+ surface). Anterior amalgam (D2110-D2113) is rare in contemporary UIC practice but listed in CDT.",
+ "Codes per Swade p.36: D2140 (amalgam 1 surface, posterior), D2150 (2 surface), D2160 (3 surface), D2161 (4+ surface). Anterior amalgam (D2110-D2113) is rare in contemporary clinic practice but listed in CDT.",
  ],
  phases: [
  { label: "Setup", count: 3 },
@@ -22318,7 +22275,7 @@ const PATHWAYS = [
  keyDecisions: [
  "Reduction targets (PFM, Swade clinic guide): 1.5–2.0 mm occlusal / 1.25–1.50 mm axial / 1.0–1.25 mm deep chamfer finish line / 6–10° total occlusal convergence. (All-metal uses shallower 0.5–0.8 mm chamfer + 1.0–1.25 mm axial; all-ceramic same as PFM.)",
  "Verify reduction with the putty matrix AND a 1.0 mm probe inside the putty — outside-only check misses inner under-reduction.",
- "Cord retraction for subgingival margins — pack BOTH cords per Swade p.55/p.66: #00 bottom (tucked, no tail) + #0 top (with tail for retrieval); soak in Hemodent or ViscoStat 3–5 min. Dual-cord is the UIC standard, NOT either/or.",
+ "Cord retraction for subgingival margins — pack BOTH cords per Swade p.55/p.66: #00 bottom (tucked, no tail) + #0 top (with tail for retrieval); soak in Hemodent or ViscoStat 3–5 min. Dual-cord is the standard, NOT either/or.",
  "Tempbond NE on the provisional; gel-stage cleanup 3–4 min after seating.",
  "Faculty signs off on the prep before impression — non-negotiable.",
  ],
@@ -22418,7 +22375,7 @@ const PATHWAYS = [
  "Pontic = modified ridge lap (allows floss to pass under cleanly); NOT saddle.",
  "Framework try-in is the highest-stakes appointment — non-passive metal cannot be made to fit later.",
  "Connector dimensions: ≥9 mm² cross-section for posterior, ≥6 mm² for anterior. Separately, Ante's law applies — total periodontal area of abutments ≥ replaced tooth's periodontal area.",
- "Cement choice (Swade clinic guide): RelyX Unicem 2 (self-adhesive resin cement) for PFM/zirconia FPDs is the UIC default — single-step, no priming dentin/etching tooth. FujiCem 2 (RMGI) is the conservative fallback on retentive preps with primarily dentin margins. Avoid traditional zinc phosphate on contemporary materials.",
+ "Cement choice (Swade clinic guide): RelyX Unicem 2 (self-adhesive resin cement) for PFM/zirconia FPDs is the default — single-step, no priming dentin/etching tooth. FujiCem 2 (RMGI) is the conservative fallback on retentive preps with primarily dentin margins. Avoid traditional zinc phosphate on contemporary materials.",
  ],
  phases: [
  { label: "Workflow + bridge design", count: 2 },
@@ -22465,7 +22422,7 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "ind-ch11" }, // Survey crowns for RPD
  { guideId: "indirect", chapterId: "ind-ch5" }, // PFM (typical survey crown material)
  // ind-ch3 (Metal framework try-in) removed — single-unit crown doesn't
- // have a separate substructure try-in in modern UIC practice; the lab
+ // have a separate substructure try-in in modern clinic practice; the lab
  // returns the finished crown after wax-up + cast + porcelain. Framework
  // try-in is an RPD-cast-framework concept, not a single-crown step.
  { guideId: "indirect", chapterId: "ind-ch4" }, // Cementation
@@ -22593,9 +22550,9 @@ const PATHWAYS = [
  id: "rpd-distal-extension",
  domain: "rpd",
  label: "Kennedy I or II (distal extension)",
- description: "Edentulous span extends distally past the last natural tooth — Kennedy I (bilateral) or II (unilateral). Tissue-supported posteriorly, so the framework rotates against the residual ridge under occlusal load. UIC default is a single-step PVS impression; altered cast technique becomes indicated when (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby or compressible. If the altered-cast call is skipped on a flabby ridge, the distal extension rocks under load on those compromised tissues, causing tissue trauma and abutment torque. The most common student error is taking a static impression on a clearly-flabby ridge and not flagging it for altered cast.",
+ description: "Edentulous span extends distally past the last natural tooth — Kennedy I (bilateral) or II (unilateral). Tissue-supported posteriorly, so the framework rotates against the residual ridge under occlusal load. default is a single-step PVS impression; altered cast technique becomes indicated when (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby or compressible. If the altered-cast call is skipped on a flabby ridge, the distal extension rocks under load on those compromised tissues, causing tissue trauma and abutment torque. The most common student error is taking a static impression on a clearly-flabby ridge and not flagging it for altered cast.",
  keyDecisions: [
- "Altered cast technique MAY be needed at framework try-in — UIC default is single-step PVS. Indications: (a) disclosing-wax shows framework seats differently on cast vs intraorally, OR (b) distal-extension ridge tissue is visibly flabby/compressible.",
+ "Altered cast technique MAY be needed at framework try-in — default is single-step PVS. Indications: (a) disclosing-wax shows framework seats differently on cast vs intraorally, OR (b) distal-extension ridge tissue is visibly flabby/compressible.",
  "Design typically uses RPI clasp on the distal abutment (rotation accommodates ridge resorption).",
  "Mesial rest on the terminal abutment (not distal) for the stress-breaking design.",
  "Framework + wax try-in MUST verify cast accuracy before processing — disclosing wax is the standard check.",
@@ -23483,9 +23440,9 @@ const PATHWAYS = [
  id: "cross-cd-iod-implants",
  domain: "cross",
  label: "Conversion from CD to implant overdenture",
- description: "Existing complete denture patient is interested in implants for retention. Two common paths: (a) keep the existing denture and add implants with chairside housing pickup at delivery, (b) fabricate a new denture designed for implant attachments from the start. Path (a) is faster and cheaper but inherits any deficiencies of the existing denture; path (b) is the better long-term outcome if the patient can afford it. Implant position is restoratively driven — work back from the planned attachment location. UIC predoc scope: this pathway is for a MANDIBULAR 2-implant overdenture opposing a maxillary CD. Maxillary implant-supported overdentures, full-arch maxillary implant prostheses, and any case >2 implants must be referred to PG Pros per UIC PIP guidelines.",
+ description: "Existing complete denture patient is interested in implants for retention. Two common paths: (a) keep the existing denture and add implants with chairside housing pickup at delivery, (b) fabricate a new denture designed for implant attachments from the start. Path (a) is faster and cheaper but inherits any deficiencies of the existing denture; path (b) is the better long-term outcome if the patient can afford it. Implant position is restoratively driven — work back from the planned attachment location. predoc scope: this pathway is for a MANDIBULAR 2-implant overdenture opposing a maxillary CD. Maxillary implant-supported overdentures, full-arch maxillary implant prostheses, and any case >2 implants must be referred to PG Pros per UIC PIP guidelines.",
  keyDecisions: [
- "UIC predoc scope (PIP page 3): mandibular 2-implant IOD opposing maxillary CD ONLY. Maxillary IOD/full-arch and >2 implants → PG Pros. Yuan: 'we don't provide implant-supported maxillary full occupation... you have to go to PG.'",
+ "predoc scope (PIP page 3): mandibular 2-implant IOD opposing maxillary CD ONLY. Maxillary IOD/full-arch and >2 implants → PG Pros. Yuan: 'we don't provide implant-supported maxillary full occupation... you have to go to PG.'",
  "Path (a): retain existing denture + pickup housings; cheaper, inherits any deficiencies.",
  "Path (b): fabricate new denture designed for implants from the start; better long-term.",
  "Implant position is restoratively driven — work back from planned attachment locations.",
@@ -23518,9 +23475,9 @@ const PATHWAYS = [
  id: "cross-rpd-to-implants",
  domain: "cross",
  label: "Patient outgrew their RPD — converting to implants",
- description: "Existing RPD patient losing additional teeth or seeking a fixed solution. The decision tree splits on remaining abutment quality: if the abutments are still good, modify the existing RPD with an added tooth and continue. If multiple abutments are failing, plan a transition to fixed-implant prosthetics — usually a fixed full-arch on 4–6 implants or implant-retained crowns on the remaining solid teeth. Phase the transition so the patient isn't without a prosthesis at any point. UIC predoc scope: implant-supported FPDs and full-arch implant prostheses go to PG Pros; predocs can restore single non-excluded implant crowns (premolars and canines per current PIP exclusion table). Add-a-tooth modifications and the consult/treatment-planning portion remain in predoc scope.",
+ description: "Existing RPD patient losing additional teeth or seeking a fixed solution. The decision tree splits on remaining abutment quality: if the abutments are still good, modify the existing RPD with an added tooth and continue. If multiple abutments are failing, plan a transition to fixed-implant prosthetics — usually a fixed full-arch on 4–6 implants or implant-retained crowns on the remaining solid teeth. Phase the transition so the patient isn't without a prosthesis at any point. predoc scope: implant-supported FPDs and full-arch implant prostheses go to PG Pros; predocs can restore single non-excluded implant crowns (premolars and canines per current PIP exclusion table). Add-a-tooth modifications and the consult/treatment-planning portion remain in predoc scope.",
  keyDecisions: [
- "UIC predoc scope (PIP page 3): full-arch implant prostheses and implant-supported FPDs → PG Pros. Single implant crowns on non-excluded teeth (premolars, canines) are predoc-restorable; #1/#2/#8/#9/#15/#16/#17/#18/#31/#32 are excluded.",
+ "predoc scope (PIP page 3): full-arch implant prostheses and implant-supported FPDs → PG Pros. Single implant crowns on non-excluded teeth (premolars, canines) are predoc-restorable; #1/#2/#8/#9/#15/#16/#17/#18/#31/#32 are excluded.",
  "Decision tree splits on remaining abutment quality.",
  "Good abutments → modify existing RPD with added tooth; defer implant transition.",
  "Failing abutments → plan implant-retained crowns or fixed full-arch.",
@@ -24021,11 +23978,11 @@ const PATHWAYS = [
  id: "cross-anterior-implant-esthetic",
  domain: "cross",
  label: "Anterior single implant + crown (esthetic zone)",
- description: "UIC predoc scope warning: per UIC PIP guidelines page 3, predocs CANNOT restore implants on #1, #2, #8, #9, #15, #16, #17, #18, #31, or #32 (and the lateral incisor numbering in some UIC source materials excludes additional anterior teeth — verify against the latest exclusion table). #8/#9 single-implant restoration is a PG Pros referral. The workflow below is for conceptual understanding and applies to NON-excluded esthetic-zone teeth (canines/premolars). For a true #8/#9 case, the predoc role is consult + faculty coordination, not the chair-side restorative work. With that caveat: implant placed in the esthetic zone and ready for restoration. Custom abutment is almost always required (stock abutments rarely meet emergence profile demands). Typical material combinations: e.max (lithium disilicate) CAD/CAM crown cemented to a titanium custom abutment (most common), OR zirconia custom abutment + e.max crown when the abutment risks showing through thin tissue (esthetic gain at slightly higher fracture risk). Screw-retained crowns can be e.max or zirconia directly on the implant platform — the abutment becomes integral to the crown. Shade matching to the contralateral natural tooth dominates the workflow. A provisional restoration for 2–3 months of soft-tissue maturation is common before the definitive crown — longer for cases that needed bone graft or a connective-tissue graft. Total timeline from uncovery to definitive seating is often 3–6 months in the esthetic zone.",
+ description: "predoc scope warning: per UIC PIP guidelines page 3, predocs CANNOT restore implants on #1, #2, #8, #9, #15, #16, #17, #18, #31, or #32 (and the lateral incisor numbering in some source materials excludes additional anterior teeth — verify against the latest exclusion table). #8/#9 single-implant restoration is a PG Pros referral. The workflow below is for conceptual understanding and applies to NON-excluded esthetic-zone teeth (canines/premolars). For a true #8/#9 case, the predoc role is consult + faculty coordination, not the chair-side restorative work. With that caveat: implant placed in the esthetic zone and ready for restoration. Custom abutment is almost always required (stock abutments rarely meet emergence profile demands). Typical material combinations: e.max (lithium disilicate) CAD/CAM crown cemented to a titanium custom abutment (most common), OR zirconia custom abutment + e.max crown when the abutment risks showing through thin tissue (esthetic gain at slightly higher fracture risk). Screw-retained crowns can be e.max or zirconia directly on the implant platform — the abutment becomes integral to the crown. Shade matching to the contralateral natural tooth dominates the workflow. A provisional restoration for 2–3 months of soft-tissue maturation is common before the definitive crown — longer for cases that needed bone graft or a connective-tissue graft. Total timeline from uncovery to definitive seating is often 3–6 months in the esthetic zone.",
  keyDecisions: [
  "UIC PREDOC SCOPE (PIP page 3): excluded tooth numbers for implant restoration include #1, #2, #8, #9, #15, #16, #17, #18, #31, #32 (verify lateral-incisor exclusions against current PIP table). Any case on these teeth → PG Pros referral. The clinical decisions below apply to teaching + canines/premolars; #8/#9 cases route to PG.",
  "Custom abutment almost always required in the esthetic zone — stock won't match emergence profile.",
- "Abutment material: titanium (default — strong, long-track-record), zirconia (esthetic — when thin biotype risks gray show-through), gold-hued titanium (compromise for warm-tone tissues). Per UIC source lab Rx examples: titanium, gold-hue, or zirconia.",
+ "Abutment material: titanium (default — strong, long-track-record), zirconia (esthetic — when thin biotype risks gray show-through), gold-hued titanium (compromise for warm-tone tissues). Per source lab Rx examples: titanium, gold-hue, or zirconia.",
  "Crown material: e.max (lithium disilicate) CAD/CAM is the typical anterior choice; PFM and full-gold are also acceptable per UIC lab Rx examples — pick by patient esthetic priorities.",
  "Provisional 2–3 months of soft-tissue maturation before the definitive crown is the typical pattern — longer (3–6 months total from uncovery) if a soft-tissue or bone graft is in play. The provisional shape drives the gingival contour that the definitive crown then mirrors.",
  "Cement vs screw retention: cement for emergence profile, screw for retrievability.",
@@ -24148,8 +24105,8 @@ const PATHWAYS = [
  "Rubber dam mandatory. Place a single-tooth subgingival anterior clamp (Brinker B4, B5, or B6 — the pointed-jaw designs sized for anteriors). Test the seal with water before starting — sodium hypochlorite leak onto mucosa is a chemical burn.",
  "Access on the lingual surface. The bur enters perpendicular to the lingual, then redirects to follow the long axis of the root. Outline form is a triangle with the base toward the incisal — opens the pulp horn region for the orifice locator. Pre-flare with Vortex orifice opener #20/.08 (Swade step 7).",
  "Working length: apex locator first, then confirm with PA radiograph showing the file 0.5–1 mm short of the radiographic apex. Re-establish length after each instrument change.",
- "Irrigation regimen (Swade p.121 note template, UIC standard): 1% NaOCl between every file change → final irrigation sequence 1% NaOCl, 17% EDTA, 1% NaOCl. Note: UIC uses 1% NaOCl, NOT the 5-6% concentration common in residency programs. Use a side-vented needle 2 mm short of working length, gentle agitation.",
- "Obturate (Swade p.120 step 21): coat master cone with Endoseal MTA sealer → insert into canal → pump up/down 3 times → condense and melt off excess gutta-percha with heat Calamus. Single-cone or warm vertical with bioceramic sealer is an acceptable alternative; the Swade-default Calamus/Endoseal-MTA workflow is what the UIC predoc clinic teaches. Temporary seal: sterile sponge + Cavit. The lingual access gets composite over Vitrebond at the same visit or schedule the definitive restoration within 4 weeks — coronal leakage is the #1 cause of RCT failure.",
+ "Irrigation regimen (Swade p.121 note template, standard): 1% NaOCl between every file change → final irrigation sequence 1% NaOCl, 17% EDTA, 1% NaOCl. Note: UIC uses 1% NaOCl, NOT the 5-6% concentration common in residency programs. Use a side-vented needle 2 mm short of working length, gentle agitation.",
+ "Obturate (Swade p.120 step 21): coat master cone with Endoseal MTA sealer → insert into canal → pump up/down 3 times → condense and melt off excess gutta-percha with heat Calamus. Single-cone or warm vertical with bioceramic sealer is an acceptable alternative; the Swade-default Calamus/Endoseal-MTA workflow is what the predoc clinic teaches. Temporary seal: sterile sponge + Cavit. The lingual access gets composite over Vitrebond at the same visit or schedule the definitive restoration within 4 weeks — coronal leakage is the #1 cause of RCT failure.",
  ],
  phases: [
  { label: "Diagnosis & access", count: 3 },
@@ -24207,7 +24164,7 @@ const PATHWAYS = [
  "Access shape: rounded triangle for mandibular molars (mesial side wider, accommodating MB + ML); rhomboid for maxillary (palatal corner, MB corner, DB corner) then trough mesial-palatal from MB orifice for MB2.",
  "MB2 hunt: drop explorer just mesial to MB orifice; MB2 usually under a calcified shelf. Trough with #2 round bur or LN bur mesially from MB orifice until orifice locator catches.",
  "Irrigation regimen (Swade p.121 note template): 1% NaOCl between every file change → final 1% NaOCl, 17% EDTA, 1% NaOCl. Same as anterior RCT; UIC uses 1% (NOT 5-6%).",
- "Obturation (Swade p.120 step 21): each canal — master cone + Endoseal MTA sealer → pump 3x → heat Calamus condense. Single-cone or warm vertical with bioceramic sealer is an acceptable alternative; Calamus/Endoseal-MTA is UIC predoc default.",
+ "Obturation (Swade p.120 step 21): each canal — master cone + Endoseal MTA sealer → pump 3x → heat Calamus condense. Single-cone or warm vertical with bioceramic sealer is an acceptable alternative; Calamus/Endoseal-MTA is predoc default.",
  "Same-day access-and-fill is Swade's default. If necrotic + PARL, two-visit with Ca(OH)2 intervisit + Cavit + sponge is the AAE-evidence-based exception (NOT the default — flag with faculty before planning).",
  "Crown plan must be in motion before final obturation. Endo-treated molars without cuspal coverage have ~50% 1-year survival. Coronal seal is THE #1 prognostic factor.",
  ],
@@ -24230,7 +24187,7 @@ const PATHWAYS = [
  id: "endo-necrotic-acute",
  domain: "endo",
  label: "Acute apical abscess",
- description: "Patient presents with throbbing pain, often facial swelling, percussion-positive on the offending tooth, and a tooth that does not respond to cold. The pulp is necrotic and the periapical tissues are colonizing the bone. Per UIC's Management of Endodontic Emergencies lecture (Weeks, 2025), the priority is drainage + Ca(OH)2 + Cavit AT THE SAME VISIT — the older 'leave tooth open 24-48 hours' approach is NOT current UIC practice and allows continued bacterial ingress. Open-tooth is reserved only for severe cellulitis when drainage cannot establish. Cellulitis (indurated, no fluctuance) and abscess (fluctuant, drainable) are different entities — cellulitis = no I&D, antibiotics + RCT; abscess = I&D first, antibiotics only if systemic involvement.",
+ description: "Patient presents with throbbing pain, often facial swelling, percussion-positive on the offending tooth, and a tooth that does not respond to cold. The pulp is necrotic and the periapical tissues are colonizing the bone. Per UIC's Management of Endodontic Emergencies lecture (Weeks, 2025), the priority is drainage + Ca(OH)2 + Cavit AT THE SAME VISIT — the older 'leave tooth open 24-48 hours' approach is NOT current clinic practice and allows continued bacterial ingress. Open-tooth is reserved only for severe cellulitis when drainage cannot establish. Cellulitis (indurated, no fluctuance) and abscess (fluctuant, drainable) are different entities — cellulitis = no I&D, antibiotics + RCT; abscess = I&D first, antibiotics only if systemic involvement.",
  keyDecisions: [
  "Confirm diagnosis: necrotic pulp + acute periapical inflammation. Cold-negative, EPT-negative, percussion-positive, often radiographic widening of the PDL or frank lesion. Differentiate cellulitis (indurated, no fluctuance — antibiotics + RCT) from abscess (fluctuant — drain first).",
  "Drainage + Ca(OH)2 + Cavit SAME-VISIT (Weeks UIC Endo Emergencies 2025). Drain through the canal preferably, or through a soft-tissue incision if a fluctuant abscess is accessible. Then debride, place Ca(OH)2, seal with Cavit. Do NOT leave the tooth open between visits — older protocol, allows bacterial re-contamination. Open-tooth ONLY for severe cellulitis when drainage cannot establish.",
@@ -24448,7 +24405,7 @@ const PATHWAYS = [
  "Flap design: full-thickness mucoperiosteal flap with intrasulcular incision + vertical releasing incision distal to the tooth. Reflect minimally — just enough to access the buccal plate.",
  "Bone removal: 702 surgical bur with copious sterile saline irrigation. Remove buccal plate to expose the cervical third of the root only — preserve as much bone as possible for future restoration.",
  "Sectioning: through the furcation for multi-rooted teeth; vertical through the long axis for single-rooted teeth. Use a periotome / luxator to mobilize each fragment, then elevate.",
- "Socket management: thorough curettage of granulation tissue, irrigation with sterile saline, gelatin sponge or socket preservation graft (D7953 if implant is planned). Per Swade p.164: 3-0 chromic gut on a 3/8 reverse-cutting needle (UIC standard), simple interrupted; figure-8 over socket if hemostasis is incomplete.",
+ "Socket management: thorough curettage of granulation tissue, irrigation with sterile saline, gelatin sponge or socket preservation graft (D7953 if implant is planned). Per Swade p.164: 3-0 chromic gut on a 3/8 reverse-cutting needle (standard), simple interrupted; figure-8 over socket if hemostasis is incomplete.",
  "Post-op: ibuprofen 600 mg q6h scheduled × 48 hr + acetaminophen 500 mg PRN. Antibiotics only if pre-op infection or immunocompromised. Recall at 7-10 days for suture removal.",
  ],
  phases: [
@@ -24468,11 +24425,11 @@ const PATHWAYS = [
  id: "surgery-third-molar",
  domain: "surgery",
  label: "Third molar extraction",
- description: "Wisdom tooth extraction — either fully erupted (treated like any other molar), partially erupted (operculitis risk, pericoronitis driver, often impacted distally on the second molar), or fully impacted (requires flap + bone removal + sectioning). The decision to refer to OMFS hinges on three things: angulation and depth (Pell-Gregory I/II/III + Winter mesial/distal/horizontal/vertical), proximity to the inferior alveolar nerve (IAN — visible on PA as the canal crossing the root), and the dental student's training level / faculty oversight. Most UIC pre-doctoral cases are referred unless the third molar is fully erupted.",
+ description: "Wisdom tooth extraction — either fully erupted (treated like any other molar), partially erupted (operculitis risk, pericoronitis driver, often impacted distally on the second molar), or fully impacted (requires flap + bone removal + sectioning). The decision to refer to OMFS hinges on three things: angulation and depth (Pell-Gregory I/II/III + Winter mesial/distal/horizontal/vertical), proximity to the inferior alveolar nerve (IAN — visible on PA as the canal crossing the root), and the dental student's training level / faculty oversight. Most predoctoral cases are referred unless the third molar is fully erupted.",
  keyDecisions: [
  "Pell-Gregory class: A (occlusal plane at or above the second molar), B (between occlusal plane and CEJ), C (below CEJ). Winter: mesial / distal / horizontal / vertical angulation. Combined classification dictates difficulty.",
  "IAN proximity: PA or panoramic radiograph showing the IAN canal crossing the root indicates risk. If darkening of the root, deflection of the IAN canal, or root narrowing at the canal — get CBCT and refer.",
- "UIC predoctoral protocol per Swade p.11 (urgent care wisdom-tooth template): ALL third molars route to PGOS via the Urgent Care wisdom-tooth referral note (#1, #16, #17, #32). Predoctoral chairside extraction of any third molar is exceptional and requires explicit faculty approval — the default move is referral, not extraction.",
+ "predoctoral protocol per Swade p.11 (urgent care wisdom-tooth template): ALL third molars route to PGOS via the Urgent Care wisdom-tooth referral note (#1, #16, #17, #32). Predoctoral chairside extraction of any third molar is exceptional and requires explicit faculty approval — the default move is referral, not extraction.",
  "If extracting: surgical technique with flap, buccal-bone removal, distal-bone removal for impacted teeth, sectioning of the crown from the roots, then root delivery. Plan 60-90 min.",
  "Post-op: pre-emptive analgesia (ibuprofen 800 mg 1 hr before procedure), scheduled NSAID + APAP for 48 hr, ice 20 min on / 20 min off for first 24 hr, soft diet 3-5 days. Inform patient of paresthesia risk if IAN was at risk.",
  ],
@@ -24565,7 +24522,7 @@ const PATHWAYS = [
  description: "A primary molar with a Class I or Class II carious lesion. The tooth will exfoliate naturally in 2-7 years — so the restoration only needs to last until then. Behavior management (tell-show-do, parental presence in operatory) precedes any clinical work; profound anesthesia and isolation in a small mouth are the procedural challenges. The composite itself is technique-identical to adult dentistry, just with smaller increments and less depth tolerance because primary pulp horns are higher and closer to the surface.",
  keyDecisions: [
  "Behavior management first. Tell-show-do for every instrument the child will see / hear. Parent in operatory for children under 6; outside for older if cooperation is good (helps with attention).",
- "Anesthesia dose limit: lidocaine 4.4 mg/kg (AAPD cap; 7 mg/kg manufacturer cap). For a 20 kg child that's ~88 mg ≈ 2.4 carpules of 2% (1 carpule = 36 mg). For a 15 kg child it's ~66 mg ≈ 1.8 carpules. UIC practice usually keeps it to 1 carpule for routine peds restorative — check with instructor before exceeding. Use 1:100,000 epi for hemostasis; topical first to minimize needle awareness.",
+ "Anesthesia dose limit: lidocaine 4.4 mg/kg (AAPD cap; 7 mg/kg manufacturer cap). For a 20 kg child that's ~88 mg ≈ 2.4 carpules of 2% (1 carpule = 36 mg). For a 15 kg child it's ~66 mg ≈ 1.8 carpules. clinic practice usually keeps it to 1 carpule for routine peds restorative — check with instructor before exceeding. Use 1:100,000 epi for hemostasis; topical first to minimize needle awareness.",
  "Isolation: Isodry pediatric size, or cotton roll + saliva ejector + bite block. Pediatric mouth is smaller — full-arch Isodry doesn't fit until ~age 10.",
  "Increments smaller (1 mm instead of 2 mm) because primary pulp horns are higher / closer to the surface. Cure each increment per the composite manufacturer's recommended time (typically 20 sec).",
  "Deep but vital lesion — consider partial (1-step) or stepwise (2-step) excavation over complete excavation. AAPD 2022 evidence: leaving caries-affected dentin over the pulp and sealing under a definitive restoration produces fewer pulp exposures than chasing every speck. If the lesion floor stays soft but the cavosurface is sound, a sealed restoration over partial excavation can spare the pulp and avoid a pulpotomy.",
@@ -24590,11 +24547,11 @@ const PATHWAYS = [
  id: "pedo-stainless-crown",
  domain: "pedo",
  label: "Primary SSC",
- description: "A primary molar with extensive caries — multi-surface (MOD), recurrent under a previous filling, pulpotomy completed, or otherwise too compromised for a direct restoration. AAPD positions SSC as the restoration of choice for multi-surface caries in primary molars, particularly in high-caries-risk children and those requiring advanced behavior guidance — composite has higher replacement rates here. SSC is preformed, full-coverage, cemented with glass ionomer, ~5-7 year service life (matching the remaining lifespan of the primary molar). Hall technique (sealing in caries without prep or LA) is an evidence-supported alternative for very limited cooperation, but UIC teaches conventional preparation. Sizing is the critical decision — too small won't seat, too large won't engage interproximal contacts.",
+ description: "A primary molar with extensive caries — multi-surface (MOD), recurrent under a previous filling, pulpotomy completed, or otherwise too compromised for a direct restoration. AAPD positions SSC as the restoration of choice for multi-surface caries in primary molars, particularly in high-caries-risk children and those requiring advanced behavior guidance — composite has higher replacement rates here. SSC is preformed, full-coverage, cemented with glass ionomer, ~5-7 year service life (matching the remaining lifespan of the primary molar). Hall technique (sealing in caries without prep or LA) is an evidence-supported alternative for very limited cooperation, but we teach conventional preparation. Sizing is the critical decision — too small won't seat, too large won't engage interproximal contacts.",
  keyDecisions: [
  "Indication check: multi-surface caries, post-pulpotomy, broken cusp on a primary molar, child with high caries risk who needs durable restoration, or a child under 4 with multi-surface caries (where AAPD specifically favors SSC over composite to avoid retreatment). Single-surface lesions = composite, not SSC.",
  "Sizing: measure the mesial-distal width of the tooth with a Boley gauge or by comparison to the contralateral. Crown sizes 2-7 (mandibular 2/3/4/5/6/7, maxillary D/DLM/E/EUL/F). Try-in must seat to the gingival margin without rocking.",
- "Prep (UIC criteria): occlusal reduction 1.5-2.0mm with a diamond football, maintaining general occlusal anatomy (inclines / ridges). Interproximal slices converge 4-10° combined; reduce enough that an explorer passes freely (0.5mm clearance) without nicking the adjacent tooth. Knife-edge margins mesial and distal, just below the gingival margin, continuous and distinct. 30-40° reverse bevel to the occlusal third on buccal and lingual (straight diamond). All reduced surfaces diamond-smooth, line angles rounded.",
+ "Prep (prep criteria): occlusal reduction 1.5-2.0mm with a diamond football, maintaining general occlusal anatomy (inclines / ridges). Interproximal slices converge 4-10° combined; reduce enough that an explorer passes freely (0.5mm clearance) without nicking the adjacent tooth. Knife-edge margins mesial and distal, just below the gingival margin, continuous and distinct. 30-40° reverse bevel to the occlusal third on buccal and lingual (straight diamond). All reduced surfaces diamond-smooth, line angles rounded.",
  "Festoon and crimp: trim the gingival margin of the crown with crown shears so it doesn't blanch tissue; crimp the cervical band inward with crown-crimping pliers to engage the gingival undercut.",
  "Cement: FujiCEM (RMGI) per Swade SSC protocol (p.151, step 11). Fill the crown 80%, seat lingual then roll to buccal, have the patient bite on a bite stick to fully seat. Clean excess with microbrushes or wet cotton roll. Floss. Patient bites on a cotton roll for 3 min. Re-confirm occlusion (primary molars tolerate <0.5 mm changes).",
  "Code: D2930 (prefabricated stainless steel crown — primary tooth). This is the single per-tooth code for any conventional or Hall-technique SSC on a primary molar. D2931 (SSC — permanent tooth) is for young permanents (e.g., heavily destroyed first permanent molar bridging into restorative planning). D2932 (prefab resin crown) is the strip-crown / preveneered-SSC code for primary anteriors — separate pathway. Do NOT use D2740 (zirconia/ceramic permanent crown) for primary SSC.",
@@ -24617,12 +24574,12 @@ const PATHWAYS = [
  label: "Primary pulpotomy",
  description: "A primary molar with caries reaching the pulp — patient reports cold-sensitivity progressing to spontaneous pain, but no signs of necrosis (no fistula, no radiographic radiolucency, no swelling). The treatment is to amputate the coronal pulp and seal the canal orifices with a fixative (formocresol, ferric sulfate) or a regenerative material (MTA, Biodentine), then immediately restore with an SSC. Primary molar canals are too narrow and curved for full RCT-style instrumentation; pulpotomy is the procedure adapted to their anatomy.",
  keyDecisions: [
- "Confirm pulp status: reversible OR partially irreversible pulpitis (sensitivity, NOT spontaneous pain at night or pulpal necrosis signs). If necrotic or with periapical changes — pulpotomy will fail; the choice becomes extraction + space maintainer (UIC default per pedo-extraction pathway) OR pulpectomy if tooth retention is preferred (no permanent successor, ortho space matters, extraction behavior is worse than pulpectomy — see pedo-pulpectomy pathway).",
+ "Confirm pulp status: reversible OR partially irreversible pulpitis (sensitivity, NOT spontaneous pain at night or pulpal necrosis signs). If necrotic or with periapical changes — pulpotomy will fail; the choice becomes extraction + space maintainer (default per pedo-extraction pathway) OR pulpectomy if tooth retention is preferred (no permanent successor, ortho space matters, extraction behavior is worse than pulpectomy — see pedo-pulpectomy pathway).",
  "Before committing — for a deep lesion that hasn't yet exposed the pulp, partial (1-step) or stepwise (2-step) excavation under a sealed restoration may keep the pulp vital without any pulpotomy at all. AAPD 2022 evidence favors this on teeth with normal pulp or reversible pulpitis. Pulpotomy is the answer when excavation reaches frank pulp.",
  "Behavior assessment: pulpotomy + SSC is a 45-60 min appointment in a small child. If cooperation is borderline, refer to pediatric specialist or sedation.",
- "Rubber dam isolation is required for pulp therapy (UIC standard, per Rawle isolation lecture, and AAPD positions rubber dam as the gold standard for pulp treatment). Even if you're not certain pulp therapy is needed at the start of the appointment, place the dam early so you're prepared. Floss every clamp and the bite block — aspiration risk.",
+ "Rubber dam isolation is required for pulp therapy (standard, per Rawle isolation lecture, and AAPD positions rubber dam as the gold standard for pulp treatment). Even if you're not certain pulp therapy is needed at the start of the appointment, place the dam early so you're prepared. Floss every clamp and the bite block — aspiration risk.",
  "Caries removal until exposure, then amputate coronal pulp with a sharp #6 or #8 round bur at slow speed. Irrigate with saline; control bleeding with a moist cotton pellet.",
- "Medicament — MTA is UIC's gold standard (per Alsaleh's Week 7 lecture, slide 42: 'MTA is now considered the material of choice for pulpotomy, it is what we use here at UIC COD'). MTA and Biodentine are bioactive — they induce hard tissue formation in pulpal tissue. Ferric sulfate 15.5% is a hemostatic agent that can be used as a pulpotomy material but UIC downranks it due to higher internal-resorption rates after use. Formocresol is no longer first-line in US programs due to toxicity concerns (1/5 Buckley dilution is the historical formulation if a preceptor requests it).",
+ "Medicament — MTA is the gold standard (per Alsaleh's Week 7 lecture, slide 42: 'MTA is now considered the material of choice for pulpotomy, it is what we use here at UIC COD'). MTA and Biodentine are bioactive — they induce hard tissue formation in pulpal tissue. Ferric sulfate 15.5% is a hemostatic agent that can be used as a pulpotomy material but UIC downranks it due to higher internal-resorption rates after use. Formocresol is no longer first-line in US programs due to toxicity concerns (1/5 Buckley dilution is the historical formulation if a preceptor requests it).",
  "Restore with SSC same visit. A temporary filling over a pulpotomy leaks.",
  "Codes: D3220 (therapeutic pulpotomy — primary or permanent) on the pulp-amputation visit + D2930 (prefab stainless steel crown — primary tooth) for the same-visit restoration. If you only do the pulpotomy without same-visit SSC (rare — avoid), the restoration code is added at the follow-up visit.",
  ],
@@ -24648,7 +24605,7 @@ const PATHWAYS = [
  "Indication: deep caries near the pulp, no spontaneous pain history, no nocturnal pain, no PARL on radiograph, no fistula, no internal/external resorption. Pain that's purely cold-provoked and stops with the stimulus = reversible pulpitis = candidate. Sensitivity at night or unprovoked = exclude.",
  "Confirm vitality before committing — palpation, percussion, and radiographic check. A tooth headed for necrosis is not an IPT candidate; you'll end up reopening within months.",
  "Excavation technique: remove all caries at the DEJ to leave caries-free walls; carefully remove soft carious dentin over the pulp but stop before exposure. The stained dentin that remains over the pulp is the deliberate endpoint — not a failure of complete excavation.",
- "Liner over the remaining caries-affected dentin: calcium hydroxide (Dycal/Theracal), MTA, or Biodentine. GIC (Vitrebond) is also acceptable as a base. UIC-taught options per Alsaleh.",
+ "Liner over the remaining caries-affected dentin: calcium hydroxide (Dycal/Theracal), MTA, or Biodentine. GIC (Vitrebond) is also acceptable as a base. taught options per Alsaleh.",
  "Restore definitively in the same visit — SSC preferred for posterior, composite acceptable. ITR/temporary restoration over IPT defeats the purpose; bacteria leak in, and the residual caries reactivates.",
  "Follow up at 6 months clinically, 12 months radiographically. Success indicators: no symptoms, no PARL development, no internal resorption. AAPD evidence supports IPT as the deep-caries strategy of choice over stepwise excavation in primary teeth.",
  ],
@@ -24669,7 +24626,7 @@ const PATHWAYS = [
  id: "pedo-pulpectomy",
  domain: "pedo",
  label: "Primary pulpectomy",
- description: "A primary tooth with necrotic or irreversibly inflamed radicular pulp where the crown is restorable and the patient (or family) prefers tooth retention over extraction — particularly when no permanent successor exists, when arch space matters orthodontically, or when an extraction would create a behavior bigger than the pulpectomy itself. UIC's operational default for necrotic primary with PARL is extraction (per the pedo-extraction pathway), but pulpectomy is a real option per Dr. Alsaleh's Week 7 lecture when conditions are right: minimal intra-radicular bone loss, no perforation, no cyst, no cellulitis, and a cooperative or sedated patient. Hand or rotary NiTi files, 2-3 mm short of the radiographic apex (apex locators are not reliable in primary), resorbable fill.",
+ description: "A primary tooth with necrotic or irreversibly inflamed radicular pulp where the crown is restorable and the patient (or family) prefers tooth retention over extraction — particularly when no permanent successor exists, when arch space matters orthodontically, or when an extraction would create a behavior bigger than the pulpectomy itself. the operational default for necrotic primary with PARL is extraction (per the pedo-extraction pathway), but pulpectomy is a real option per Dr. Alsaleh's Week 7 lecture when conditions are right: minimal intra-radicular bone loss, no perforation, no cyst, no cellulitis, and a cooperative or sedated patient. Hand or rotary NiTi files, 2-3 mm short of the radiographic apex (apex locators are not reliable in primary), resorbable fill.",
  keyDecisions: [
  "Indication: radicular pulp chronically inflamed or necrotic, spontaneous/persistent pain history, no internal resorption, intra-radicular bone loss minimal, abscess/fistula may be present (local infection only). The judgment call: tooth-saving worth the longer visit vs. extracting and placing a space maintainer.",
  "Contraindications (per Alsaleh): non-restorable crown, internal resorption, perforation of the chamber floor, pathologic root resorption >1/3 of root length, pathologic bone loss with PDL destruction, dentigerous/follicular cyst, PARL involving the developing permanent successor's crypt, cellulitis (acute spread), immunocompromised patient. Any of these → extract instead.",
@@ -24770,7 +24727,7 @@ const PATHWAYS = [
  label: "Behavior management",
  description: "A young patient who is fearful, crying, refusing the chair, or otherwise not yet ready for treatment. Behavior guidance has two goals that sometimes pull against each other: (a) facilitate the dental treatment the child needs, and (b) teach the child the skills to cooperate and manage stress. Decisions depend on which goal matters more for this visit. The Frankl scale (1 = definitely negative, 2 = negative, 3 = positive, 4 = definitely positive) is the shorthand for where the child is now. Cooperation is shaped less by the child's personality than by the communication triangle (provider, staff, parent) all aimed at the child as patient.",
  keyDecisions: [
- "Rate cooperation using the Frankl scale and document it. Frankl 3-4 are workable with routine technique; Frankl 2 is workable with active behavior management; Frankl 1 means stop and reassess. The 9 basic techniques UIC teaches (per Desai, DAOB 321) are: tell-show-do, ask-tell-ask, voice control, positive reinforcement, distraction, non-verbal communication, modeling, parental presence/absence, and memory restructuring. General dentists can use all of them; everything past nitrous oxide is specialty territory.",
+ "Rate cooperation using the Frankl scale and document it. Frankl 3-4 are workable with routine technique; Frankl 2 is workable with active behavior management; Frankl 1 means stop and reassess. The 9 basic techniques we teach (per Desai, DAOB 321) are: tell-show-do, ask-tell-ask, voice control, positive reinforcement, distraction, non-verbal communication, modeling, parental presence/absence, and memory restructuring. General dentists can use all of them; everything past nitrous oxide is specialty territory.",
  "Match your language to the child's age — rule of thumb, the number of words a child understands in a sentence roughly equals their age. Avoid jargon (with the parent too). Use kid-friendly substitutions for every instrument before it enters the mouth (\"sugar bug\" for caries, \"tooth pictures\" for radiographs, \"sleepy juice\" for anesthetic). Tell-show-do for first-time procedures, ask-tell-ask for older or more verbal patients (ask how they feel about it → tell them what to expect → ask if they feel more comfortable now).",
  "Voice control is deliberate — altering tone and volume on a spectrum of loud–soft–sharp to achieve a behavioral result, not raising your voice in frustration. Parents may not be familiar with the technique, so a quick disclaimer before the visit (\"sometimes I'll change my tone of voice to help focus\") avoids confusion. Pair with non-verbal cues: reassuring touch when receptive, smile, head nod. Never alone in the room with the child without an assistant or parent.",
  "Parental presence is case-by-case — there is no rule. It can be positive (very young children, separation anxiety) or negative (parent talking over you, telegraphing their own dental anxiety). Discuss with the parent before the appointment, not in front of the child. When the parent is in the operatory, establish that the child is your patient and you are the provider in that moment.",
@@ -24822,7 +24779,7 @@ const PATHWAYS = [
  keyDecisions: [
  "Indication check: extensive multi-surface caries on a primary incisor where a direct composite would not retain. Single-surface lesions get a Class III or IV composite. Pulp-involved teeth need pulpotomy + strip crown, not strip crown alone. If multiple anterior teeth are affected, plan all of them in one visit if cooperation allows.",
  "Anesthesia and isolation: 1 carpule of 2% lidocaine with 1:100K epi, short blue needle, buccal infiltration. Isolation is the make-or-break — Isodry on anteriors sometimes interferes; rubber dam with tie-floss on the clamp is more reliable. If rubber dam: punch two holes ½ inch apart and cut between them for a slot — fast placement and removal. Clamp-free shortcut for cooperative patients: punch overlapping holes for the teeth being worked on +1 in either direction, stretch the dam over, add canine clamps only if you need stability. Less stable but much easier to place and reposition.",
- "Preparation (UIC criteria): knife-edge finish line at the level of the gingiva, continuous on all surfaces. Interproximal reduction 1.0mm following tooth contour (tapered diamond / 55 / 56 / 169). Facial 1.0mm tapering toward the incisal (same burs). Lingual 0.5mm clearance from opposing dentition (diamond football). Incisal 1.5mm with rounded corners. Final gingival adjustment with flame or narrow diamond. Crown forms are fragile — if you push, they break. The form should seat passively; if it doesn't, add more reduction apical to the deepest seating point.",
+ "Preparation (prep criteria): knife-edge finish line at the level of the gingiva, continuous on all surfaces. Interproximal reduction 1.0mm following tooth contour (tapered diamond / 55 / 56 / 169). Facial 1.0mm tapering toward the incisal (same burs). Lingual 0.5mm clearance from opposing dentition (diamond football). Incisal 1.5mm with rounded corners. Final gingival adjustment with flame or narrow diamond. Crown forms are fragile — if you push, they break. The form should seat passively; if it doesn't, add more reduction apical to the deepest seating point.",
  "Bonding sequence: etch enamel first, then dentin (15 sec), rinse, dry leaving dentin glossy and moist. Apply Scotchbond Universal with vigorous 20-sec scrub, thin with air for 5 sec, cure 10 sec. If saliva contamination happens — re-etch for only 5 sec and proceed. Pre-load all materials before starting; the bond window in a young child is short.",
  "Load the celluloid form with composite (Renamel nanofill or equivalent in pediatric A2-A3 shade), seat onto the prepared tooth, express excess from a vent hole on the INCISAL or LINGUAL surface (avoid the facial — easier cleanup, less risk of visible vent mark), cure 40 sec from facial then 40 sec from lingual. Peel the form off with a #12 scalpel or simply tear it. Finish with fine diamond. Polish PRIMARILY at the gingival margins — that's where the food trap risk and the visible restoration-tooth interface live; the rest of the crown form gave you a glossy surface that needs very little attention. Restoration should not be in occlusion, protrusion, or lateral excursion.",
  "Code: D2932 (prefabricated resin crown — primary tooth) is the CDT 2024 strip-crown code. Per tooth. If you're billing a full anterior smile that includes multiple primary incisors plus a unilateral pulpotomy, code each tooth's restoration separately. Do NOT use D2330-D2335 (anterior composite codes) — strip crown is a full-coverage code, not a multi-surface direct fill.",
@@ -24848,11 +24805,11 @@ const PATHWAYS = [
  keyDecisions: [
  "Indication: small interproximal lesion that DOES NOT undermine the mesial or distal angle of the incisor. If the angle is undermined, you've lost the bonded enamel border that holds the restoration — go strip crown instead. If the lesion is on multiple surfaces, also go strip crown. Single-surface Class III with intact angle = this pathway.",
  "Isolation: rubber dam preferred (overlapping-punch + slot trick for fast placement, canine clamp for stability if needed). Isodry as backup. Anteriors desiccate fast — work efficiently.",
- "Prep (UIC criteria, distinct from adult Class III): 330 bur to penetrate the interproximal carious area until dentin (~1 mm from enamel). Prep is limited to the GINGIVAL 2/3 of the incisor — do NOT extend into the incisal third. Cervical seat is definitive and follows the gingival contour, 1 mm above the gingiva. Cavity walls established by moving the bur perpendicular to the tooth, light intermittent lateral motion into sound dentin / enamel.",
+ "Prep (prep criteria, distinct from adult Class III): 330 bur to penetrate the interproximal carious area until dentin (~1 mm from enamel). Prep is limited to the GINGIVAL 2/3 of the incisor — do NOT extend into the incisal third. Cervical seat is definitive and follows the gingival contour, 1 mm above the gingiva. Cavity walls established by moving the bur perpendicular to the tooth, light intermittent lateral motion into sound dentin / enamel.",
  "Retention locks (the key step that separates this from adult Class III): cut a labial DOVETAIL lock extending across 2/3 of the labial surface — include any decalcified enamel in the cervical area. 1 mm deep. Canines may need labial AND lingual locks; incisors usually just labial. The locks are mechanical retention; bonded enamel alone is not enough on a primary incisor.",
  "Place a wedge at the cervical seat + tightly placed Mylar strip. Etch (35% phosphoric, 15 sec), bond (Scotchbond Universal scrub + cure), composite in incremental layers, cure each. Use the wedge to pull the strip into intimate proximal contact — open contact here = food trap + future caries.",
  "Finish + polish: flame bur for contouring, sharp scalpel blade for the gingival margin (cleaner finish than a bur in that confined space). Rubber cup + fine moist abrasive (or a composite polishing system) for final polish. Restoration should NOT be in incisal occlusion — check protrusion specifically.",
- "Codes: D2330 (1-surface anterior composite) or D2331 (2-surface anterior composite) depending on whether the labial dovetail lock is being billed as a separate surface. UIC convention generally bills the lock + interproximal as 2 surfaces (D2331). If you build the lock with bonded composite that extends across the buccal as an esthetic continuation of the restoration, D2332 (3-surface) is appropriate. Per tooth.",
+ "Codes: D2330 (1-surface anterior composite) or D2331 (2-surface anterior composite) depending on whether the labial dovetail lock is being billed as a separate surface. convention generally bills the lock + interproximal as 2 surfaces (D2331). If you build the lock with bonded composite that extends across the buccal as an esthetic continuation of the restoration, D2332 (3-surface) is appropriate. Per tooth.",
  ],
  phases: [
  { label: "Indication & isolation", count: 2 },
@@ -24971,7 +24928,7 @@ const PATHWAYS = [
  id: "pedo-extraction",
  domain: "pedo",
  label: "Pediatric extraction",
- description: "A primary tooth or a young permanent tooth needs to come out. Indications differ from adult extraction: over-retained primary blocking permanent eruption, necrotic primary with PARL (UIC's standard rather than pulpectomy), abscessed primary, primary tooth with extensive crown destruction not restorable with SSC, orthodontic serial extraction sequence (ages 8-10), traumatic injury with poor prognosis, ectopic permanent eruption requiring primary removal. The mechanics are the same as adult extraction (elevate, luxate, deliver with forceps, irrigate, compress, sometimes suture) but the dose limits, instrument selection, parental consent, and post-op communication all shift. Note that primary roots are often partially resorbed, so the tooth can come out faster than expected.",
+ description: "A primary tooth or a young permanent tooth needs to come out. Indications differ from adult extraction: over-retained primary blocking permanent eruption, necrotic primary with PARL (the standard rather than pulpectomy), abscessed primary, primary tooth with extensive crown destruction not restorable with SSC, orthodontic serial extraction sequence (ages 8-10), traumatic injury with poor prognosis, ectopic permanent eruption requiring primary removal. The mechanics are the same as adult extraction (elevate, luxate, deliver with forceps, irrigate, compress, sometimes suture) but the dose limits, instrument selection, parental consent, and post-op communication all shift. Note that primary roots are often partially resorbed, so the tooth can come out faster than expected.",
  keyDecisions: [
  "Indication confirmation: necrotic primary with PARL (UIC extracts these — pulpectomy is not the routine), over-retained primary with permanent erupting palatally/lingually, unrestorable caries, trauma with hopeless prognosis, ortho serial extraction. Get the indication and rationale documented in the chart before the appointment.",
  "Anesthesia: AAPD maximum lidocaine dose 4.4 mg/kg. For typical pediatric weights — 1 carpule of 2% lidocaine is the limit (and the patient must weigh at least 18 lb / 8.2 kg). Maxillary: buccal infiltration + PDL is usually sufficient; primary maxillary bone is thin and permeable. Mandibular: IAN block + long buccal in older kids; in younger kids (under 5) IAN is unreliable due to mandibular foramen position — buccal + lingual infiltration + PDL often works better. Use the short blue 30G 20mm needle even for IAN, except in larger teens.",
@@ -25286,7 +25243,7 @@ const PATHWAYS = [
  id: "dir-large-mod",
  domain: "direct",
  label: "Large MOD composite",
- description: "A posterior tooth with a large MOD lesion or fractured filling — the cusps are undermined or the isthmus is wider than half the buccolingual width. Direct composite is the cheaper, faster option but has a 5-year failure rate of ~30% for these large restorations; indirect onlay or crown has 5-year failure of ~5-10% but requires two visits + lab fees. The decision is part clinical (how undermined are the cusps?), part financial (insurance coverage, patient budget), and part patient-factor (bruxer? cuspal proximity to occlusal contacts?). UIC predoctoral often does the direct restoration as the interim and refers for definitive indirect later.",
+ description: "A posterior tooth with a large MOD lesion or fractured filling — the cusps are undermined or the isthmus is wider than half the buccolingual width. Direct composite is the cheaper, faster option but has a 5-year failure rate of ~30% for these large restorations; indirect onlay or crown has 5-year failure of ~5-10% but requires two visits + lab fees. The decision is part clinical (how undermined are the cusps?), part financial (insurance coverage, patient budget), and part patient-factor (bruxer? cuspal proximity to occlusal contacts?). predoctoral often does the direct restoration as the interim and refers for definitive indirect later.",
  keyDecisions: [
  "Cusp involvement assessment: if the isthmus (B-L) is more than half the intercuspal distance, OR if cusps are unsupported (no dentin underneath), OR if the tooth has any vertical crack — direct composite has poor long-term prognosis; recommend onlay or crown.",
  "Patient factors: bruxer (occlusal wear, attrition, masseter hypertrophy) = indirect always. Heavy occlusal contact area on the restoration = indirect. Patient willing to return for a crown later = direct interim is reasonable.",
@@ -25341,9 +25298,9 @@ const PATHWAYS = [
  id: "ind-single-implant-crown",
  domain: "indirect",
  label: "Single implant crown",
- description: "A patient who had an implant placed 3-6 months ago returns for the restoration phase. The crown will sit on a custom or stock abutment connected to the implant fixture. The first big decision is cement-retained (esthetic, but residual cement is the #1 cause of peri-implantitis) vs screw-retained (retrievable, no cement risk, requires access hole). The second is anterior (where esthetic dominates, often cement-retained with esthetic abutment) vs posterior (where retrievability dominates, often screw-retained). UIC predoc scope: excluded teeth per PIP page 3 are #1, #2, #8, #9, #15, #16, #17, #18, #31, #32 — those cases go to PG Pros. Predoc-restorable single-implant cases are typically premolars and canines (and verify lateral incisor exclusion against current PIP table).",
+ description: "A patient who had an implant placed 3-6 months ago returns for the restoration phase. The crown will sit on a custom or stock abutment connected to the implant fixture. The first big decision is cement-retained (esthetic, but residual cement is the #1 cause of peri-implantitis) vs screw-retained (retrievable, no cement risk, requires access hole). The second is anterior (where esthetic dominates, often cement-retained with esthetic abutment) vs posterior (where retrievability dominates, often screw-retained). predoc scope: excluded teeth per PIP page 3 are #1, #2, #8, #9, #15, #16, #17, #18, #31, #32 — those cases go to PG Pros. Predoc-restorable single-implant cases are typically premolars and canines (and verify lateral incisor exclusion against current PIP table).",
  keyDecisions: [
- "UIC predoc scope (PIP page 3): #1/#2/#8/#9/#15/#16/#17/#18/#31/#32 are PG Pros referrals. Premolar and canine single-implant crowns are predoc-restorable. Verify current PIP exclusion table at appointment time.",
+ "predoc scope (PIP page 3): #1/#2/#8/#9/#15/#16/#17/#18/#31/#32 are PG Pros referrals. Premolar and canine single-implant crowns are predoc-restorable. Verify current PIP exclusion table at appointment time.",
  "Cement vs screw: anterior + esthetic priority + 0° angled access NOT possible = cement-retained. Posterior + retrievability + easy access angle = screw-retained. The angled-screw-channel (ASC) abutments can shift the decision toward screw when the access angle is up to 25° off ideal.",
  "Abutment type: stock titanium (cheapest, posterior, low esthetic demand), custom titanium (better emergence profile, posterior or non-smile anterior), zirconia (esthetic anterior, but only with hex-locked or anti-rotation feature for screw-retention).",
  "Margin location: 0.5-1.0 mm subgingival on the buccal of anterior implants for esthetic emergence; equigingival or supragingival on posterior. Sub-gingival margin demands precise impression and cementation to avoid retained cement.",

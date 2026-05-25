@@ -2827,22 +2827,12 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
  // iteration can re-surface this info via a Delivery pathway link
  // instead of an always-on notice.
 
- // "Always close the anterior edentulous area" — // (red text, hard rule). Engine surfaces this as an info-tier confirmation
- // whenever the case includes an anterior span (#7-10 max or #23-26 mand),
- // so the student is reminded the gap MUST be closed by some means (RPD,
- // FPD, or implant) — never left open. The engine never recommends leaving
- // an anterior gap open, but the explicit reminder reinforces the hard rule.
- const RPD_MAX_ANTERIOR_SET = new Set([7, 8, 9, 10]);
- const RPD_MAND_ANTERIOR_SET = new Set([23, 24, 25, 26]);
- const anteriorSet = caseInput.arch === "maxillary" ? RPD_MAX_ANTERIOR_SET: RPD_MAND_ANTERIOR_SET;
- const missingAnteriors = rpdArchTeeth(caseInput.arch).filter(n => anteriorSet.has(n) && !rpdIsPresent(caseInput, n));
- if (missingAnteriors.length > 0) {
- flags.push({
- severity: "info",
- type: "always-close-anterior",
- message: `Anterior edentulous area present (${rpdToothList(missingAnteriors)}). UIC Lecture 2 hard rule: "Always close the anterior edentulous area." Replacement options (in order of preference): FPD (if abutments allow), implant-supported crown(s), RPD with appropriate base design (Mesh for ≥3 anterior teeth, Facing for extremely limited vertical space + non-resorbed ridge), or IPD with denture teeth bonded to acrylic base if transitional. Leaving the gap open is never an acceptable definitive outcome.`,
- });
- }
+ // "Always close the anterior edentulous area" notice — REMOVED per user
+ // (iter 34). Was firing on every case with a missing #7-10 (max) or #23-26
+ // (mand). User feedback: the notice was noise, students already plan to
+ // close the gap. The engine's design output already picks an appropriate
+ // base form (Mesh / Facing / Tube Tooth) for the anterior span, which is
+ // the actionable answer.
 
  // Short crown / crown lengthening recommended
  const shortCrownTeeth = abutmentDesigns.filter(a => a.crownLengthening?.indicated).map(a => a.tooth);
@@ -2892,28 +2882,12 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
  });
  }
 
- // Applegate Rule 8 — 3rd molars as primary abutments require verification.
- // Per Applegate's classification rules, a 3rd molar can serve as a primary
- // abutment ONLY when ALL of: (a) normal angulation, (b) intact root form,
- // (c) adequate periodontal support, (d) a functional opposing antagonist.
- // If ANY criterion fails, the 3rd molar should not be the abutment —
- // either use the next-most-distal tooth, or re-classify the case to
- // include this site as a distal extension.
- //
- // The engine doesn't currently model 3rd-molar acceptability inputs, so
- // we surface a flag every time a 3rd molar bounds a span — instructing
- // the student to verify before sending the design to lab.
- const RPD_3RD_MOLARS_SET = new Set([1, 16, 17, 32]);
- const thirdMolarAbutments = (abutmentDesigns || [])
- .filter(a => a && RPD_3RD_MOLARS_SET.has(a.tooth) && a.claspType !== "Rest Only (no clasp)")
- .map(a => `#${a.tooth}`);
- if (thirdMolarAbutments.length > 0) {
- flags.push({
- severity: "info",
- type: "third-molar-applegate-rule-8",
- message: `Third molar(s) ${thirdMolarAbutments.join(", ")} used as primary abutment(s). Per Applegate Rule 8, verify ALL of: (a) normal angulation (not severely mesially tilted), (b) intact root form (no resorption, no fused roots that compromise function), (c) adequate periodontal support (no severe bone loss, no mobility >grade 1), (d) functional opposing antagonist (a tooth or denture that occludes properly). If any criterion fails, the 3rd molar should NOT be the abutment — either use the next-most-distal tooth or extract this 3rd molar and re-classify the case as a distal extension. 3rd molars often have unusual root anatomy, distal tilt, and limited functional load history; clinical reassessment is essential before committing to them as abutments.`,
- });
- }
+ // Applegate Rule 8 third-molar notice — REMOVED per user (iter 34). The
+ // engine's existing Rule 2/3 logic already excludes missing 3rd molars
+ // from classification. Surfacing a verification reminder every time #1,
+ // #16, #17, or #32 was used as an abutment was noise; the student has
+ // the radiograph in front of them and can judge tilt/roots/periodontium
+ // without an always-on flag.
 
  // Class II without modification — explain contralateral stabilization.
  // When a Class II has NO modification spaces, only the DE-side abutment
