@@ -24391,7 +24391,7 @@ const PATHWAYS = [
  "Pre-op assessment: medical history (anticoagulants, bisphosphonates), pre-op radiograph to evaluate root anatomy / divergence / dilaceration, plan socket-management approach (clean vs grafted).",
  "Anesthesia per Swade p.161: maxillary anteriors and premolars — buccal infiltration + greater palatine (or nasopalatine for #6-11) + PDL. Mandibular premolars — IAN block + lingual + mental + buccal infiltration + PDL. Confirm profound anesthesia before starting (instrument-cold test, not just lip numbness).",
  "Use the periotome first along the entire root circumference — severs the PDL, expands the socket, reduces fracture risk. Then straight elevator from the mesial line angle, pivoting against the alveolar bone (not the adjacent tooth).",
- "Forceps technique: anterior teeth = rotational + apical pressure; premolars = buccolingual figure-8 + slight rotation, then deliver buccally (premolar roots usually palatally / lingually curved).",
+ "Forceps technique: anterior teeth = rotational + apical pressure. MAXILLARY premolars (single buccal + single palatal root on first; single conical root on second) — buccolingual figure-8 + slight rotation, deliver buccally. MANDIBULAR premolars (single conical root, often slightly distally curved) — rotation + apical pressure, delivery direction is the resistance-of-least path (usually buccal or lingual, NOT a fixed rule).",
  "Post-op: inspect the socket (curette ONLY if granulation tissue or root tip remnant), irrigate with sterile saline, place a gelatin sponge if bleeding persists, pressure pack with gauze 30 min. Discuss dry socket prevention and signs.",
  ],
  phases: [
@@ -24516,7 +24516,7 @@ const PATHWAYS = [
  "Diagnosis: post-extraction pain peaking at day 2-4, socket appearing empty / clot dissolved, foul taste, exposed bone tender to touch. Not associated with fever or swelling (those suggest infection, not dry socket).",
  "Treatment is NOT antibiotics. Dry socket is sterile inflammation, not infection. Antibiotics don't help and risk adverse effects.",
  "Gentle irrigation with warm sterile saline to remove debris. Avoid aggressive curettage — that strips the periosteum and worsens pain.",
- "Place medicated dressing: Alvogyl (butamben + eugenol + iodoform) or eugenol-impregnated gauze packed gently into the socket. Patient reports immediate pain relief — that confirms the diagnosis.",
+ "Place medicated dressing: eugenol-impregnated gauze packed gently into the socket is the contemporary first-line. Alvogyl (butamben + eugenol + iodoform) historically used but was discontinued in much of the US/EU around 2019-2021 over iodoform concerns — check what UIC OS clinic actually stocks before assuming Alvogyl is available. Patient reports immediate pain relief — that confirms the diagnosis.",
  "Recall every 1-2 days for dressing change. Pain typically resolves in 5-7 days. NSAIDs for breakthrough pain. Counsel on prevention for future extractions: avoid smoking, avoid straws, avoid spitting, gentle saltwater rinse only.",
  ],
  phases: [
@@ -25111,7 +25111,7 @@ const PATHWAYS = [
  label: "Adult prophy (D1110)",
  description: "Patient without periodontal disease (gingivitis only, no bone loss). Part of Phase I (recall after COE) or Phase IV (every-6-month maintenance for healthy patients). Paired with POE (D0120) at the same appointment — the prophy+POE schedule is every 6 months, with the perio chart updated 1× per year (so every other prophy+POE appointment includes new charting). The endpoint is plaque-free crowns; this is not SRP, no subgingival deep cleaning. (Swade prophy chapter p.26-27, POE/PROPHY/PERIO MAINTENANCE p.21-22.)",
  keyDecisions: [
- "Indication check — no perio disease, no bone loss, gingivitis at most. Pockets ≥4 mm with bleeding, radiographic bone loss, or attachment loss = SRP territory (see perio-srp pathway), NOT prophy.",
+ "Indication check — no perio disease, no bone loss, gingivitis at most. Pockets ≥4 mm with bleeding + radiographic bone loss + attachment loss = SRP territory (see perio-srp pathway). Heavy generalized gingival inflammation WITHOUT bone loss (e.g., orthodontic-appliance plaque or pregnancy gingivitis with full-mouth thick calculus) = D4346 (full-mouth scaling in presence of generalized moderate-severe gingival inflammation), a distinct code from D1110 prophy.",
  "Perio chart + EPR update cadence: every other prophy+POE appointment (1× per year). At each visit, decide whether this visit needs new probing (perio chair) or surface debridement only (restorative chair).",
  "Instrumentation sequence (Swade p.26 step 5): Cavitron first for gross calculus; if patient has dense buildup, prophy cup first to remove gross plaque, then Cavitron. Floss interproximals to remove gross plaque. Finish with hand instruments — don't forget interproximals.",
  "Endpoint check with 11/12 ODU explorer at THREE specific spots before instructor check: line angles, CEJ, and under the contact. If those feel clean, you're done.",
