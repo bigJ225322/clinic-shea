@@ -22013,6 +22013,7 @@ const PATHWAYS = [
  "Layer dentin shade first (cervical and body), then translucent enamel shade over it. A monochromatic restoration looks flat against natural enamel translucency.",
  "Mylar strip + wedge shapes the proximal. Pre-curve the strip over a mirror handle to give it natural anatomy before placement. When placing liner/base, avoid the facial wall to preserve esthetics — opaque liner showing through facial enamel ruins the result.",
  "Polish in the proximal area with a fine-grit Soflex disc on a slow handpiece. Rough proximal surface = stain, plaque, recurrent caries.",
+ "Swade etch + bond sequence (p.41-42): etch enamel-then-dentin with 35% phosphoric acid → wait 15s → rinse 5s → lightly dry. Apply Gluma 45s → wait 15s → air dry → rinse 15s → lightly dry. ScotchBond Universal 20s vigorous scrub → air thin 5s → light cure 10s. Codes: D2330 (1 surf), D2331 (2 surf), D2332 (3 surf) — all anterior.",
  ],
  phases: [
  { label: "Shade & access", count: 2 },
@@ -22041,6 +22042,8 @@ const PATHWAYS = [
  "Place the lingual enamel shell first against the putty index, then dentin layers, then facial enamel layer. Add a thin halo of translucent shade at the incisal edge for opalescence.",
  "Polish with progressive grit Soflex discs (medium → fine → superfine) and finish with felt + diamond polishing paste.",
  "Photograph at delivery with shade tab adjacent — useful for refining future cases and for patient record.",
+ "Swade Class IV bevel (p.43 step 7): create a WIDE bevel 0.5-2.0 mm to maximize esthetics + retention (wider than the Class III 0.25-0.5 mm bevel because Class IV needs more enamel-rod surface for the bond to survive incisal occlusal stress). Etch + Gluma + ScotchBond sequence same as Class I/II. Code: D2335 (Resin-based comp — 4+ surf, ant).",
+ "Reference: Dr. Baroudi's Anterior Layering Technique video (linked from Swade p.43) — the canonical UIC method for the dentin-enamel layering on Class IV. Worth watching before any anterior corner buildup.",
  ],
  phases: [
  { label: "Planning & wax-up", count: 2 },
@@ -22072,6 +22075,7 @@ const PATHWAYS = [
  "Sandwich technique (when the gingival floor is dentin and the coronal margin is enamel): place RMGI as the bottom layer first — condition with polyacrylic acid 15 sec, light air dry without water, cure 10 sec, then place Ketac Nano RMGI as the dentin-floor base and cure 20 sec. Then etch the enamel and the RMGI surface, bond, and place composite over the top. RMGI's chemical bond to dentin + composite's polishability and color in the visible zone.",
  "Match cervical shade — usually one shade darker (higher chroma) than the body of the tooth.",
  "Polish flush with the root surface. A high or rough margin invites plaque retention and re-caries within 1–2 years.",
+ "Swade Class V step 9 (p.45): pack a #0 retraction cord soaked in Hemodent if needed for the subgingival margin. Swade etch + Gluma + ScotchBond sequence same as Class I/II. Code: D2330 (1 surf, ant) for anterior Class V; D2391 (1 surf, post) for posterior Class V.",
  ],
  phases: [
  { label: "Setup & isolation", count: 2 },
