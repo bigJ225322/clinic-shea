@@ -21922,11 +21922,12 @@ const PATHWAYS = [
  label: "Class II composite",
  description: "The workhorse of operative dentistry. A posterior tooth with proximal caries needs a composite restoration that reproduces the original contact, contour, and occlusion in a single visit. The case turns on three things — a tight proximal contact (sectional matrix with wedge and ring, never a flat band alone), a moisture-free bonding field (Isodry, not cotton rolls), and adequate light cure energy reaching the gingival floor. Most failures trace back to a weak proximal contact (food trap, recurrent caries) or to inadequate cure at the box floor.",
  keyDecisions: [
- "Use a sectional matrix system (Palodent, Composi-Tight) with a contoured band, wedge, and separator ring. Tofflemire alone gives flat contacts and open margins.",
- "Isodry isolation, ideally including one tooth distal. Cotton rolls bleed at the gingival margin and contaminate the bond.",
- "Selective-etch enamel (15 sec phosphoric acid on enamel only) + universal adhesive. Total-etch on dentin risks post-op sensitivity on deep preps.",
- "Place the gingival increment first (1.5–2 mm), light cure 20 sec, then build incrementally up the box. Bulk-fill is acceptable if using a bulk-fill-rated composite at the manufacturer-stated depth.",
- "Check the contact with floss before dismissing: floss should snap through with resistance. A loose contact is a redo, not a polish.",
+ "Pre-wedge BEFORE prepping (Swade Class II step 6, p.39) — wooden wedge mesial and distal for MOD, expands the PDL and makes restoring contact easier.",
+ "Matrix system (Swade allows either, p.39 step 9): Garrison sectional kit (contoured band + plastic wedge + Garrison ring, burnish) is preferred for proximal contact, OR Tofflemire universal matrix + wooden wedge + burnish if sectional unavailable. The Garrison ring + wedge combination is critical — a flat Tofflemire band alone gives open contacts.",
+ "Isolation: Isodry (UIC default) or rubber dam — both are acceptable per Swade; tie floss to the clamp if using rubber dam.",
+ "Swade etch + bond sequence (p.39 step 12): etch enamel first, then dentin with 35% phosphoric acid → wait 15s → rinse 5s → lightly dry (dentin glossy without pooling). Apply Gluma 45s → wait 15s → air dry → rinse 15s → lightly dry. Apply ScotchBond Universal in vigorous scrub for 20s → air thin 5s → light cure 10s. The Gluma desensitization step is non-negotiable for posterior composite — skip it and the patient returns with post-op sensitivity within 24h.",
+ "Place gingival increment first (1.5–2 mm), light cure 20–40 sec, then build incrementally up the box. Cure the final increment 60 sec.",
+ "Check the contact with floss before dismissing — floss should snap through with resistance. A loose contact is a redo, not a polish. Codes: D2392 (2-surface) or D2393 (3-surface).",
  ],
  phases: [
  { label: "Setup & isolation", count: 2 },
@@ -21952,10 +21953,10 @@ const PATHWAYS = [
  description: "A single-surface restoration in a pit or fissure — almost always occlusal on a posterior tooth, occasionally the lingual pit (cingulum) of a maxillary lateral incisor. The simplest restorative case and the one most likely to be over-prepared. Modern adhesion lets you preserve every millimetre of sound tooth structure; the prep is whatever the caries demands, not a geometric textbook outline. Most Class I failures come from over-reduction during prep or from leaving the occlusal anatomy flat instead of carving cusp tips, fossae, and developmental grooves back in.",
  keyDecisions: [
  "Minimum cavity prep — remove caries-infected dentin only (soft, wet, bacteria-laden), leave caries-affected dentin that is firm and structurally sound. No prophylactic extension.",
- "Selective enamel etch is sufficient. Total-etch on a small Class I adds nothing.",
- "Increment in 2 mm layers with 20 sec cure, or use bulk-fill at up to 4 mm if the material is rated for it.",
- "Carve anatomy with a small instrument (IPC, hollenback) before final cure — composite stays sculptable for 20–30 seconds.",
- "Check occlusion with thin articulating paper at MI and excursive movements. A high spot the patient can feel will cause post-op sensitivity within 24 hours.",
+ "Swade etch + bond sequence (Class I p.37-38, step 10): etch enamel first then dentin with 35% phosphoric acid → wait 15s → rinse 5s → lightly dry (dentin glossy without pooling). Apply Gluma 45s → wait 15s → air dry → rinse 15s → lightly dry. ScotchBond Universal vigorous scrub 20s → air thin 5s → light cure 10s. Gluma desensitization is non-negotiable.",
+ "Clean prep with Consepsis 10s scrub → 5s rinse → gently air-dry (Swade step 8) BEFORE liner/base placement. If indicated: 0.5 mm Vitrebond RMGI in deepest area → light cure 20s. Dycal only for indirect pulp cap or small mechanical exposure.",
+ "Increment in 2 mm layers with 20–40 sec cure per layer; cure the final increment 60s. Carve anatomy with IPC / Hollenback before final cure — composite stays sculptable for 20–30 seconds.",
+ "Check occlusion with articulating paper at MI and excursive movements. Finish with composite finishing burs, polish with Shofu + Jiffy Brush. Code: D2391 (resin-based composite, 1 surface, posterior).",
  ],
  phases: [
  { label: "Setup & prep", count: 3 },
