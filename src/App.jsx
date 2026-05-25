@@ -22248,9 +22248,18 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "ind-ch1" }, // Conventional workflow appt-by-appt
  { guideId: "indirect", chapterId: "ind-ch22" }, // Shade taking (do at appt 1)
  { guideId: "indirect", chapterId: "ind-ch5" }, // PFM material specifics
- { guideId: "indirect", chapterId: "ind-ch3" }, // Framework try-in
- { guideId: "indirect", chapterId: "ind-ch4" },
- { guideId: "indirect", chapterId: "ind-ch25" }, // Post-cementation adjustment + 24-hr / 1-wk follow-up // Cementation
+ // ind-ch3 (Metal framework try-in evaluation) intentionally REMOVED —
+ // that's the cast-metal substructure try-in step in the traditional
+ // multi-appointment PFM workflow. Modern UIC clinic practice doesn't
+ // do a separate metal-try-in appointment; the lab returns the finished
+ // PFM after wax-up + cast + porcelain firing, and the next visit is
+ // delivery. Including ind-ch3 here was rendering as "Step 4: Metal
+ // framework try-in evaluation" in the pathway view, which a student
+ // would (correctly) read as RPD-style content polluting a single-crown
+ // pathway. Survey-crown-for-RPD lives at ind-survey-crown — its own
+ // pathway, where framework try-in belongs.
+ { guideId: "indirect", chapterId: "ind-ch4" }, // Cementation comprehensive
+ { guideId: "indirect", chapterId: "ind-ch25" }, // Post-cementation adjustment + 24-hr / 1-wk follow-up
  { guideId: "indirect", chapterId: "ind-ch23" }, // Common pitfalls
  ],
  },
@@ -22362,9 +22371,12 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "ind-ch1" }, // Workflow
  { guideId: "indirect", chapterId: "ind-ch11" }, // Survey crowns for RPD
  { guideId: "indirect", chapterId: "ind-ch5" }, // PFM (typical survey crown material)
- { guideId: "indirect", chapterId: "ind-ch3" }, // Framework try-in
- { guideId: "indirect", chapterId: "ind-ch4" },
- { guideId: "indirect", chapterId: "ind-ch25" }, // Post-cementation adjustment // Cementation
+ // ind-ch3 (Metal framework try-in) removed — single-unit crown doesn't
+ // have a separate substructure try-in in modern UIC practice; the lab
+ // returns the finished crown after wax-up + cast + porcelain. Framework
+ // try-in is an RPD-cast-framework concept, not a single-crown step.
+ { guideId: "indirect", chapterId: "ind-ch4" }, // Cementation
+ { guideId: "indirect", chapterId: "ind-ch25" }, // Post-cementation adjustment
  { guideId: "rpd", chapterId: "rpd-ch8" }, // RPD-side survey crown prep specifics
  { guideId: "indirect", chapterId: "ind-ch23" }, // Common pitfalls
  ],
@@ -22743,7 +22755,8 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "ind-ch1" }, // Conventional crown workflow
  { guideId: "indirect", chapterId: "ind-ch11" }, // Survey crowns for RPD (indirect-side detail)
  { guideId: "indirect", chapterId: "ind-ch5" }, // PFM (typical survey crown material)
- { guideId: "indirect", chapterId: "ind-ch3" }, // Framework try-in
+ // ind-ch3 removed — see ind-survey-crown comment above; single-unit
+ // survey crown doesn't have a separate metal framework try-in step.
  { guideId: "indirect", chapterId: "ind-ch4" }, // Cementation
  { guideId: "indirect", chapterId: "ind-ch23" }, // Common pitfalls
  ],
@@ -23768,7 +23781,8 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "ind-ch1" }, // Workflow
  { guideId: "indirect", chapterId: "ind-ch12" }, // ¾ crown chapter
  { guideId: "indirect", chapterId: "ind-ch8" }, // Cast gold (typical material)
- { guideId: "indirect", chapterId: "ind-ch3" }, // Framework try-in
+ // ind-ch3 removed — single ¾ crown doesn't have a separate framework
+ // try-in (it's not a multi-unit cast-metal substructure case).
  { guideId: "indirect", chapterId: "ind-ch4" }, // Cementation
  { guideId: "indirect", chapterId: "ind-ch23" }, // Pitfalls
  ],
