@@ -23427,10 +23427,11 @@ const PATHWAYS = [
  ],
  sections: [
  { guideId: "cd", chapterId: "cd-ch1" }, // Diagnostic
+ { guideId: "cd", chapterId: "cd-ch2" }, // Custom tray (border-aggressive for xerostomic seal)
  { guideId: "cd", chapterId: "cd-ch3" }, // Border molding (extra critical for seal)
- { guideId: "cd", chapterId: "cd-ch4" },
- { guideId: "cd", chapterId: "cd-ch28" }, // Chairside liners (Coe-Soft / COE-Comfort for comfort) // Final impression (PVS retention strategies)
+ { guideId: "cd", chapterId: "cd-ch4" }, // Final impression (PVS retention strategies)
  { guideId: "cd", chapterId: "cd-ch17" }, // PPS, vibrating line (posterior seal)
+ { guideId: "cd", chapterId: "cd-ch28" }, // Chairside liners (Coe-Soft / COE-Comfort for comfort)
  { guideId: "cd", chapterId: "cd-ch22" }, // Loose denture differential
  { guideId: "cd", chapterId: "cd-ch24" }, // Edge-case management
  ],
@@ -23946,12 +23947,14 @@ const PATHWAYS = [
  { guideId: "cd", chapterId: "cd-ch19" }, // Types of CD (interim / immediate)
  { guideId: "cd", chapterId: "cd-ch1" }, // Diagnostic
  { guideId: "cd", chapterId: "cd-ch2" }, // Custom tray
- { guideId: "cd", chapterId: "cd-ch4" }, // Final impression
+ { guideId: "cd", chapterId: "cd-ch3" }, // Border molding — do NOT compress, fit-determining
+ { guideId: "cd", chapterId: "cd-ch4" }, // Final impression — do NOT compress, fit-determining
  { guideId: "cd", chapterId: "cd-ch7" }, // Mounting
+ { guideId: "cd", chapterId: "cd-ch9" }, // CR registration — required even in compressed timelines
  { guideId: "cd", chapterId: "cd-ch11" }, // Tooth setup
  { guideId: "cd", chapterId: "cd-ch13" }, // Wax try-in
- { guideId: "cd", chapterId: "cd-ch14" },
- { guideId: "cd", chapterId: "cd-ch26" }, // Clinical remount (still required even in compressed timelines) // Processing
+ { guideId: "cd", chapterId: "cd-ch14" }, // Processing
+ { guideId: "cd", chapterId: "cd-ch26" }, // Clinical remount (still required even in compressed timelines)
  { guideId: "cd", chapterId: "cd-ch15" }, // Delivery
  ],
  },
@@ -24589,6 +24592,7 @@ const PATHWAYS = [
  "Prep (UIC criteria): occlusal reduction 1.5-2.0mm with a diamond football, maintaining general occlusal anatomy (inclines / ridges). Interproximal slices converge 4-10° combined; reduce enough that an explorer passes freely (0.5mm clearance) without nicking the adjacent tooth. Knife-edge margins mesial and distal, just below the gingival margin, continuous and distinct. 30-40° reverse bevel to the occlusal third on buccal and lingual (straight diamond). All reduced surfaces diamond-smooth, line angles rounded.",
  "Festoon and crimp: trim the gingival margin of the crown with crown shears so it doesn't blanch tissue; crimp the cervical band inward with crown-crimping pliers to engage the gingival undercut.",
  "Cement: FujiCEM (RMGI) per Swade SSC protocol (p.151, step 11). Fill the crown 80%, seat lingual then roll to buccal, have the patient bite on a bite stick to fully seat. Clean excess with microbrushes or wet cotton roll. Floss. Patient bites on a cotton roll for 3 min. Re-confirm occlusion (primary molars tolerate <0.5 mm changes).",
+ "Code: D2930 (prefabricated stainless steel crown — primary tooth). This is the single per-tooth code for any conventional or Hall-technique SSC on a primary molar. D2931 (SSC — permanent tooth) is for young permanents (e.g., heavily destroyed first permanent molar bridging into restorative planning). D2932 (prefab resin crown) is the strip-crown / preveneered-SSC code for primary anteriors — separate pathway. Do NOT use D2740 (zirconia/ceramic permanent crown) for primary SSC.",
  ],
  phases: [
  { label: "Behavior & anesthesia", count: 2 },
@@ -24615,6 +24619,7 @@ const PATHWAYS = [
  "Caries removal until exposure, then amputate coronal pulp with a sharp #6 or #8 round bur at slow speed. Irrigate with saline; control bleeding with a moist cotton pellet.",
  "Medicament — MTA is UIC's gold standard (per Alsaleh's Week 7 lecture, slide 42: 'MTA is now considered the material of choice for pulpotomy, it is what we use here at UIC COD'). MTA and Biodentine are bioactive — they induce hard tissue formation in pulpal tissue. Ferric sulfate 15.5% is a hemostatic agent that can be used as a pulpotomy material but UIC downranks it due to higher internal-resorption rates after use. Formocresol is no longer first-line in US programs due to toxicity concerns (1/5 Buckley dilution is the historical formulation if a preceptor requests it).",
  "Restore with SSC same visit. A temporary filling over a pulpotomy leaks.",
+ "Codes: D3220 (therapeutic pulpotomy — primary or permanent) on the pulp-amputation visit + D2930 (prefab stainless steel crown — primary tooth) for the same-visit restoration. If you only do the pulpotomy without same-visit SSC (rare — avoid), the restoration code is added at the follow-up visit.",
  ],
  phases: [
  { label: "Behavior & anesthesia", count: 2 },
@@ -24668,6 +24673,7 @@ const PATHWAYS = [
  "Irrigate with sodium hypochlorite — but DO NOT allow extrusion through the apex (permanent successor sits right there). Light, gentle irrigation. Dry with paper points.",
  "Fill with resorbable material so the primary fill exfoliates with the tooth: ZOE, iodoform paste (KRI = iodoform + camphor + parachlorophenol + menthol), or iodoform + calcium hydroxide (Vitapex, Endoflas). If no permanent successor is present and the goal is long-term retention of the primary, gutta-percha + sealer is acceptable (per Alsaleh).",
  "Restore with SSC same visit; chamber base GIC. Follow-up: monitor for healing of fistula, absence of pain/mobility, no internal/external resorption. Delayed exfoliation is common (ZOE in the tissues can slow resorption — not a failure).",
+ "Codes: D3230 (pulpal therapy — anterior, primary tooth) for primary incisors/canines, OR D3240 (pulpal therapy — posterior, primary tooth) for primary molars. Add D2930 (prefab stainless steel crown — primary tooth) for the same-visit restoration. D3230/D3240 are the resorbable-fill primary equivalents of adult RCT codes (D3310/D3320/D3330) — bill the primary code even though the procedure resembles RCT.",
  ],
  phases: [
  { label: "Indication & informed consent", count: 2 },
@@ -24741,6 +24747,7 @@ const PATHWAYS = [
  "Application: dry teeth lightly with gauze (not perfect dryness), brush varnish onto all tooth surfaces with the unit-dose brush. Avoid the gingiva and tongue.",
  "Post-op: soft diet for 4 hours, no brushing or flossing until the next morning, no fluoride toothpaste rinse that night. The varnish needs time to deposit fluoride into the enamel.",
  "Recall frequency: high caries risk → every 3 months; moderate risk → every 6 months; low risk in children under 6 → 6 months; school-age low risk → annual. Document risk category in the chart at each visit.",
+ "Code: D1206 (topical fluoride varnish, therapeutic) — this is the correct code for fluoride varnish at any age. D1208 (topical fluoride application — excluding varnish) is for foam/gel/rinse fluorides. Many state Medicaid programs reimburse D1206 separately from a prophy code (D1110/D1120) at the same visit; check fee schedule.",
  ],
  phases: [
  { label: "Risk assessment", count: 1 },
@@ -24813,6 +24820,7 @@ const PATHWAYS = [
  "Preparation (UIC criteria): knife-edge finish line at the level of the gingiva, continuous on all surfaces. Interproximal reduction 1.0mm following tooth contour (tapered diamond / 55 / 56 / 169). Facial 1.0mm tapering toward the incisal (same burs). Lingual 0.5mm clearance from opposing dentition (diamond football). Incisal 1.5mm with rounded corners. Final gingival adjustment with flame or narrow diamond. Crown forms are fragile — if you push, they break. The form should seat passively; if it doesn't, add more reduction apical to the deepest seating point.",
  "Bonding sequence: etch enamel first, then dentin (15 sec), rinse, dry leaving dentin glossy and moist. Apply Scotchbond Universal with vigorous 20-sec scrub, thin with air for 5 sec, cure 10 sec. If saliva contamination happens — re-etch for only 5 sec and proceed. Pre-load all materials before starting; the bond window in a young child is short.",
  "Load the celluloid form with composite (Renamel nanofill or equivalent in pediatric A2-A3 shade), seat onto the prepared tooth, express excess from a vent hole on the INCISAL or LINGUAL surface (avoid the facial — easier cleanup, less risk of visible vent mark), cure 40 sec from facial then 40 sec from lingual. Peel the form off with a #12 scalpel or simply tear it. Finish with fine diamond. Polish PRIMARILY at the gingival margins — that's where the food trap risk and the visible restoration-tooth interface live; the rest of the crown form gave you a glossy surface that needs very little attention. Restoration should not be in occlusion, protrusion, or lateral excursion.",
+ "Code: D2932 (prefabricated resin crown — primary tooth) is the CDT 2024 strip-crown code. Per tooth. If you're billing a full anterior smile that includes multiple primary incisors plus a unilateral pulpotomy, code each tooth's restoration separately. Do NOT use D2330-D2335 (anterior composite codes) — strip crown is a full-coverage code, not a multi-surface direct fill.",
  ],
  phases: [
  { label: "Anesthesia & isolation", count: 2 },
@@ -24889,6 +24897,7 @@ const PATHWAYS = [
  "Lab fabrication (for students doing UIC DAOB lab — clinical practice sends to a lab): wire bending uses three-pronged plier for retention bends (Nance palatal acrylic-retention bend, band-and-loop spring loop) and bird-beak plier for shaping rails to the tissue. Goal: passive fit, 2+ mm clearance from teeth, wire touches tissue without pressing into it. Lower lingual holding arch (LLHA) loop sits midway between distal canine and mesial permanent molar, below the occlusal plane, contacting all four incisors lightly, not the canine or molar. Leave the wire long while bending — easier to refine, trim at the end.",
  "Lab fabrication — soldering: silver-based solder (Ag/Cu/Zn alloy, fusion 620-655 °C / 1150-1250 °F — low to avoid softening the stainless band). Water-soluble flux (potassium fluoride + borax + boric acid + silica) applied ONLY where you want solder to flow. Fix the band heat-resistant, intimate metal-to-metal contact between band and wire (closer = better joint), melt the flux first, then apply solder slowly, controlling heat with distance. Underheating → poor flow; overheating → pitting. Goal: smoothly joined, rounded joint. Polish sequence: wheel/disc → green stone → white stone → brown rubber → green rubber (coarse to fine — let the bur do the work).",
  "2nd visit — delivery: try the appliance in (it should seat without force), evaluate occlusion (child should not be biting on any wire), clean the abutment tooth with non-fluoride pumice and prophy cup, dry, fill the band with FujiCEM RMGI, seat with band seater, clean excess with microbrushes, burnish the band. Post-op: soft diet today, soreness for 24 hours, don't pick at it with tongue, call if it comes loose. Schedule 2-4 week post-op check.",
+ "Codes (CDT 2024): D1510 (fixed unilateral space maintainer — band-and-loop, single posterior loss) is the most common code. D1515 (fixed bilateral, maxillary — Nance). D1517 (fixed bilateral, mandibular — lingual arch). D1520 (removable unilateral, e.g., Hawley with denture tooth for anterior esthetics). D1525 (removable bilateral). D1526/D1527 are CDT 2024 additions for unilateral/bilateral specifically of the mandibular arch removable. Per-arch code, not per-tooth. If the maintainer needs adjustment/recementation at recall, D1551-D1556 (recementation codes). If lost or broken and replaced, D1556/D1557/D1558 (replacement codes).",
  ],
  phases: [
  { label: "Diagnosis & appliance selection", count: 2 },
@@ -24967,6 +24976,7 @@ const PATHWAYS = [
  "For mandibular extractions: support the mandible with your non-dominant hand to protect the TMJ from injury — particularly when the child can't reliably hold the bite block tight.",
  "Known complications to predict and prevent: (a) lip / cheek / tongue BITING is the most common post-op complication — counsel the parent directly. (b) Inadvertent extraction of the permanent successor along with a primary molar — happens when primary roots encircle the premolar crown; preop radiograph identifies this risk and a sectioning approach mitigates it; if it happens, reposition the premolar into its socket and splint. (c) Fractured root tip — weigh retrieval (instrumentation near the follicle) vs. leaving it (small/deep tips often resorb; chart that you left it). (d) Wrong tooth extracted — verify with radiograph + chair-side count before placing the forceps.",
  "Post-op: do NOT scrape the socket — risk to the permanent tooth bud (UIC Alsaleh). Evaluate visually; if pathologic tissue (granuloma, cyst) is present, remove with rongeurs rather than curettage. Digital pressure with gauze 30-45 minutes (children won't hold it as long as adults — set a timer). Compress the socket walls back to pre-surgical contour. For ongoing bleeding: absorbable gelatin sponge (Gelfoam) or oxidized cellulose (Surgicel). Suture only if tissue is mobile or the defect is large; primary extraction sockets usually do not need sutures. Post-op instructions to the parent: soft diet for the day, no straws (clot dislodgement), no spitting forcefully, no rinsing today, Tylenol or Motrin for pain (weight-based dose). Warn the parent the child WILL want to chew their lip/tongue while numb — supervise. Schedule recall if a space maintainer is indicated.",
+ "Codes: D7140 (extraction, erupted tooth or exposed root — routine, includes elevation/forceps and routine suturing) is the default for primary teeth requiring simple delivery. D7210 (surgical extraction, requiring removal of bone and/or sectioning of tooth) when the primary molar must be sectioned through the crown to avoid encroaching on the permanent successor bud. D7220-D7241 (impactions) rarely apply to primaries. If a space maintainer follows, bill that separately at the delivery visit (D1510/D1515/D1517/D1520, not at the extraction).",
  ],
  phases: [
  { label: "Indication & consent", count: 2 },
