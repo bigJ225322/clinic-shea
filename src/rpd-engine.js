@@ -1100,7 +1100,7 @@ function appendSpanBoundaryRetainers({
  // (e.g. #22/#27 flanking missing incisors #23-26) serve as rest-only
  // INDIRECT retainers, not clasped direct retainers. With lingual plate
  // the major connector contacts the lingual surface, providing bracing
- // in lieu of a clasp arm. McCracken Ch 5 + UIC Design Case II protocol.
+ // in lieu of a clasp arm. McCracken Ch 5 + Design Case II protocol.
  if (
  mandibularCanineAnteriorIndirects !== null
  && arch === "mandibular"
@@ -1124,7 +1124,7 @@ function appendSpanBoundaryRetainers({
  + (hasLingualPlate
  ? `the lingual plate contacts and braces the lingual surface, making a clasp arm both esthetically unacceptable and biomechanically redundant. `
  : `with a lingual bar (no plate contact on the canine), the ball rest alone provides the rotational counterpoise — bilateral RPI on the DE terminals + ring-rigid bar across the arch supplies the retention, while a canine clasp would be esthetically prominent and biomechanically duplicative. Note: with shallow sulcus or mand tori a lingual plate is the cleaner choice. `)
- + `McCracken Ch 5 + UIC Design Case II (Prelim Case 2) protocol.`,
+ + `McCracken Ch 5 + Design Case II (Prelim Case 2) protocol.`,
  tier: "strong",
  alternativeRationale: null,
  },
