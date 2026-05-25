@@ -23849,7 +23849,7 @@ const PATHWAYS = [
  description: "Posterior crown where the patient wants metal-free AND is a moderate-to-heavy bruxer — the combination that takes e.max off the table. 3Y monolithic zirconia is the strongest non-metal option; 4Y and 5Y get more translucent but less strong. Cementation is different from e.max: HF doesn't etch zirconia, so the bond protocol is sandblast + MDP-containing primer (Z-Prime Plus, Monobond Plus) + self-adhesive or dual-cure resin cement. Conventional RMGI is acceptable if retention form is adequate.",
  keyDecisions: [
  "Choose 3Y (highest strength) for bruxers; 4Y or 5Y for more translucency in less-stressed sites.",
- "Cementation: sandblast (50 µm Al2O3) + MDP primer + dual-cure resin cement.",
+ "Cementation per Swade: sandblast intaglio (50 µm Al2O3) → MDP primer (Z-Prime Plus or Monobond Plus, includes 10-MDP for chemical bond to zirconia) → RelyX Unicem 2 (self-adhesive resin) for the bond. FujiCem 2 (RMGI) is acceptable when retention form is adequate but is not the primary recommendation for monolithic zirconia.",
  "HF acid does NOT etch zirconia — common error if cemented like e.max.",
  "Polish any chairside adjustments with a zirconia-specific kit (no glaze layer to worry about).",
  "Counsel: opposing natural enamel may show wear; polish zirconia thoroughly to mitigate.",
