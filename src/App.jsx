@@ -23518,8 +23518,9 @@ const PATHWAYS = [
  id: "cross-rpd-to-implants",
  domain: "cross",
  label: "Patient outgrew their RPD — converting to implants",
- description: "Existing RPD patient losing additional teeth or seeking a fixed solution. The decision tree splits on remaining abutment quality: if the abutments are still good, modify the existing RPD with an added tooth and continue. If multiple abutments are failing, plan a transition to fixed-implant prosthetics — usually a fixed full-arch on 4–6 implants or implant-retained crowns on the remaining solid teeth. Phase the transition so the patient isn't without a prosthesis at any point.",
+ description: "Existing RPD patient losing additional teeth or seeking a fixed solution. The decision tree splits on remaining abutment quality: if the abutments are still good, modify the existing RPD with an added tooth and continue. If multiple abutments are failing, plan a transition to fixed-implant prosthetics — usually a fixed full-arch on 4–6 implants or implant-retained crowns on the remaining solid teeth. Phase the transition so the patient isn't without a prosthesis at any point. UIC predoc scope: implant-supported FPDs and full-arch implant prostheses go to PG Pros; predocs can restore single non-excluded implant crowns (premolars and canines per current PIP exclusion table). Add-a-tooth modifications and the consult/treatment-planning portion remain in predoc scope.",
  keyDecisions: [
+ "UIC predoc scope (PIP page 3): full-arch implant prostheses and implant-supported FPDs → PG Pros. Single implant crowns on non-excluded teeth (premolars, canines) are predoc-restorable; #1/#2/#8/#9/#15/#16/#17/#18/#31/#32 are excluded.",
  "Decision tree splits on remaining abutment quality.",
  "Good abutments → modify existing RPD with added tooth; defer implant transition.",
  "Failing abutments → plan implant-retained crowns or fixed full-arch.",
