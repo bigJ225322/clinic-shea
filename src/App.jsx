@@ -24540,8 +24540,9 @@ const PATHWAYS = [
  "Increments smaller (1 mm instead of 2 mm) because primary pulp horns are higher / closer to the surface. Cure each increment per the composite manufacturer's recommended time (typically 20 sec).",
  "Deep but vital lesion — consider partial (1-step) or stepwise (2-step) excavation over complete excavation. AAPD 2022 evidence: leaving caries-affected dentin over the pulp and sealing under a definitive restoration produces fewer pulp exposures than chasing every speck. If the lesion floor stays soft but the cavosurface is sound, a sealed restoration over partial excavation can spare the pulp and avoid a pulpotomy.",
  "UIC prep criteria: 1.0-1.5mm pulpal depth, smooth floor with rounded internal line angles, walls parallel to slightly convergent, marginal ridges + cusp tips preserved. Recommended burs: 329, 330, 55, 56, 169 (UIC Restorative + Composite Finishing kits). For Class II: isthmus width 1/4-1/3 intercuspal distance (~1mm), axial wall 1.0mm matching external contour, B/L extensions within the line angles of the tooth, no retention grooves.",
- "Class II matrix selection: T-band (stainless steel pre-formed band) is the conventional UIC choice for primary molars — the band is wrapped buccal-to-lingual around the tooth, the T-fold tightened over a wooden wedge to lock the band, then trimmed flush with crown scissors. A sectional matrix (pedo-size Garrison ring or Triodent V3 Pedi) is acceptable when the contact area is small and the prep stays within one line angle, but T-band re-establishes contour more reliably on wider primary contacts. Tofflemire with a universal band is generally too tall for primary molars and tends to overflare — avoid unless nothing else fits.",
+ "Class II matrix selection: Garrison sectional kit is Swade's default for primary molars per p.140-141 (sectional matrix band + plastic wedge + Garrison ring, burnish — same kit as adult Class II). Gold matrix band is the listed alternative but Swade explicitly downranks it (\"honestly it sucks, I'd just use a Garrison\"). T-band remains an acceptable third option when neither sectional nor gold band fits. Tofflemire with a universal band is generally too tall for primary molars and tends to overflare — avoid unless nothing else fits.",
  "Carve and finish gently — primary teeth have thinner enamel that can fracture under aggressive finishing. Maintain \"sealed tooth\" anatomy on the restoration — inclines and ridges restored without recreating deep pits or grooves. Check occlusion in MI.",
+ "Codes: D2391 (1-surface posterior) / D2392 (2-surface) / D2393 (3-surface) for Class I/II; D2330 (1-surface anterior) / D2331 (2-surface) / D2332 (3-surface) / D2335 (4+ surface anterior) for Class III/IV; D2330 or D2391 for Class V depending on facial vs lingual surface.",
  ],
  phases: [
  { label: "Behavior & anesthesia", count: 2 },
@@ -24692,9 +24693,9 @@ const PATHWAYS = [
  keyDecisions: [
  "Indication: deep pits and fissures with no cavitation, in a child at moderate-to-high caries risk. Cavitated lesion = PRR (Preventive Resin Restoration), not sealant.",
  "Pediatric-size Isodry for 8+, cotton rolls + saliva ejector + bite block for younger. Saliva contamination of the etched enamel is the common failure mode.",
- "Etch with 35% phosphoric acid (UIC criteria) on enamel only. Rinse, dry thoroughly — frosted matte appearance confirms adequate etch.",
- "Apply resin bonding agent first — thin with air, light cure — then the sealant on top. Manipulate sealant into grooves with the applicator tip, microbrush, or explorer. Avoid bubbles. Cure.",
- "Check seal with explorer — any tag-back or sticky feel = redo. Recall in 6 months for re-evaluation; sealants need monitoring and repair as they wear.",
+ "Etch with 35% phosphoric acid for 30 SECONDS (Swade p.134 — longer than the 15s used for composite restorations). Rinse, dry thoroughly — frosted matte appearance confirms adequate etch.",
+ "Apply Scotchbond Universal bonding agent (faculty usually requires it per Swade p.134) — vigorous scrub 20s, air thin, cure 10s — then sealant material on top. Manipulate sealant into grooves with the applicator tip, microbrush, or explorer. Avoid bubbles. Cure.",
+ "Check seal with explorer — any tag-back or sticky feel = redo. Recall in 6 months for re-evaluation; sealants need monitoring and repair as they wear. Code: D1351 per tooth (sealant — resin-based, per tooth).",
  ],
  phases: [
  { label: "Behavior & isolation", count: 2 },
