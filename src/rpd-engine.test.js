@@ -3661,26 +3661,14 @@ describe("UIC-AUDIT — Reverse Akers on molar is tier-downgraded (Retainers PDF
   });
 });
 
-describe("UIC-AUDIT — Always close anterior edentulous area flag (Lecture 2 p.14)", () => {
-  it("Missing #8 max central triggers always-close-anterior flag", () => {
-    const c = rpdMakeBlankCase("maxillary");
-    setMissing(c, [1, 16]);
-    setMissing(c, [8]);
-    const r = rpdRunEngine(c);
-    const flag = r.redFlags?.find(f => f.type === "always-close-anterior");
-    expect(flag).toBeTruthy();
-    expect(flag.message).toMatch(/Always close/i);
-    expect(flag.message).toMatch(/Lecture 2/);
-  });
-  it("Missing #23 mand lateral triggers always-close-anterior flag", () => {
-    const c = rpdMakeBlankCase("mandibular");
-    setMissing(c, [17, 32]);
-    setMissing(c, [23, 24, 25, 26]); // all 4 mand incisors
-    const r = rpdRunEngine(c);
-    const flag = r.redFlags?.find(f => f.type === "always-close-anterior");
-    expect(flag).toBeTruthy();
-  });
-  it("Pure posterior case (no anterior missing) does NOT trigger the flag", () => {
+// Iter 34: "always-close-anterior" notice removed per user — it fired on
+// every relevant case as noise. The engine's design output already picks
+// the right base form (Mesh / Facing / Tube Tooth) for anterior spans.
+// Tests deleted with the notice. The third "no anterior missing → no
+// flag" test kept (negative assertion now trivially true since the flag
+// no longer exists at all).
+describe("Iter 34 — always-close-anterior notice removed (audit-driven)", () => {
+  it("Pure posterior case (no anterior missing) does NOT trigger any always-close-anterior flag", () => {
     const c = rpdMakeBlankCase("mandibular");
     setMissing(c, [17, 32]);
     setMissing(c, [30, 31]); // right DE only
@@ -6618,15 +6606,15 @@ describe("Iter 25-28 regression tests", () => {
     expect(flag.severity).toBe("info");
   });
 
-  it("Third molar primary abutment surfaces Applegate Rule 8 flag", () => {
+  // Iter 34: "third-molar-applegate-rule-8" notice removed per user — it
+  // fired on every case with a 3rd-molar abutment as noise. Engine's
+  // Rule 2/3 logic already excludes missing 3rd molars from classification.
+  it("Third molar abutment does NOT surface the Applegate Rule 8 verify flag (notice removed)", () => {
     const c = rpdMakeBlankCase("mandibular");
-    // #17, #32 (3rd molars) present + #18, #31 missing → bilateral tooth-bounded
     for (const n of [18, 19, 30, 31]) c.teeth[n].status = "missing";
     const r = rpdRunEngine(c);
     const flag = r.redFlags.find(f => f.type === "third-molar-applegate-rule-8");
-    expect(flag).toBeDefined();
-    expect(flag.severity).toBe("info");
-    expect(flag.message).toMatch(/Applegate Rule 8/);
+    expect(flag).toBeUndefined();
   });
 
   it("Severe resorption Full Palatal Plate is scoped to Class I only (Class III stays FPD/strap)", () => {

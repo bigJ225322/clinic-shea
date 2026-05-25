@@ -1346,11 +1346,6 @@ Please return for try-in. Thank you.",
       "type": "altered-cast",
     },
     {
-      "message": "Anterior edentulous area present (#7, #8, #10). UIC Lecture 2 hard rule: "Always close the anterior edentulous area." Replacement options (in order of preference): FPD (if abutments allow), implant-supported crown(s), RPD with appropriate base design (Mesh for ≥3 anterior teeth, Facing for extremely limited vertical space + non-resorbed ridge), or IPD with denture teeth bonded to acrylic base if transitional. Leaving the gap open is never an acceptable definitive outcome.",
-      "severity": "info",
-      "type": "always-close-anterior",
-    },
-    {
       "message": "Vestibular depth ≤5mm: I-bar approach is contraindicated arch-wide. RPI assemblies have been switched to Combination Clasp.",
       "severity": "info",
       "type": "vestibular-depth",
@@ -1769,11 +1764,6 @@ Please return for try-in. Thank you.",
       "message": "Maxillary Kennedy Class I distal extension: Occlusion — REQUIRES balancing contacts (in addition to group function on remaining natural teeth). Set posterior denture teeth LATERAL to the residual alveolar ridge (cross-arch loading consideration — distributes occlusal force across the palate). At wax-rim try-in, verify simultaneous bilateral contacts in lateral excursions on denture teeth; natural-tooth side maintains group function with no interferences.",
       "severity": "info",
       "type": "max-class-i-balanced-required",
-    },
-    {
-      "message": "Anterior edentulous area present (#7, #8, #9, #10). UIC Lecture 2 hard rule: "Always close the anterior edentulous area." Replacement options (in order of preference): FPD (if abutments allow), implant-supported crown(s), RPD with appropriate base design (Mesh for ≥3 anterior teeth, Facing for extremely limited vertical space + non-resorbed ridge), or IPD with denture teeth bonded to acrylic base if transitional. Leaving the gap open is never an acceptable definitive outcome.",
-      "severity": "info",
-      "type": "always-close-anterior",
     },
   ],
 }
