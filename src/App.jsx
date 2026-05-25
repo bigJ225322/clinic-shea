@@ -22705,16 +22705,19 @@ const PATHWAYS = [
  { guideId: "cd", chapterId: "cd-ch19" }, // Types of CD & immediate scenarios (IID context)
  { guideId: "cd", chapterId: "cd-ch1" }, // Diagnostic impression
  { guideId: "cd", chapterId: "cd-ch2" }, // Custom tray
+ { guideId: "cd", chapterId: "cd-ch3" }, // Border molding — still required for edentulous posterior in IID
  { guideId: "cd", chapterId: "cd-ch4" }, // Final PVS impression
+ { guideId: "cd", chapterId: "cd-ch5" }, // Boxing & pouring
  { guideId: "cd", chapterId: "cd-ch6" }, // Face-bow (still done over teeth)
  { guideId: "cd", chapterId: "cd-ch7" }, // Mounting
  { guideId: "cd", chapterId: "cd-ch8" }, // VDO methods
+ { guideId: "cd", chapterId: "cd-ch9" }, // CR registration — required even for IID
  { guideId: "cd", chapterId: "cd-ch10" }, // Tooth selection
  { guideId: "cd", chapterId: "cd-ch11" }, // Tooth setup
  { guideId: "cd", chapterId: "cd-ch13" }, // Wax try-in
- { guideId: "cd", chapterId: "cd-ch14" },
- { guideId: "cd", chapterId: "cd-ch26" },
- { guideId: "cd", chapterId: "cd-ch28" }, // Chairside liners — IID transition reline schedule // Clinical remount at delivery // Processing
+ { guideId: "cd", chapterId: "cd-ch14" }, // Processing
+ { guideId: "cd", chapterId: "cd-ch26" }, // Clinical remount at delivery
+ { guideId: "cd", chapterId: "cd-ch28" }, // Chairside liners — IID transition reline schedule
  { guideId: "cd", chapterId: "cd-ch15" }, // Delivery
  { guideId: "cd", chapterId: "cd-ch23" }, // Post-delivery complaints
  ],
@@ -23310,14 +23313,17 @@ const PATHWAYS = [
  { guideId: "cd", chapterId: "cd-ch19" }, // Types of CD (IOD section)
  { guideId: "cd", chapterId: "cd-ch1" }, // Diagnostic impression (over roots)
  { guideId: "cd", chapterId: "cd-ch2" }, // Custom tray with root block-out
+ { guideId: "cd", chapterId: "cd-ch3" }, // Border molding — still required between roots
  { guideId: "cd", chapterId: "cd-ch4" }, // Final impression
+ { guideId: "cd", chapterId: "cd-ch5" }, // Boxing & pouring
  { guideId: "cd", chapterId: "cd-ch7" }, // Mounting
  { guideId: "cd", chapterId: "cd-ch8" }, // VDO
+ { guideId: "cd", chapterId: "cd-ch9" }, // CR registration
  { guideId: "cd", chapterId: "cd-ch11" }, // Tooth setup
  { guideId: "cd", chapterId: "cd-ch13" }, // Wax try-in
- { guideId: "cd", chapterId: "cd-ch14" },
- { guideId: "cd", chapterId: "cd-ch26" },
- { guideId: "cd", chapterId: "cd-ch27" }, // Attachment systems — root copings + studs // Clinical remount // Processing
+ { guideId: "cd", chapterId: "cd-ch14" }, // Processing
+ { guideId: "cd", chapterId: "cd-ch26" }, // Clinical remount
+ { guideId: "cd", chapterId: "cd-ch27" }, // Attachment systems — root copings + studs
  { guideId: "cd", chapterId: "cd-ch15" }, // Delivery
  { guideId: "cd", chapterId: "cd-ch23" }, // Post-delivery complaints
  ],
@@ -23346,14 +23352,17 @@ const PATHWAYS = [
  { guideId: "cd", chapterId: "cd-ch19" }, // Types of CD (implant overdenture section)
  { guideId: "cd", chapterId: "cd-ch1" }, // Diagnostic
  { guideId: "cd", chapterId: "cd-ch2" }, // Custom tray
+ { guideId: "cd", chapterId: "cd-ch3" }, // Border molding (between implants)
  { guideId: "cd", chapterId: "cd-ch4" }, // Final impression (transfer caps)
+ { guideId: "cd", chapterId: "cd-ch5" }, // Boxing & pouring
  { guideId: "cd", chapterId: "cd-ch7" }, // Mounting
  { guideId: "cd", chapterId: "cd-ch8" }, // VDO
+ { guideId: "cd", chapterId: "cd-ch9" }, // CR registration
  { guideId: "cd", chapterId: "cd-ch11" }, // Tooth setup
  { guideId: "cd", chapterId: "cd-ch13" }, // Wax try-in
- { guideId: "cd", chapterId: "cd-ch14" },
- { guideId: "cd", chapterId: "cd-ch26" },
- { guideId: "cd", chapterId: "cd-ch27" }, // Attachment systems — Locator pickup // Clinical remount // Processing
+ { guideId: "cd", chapterId: "cd-ch14" }, // Processing
+ { guideId: "cd", chapterId: "cd-ch26" }, // Clinical remount
+ { guideId: "cd", chapterId: "cd-ch27" }, // Attachment systems — Locator pickup
  { guideId: "cd", chapterId: "cd-ch15" }, // Delivery
  { guideId: "cd", chapterId: "cd-ch20" }, // Reline / rebase (attachment pickup)
  { guideId: "cd", chapterId: "cd-ch23" }, // Complaints
@@ -23941,10 +23950,10 @@ const PATHWAYS = [
  id: "cd-limited-dexterity",
  domain: "cd",
  label: "Limited dexterity",
- description: "Arthritis, post-stroke, Parkinson's, or general dexterity loss. The patient may struggle to insert and remove the denture independently — material choice (lighter weight), attachment design (lower retention force on overdentures), and caregiver involvement become primary design constraints. Avoid Locator attachments on overdentures (too much retention force); switch to ball attachments or lower-retention Locator inserts. Train a caregiver at delivery, not just the patient.",
+ description: "Arthritis, post-stroke, Parkinson's, or general dexterity loss. The patient may struggle to insert and remove the denture independently — material choice (lighter weight), attachment design (lower retention force on overdentures), and caregiver involvement become primary design constraints. Switch to LOWER-RETENTION Locator inserts (pink or clear — designed for exactly this scenario) rather than abandoning Locator for ball attachments. Per UIC Reline/Rebase/Repair lecture (Bin Yang), low-force Locator inserts are first-line for dexterity-compromised patients; ball attachments are harder to clean and offer less control over retention. Train a caregiver at delivery, not just the patient.",
  keyDecisions: [
  "Material choice: lighter weight (consider thermoplastic) if patient struggles with handling.",
- "Attachment design: reduce retention force (weaker Locator insert, ball over Locator).",
+ "Attachment design (UIC Bin Yang Reline/Rebase/Repair lecture): switch to LOWER-RETENTION Locator inserts (pink ~1.5 lb retention, or clear ~0.5 lb) — do NOT abandon Locator for ball attachments. Locator with weak inserts is the canonical UIC first-line for dexterity loss; ball attachments are harder to clean and have less retention-force control.",
  "Train a caregiver at delivery, NOT just the patient.",
  "Schedule longer follow-ups; assume caregiver will be doing insertion/removal long-term.",
  "Counsel on cleaning routine that caregiver can perform.",
