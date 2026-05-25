@@ -22315,7 +22315,11 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "ind-ch22" }, // Shade taking (critical for anteriors)
  { guideId: "indirect", chapterId: "ind-ch9" }, // Feldspathic porcelain
  { guideId: "indirect", chapterId: "ind-ch6" }, // e.max alternative
- { guideId: "indirect", chapterId: "ind-ch20" }, // Diagnostic wax-up
+ // ind-ch20 removed — chapter title is "Wax-up + lost-wax casting"
+ // (a lab step in the cast-gold/PFM fabrication sequence), NOT
+ // diagnostic wax-up. The veneer workflow doesn't go through
+ // lost-wax casting. If diagnostic wax-up content is desired, a new
+ // dedicated chapter would need to be authored.
  { guideId: "indirect", chapterId: "ind-ch4" }, // Cementation (adhesive bonding)
  { guideId: "indirect", chapterId: "ind-ch23" }, // Common pitfalls
  ],
@@ -22343,7 +22347,12 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "ind-ch1" }, // Conventional workflow
  { guideId: "indirect", chapterId: "ind-ch15" }, // FPDs (bridges)
  { guideId: "indirect", chapterId: "ind-ch5" }, // PFM (typical bridge material)
- { guideId: "indirect", chapterId: "ind-ch3" }, // Framework try-in
+ // ind-ch3 (Metal framework try-in) removed for short-span (3-unit)
+ // bridges — modern UIC clinic practice has the lab return the
+ // finished PFM bridge without a separate metal-substructure try-in
+ // appointment. Long-span (4+ unit) bridges keep this step — see
+ // ind-large-span-fpd, where casting verification at the framework
+ // stage is genuinely useful before porcelain firing.
  { guideId: "indirect", chapterId: "ind-ch4" }, // Cementation
  { guideId: "indirect", chapterId: "ind-ch23" }, // Common pitfalls
  ],
@@ -22947,7 +22956,8 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "ind-ch22" }, // Shade taking
  { guideId: "indirect", chapterId: "ind-ch6" }, // e.max (first-line for anteriors)
  { guideId: "indirect", chapterId: "ind-ch9" }, // Feldspathic alternative
- { guideId: "indirect", chapterId: "ind-ch20" }, // Diagnostic wax-up
+ // ind-ch20 removed — see ind-veneers comment; chapter title is
+ // lost-wax casting, not diagnostic wax-up.
  { guideId: "indirect", chapterId: "ind-ch4" },
  { guideId: "indirect", chapterId: "ind-ch25" }, // Post-cementation adjustment // Cementation (adhesive)
  { guideId: "indirect", chapterId: "ind-ch23" }, // Pitfalls
@@ -23359,7 +23369,8 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "ind-ch15" }, // FPDs
  { guideId: "indirect", chapterId: "ind-ch16" }, // Endo-treated teeth
  { guideId: "indirect", chapterId: "ind-ch11" }, // Survey crowns
- { guideId: "indirect", chapterId: "ind-ch20" }, // Diagnostic wax-up (rehab planning starts here)
+ // ind-ch20 removed — chapter title is lost-wax casting, not
+ // diagnostic wax-up (which is what full-mouth rehab planning needs).
  // RPD (if partial arches)
  { guideId: "rpd", chapterId: "rpd-ch2" }, // Mount
  { guideId: "rpd", chapterId: "rpd-ch3" }, // Survey
@@ -23672,8 +23683,12 @@ const PATHWAYS = [
  sections: [
  { guideId: "indirect", chapterId: "ind-ch9" }, // Feldspathic + veneer workflow
  { guideId: "indirect", chapterId: "ind-ch6" }, // e.max (if e.max veneer)
- { guideId: "indirect", chapterId: "ind-ch4" },
- { guideId: "indirect", chapterId: "ind-ch29" }, // Repair protocols — surface treatment specifics // Cementation (adhesive bond protocol)
+ { guideId: "indirect", chapterId: "ind-ch4" }, // Cementation comprehensive (re-bond protocol)
+ // ind-ch29 removed — that chapter is "Intraoral repair protocols
+ // — PFM porcelain chip + zirconia chip," which is about chip repair
+ // on an existing crown, not re-bonding a debonded veneer. The
+ // cementation protocol for veneer re-bond is already covered by
+ // ind-ch4 above.
  { guideId: "indirect", chapterId: "ind-ch23" }, // Pitfalls
  ],
  },
@@ -23698,7 +23713,7 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "ind-ch5" }, // PFM (failure mode context)
  { guideId: "indirect", chapterId: "ind-ch23" }, // Pitfalls (porcelain repair)
  { guideId: "indirect", chapterId: "ind-ch4" },
- { guideId: "indirect", chapterId: "ind-ch29" }, // Intraoral repair protocols — chairside PFM + zirconia // Cementation + bonding protocols
+ { guideId: "indirect", chapterId: "ind-ch29" }, // Intraoral repair protocols — chairside PFM + zirconia chip repair
  { guideId: "indirect", chapterId: "ind-ch1" }, // Workflow if remaking
  ],
  },
@@ -23925,7 +23940,8 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "ind-ch2" }, // Digital workflow (typical for implant crowns)
  { guideId: "indirect", chapterId: "ind-ch22" }, // Shade taking
  { guideId: "indirect", chapterId: "ind-ch6" }, // e.max
- { guideId: "indirect", chapterId: "ind-ch20" }, // Diagnostic wax-up
+ // ind-ch20 removed — chapter title is lost-wax casting, not
+ // diagnostic wax-up (relevant for esthetic-zone implant planning).
  { guideId: "indirect", chapterId: "ind-ch4" }, // Cementation (or screw-retained access)
  { guideId: "indirect", chapterId: "ind-ch23" },
  { guideId: "indirect", chapterId: "ind-ch26" },
@@ -24980,7 +24996,7 @@ const PATHWAYS = [
  description: "A patient with Stage II–III periodontitis (4-5 mm pockets with bleeding, calculus, or 5 mm+ pockets) needs definitive non-surgical therapy. SRP differs from a prophy in three ways: anesthesia is required (subgingival instrumentation hurts), the endpoint is calculus-free root surfaces (not plaque-free crowns), and you bill by quadrant (D4341 if 4+ teeth involved per quadrant, D4342 if 1-3 teeth). UIC typically schedules SRP in two visits — Mx in one visit, Mn in the next — to balance anesthesia and patient tolerance. Maintenance interval converts from 6 months to 3-4 months after SRP.",
  keyDecisions: [
  "Confirm staging: pocket depths ≥4 mm with bleeding, radiographic bone loss > 15% of root length, or clinical attachment loss ≥3 mm. Stage I (3 mm pockets, gingivitis-level) = prophy + OHI, not SRP.",
- "Anesthesia: long-acting (Marcaine 0.5% w/ epi 1:200K) for mandibular blocks, lidocaine 2% w/ epi for maxillary infiltrations. Anesthetize quadrant before starting; subgingival calculus removal without anesthesia is patient torture and breaks rapport.",
+ "Anesthesia (Swade SRP protocol p.28): for mandibular, IAN if 3+ teeth require SRP, otherwise buccal infiltrations for 1-2 teeth; mental nerve block useful especially with septocaine. For maxillary, appropriate buccal + palatal infiltrations; aim for PSA + MSA + ASA + greater palatine if all maxillary teeth need SRP. Default agent is 2% lidocaine 1:100k epi; septocaine is an option for breakthrough. Anesthetize the quadrant before starting — subgingival calculus removal without anesthesia is patient torture and breaks rapport.",
  "Instrumentation sequence: ultrasonic (Cavitron) for gross calculus removal first (medium-power universal tip, foot pedal-paced strokes), then hand instrumentation (Gracey 1-2 anteriors, 11-12 mesial posterior, 13-14 distal posterior) for definitive root planing.",
  "Endpoint check: explorer detects no calculus, no rough surface. Visible plaque alone isn't the endpoint; calculus is. Subgingival calculus that's been there 10 years feels glassy-smooth — it's not finished until you can run an explorer along the root surface and it feels like polished glass.",
  "Re-evaluation at 4-6 weeks. Pockets should reduce 1-2 mm, bleeding should decrease. Residual 5+ mm pockets after SRP go to periodontal specialist or surgical referral. Maintenance interval set to 3-4 months going forward.",
