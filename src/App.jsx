@@ -22197,9 +22197,13 @@ const PATHWAYS = [
  { label: "Follow-up", count: 1 },
  ],
  sections: [
- { guideId: "direct", chapterId: "dir-ch22" },
- { guideId: "direct", chapterId: "dir-ch3" },
- { guideId: "direct", chapterId: "dir-ch31" },
+ { guideId: "direct", chapterId: "dir-ch22" }, // SDF chapter
+ // dir-ch3 (Caries removal — endpoint and instrumentation) removed —
+ // SDF is a non-surgical caries arrest treatment. The point is to
+ // NOT excavate. If the workflow extends to SMART (SDF + GIC), the
+ // restorative side is covered by the user opening a separate
+ // restoration pathway; it shouldn't be implied as a step here.
+ { guideId: "direct", chapterId: "dir-ch31" }, // Pitfalls
  ],
  },
  {
@@ -24483,7 +24487,7 @@ const PATHWAYS = [
  "Sizing: measure the mesial-distal width of the tooth with a Boley gauge or by comparison to the contralateral. Crown sizes 2-7 (mandibular 2/3/4/5/6/7, maxillary D/DLM/E/EUL/F). Try-in must seat to the gingival margin without rocking.",
  "Prep (UIC criteria): occlusal reduction 1.5-2.0mm with a diamond football, maintaining general occlusal anatomy (inclines / ridges). Interproximal slices converge 4-10° combined; reduce enough that an explorer passes freely (0.5mm clearance) without nicking the adjacent tooth. Knife-edge margins mesial and distal, just below the gingival margin, continuous and distinct. 30-40° reverse bevel to the occlusal third on buccal and lingual (straight diamond). All reduced surfaces diamond-smooth, line angles rounded.",
  "Festoon and crimp: trim the gingival margin of the crown with crown shears so it doesn't blanch tissue; crimp the cervical band inward with crown-crimping pliers to engage the gingival undercut.",
- "Cement: glass ionomer (Fuji I, Ketac Cem). Apply to the intaglio, seat with finger pressure or have the child bite, gel-stage cleanup with explorer + floss at 3-4 min, then full set in 6-8 min. Check occlusion gently; primary molars don't need precise occlusal contacts.",
+ "Cement: FujiCEM (RMGI) per Swade SSC protocol (p.151, step 11). Fill the crown 80%, seat lingual then roll to buccal, have the patient bite on a bite stick to fully seat. Clean excess with microbrushes or wet cotton roll. Floss. Patient bites on a cotton roll for 3 min. Re-confirm occlusion (primary molars tolerate <0.5 mm changes).",
  ],
  phases: [
  { label: "Behavior & anesthesia", count: 2 },
