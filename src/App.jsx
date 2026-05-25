@@ -20686,7 +20686,16 @@ const GUIDES = [
  ],
  },
  { id: "ind-ch2", num: 2, title: "Digital (CAD/CAM) workflow", stub: true },
- { id: "ind-ch3", num: 3, title: "Metal framework try-in evaluation", stub: true },
+ // AUTHORING NOTE: ind-ch3 covers the cast-metal *substructure* try-in
+ // step in long-span FPDs and the historical multi-appointment PFM
+ // workflow — NOT the RPD-framework try-in (rpd-ch5/rpd-ch6 own that).
+ // When fleshing this stub out, scope content to FPD-substructure
+ // verification (porcelain firing readiness, marginal seat, connector
+ // contour) and do NOT pull in RPD framework content. Survey-crown
+ // pathway (ind-survey-crown) already excludes ind-ch3 because survey
+ // crown skips the framework try-in. ind-large-span-fpd is the
+ // primary consumer of this chapter.
+ { id: "ind-ch3", num: 3, title: "Metal framework try-in evaluation (FPD substructure)", stub: true },
  { id: "ind-ch4", num: 4, title: "Cementation comprehensive", stub: true },
  ],
  },
@@ -22307,7 +22316,7 @@ const PATHWAYS = [
  keyDecisions: [
  "Reduction targets (PFM, Swade clinic guide): 1.5–2.0 mm occlusal / 1.25–1.50 mm axial / 1.0–1.25 mm deep chamfer finish line / 6–10° total occlusal convergence. (All-metal uses shallower 0.5–0.8 mm chamfer + 1.0–1.25 mm axial; all-ceramic same as PFM.)",
  "Verify reduction with the putty matrix AND a 1.0 mm probe inside the putty — outside-only check misses inner under-reduction.",
- "Cord retraction for subgingival margins (#00 or #0; soak in hemostatic 3–5 min).",
+ "Cord retraction for subgingival margins — pack BOTH cords per Swade p.55/p.66: #00 bottom (tucked, no tail) + #0 top (with tail for retrieval); soak in Hemodent or ViscoStat 3–5 min. Dual-cord is the UIC standard, NOT either/or.",
  "Tempbond NE on the provisional; gel-stage cleanup 3–4 min after seating.",
  "Faculty signs off on the prep before impression — non-negotiable.",
  ],
@@ -22407,7 +22416,7 @@ const PATHWAYS = [
  "Pontic = modified ridge lap (allows floss to pass under cleanly); NOT saddle.",
  "Framework try-in is the highest-stakes appointment — non-passive metal cannot be made to fit later.",
  "Connector dimensions: ≥9 mm² cross-section for posterior, ≥6 mm² for anterior. Separately, Ante's law applies — total periodontal area of abutments ≥ replaced tooth's periodontal area.",
- "Cement with resin cement on enamel margins, RMGI on dentin margins.",
+ "Cement choice (Swade clinic guide): RelyX Unicem 2 (self-adhesive resin cement) for PFM/zirconia FPDs is the UIC default — single-step, no priming dentin/etching tooth. FujiCem 2 (RMGI) is the conservative fallback on retentive preps with primarily dentin margins. Avoid traditional zinc phosphate on contemporary materials.",
  ],
  phases: [
  { label: "Workflow + bridge design", count: 2 },
@@ -22434,7 +22443,7 @@ const PATHWAYS = [
  id: "ind-survey-crown",
  domain: "indirect",
  label: "Survey crown for RPD abutment",
- description: "Patient is planned for an RPD, and a key abutment lacks a usable undercut, a parallel guide plane, or a stable rest seat. The crown gets surveyed contours built into it: a defined survey line, a 1.5 mm undercut for the clasp tip, a flat guide plane on the proximal toward the edentulous span, and a positive rest seat preparation. This is one of the few crown cases where the RPD design must be finalized BEFORE the crown is prepped, so the lab knows what contours to give you.",
+ description: "Patient is planned for an RPD, and a key abutment lacks a usable undercut, a parallel guide plane, or a stable rest seat. The crown gets surveyed contours built into it: a defined survey line, a 0.01-inch (0.25 mm) undercut for the clasp tip, a flat guide plane on the proximal toward the edentulous span, and a positive rest seat preparation. This is one of the few crown cases where the RPD design must be finalized BEFORE the crown is prepped, so the lab knows what contours to give you.",
  keyDecisions: [
  "Finalize the RPD design form BEFORE crown prep — the crown contours follow the partial design.",
  "Surveyed contours: defined survey line, 0.01-in undercut for the clasp tip, flat guide plane, positive rest seat.",
@@ -22498,8 +22507,8 @@ const PATHWAYS = [
  description: "Patient walks in with a crown or bridge in hand. Decision tree before any cement opens: is the crown intact (margin chips, porcelain chips, missing pontic facing)? Is the prep intact (no recurrent caries, no fracture below margin, sufficient ferrule remains)? Is the cement on the intaglio retained or clean? If all three answers are favorable, you have a candidate for re-cement; otherwise you're on a path to remake. The single most common mistake is re-cementing onto a contaminated prep without sandblasting the intaglio first.",
  keyDecisions: [
  "Three-way evaluation before cementing: crown intact? prep intact (no recurrent caries)? cement layer clean?",
- "Sandblast the intaglio (50 µm Al2O3) — old cement remnants prevent the new bond.",
- "Resin cement if any uncertainty about retention form; RMGI if both crown + prep are clean.",
+ "Intaglio decontamination is the most-skipped step and the #1 cause of secondary debond (Swade p.65). Sequence: 50 µm Al2O3 air-abrasion of the intaglio → ultrasonic in alcohol 2 min → re-air-dry. For zirconia intaglio, add MDP primer (Z-Prime Plus) after cleaning; for e.max intaglio, refresh HF etch 20 sec + silane. Cementing onto residual saliva/cement is the canonical UIC re-cement failure mode.",
+ "Resin cement if any uncertainty about retention form (RelyX Unicem 2 self-adhesive); RMGI (FujiCem 2) only when both crown + prep are clean AND ferrule is robust.",
  "If any of the three criteria fail → remake, not re-cement.",
  "Document patient was informed re-cement may not last — set expectation for potential remake.",
  ],
