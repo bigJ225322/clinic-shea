@@ -21992,7 +21992,9 @@ const PATHWAYS = [
  "Gluma sealer is mandatory under amalgam — 45 sec scrub, 15 sec wait, air dry, 15 sec rinse, lightly dry. Skip this and the patient returns with post-op sensitivity.",
  "Tofflemire universal matrix band + wooden wedge for Class II, with the closed end of the retainer toward the occlusal. Burnish the band against the adjacent tooth before placing the amalgam — this is what creates an anatomic contact.",
  "Overfill the prep — cavosurface margins must be covered. Condense with the small condenser into line angles first, then the large condenser. Carve back to anatomy with 5T, Cleoid-Discoid, ½ Hollenback, anatomic burnisher.",
+ "Amalgamation (Swade p.35): 9-12 seconds on medium speed (3600 cpm). Mix should be consistent, shiny, smooth — too short = crumbly, too long = excess setting heat + reduced strength.",
  "Check occlusion gently with articulating paper — if the patient bites hard before the amalgam fully sets, it can fracture. Adjust high spots with a high-speed bur, lightly.",
+ "Codes per Swade p.36: D2140 (amalgam 1 surface, posterior), D2150 (2 surface), D2160 (3 surface), D2161 (4+ surface). Anterior amalgam (D2110-D2113) is rare in contemporary UIC practice but listed in CDT.",
  ],
  phases: [
  { label: "Setup", count: 3 },
@@ -22107,9 +22109,9 @@ const PATHWAYS = [
  description: "Cervical or root-surface caries where the gingival margin sits apical to the CEJ — there is no enamel to bond to. Resin-modified glass ionomer (RMGI, Ketac Nano or Fuji II LC) is the material of choice here because it bonds chemically to dentin without an adhesive step and continuously releases fluoride into the surrounding tooth. Composite over an exposed root surface is a setup for failure; the bond strength to root dentin alone is unreliable.",
  keyDecisions: [
  "If the lesion margin is fully on root surface (no enamel), RMGI is the default. Composite needs an enamel margin to anchor the bond.",
- "Condition the cavity with RMGI conditioner (mild polyacrylic acid, 10–15 sec) — not phosphoric etch. Phosphoric acid degrades the ionic bond at the dentin interface.",
+ "Condition the cavity per Swade RMGI p.49: polyacrylic acid 15 sec → lightly air-dry WITHOUT rinsing (dentin should look just-moist, not glistening wet, not dry) → light cure 10 sec. NOT phosphoric etch. Phosphoric acid degrades the ionic bond at the dentin interface.",
  "Mix and place RMGI quickly — working time is 2–3 minutes. The capsule form (auto-mix) is more reliable than hand-mix for this reason.",
- "Light cure 20 seconds per surface. Cure the surface even though it's resin-modified — the dual-cure component is the reason for the longer working time.",
+ "Light cure each increment 20 sec (Swade p.49). Cure even though it's resin-modified — the dual-cure component is the reason for the longer working time.",
  "Polish gently with a fine-grit disc, not coarse. RMGI surface is softer than composite and roughens easily.",
  ],
  phases: [
@@ -22211,7 +22213,7 @@ const PATHWAYS = [
  "Indication check: caries-free OR enamel-limited non-cavitated lesion. If lesion has progressed into dentin (cavitated, radiolucency on bitewing), it's a Class I composite case (see dir-ch10), not a sealant.",
  "Use fluoride-free pumice for the prophy step — fluoride interferes with the etch and bond.",
  "Isodry is the standard isolation — no anesthesia needed because there's no clamp to seat.",
- "Etch 30 sec, optional bond step (faculty usually want it done), sealant material (thick — apply sparingly), 20-sec cure.",
+ "Etch enamel 30 sec → rinse → lightly air-dry (Swade sealant p.51), optional bond step (faculty usually want it done), Ultradent UltraSeal XT Plus (the sealant material stocked at UIC, currently in the peds clinic), thick — apply sparingly, 20-sec cure.",
  "Check occlusion with articulating paper before dismissing — sealant high on occlusion needs adjustment with a fine finishing bur.",
  ],
  phases: [
