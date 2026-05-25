@@ -137,9 +137,9 @@ const rpdGetAttrs = (caseInput, n) => ({...RPD_ABUTMENT_DEFAULTS,...(caseInput.t
 // ============================================================================
 // KENNEDY CLASSIFIER — Applegate's Rules 1–8
 // (Rules 1, 2, 3, 4, 5, 6 explicit; Rule 7 via modification count without
-//  extent measurement; Rule 8 via the `isAnteriorOnly` single-span check
-//  in rpdClassifyKennedy at line ~252 — Class IV requires the anterior
-//  span to be the ONLY span, so modifications are structurally impossible.)
+// extent measurement; Rule 8 via the `isAnteriorOnly` single-span check
+// in rpdClassifyKennedy at line ~252 — Class IV requires the anterior
+// span to be the ONLY span, so modifications are structurally impossible.)
 // ============================================================================
 
 /**
@@ -372,26 +372,26 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
  //
  // Design Case I (6 abutments: #2,#4,#6,#9,#11,#12) → A-P Strap
  // Design Case II (4 abutments: #4,#6,#11,#12; #5 is a bystander; 5 present)
- //   → Full Palatal Plate per Dr. Shahin answer key
+ // → Full Palatal Plate per the answer key answer key
  //
  // presentCount ≤ 4 was wrong for Design Case II (gave A-P Strap).
  // abutmentCount ≤ 4 correctly captures both cases.
  const fppArchMin = arch === "maxillary" ? 1 : 17;
  const fppArchMax = arch === "maxillary" ? 16 : 32;
  const fppIsPresent = (n) =>
-   n >= fppArchMin && n <= fppArchMax && caseInput.teeth?.[n]?.status !== "missing";
+ n >= fppArchMin && n <= fppArchMax && caseInput.teeth?.[n]?.status !== "missing";
  const fppAbutSet = new Set();
  for (const span of kennedy.spans || []) {
-   const spanTeeth = span.teeth || [];
-   if (spanTeeth.length === 0) continue;
-   const minT = Math.min(...spanTeeth);
-   const maxT = Math.max(...spanTeeth);
-   for (let t = minT - 1; t >= fppArchMin; t--) {
-     if (fppIsPresent(t)) { fppAbutSet.add(t); break; }
-   }
-   for (let t = maxT + 1; t <= fppArchMax; t++) {
-     if (fppIsPresent(t)) { fppAbutSet.add(t); break; }
-   }
+ const spanTeeth = span.teeth || [];
+ if (spanTeeth.length === 0) continue;
+ const minT = Math.min(...spanTeeth);
+ const maxT = Math.max(...spanTeeth);
+ for (let t = minT - 1; t >= fppArchMin; t--) {
+ if (fppIsPresent(t)) { fppAbutSet.add(t); break; }
+ }
+ for (let t = maxT + 1; t <= fppArchMax; t++) {
+ if (fppIsPresent(t)) { fppAbutSet.add(t); break; }
+ }
  }
  const abutmentCount = fppAbutSet.size;
  const severeResorption = (m.ridgeResorption === "severe");
@@ -417,7 +417,7 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
  // tooth-supported Class IV — both clinically wrong.)
  //
  // Threshold of 4 derived from Design Case II (Class I, 4 abutments → Full
- // Palate per Dr. Shahin) vs Case 3 test (Class I, 4 abutments → Full Palate).
+ // Palate per the answer key) vs Case 3 test (Class I, 4 abutments → Full Palate).
  // The raw present-tooth count was wrong because bystander tooth #5 inflated
  // it to 5, causing the engine to pick A-P Strap incorrectly.
  if (kennedy.class === "I" && (abutmentCount <= 4 || severeResorption)) {
@@ -1916,7 +1916,7 @@ function pickClaspMechanic({
  // restSeat is set independently by pickRestSeat — mand incisor → ML
  // ball, max lateral → cingulum. Cross-arch retention comes from
  // posterior clasps; the major connector (lingual plate for mand,
- // palatal coverage for max) provides bracing. This matches Shahin
+ // palatal coverage for max) provides bracing. This matches the answer key
  // Design Case I where #6 and #11 had Rest Only on max canines, and
  // McCracken's general approach for small anterior abutments.
  if (tooSmallForIBar && inEsthetic) {
@@ -3759,7 +3759,7 @@ function rpdEvaluate2ndMolarRule4(caseInput, arch) {
 // ============================================================================
 // ACP PRODSTHODONTIC DIAGNOSTIC INDEX (PDI) for partially edentulous patients
 // ----------------------------------------------------------------------------
-// Source: McGarry et al. 1998 / 2002; (Sabbagh 2024 Diagnosis &
+// Source: McGarry et al. 1998 / 2002; (2024 Diagnosis &
 // Treatment Planning). Four criteria, "worst single criterion sets the class":
 //
 // 1. Location & extent of edentulous area
