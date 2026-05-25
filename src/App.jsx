@@ -22578,7 +22578,7 @@ const PATHWAYS = [
  id: "rpd-distal-extension",
  domain: "rpd",
  label: "Kennedy I or II (distal extension)",
- description: "Edentulous span extends distally past the last natural tooth — Kennedy I (bilateral) or II (unilateral). Tissue-supported posteriorly, so the framework rotates against the residual ridge under occlusal load. UIC default is a single-step PVS impression; altered cast technique becomes indicated when (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby or compressible. Skip the altered-cast call entirely and the distal extension can rock under load on those compromised tissues, causing trauma and abutment torque. The most common student error is taking a static impression on a clearly-flabby ridge and not flagging it for altered cast.",
+ description: "Edentulous span extends distally past the last natural tooth — Kennedy I (bilateral) or II (unilateral). Tissue-supported posteriorly, so the framework rotates against the residual ridge under occlusal load. UIC default is a single-step PVS impression; altered cast technique becomes indicated when (a) disclosing-wax try-in shows the framework seats differently on the master cast vs intraorally, OR (b) the distal-extension ridge tissue is visibly flabby or compressible. If the altered-cast call is skipped on a flabby ridge, the distal extension rocks under load on those compromised tissues, causing tissue trauma and abutment torque. The most common student error is taking a static impression on a clearly-flabby ridge and not flagging it for altered cast.",
  keyDecisions: [
  "Altered cast technique MAY be needed at framework try-in — UIC default is single-step PVS. Indications: (a) disclosing-wax shows framework seats differently on cast vs intraorally, OR (b) distal-extension ridge tissue is visibly flabby/compressible.",
  "Design typically uses RPI clasp on the distal abutment (rotation accommodates ridge resorption).",
@@ -22597,7 +22597,7 @@ const PATHWAYS = [
  { guideId: "rpd", chapterId: "rpd-ch2" }, // Mount diagnostic casts
  { guideId: "rpd", chapterId: "rpd-ch3" }, // Survey
  { guideId: "rpd", chapterId: "rpd-ch4" }, // Custom tray
- { guideId: "rpd", chapterId: "rpd-ch6" }, // Altered cast impression (mandatory for DE)
+ { guideId: "rpd", chapterId: "rpd-ch6" }, // Altered cast impression (conditional — disclosing-wax mismatch or flabby ridge per UIC)
  { guideId: "rpd", chapterId: "rpd-ch7" }, // Design form
  { guideId: "rpd", chapterId: "rpd-ch9" },
  { guideId: "rpd", chapterId: "rpd-ch20" },
@@ -22663,15 +22663,16 @@ const PATHWAYS = [
  "Lab solder is acceptable for a small, clean break where both fragments are present and the framework geometry is otherwise intact.",
  "Remake threshold: distorted geometry, framework already repaired once, or fragments lost. Solder won't survive load cycling on a fatigued framework.",
  "Take new alginate impressions if remaking — the patient's mouth has changed since the original; don't reuse old casts.",
- "Provide an interim solution (Valplast flipper, or have the patient continue with the broken RPD if non-load-bearing) while the new framework is being made.",
+ "Provide an interim solution while the new framework is being made — Swade's interim PD codes (D5820/D5821) cover this, billed as a separate appliance. The patient can also keep wearing a non-load-bearing broken RPD short-term, but counsel that this risks further fragmentation.",
  ],
  phases: [
  { label: "Triage", count: 1 },
- { label: "Lab or remake", count: 2 },
+ { label: "Lab or remake", count: 3 },
  ],
  sections: [
  { guideId: "rpd", chapterId: "rpd-ch18" }, // Repair 5 (framework fracture)
  { guideId: "rpd", chapterId: "rpd-ch16" }, // Pitfalls
+ { guideId: "rpd", chapterId: "rpd-ch9" }, // Lab Rx for remake / solder repair
  { guideId: "rpd", chapterId: "rpd-ch12" }, // Occlusal check after new framework
  ],
  },
@@ -23196,11 +23197,11 @@ const PATHWAYS = [
  label: "Existing flexible (Valplast) RPD needs repair",
  description: "Patient brings in a nylon thermoplastic partial (Valplast, Flexite, TCS) needing repair — added tooth, broken clasp arm, or replaced acrylic flange. Cold-cure PMMA does NOT bond to nylon, so chairside repair with standard repair acrylic will fail. Lab repair only: the nylon needs to be re-injected at the original processing temperature, or a new piece flowed in via the same process. Counsel the patient on extra turnaround time and consider remake if multiple repair sites accumulate.",
  keyDecisions: [
- "Cold-cure PMMA does NOT bond to nylon — chairside repair will fail.",
- "Lab repair only — re-inject or flow new material at original processing temperature.",
- "Counsel patient on extra turnaround time (typically 1–2 weeks).",
- "If multiple repair sites accumulate, consider remake rather than chasing each break.",
- "Refer to faculty for Valplast workflow — outside the standard Co-Cr curriculum.",
+ "Cold-cure PMMA does NOT bond to nylon — chairside repair will fail. The chemistry is incompatible (PMMA bonds by methacrylate cross-linking; nylon is a polyamide).",
+ "Lab Rx specifies thermoplastic re-injection at original processing temperature. CITE the existing prosthesis brand on the Rx (Valplast / Flexite / TCS / Duraflex) so the lab matches material — wrong-brand re-injection produces a visible color and material mismatch.",
+ "Counsel patient on extra turnaround time (typically 1–2 weeks) and that not all breaks are repairable — particularly clasp arm fractures at the engagement region often require remake.",
+ "Billing: D5640 (replace tooth) and D5660 (add clasp) apply, but the per-tooth/per-clasp fees may not reimburse the higher lab cost without a modifier — confirm with the patient's plan and the clinic's lab fee schedule before quoting.",
+ "If multiple repair sites accumulate or the patient wants metal-clasped retention, plan a remake to a metal-framework RPD rather than chasing each break. Background reading: Fall RPD 22 Non-metal Clasps lecture covers the material limitations.",
  ],
  phases: [
  { label: "Repair protocol", count: 1 },
@@ -23965,11 +23966,12 @@ const PATHWAYS = [
  label: "Recurrent caries at clasp-engagement area on existing RPD",
  description: "Existing RPD patient develops recurrent caries at the clasp engagement area of an abutment tooth. Two paths: restore the abutment with a survey crown (and modify the framework to engage the new crown contours), or accept the abutment is failing and modify the framework to drop it from the design. Survey crowns are the higher-investment option but extend the prosthesis lifespan; framework modification is cheaper but accepts continued resorption around the lost abutment.",
  keyDecisions: [
- "Two paths: survey crown the abutment vs framework modification to drop the abutment.",
- "Survey crown — longer prosthesis lifespan, higher cost.",
- "Framework drop — cheaper but accepts continued resorption.",
+ "Reassess caries risk BEFORE re-investing in this abutment — recurrent caries at the clasp engagement is a sign of fluoride/hygiene/diet control failure that will repeat on the next abutment unless addressed. Per Sabbagh Lecture 2 (Diagnosis & Tx Planning), CAMBRA reassessment + Prevident 5000 or 3x-yearly 5% NaF varnish is the first move; only THEN decide between the surgical options below.",
+ "Two paths: survey crown the abutment (D5660 add clasp on new crown contours) vs framework modification to drop the abutment.",
+ "Survey crown — longer prosthesis lifespan, higher cost. Requires a new survey + design check to make sure the modified RPD path of insertion still works.",
+ "Framework drop — cheaper but accepts continued resorption around the lost abutment, which can compromise the rest of the design.",
  "Patient counseling on which path matches their goals + finances is essential.",
- "If recurrent caries on multiple abutments → remake of the RPD likely indicated.",
+ "If recurrent caries on multiple abutments → remake of the RPD likely indicated, AND a CAMBRA control plan that's actually working before committing.",
  ],
  phases: [
  { label: "Diagnose", count: 1 },
