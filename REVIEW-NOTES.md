@@ -2084,3 +2084,37 @@ The RPD engine audit agent ran a 13-tool-use deep check against Dr. Shahin's Int
 13. **Applegate Rules comment header corrected (92042bc).** Engine section header said "Rules 1-6" but implementation covers all 8 rules — Rule 7 (modification count without extent) is implicit via `modSpans.length`, Rule 8 (no mods in Class IV) is implicit via the `isAnteriorOnly = spans.length === 1` guard. Updated comment to reflect actual coverage. No behavior change.
 
 ### Iter 31 cumulative: 13 commits + 5 REVIEW-NOTES updates = 18 git pushes. 13 substantive fixes (including 1 RPD test added, 6 CDT code corrections across 2 commits, and the Applegate Rules comment clarification). All live. Tests 1023/1023 pass. B35 borderline resolved. CDT-code accuracy was the biggest theme of this iter — between commits 78f9408 and 6e711a1, the RPD engine's billing-code mappings are now fully CDT 2024 compliant. Direct billing-accuracy improvements for students using the engine in clinic.
+
+---
+
+## Iter 32 (2026-05-23) — Cases pathway content-pollution cleanup vs Swade + UIC source materials
+
+User caught a concrete AI-slop bug: the "PFM crown" pathway was rendering "Step 4: Metal framework try-in evaluation" — RPD-protocol content polluting a single-crown pathway. The fix wasn't cross-linking; it was data hygiene on the pathway `sections` arrays. Spawned a systematic audit agent to find every similar misfit, then shipped fixes.
+
+### Iter 32 commits: 6 substantive fixes deployed
+
+1. **`ind-conventional-crown` ("PFM crown") removed `ind-ch3` (424c4a9).** The original user-reported bug. ind-ch3 is "Metal framework try-in evaluation" — RPD framework content, not single-crown content. Modern UIC clinic practice doesn't do a separate metal-substructure try-in appointment for single PFM crowns. Same fix applied to `ind-survey-crown`, `cross-survey-crown` (cross-disciplinary version), and `ind-3-4-crown` in the same commit.
+
+2. **Four pathways referenced `ind-ch20` mislabeled as "Diagnostic wax-up" (34639ef).** The chapter's actual title is "Wax-up + lost-wax casting" — a LAB step in PFM/cast-gold fabrication. Wrong context for `ind-veneers`, `ind-anterior-crown-esthetic`, `cross-full-mouth-rehab`, and `cross-anterior-implant-esthetic`. Removed from all four with an explanatory comment that diagnostic-wax-up content would need a dedicated new chapter.
+
+3. **`repair-veneer-debond` referenced `ind-ch29` mis-tagged as cementation (34639ef).** Same commit. ind-ch29 is "Intraoral repair protocols — PFM porcelain chip + zirconia chip" — chip repair, not veneer re-bonding. ind-ch4 (Cementation comprehensive) already covers veneer re-bond cementation.
+
+4. **`ind-bridge` (3-unit FPD) removed `ind-ch3` (34639ef).** Same logic as single PFM crown — modern UIC lab returns finished short-span bridges. Kept ind-ch3 in `ind-large-span-fpd` (4+ unit) where long-span casting verification is genuinely useful.
+
+5. **`perio-srp` anesthesia keyDecision reconciled to Swade (34639ef).** Said "Marcaine 0.5% w/epi 1:200K for mandibular blocks" — Swade p.28 protocol is plain 2% lidocaine 1:100k epi with IAN/infiltration selection by tooth count.
+
+6. **Adult prophy (D1110) pathway added (4960b01).** Was missing entirely from Cases. `perio-maintenance` (D4910) is a different procedure on a different patient. Built `perio-prophy` from Swade p.26-27 (prophy chapter) plus p.21-22 (POE/PROPHY/PERIO MAINTENANCE context). Six keyDecisions covering indication threshold, perio chart update cadence, Cavitron-then-floss-then-hand sequence, the 11/12 ODU explorer endpoint check, the polish-AFTER-instructor rule, and required OHI/codes.
+
+7. **SSC cement + dir-sdf alignment (3b0ea30).** `pedo-stainless-crown` cement decision said "Fuji I, Ketac Cem" — Swade p.151 is explicit: FujiCEM. `dir-sdf` removed dir-ch3 ("Caries removal — endpoint") — SDF is non-surgical caries arrest, not excavation.
+
+### Iter 32 knowledge gaps flagged for user input
+
+These are real disagreements where I could not resolve without UIC-specific lecture content from `/Users/jakeshea/Documents/Dentistry Files`:
+
+**A. Pulpotomy medicament.** Swade p.152-154 explicitly: Viscostat (ferric sulfate) hemostasis + IRM placement. `pedo-pulpotomy` Cases keyDecisions: "MTA is UIC's gold standard (per Alsaleh's Week 7 lecture, slide 42)... Ferric sulfate downranked." Two possibilities: (a) Alsaleh updated UIC protocol post-Swade and the Cases pathway is the newer truth; (b) the slide citation is fabricated and Swade is authoritative. Need user to check the actual Alsaleh peds lecture (`Dentistry Files / All of Peds Semester Content`). Left Cases pathway unchanged pending input — but this is a real clinical disagreement worth resolving.
+
+**B. Diagnostic wax-up chapter doesn't exist.** Four pathways wanted to reference it (veneers, anterior crown esthetic, full-mouth rehab, anterior implant esthetic). The closest existing chapter is ind-ch20 (lost-wax casting) which is the wrong concept. To preserve the diagnostic-wax-up reference, a new chapter (ind-ch24 or similar) would need to be authored — sourced from Swade Indirect content (page references TBD) plus the Module 2A pre-clinical lab manual.
+
+**C. Bridge framework try-in for 3-unit at UIC.** Removed `ind-ch3` from `ind-bridge` assuming UIC labs return finished short-span bridges. Could be wrong — if UIC clinic actually does have a metal-substructure try-in appointment for PFM bridges, this needs to come back. Easy to verify with any indirect-restorations preceptor.
+
+### Iter 32 cumulative: 5 commits, 7 substantive fixes (6 pollution removals + 1 new pathway added), 3 knowledge gaps flagged. All live. Tests 1023/1023 pass. The biggest theme this iter: data hygiene on pathway `sections` arrays. The audit agent found these systematically; the chapter-stub system is fragile because unfilled section refs render as Step headers in the UI without body content, exposing the AI-slop label of any inappropriate ref.
