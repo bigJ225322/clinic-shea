@@ -17441,24 +17441,46 @@ const TOOTH_MOULD_TABLE = {
  "A84": { lower: ["N"],            post: { p0: "632", b0: "431", a10: "332",        a20: "31M",        p22: "532",      b30: "230L",        a33: "32L",      p40: "732" } },
 };
 
+// Facial-form silhouettes (Williams/Trubyte classification viewed frontally).
+// SVG path drawn inside a 32×40 viewBox — small frontal-face outlines that
+// let the student visually match the patient's face shape rather than reading
+// labels. Square = rectangular with parallel sides; Tapering = wide temples
+// narrowing to chin; Ovoid = egg-shape; combinations interpolate.
 const TOOTH_MOULD_FORMS = [
- { id: "1", label: "Square" },
- { id: "2", label: "Square Tapering" },
- { id: "3", label: "Square Ovoid" },
- { id: "4", label: "Tapering" },
- { id: "5", label: "Tapering Ovoid" },
- { id: "6", label: "Ovoid" },
- { id: "7", label: "Square Tapering Ovoid" },
+ { id: "1", label: "Square",
+ path: "M6 4 L26 4 L26 28 L24 36 L8 36 L6 28 Z" },
+ { id: "2", label: "Square Tapering",
+ path: "M5 4 L27 4 L25 22 L21 32 L18 36 L14 36 L11 32 L7 22 Z" },
+ { id: "3", label: "Square Ovoid",
+ path: "M6 4 L26 4 L25 18 C24 30 22 36 16 36 C10 36 8 30 7 18 Z" },
+ { id: "4", label: "Tapering",
+ path: "M4 4 L28 4 L24 18 L20 30 L17 36 L15 36 L12 30 L8 18 Z" },
+ { id: "5", label: "Tapering Ovoid",
+ path: "M5 4 L27 4 L24 18 C22 30 19 36 16 36 C13 36 10 30 8 18 Z" },
+ { id: "6", label: "Ovoid",
+ path: "M16 4 C24 4 26 12 25 22 C24 32 21 36 16 36 C11 36 8 32 7 22 C6 12 8 4 16 4 Z" },
+ { id: "7", label: "Square Tapering Ovoid",
+ path: "M6 4 L26 4 L25 16 C24 24 22 30 19 34 C18 36 14 36 13 34 C10 30 8 24 7 16 Z" },
 ];
 
-// Proportion of tooth (long / medium / short) × facial contour (straight / curved)
+// Proportion of tooth (long / medium / short) × facial contour (straight / curved).
+// "Facial contour" here describes the FACIAL SURFACE of the maxillary central
+// incisor — straight = flat / flat-rectangular profile, curved = bulging /
+// convex profile. SVG silhouettes drawn at 16×22 viewBox approximate the
+// frontal outline of a #8 central incisor.
 const TOOTH_MOULD_PROPORTIONS = [
- { id: "1", label: "Long · Straight" },
- { id: "2", label: "Medium · Straight" },
- { id: "3", label: "Short · Straight" },
- { id: "4", label: "Long · Curved" },
- { id: "5", label: "Medium · Curved" },
- { id: "6", label: "Short · Curved" },
+ { id: "1", label: "Long · Straight",
+ path: "M3 2 L13 2 L13 18 L11 20 L5 20 L3 18 Z" },
+ { id: "2", label: "Medium · Straight",
+ path: "M3 4 L13 4 L13 17 L11 19 L5 19 L3 17 Z" },
+ { id: "3", label: "Short · Straight",
+ path: "M3 6 L13 6 L13 16 L11 18 L5 18 L3 16 Z" },
+ { id: "4", label: "Long · Curved",
+ path: "M5 2 Q3 2 3 5 Q1 10 3 14 Q5 19 8 20 Q11 19 13 14 Q15 10 13 5 Q13 2 11 2 Z" },
+ { id: "5", label: "Medium · Curved",
+ path: "M5 4 Q3 4 3 7 Q1 11 3 14 Q5 19 8 19 Q11 19 13 14 Q15 11 13 7 Q13 4 11 4 Z" },
+ { id: "6", label: "Short · Curved",
+ path: "M5 6 Q3 6 3 9 Q2 12 3 14 Q5 18 8 18 Q11 18 13 14 Q14 12 13 9 Q13 6 11 6 Z" },
 ];
 
 // Width of upper six anterior teeth on curve, distal-to-distal
@@ -17824,12 +17846,43 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  const angleMeta = TOOTH_MOULD_CUSP_ANGLES.find(a => a.key === angle);
  const posteriorMould = entry ? entry.post[angle] : null;
 
- // Mini button row helper
- const PillRow = ({ items, value, onChange, getLabel, getKey }) => (
- <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+ // Mini button row helper. When items have a `path` field, render the SVG
+ // silhouette as a thumbnail above the label (akin to a shade-tab visual).
+ // Without a path, fall back to a plain text pill.
+ const PillRow = ({ items, value, onChange, getLabel, getKey,
+ svgViewBox = "0 0 32 40", svgWidth = 28, svgHeight = 36 }) => {
+ const hasIcons = items.some(i => i.path);
+ return (
+ <div style={{ display: "flex", flexWrap: "wrap", gap: hasIcons ? "6px" : "4px" }}>
  {items.map(item => {
  const k = getKey(item);
  const active = value === k;
+ if (item.path) {
+ return (
+ <button key={k} type="button" onClick={() => onChange(k)} style={{
+ padding: "6px 8px 4px",
+ background: active ? "var(--accent)" : "white",
+ color: active ? "white" : "var(--ink-soft)",
+ border: `1px solid ${active ? "var(--accent)" : "var(--rule)"}`,
+ borderRadius: "4px", cursor: "pointer",
+ fontFamily: "'Geist', sans-serif",
+ display: "flex", flexDirection: "column",
+ alignItems: "center", gap: "3px",
+ minWidth: svgWidth + 12,
+ }}>
+ <svg viewBox={svgViewBox} width={svgWidth} height={svgHeight}
+ aria-hidden="true" style={{ display: "block" }}>
+ <path d={item.path}
+ fill={active ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.04)"}
+ stroke={active ? "white" : "var(--ink-soft)"}
+ strokeWidth="1.25" strokeLinejoin="round" />
+ </svg>
+ <span style={{ fontSize: "10px", lineHeight: 1.2, textAlign: "center" }}>
+ {getLabel(item)}
+ </span>
+ </button>
+ );
+ }
  return (
  <button key={k} type="button" onClick={() => onChange(k)} style={{
  padding: "4px 10px", fontSize: "11px",
@@ -17843,6 +17896,7 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  })}
  </div>
  );
+ };
 
  return (
  <div style={{
@@ -17891,7 +17945,7 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  <div style={{ display: "grid", gap: "10px" }}>
  <div>
  <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)", marginBottom: "4px" }}>
- 1 · Facial form
+ 1 · Facial form <span style={{ textTransform: "none", letterSpacing: 0, fontStyle: "italic", color: "var(--ink-faint)" }}>— match the patient's frontal face outline</span>
  </div>
  <PillRow items={TOOTH_MOULD_FORMS} value={form} onChange={setForm}
  getKey={i => i.id} getLabel={i => `${i.id} · ${i.label}`} />
@@ -17899,15 +17953,19 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
 
  <div>
  <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)", marginBottom: "4px" }}>
- 2 · Tooth proportion & facial contour
+ 2 · Maxillary central incisor shape <span style={{ textTransform: "none", letterSpacing: 0, fontStyle: "italic", color: "var(--ink-faint)" }}>— proportion (long / medium / short) × facial profile (straight = flat, curved = convex)</span>
  </div>
  <PillRow items={TOOTH_MOULD_PROPORTIONS} value={prop} onChange={setProp}
- getKey={i => i.id} getLabel={i => `${i.id} · ${i.label}`} />
+ getKey={i => i.id} getLabel={i => `${i.id} · ${i.label}`}
+ svgViewBox="0 0 16 22" svgWidth={22} svgHeight={30} />
  </div>
 
  <div>
  <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)", marginBottom: "4px" }}>
  3 · Upper six anterior curve width
+ </div>
+ <div style={{ fontSize: "10px", color: "var(--ink-faint)", fontStyle: "italic", marginBottom: "6px", lineHeight: 1.4 }}>
+ Measure the chord (straight-line) distance from the distal of the right canine (#6) to the distal of the left canine (#11) across the facial surfaces of the upper six anteriors. A Boley gauge or millimeter ruler held flat against the labial of the anteriors works; on a diagnostic cast the same measurement is taken on the cast itself. The chord — not the arc — is the value the Trubyte mould table expects.
  </div>
  <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
  <input type="text" inputMode="decimal" placeholder="mm (e.g. 49.5)"
