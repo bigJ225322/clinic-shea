@@ -17502,14 +17502,22 @@ const TOOTH_MOULD_WIDTHS = [
 ];
 
 const TOOTH_MOULD_CUSP_ANGLES = [
- { key: "p0",  label: "0°",  brand: "Portrait IPN", category: "Non-anatomical (flat plane)" },
- { key: "b0",  label: "0°",  brand: "Bioform IPN Monoline", category: "Non-anatomical (flat plane)" },
- { key: "a10", label: "10°", brand: "Portrait IPN / Bioform Anatoline", category: "Semi-anatomical (modified cusp)" },
- { key: "a20", label: "20°", brand: "Portrait / Bioform IPN", category: "Semi-anatomical (modified cusp)" },
- { key: "p22", label: "22°", brand: "Portrait IPN", category: "Semi-anatomical (modified cusp)" },
- { key: "b30", label: "30°", brand: "Bioform IPN PT", category: "Anatomical (deep cusp)" },
- { key: "a33", label: "33°", brand: "Portrait / Bioform IPN", category: "Anatomical (deep cusp)" },
- { key: "p40", label: "40°", brand: "Portrait IPN EuroLine", category: "Anatomical (deep cusp)" },
+ { key: "p0",  label: "0°",  brand: "Portrait IPN", category: "Non-anatomical (flat plane)",
+   desc: "Flat-plane occlusal. Best for poor ridges, severe resorption, Class II/III jaw relationships, and patients who can't tolerate any lateral interference (severe TMD, neuromuscular issues). No interlocking cusps — the prosthesis moves freely in excursions but loses chewing efficiency vs anatomical." },
+ { key: "b0",  label: "0°",  brand: "Bioform IPN Monoline", category: "Non-anatomical (flat plane)",
+   desc: "Bioform's flat-plane equivalent. Same indications as Portrait 0°: poor ridge support, severe resorption, Class II/III, TMD that cannot accept any lateral interference." },
+ { key: "a10", label: "10°", brand: "Portrait IPN / Bioform Anatoline", category: "Semi-anatomical (modified cusp)",
+   desc: "Shallow 10° cusps. Look of well-worn natural teeth with a definite centric. Upper lingual cusps form a 'lingual cutting knife' in occlusion. Good middle ground when ridges are adequate but neuromuscular control is questionable." },
+ { key: "a20", label: "20°", brand: "Portrait / Bioform IPN", category: "Semi-anatomical (modified cusp)",
+   desc: "Shallow 20° cusps with minimal lateral interference. Specially contoured occlusal ridges + clearance spaces for chewing efficiency. Good default for the average complete-denture patient with reasonable ridges and no parafunctional issues." },
+ { key: "p22", label: "22°", brand: "Portrait IPN", category: "Semi-anatomical (modified cusp)",
+   desc: "Portrait 22° BioStabil. Aesthetic and functional middle ground — shallow non-interfering cusps with freedom in all excursions. Indicated for complete and partial dentures opposing natural dentition with normal occlusal relationships." },
+ { key: "b30", label: "30°", brand: "Bioform IPN PT", category: "Anatomical (deep cusp)",
+   desc: "Bioform 30° Pilkington-Turner posteriors. Upper premolars slope inward gingival-to-occlusal for a natural smile look. Best for good ridges, Class I jaw relationships, opposing well-developed natural teeth, and patients with good neuromuscular coordination." },
+ { key: "a33", label: "33°", brand: "Portrait / Bioform IPN", category: "Anatomical (deep cusp)",
+   desc: "Fully anatomical 33° with natural cusp contours. Ideal for complete and partial dentures occluding with well-developed natural teeth (especially when balanced occlusion is achievable). Needs excellent ridge support — contraindicated for poor ridges or severe resorption." },
+ { key: "p40", label: "40°", brand: "Portrait IPN EuroLine", category: "Anatomical (deep cusp)",
+   desc: "EuroLine 40° — German-designed natural-looking 'young' occlusal pattern with wide food table and long crown form. Set with 30° incisal/condylar guidance for maximum efficiency. Best for younger patients with good ridges + Class I, or implant-supported overdentures where load isn't a concern." },
 ];
 
 // Translate a measured upper-six-anterior-curve width (mm) → letter range.
@@ -17651,10 +17659,66 @@ function GingivalShadeInput({ value, onChange }) {
  );
 }
 
+// Small circled-(i) tooltip showing when the currently-selected cusp angle
+// is clinically appropriate. Click to toggle a popover with the angle's
+// indication text (sourced from TOOTH_MOULD_CUSP_ANGLES[].desc).
+function CuspAngleInfo({ angle }) {
+ const [open, setOpen] = useState(false);
+ if (!angle) return null;
+ return (
+ <span style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
+ <button type="button" onClick={() => setOpen(o => !o)}
+   aria-label={open ? "Hide cusp angle indications" : "Show when this cusp angle is appropriate"}
+   style={{
+   width: "16px", height: "16px", borderRadius: "50%",
+   border: `1px solid ${open ? "var(--accent)" : "var(--ink-faint)"}`,
+   background: open ? "var(--accent)" : "transparent",
+   color: open ? "white" : "var(--ink-soft)",
+   fontSize: "10px", fontFamily: "'Fraunces', serif",
+   fontStyle: "italic", lineHeight: 1, cursor: "pointer",
+   display: "inline-flex", alignItems: "center", justifyContent: "center",
+   padding: 0, fontWeight: 500,
+   }}>i</button>
+ {open && (
+ <div style={{
+ position: "absolute", top: "20px", left: "0",
+ width: "320px", zIndex: 10,
+ padding: "10px 12px", background: "var(--paper)",
+ border: "1px solid var(--accent)", borderRadius: "3px",
+ fontSize: "11px", lineHeight: 1.5, color: "var(--ink)",
+ fontStyle: "normal", textTransform: "none", letterSpacing: 0,
+ boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+ }}>
+ <div style={{ fontWeight: 600, marginBottom: "4px", fontSize: "12px" }}>
+ {angle.label} {angle.brand} — {angle.category}
+ </div>
+ <div>{angle.desc}</div>
+ </div>
+ )}
+ </span>
+ );
+}
+
 // Mould-outline preview. Draws 6 anterior teeth at proportions implied by
 // the mould code (width letter → mm range; proportion digit → long/medium/
-// short + straight/curved). Stylized — not anatomically exact, but the
-// shape + curve cues match the chart silhouettes well enough for a glance.
+// short + straight/curved; FORM character → silhouette family).
+//
+// Iter 34 rewrite: each of the 7 facial forms now produces a visibly
+// distinct silhouette per the Portrait/Bioform IPN PDF page 4:
+// 1 Square          — straight sides, flat incisal corners, slightly
+//                    wider cervically → reads boxy / rectangular.
+// 2 Square Tapering — straight sides at the top half, taper into the
+//                    incisal third (subtle wedge cue, NOT a strong V).
+// 3 Square Ovoid    — straight sides, rounded incisal — bottom looks egg-y
+//                    while the top stays parallel.
+// 4 Tapering        — strong wedge: wide at cervical, narrow at incisal,
+//                    flat incisal edge (the canonical inverted trapezoid).
+// 5 Tapering Ovoid  — strong wedge with rounded incisal corners.
+// 6 Ovoid           — egg-shaped: rounded everywhere, slight narrowing
+//                    at both cervical and incisal (the rugby ball).
+// 7 Square Tapering Ovoid — composite cue: square top, slight taper at
+//                          midline, rounded incisal — visually the most
+//                          "blended" of the 7.
 function MouldOutlinePreview({ code }) {
  if (!code || code.length < 3) return null;
  const formId = code[0];
@@ -17670,44 +17734,75 @@ function MouldOutlinePreview({ code }) {
  const isShort = propNum === 3 || propNum === 6;
  const heightMm = isLong ? 11.5 : isShort ? 9.5 : 10.5;
  const isCurved = propNum >= 4;
- // Form character roughly maps to overall arch shape:
- // 1 Square / 4 Tapering: straight-sided; 3/5/6 Ovoid families: rounded.
- const isTapering = formId === "2" || formId === "4" || formId === "7";
- const isOvoid = formId === "3" || formId === "5" || formId === "6";
+
  // SVG scaled at 7 px per mm
  const SCALE = 7;
  const W = widthMm * SCALE + 16;
  const H = heightMm * SCALE + 28;
  const cx = W / 2;
  const toothW = (widthMm * SCALE) / 6;
- // Slight curvature: central incisors longer than canines on curved moulds;
- // canines slope outward on tapering moulds.
+ const toothH = heightMm * SCALE;
+
+ // Form character → per-tooth silhouette parameters:
+ //   cervicalTaper : how much the tooth narrows at the cervical (negative
+ //                   for ovoid where it actually narrows toward gingiva)
+ //   incisalTaper  : how much it narrows at the incisal
+ //   incisalRadius : how rounded the incisal corners are (0 = sharp, 1 = full hemisphere)
+ //   cervicalRadius: how rounded the cervical-line corners are
+ //   sideCurve     : how much the proximal sides bow outward (1 = belly-out, 0 = flat sides)
+ const FORM_GEOM = {
+ // Square: straight rectangular sides, flat-ish incisal
+ "1": { cervicalTaper: 0.02, incisalTaper: 0.04, incisalRadius: 0.15, cervicalRadius: 0.08, sideCurve: 0.05 },
+ // Square Tapering: straight top half, taper in lower half
+ "2": { cervicalTaper: 0.02, incisalTaper: 0.20, incisalRadius: 0.18, cervicalRadius: 0.08, sideCurve: 0.08 },
+ // Square Ovoid: straight sides + rounded incisal (egg-bottom on rectangle)
+ "3": { cervicalTaper: 0.02, incisalTaper: 0.06, incisalRadius: 0.45, cervicalRadius: 0.10, sideCurve: 0.10 },
+ // Tapering: strong wedge — wide cervical, narrow incisal, flat incisal
+ "4": { cervicalTaper: 0.00, incisalTaper: 0.32, incisalRadius: 0.15, cervicalRadius: 0.05, sideCurve: 0.06 },
+ // Tapering Ovoid: strong wedge with rounded incisal
+ "5": { cervicalTaper: 0.00, incisalTaper: 0.28, incisalRadius: 0.50, cervicalRadius: 0.05, sideCurve: 0.10 },
+ // Ovoid: egg shape — rounded EVERYWHERE with slight cervical & incisal narrowing
+ "6": { cervicalTaper: 0.10, incisalTaper: 0.18, incisalRadius: 0.55, cervicalRadius: 0.30, sideCurve: 0.22 },
+ // Square Tapering Ovoid: composite — square top + slight taper + rounded incisal
+ "7": { cervicalTaper: 0.02, incisalTaper: 0.16, incisalRadius: 0.42, cervicalRadius: 0.12, sideCurve: 0.12 },
+ };
+ const geom = FORM_GEOM[formId] || FORM_GEOM["1"];
+
  const teeth = [-2.5, -1.5, -0.5, 0.5, 1.5, 2.5].map((slot, i) => {
  const x = cx + slot * toothW;
- // Curved moulds: subtle parabolic offset down (anterior teeth bow forward)
+ // Curved (proportion 4-6): central incisors longer than canines (arch curve)
  const yOffset = isCurved ? Math.pow(slot, 2) * 1.6 : 0;
- // Position offset: outer teeth (canines) sit slightly more cervically on
- // tapering forms (visual cue for the wedge)
- const tapeOffset = isTapering ? Math.abs(slot) * 1.2 : 0;
- // Tooth-shape variation: outer 2 teeth (canines) narrower
+ // Canines slightly more cervical on STRONG-tapering forms (4, 5)
+ const tapeOffset = (formId === "4" || formId === "5") ? Math.abs(slot) * 1.4 : 0;
+ // Tooth-shape variation: canines narrower than centrals
  const isCanine = i === 0 || i === 5;
  const isCentral = i === 2 || i === 3;
  const widthMul = isCanine ? 0.78 : isCentral ? 1.05 : 0.92;
  const wThis = toothW * widthMul;
- // Ovoid forms: rounded incisal edges
- const rIncisal = isOvoid ? wThis * 0.45 : isTapering ? wThis * 0.2 : wThis * 0.3;
+
  const top = 10 + yOffset + tapeOffset;
- const bottom = top + heightMm * SCALE;
- // Trapezoidal-with-rounded-incisal shape
- const taperPx = isTapering ? wThis * 0.12 : wThis * 0.06;
+ const bottom = top + toothH;
+ const halfTop = (wThis / 2) * (1 - geom.cervicalTaper);
+ const halfBot = (wThis / 2) * (1 - geom.incisalTaper);
+ const rIncisal = halfBot * geom.incisalRadius;
+ const rCerv = halfTop * geom.cervicalRadius;
+ // Belly-out side curve — control point offset for the proximal Q-curve
+ const sideBelly = ((wThis / 2) * geom.sideCurve);
+ const midY = top + toothH * 0.5;
+
+ // Path: cervical line → rounded cervical corners → side curve to widest
+ // point at midY → continue to incisal corners → rounded incisal arc.
  return (
  <path key={i} d={`
- M ${x - wThis/2 + taperPx} ${top}
- L ${x + wThis/2 - taperPx} ${top}
- L ${x + wThis/2} ${bottom - rIncisal}
- Q ${x + wThis/2} ${bottom}, ${x + wThis/2 - rIncisal} ${bottom}
- L ${x - wThis/2 + rIncisal} ${bottom}
- Q ${x - wThis/2} ${bottom}, ${x - wThis/2} ${bottom - rIncisal}
+ M ${x - halfTop + rCerv} ${top}
+ L ${x + halfTop - rCerv} ${top}
+ Q ${x + halfTop} ${top}, ${x + halfTop} ${top + rCerv}
+ Q ${x + halfTop + sideBelly} ${midY}, ${x + halfBot} ${bottom - rIncisal}
+ Q ${x + halfBot} ${bottom}, ${x + halfBot - rIncisal} ${bottom}
+ L ${x - halfBot + rIncisal} ${bottom}
+ Q ${x - halfBot} ${bottom}, ${x - halfBot} ${bottom - rIncisal}
+ Q ${x - halfTop - sideBelly} ${midY}, ${x - halfTop} ${top + rCerv}
+ Q ${x - halfTop} ${top}, ${x - halfTop + rCerv} ${top}
  Z
  `} fill="#FCFAF4" stroke="#3A332A" strokeWidth={0.9} strokeLinejoin="round" />
  );
@@ -17727,6 +17822,77 @@ function MouldOutlinePreview({ code }) {
  letterSpacing: "0.04em",
  }}>
  ~{widthMm.toFixed(1)} mm × {heightMm.toFixed(1)} mm
+ </div>
+ </div>
+ );
+}
+
+// Posterior silhouette preview — shows the four maxillary posterior cusps
+// in a buccal-view cross-section that reads cusp angle at a glance.
+// 0° draws a flat-plane occlusal table; 10/20/22° draw modest cusp depth;
+// 30/33/40° draw a fully developed anatomical cusp profile. The cervical
+// outline is the same across forms — only the occlusal silhouette changes.
+function PosteriorMouldPreview({ angle }) {
+ if (!angle) return null;
+ // Parse the leading degrees from the label ("33°" → 33)
+ const deg = parseInt((angle.label || "0").replace(/[^\d]/g, ""), 10) || 0;
+ // Cusp height in px, scaled from the degrees value
+ const cuspH = Math.max(0, deg * 0.45);
+ // SVG: 4 posterior teeth (P1, P2, M1, M2) side-by-side, buccal view
+ const W = 360, H = 90;
+ const baseY = 70;        // cervical baseline
+ const occlusalY = 32;    // occlusal-table baseline (top of crown)
+ const teethW = [56, 56, 76, 76]; // wider for molars
+ let x = 20;
+ const paths = teethW.map((w, i) => {
+ const left = x;
+ const right = x + w;
+ x = right + 6;
+ const mid = (left + right) / 2;
+ const cuspOffset = i < 2 ? w * 0.30 : w * 0.22; // premolar = 2 cusps; molar = treated as 2-cusp simplification
+ // Build the crown outline as: cervical-left → up the mesial → cusp peaks → down the distal → cervical-right
+ const path = `
+ M ${left} ${baseY}
+ L ${left} ${occlusalY + 4}
+ Q ${left} ${occlusalY}, ${left + 4} ${occlusalY - cuspH * 0.4}
+ ${cuspH > 0
+   ? `L ${left + cuspOffset} ${occlusalY - cuspH}
+      L ${mid} ${occlusalY - cuspH * 0.25}
+      L ${right - cuspOffset} ${occlusalY - cuspH}`
+   : `L ${left + cuspOffset} ${occlusalY}
+      L ${mid} ${occlusalY}
+      L ${right - cuspOffset} ${occlusalY}`}
+ Q ${right} ${occlusalY}, ${right} ${occlusalY + 4}
+ L ${right} ${baseY}
+ Z
+ `;
+ const label = i < 2 ? (i === 0 ? "P1" : "P2") : (i === 2 ? "M1" : "M2");
+ return { path, mid, label };
+ });
+ return (
+ <div style={{
+ display: "flex", flexDirection: "column", alignItems: "center",
+ padding: "8px 10px", background: "rgba(0,0,0,0.015)",
+ borderRadius: "3px", border: "1px solid var(--rule-soft)",
+ }}>
+ <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ maxWidth: "100%" }}>
+ {/* Cervical baseline reference */}
+ <line x1={10} y1={baseY + 2} x2={W - 10} y2={baseY + 2}
+       stroke="rgba(58,51,42,0.3)" strokeWidth={0.5} strokeDasharray="3,2" />
+ {paths.map((p, i) => (
+ <g key={i}>
+ <path d={p.path} fill="#FCFAF4" stroke="#3A332A" strokeWidth={0.9} strokeLinejoin="round" />
+ <text x={p.mid} y={baseY + 14} textAnchor="middle"
+   fontSize="9" fontFamily="'JetBrains Mono', monospace" fill="var(--ink-faint)">{p.label}</text>
+ </g>
+ ))}
+ </svg>
+ <div style={{
+ fontSize: "9px", color: "var(--ink-faint)",
+ marginTop: "2px", fontFamily: "'JetBrains Mono', monospace",
+ letterSpacing: "0.04em",
+ }}>
+ Buccal silhouette — {angle.label} {angle.category}
  </div>
  </div>
  );
@@ -17989,8 +18155,9 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  </div>
 
  <div>
- <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)", marginBottom: "4px" }}>
- 4 · Posterior cusp angle
+ <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)", marginBottom: "4px", display: "flex", alignItems: "center", gap: "8px" }}>
+ <span>4 · Posterior cusp angle</span>
+ <CuspAngleInfo angle={angleMeta} />
  </div>
  <PillRow items={TOOTH_MOULD_CUSP_ANGLES} value={angle} onChange={setAngle}
  getKey={i => i.key}
@@ -18026,6 +18193,14 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  silhouettes well enough to glance-confirm a selection. */}
  <div style={{ marginTop: "10px" }}>
  <MouldOutlinePreview code={code} />
+ </div>
+ {/* Posterior silhouette — shows the 4 posterior cusps + cervix
+    in a cross-section view that reads the cusp angle at a glance.
+    Flat plane (0°) is non-anatomical; semi-anatomical (10°-22°)
+    shows modest cusp depth; anatomical (30°-40°) shows the full
+    cusp profile a natural posterior would carry. */}
+ <div style={{ marginTop: "8px" }}>
+ <PosteriorMouldPreview angle={angleMeta} />
  </div>
  {onApply && (
  <div style={{ marginTop: "10px" }}>
