@@ -2214,4 +2214,21 @@ After the first wave of batches, spawned 4 more parallel audit agents (Surgery, 
 - All build-green, all pushed live
 - One major user correction reversed (Cavitron+Isodry pairing restored from iter 30 mistake)
 - Outstanding for review: Surgery agent flagged orphan chapter surgery-ch22 (sinus communication) — not in any pathway. Per "be smart about not over editing," left as backlog rather than authoring a new OAC pathway.
-- AAP "2018" → "AAP 2017/2018" engine unification flagged but not applied (polish, not bug).
+- AAP "2018" → "AAP 2017/2018" engine unification flagged but not applied (polish, not bug). 21 occurrences across `computePerioCOEDx`, HelpPopup, and Stage/Grade narratives. Unifying touches user-visible engine output strings; deferred per "be smart about not over editing".
+
+### Iter 33 — chapter-ref integrity check (final QA pass)
+
+Ran a python diff between defined chapter IDs and referenced chapter IDs across the entire `src/App.jsx`:
+- **Defined chapters: 150**
+- **Referenced chapters: 142**
+- **Broken refs (referenced but undefined): 0** ✅
+- **Orphan chapters (defined but never referenced): 8** — endo-ch21 (perforation repair, stub), endo-ch23 (material reference, stub), ind-ch17-21 (lab-side chapters intentionally pulled from indirect pathways per modern UIC workflow), surgery-ch22 (sinus communication, OAC — agent-flagged but no pathway authored)
+
+All orphans are intentional or backlog. No section-ref maintenance work needed.
+
+### Iter 33 — final post-batch polish commits
+
+- **ind-single-implant-crown (commit 4274229)**: predoc scope warning (excluded teeth → PG Pros) + CDT codes (D6065 default, D6056/D6057 abutment, D6010 belongs to surgeon)
+- **ind-zirconia-posterior (commit 338cf83)**: Swade-named cementation specifics — sandblast → MDP primer (Z-Prime/Monobond) → RelyX Unicem 2; FujiCem 2 RMGI as fallback only
+
+Final iter 33 commit count: **15** across the Cases tab.
