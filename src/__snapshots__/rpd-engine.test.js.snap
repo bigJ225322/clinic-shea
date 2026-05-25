@@ -343,7 +343,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
     },
     {
       "claspAlternative": "Ring clasp",
-      "claspAlternativeRationale": "Ring clasp is the alternative for tilted terminal molars with lingual undercut: ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut. Both Reverse Akers AND Ring are -acceptable for this scenario (Huddle 6 Q10).",
+      "claspAlternativeRationale": "Ring clasp is the alternative for tilted terminal molars with lingual undercut: ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut. Both Reverse Akers AND Ring are acceptable for this scenario (Huddle 6 Q10).",
       "claspAlternatives": null,
       "claspRationale": "Used when ONLY a mesial/lingual undercut is available on a bicuspid or cuspid (NEVER molar — aspiration risk per Retainers PDF p. 27). Cast clasp originates from the distal aspect of the tooth and wraps to engage a mesio-lingual undercut. Tier-downgraded for molars (use Combination or Embrasure instead). (retentive arm engages disto-lingual undercut) — Huddle 6 Q10 carve-out: lingually inclined terminal molar permits Reverse Akers (or Ring clasp). The tilt makes lingual surface the practical engagement location.",
       "claspTier": "common",
@@ -418,7 +418,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
     {
       "alternativeRationale": "If the indirect retainer's chosen tooth has compromised support, the next-best tooth in the priority class (canine ↔ premolar) can be used. Geometric perpendicular ranking is a refinement, not a hard rule — instructor judgment can pick a different anterior tooth if support is inadequate at the geometric ideal.",
       "dualRole": false,
-      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II. Indirect retainer placement chosen via diagonal fulcrum-line geometry (McCracken Fig 8-2 C): fulcrum endpoints #21 (DE terminal) and #31 (opposite-side distalmost); perpendicular projection from fulcrum midpoint = 15.5 mm anterior. Among -preferred tooth types on opposite side, this tooth has the greatest anteriority.",
+      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II. Indirect retainer placement chosen via diagonal fulcrum-line geometry (McCracken Fig 8-2 C): fulcrum endpoints #21 (DE terminal) and #31 (opposite-side distalmost); perpendicular projection from fulcrum midpoint = 15.5 mm anterior. Among the preferred tooth types on opposite side, this tooth has the greatest anteriority.",
       "restType": "mesial occlusal rest",
       "source": "fulcrum-diagonal-perpendicular",
       "tier": "common",

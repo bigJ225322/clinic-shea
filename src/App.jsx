@@ -24299,7 +24299,7 @@ const PATHWAYS = [
  id: "endo-molar-rct",
  domain: "endo",
  label: "Molar RCT",
- description: "Mandibular first molar is the most-extracted tooth, and the most-frequent RCT. Per Swade Tooth Anatomy table (p.124): mand 1st molar = 2 roots / 3 canals primary, 2 roots / 4 canals as the alternate (distal canal splits to DB + DL). Maxillary first molar (Swade p.123) = 4 canals (MB2 60%), or 3 canals (40%). Per RCT-1-Visit protocol (Swade pp.119-121), molars follow the same same-day access-and-fill workflow as anteriors — multi-visit is the AAE-evidence-based deviation for necrotic teeth with PARL, not Swade's default.",
+ description: "Mandibular first molar is the most-extracted tooth, and the most-frequent RCT. Per Swade Tooth Anatomy table (p.124): mand 1st molar = 2 roots / 3 canals primary, 2 roots / 4 canals as the alternate (distal canal splits to DB + DL). Maxillary first molar (Swade p.123) = 4 canals (MB2 60%), or 3 canals (40%). Per RCT-1-Visit protocol (Swade pp.119-121), molars follow the same-day access-and-fill workflow as anteriors — multi-visit is the AAE-evidence-based deviation for necrotic teeth with PARL, not Swade's default.",
  keyDecisions: [
  "Canal anatomy per Swade Tooth Anatomy table (p.122-124, memorize for clinic): max 1st molar = 4 canals if MB2 present (60% incidence), otherwise 3 canals (40%). Mand 1st molar = 3 canals primary (MB, ML, single distal), or 4 canals (10-15% — distal splits to DB + DL).",
  "Pre-op CBCT is justified for any maxillary molar — MB2 incidence (60% per Swade) means flat-radiograph 'two-canal MB' likely misses the smaller orifice.",
