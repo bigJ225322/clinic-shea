@@ -2117,4 +2117,17 @@ These are real disagreements where I could not resolve without UIC-specific lect
 
 **C. Bridge framework try-in for 3-unit at UIC.** Removed `ind-ch3` from `ind-bridge` assuming UIC labs return finished short-span bridges. Could be wrong — if UIC clinic actually does have a metal-substructure try-in appointment for PFM bridges, this needs to come back. Easy to verify with any indirect-restorations preceptor.
 
-### Iter 32 cumulative: 5 commits, 7 substantive fixes (6 pollution removals + 1 new pathway added), 3 knowledge gaps flagged. All live. Tests 1023/1023 pass. The biggest theme this iter: data hygiene on pathway `sections` arrays. The audit agent found these systematically; the chapter-stub system is fragile because unfilled section refs render as Step headers in the UI without body content, exposing the AI-slop label of any inappropriate ref.
+### Iter 32 cumulative: 8 commits, 9 substantive fixes (7 pollution removals + 1 new pathway added + 1 Swade alignment), 3 knowledge gaps flagged. All live. Tests 1023/1023 pass. The biggest theme this iter: data hygiene on pathway `sections` arrays. The audit agent found these systematically; the chapter-stub system is fragile because unfilled section refs render as Step headers in the UI without body content, exposing the AI-slop label of any inappropriate ref.
+
+### Iter 32 — Swade-source confirmation on framework try-in placement
+
+Reading Swade pp.61-72 (FIXED single-crown sequence) and pp.75-76 (RPD STEPS — full 10-clinical-appointment workflow) confirmed the framework-try-in placement decision was correct: the metal-substructure try-in is RPD APPOINTMENT 6 in Swade's official sequence, NOT a step in any single-unit crown workflow. The Cases pathway `rpd-ch20` ("Framework try-in (appointment 5)") is the right chapter for RPD pathways — its chapter title is off by one vs Swade's appointment numbering (Swade says appt 6 in the with-survey-crowns sequence; without survey crowns it shifts to appt 3) but the concept is correct. The 6 RPD pathways that reference `rpd-ch20` are all genuine RPD cases. The `ind-ch3` removal from 4 single-unit indirect pathways was correct because that chapter (also "Metal framework try-in") was being used as a stand-in for the same RPD concept in non-RPD pathways — pure misclassification.
+
+### Iter 32 — Swade single-crown sequence absorbed for future migration work
+
+Crown workflow per Swade (the canonical UIC sequence):
+- Combined appointment 1: core buildup (D2950) + crown prep (D2790A/D2750A/D2740A) + provisional + impression — Swade p.59-67
+- Lab interlude: die trim → wax-up → cast → porcelain firing → return
+- Appointment 2: crown delivery (D2790C/D2750C/D2740C) — Swade p.68-69
+
+When the next migration phase begins (porting Swade equipment + numbered steps + note templates inline into pathways), `ind-conventional-crown` is the natural first prototype because the Swade content is already paged-organized and the existing keyDecisions match Swade's reduction targets table closely.
