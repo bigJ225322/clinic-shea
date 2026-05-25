@@ -13300,32 +13300,68 @@ function semesterStatus(pe, current) {
 // prereq text remains visible in the expanded view as plain prose.)
 
 // Timeline — full-width strip at top; chips are selectable (highlight selected).
-function PETimeline({ pes, selectedId, onSelect }) {
- const current = currentSemester;
+function PETimeline({ pes, selectedId, onSelect, groupBy = "semester", onGroupByChange }) {
+ const current = currentSemester();
+ // Iter 34: column data depends on grouping mode. Semester mode renders
+ // PE_SEMESTERS as columns (existing behavior). Category mode renders
+ // PE_PARTS as columns — same box-grid layout, different column labels
+ // and PE filtering.
+ const columns = groupBy === "type"
+ ? PE_PARTS.map(p => ({ id: p.id, label: p.label, isCategory: true }))
+ : PE_SEMESTERS.map(s => ({ id: s.id, label: s.label, isCategory: false }));
  return (
  <div style={{ marginBottom: "20px" }}>
  <div style={{
+ display: "flex", alignItems: "center", justifyContent: "space-between",
+ marginBottom: "10px",
+ }}>
+ <div style={{
  fontSize: "10px", letterSpacing: "0.22em",
  textTransform: "uppercase", color: "var(--accent)",
- fontWeight: 500, marginBottom: "10px",
+ fontWeight: 500,
  }}>
- Timeline
+ {groupBy === "type" ? "By Category" : "Timeline"}
+ </div>
+ {onGroupByChange && (
+ <div style={{
+ display: "flex", background: "var(--paper-soft)",
+ border: "1px solid var(--rule)",
+ borderRadius: "3px", overflow: "hidden",
+ }}>
+ {[{ id: "semester", label: "Semester" }, { id: "type", label: "Category" }].map(opt => (
+ <button key={opt.id} onClick={() => onGroupByChange(opt.id)}
+   style={{
+   padding: "4px 10px", fontSize: "10px", letterSpacing: "0.04em",
+   background: groupBy === opt.id ? "var(--accent)" : "transparent",
+   color: groupBy === opt.id ? "var(--paper)" : "var(--ink-soft)",
+   border: "none", cursor: "pointer",
+   fontFamily: "'Geist', sans-serif", fontWeight: 500,
+   transition: "background 100ms, color 100ms",
+   }}>{opt.label}</button>
+ ))}
+ </div>
+ )}
  </div>
  <div style={{
  display: "grid",
- gridTemplateColumns: `repeat(${PE_SEMESTERS.length}, 1fr)`,
+ gridTemplateColumns: `repeat(${columns.length}, 1fr)`,
  gap: "6px",
  }}>
- {PE_SEMESTERS.map(sem => {
- // Track-split PEs (PEDO_EXAM, PEDO_REST, URGENT, OS) appear in two
- // columns: D3-spring labeled "DMD only" and D4-summer labeled "AS only".
+ {columns.map(col => {
+ const sem = col.isCategory ? null : PE_SEMESTERS.find(s => s.id === col.id);
+ // In category mode, all PEs in this part appear; track-split logic
+ // doesn't apply (each PE shows once per its assigned part).
+ // In semester mode, track-split PEs (PEDO_EXAM, PEDO_REST, URGENT,
+ // OS) are duplicated into D3-spring (DMD) + D4-summer (AS).
  const TRACK_IDS = new Set(["PEDO_EXAM", "PEDO_REST", "URGENT", "OS"]);
- const semPes = pes.filter(p =>!TRACK_IDS.has(p.id) && p.deadline.semester === sem.id);
- const trackPes = pes.filter(p => TRACK_IDS.has(p.id));
- const showDMD = sem.id === "D3-spring";
- const showAS = sem.id === "D4-summer";
+ const semPes = col.isCategory
+   ? pes.filter(p => p.part === col.id)
+   : pes.filter(p => !TRACK_IDS.has(p.id) && p.deadline.semester === col.id);
+ const trackPes = col.isCategory ? [] : pes.filter(p => TRACK_IDS.has(p.id));
+ const showDMD = !col.isCategory && col.id === "D3-spring";
+ const showAS = !col.isCategory && col.id === "D4-summer";
  return (
- <div key={sem.id} style={{
+ <div key={col.id} style={{
  border: "1px solid var(--rule)",
  borderRadius: "3px",
  padding: "8px 6px",
@@ -13339,7 +13375,7 @@ function PETimeline({ pes, selectedId, onSelect }) {
  marginBottom: "6px",
  fontFamily: "'Geist', sans-serif",
  }}>
- {sem.label}
+ {col.label}
  </div>
  {(() => {
  // Compact groups — rendered as a single horizontal strip.
@@ -13724,113 +13760,20 @@ function PEs({ onShowSteps }) {
  setSelectedId(id => (id === peId? null: peId));
  };
 
- // Build the navigation groups for the left panel
- const navGroups = groupBy === "type"
-? PE_PARTS
-.map(part => ({ label: part.label, pes: PES_ALL.filter(p => p.part === part.id) }))
-.filter(g => g.pes.length > 0)
-: PE_SEMESTERS
-.map(sem => ({
- label: sem.label,
- pes: PES_ALL.filter(p => p.tracks
-? (p.tracks.dmd === sem.id || p.tracks.as === sem.id)
-: p.deadline.semester === sem.id),
- }))
-.filter(g => g.pes.length > 0);
+ // Iter 34: navGroups (left-panel grouped list) removed; PETimeline
+ // now handles both Type and Semester grouping directly.
 
  return (
  <div>
- {/* Full-width timeline — chips are clickable to select */}
- <PETimeline pes={PES_ALL} selectedId={selectedId} onSelect={handleSelect} />
+ {/* Iter 34: the previous left-panel grouped navigation (Type/Semester
+    toggle + indented PE list) was redundant — every PE in that list
+    was also a clickable box in the timeline above. Removed entirely;
+    the Type/Semester toggle was lifted into the timeline header
+    itself. Detail panel now uses the full width below the timeline. */}
+ <PETimeline pes={PES_ALL} selectedId={selectedId} onSelect={handleSelect}
+   groupBy={groupBy} onGroupByChange={setGroupBy} />
 
- {/* Split panel */}
- <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: "20px", alignItems: "start" }}>
-
- {/* LEFT: grouped navigation list */}
- <div>
- {/* Header + toggle */}
- <div style={{
- display: "flex", alignItems: "center", justifyContent: "space-between",
- marginBottom: "12px",
- }}>
- <div style={{
- fontSize: "10px", letterSpacing: "0.22em",
- textTransform: "uppercase", color: "var(--accent)", fontWeight: 500,
- }}>
- Exams
- </div>
- {/* Pill toggle: Type / Semester */}
- <div style={{
- display: "flex",
- background: "var(--paper-soft)",
- border: "1px solid var(--rule)",
- borderRadius: "3px", overflow: "hidden",
- }}>
- {[{ id: "type", label: "Type" }, { id: "semester", label: "Semester" }].map(opt => (
- <button key={opt.id}
- onClick={() => setGroupBy(opt.id)}
- style={{
- padding: "4px 10px",
- fontSize: "10px", letterSpacing: "0.04em",
- background: groupBy === opt.id? "var(--accent)": "transparent",
- color: groupBy === opt.id? "var(--paper)": "var(--ink-soft)",
- border: "none", cursor: "pointer",
- fontFamily: "'Geist', sans-serif", fontWeight: 500,
- transition: "background 100ms ease, color 100ms ease",
- }}
- >
- {opt.label}
- </button>
-))}
- </div>
- </div>
-
- {/* Grouped list */}
- {navGroups.map(group => (
- <div key={group.label} style={{ marginBottom: "14px" }}>
- <div style={{
- fontSize: "9px", letterSpacing: "0.14em",
- textTransform: "uppercase", color: "var(--ink-faint)",
- fontWeight: 500, fontFamily: "'Geist', sans-serif",
- marginBottom: "4px", paddingBottom: "3px",
- borderBottom: "1px solid var(--rule-soft)",
- }}>
- {group.label}
- </div>
- {group.pes.map(pe => {
- const isActive = selectedId === pe.id;
- return (
- <button key={pe.id}
- onClick={() => handleSelect(pe.id)}
- style={{
- display: "block", width: "100%", textAlign: "left",
- background: isActive? "rgba(122,30,30,0.06)": "transparent",
- border: "none",
- borderLeft: `2px solid ${isActive? "var(--accent)": "transparent"}`,
- padding: "5px 8px",
- cursor: "pointer",
- fontFamily: "'Geist', sans-serif",
- transition: "background 80ms ease",
- }}
- >
- <span className="mono" style={{
- fontSize: "11px", fontWeight: 500,
- color: "var(--accent)", marginRight: "7px",
- fontVariantNumeric: "tabular-nums",
- }}>
- {pe.code}
- </span>
- <span style={{ fontSize: "11px", color: isActive? "var(--ink)": "var(--ink-soft)" }}>
- {pe.name}
- </span>
- </button>
-);
- })}
- </div>
-))}
- </div>
-
- {/* RIGHT: detail panel */}
+ {/* Detail panel — full-width */}
  <div>
  {selectedPE? (
  <PEDetail pe={selectedPE} onShowSteps={onShowSteps} />
@@ -13841,11 +13784,9 @@ function PEs({ onShowSteps }) {
  paddingTop: "80px",
  fontFamily: "'Fraunces', serif",
  }}>
- Select an exam from the timeline or list.
+ Click any exam box above to see prerequisites, codes, and details.
  </div>
 )}
- </div>
-
  </div>
  </div>
 );
@@ -16776,12 +16717,31 @@ function RPDPaperFormArchDrawing({
  {/* 4. Survey lines / HOC ovals on abutments — positioned at
  the engine's EFFECTIVE undercut (DB / MB for Akers) rather
  than the user's raw attrs default, so the marker sits where
- the clasp actually engages. */}
+ the clasp actually engages. The survey line is a closed loop
+ around the entire tooth (it exists on every axial surface),
+ but the marker convention draws an oval only at the
+ RETENTIVE-clasp engagement point. */}
  {abutments.map((a, i) => selectable(
  drawSurveyLine(a.tooth, `sl-${i}`, a.effectiveUndercutLocation),
- 'surveyLine', { tooth: a.tooth, tooltip: `Survey line / HOC on ${rpdToothName(a.tooth)}` },
+ 'surveyLine', { tooth: a.tooth, tooltip: `Survey line / HOC on ${rpdToothName(a.tooth)} (retentive side — clasp crosses HOC to engage undercut below)` },
  `sl-w-${i}`
 ))}
+ {/* 4b. Lingual survey-line marker on abutments that carry a
+ RECIPROCAL ARM (not plate). The reciprocal arm sits ABOVE
+ the lingual HOC in the suprabulge zone — it doesn't engage
+ an undercut, but the HOC is what defines where the arm can
+ sit. Drawn at "mid-lingual" so it's visually opposite the
+ buccal undercut marker. Reciprocal PLATES cover the cingulum
+ region entirely, so no marker is needed there — the plate
+ IS the visual indicator. */}
+ {abutments.map((a, i) => (a.reciprocation && a.reciprocation.type === "arm")
+ ? selectable(
+ drawSurveyLine(a.tooth, `sl-recip-${i}`, "mid-lingual"),
+ 'surveyLine', { tooth: a.tooth, tooltip: `Lingual HOC marker on ${rpdToothName(a.tooth)} — reciprocal arm sits above this line in the suprabulge zone` },
+ `sl-recip-w-${i}`
+ )
+ : null
+ ).filter(Boolean)}
 
  {/* 5a. Minor connector struts */}
  {abutments.map((a, i) => selectable(
@@ -18908,7 +18868,7 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
  } else if (kind === 'surveyLine' && tooth!= null) {
  title = `Survey line (HOC) — ${rpdToothName(tooth)}`;
  lines = [["Function", "Marks height-of-contour around the tooth"]];
- rationale = "The survey line (height of contour) separates retentive areas (below) from suprabulge areas (above). Drawn in black on the cast. Clasp arms cross the survey line to engage undercuts; reciprocal arms stay above.";
+ rationale = "The survey line (height of contour) is a closed loop around every axial surface of the tooth — it exists on buccal, lingual, mesial, and distal. It separates retentive areas (below) from suprabulge areas (above). Drawn in black on the cast. Two markers appear on abutments with a cast reciprocal arm: the BUCCAL oval shows where the retentive clasp engages an undercut below HOC; the LINGUAL oval shows where the reciprocal arm sits above HOC for bracing (it does NOT engage an undercut). Reciprocal plates cover the lingual cingulum entirely, so no lingual marker is drawn when a plate is used.";
  } else if (kind === 'connector' && mc) {
  title = `Major connector — ${mc.type}`;
  lines = [
