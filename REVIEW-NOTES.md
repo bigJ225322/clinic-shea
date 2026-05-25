@@ -2232,3 +2232,35 @@ All orphans are intentional or backlog. No section-ref maintenance work needed.
 - **ind-zirconia-posterior (commit 338cf83)**: Swade-named cementation specifics — sandblast → MDP primer (Z-Prime/Monobond) → RelyX Unicem 2; FujiCem 2 RMGI as fallback only
 
 Final iter 33 commit count: **15** across the Cases tab.
+
+---
+
+## Iteration 34 (2026-05-25 — /loop 2h, user-batched UI/content cleanup)
+
+User batch in one go:
+1. RPD Lab Rx form: remove collapse/dropdown — always open
+2. Tooth mould facial form silhouettes too similar — make them visibly distinct vs PDF page 4
+3. "31G not in chart" type errors — verify we're not lying about availability
+4. Posterior tooth view with cusp-angle distinction + circled-i tooltips
+5. Cut "Anterior edentulous area present" notice
+6. Cut "Third molar primary abutment / Applegate Rule 8" notice
+7. Strip ALL "UIC" references + UIC faculty names
+8. Survey lines on lingual surfaces (reciprocal-arm side)
+9. PEs view: cut bottom nav, lift toggle to timeline, add Category mapping mode
+
+### Iter 34 commits (in order, all to main, all build-green, all tests passing)
+
+1. **e7624b9 (worktree only)** + **3ea2f4a (main)** RPD form always-open + UIC scrub + 2 notice removals. ~52 UIC occurrences removed, faculty-attributed lecture content paraphrased to school-agnostic. Collateral fix: restored empty `()` in function/arrow signatures and method calls that an over-eager regex stripped.
+2. **67ab58b** Tooth mould — rewrote MouldOutlinePreview with per-form silhouette parameters (cervicalTaper, incisalTaper, sideCurve, incisalRadius, cervicalRadius). Added PosteriorMouldPreview (4-tooth buccal cross-section with cusp height scaled by degrees). Added CuspAngleInfo (circled-i tooltip on the cusp angle selector). Each TOOTH_MOULD_CUSP_ANGLES entry now carries a `desc` field with clinical indication text.
+3. **d529bbd** PEs view refactor: removed redundant left-panel grouped nav; lifted Type/Semester toggle up into PETimeline header; PETimeline now renders Category columns OR Semester columns; box-grid layout stays in place. Side benefit: fixed latent `currentSemester` vs `currentSemester()` reference bug in PETimeline.
+4. **d529bbd** (same commit) Lingual survey-line marker — added a second red oval at mid-lingual on abutments carrying a cast reciprocal ARM (not plate). Updated the survey-line detail panel to explain the HOC closed-loop reality + retentive (buccal, below HOC) vs reciprocal (lingual, above HOC = suprabulge).
+5. **88db682** Tooth mould chart verification — diffed TOOTH_MOULD_TABLE vs PDF page 24 combination table. Result: 0 false-positives ("we say it exists" but it doesn't), 1 missing (62F — added). The user-perceived problem of frequent "not in chart" hits is a property of the actual mould catalog; the closest-match suggestions panel already handles it.
+6. **9c005a5** Tests + snapshots updated after notice removal — 1021/1021 passing.
+
+### Iter 34 borderline / kept-for-review
+
+- "Swade" references preserved (it's the source-of-truth PDF + the user's explicit primary reference per standing instructions). User did not specifically ask to remove these; "UIC + UIC faculty" was the scope.
+- PEs Category mode does NOT show track-split labels (DMD only / AS only) because tracks are a semester-distribution concept, not a category one. Acceptable trade-off.
+- Posterior silhouette is a simplified 2-cusp-per-tooth model (didn't render P/M furcation, distal cusp, etc.). Good enough for cusp-angle communication; not anatomically rigorous.
+
+### Iter 34 final: 6 commits, 1 PDF verified, 1021 tests passing, all live.
