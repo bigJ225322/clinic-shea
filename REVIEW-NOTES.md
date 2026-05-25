@@ -2169,3 +2169,49 @@ Iter 32 flagged uncertainty about MTA vs ferric sulfate for primary pulpotomy. I
 - **Cavitron+Isodry pattern restored** — every endo/perio scaling note now correctly references Isodry per Swade clinic-practice norm (user feedback).
 
 ### Iter 33 build status: green at every commit. Final test count unchanged. All commits pushed to main → live on Vercel.
+
+### Iter 33 — additional audit-driven commits (Perio, Surgery, Cross-disciplinary, Operative)
+
+After the first wave of batches, spawned 4 more parallel audit agents (Surgery, Perio, Cross-disciplinary, Operative). All completed with actionable findings; all priority fixes applied:
+
+**Perio batch (commit 802d22d):**
+- perio-srp: Stage I corrected from "gingivitis-level" → "initial periodontitis CAL 1-2 mm" per UIC AAP 2017/2018 framework
+- SRP visit-splitting: right-side / left-side per Swade p.22 (NOT Mx/Mn)
+- Added AAP Grade modifiers (smoking ≥10 cig/day, HbA1c ≥7, BL/age >1.0) — what engine uses but Cases never surfaced
+- Added D0170 re-eval code + plaque disclosure + O'Leary at re-eval per Swade p.30-31
+- perio-maintenance: re-charting cadence corrected to EVERY visit per Swade p.32 (was incorrectly "every 12 months")
+
+**Surgery batch (same commit):**
+- Anesthesia recipes per Swade p.161: added missing lingual + mental + PDL for mandibular extractions; greater palatine + PDL for maxillary
+- Forceps corrected to Swade UIC kit (#89/#90 max, #17/#87 mand) — #53R/L is NOT in Swade
+- Third-molar referral scope corrected: ALL third molars route to PGOS per Swade p.11 urgent care template (not just impacted/IAN-risk)
+- Suture spec: 3-0 chromic gut on 3/8 reverse-cutting needle per Swade p.164 + D7953 socket preservation code
+- surgery-avulsed-tooth: splint timing per IADT 2020 (2 weeks, or 4 weeks if EO dry time >60 min — NOT 7-14 days); RCT for closed apex starts BEFORE splint removal
+
+**Perio + Surgery polish (commit 6439eb1):**
+- perio-prophy: clarified D4346 distinction (full-mouth scaling with heavy gingivitis, no bone loss)
+- surgery-simple-ext: distinguished max premolar (deliver buccally) from mandibular (path of least resistance)
+- surgery-dry-socket: flagged Alvogyl discontinuation (~2019-2021), eugenol-impregnated gauze is contemporary first-line
+
+**Isodry baked into Steps tab raw strings (commit 4c96a57):**
+- All 5 raw "(with [an] assistant using HVE)" → "(with Isodry)" directly in note templates AND Steps tab body content
+- renderTemplate substitution becomes no-op safety net; single source of truth across tabs
+
+**Operative batch (commit ccdc8b7):**
+- dir-amalgam: added Swade p.35 amalgamation specs (9-12s @ 3600 cpm) + CDT codes (D2140/D2150/D2160/D2161)
+- dir-class5-rmgi: conditioner protocol per Swade p.49 (polyacrylic 15s + air-dry + cure 10s, not "10-15 sec")
+- dir-sealant: named UIC actual material (Ultradent UltraSeal XT Plus, currently peds-only) + Swade p.51 citation
+
+**Cross-disciplinary batch (commits e2bdece + 96432c8):**
+- cross-cd-iod-implants: UIC PIP scope warning (mandibular 2-implant IOD only); bone height corrected to ≥12 mm Yuan / >16 mm Campbell (was "10 mm"); insert-replacement corrected to every 1-2 years (was "6-12 months")
+- cross-anterior-implant-esthetic: UIC predoc scope warning prepended (excluded teeth #1/#2/#8/#9/#15/#16/#17/#18/#31/#32 → PG Pros)
+- cross-rpd-to-implants: same predoc scope warning for full-arch / FPD referrals
+- cross-cd-rpd: sections swap rpd-ch5 → rpd-ch6 (altered-cast impression per Kim's combination syndrome slide)
+
+### Iter 33 final stats:
+- 7 audit agents spawned in parallel (Endo, RPD, Pedo, CD, Indirect, Surgery, Perio, Cross, Operative)
+- 12+ commits applied this iter
+- All build-green, all pushed live
+- One major user correction reversed (Cavitron+Isodry pairing restored from iter 30 mistake)
+- Outstanding for review: Surgery agent flagged orphan chapter surgery-ch22 (sinus communication) — not in any pathway. Per "be smart about not over editing," left as backlog rather than authoring a new OAC pathway.
+- AAP "2018" → "AAP 2017/2018" engine unification flagged but not applied (polish, not bug).
