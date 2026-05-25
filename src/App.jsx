@@ -22817,7 +22817,7 @@ const PATHWAYS = [
  { guideId: "rpd", chapterId: "rpd-ch2" }, // Mount
  { guideId: "rpd", chapterId: "rpd-ch3" }, // Survey
  { guideId: "rpd", chapterId: "rpd-ch4" }, // Custom tray
- { guideId: "rpd", chapterId: "rpd-ch5" }, // Single-step impression
+ { guideId: "rpd", chapterId: "rpd-ch6" }, // Altered cast impression — Combination Syndrome prevention per Kim's UIC slide ("Selective pressure/altered cast impression technique")
  { guideId: "rpd", chapterId: "rpd-ch7" }, // Design form
  { guideId: "rpd", chapterId: "rpd-ch10" }, // PIP + Mizzy
  { guideId: "rpd", chapterId: "rpd-ch12" }, // Occlusal adjustment (coordinated)
@@ -23483,14 +23483,15 @@ const PATHWAYS = [
  id: "cross-cd-iod-implants",
  domain: "cross",
  label: "Conversion from CD to implant overdenture",
- description: "Existing complete denture patient is interested in implants for retention. Two common paths: (a) keep the existing denture and add implants with chairside housing pickup at delivery, (b) fabricate a new denture designed for implant attachments from the start. Path (a) is faster and cheaper but inherits any deficiencies of the existing denture; path (b) is the better long-term outcome if the patient can afford it. Implant position is restoratively driven — work back from the planned attachment location.",
+ description: "Existing complete denture patient is interested in implants for retention. Two common paths: (a) keep the existing denture and add implants with chairside housing pickup at delivery, (b) fabricate a new denture designed for implant attachments from the start. Path (a) is faster and cheaper but inherits any deficiencies of the existing denture; path (b) is the better long-term outcome if the patient can afford it. Implant position is restoratively driven — work back from the planned attachment location. UIC predoc scope: this pathway is for a MANDIBULAR 2-implant overdenture opposing a maxillary CD. Maxillary implant-supported overdentures, full-arch maxillary implant prostheses, and any case >2 implants must be referred to PG Pros per UIC PIP guidelines.",
  keyDecisions: [
+ "UIC predoc scope (PIP page 3): mandibular 2-implant IOD opposing maxillary CD ONLY. Maxillary IOD/full-arch and >2 implants → PG Pros. Yuan: 'we don't provide implant-supported maxillary full occupation... you have to go to PG.'",
  "Path (a): retain existing denture + pickup housings; cheaper, inherits any deficiencies.",
  "Path (b): fabricate new denture designed for implants from the start; better long-term.",
  "Implant position is restoratively driven — work back from planned attachment locations.",
- "Vertical-space check before committing to the design: at least ~10 mm of bone height for implant placement, and ~7 mm of interocclusal space from ridge crest to opposing dentition for the abutment + attachment + acrylic stack. Tight interocclusal space is the most common reason to abandon an attachment in favor of a different retention strategy.",
+ "Vertical-space check before committing to the design: bone height ≥12 mm minimum (Yuan, UIC IOD section p.29) — Campbell prefers >16 mm specifically for IOD; ~7 mm of interocclusal space from ridge crest to opposing dentition for the abutment + attachment + acrylic stack. Tight interocclusal space is the most common reason to abandon an attachment in favor of a different retention strategy.",
  "Pickup at delivery or via chairside reline.",
- "Schedule insert-replacement maintenance at 6–12 months.",
+ "Schedule insert-replacement maintenance every 1–2 years (UIC IOD section p.31). Counsel the patient that inserts wear and need replacement on this schedule. Early looseness at 3 months usually means food impacted in the cap, not insert wear.",
  ],
  phases: [
  { label: "IOD context", count: 1 },
@@ -24019,8 +24020,9 @@ const PATHWAYS = [
  id: "cross-anterior-implant-esthetic",
  domain: "cross",
  label: "Anterior single implant + crown (esthetic zone)",
- description: "Implant placed in the #8 or #9 site and ready for restoration. Custom abutment is almost always required in the esthetic zone (stock abutments rarely meet emergence profile demands). Typical material combinations: e.max (lithium disilicate) CAD/CAM crown cemented to a titanium custom abutment (most common), OR zirconia custom abutment + e.max crown when the abutment risks showing through thin tissue (esthetic gain at slightly higher fracture risk). Screw-retained crowns can be e.max or zirconia directly on the implant platform — the abutment becomes integral to the crown. Shade matching to the contralateral natural tooth dominates the workflow. A provisional restoration for 2–3 months of soft-tissue maturation is common before the definitive crown — longer for cases that needed bone graft or a connective-tissue graft. Total timeline from uncovery to definitive seating is often 3–6 months in the esthetic zone.",
+ description: "UIC predoc scope warning: per UIC PIP guidelines page 3, predocs CANNOT restore implants on #1, #2, #8, #9, #15, #16, #17, #18, #31, or #32 (and the lateral incisor numbering in some UIC source materials excludes additional anterior teeth — verify against the latest exclusion table). #8/#9 single-implant restoration is a PG Pros referral. The workflow below is for conceptual understanding and applies to NON-excluded esthetic-zone teeth (canines/premolars). For a true #8/#9 case, the predoc role is consult + faculty coordination, not the chair-side restorative work. With that caveat: implant placed in the esthetic zone and ready for restoration. Custom abutment is almost always required (stock abutments rarely meet emergence profile demands). Typical material combinations: e.max (lithium disilicate) CAD/CAM crown cemented to a titanium custom abutment (most common), OR zirconia custom abutment + e.max crown when the abutment risks showing through thin tissue (esthetic gain at slightly higher fracture risk). Screw-retained crowns can be e.max or zirconia directly on the implant platform — the abutment becomes integral to the crown. Shade matching to the contralateral natural tooth dominates the workflow. A provisional restoration for 2–3 months of soft-tissue maturation is common before the definitive crown — longer for cases that needed bone graft or a connective-tissue graft. Total timeline from uncovery to definitive seating is often 3–6 months in the esthetic zone.",
  keyDecisions: [
+ "UIC PREDOC SCOPE (PIP page 3): excluded tooth numbers for implant restoration include #1, #2, #8, #9, #15, #16, #17, #18, #31, #32 (verify lateral-incisor exclusions against current PIP table). Any case on these teeth → PG Pros referral. The clinical decisions below apply to teaching + canines/premolars; #8/#9 cases route to PG.",
  "Custom abutment almost always required in the esthetic zone — stock won't match emergence profile.",
  "Abutment material: titanium (default — strong, long-track-record), zirconia (esthetic — when thin biotype risks gray show-through), gold-hued titanium (compromise for warm-tone tissues). Per UIC source lab Rx examples: titanium, gold-hue, or zirconia.",
  "Crown material: e.max (lithium disilicate) CAD/CAM is the typical anterior choice; PFM and full-gold are also acceptable per UIC lab Rx examples — pick by patient esthetic priorities.",
