@@ -2131,3 +2131,41 @@ Crown workflow per Swade (the canonical UIC sequence):
 - Appointment 2: crown delivery (D2790C/D2750C/D2740C) — Swade p.68-69
 
 When the next migration phase begins (porting Swade equipment + numbered steps + note templates inline into pathways), `ind-conventional-crown` is the natural first prototype because the Swade content is already paged-organized and the existing keyDecisions match Swade's reduction targets table closely.
+
+---
+
+## Iteration 33 (2026-05-25 — /loop 4h continuous)
+
+User instruction: "AUDIT USING THE SHARED FILES/FOLDERS THE ENTIRE CASES TAB FOR A FULL 4 HOURS WITHOUT DELAY OR BREAKS." Plus the Cavitron+Isodry correction from iter 30 ("Isodry absolutely does fit when using cavitron"). Plus the new resource: `Dental School Topics in Which Weeks.docx` mapping preclinical lectures by semester.
+
+### Iter 33 commits (chronological)
+
+1. **Cavitron→Isodry restoration (iter 30 revert reversal)** — renderTemplate line 3859: restored `t = t.replace(/\(with (?:an )?assistant using HVE\)/g, "(with Isodry)")` per user instruction.
+2. **Operative Class III/IV/V batch** — added Gluma + ScotchBond + total-etch sequence + D2391/D2392/D2393 codes per Swade.
+3. **Pedo Cases batch** — composite matrix corrected to Garrison sectional per Swade p.140-141 (was T-band default), sealant etch time 15s→30s per Swade p.134, added Scotchbond Universal step.
+4. **Endo Cases batch (6 pathways)** — anterior/molar/premolar RCT obturation rewritten to Swade master cone + Endoseal MTA + heat Calamus; irrigation 1% NaOCl + 17% EDTA; canal anatomy per Swade p.122-124. Necrotic acute dropped "leave open 24-48h", updated antibiotics per AAE 2019 (amox 500mg TID × 3-7d, azithromycin for PCN allergy NOT clindamycin). Direct pulp cap: MTA/Biodentine > Ca(OH)2 per UIC Vital Pulp Therapy 2025 (5yr success 56% vs 81%). Retreatment + broken instrument: pre-doctoral REFERRAL default.
+5. **RPD pathway batch (5 fixes)** — rpd-distal-extension dangling sentence + "(mandatory for DE)"→"(conditional)" comment; rpd-valplast-repair "refer to faculty" dead-end replaced with teachable lab Rx guidance; rpd-recurrent-caries-abutment added Sabbagh Lecture 2 CAMBRA reassessment FIRST; rpd-broken-framework added rpd-ch9.
+6. **CD batch** — cd-iid, cd-iod-canine-roots, cd-implant-supported-lower: added cd-ch3 (border molding), cd-ch5 (boxing), cd-ch9 (CR registration) which were missing. cd-limited-dexterity: corrected attachment guidance per Bin Yang Reline/Rebase/Repair lecture — UIC first-line for dexterity loss is switching to LOWER-RETENTION Locator inserts (pink ~1.5 lb, clear ~0.5 lb), NOT abandoning Locator for ball attachments.
+7. **Indirect/crown batch** — ind-conventional-crown: cord retraction corrected to dual-cord (#00 bottom + #0 top per Swade p.55/p.66), not "#00 OR #0". ind-survey-crown: undercut spec corrected from "1.5 mm" to "0.01-inch (0.25 mm)". ind-bridge: replaced generic resin/RMGI with Swade-named RelyX Unicem 2 + FujiCem 2. ind-recement: added intaglio-decontamination keyDecision as #1 cause of secondary debond (Swade p.65). ind-ch3 stub: added author-warning comment about FPD-substructure scope.
+8. **Pedo CDT codes + CD chapters** — added CDT 2024 codes to pedo-pulpotomy (D3220+D2930), pedo-pulpectomy (D3230/D3240+D2930), pedo-extraction (D7140/D7210), pedo-space-maintainer (D1510-D1527), pedo-stainless-crown (D2930), pedo-strip-crown (D2932), pedo-fluoride-varnish (D1206), pedo-primary-anterior-class3 (D2330-D2332). Added cd-ch2 to cd-xerostomic and cd-ch3+cd-ch9 to cd-rapid-need.
+
+### Iter 33 knowledge resolution — pulpotomy medicament
+
+Iter 32 flagged uncertainty about MTA vs ferric sulfate for primary pulpotomy. Iter 33 pedo audit agent VERIFIED the citation: Alsaleh Week 7 slide 42 verbatim says "MTA is now considered the material of choice for pulpotomy, it is what we use here at UIC COD — GOLD Standard." Swade pp.152-154 (Viscostat+IRM) is out of date on this specific point. Cases pathway is the newer truth.
+
+### Iter 33 audit agents (parallel, 5 spawned this iter)
+
+- Endo: verified obturation default + irrigation concentration disagreements → all fixed
+- RPD: 5 priority fixes identified → all batched
+- Pedo: verified MTA citation, found composite matrix wrong (T-band vs Garrison), sealant etch time wrong (15s vs 30s) → all fixed
+- CD: cd-iid missing 3 chapters; cd-limited-dexterity Locator vs ball wrong → all fixed
+- Indirect: 5 fixes (dual cord, undercut spec, cement brands, intaglio decontamination, ind-ch3 comment) → all fixed
+- (Iter 33 also has running: Surgery audit + Perio audit at time of summary)
+
+### Iter 33 outstanding for review
+
+- **rpd-ch1 (facebow) inclusion standardization** — audit noted inconsistency across full-fab RPD pathways. rpd-kennedy4-anterior, rpd-implant-hybrid, rpd-tmd-considering have it; rpd-kennedy3, rpd-distal-extension don't. Decision deferred — Cases tab is deliberately curated to salient steps, and per user "be smart about not over editing" — facebow inclusion is a polish, not a bug fix.
+- **Pulpotomy MTA Swade-disagreement documented** in iter 32 → resolved iter 33 in favor of Alsaleh slide.
+- **Cavitron+Isodry pattern restored** — every endo/perio scaling note now correctly references Isodry per Swade clinic-practice norm (user feedback).
+
+### Iter 33 build status: green at every commit. Final test count unchanged. All commits pushed to main → live on Vercel.
