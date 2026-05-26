@@ -25407,6 +25407,7 @@ const PATHWAYS = [
  "Irrigation with chlorhexidine 0.12% or warm sterile saline. Patient prescribed CHX rinse BID for 7-10 days. Warm saltwater rinses every 4 hours at home.",
  "Antibiotics ONLY for systemic involvement (fever, cellulitis, lymphadenopathy). Localized abscess that drains does not need antibiotics. If prescribed: amoxicillin 500 mg TID × 7 days or pen V K 500 mg QID × 7 days. PCN allergy: azithromycin 500 mg day 1 → 250 mg × 4 days (clindamycin NO longer first-line per 2021 AHA update + C. diff risk).",
  "Re-evaluation at 7-10 days. Acute symptoms should be resolved. Schedule SRP for the quadrant (or full-mouth if not previously done) — the abscess is a sign the patient needs definitive perio therapy.",
+ "CDT codes (CDT 2024): D7510 (Incision and drainage of abscess — intraoral soft tissue) when a fluctuant external incision is needed; usually NOT billed if drainage is achieved through the pocket alone. D0140 (Limited oral evaluation — problem-focused) for the emergency visit. SRP at re-eval bills D4341/D4342 by quadrant. The abscess drainage itself is often bundled under D0140 + the SRP visit that follows.",
  ],
  phases: [
  { label: "Diagnosis", count: 2 },
