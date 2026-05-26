@@ -11635,10 +11635,10 @@ function ClickToCopyCode({ code, showSwadeFlag }) {
 
 function RVUs() {
  const [search, setSearch] = useState("");
- // Default to "Diagnostic" — first practical category, much smaller
- // landing set than "All" (23 vs 92 codes). Students typically start
- // looking up a specific procedure type, not browse the whole CDT book.
- const [activeCategory, setActiveCategory] = useState("diag");
+ // Default to no category selected (null) — student sees the full
+ // catalog and can narrow with a pill or the search box. Clicking the
+ // active pill a second time deselects it and returns to this state.
+ const [activeCategory, setActiveCategory] = useState(null);
  const [sortBy, setSortBy] = useState("relevance");
  const [sortDir, setSortDir] = useState("asc");
  // Hide codes that aren't referenced in the Swade manual. The full table is
@@ -11795,9 +11795,9 @@ function RVUs() {
  return counts;
  }, [swadeOnly]);
 
- // If the active category drops to zero codes (e.g. swadeOnly hides it), reset to "all".
+ // If the active category drops to zero codes (e.g. swadeOnly hides it), reset to no selection.
  useEffect(() => {
- if (categoryCounts[activeCategory] === 0) setActiveCategory("all");
+ if (activeCategory && categoryCounts[activeCategory] === 0) setActiveCategory(null);
  }, [categoryCounts, activeCategory]);
 
  const toggleSort = (col) => {
@@ -11938,7 +11938,8 @@ function RVUs() {
  if (count === 0) return null;
  return (
  <button key={cat.id}
- onClick={() => setActiveCategory(cat.id)}
+ onClick={() => setActiveCategory(prev => prev === cat.id? null: cat.id)}
+ title={isActive? "Click again to clear filter": `Filter to ${cat.label}`}
  style={{
  fontSize: "11px",
  padding: "5px 11px",
@@ -19954,29 +19955,12 @@ function RPDHelper() {
 
  return (
  <>
- <div style={{...cardStyle, padding: "26px 28px", position: "relative" }}>
- {/* Diagnosis label — pinned to the top-left edge of the builder card,
- inside the white area at the boundary with the page background.
- Absolute-positioned so it sits along the top edge rather than
- pushing the action bar down. Small Fraunces oxblood roman. */}
- {hasContent && result.kennedy?.class != null && (
- <div className="rpd-print-hide" style={{
- position: "absolute",
- top: "8px",
- left: "28px",
- fontFamily: "'Fraunces', serif",
- fontSize: "13px",
- color: "var(--accent)",
- letterSpacing: "0.01em",
- }}>
- {result.kennedy.description}.
- </div>
- )}
-
+ <div style={{...cardStyle, padding: "26px 28px" }}>
  {/* Top action bar — all three controls on one horizontal line.
- Clear all (left), Mx/Mn toggle (center), Case inputs (right).
- The "RPD Design Helper" h2 title was cut; the tab label "RPD"
- already identifies the section. */}
+ Clear (left, with Kennedy diagnosis text inline to its right
+ once a case has content), Mx/Mn toggle (center), Case inputs
+ (right). The "RPD Design Helper" h2 title was cut; the tab
+ label "RPD" already identifies the section. */}
  <div className="rpd-print-hide" style={{
  marginBottom: "16px",
  display: "grid",
@@ -19986,15 +19970,28 @@ function RPDHelper() {
  position: "relative",
  zIndex: 5,
  }}>
- <div style={{ justifySelf: "start" }}>
+ <div style={{ justifySelf: "start", display: "flex", alignItems: "center", gap: "14px", minWidth: 0 }}>
  <button
  onClick={clearAll}
  style={{ background: "transparent", color: "var(--ink-soft)", border: "1px solid var(--rule)", padding: "6px 14px",
  fontFamily: "'Geist', sans-serif", fontSize: "10px", letterSpacing: "0.16em",
- textTransform: "uppercase", cursor: "pointer", borderRadius: "2px" }}
+ textTransform: "uppercase", cursor: "pointer", borderRadius: "2px", flexShrink: 0 }}
  title="Reset all teeth to present, default measurements and patient factors">
  Clear
  </button>
+ {hasContent && result.kennedy?.class != null && (
+ <span style={{
+ fontFamily: "'Fraunces', serif",
+ fontSize: "13px",
+ color: "var(--accent)",
+ letterSpacing: "0.01em",
+ whiteSpace: "nowrap",
+ overflow: "hidden",
+ textOverflow: "ellipsis",
+ }}>
+ {result.kennedy.description}.
+ </span>
+ )}
  </div>
  {/* Mx/Mn segmented toggle, centered */}
  <div style={{ display: "inline-flex", border: "1px solid var(--rule)", borderRadius: "2px", overflow: "hidden", justifySelf: "center" }}>
