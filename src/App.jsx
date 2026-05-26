@@ -10658,7 +10658,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <Hairline />
  <Field label="Name(s)">
  <TextInput value={fields.names} onChange={v=>setField("names",v)}
- placeholder="S.Student/Dr. Nice" />
+ placeholder="S.Swade/Dr. Nice" />
  </Field>
  <button className="ghost" onClick={handleReset} style={{ width: "100%", marginTop: "10px" }}>
  Clear patient fields
