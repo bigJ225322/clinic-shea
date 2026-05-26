@@ -22897,6 +22897,7 @@ const PATHWAYS = [
  "Plan for 1.5× the chair time of a single prosthesis.",
  "Counsel patient: adaptation is harder for combined cases.",
  "COMBINATION SYNDROME RISK: maxillary CD + mandibular Class I RPD is the textbook trigger configuration (Kelly 1972). Anticipate the 5 classic consequences over time — anterior max ridge resorption, posterior mand ridge resorption, mand anterior supra-eruption, maxillary tuberosity downgrowth, papillary hyperplasia of hard palate. Prevention: bilateral balanced occlusion at delivery, altered-cast impression for the mand RPD, 1-year clinical remount, 3-month perio recall for remaining mand teeth, reline as needed. Consider implant-assisted mandibular RPD or maxillary OD as the definitive long-term plan — explicitly recommended when the mandibular ridge is already showing severe resorption.",
+ "CDT codes (combination case = both prosthesis codes): D5110 (Complete denture — maxillary) + D5214 (Cast-metal RPD — mandibular). Per-step subcodes on each side. If mandibular is Class I distal extension, the altered-cast technique adds D5810/D5811 (interim/diagnostic impression — verify your school's fee schedule).",
  ],
  phases: [
  { label: "CD — Records", count: 2 },
@@ -22943,6 +22944,7 @@ const PATHWAYS = [
  "Communicate surveyed contour dimensions on the crown Rx.",
  "Crown material commonly PFM for durability and contour control.",
  "Faculty signs off on the RPD design before crown prep.",
+ "CDT codes (per-procedure, sequential): D2750 (PFM crown, high noble metal) at the survey-crown visits — typical material default. D5213/D5214 (maxillary/mandibular cast-metal RPD) at the RPD fabrication that follows. Each is billed independently — the survey crown is its own complete procedure that precedes the RPD impression.",
  ],
  phases: [
  { label: "RPD-side planning", count: 3 },
