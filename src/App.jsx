@@ -26202,11 +26202,11 @@ const PATHWAYS = [
  description: "Patient without periodontal disease (gingivitis only, no bone loss). Part of Phase I (recall after COE) or Phase IV (every-6-month maintenance for healthy patients). Paired with POE (D0120) at the same appointment — the prophy+POE schedule is every 6 months, with the perio chart updated 1× per year (so every other prophy+POE appointment includes new charting). The endpoint is plaque-free crowns; this is not SRP, no subgingival deep cleaning.",
  keyDecisions: [
  "Indication check — no perio disease, no bone loss, gingivitis at most. Pockets ≥4 mm with bleeding + radiographic bone loss + attachment loss = SRP territory (see perio-srp pathway). Heavy generalized gingival inflammation WITHOUT bone loss (e.g., orthodontic-appliance plaque or pregnancy gingivitis with full-mouth thick calculus) = D4346 (full-mouth scaling in presence of generalized moderate-severe gingival inflammation), a distinct code from D1110 prophy.",
- "Perio chart + EPR update cadence: every other prophy+POE appointment (1× per year). At each visit, decide whether this visit needs new probing (perio chair) or surface debridement only (restorative chair).",
+ "Perio chart + EPR update cadence: every other prophy+POE appointment (1× per year). Adult prophy — including the visits where probing depths are updated — is booked in a restorative chair; there is no perio-chair requirement just because the visit includes probing.",
  "Instrumentation sequence: Cavitron with Isodry first for gross calculus; if patient has dense buildup, prophy cup first to remove gross plaque, then Cavitron. Floss interproximals to remove gross plaque. Finish with hand instruments — don't forget interproximals.",
  "Endpoint check with 11/12 ODU explorer at THREE specific spots before instructor check: line angles, CEJ, and under the contact. If those feel clean, you're done.",
  "Polish AFTER instructor swipes the prophy — keeps prophy paste debris out of the perio chart and final inspection.",
- "OHI + nutritional counseling + tobacco cessation are required at every prophy visit (D1330 / D1310 / D1320.1 / D1320.2).",
+ "OHI is the only patient-education code that's effectively expected at every prophy. Nutritional counseling (D1310) and tobacco cessation (D1320.1/D1320.2) are billable and encouraged but not enforced — add them when they fit the visit.",
  ],
  phases: [
  { label: "Perio chart + EPR", count: 2 },
