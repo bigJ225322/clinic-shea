@@ -21763,9 +21763,9 @@ const PATHWAY_GROUPS = {
  { label: "By prosthesis", ids: [
  "repair-cd-fracture",
  "repair-loose-cd",
- "repair-rpd-clasp",
- "repair-rpd-denture-tooth",
- "repair-rpd-framework",
+ "rpd-broken-clasp",
+ "rpd-broken-denture-tooth",
+ "rpd-broken-framework",
  "repair-tooth-loss-after-rpd",
  "repair-crown-bridge-loss",
  "repair-veneer-debond",
@@ -22010,9 +22010,9 @@ const WIZARDS = {
  rpd: {
  question: "What's wrong with the RPD?",
  options: [
- { label: "Fractured clasp", pathway: "repair-rpd-clasp" },
- { label: "Broken or lost denture tooth", pathway: "repair-rpd-denture-tooth" },
- { label: "Framework fracture (Co-Cr broken)", pathway: "repair-rpd-framework" },
+ { label: "Fractured clasp", pathway: "rpd-broken-clasp" },
+ { label: "Broken or lost denture tooth", pathway: "rpd-broken-denture-tooth" },
+ { label: "Framework fracture (Co-Cr broken)", pathway: "rpd-broken-framework" },
  { label: "Patient lost another tooth (modify)", pathway: "repair-tooth-loss-after-rpd" },
  ],
  },
@@ -23875,74 +23875,12 @@ const PATHWAYS = [
  { guideId: "cd", chapterId: "cd-ch24" }, // Edge-case management
  ],
  },
- {
- id: "repair-rpd-clasp",
- domain: "repair",
- label: "RPD fractured clasp",
- description: "Patient walks in with one cast clasp fractured. If the rest seat and the acrylic flange are intact, the chairside fix is a wrought-wire replacement embedded in cold-cure PMMA: roughen the acrylic, bend the wire to engage the same undercut and rest, embed, finish + polish. If the framework itself is fractured at the clasp origin or has been repaired before, it's a lab repair or a remake — soldering cast frameworks rarely holds long-term.",
- keyDecisions: [
- "Wrought-wire replacement chairside if rest seat + acrylic interface are intact.",
- "Roughen acrylic; bend wire to engage same undercut; embed in cold-cure PMMA.",
- "Re-PIP and re-check occlusion after seating — new clasp position can introduce interferences.",
- "If framework itself is fractured at the clasp origin → lab repair or remake.",
- "Counsel patient: wrought wire engages the undercut less precisely than the original cast clasp.",
- ],
- phases: [
- { label: "Repair", count: 1 },
- { label: "Verify fit + occlusion", count: 2 },
- { label: "Pitfalls", count: 1 },
- ],
- sections: [
- { guideId: "rpd", chapterId: "rpd-ch18" }, // Repair 1 (fractured clasp)
- { guideId: "rpd", chapterId: "rpd-ch10" }, // PIP + Mizzy (after repair)
- { guideId: "rpd", chapterId: "rpd-ch12" }, // Occlusal adjustment recheck
- { guideId: "rpd", chapterId: "rpd-ch16" }, // Pitfalls
- ],
- },
- {
- id: "repair-rpd-denture-tooth",
- domain: "repair",
- label: "RPD broken or lost denture tooth",
- description: "Patient walks in with a denture tooth missing from the saddle or fractured at the cervical. Chairside add in cold-cure PMMA. If the broken piece is in hand, attempt to rebond it (sandblast + adhesive + cold-cure); otherwise select a replacement tooth from the same mold/shade and bond it into the framework saddle. Most rebond failures trace to residual acrylic at the bond surface, so clean down to fresh material before placing new PMMA.",
- keyDecisions: [
- "If broken piece is in hand: rebond with sandblast + adhesive + cold-cure PMMA. Faster than full replacement and matches mold automatically.",
- "If no piece: select replacement tooth from same mold + shade. Verify shade adjacent to existing teeth before bonding.",
- "Remove ALL residual acrylic from the saddle before bonding — old PMMA at the bond surface is the most common debond cause.",
- "Cold-cure PMMA, not light-cure composite — composite does not bond reliably to cured acrylic.",
- "Re-check occlusion at delivery — a new tooth slightly proud will fracture again within months.",
- ],
- phases: [
- { label: "Repair", count: 1 },
- { label: "Verify", count: 2 },
- ],
- sections: [
- { guideId: "rpd", chapterId: "rpd-ch18" }, // Repair 2 (broken denture tooth)
- { guideId: "rpd", chapterId: "rpd-ch12" }, // Occlusal adjustment recheck
- { guideId: "rpd", chapterId: "rpd-ch16" }, // Pitfalls
- ],
- },
- {
- id: "repair-rpd-framework",
- domain: "repair",
- label: "RPD framework fracture (Co-Cr broken)",
- description: "Co-Cr framework fractured at a major connector, minor connector, or clasp origin. This is a lab-repair or remake decision, not a chairside fix — chairside soldering of Co-Cr rarely holds long term and creates a stress riser for the next fracture. The decision: small clean break with fragments intact + geometry preserved → lab solder attempt OK. Larger break, distorted geometry, or framework already on its second repair → remake.",
- keyDecisions: [
- "Do NOT attempt chairside soldering of Co-Cr — won't hold and seeds the next fracture.",
- "Lab solder acceptable for small, clean breaks with both fragments present and geometry intact.",
- "Remake threshold: distorted framework, prior repair, or lost fragments.",
- "Remake means new alginate impressions — the mouth has changed since the original; don't reuse old casts.",
- "Interim plan: Valplast flipper, or patient continues with broken RPD if non-load-bearing, while the new framework is fabricated.",
- ],
- phases: [
- { label: "Triage", count: 1 },
- { label: "Lab or remake", count: 2 },
- ],
- sections: [
- { guideId: "rpd", chapterId: "rpd-ch18" }, // Repair 5 (framework fracture)
- { guideId: "rpd", chapterId: "rpd-ch16" }, // Pitfalls
- { guideId: "rpd", chapterId: "rpd-ch12" }, // Occlusal check after new framework
- ],
- },
+ // repair-rpd-clasp + repair-rpd-denture-tooth + repair-rpd-framework
+ // were near-identical duplicates of rpd-broken-clasp /
+ // rpd-broken-denture-tooth / rpd-broken-framework. Collapsed: the
+ // repair-triage decision tree (around line 22013) now points at the
+ // canonical rpd-broken-* pathways (which carry CDT codes). Removed
+ // the duplicates to avoid drift between the two sets.
  {
  id: "repair-crown-bridge-loss",
  domain: "repair",
