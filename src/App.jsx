@@ -19954,19 +19954,19 @@ function RPDHelper() {
 
  return (
  <>
- <div style={{...cardStyle, padding: "26px 28px" }}>
- {/* Diagnosis label — upper-left of the builder card, small Fraunces
- oxblood roman. Replaces the old below-the-chart verdict block.
- Cutting the engine's design-summary sentence ("Designed as a
- definitive RPD with…") encourages students to read the lab form
- directly, which is the source of truth and where every choice is
- spelled out in clinical convention. */}
+ <div style={{...cardStyle, padding: "26px 28px", position: "relative" }}>
+ {/* Diagnosis label — pinned to the top-left edge of the builder card,
+ inside the white area at the boundary with the page background.
+ Absolute-positioned so it sits along the top edge rather than
+ pushing the action bar down. Small Fraunces oxblood roman. */}
  {hasContent && result.kennedy?.class != null && (
  <div className="rpd-print-hide" style={{
+ position: "absolute",
+ top: "8px",
+ left: "28px",
  fontFamily: "'Fraunces', serif",
  fontSize: "13px",
  color: "var(--accent)",
- marginBottom: "10px",
  letterSpacing: "0.01em",
  }}>
  {result.kennedy.description}.
@@ -26032,21 +26032,6 @@ function Pathways() {
  </button>
 );
  })}
- <span style={{ flex: 1 }} />
- <button
- onClick={() => setShowAllDomains(v =>!v)}
- style={{
- padding: "6px 12px", borderRadius: "100px",
- border: `1px solid ${showAllDomains? "var(--accent)": "var(--rule)"}`,
- background: showAllDomains? "var(--accent)": "transparent",
- color: showAllDomains? "var(--paper, white)": "var(--ink-soft)",
- fontSize: "0.8rem", fontWeight: 500, cursor: "pointer",
- fontFamily: "'Geist', sans-serif",
- }}
- title={showAllDomains? "Only show selected domain": "Search across all domains"}
- >
- {showAllDomains? "All ✓": "All"}
- </button>
  </div>
 
  {/* Scenario pills — same pill family as the domain pills above, but
