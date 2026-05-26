@@ -2346,6 +2346,20 @@ User explicitly asked: "i sincerely hope you didn't scrub the UIC-specific prefe
 
 ### Iter 35 GRAND TOTAL: 3 commits, 1021 tests passing, build green throughout, 1 CRITICAL clinical safety fix applied.
 
+### Iter 35 continued — CDT-code coverage pass on high-traffic pathways
+
+After the audit fixes, addressed the agent-flagged backlog: "90 pathways with no D-code mention." Tackled the high-traffic ones first (the ones a student actually bills on):
+
+7. **2dccffc** — ind-cad-cam-inlay-onlay: D2610/D2620/D2630 inlay + D2642/D2643/D2644 onlay + per-step A/B/C in digital flow.
+8. **1451f9a** — ind-conventional-crown: D2750 (PFM high noble) default + material variants + per-step A/B/C + D2799 provisional.
+9. **be298b9** — Indirect pathways batch: ind-digital-emax (D2740), ind-veneers (D2962/D2960), ind-bridge (D6750 + D6240), ind-survey-crown (D2750), ind-recement (D2920/D6930), ind-bruxer-crown (D2740/D2790 + D9944 nightguard).
+10. **d0d4c91** — RPD + CD pathway batch: rpd-distal-extension (D5213/D5214 + subcodes), rpd-broken-clasp (D5660), rpd-broken-denture-tooth (D5640), cd-iid (D5130/D5140 + reline + extractions billed separately), cd-conventional (D5110/D5120 + per-step A/B/C + D5410/D5411 adjustment).
+11. **e70450b** — Cross-disciplinary: cross-cd-rpd (D5110 + D5214), cross-survey-crown (D2750 + D5213/D5214 sequential).
+12. **eb63f1c** — ind-fractured-cusp (onlay codes + crown alternative), ind-inlay (inlay codes + cast metal alternative).
+13. **6d60dad** — rpd-kennedy3 + rpd-kennedy4-anterior: D5213/D5214 with alternative treatment-plan codes documented.
+
+### Iter 35 GRAND TOTAL (extended): 11 commits this iter. Critical antibiotic prophylaxis safety fix landed + comprehensive UIC scrub stragglers + RPD-engine cleanup + 14 high-traffic pathways got CDT 2024 code references that were missing. 1021/1021 tests, all builds green, all pushed live.
+
 Outstanding for next iter:
 - A few internal rpd-engine.js comment artifacts: `// (corrected per NotebookLM/)` trailing slash where a faculty name was scrubbed; "Among -preferred" / "are -acceptable" leading-hyphen artifacts (functional, not user-visible). User-review-only.
 - `same same-day` in pedo extraction at line 24296 (functional but stylistic; "follow the same same-day access-and-fill workflow" — minor).
