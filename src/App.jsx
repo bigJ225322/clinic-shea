@@ -5469,6 +5469,13 @@ function parseLabPlaceholders(body) {
  // student picks Maxillary or Mandibular and the abbreviation
  // (M / D) substitutes correctly.
  type = "arch";
+ } else if (text === "Student Name" || text === "Instructor") {
+ // Peds templates end with "- [Student Name] / Dr. [Instructor]" —
+ // those are filled by the Names field at the bottom of the form,
+ // not by this bracket-picker stack. Suppress them here so non-lab
+ // templates can still surface the rest of their bracket pickers
+ // (e.g. peds needle-gauge "[ 30G 25mm / 27G 35 mm ]").
+ continue;
  } else if (text === "Anterior tooth mold") {
  // Render the full Tooth Mould Picker inline. Its Apply button
  // emits both anterior and posterior mould codes — the
@@ -5640,8 +5647,12 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  "A2": "Shade",
  "gingival shade": "Gingival shade",
  "Implant Diameter": "Implant diameter",
+ " 30G 25mm / 27G 35 mm ": "Needle size",
  };
- const labelText = DISPLAY_LABEL[p.key] || p.key;
+ // Fall back to the bracket key when no friendly label is defined.
+ // Trim incidental whitespace (some templates have " X / Y " brackets
+ // — preserve the substitution key but show a clean visible label).
+ const labelText = DISPLAY_LABEL[p.key] || p.key.trim();
  return (
  <div key={p.key} style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
  {!hideLabel && (
@@ -10518,16 +10529,14 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  highlighted placeholders that the Steps tab exposes. */}
  {(() => {
  if (!/\[[^\]]+\]/.test(rawTemplate)) return null;
- // The bracket-form picker was built for lab scripts and their
- // structured placeholders ([tooth], [A2], [##-##], implant
- // brand/diameter, etc.). Other templates use brackets for
- // different things — e.g. peds notes end with "[Student Name]
- // / Dr. [Instructor]", which is already covered by the standard
- // Names field at the bottom of the form. Running this picker
- // for non-lab templates would surface redundant text inputs.
- // Gate to lab-* only.
- const isLab = typeof procedureId === "string" && procedureId.startsWith("lab-");
- if (!isLab) return null;
+ // [Student Name] and [Instructor] are filled by the standard
+ // Names field at the bottom of the form, so parseLabPlaceholders
+ // skips them. Peds templates with slash-separated brackets like
+ // "[ 30G 25mm / 27G 35 mm ]" (needle gauge) DO benefit from a
+ // dropdown, so we let the picker fire for any template with at
+ // least one parseable bracket.
+ const placeholders = parseLabPlaceholders(rawTemplate);
+ if (placeholders.length === 0) return null;
  return (
  <LabPlaceholderInputs
  rawTemplate={rawTemplate}
