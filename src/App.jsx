@@ -5172,7 +5172,7 @@ function renderTemplate(raw, f) {
  // benzocaine & administered..." form, and subsequent ones are appended as
  // "Then administered..." sentences (topical only applied once at the start).
  const anesSentenceRe =
- /Applied 20% topical benzocaine & administered [^.]*?\[\s*30G 25mm\s*\/\s*27G 35 mm\s*\][^.]*?\./;
+ /Applied 20% topical benzocaine & administered [^.]*?\[\s*30G 25mm\s*\/\s*27G 35\s*mm\s*\][^.]*?\./;
 
  // Helper: build the trailing portion of one injection sentence.
  // Returns "X carpules of 2% drug with NEEDLE needle as TECHNIQUES."
