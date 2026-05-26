@@ -22454,6 +22454,7 @@ const PATHWAYS = [
  "HF etch 20 sec + silane + bonding agent + dual-cure resin cement for adhesive bond.",
  "Patient sits chairside for 2.5–3 hours; brief them on the timeline up front.",
  "If the scan is suspect (smeared margin, holes), fall back to PVS rather than mill from bad data.",
+ "CDT code: D2740 (Crown, porcelain/ceramic substrate) — covers monolithic e.max (lithium disilicate is a glass-ceramic). Per-step subcodes commonly used in digital workflows: D2740A (prep), D2740B (scan & design), D2740C (delivery).",
  ],
  phases: [
  { label: "Digital workflow", count: 2 },
@@ -22482,6 +22483,7 @@ const PATHWAYS = [
  "HF etch the intaglio of the veneer (60 sec for feldspathic, 20 sec for e.max) + silane.",
  "Cement under finger pressure during cure; clean excess at gel stage.",
  "Color match the patient at the try-in stage, NOT after delivery.",
+ "CDT codes: D2962 (Labial veneer — porcelain laminate, laboratory) per tooth. D2960 (Resin/composite veneer, indirect/direct) is the alternative for chairside direct composite veneers. Diagnostic wax-up + mock-up may bill D9310 (consultation) at planning visit. Per-tooth billing — a 6-veneer case codes 6× D2962.",
  ],
  phases: [
  { label: "Workflow + shade", count: 2 },
@@ -22515,6 +22517,7 @@ const PATHWAYS = [
  "Framework try-in is the highest-stakes appointment — non-passive metal cannot be made to fit later.",
  "Connector dimensions: ≥9 mm² cross-section for posterior, ≥6 mm² for anterior. Separately, Ante's law applies — total periodontal area of abutments ≥ replaced tooth's periodontal area.",
  "Cement choice (Swade clinic guide): RelyX Unicem 2 (self-adhesive resin cement) for PFM/zirconia FPDs is the default — single-step, no priming dentin/etching tooth. FujiCem 2 (RMGI) is the conservative fallback on retentive preps with primarily dentin margins. Avoid traditional zinc phosphate on contemporary materials.",
+ "CDT codes (3-unit FPD = 3 separate codes — 2 retainer crowns + 1 pontic): retainer crowns D6750 (PFM high noble metal) — or material variant: D6740 (porc/cer), D6790 (full cast high noble), D6752/D6753 (PFM noble/titanium). Pontic D6240 (PFM high noble) — or D6245 (porc/cer pontic), D6210 (full cast high noble pontic), D6242/D6243 (PFM noble/titanium pontic). Bridges are billed per unit, not as a single procedure.",
  ],
  phases: [
  { label: "Workflow + bridge design", count: 2 },
@@ -22548,6 +22551,7 @@ const PATHWAYS = [
  "Crown material commonly PFM for durability + ability to engineer surveyed contours.",
  "Communicate surveyed dimensions on the Rx — the lab can't survey from the impression alone.",
  "Deliver crown FIRST, then proceed with RPD impression at the next visit.",
+ "CDT code: same as conventional crown — D2750 (PFM high noble metal) is typical for survey crowns since PFM gives both durability and contour-shapability. Surveyed-contour Rx instruction is in the lab Rx, not a separate code. Per-step subcodes: D2750A (prep), D2750B (lab), D2750C (delivery).",
  ],
  phases: [
  { label: "Workflow + survey design", count: 2 },
@@ -22609,6 +22613,7 @@ const PATHWAYS = [
  "Resin cement if any uncertainty about retention form (RelyX Unicem 2 self-adhesive); RMGI (FujiCem 2) only when both crown + prep are clean AND ferrule is robust.",
  "If any of the three criteria fail → remake, not re-cement.",
  "Document patient was informed re-cement may not last — set expectation for potential remake.",
+ "CDT code: D2920 (Re-cement or re-bond crown). For a bridge re-cement use D6930 (Re-cement or re-bond fixed partial denture). These are distinct from the original placement codes — re-cement is its own procedure.",
  ],
  phases: [
  { label: "Decision + re-cement protocol", count: 1 },
@@ -22632,6 +22637,7 @@ const PATHWAYS = [
  "Cementation: sandblast + MDP primer (Z-Prime Plus / Monobond Plus) + resin cement.",
  "Fabricate a nightguard concurrent with the crown — non-negotiable.",
  "Counsel patient: even zirconia chips under bruxism without a nightguard.",
+ "CDT codes: crown = D2740 (porcelain/ceramic — monolithic zirconia falls here) OR D2790 (full cast high noble metal) for cast gold. Nightguard = D9944 (Occlusal guard — hard appliance, full arch) typically billed in two parts: D9944A (records / impression) at the first visit, D9944B (delivery) at the second. I9002 lab quality review may also apply at delivery.",
  ],
  phases: [
  { label: "Workflow", count: 1 },
