@@ -22817,7 +22817,7 @@ const PATHWAYS = [
  "Patient leaves the surgical visit with the denture in place.",
  "Soft reline at 2–4 weeks; hard reline at 3–6 months as ridge remodels.",
  "Counsel patient on diet (soft for first 2 weeks) and immediate post-op care.",
- "CDT codes: D5130 (Immediate denture, maxillary) / D5140 (Immediate denture, mandibular). Soft reline at 2-4 weeks bills D5740 (max chairside reline) / D5741 (mand chairside reline). Hard reline at 3-6 months bills D5750/D5751 (lab reline). Extractions are billed separately by the surgeon: D7140 (simple) per tooth, or D7210 (surgical) per tooth as appropriate.",
+ "CDT codes: D5130 (Immediate denture, maxillary) / D5140 (Immediate denture, mandibular). Soft reline at 2-4 weeks bills D5730 (max complete-denture chairside reline) / D5731 (mand complete-denture chairside reline). Hard reline at 3-6 months bills D5750 (max lab reline) / D5751 (mand lab reline). (D5740/D5741 are PARTIAL-denture chairside reline codes.) Extractions are billed separately by the surgeon: D7140 (simple) per tooth, or D7210 (surgical) per tooth as appropriate.",
  ],
  phases: [
  { label: "Records", count: 4 },
@@ -25476,7 +25476,7 @@ const PATHWAYS = [
  "Occlusion: implant crowns should have lighter contact in MI than natural teeth (because implants don't have PDL to absorb force) - shimstock pulls through without holding when biting normally, holds in maximum clenching. Lateral excursions: anterior guidance on natural teeth, NOT on the implant crown.",
  "Torque on delivery is brand-specific — Astra abutments to 25 Ncm, Straumann to 35 Ncm. Confirm the brand from the implant placement note before reaching for the torque wrench. Under-torque = abutment loosening (cement crowns work loose, screw crowns micro-rotate). Over-torque = abutment screw fracture, which is an irretrievable failure on most platforms.",
  "Safety mechanics on any implant manipulation (healing abutment removal, impression coping, custom abutment, crown try-in): gauze THROAT PACK over the oropharynx + tie a length of floss to the hand driver. Implant components are small, smooth metal — they slip and bounce. The throat pack catches a dropped piece; the floss tether catches the driver if it pops free.",
- "CDT codes (CDT 2024): D6065 (porcelain/ceramic implant crown — single implant) is the typical predoc code. D6066 (PFM-high noble metal implant crown), D6067 (high noble metal full-cast implant crown), D6068 (porcelain/ceramic abutment-supported crown — implant), D6058 (abutment-supported porcelain/ceramic crown — connected to an implant abutment). Abutments billed separately: D6056 (prefabricated abutment), D6057 (custom abutment). The fixture placement code D6010 is the SURGEON'S, not the restoring dentist's.",
+ "CDT codes (CDT 2024): D6065 (porcelain/ceramic IMPLANT-supported crown — crown attached directly to fixture, no separate abutment). D6066 (PFM IMPLANT-supported crown, titanium/HN metal), D6067 (full-cast metal IMPLANT-supported crown, titanium/HN metal). D6058 (porcelain/ceramic ABUTMENT-supported crown — crown attached to a separate abutment, the more common predoc scenario). Abutments billed separately: D6056 (prefabricated abutment), D6057 (custom abutment). NOTE: D6068 is the ABUTMENT-supported FPD retainer code (porcelain/ceramic) — not a single crown. The fixture placement code D6010 is the SURGEON'S, not the restoring dentist's.",
  ],
  phases: [
  { label: "Cement vs screw decision", count: 2 },
