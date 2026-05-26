@@ -21753,7 +21753,7 @@ const GUIDES = [
  "**10h.** Discharge instructions: avoid sticky/chewy foods on that side, brush + floss gently, call if provisional loosens.",
  ]},
  { kind: "troubleshoot", title: "If something goes wrong (Appt 1)", body: "**Shade selected after isolation:** color reads too light. Use the photograph (with shade tab adjacent) as the reference for the lab; re-do shade selection at the next appointment if the photo isn't clear. **Outer putty clearance looks fine but inner reduction is under-prepared:** use a 1.0 mm probe / condenser *inside* the putty to verify the actual reduction. Re-prep before impression. **Impression has a void at the margin:** retraction tissue collapsed before the light body set. Re-pack cord, re-impress. **Bleeding contaminated the impression:** hemostatic-soaked cord for 5 min, re-impress. **Provisional won't release from prep:** insufficient release agent. Carefully pry with explorer; reseparate with fresh provisional if it fractures. **Ridge-lap pontic created accidentally (saddle):** trim to modified ridge lap chairside. The pontic must allow floss to pass under cleanly. **Provisional occlusion doesn't match pre-prep reference:** adjust with fine diamond + verify with shimstock. Don't deliver a provisional that alters the bite — the abutment teeth shift, the final crown won't fit." },
- { kind: "paragraph", text: "*Note: Appointments 2–4 (die trim + mount, framework try-in, bisque bake, cementation) populate from the same source. Currently stubbed pending generation pipeline.*" },
+ { kind: "paragraph", text: "*Appointments 2–4 — framework try-in, bisque bake try-in, and cementation — are still authored only as the high-level workflow in Appt 1's bullets. For deep clinical detail on those visits, see the Indirect cementation chapter (ind-ch4) and the conventional-crown pathway in the Cases tab (ind-conventional-crown).*" },
  ],
  },
  { id: "ind-ch2", num: 2, title: "Digital (CAD/CAM) workflow", stub: true },
@@ -21834,7 +21834,7 @@ const GUIDES = [
  {
  id: "cd-p1",
  label: "Procedural deep-dives",
- tagline: "Each appointment of the complete-denture sequence at recipe-style depth. Currently stubbed pending generation pipeline; the PDF (CD Comprehensive Guide — Deep Dives) is the live source.",
+ tagline: "Each appointment of the complete-denture sequence at recipe-style depth. For active clinic use, the CD pathway in the Cases tab (cd-complete-denture) carries the appointment-by-appointment workflow; the deep-dive chapters here build out individual technique sections as content lands.",
  chapters: [
  { id: "cd-ch1", num: 1, title: "Diagnostic impression", stub: true },
  { id: "cd-ch2", num: 2, title: "Custom tray fabrication", stub: true },
@@ -21872,7 +21872,7 @@ const GUIDES = [
  {
  id: "rpd-p1",
  label: "Procedural deep-dives",
- tagline: "Procedural deep-dives covering mounting, surveying, custom tray, survey-crown prep specifics, PIP + Mizzy, and the occlusal adjustment sequence. Currently stubbed pending generation pipeline; the PDF (RPD Comprehensive Guide — Deep Dives) is the live source.",
+ tagline: "Procedural deep-dives covering mounting, surveying, custom tray, survey-crown prep specifics, PIP + Mizzy, and the occlusal adjustment sequence. For active clinic use, the RPD Design Helper builds the design directly from case inputs and the RPD pathways in the Cases tab carry the appointment-by-appointment workflow.",
  chapters: [
  { id: "rpd-ch1", num: 1, title: "Facebow record (Denar — partially edentulous)", stub: true },
  { id: "rpd-ch2", num: 2, title: "Mount diagnostic casts (Denar 320)", stub: true },
