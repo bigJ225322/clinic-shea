@@ -5251,15 +5251,20 @@ function renderTemplate(raw, f) {
  }
 
  // -------- 11. Names (signature line). --------
- // Peds templates ship with "- [Student Name] / Dr. [Instructor]" as the signature line.
- // Always replace "Sarah Swade / Dr." with the user's names — or with
- // nothing (so the line renders as just "- "), giving the student a clean
- // empty bullet to write their name into by hand if they didn't fill the
- // form field. For non-peds templates without that placeholder, append a
- // "- {names}" line after NV when names is provided.
+ // Templates ship with one of two signature placeholders:
+ // - "Sarah Swade / Dr." (most templates, the new convention)
+ // - "[Student Name] / Dr. [Instructor]" (peds templates — original)
+ // Replace whichever is present with f.names. If the user hasn't filled
+ // in their name, replace with empty so the line renders as just "- ",
+ // a clean bullet they can write into by hand. For templates with
+ // neither placeholder, append a "- {names}" line after NV when names
+ // is provided.
  const hasSwadePlaceholder = /Sarah Swade \/ Dr\./.test(t);
+ const hasStudentNamePlaceholder = /\[Student Name\]\s*\/\s*Dr\.\s*\[Instructor\]/.test(t);
  if (hasSwadePlaceholder) {
  t = t.replace(/Sarah Swade \/ Dr\./, f.names.trim());
+ } else if (hasStudentNamePlaceholder) {
+ t = t.replace(/\[Student Name\]\s*\/\s*Dr\.\s*\[Instructor\]/, f.names.trim() || "");
  } else if (f.names.trim()) {
  t = t.replace(/(^|\n)([ \t]*-?[ \t]*NV:.*)$/m,
  _m => `${_m}\n- ${f.names.trim()}`);
@@ -10435,13 +10440,16 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  highlighted placeholders that the Steps tab exposes. */}
  {(() => {
  if (!/\[[^\]]+\]/.test(rawTemplate)) return null;
- // Previously lab-bridge and lab-bridge-cast opted out, on the
- // theory that two digits could be edited inline faster than
- // opening chart pickers. But hiding the standard tooth/shade
- // fields for lab-* templates removed the inline editor — those
- // scripts would have left [##-##] literally in the output. Run
- // the placeholder form for every lab-* template that has
- // brackets so the student always has a way to fill them in.
+ // The bracket-form picker was built for lab scripts and their
+ // structured placeholders ([tooth], [A2], [##-##], implant
+ // brand/diameter, etc.). Other templates use brackets for
+ // different things — e.g. peds notes end with "[Student Name]
+ // / Dr. [Instructor]", which is already covered by the standard
+ // Names field at the bottom of the form. Running this picker
+ // for non-lab templates would surface redundant text inputs.
+ // Gate to lab-* only.
+ const isLab = typeof procedureId === "string" && procedureId.startsWith("lab-");
+ if (!isLab) return null;
  return (
  <LabPlaceholderInputs
  rawTemplate={rawTemplate}
