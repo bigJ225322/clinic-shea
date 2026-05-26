@@ -21528,7 +21528,7 @@ const PATHWAY_DOMAINS = [
  { id: "endo", label: "Endo" },
  { id: "surgery", label: "OS" },
  { id: "perio", label: "Perio" },
- { id: "pedo", label: "Pediatrics" },
+ { id: "pedo", label: "Peds" },
  { id: "rpd", label: "RPD" },
  { id: "cd", label: "CD" },
  { id: "cross", label: "Cross-disciplinary" },
