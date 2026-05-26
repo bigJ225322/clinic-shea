@@ -20681,6 +20681,7 @@ const GUIDES = [
  { id: "dir-ch19", num: 19, title: "PRR (Preventive Resin Restoration) — small cavitation in a sealable surface", stub: true },
  { id: "dir-ch22", num: 22, title: "SDF (Silver Diamine Fluoride) — non-surgical caries arrest", stub: true },
  { id: "dir-ch23", num: 23, title: "Vital tooth bleaching — at-home tray, in-office, OTC", stub: true },
+ { id: "dir-ch24", num: 24, title: "Dentin hypersensitivity — desensitizing agents + restorative", stub: true },
  ],
  },
  {
@@ -21568,6 +21569,7 @@ const PATHWAY_GROUPS = {
  "dir-large-mod",
  "dir-replacing-failing-composite",
  "dir-bruxer-management",
+ "dir-dentin-hypersensitivity",
  "dir-sedative",
  ]},
  { label: "Preventive", ids: [
@@ -22284,6 +22286,34 @@ const PATHWAYS = [
  { guideId: "direct", chapterId: "dir-ch2" }, // Isolation (for in-office)
  { guideId: "direct", chapterId: "dir-ch23" }, // Vital bleaching detail
  { guideId: "direct", chapterId: "dir-ch7" }, // Polish (post-bleaching)
+ { guideId: "direct", chapterId: "dir-ch31" }, // Pitfalls
+ ],
+ },
+ {
+ id: "dir-dentin-hypersensitivity",
+ domain: "direct",
+ label: "Dentin hypersensitivity",
+ description: "Patient reports sharp, transient pain to cold, sweet, or brushing — most often at the buccal cervical area of premolars/canines/molars. Pulp tests cold-positive, EPT-positive (the tooth is VITAL — this is the diagnostic discriminator from pulpitis, which lingers). The hydrodynamic theory explains the mechanism: exposed dentinal tubules let fluid move in response to thermal/osmotic/tactile stimuli, which deflects odontoblast processes and fires A-δ pain fibers. Treatment ladder: (1) address etiology (recession, abrasion, erosion, abfraction, post-bleaching, post-SRP) — bleaching protocol, OHI, GERD referral, occlusion check; (2) at-home 5% potassium nitrate toothpaste (Sensodyne) BID × 2-4 weeks — depolarizes nerve; (3) in-office desensitizing agent (Gluma, fluoride varnish, oxalates, glass ionomer, bonding-agent occlusion of tubules); (4) restorative if exposed root or NCCL — RMGI or composite with bevel + retention. The most common failure is treating symptoms without identifying etiology — the cervical lesion gets restored but recession progresses because the brushing technique never changed.",
+ keyDecisions: [
+ "Diagnosis: cold-positive + percussion-negative + EPT-positive (vital). Differentiate from reversible pulpitis (cold pain lingers >15s) or irreversible pulpitis (cold pain lingers + spontaneous + nocturnal). Hypersensitivity is sharp, transient, and ALWAYS stops when stimulus removed. Localize to specific tooth/surface — exposed root, cervical area, or recent restoration margin. If the pain doesn't fit hypersensitivity criteria, work up for pulpal/periapical pathology first.",
+ "Identify and address etiology BEFORE treating symptoms. Common causes: gingival recession (RPD clasp, brushing, periodontal); abrasion (aggressive brushing, mid-buccal worn enamel); erosion (GERD, citrus, sports drinks, bulimia); abfraction (occlusion + flexure at cervical); post-bleaching (transient, 24-48 hr typical); post-SRP (1-2 weeks transient). Without addressing the cause, hypersensitivity returns.",
+ "At-home first-line: 5% potassium nitrate toothpaste (Sensodyne Original) BID × 2-4 weeks. Patient brushes normally then leaves a small amount of paste on affected area without rinsing for 1-2 min. Mechanism: K+ ion depolarizes the A-δ fiber, blunting transmission. Alternatives: stannous fluoride (Crest Gum & Sensitivity) — blocks tubules; arginine + calcium carbonate (Colgate Pro-Argin) — biomimetic tubule occlusion.",
+ "In-office desensitizing agents: (a) Gluma desensitizer (HEMA + glutaraldehyde) — apply for 30-60s, gently air dry; precipitates plasma proteins in tubules. (b) 5% NaF varnish (Duraflor, Vanish) — paint on, sets on contact with saliva; releases F for tubule remineralization. (c) potassium oxalate (Bisbloc) — precipitates calcium oxalate crystals in tubule lumens. (d) glass ionomer or composite resin tubule occlusion — apply primer + adhesive, cure to seal tubules; for stubborn cases. (e) MI Paste (CPP-ACP) — adjunct for chronic cases. Effect lasts 1-3 months; can repeat as needed.",
+ "Restorative endpoint — if exposed root or NCCL (non-carious cervical lesion) is present: place RMGI (Ketac Nano or Fuji II LC) at the gingival floor + composite over enamel margin (sandwich technique — see dir-class5-composite or dir-class5-rmgi). If the lesion is purely on root surface with no enamel margin, RMGI alone is the material of choice (see dir-class5-rmgi). Bevel enamel margins. For abfraction with active occlusion contributing, address occlusion BEFORE restoring — otherwise the restoration debonds.",
+ "Post-bleaching sensitivity (transient 24-48 hr, common): pre-treat with 5% KNO3 toothpaste 1-2 weeks before bleaching + during. Pause bleaching 1-3 days if intolerable. In-tray fluoride or KNO3 for 30 min after each cycle for breakthrough. Almost always self-resolving within 1-2 weeks of stopping (see dir-vital-bleaching for full bleaching protocol).",
+ "Post-SRP sensitivity (transient 1-2 weeks, common): counsel patient at SRP visit that 1-2 weeks of cold sensitivity is expected as gingiva tightens and exposes previously protected root surface. 5% KNO3 toothpaste + fluoride rinse during the healing window usually suffices. If persistent past 4-6 weeks, treat as primary hypersensitivity.",
+ "CDT codes: D9910 (Application of desensitizing medicament — billed once per visit regardless of number of teeth treated) for varnish, Gluma, oxalates. D9911 (Application of desensitizing resin for cervical and/or root surface — per tooth) for bonded resin sealing of tubules on a specific tooth. Restorative codes apply if a Class V is placed: D2330/D2331 (anterior composite) or D2391/D2392 (posterior composite) depending on surface count.",
+ ],
+ phases: [
+ { label: "Diagnosis & etiology", count: 2 },
+ { label: "At-home regimen", count: 1 },
+ { label: "In-office desensitizer", count: 2 },
+ { label: "Restorative endpoint", count: 1 },
+ ],
+ sections: [
+ { guideId: "direct", chapterId: "dir-ch1" },
+ { guideId: "direct", chapterId: "dir-ch24" },
+ { guideId: "direct", chapterId: "dir-ch14" }, // Class V decision
  { guideId: "direct", chapterId: "dir-ch31" }, // Pitfalls
  ],
  },
