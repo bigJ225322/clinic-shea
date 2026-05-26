@@ -3496,6 +3496,10 @@ const DEFAULT_FIELDS = {
  age: "", gender: "", clinic: "", tooth: "", shade: "A2",
  medHistory: "", medications: "", allergies: "",
  bp: "", bg: "", temp: "",
+ // Lab-script generic placeholder values. Keyed by the literal text inside
+ // the [brackets] in the lab Rx body. Substituted into the rendered note
+ // when the user picks a value via LabPlaceholderInputs.
+ labPlaceholders: {},
  // Anesthetic — list of injections (default: one).
  injections: [{...DEFAULT_INJECTION }],
  // Liners / sealers — default OFF; revealed via collapsible section.
@@ -5244,6 +5248,20 @@ function renderTemplate(raw, f) {
  _m => `${_m}\n- ${f.names.trim()}`);
  }
 
+ // -------- 11b. Lab-script [bracket] placeholders. --------
+ // Generic substitution: any literal "[xxx]" placeholder in the body gets
+ // replaced with f.labPlaceholders[xxx] if the user picked a value via the
+ // LabPlaceholderInputs UI. Placeholders the user didn't fill stay as
+ // "[xxx]" so the rendered note still reads as a template. Used by lab
+ // scripts (lab-*) and any other template that adopts the convention.
+ if (f.labPlaceholders) {
+ for (const [key, value] of Object.entries(f.labPlaceholders)) {
+ const trimmed = value == null? "": String(value).trim();
+ if (!trimmed) continue;
+ t = t.split(`[${key}]`).join(trimmed);
+ }
+ }
+
  // -------- 12. Tidy: collapse 3+ consecutive newlines down to 2. --------
  t = t.replace(/\n{3,}/g, "\n\n");
 
@@ -5372,6 +5390,135 @@ function TextInput({ value, onChange, placeholder }) {
  boxShadow: focused? "0 0 0 3px rgba(122, 26, 26, 0.08)": "none",
  }} />
 );
+}
+
+// ── LabPlaceholderInputs ────────────────────────────────────────────────────
+// Generic detector + UI for [bracket] placeholders in a template body. Used
+// by the note builder when the selected procedure is a lab script — the same
+// pattern the Steps tab RefScript already uses, but here it auto-renders an
+// appropriate input for every unique bracketed placeholder.
+//
+// Type detection (heuristic, from placeholder text):
+// "X / Y / Z" (slash-separated) → dropdown of those options
+// "A2" → shade picker (VITA)
+// "tooth" → tooth picker (single)
+// "##-##" → two tooth inputs (mesial + distal span)
+// "[0-9.]+" (pure numeric like "4.8") → text input (number-flavored)
+// otherwise → text input (free entry; gives placeholder as hint)
+function parseLabPlaceholders(body) {
+ if (!body) return [];
+ const matches = [...body.matchAll(/\[([^\]]+)\]/g)];
+ const seen = new Map();
+ for (const m of matches) {
+ const text = m[1];
+ if (seen.has(text)) continue;
+ let type, options;
+ if (/\s\/\s/.test(text)) {
+ // Slash-separated: "Straumann / Nobel / Dentsply EV". Split only on
+ // WHITESPACE-padded slashes so embedded brand syntax like
+ // "cement-retained CAD/CAM emax" stays intact as a single option.
+ type = "dropdown";
+ options = text.split(/\s+\/\s+/).map(s => s.trim()).filter(Boolean);
+ } else if (/^\w+(\s+or\s+\w+)+$/.test(text)) {
+ // "or"-separated: "M or D" → ["M", "D"]
+ type = "dropdown";
+ options = text.split(/\s+or\s+/).map(s => s.trim()).filter(Boolean);
+ } else if (text === "A2") {
+ type = "shade";
+ } else if (text === "tooth") {
+ type = "tooth";
+ } else if (text === "##-##") {
+ type = "span";
+ } else if (/^[\d.]+$/.test(text)) {
+ type = "number";
+ } else {
+ type = "text";
+ }
+ seen.set(text, { key: text, type, options });
+ }
+ return [...seen.values()];
+}
+
+function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
+ const placeholders = useMemo(() => parseLabPlaceholders(rawTemplate), [rawTemplate]);
+ if (placeholders.length === 0) return null;
+ // Span placeholder stores "mesial-distal" as a single string in the value
+ // map; the two-input UI splits/joins it.
+ const setSpan = (key, mesial, distal) => {
+ const v = (mesial || distal) ? `${mesial || ""}-${distal || ""}` : "";
+ onChange(key, v);
+ };
+ const getSpan = (key) => {
+ const v = values[key] || "";
+ const [m, d] = v.split("-");
+ return { mesial: m || "", distal: d || "" };
+ };
+ const selectStyle = {
+ background: "var(--paper)", border: "1px solid var(--rule)",
+ borderRadius: "3px", padding: "5px 8px",
+ fontFamily: "'Geist', sans-serif", fontSize: "12px",
+ color: "var(--ink)", cursor: "pointer", width: "100%",
+ };
+ return (
+ <>
+ <Hairline />
+ <div style={{ marginBottom: "12px" }}>
+ <div style={{ fontSize: "10px", fontWeight: 600, marginBottom: "8px",
+ textTransform: "uppercase", letterSpacing: "0.06em",
+ color: "var(--ink-soft)" }}>
+ Lab Rx placeholders ({placeholders.length})
+ </div>
+ <div style={{ display: "grid", gap: "10px",
+ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+ {placeholders.map(p => (
+ <Field key={p.key} label={p.key}>
+ {p.type === "dropdown" && (
+ <select value={values[p.key] || ""}
+ onChange={e => onChange(p.key, e.target.value)}
+ style={selectStyle}>
+ <option value="">— select —</option>
+ {p.options.map(opt => (
+ <option key={opt} value={opt}>{opt}</option>
+ ))}
+ </select>
+ )}
+ {p.type === "shade" && (
+ <ShadeInput value={values[p.key] || ""}
+ onChange={v => onChange(p.key, v)}
+ compact />
+ )}
+ {p.type === "tooth" && (
+ <TextInput value={values[p.key] || ""}
+ onChange={v => onChange(p.key, v)}
+ placeholder="e.g. 30" />
+ )}
+ {p.type === "span" && (() => {
+ const { mesial, distal } = getSpan(p.key);
+ return (
+ <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+ <input type="text" value={mesial}
+ placeholder="mesial #"
+ onChange={e => setSpan(p.key, e.target.value, distal)}
+ style={{...selectStyle, flex: 1, minWidth: 0 }} />
+ <span style={{ color: "var(--ink-faint)" }}>—</span>
+ <input type="text" value={distal}
+ placeholder="distal #"
+ onChange={e => setSpan(p.key, mesial, e.target.value)}
+ style={{...selectStyle, flex: 1, minWidth: 0 }} />
+ </div>
+ );
+ })()}
+ {(p.type === "number" || p.type === "text") && (
+ <TextInput value={values[p.key] || ""}
+ onChange={v => onChange(p.key, v)}
+ placeholder={p.key} />
+ )}
+ </Field>
+ ))}
+ </div>
+ </div>
+ </>
+ );
 }
 
 // Per-segment colors for multi-tooth input. Position 1 = accent (oxblood),
@@ -9975,6 +10122,25 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  }} />
  </>
  )}
+ {/* Generic [bracket] placeholder pickers — surfaces for any template
+ that contains "[X]" tokens. Renders a dropdown for slash-separated
+ options ("[mandibular / maxillary]"), shade picker for "[A2]",
+ span pair for "[##-##]", and a text input for the rest. Used by the
+ lab scripts moved into this dropdown (PFM Crown, Survey Crown,
+ Bridge, RPD Framework, etc.) so the student fills the same
+ highlighted placeholders that the Steps tab exposes. */}
+ {(() => {
+ if (!/\[[^\]]+\]/.test(rawTemplate)) return null;
+ return (
+ <LabPlaceholderInputs
+ rawTemplate={rawTemplate}
+ values={fields.labPlaceholders || {}}
+ onChange={(key, value) => {
+ setField("labPlaceholders", {...(fields.labPlaceholders || {}), [key]: value });
+ }}
+ />
+ );
+ })()}
  {/* Crown-specific controls: Placed cord?, Crown Type.
  Gates are now derived from the template body itself — if the
  template contains the cord-placement sentence, show the cord
