@@ -18597,14 +18597,21 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  </div>
 
  <div>
- <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)", marginBottom: "4px" }}>
+ <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
+ <span style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)" }}>
  3 · Upper six anterior curve width
- </div>
- <div style={{ fontSize: "10px", color: "var(--ink-faint)", fontStyle: "italic", marginBottom: "6px", lineHeight: 1.4 }}>
- Measure the chord (straight-line) distance from the distal of the right canine (#6) to the distal of the left canine (#11) across the facial surfaces of the upper six anteriors. A Boley gauge or millimeter ruler held flat against the labial of the anteriors works; on a diagnostic cast the same measurement is taken on the cast itself. The chord — not the arc — is the value the Trubyte mould table expects.
+ </span>
+ <span title="Measure the chord (straight-line) distance from the distal of the right canine (#6) to the distal of the left canine (#11) across the facial surfaces of the upper six anteriors. A Boley gauge or millimeter ruler held flat against the labial of the anteriors works; on a diagnostic cast the same measurement is taken on the cast itself. The chord — not the arc — is the value the Trubyte mould table expects."
+ style={{
+ display: "inline-flex", alignItems: "center", justifyContent: "center",
+ width: "14px", height: "14px", borderRadius: "50%",
+ border: "1px solid var(--ink-faint)", color: "var(--ink-faint)",
+ fontSize: "9px", fontFamily: "'Geist', sans-serif",
+ cursor: "help", userSelect: "none",
+ }}>i</span>
  </div>
  <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
- <input type="text" inputMode="decimal" placeholder="mm (e.g. 49.5)"
+ <input type="text" inputMode="decimal" placeholder="e.g. 49"
  value={widthMm} onChange={e => setWidthFromMm(e.target.value)}
  style={{
  padding: "4px 8px", fontSize: "11px", width: "100px",
