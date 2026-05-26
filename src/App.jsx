@@ -1499,7 +1499,7 @@ const CHUNKS = [
 "id": "c128",
 "section": "MISC",
 "title": "PHONE NUMBERS STEPS",
-"body": " the school main: [main number]\n (patients can reach all departments through this number)\n\n ● 2nd floor front desk: [front desk number]\n ● the clinic front desk:[clinic front desk number]\n ● faculty practice: [faculty practice number]\n ● implant: [implant clinic number]\n ● oral medicine: [oral medicine number]\n ● orthodontics: [ortho number]\n ● pediatrics: [peds number]\n ● pediatrics urgent care: [peds urgent care number]\n ● PG endodontics: [PG endo number]\n ● PG OMFS: [PG OMFS number]\n ● PG periodontics: [PG perio number]\n ● PG prosthodontics: [PG pros number]\n ● radiology: [radiology number]\n ● urgent care: [urgent care number]"
+"body": "Note: phone numbers are intentionally left as placeholders here — UIC clinic line numbers rotate and the Swade-era specifics aren't safe to ship. Ask your clinic manager once on your first day and write them in your phone contacts.\n\n- school main: [ask your clinic manager] (patients reach all departments through this number)\n- 2nd floor front desk: [ask]\n- the clinic front desk: [ask]\n- faculty practice: [ask]\n- implant: [ask]\n- oral medicine: [ask]\n- orthodontics: [ask]\n- pediatrics: [ask]\n- pediatrics urgent care: [ask]\n- PG endodontics: [ask]\n- PG OMFS: [ask]\n- PG periodontics: [ask]\n- PG prosthodontics: [ask]\n- radiology: [ask]\n- urgent care: [ask]"
 },
 {
 "id": "c129",
