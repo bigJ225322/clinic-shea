@@ -25736,7 +25736,7 @@ const PATHWAYS = [
  "Severity grade: mild (occasional, no symptoms) = night guard + monitor. Moderate (regular grinding, mild jaw pain, wear visible) = night guard + restorative as needed + recall every 6 months. Severe (broken teeth, TMD, chronic pain) = co-treat with TMD specialist or prosthodontist.",
  "Restorative material choice: monolithic zirconia for crowns (most fracture-resistant), bulk-fill composites for direct restorations (less stress concentration than layered), avoid feldspathic porcelain in heavy bruxers.",
  "Occlusal adjustment at delivery: shimstock holds in MI clench, pulls through in light bite. Reduce excursive contacts on the restored tooth — anterior guidance on canines and incisors only.",
- "Night guard is MANDATORY for any new restoration in a bruxer: hard acrylic Michigan splint (full coverage, lab-made, $300-500 patient cost), or NTI as interim (chairside, single-tooth, $150). Document the prescription in the chart.",
+ "Night guard is MANDATORY for any new restoration in a bruxer: hard acrylic Michigan splint (full coverage, lab-made — D9944) or NTI as interim (chairside, single-tooth, less protective). Verify current patient-cost in the Axium fee schedule before quoting. Document the prescription in the chart.",
  ],
  phases: [
  { label: "Diagnosis & planning", count: 2 },
