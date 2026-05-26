@@ -27494,6 +27494,14 @@ function Pathways() {
  const slice = resolvedSections.slice(cursor, cursor + phase.count);
  const startNum = cursor + 1;
  cursor += phase.count;
+ // Defensive: skip rendering this phase header if there are NO
+ // sections to show under it. Many pathways have phases.count
+ // sums that don't match sections.length exactly — when that
+ // happens, the trailing phases used to render as empty <ol>s
+ // under their headers ("Phase 8 — Follow-up" with nothing
+ // underneath). Hiding empty phases keeps the Sequence TOC
+ // legible even when the underlying data is mid-edit.
+ if (slice.length === 0) return null;
  return (
  <div key={pi} style={{ marginTop: pi === 0 ? "0" : "12px" }}>
  <div style={{
