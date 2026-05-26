@@ -21611,6 +21611,10 @@ const PATHWAY_GROUPS = {
  "surgery-dry-socket",
  "surgery-post-op-bleed",
  ]},
+ { label: "Pre-prosthetic + infection management", ids: [
+ "surgery-pre-prosthetic",
+ "surgery-odontogenic-infection",
+ ]},
  ],
  pedo: [
  // Restorative covers operative work in primary teeth (composite, SSC,
@@ -25578,6 +25582,56 @@ const PATHWAYS = [
  { guideId: "endo", chapterId: "endo-ch14" },
  { guideId: "direct", chapterId: "dir-ch1" },
  { guideId: "direct", chapterId: "dir-ch11" },
+ ],
+ },
+ // ── Surgery — additional adult-OS pathways (gaps identified in iter 35) ─
+ {
+ id: "surgery-pre-prosthetic",
+ domain: "surgery",
+ label: "Pre-prosthetic surgery evaluation + procedures",
+ description: "Surgical preparation of hard and soft tissues for a denture, RPD, or implant prosthesis. Before committing to records on a CD/RPD case, screen for conditions that compromise prosthesis seating or longevity: bony undercuts/exostoses/tori, hyperplastic resorbed ridges, epulis fissuratum, papillomatosis, unfavorable frena, enlarged maxillary tuberosities, inadequate vestibular depth, jaw-size discrepancies, pressure on mental foramen, limited restorative space, inflammatory papillary hyperplasia. The general dentist's role is recognition + prescribing — surgical intervention is typically referred to OMS, but the GP must identify the need and document the consult.",
+ keyDecisions: [
+ "Indication check: any of (a) bony undercut/exostosis preventing path of insertion, (b) tori that interfere with the major connector or denture base, (c) hyperplastic / mobile crestal tissue that compresses under denture load, (d) epulis fissuratum from an ill-fitting existing denture, (e) high frenum attachment that displaces the denture flange, (f) inadequate (<3-4 mm) attached gingiva at planned implant site, (g) shallow vestibule limiting flange extension, (h) papillary hyperplasia of palate from chronic 24/7 denture wear. Document with intraoral photos.",
+ "Procedure choice — hard tissue: alveoloplasty (smooth out sharp ridges after extraction), alveolectomy (remove a problematic segment), torus reduction (mandibular lingual / maxillary palatal tori), exostosis removal, bone graft / sinus lift for implant prep.",
+ "Procedure choice — soft tissue: vestibuloplasty (deepen the vestibule), frenectomy (release a high or pulling frenum), connective tissue graft / FGG (augment attached gingiva at an implant site), excision of hyperplastic tissue / epulis fissuratum.",
+ "Healing timeline: 6-8 weeks for alveoloplasty / torus reduction / frenectomy before final impression. Bone graft + sinus lift: 4-6 months. Soft tissue grafts: 3 months for tissue maturation. Plan the prosthesis workflow around the healing window.",
+ "Refer to OMS for: complex tori, large exostoses, vestibuloplasty, soft tissue grafting (unless trained), sinus lift. Predocs typically perform simple alveoloplasty + frenectomy + tuberosity reduction under faculty supervision; everything else goes to OMS.",
+ "CDT codes: D7310 (alveoloplasty per quadrant — with extractions) / D7311 (1-3 teeth per quadrant) / D7320 (without extractions per quadrant) / D7321 (1-3 teeth per quadrant). D7960 (frenectomy, separate procedure). D7471/D7472/D7473 (exostosis/tuberosity removal). D7286 (biopsy of soft tissue). D4273/D4283 (connective tissue/FGG soft tissue grafts).",
+ ],
+ phases: [
+ { label: "Indication assessment", count: 2 },
+ { label: "Procedure planning", count: 2 },
+ { label: "Healing timeline + prosthesis workflow", count: 2 },
+ ],
+ sections: [
+ { guideId: "surgery", chapterId: "surgery-ch1" }, // Pre-op assessment
+ { guideId: "surgery", chapterId: "surgery-ch4" }, // Socket management (overlap with alveoloplasty)
+ { guideId: "surgery", chapterId: "surgery-ch5" }, // Post-op instructions
+ ],
+ },
+ {
+ id: "surgery-odontogenic-infection",
+ domain: "surgery",
+ label: "Adult odontogenic infection with spread",
+ description: "A pulpal or periodontal infection has progressed beyond the local periapical/periodontal tissues into adjacent fascial spaces. The infection follows the path of least resistance through bone, then into the muscle/soft-tissue compartments where it can compromise the airway (Ludwig's angina = bilateral submandibular + sublingual + submental spaces) or extend into the brain via cavernous sinus thrombosis. Triage is the dominant clinical decision: most adult odontogenic infections can be managed in clinic (RCT or extraction + I&D + antibiotics) but ANY airway-threatening or systemic-involvement red flag → ER referral, not chairside management.",
+ keyDecisions: [
+ "Recognize systemic involvement: fever ≥101°F (38.3°C), tachycardia (HR >100), tachypnea (RR >20), trismus (interincisal opening <20 mm), dysphagia, drooling, voice change ('hot potato' voice), elevated WBC. ANY of these → ER referral.",
+ "Recognize airway-threatening spread: bilateral submandibular swelling (Ludwig's angina precursor), elevated/protruding tongue, sublingual edema, neck swelling crossing midline, dyspnea, stridor. → ER NOW, not later.",
+ "Local-only infection (vital ABCs, no fascial space involvement, no systemic signs): manage in clinic. Establish drainage through the canal (RCT) OR via extraction. I&D if fluctuant. Irrigate with sterile saline + CHX.",
+ "Antibiotics: not indicated for localized drained infection per AAE 2019. Indicated for spreading infection, fever, lymphadenopathy, trismus, immunocompromise. First-line: amoxicillin 500 mg TID × 3-7 days. PCN allergy: azithromycin 500 mg day 1 → 250 mg × 4 days (clindamycin NO longer first-line due to C. diff risk). Penetrate beta-lactamase-positive strains: amoxicillin/clavulanate 875/125 mg BID × 7 days.",
+ "Drainage is the definitive treatment — antibiotics alone do not cure an established infection without source removal. The general dentist's job is identification + initial drainage (RCT or extraction) + appropriate referral; complex hospital-based management (IV antibiotics, CT imaging, surgical drainage of fascial spaces) is the OMS role.",
+ "CDT codes: D7510 (I&D, intraoral, soft tissue) / D7511 (I&D, complicated, includes drainage in multiple fascial spaces) / D7521 (I&D, extraoral, complicated, multiple fascial spaces). RCT or extraction codes per the source-removal procedure. D9410 (house/extended care facility call) rarely applies.",
+ ],
+ phases: [
+ { label: "Triage + airway assessment", count: 2 },
+ { label: "Drainage + source removal", count: 2 },
+ { label: "Antibiotics + referral decision", count: 2 },
+ ],
+ sections: [
+ { guideId: "endo", chapterId: "endo-ch13" }, // Necrotic with PARL (often the source)
+ { guideId: "surgery", chapterId: "surgery-ch1" }, // Pre-op assessment (sysmtic eval)
+ { guideId: "surgery", chapterId: "surgery-ch4" }, // Socket management
+ { guideId: "surgery", chapterId: "surgery-ch5" }, // Post-op instructions
  ],
  },
  // ── Additional Direct pathways (occlusal management) ─────────────────────
