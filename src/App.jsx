@@ -19970,7 +19970,7 @@ function RPDHelper() {
  position: "relative",
  zIndex: 5,
  }}>
- <div style={{ justifySelf: "start", display: "flex", alignItems: "center", gap: "14px", minWidth: 0 }}>
+ <div style={{ justifySelf: "stretch", display: "flex", alignItems: "center", minWidth: 0 }}>
  <button
  onClick={clearAll}
  style={{ background: "transparent", color: "var(--ink-soft)", border: "1px solid var(--rule)", padding: "6px 14px",
@@ -19981,6 +19981,9 @@ function RPDHelper() {
  </button>
  {hasContent && result.kennedy?.class != null && (
  <span style={{
+ flex: 1,
+ textAlign: "center",
+ padding: "0 12px",
  fontFamily: "'Fraunces', serif",
  fontSize: "13px",
  color: "var(--accent)",
