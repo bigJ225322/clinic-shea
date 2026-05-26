@@ -26804,10 +26804,21 @@ function Pathways() {
  }
  if (!searchQuery.trim()) return base;
  const q = searchQuery.trim().toLowerCase();
- return base.filter(p =>
- p.label.toLowerCase().includes(q) ||
- p.description.toLowerCase().includes(q)
-);
+ // Extend search to keyDecisions[] as well as label + description.
+ // Without this, queries like "PFM", "RCT", "Cavitron", "Garrison"
+ // — terms that show up in the clinical narrative but not in the
+ // pathway's headline — return zero results. The keyDecisions array
+ // is where most of the clinical-vocabulary content lives.
+ return base.filter(p => {
+ if (p.label.toLowerCase().includes(q)) return true;
+ if (p.description.toLowerCase().includes(q)) return true;
+ if (Array.isArray(p.keyDecisions)) {
+ for (const d of p.keyDecisions) {
+ if (typeof d === "string" && d.toLowerCase().includes(q)) return true;
+ }
+ }
+ return false;
+ });
  }, [domainId, searchQuery, showAllDomains]);
  const pathwaysInDomain = filteredPathways;
  // Nothing-selected: render a friendly prompt instead of a "Specific
