@@ -5474,6 +5474,10 @@ function parseLabPlaceholders(body) {
  // chip-style picker so the student adds/removes individual teeth
  // rather than free-typing a comma-separated list.
  type = "tooth-list";
+ } else if (/^(Rest seats?|Guide planes?)$/i.test(text)) {
+ // Tooth-with-surface designators ("21-MO, 28-DO", "21-D, 28-D")
+ // → chart picker that allows per-tooth surface selection.
+ type = "tooth-list-with-surfaces";
  } else if (/\bteeth\b/i.test(text)) {
  // Descriptive label containing the word "teeth" (plural) like
  // "Reference teeth" / "Teeth to extract" / "Clasp teeth" → also
@@ -5650,8 +5654,21 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  );
  })()}
  {p.type === "tooth-list" && (
- <MultiToothInput value={values[p.key] || ""}
- onChange={v => onChange(p.key, v)} />
+ // Chart-style multi-tooth picker — same one the per-tooth tooth
+ // field uses, just allowing multiple selections. Click teeth on
+ // the chart popup to add them; click an already-selected tooth
+ // to deselect (single click since withSurfaces=false).
+ <ToothSurfaceInput value={values[p.key] || ""}
+ onChange={v => onChange(p.key, v)}
+ withSurfaces={false} />
+ )}
+ {p.type === "tooth-list-with-surfaces" && (
+ // Same chart picker but with surface picking — used for fields
+ // where each tooth carries an occlusal/proximal designator
+ // (rest seats like "21-MO, 28-DO"; guide planes like "21-D, 28-D").
+ <ToothSurfaceInput value={values[p.key] || ""}
+ onChange={v => onChange(p.key, v)}
+ withSurfaces={true} />
  )}
  {p.type === "implant-diameter" && (() => {
  // Brand-aware diameter list. If a brand was picked in a sibling
