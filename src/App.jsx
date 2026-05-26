@@ -3945,7 +3945,7 @@ function renderTemplate(raw, f) {
  // Ages over 89 are PHI under HIPAA and must not appear in the note.
  // If the field is filled but > 89, treat it as blank so "y/o" renders
  // without a number — the student still sees the value in the form.
- const ageForNote = f.age.trim() && parseInt(f.age.trim(), 10) <= 89? f.age.trim: "";
+ const ageForNote = f.age.trim() && parseInt(f.age.trim(), 10) <= 89? f.age.trim(): "";
  // Some templates (273, 807, 871) start with 2–3 artifact spaces before
  // "y/o". Collapse those to exactly one space when the field is unfilled,
  // or to nothing (age precedes y/o directly) when filled.
