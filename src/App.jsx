@@ -22646,7 +22646,6 @@ const PATHWAY_GROUPS = {
  "pedo-primary-trauma",
  "pedo-space-maintainer",
  "pedo-oral-pathology",
- "pedo-oral-surgery",
  ]},
  // Visits + behavior + preventive grouped — these are the non-restorative
  // parts of a typical pedo appointment block.
@@ -22661,6 +22660,7 @@ const PATHWAY_GROUPS = {
  { label: "Reference", ids: [
  "pedo-radiograph-selection",
  "pedo-medications-reference",
+ "pedo-oral-surgery",
  ]},
  ],
  perio: [
