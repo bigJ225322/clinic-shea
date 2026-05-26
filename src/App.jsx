@@ -20744,6 +20744,18 @@ function RPDInputsForm({ caseInput, onUpdate }) {
  v: "Lingual exostoses near the floor of the mouth. If surgical removal isn't planned, the lingual bar can't pass over them → lingual plate instead." },
  { k: "Sensitive gag reflex (maxillary only)",
  v: "Patient cannot tolerate full palatal coverage. Forces strap-style or U-shaped connectors instead of a full palate." },
+ { k: "Caries risk (CAMBRA: low / moderate / high / extreme)",
+ v: "Drives the recall interval (3-month for high/extreme vs 6-month for low/moderate) and CAMBRA-tier preventive Rx (PreviDent 5000 + chlorhexidine for high; xylitol-only for low). High caries risk also nudges design toward minimal abutment coverage (less plaque trap)." },
+ { k: "Perio risk (Stage I-IV / Grade A-C)",
+ v: "Drives abutment selection (skip mobile or short-attachment-loss abutments per Applegate Rule 1) and recall interval. Stage III/IV cases route to perio specialist for prognosis discussion before RPD." },
+ { k: "Esthetic demand (low / moderate / high)",
+ v: "Gates I-bar esthetic on anterior abutments (#6, #11) and high-smile cases. Forces Facing instead of Mesh on anterior denture base when smile line shows the framework. High esthetic demand on a Class IV anterior may route to fixed referral instead of RPD." },
+ { k: "VDO loss (severe wear / collapsed)",
+ v: "Engine flags need for full-arch records and articulator mounting BEFORE RPD design — VDO must be re-established (Lytle/Dawson convention) before the major connector and occlusal scheme are set. Untreated collapse routes to a treatment-plan re-eval first." },
+ { k: "Existing RPD same arch",
+ v: "Signals replacement vs new fabrication. If the patient is already wearing an RPD with framework issues, captures the existing prosthesis for design reference and ensures the new prosthesis path-of-insertion matches the abutment modifications the patient already accepts." },
+ { k: "High lingual frenum (mandibular only)",
+ v: "Frenum attachment encroaches on the lingual bar 4-mm clearance requirement. Forces lingual plate instead of lingual bar; in extreme cases requires frenectomy before final design." },
  ].map(({ k, v }) => (
  <div key={k} style={{ marginBottom: "10px" }}>
  <div style={{
