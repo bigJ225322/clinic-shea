@@ -5469,6 +5469,12 @@ function parseLabPlaceholders(body) {
  // student picks Maxillary or Mandibular and the abbreviation
  // (M / D) substitutes correctly.
  type = "arch";
+ } else if (text === "Name") {
+ // Urgent care template has 3x "Dr. [Name] -- {type} consult:" lines.
+ // The consultations block is rebuilt from f.examFindings.consultations
+ // (see renderTemplate consultations handler), so a single shared
+ // bracket-form input would write the same name to all three. Skip.
+ continue;
  } else if (text === "Student Name" || text === "Instructor") {
  // Peds templates end with "- [Student Name] / Dr. [Instructor]" —
  // those are filled by the Names field at the bottom of the form,
