@@ -116,7 +116,7 @@ const TEMPLATES = {
  "lab-ii-denture": "F/F: Please fabricate maxillary and mandibular interim complete dentures. Use existing teeth [6, 11, 22, 27] as reference. [6, 11, 22, 27] will be extracted. Please set posterior teeth over the residual ridge and do not increase VDO. Please use Trubyte Classic anterior tooth mold [4H] and posterior teeth mold [F30] 10°. Please use tooth shade [81] for all teeth. Please use acrylic shade: 50% OR (original) + 50% DK (dark). Please set teeth, festoon, process & polish, and return for delivery. Thank you.",
  "lab-reline": "F/[M or D]: Please reline the denture with heat-cured acrylic resin, shade L199-OR. Please add the posterior palatal seal as indicated on the impression. Please polish and return for delivery. Thank you.",
  "lab-rpd": "Please fabricate [mandibular / maxillary] RPD framework using Vitallium alloy.\nMajor connector: [lingual bar / palatal plate].\nRest seats: [21-MO, 28-DO].\nGuide planes: [21-D, 28-D].\nClasps:\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [21]\n- 18 gauge wrought wire reciprocal arm on lingual of [21]\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [28]\n- 18 gauge wrought wire reciprocal arm on lingual of [28]\nTissue stops marked on cast.\nRetentive loops on areas: [18, 19, 20, 29, 30].\nReturn framework for try-in.\nThank you.",
- "lab-survey-crown": "Please fabricate PFM survey crown(s) for [tooth #(s)] to be fitted with [mandibular / maxillary] RPD framework. Metal: high-noble alloy.\n\nCrown design — integrate the following surveyed features (working cast tripoded; tripod marks and path of insertion marked in red):\n\nFor [tooth #]:\n- Metal occlusal thickness: 0.5-1.0 mm at the rest seat area (total tooth reduction 2.5-3.0 mm there; 1.5 mm elsewhere)\n- Rest seat: [mesial / distal / cingulum] — 1.5 mm deep × 2.5 mm wide, floor angled toward the long axis of the tooth (positive seat)\n- Guide plane: [mesial / distal] proximal surface flat and parallel to the RPD path of insertion (per tripod marks on the enclosed working cast)\n- Undercut: [0.01\" cast clasp / 0.02\" wrought wire] at [mid-buccal / MB / DB / ML / DL], in the gingival 1/3 (clasp tip engages the infrabulge area from the opposite direction the rest sits)\n- HOC: at the junction of the middle 1/3 and the gingival 1/3 of the [buccal / lingual] surface (clasp origin sits in the suprabulge area; clasp tip engages the infrabulge below this line)\n\nPlease send the full-contour wax-up back BEFORE final firing for surveyor verification. Once approved, complete the porcelain application and return for cementation.\n\nEnclosed: final impression, opposing impression, bite registration in MI, tripoded diagnostic cast (as reference for path of insertion).\n\nThank you.",
+ "lab-survey-crown": "Please fabricate PFM survey crown(s) for #30 to be fitted with [mandibular / maxillary] RPD framework. Metal: high-noble alloy. Shade A2.\n\nCrown design — integrate the following surveyed features (working cast tripoded; tripod marks and path of insertion marked in red):\n\n- Metal occlusal thickness: 0.5-1.0 mm at the rest seat area (total tooth reduction 2.5-3.0 mm there; 1.5 mm elsewhere)\n- Rest seat: [mesial / distal / cingulum] — 1.5 mm deep × 2.5 mm wide, floor angled toward the long axis of the tooth (positive seat)\n- Guide plane: [mesial / distal] proximal surface flat and parallel to the RPD path of insertion (per tripod marks on the enclosed working cast)\n- Undercut: [0.01\" cast clasp / 0.02\" wrought wire] at [mid-buccal / MB / DB / ML / DL], in the gingival 1/3 (clasp tip engages the infrabulge area from the opposite direction the rest sits)\n- HOC: at the junction of the middle 1/3 and the gingival 1/3 of the [buccal / lingual] surface (clasp origin sits in the suprabulge area; clasp tip engages the infrabulge below this line)\n\nPlease send the full-contour wax-up back BEFORE final firing for surveyor verification. Once approved, complete the porcelain application and return for cementation.\n\nEnclosed: final impression, opposing impression, bite registration in MI, tripoded diagnostic cast (as reference for path of insertion).\n\nThank you.",
  "lab-ii-rpd": "Please fabricate [mandibular / maxillary] interim immediate acrylic removable partial denture. Use existing teeth [22-28] as a reference for occlusal plane. [18 and 28] will be extracted. Please set posterior teeth over the residual ridge and do not increase VDO. Please place wrought wire clasps on [22 and 27]. Please use Trubyte Classic posterior tooth mold F30 10°, tooth shade 81. Please use acrylic shade: 50% OR (original) + 50% DK (dark). Please set teeth, festoon, process & polish, and return for delivery.\nThank you.",
 };
 
@@ -2485,9 +2485,23 @@ function flattenCategory(cat) {
 }
 
 // All categories with.procedures available (for NoteBuilder).
-// Exclude misc (Axium workflows / lookup references — no note codes) and
-// lab (lab Rx text goes to Axium's Labs > Details field, not the chart note).
-const FLAT_CATEGORIES = CATEGORIES.filter(c => c.id!== "misc" && c.id!== "lab").map(flattenCategory);
+// Lab Scripts are surfaced here too — the same Rx body can be drafted via the
+// note generator (with the existing tooth + shade + crown-type fields auto-
+// substituting #N and A2 placeholders) and pasted into Axium's Labs > Details
+// field. Inserted right after Restorative in the dropdown order.
+// Excludes misc (Axium workflows / lookup references — no notes there).
+const FLAT_CATEGORIES = (() => {
+ const ordered = [];
+ for (const cat of CATEGORIES) {
+ if (cat.id === "misc" || cat.id === "lab") continue;
+ ordered.push(cat);
+ if (cat.id === "restorative") {
+ const lab = CATEGORIES.find(c => c.id === "lab");
+ if (lab) ordered.push(lab);
+ }
+ }
+ return ordered.map(flattenCategory);
+})();
 
 // Browse tab: every category. Lab Scripts used to be filtered out because the
 // per-procedure pages had no CHUNKS content; each lab Rx now has a REF_DATA
