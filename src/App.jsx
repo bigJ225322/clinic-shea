@@ -5545,8 +5545,11 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  color: "var(--ink-soft)" }}>
  Lab Rx placeholders ({placeholders.length})
  </div>
- <div style={{ display: "grid", gap: "10px",
- gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+ {/* Single column so the picker order matches the placeholder's order
+ of appearance in the rendered note below — students fill the form
+ top-to-bottom and the substitution lands in the same top-to-bottom
+ sequence in the Rx text. */}
+ <div style={{ display: "grid", gap: "10px", gridTemplateColumns: "1fr" }}>
  {placeholders.map(p => (
  <Field key={p.key} label={p.key}>
  {p.type === "dropdown" && (
