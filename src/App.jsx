@@ -22589,6 +22589,9 @@ const PATHWAYS = [
  "Material choice: PFM or zirconia for posterior load (e.max acceptable for light occlusal stress only).",
  "Cement with RMGI if retention form is good; resin cement if ferrule is short.",
  "Check for fracture lines with transillumination before commitment to crown vs extraction.",
+ "Timing matters — coronal seal is the #1 prognostic factor for RCT survival. Complete the definitive crown within 4 weeks of obturation; longer than that risks bacterial recontamination through the temporary restoration. If patient delays > 4 weeks, the access cavity needs to be reopened and re-cleaned before final restoration.",
+ "Subgingival margins should be avoided where possible — when margins violate the biologic width (≤2 mm of supracrestal tissue attachment) the result is chronic inflammation, bone loss, and pocket formation. If subgingival margin is unavoidable, plan crown lengthening (6-8 week healing) BEFORE crown prep.",
+ "CDT codes: D2750 (PFM high noble) or D2740 (porc/cer) for the crown, D2950 (core buildup, including any pins) for the foundation. If a post is needed: D2954 (prefabricated post, in addition to core buildup). The endo procedure (D3310/D3320/D3330) is billed separately at the RCT visit, not at the crown visit.",
  ],
  phases: [
  { label: "Workflow + endo-tooth specifics", count: 2 },
