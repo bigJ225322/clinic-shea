@@ -21523,17 +21523,17 @@ function Guides() {
  * "Coming soon" placeholders until populated.
  * ==========================================================================*/
 const PATHWAY_DOMAINS = [
- { id: "direct", label: "Direct Restorations" },
- { id: "indirect", label: "Indirect Restorations" },
+ { id: "direct", label: "Direct" },
+ { id: "indirect", label: "Indirect" },
  { id: "endo", label: "Endodontics" },
  { id: "surgery", label: "Oral Surgery" },
- { id: "perio", label: "Periodontics" },
- { id: "pedo", label: "Pediatric Dentistry" },
- { id: "rpd", label: "Removable Partial Dentures" },
- { id: "cd", label: "Complete Dentures" },
+ { id: "perio", label: "Perio" },
+ { id: "pedo", label: "Pediatrics" },
+ { id: "rpd", label: "RPD" },
+ { id: "cd", label: "CD" },
  { id: "cross", label: "Cross-disciplinary" },
  { id: "repair", label: "Repair situations" },
- { id: "ref", label: "Reference" },
+ { id: "ref", label: "Ref" },
 ];
 
 // Loose visual sub-grouping inside a domain — used only when there are enough
