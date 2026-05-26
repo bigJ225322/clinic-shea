@@ -114,8 +114,8 @@ const TEMPLATES = {
  "lab-og": "Please fabricate maxillary full arch flat plane occlusal guard. Please process in dual layer acrylic with VDO raised to create at least 1 mm space measured between the tips of the canines & all posterior teeth during eccentric movements (pin +3 mm). Please achieve all of the following:\n(a) point-to-flat-plane contact in centric (buccal cusps & incisal edges of mandibular teeth)\n(b) 1-2 mm of freedom in centric\n(c) minimal incisal guidance, but enough to disclude posterior teeth in protrusion\n(d) canine guidance during lateral excursion\nPlease return for delivery. Thank you.",
  "lab-ff": "F/F: Please festoon, pack, and process maxillary & mandibular complete dentures. Gingival shade: [gingival shade]. Please return for delivery. Thank you.",
  "lab-ii-denture": "F/F: Please fabricate maxillary and mandibular interim complete dentures. Use existing teeth [Reference teeth] as reference. [Teeth to extract] will be extracted. Please set posterior teeth over the residual ridge and do not increase VDO. Please use Trubyte Classic anterior tooth mold [Anterior tooth mold] and posterior teeth mold [Posterior tooth mold] 10°. Please use tooth shade [Trubyte shade] for all teeth. Please use acrylic shade: 50% OR (original) + 50% DK (dark). Please set teeth, festoon, process & polish, and return for delivery. Thank you.",
- "lab-reline": "F/[M or D]: Please reline the denture with heat-cured acrylic resin, shade L199-OR. Please add the posterior palatal seal as indicated on the impression. Please polish and return for delivery. Thank you.",
- "lab-rpd": "Please fabricate [mandibular / maxillary] RPD framework using Vitallium alloy.\nMajor connector: [lingual bar / palatal plate].\nRest seats: [21-MO, 28-DO].\nGuide planes: [21-D, 28-D].\nClasps:\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [21]\n- 18 gauge wrought wire reciprocal arm on lingual of [21]\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [28]\n- 18 gauge wrought wire reciprocal arm on lingual of [28]\nTissue stops marked on cast.\nRetentive loops on areas: [18, 19, 20, 29, 30].\nReturn framework for try-in.\nThank you.",
+ "lab-reline": "F/[Arch]: Please reline the denture with heat-cured acrylic resin, shade L199-OR. Please add the posterior palatal seal as indicated on the impression. Please polish and return for delivery. Thank you.",
+ "lab-rpd": "Please fabricate [mandibular / maxillary] RPD framework using Vitallium alloy.\nMajor connector: [lingual bar / palatal plate].\nRest seats: [Rest seats].\nGuide planes: [Guide planes].\nClasps:\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [Abutment 1]\n- 18 gauge wrought wire reciprocal arm on lingual of [Abutment 1]\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [Abutment 2]\n- 18 gauge wrought wire reciprocal arm on lingual of [Abutment 2]\nTissue stops marked on cast.\nRetentive loops on areas: [Retentive loop areas].\nReturn framework for try-in.\nThank you.",
  "lab-survey-crown": "Please fabricate PFM survey crown(s) for #30 to be fitted with [mandibular / maxillary] RPD framework. Metal: high-noble alloy. Shade A2.\n\nCrown design — integrate the following surveyed features (working cast tripoded; tripod marks and path of insertion marked in red):\n\n- Metal occlusal thickness: 0.5-1.0 mm at the rest seat area (total tooth reduction 2.5-3.0 mm there; 1.5 mm elsewhere)\n- Rest seat: [mesial / distal / cingulum] — 1.5 mm deep × 2.5 mm wide, floor angled toward the long axis of the tooth (positive seat)\n- Guide plane: [mesial / distal] proximal surface flat and parallel to the RPD path of insertion (per tripod marks on the enclosed working cast)\n- Undercut: [0.01\" cast clasp / 0.02\" wrought wire] at [mid-buccal / MB / DB / ML / DL], in the gingival 1/3 (clasp tip engages the infrabulge area from the opposite direction the rest sits)\n- HOC: at the junction of the middle 1/3 and the gingival 1/3 of the [buccal / lingual] surface (clasp origin sits in the suprabulge area; clasp tip engages the infrabulge below this line)\n\nPlease send the full-contour wax-up back BEFORE final firing for surveyor verification. Once approved, complete the porcelain application and return for cementation.\n\nEnclosed: final impression, opposing impression, bite registration in MI, tripoded diagnostic cast (as reference for path of insertion).\n\nThank you.",
  "lab-ii-rpd": "Please fabricate [mandibular / maxillary] interim immediate acrylic removable partial denture. Use existing teeth [Reference teeth] as a reference for occlusal plane. [Teeth to extract] will be extracted. Please set posterior teeth over the residual ridge and do not increase VDO. Please place wrought wire clasps on [Clasp teeth]. Please use Trubyte Classic posterior tooth mold [Posterior tooth mold] 10°, tooth shade [Trubyte shade]. Please use acrylic shade: 50% OR (original) + 50% DK (dark). Please set teeth, festoon, process & polish, and return for delivery.\nThank you.",
 };
@@ -3319,7 +3319,7 @@ const REF_DATA = {
  blocks: [
  { type: "script",
  caption: "Lab Rx",
- body: "F/[M or D]: Please reline the denture with heat-cured acrylic resin, shade L199-OR. Please add the posterior palatal seal as indicated on the impression. Please polish and return for delivery. Thank you.",
+ body: "F/[Arch]: Please reline the denture with heat-cured acrylic resin, shade L199-OR. Please add the posterior palatal seal as indicated on the impression. Please polish and return for delivery. Thank you.",
  note: "F/M = maxillary, F/D = mandibular. The patient is dentureless during the turnaround — provide an interim immediate denture or schedule chairside reline." },
  { type: "cards", caption: "What to send with this Rx", cards: [
  { title: "Supplements", rows: [
@@ -3338,7 +3338,7 @@ const REF_DATA = {
  blocks: [
  { type: "script",
  caption: "Lab Rx",
- body: "Please fabricate [mandibular / maxillary] RPD framework using Vitallium alloy.\nMajor connector: [lingual bar / palatal plate].\nRest seats: [21-MO, 28-DO].\nGuide planes: [21-D, 28-D].\nClasps:\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [21]\n- 18 gauge wrought wire reciprocal arm on lingual of [21]\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [28]\n- 18 gauge wrought wire reciprocal arm on lingual of [28]\nTissue stops marked on cast.\nRetentive loops on areas: [18, 19, 20, 29, 30].\nReturn framework for try-in.\nThank you.",
+ body: "Please fabricate [mandibular / maxillary] RPD framework using Vitallium alloy.\nMajor connector: [lingual bar / palatal plate].\nRest seats: [Rest seats].\nGuide planes: [Guide planes].\nClasps:\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [Abutment 1]\n- 18 gauge wrought wire reciprocal arm on lingual of [Abutment 1]\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [Abutment 2]\n- 18 gauge wrought wire reciprocal arm on lingual of [Abutment 2]\nTissue stops marked on cast.\nRetentive loops on areas: [Retentive loop areas].\nReturn framework for try-in.\nThank you.",
  note: "This is the manual fallback. For a case-specific Rx generated from your survey + design, use the RPD Design Helper — it produces a script with your exact rest seats, clasp types, and undercut measurements." },
  { type: "cards", caption: "What to send with this Rx", cards: [
  { title: "Supplements", rows: [
@@ -5453,6 +5453,16 @@ function parseLabPlaceholders(body) {
  // LabPlaceholderInputs component (which knows which brand was
  // picked in the sibling [Straumann / Nobel / Dentsply EV] field).
  type = "implant-diameter";
+ } else if (text === "Arch") {
+ // Arch dropdown — used by lab-reline ("F/[Arch]:") so the
+ // student picks Maxillary or Mandibular and the abbreviation
+ // (M / D) substitutes correctly.
+ type = "arch";
+ } else if (/^Abutment(\s+\d+)?$/.test(text)) {
+ // Abutment slot ("Abutment 1", "Abutment 2", ...) → single tooth
+ // input. Used by lab-rpd for the wrought-wire clasp abutment
+ // assignments.
+ type = "tooth";
  } else if (text === "##-##") {
  type = "span";
  } else if (/^\d+\s*-\s*\d+$/.test(text)) {
@@ -5587,9 +5597,18 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  onChange={v => onChange(p.key, v)} />
  )}
  {p.type === "tooth" && (
- <TextInput value={values[p.key] || ""}
- onChange={v => onChange(p.key, v)}
- placeholder="e.g. 30" />
+ <ToothSurfaceInput value={values[p.key] || ""}
+ onChange={v => onChange(p.key, (v || "").split(",")[0].trim().replace(/^#/, ""))}
+ withSurfaces={false} />
+ )}
+ {p.type === "arch" && (
+ <select value={values[p.key] || ""}
+ onChange={e => onChange(p.key, e.target.value)}
+ style={selectStyle}>
+ <option value="">— select arch —</option>
+ <option value="M">Maxillary (M)</option>
+ <option value="D">Mandibular (D)</option>
+ </select>
  )}
  {p.type === "span" && (() => {
  const { mesial, distal } = getSpan(p.key);
@@ -10285,11 +10304,12 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  highlighted placeholders that the Steps tab exposes. */}
  {(() => {
  if (!/\[[^\]]+\]/.test(rawTemplate)) return null;
- // Bridge scripts (lab-bridge, lab-bridge-cast, lab-porcelain) opt
- // out of the "Customize this Rx" form — their only bracket is the
- // [##-##] span, which the student can edit faster directly in the
- // rendered Rx than via two chart-style pickers above it.
- const BRIDGE_LAB_IDS = new Set(["lab-bridge", "lab-bridge-cast", "lab-porcelain"]);
+ // Only lab-bridge and lab-bridge-cast opt out — the only bracket on
+ // those is [##-##] and editing two digits inline is faster than
+ // opening two chart pickers. lab-porcelain ("add porcelain to
+ // framework") needs the span picker since you're filling in WHICH
+ // bridge you're adding porcelain to.
+ const BRIDGE_LAB_IDS = new Set(["lab-bridge", "lab-bridge-cast"]);
  if (BRIDGE_LAB_IDS.has(procedureId)) return null;
  return (
  <LabPlaceholderInputs
@@ -10669,11 +10689,15 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </Field>
  </>
 )}
+ {!(typeof procedureId === "string" && procedureId.startsWith("lab-")) && (
+ <>
  <Hairline />
  <Field label="Name(s)">
  <TextInput value={fields.names} onChange={v=>setField("names",v)}
  placeholder="S.Swade/Dr. Nice" />
  </Field>
+ </>
+ )}
  <button className="ghost" onClick={handleReset} style={{ width: "100%", marginTop: "10px" }}>
  Clear patient fields
  </button>
