@@ -1217,7 +1217,7 @@ const CHUNKS = [
 "id": "c081",
 "section": "ORAL SURGERY",
 "title": "BLOOD PRESSURE",
-"body": "S D\n\n normal\n\n elevated\n\n 130 80\n\n stage I hypertension\n\n 140 90\n\n stage II hypertension\n\n 180 120\n\n hypertensive crisis\n\nthe protocol for BP\n ●​ if systolic pressure is greater than 160 or the diastolic pressure is greater than 90, then routine dental care is\n contraindicated and only urgent care can be provided\n ●​ if systolic pressure is greater than 180 or the diastolic pressure is greater than 110, no dental care can be provided (even\n emergency dental care) & pt should be referred to emergency room\n\nthe protocol for blood glucose\n ●​ routine dental care is contraindicated in pts whose blood glucose is 200 or above\n ●​ patients whose blood glucose is less than 70 should be encouraged to eat if they have brought food with them, or should be\n given food, or be given the glucose gel in the emergency cart (which tastes awful so try to find something else if possible &\n not an emergency)"
+"body": "BP CATEGORY (Systolic / Diastolic, mmHg)\n - Normal: <120 / <80\n - Elevated: 120-129 / <80\n - Stage I hypertension: 130-139 / 80-89\n - Stage II hypertension: 140-179 / 90-119\n - Hypertensive crisis: ≥180 / ≥120\n\nthe protocol for BP\n - if systolic pressure is greater than 160 or the diastolic pressure is greater than 90, then routine dental care is contraindicated and only urgent care can be provided\n - if systolic pressure is greater than 180 or the diastolic pressure is greater than 110, no dental care can be provided (even emergency dental care) & pt should be referred to emergency room\n\nthe protocol for blood glucose\n - routine dental care is contraindicated in pts whose blood glucose is 200 or above\n - patients whose blood glucose is less than 70 should be encouraged to eat if they have brought food with them, or should be given food, or be given the glucose gel in the emergency cart (which tastes awful so try to find something else if possible & not an emergency)"
 },
 {
 "id": "c082.0",
@@ -1367,7 +1367,7 @@ const CHUNKS = [
 "id": "c106",
 "section": "AXIUM",
 "title": "ADDING RADIOGRAPHS",
-"body": "1.​ locate the x-ray files & save them to the computer; or, plug in the flash drive containing the x-ray files​\n\n 2.​ open Dexis​\n\n 3.​ select the FMX or Panoramic icon at the top (depending on if you are uploading individual x-rays or panos)​\n\n ​\n\n 4.​ select the import icon at the top (or, you can right click the screen and select “Import”)​\n\n ​\n\n 5.​ select “Browse”​\n\n ​\n\n 6.​ select the folder with the x-ray files​\n\n 7.​ hold down the Command key and select all your photos​\n\n 8.​ click “Import Selected”​\n\n 9.​"
+"body": "1. locate the x-ray files & save them to the computer; or, plug in the flash drive containing the x-ray files\n\n 2. open Dexis\n\n 3. select the FMX or Panoramic icon at the top (depending on if you are uploading individual x-rays or panos)\n\n 4. select the import icon at the top (or, you can right click the screen and select \"Import\")\n\n 5. select \"Browse\"\n\n 6. select the folder with the x-ray files\n\n 7. hold down the Command key and select all your photos\n\n 8. click \"Import Selected\"\n\n 9. the radiographs import into the patient's chart — verify each image is correctly assigned to the right tooth/region before closing Dexis."
 },
 {
 "id": "c107",
