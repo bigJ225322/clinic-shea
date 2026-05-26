@@ -10292,11 +10292,11 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <Field label="Clinic">
  <Select value={fields.clinic} onChange={v=>setField("clinic",v)}>
  <option value="">— Select a clinic —</option>
- <option value="Bach">Bach</option>
- <option value="Brahms">Brahms</option>
  <option value="Gershwin">Gershwin</option>
- <option value="Mozart">Mozart</option>
  <option value="Vivaldi">Vivaldi</option>
+ <option value="Brahms">Brahms</option>
+ <option value="Bach">Bach</option>
+ <option value="Mozart">Mozart</option>
  {showChicago && <option value="Chicago">Chicago</option>}
  </Select>
  </Field>
