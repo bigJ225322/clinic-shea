@@ -22702,6 +22702,7 @@ const PATHWAYS = [
  "Mesial rest on the terminal abutment (not distal) for the stress-breaking design.",
  "Framework + wax try-in MUST verify cast accuracy before processing — disclosing wax is the standard check.",
  "Counsel patient: distal extension prostheses load tissue; reline likely at 12–24 months.",
+ "CDT codes: D5213 (maxillary cast-metal RPD) or D5214 (mandibular cast-metal RPD). Per-step subcodes: D5213A (final impression), D5213B (framework try-in), D5213C (wax try-in), D5213D (delivery). Interim partials use D5820 (max) / D5821 (mand). Future reline at 12-24 months bills D5740 (max chairside reline) / D5741 (mand chairside) or D5750/D5751 (lab reline).",
  ],
  phases: [
  { label: "Records & planning", count: 3 },
@@ -22737,6 +22738,7 @@ const PATHWAYS = [
  "Wrought wire engages less precisely than cast — counsel the patient about the retention difference.",
  "Re-PIP and re-check occlusion after seating — the new clasp can introduce occlusal interferences if it sits higher than the original.",
  "Repair section in the chapter: Repair 1 (fractured clasp). Subsequent sections cover the other failure modes for reference, but a fractured-clasp visit usually doesn't need them.",
+ "CDT code: D5660 (Add clasp to existing partial denture — per tooth) for chairside wrought-wire clasp addition. If you have to send the framework to the lab for a cast-clasp repair, that's D5640 (Replace broken teeth — per tooth) or a custom lab repair code per fee schedule.",
  ],
  phases: [
  { label: "Repair", count: 1 },
@@ -22759,6 +22761,7 @@ const PATHWAYS = [
  "Remove all residual acrylic from the saddle before bonding — old PMMA at the bond surface is the most common debond cause.",
  "Cold-cure PMMA, not light-cure composite. Composite doesn't bond reliably to cured acrylic without aggressive surface treatment.",
  "Re-check occlusion at delivery — a new tooth sitting slightly proud will fracture again within months.",
+ "CDT code: D5640 (Replace broken teeth — per tooth) for chairside denture-tooth add/replace. Charged per tooth — a 3-tooth saddle with 1 fractured tooth bills 1× D5640.",
  ],
  phases: [
  { label: "Repair", count: 1 },
@@ -22806,6 +22809,7 @@ const PATHWAYS = [
  "Patient leaves the surgical visit with the denture in place.",
  "Soft reline at 2–4 weeks; hard reline at 3–6 months as ridge remodels.",
  "Counsel patient on diet (soft for first 2 weeks) and immediate post-op care.",
+ "CDT codes: D5130 (Immediate denture, maxillary) / D5140 (Immediate denture, mandibular). Soft reline at 2-4 weeks bills D5740 (max chairside reline) / D5741 (mand chairside reline). Hard reline at 3-6 months bills D5750/D5751 (lab reline). Extractions are billed separately by the surgeon: D7140 (simple) per tooth, or D7210 (surgical) per tooth as appropriate.",
  ],
  phases: [
  { label: "Records", count: 4 },
@@ -22847,6 +22851,7 @@ const PATHWAYS = [
  "Clinical remount + selective grinding at delivery — non-negotiable for occlusion.",
  "Schedule 24-hr and 1-week follow-ups for adjustments before complaints escalate.",
  "Counsel: 'There is no such thing as a perfect denture — there's a denture you adapt to.' Set the expectation early: dentures function at roughly 30% of natural dentition.",
+ "CDT codes: D5110 (Complete denture — maxillary) / D5120 (Complete denture — mandibular). Per-step subcodes commonly used: D5110A (records / facebow / impressions), D5110B (wax try-in), D5110C (delivery). I9002 (Lab quality review) may apply at delivery. Adjustments at 24h/1wk: D5410 (Adjust complete denture, max) / D5411 (Adjust complete denture, mand).",
  ],
  phases: [
  { label: "Pre-prosthetic eval", count: 1 },
