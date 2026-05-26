@@ -11368,22 +11368,37 @@ Object.entries(CODE_GROUPS).forEach(([p, g]) => g.children.forEach(c => { CHILD_
 
 // CDT category convention by code prefix. Used by the code lookup table
 // for quick filtering.
+// Codes-tab category pills are scoped to clinical procedure domains —
+// same buckets the Cases tab uses (Direct, Indirect, Perio, CD, RPD,
+// Repair, Peds, Endo, OS, Ref). A code can match more than one matcher
+// (e.g. D1351 sealants show under both Direct and Peds) — that's
+// intentional, students look up codes by clinical context.
 const RVU_CATEGORIES = [
- { id: "all", label: "All", match: () => true },
- { id: "diag", label: "Diagnostic", match: c => /^D0/.test(c) },
- { id: "prev", label: "Preventive", match: c => /^D1/.test(c) },
- // Crowns (D27xx, prefab/SSC D292x–D293x) are separated from fillings so
- // Restorative aligns with the MEE "Direct Restorative" category.
- { id: "rest", label: "Restorative", match: c => /^D2/.test(c) &&!/^D27/.test(c) &&!/^D29(2[0-9]|3[0-5])/.test(c) },
+ // Direct: composite (D23xx), amalgam (D21xx), sealants, caries control, ITR.
+ { id: "direct", label: "Direct", match: c => /^D2[13]\d{2}$/.test(c) || c === "D2940" || c === "D2941" || c === "D1351" || c === "D1352" },
+ // Indirect: crowns (D27xx), recement/prefab adult, FPDs + implants (D6xxx),
+ // and UIC's digital crown codes (DD / RD).
+ { id: "indirect", label: "Indirect", match: c => /^D27/.test(c) || c === "D2920" || c === "D2921" || c === "D2935" || /^D6/.test(c) || /^DD/.test(c) || /^RD/.test(c) },
+ // Perio: D4xxx + adult prophy + tobacco-cessation codes.
+ { id: "perio", label: "Perio", match: c => /^D4/.test(c) || c === "D1110" || /^D1320/.test(c) },
+ // CD: complete denture / immediate CD / interim CD / overdenture.
+ { id: "cd", label: "CD", match: c => /^D5(11|12|13|14|81|82|86)/.test(c) },
+ // RPD: cast metal / flexible / interim partial dentures.
+ { id: "rpd", label: "RPD", match: c => /^D5(21|22|23|24|25|26|27|28)/.test(c) },
+ // Repair: denture adjustments, repairs, rebases, relines (CD or RPD).
+ { id: "repair", label: "Repair", match: c => /^D5(41|42|43|51|52|53|55|56|57|61|62|63|64|65|66|67|71|72|73|74|75|76)/.test(c) },
+ // Peds: child prophy / fluoride / OHI / diet, primary-tooth pulp therapy
+ // (D32xx pulp caps + indirect/direct pulp), SSCs / prefab esthetic
+ // primary crowns (D29(29|3[0-4])), primary extractions (D7111/D7140),
+ // space maintainers (D154x).
+ { id: "pedo", label: "Peds", match: c => c === "D1120" || c === "D1206" || c === "D1206NC" || c === "D1310" || c === "D1330" || /^D32[23]/.test(c) || /^D29(29|3[0-4])/.test(c) || c === "D7111" || c === "D7140" || /^D154/.test(c) },
+ // Endo: full D3xxx range.
  { id: "endo", label: "Endo", match: c => /^D3/.test(c) },
- { id: "perio", label: "Perio", match: c => /^D4/.test(c) },
- { id: "rpd", label: "Removable", match: c => /^D5/.test(c) },
- { id: "fix", label: "Fixed/Implant", match: c => /^D27/.test(c) || /^D29(2[0-9]|3[0-5])/.test(c) || /^D6/.test(c) },
- { id: "os", label: "Oral Surgery", match: c => /^D7/.test(c) },
- { id: "ortho", label: "Orthodontics", match: c => /^D8/.test(c) },
- { id: "adj", label: "Adjunctive", match: c => /^D9/.test(c) },
- { id: "dig", label: "Digital", match: c => /^DD/.test(c) || /^RD/.test(c) },
- { id: "edu", label: "IPE / Other", match: c => /^I/.test(c) || /^R9/.test(c) || /^R5/.test(c) },
+ // OS: full D7xxx range.
+ { id: "os", label: "OS", match: c => /^D7/.test(c) },
+ // Ref: exam + radiograph (D0xxx), ortho (D8xxx), adjunctive (D9xxx),
+ // IPE / Other (I-prefix, R-prefix).
+ { id: "ref", label: "Ref", match: c => /^D0/.test(c) || /^D8/.test(c) || /^D9/.test(c) || /^I/.test(c) || /^R/.test(c) },
 ];
 
 // MEE category structure mapping the dashboard's 14 progress columns
@@ -11963,8 +11978,12 @@ function RVUs() {
  })}
  </div>
 
- {/* Table — fee col is fixed-width and sits left of Code so Code never shifts */}
- {(() => {
+ {/* Table — fee col is fixed-width and sits left of Code so Code never shifts.
+ Renders when a category pill is selected OR a search term is active; with
+ neither, the entire table is hidden so the tab matches the clean starting
+ state of every other tab (no content until you ask for it). The search
+ box still works without a category — it searches the whole catalog. */}
+ {(activeCategory === null && search.trim() === "")? null: (() => {
  const meeColW = showD3Pct && showD4Pct? "80px": "56px";
  // Column order: Description | Fee | Code | RVU | MEE Cat. | MEE %
  const cols = showMee? `1fr 60px 80px 50px 140px ${meeColW}`: "1fr 60px 80px 50px";
