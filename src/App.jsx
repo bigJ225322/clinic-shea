@@ -21531,7 +21531,7 @@ const PATHWAY_DOMAINS = [
  { id: "pedo", label: "Peds" },
  { id: "rpd", label: "RPD" },
  { id: "cd", label: "CD" },
- { id: "cross", label: "Cross-disciplinary" },
+ { id: "cross", label: "Multi" },
  { id: "repair", label: "Repair" },
  { id: "ref", label: "Ref" },
 ];
