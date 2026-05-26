@@ -10017,7 +10017,21 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
 )}
  {needsBP && (
  <Field label="BP">
- <TextInput value={fields.bp} onChange={v=>setField("bp",v)} placeholder="120/80" />
+ <TextInput value={fields.bp}
+ onChange={v => {
+ // Auto-insert "/" after the first 3 digits so the student
+ // only types the diastolic number. Strip non-digit/slash
+ // chars and collapse duplicate slashes (paranoia). The
+ // auto-insert only fires on ADDITION (not deletion) and
+ // only when no slash is present yet, so backspacing past
+ // the slash doesn't re-add it.
+ let cleaned = v.replace(/[^\d/]/g, "").replace(/\/+/g, "/");
+ if (cleaned.length > fields.bp.length && !cleaned.includes("/") && cleaned.length >= 3) {
+ cleaned = cleaned.slice(0, 3) + "/" + cleaned.slice(3);
+ }
+ setField("bp", cleaned);
+ }}
+ placeholder="120/80" />
  </Field>
 )}
  {needsBG && (
