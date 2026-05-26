@@ -9913,7 +9913,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  fontSize: "11px", lineHeight: 1.5,
  color: "var(--ink-soft)",
  }}>
- <em>Copy this script into the Axium <strong style={{ color: "var(--ink)" }}>Details</strong> field before sending to the lab.</em>
+ <em>Copy to <strong style={{ color: "var(--ink)" }}>‘Axium Details’</strong> field of lab script.</em>
  </div>
 )}
  {(procedureId === "1091" || procedureId === "1425") && (
