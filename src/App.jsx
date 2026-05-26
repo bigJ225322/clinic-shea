@@ -4010,7 +4010,11 @@ function renderTemplate(raw, f) {
  // - "the implant clinic" → left unchanged (only Chicago does STI/implant work)
  // - "the predoctoral clinic" / "UG Peds" → "Gershwin clinic" / "Gershwin"
  const userClinic = f.clinic.trim();
- const namedClinics = ["Gershwin", "the clinic", "Brahms", "Bach", "Mozart", "Pediatrics", "Chicago"];
+ // UIC composer-named predoctoral clinics + Pediatrics (own clinic) +
+ // Chicago (implants only). "the clinic" stays in the list as a no-op
+ // — if a future template defaults to that literal we still substitute
+ // correctly, but the dropdown no longer surfaces it as a picker option.
+ const namedClinics = ["Bach", "Brahms", "Gershwin", "Mozart", "Vivaldi", "the clinic", "Pediatrics", "Chicago"];
  if (userClinic) {
  const replacement = namedClinics.includes(userClinic)? `${userClinic} clinic`: userClinic;
  t = t.replace(/\bthe clinic\b/g, replacement);
@@ -10288,11 +10292,11 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <Field label="Clinic">
  <Select value={fields.clinic} onChange={v=>setField("clinic",v)}>
  <option value="">— Select a clinic —</option>
- <option value="Gershwin">Gershwin</option>
- <option value="the clinic">the clinic</option>
- <option value="Brahms">Brahms</option>
  <option value="Bach">Bach</option>
+ <option value="Brahms">Brahms</option>
+ <option value="Gershwin">Gershwin</option>
  <option value="Mozart">Mozart</option>
+ <option value="Vivaldi">Vivaldi</option>
  {showChicago && <option value="Chicago">Chicago</option>}
  </Select>
  </Field>
