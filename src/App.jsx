@@ -4340,8 +4340,14 @@ function renderTemplate(raw, f) {
  // Pattern A: separate sentence ("Removed existing failing … restoration.")
  t = t.replace(/Removed existing failing [^.]+? restoration\.\s*/gi, "");
  // Pattern B: joined with "and excavated decay" or "& excavated [X] decay"
+ // Note: first optional group needs the trailing space INSIDE the group
+ // — "(?:existing )?" not "(?:existing)?" — otherwise it would only match
+ // the non-existent "removed existingfailing" form. Current templates
+ // happen to use "Completely removed failing X restoration" or
+ // "Completely removed failing existing X restoration", both of which
+ // the fixed pattern matches.
  t = t.replace(
- /Completely removed (?:existing)?failing(?: existing)? [^.&]+? restoration\s+(?:and|&)\s+excavated\s+(?:[A-Z]+\s+)?decay/gi,
+ /Completely removed (?:existing )?failing(?: existing)? [^.&]+? restoration\s+(?:and|&)\s+excavated\s+(?:[A-Z]+\s+)?decay/gi,
  "Excavated decay"
 );
  }
@@ -4593,7 +4599,13 @@ function renderTemplate(raw, f) {
  // Peds templates use inline "allergies???" placeholder.
  t = t.replace(/allergies\?\?\?/, allergiesVal);
  }
- if (f.bp.trim()) {
+ // Blood pressure: drop " - blood pressure:" line entirely if no value,
+ // mirroring the temperature + blood-glucose handling above. Previously
+ // only the populate branch existed, so an unfilled BP would leave a
+ // dangling "- blood pressure:" stub in the rendered note.
+ if (!f.bp.trim()) {
+ t = t.replace(/^[ \t]*-[ \t]*blood pressure:[ \t]*\n/im, "");
+ } else {
  t = t.replace(/^([ \t]*-[ \t]*blood pressure:)[ \t]*$/im,
  `$1 ${f.bp.trim()}`);
  }
@@ -9540,7 +9552,10 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
  // the Dx changes while the checkbox is on.
  useEffect(() => {
  if (fields.perioCOEDxSendToNote && dx && applyToFindings) {
- const adaMatch = (dx.ada || "").match(/Type (I+V?|IV)/);
+ // Longest-first alternation so "IV" is matched before "I", and use \b
+ // to refuse trailing garbage. Previously /Type (I+V?|IV)/ would also
+ // accept invalid Roman numerals like "III" → "III", "IIIV", etc.
+ const adaMatch = (dx.ada || "").match(/Type (IV|III|II|I)\b/);
  const adaType = adaMatch? adaMatch[1]: "";
  if (dx.stage) {
  applyToFindings({
@@ -9995,7 +10010,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  // verbatim; if they type something, it overrides.
  const nvDefault = useMemo(() => {
  const m = rawTemplate.match(/(?:^|\n)[ \t]*-?[ \t]*NV:[ \t]*([^\n]*)/);
- return m? m[1].trim: "";
+ return m ? m[1].trim() : "";
  }, [rawTemplate]);
  const needsCC = useMemo(() => /(?:CC:|Chief complaint:)\s*“/.test(rawTemplate), [rawTemplate]);
  const needsNitrous = useMemo(() => /Titrated to[^.]*nitrous/i.test(rawTemplate), [rawTemplate]);
@@ -10003,7 +10018,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  // restoration prior to excavating decay. Surfaces a "Removed existing
  // restoration?" checkbox in the form; unchecking strips the phrase
  // (see renderTemplate step 6h-pre).
- const needsRemovedRestoration = useMemo(() => /Removed existing failing|Completely removed (?:existing)?failing/i.test(rawTemplate),
+ const needsRemovedRestoration = useMemo(() => /Removed existing failing|Completely removed (?:existing )?failing/i.test(rawTemplate),
  [rawTemplate]);
  const needsDentalHistory = useMemo(() => /dental history:/i.test(rawTemplate), [rawTemplate]);
  const needsLastDentist = useMemo(() => /last time at dentist:/i.test(rawTemplate), [rawTemplate]);
@@ -11741,7 +11756,7 @@ function parseEquipment(chunk) {
  for (const sub of segments.slice(1)) {
  // Find the colon that ends the qualifier and keep what follows.
  const colonIdx = sub.indexOf(":");
- const items = colonIdx >= 0? sub.slice(colonIdx + 1).trim: sub;
+ const items = colonIdx >= 0 ? sub.slice(colonIdx + 1).trim() : sub;
  for (const item of splitItems(items)) groups[groupKey].push(item);
  }
  }
