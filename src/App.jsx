@@ -12491,9 +12491,18 @@ function RVUs() {
  }, [search, sortBy, sortDir, activeCategory, swadeOnly]);
 
  // Per-category counts for the pill row (counts parent rows, not raw children).
+ // Includes an "all" key with the unique count across the entire catalog —
+ // can't sum the per-category counts because a code (e.g. D1351 sealants)
+ // appears in more than one category.
  const categoryCounts = useMemo(() => {
  const counts = {};
- for (const cat of RVU_CATEGORIES) {
+ const matchers = [
+...RVU_CATEGORIES,
+ // Synthetic "all" matcher: match every code so the same parent-row
+ // grouping + swadeOnly filter applies.
+ { id: "all", match: () => true },
+ ];
+ for (const cat of matchers) {
  let catBase = RVU_DATA.filter(r => cat.match(r.code));
  // Build parent rows for this category (same logic as main rows useMemo).
  const parentsHere = new Set([
@@ -12653,6 +12662,41 @@ function RVUs() {
  display: "flex", flexWrap: "wrap", gap: "6px",
  marginBottom: "16px",
  }}>
+ {/* "All" pill — clears the category filter and shows every code
+ in the catalog. Same toggle behavior as the other pills: click
+ again to deselect (returns to the empty starting state). When
+ active, the row filter falls through to "true" for every code
+ because RVU_CATEGORIES.find(c => c.id === "all") returns
+ undefined (the existing `cat ? cat.match(r.code) : true`
+ branch already treats undefined as "no filter"). */}
+ {(() => {
+ const isActive = activeCategory === "all";
+ const allCount = categoryCounts.all || 0;
+ return (
+ <button
+ onClick={() => setActiveCategory(prev => prev === "all" ? null : "all")}
+ title={isActive ? "Click again to clear filter" : "Show all codes"}
+ style={{
+ fontSize: "11px",
+ padding: "5px 11px",
+ borderRadius: "999px",
+ fontFamily: "'Geist', sans-serif",
+ fontWeight: isActive ? 500 : 400,
+ cursor: "pointer",
+ border: `1px solid ${isActive ? "var(--accent)" : "var(--rule)"}`,
+ background: isActive ? "var(--accent)" : "var(--paper)",
+ color: isActive ? "var(--paper)" : "var(--ink-soft)",
+ letterSpacing: "0.02em",
+ transition: "all 140ms ease",
+ }}>
+ All
+ <span style={{
+ marginLeft: "6px", opacity: 0.7,
+ fontVariantNumeric: "tabular-nums",
+ }}>{allCount}</span>
+ </button>
+ );
+ })()}
  {RVU_CATEGORIES.map(cat => {
  const isActive = activeCategory === cat.id;
  const count = categoryCounts[cat.id];
