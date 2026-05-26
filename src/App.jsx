@@ -104,19 +104,19 @@ const TEMPLATES = {
  // These are written to the Axium Labs "Details" field, not the chart note.
  // Tooth + shade substitution works for single-tooth cases. Bridge spans and
  // RPD designs use [bracket] placeholders — students fill those in manually.
- "lab-pfm": "Please pour impression & fabricate PFM crown for [tooth] using high-noble alloy.\nOcclusal and interproximal contacts should be in porcelain.\n1-2 mm metal collar on the lingual margin, no metal collar on the buccal margin.\nShade [A2].\nThank you.",
- "lab-implant-cast": "Please pour final impression & create soft tissue cast for implant-supported crown, [tooth].\nImplant replica is provided for [Straumann / Nobel / Dentsply EV] Implant diameter [Implant Diameter] mm.\nPlease return working cast for mount.\nThank you.",
- "lab-abutment": "Please fabricate an Atlantis custom abutment for [tooth] ([Straumann / Nobel / Dentsply EV] Implant, [Implant Diameter] mm diameter).\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown]\nThank you.",
- "lab-implant-crown": "Please fabricate all-ceramic emax CAD/CAM crown (lithium disilicate) for site [tooth] ([Straumann / Nobel / Dentsply EV] [Implant Diameter] mm): Shade LT [A2]. Please crystallize and return it for delivery. Thank you.",
+ "lab-pfm": "Please pour impression & fabricate PFM crown for #[tooth] using high-noble alloy.\nOcclusal and interproximal contacts should be in porcelain.\n1-2 mm metal collar on the lingual margin, no metal collar on the buccal margin.\nShade [A2].\nThank you.",
+ "lab-implant-cast": "Please pour final impression & create soft tissue cast for implant-supported crown, #[tooth].\nImplant replica is provided for [Straumann / Nobel / Dentsply EV] Implant diameter [Implant Diameter] mm.\nPlease return working cast for mount.\nThank you.",
+ "lab-abutment": "Please fabricate an Atlantis custom abutment for #[tooth] ([Straumann / Nobel / Dentsply EV] Implant, [Implant Diameter] mm diameter).\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown]\nThank you.",
+ "lab-implant-crown": "Please fabricate all-ceramic emax CAD/CAM crown (lithium disilicate) for site #[tooth] ([Straumann / Nobel / Dentsply EV] [Implant Diameter] mm): Shade [LT / MT / HT] [A2]. Please crystallize and return it for delivery. Thank you.",
  "lab-bridge-cast": "Please pour impression for PFM bridge from [##-##].\nPlease section dies & return working cast for mounting.\nThank you.",
  "lab-bridge": "Please fabricate PFM bridge from [##-##] using high-noble alloy.\nOcclusal and interproximal contacts should be in porcelain.\n2-3 mm metal collar on the lingual margins, no metal collar on the buccal margins.\nModified ridge lap pontic design.\nPlease return metal framework for try-in.\nThank you.",
  "lab-porcelain": "Please apply porcelain to metal framework for PFM bridge from [##-##].\nShade [A2].\nThank you.",
- "lab-og": "Please fabricate maxillary full arch flat plane occlusal guard. Please process in dual layer acrylic with VDO raised to create at least 1 mm space measured between the tips of the canines & all posterior teeth during eccentric movements (pin +3 mm). Please achieve all of the following:\n(a) point-to-flat-plane contact in centric (buccal cusps & incisal edges of mandibular teeth)\n(b) 1-2 mm of freedom in centric\n(c) minimal incisal guidance, but enough to disclude posterior teeth in protrusion\n(d) canine guidance during lateral excursion\nPlease return for delivery. Thank you.",
+ "lab-og": "Please fabricate [maxillary / mandibular] full arch flat plane occlusal guard. Please process in dual layer acrylic with VDO raised to create at least 1 mm space measured between the tips of the canines & all posterior teeth during eccentric movements (pin +3 mm). Please achieve all of the following:\n(a) point-to-flat-plane contact in centric (buccal cusps & incisal edges of opposing teeth)\n(b) 1-2 mm of freedom in centric\n(c) minimal incisal guidance, but enough to disclude posterior teeth in protrusion\n(d) canine guidance during lateral excursion\nPlease return for delivery. Thank you.",
  "lab-ff": "F/F: Please festoon, pack, and process maxillary & mandibular complete dentures. Gingival shade: [gingival shade]. Please return for delivery. Thank you.",
  "lab-ii-denture": "F/F: Please fabricate maxillary and mandibular interim complete dentures. Use existing teeth [Reference teeth] as reference. [Teeth to extract] will be extracted. Please set posterior teeth over the residual ridge and do not increase VDO. Please use Trubyte Classic anterior tooth mold [Anterior tooth mold] and posterior teeth mold [Posterior tooth mold] 10°. Please use tooth shade [Trubyte shade] for all teeth. Please use acrylic shade: 50% OR (original) + 50% DK (dark). Please set teeth, festoon, process & polish, and return for delivery. Thank you.",
  "lab-reline": "F/[Arch]: Please reline the denture with heat-cured acrylic resin, shade L199-OR. Please add the posterior palatal seal as indicated on the impression. Please polish and return for delivery. Thank you.",
- "lab-rpd": "Please fabricate [mandibular / maxillary] RPD framework using Vitallium alloy.\nMajor connector: [lingual bar / palatal plate].\nRest seats: [Rest seats].\nGuide planes: [Guide planes].\nClasps:\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [Abutment 1]\n- 18 gauge wrought wire reciprocal arm on lingual of [Abutment 1]\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [Abutment 2]\n- 18 gauge wrought wire reciprocal arm on lingual of [Abutment 2]\nTissue stops marked on cast.\nRetentive loops on areas: [Retentive loop areas].\nReturn framework for try-in.\nThank you.",
- "lab-survey-crown": "Please fabricate PFM survey crown(s) for [tooth] to be fitted with [mandibular / maxillary] RPD framework. Metal: high-noble alloy. Shade [A2].\n\nCrown design — integrate the following surveyed features (working cast tripoded; tripod marks and path of insertion marked in red):\n\n- Metal occlusal thickness: 0.5-1.0 mm at the rest seat area (total tooth reduction 2.5-3.0 mm there; 1.5 mm elsewhere)\n- Rest seat: [mesial / distal / cingulum] — 1.5 mm deep × 2.5 mm wide, floor angled toward the long axis of the tooth (positive seat)\n- Guide plane: [mesial / distal] proximal surface flat and parallel to the RPD path of insertion (per tripod marks on the enclosed working cast)\n- Undercut: [0.01\" cast clasp / 0.02\" wrought wire] at [mid-buccal / MB / DB / ML / DL], in the gingival 1/3 (clasp tip engages the infrabulge area from the opposite direction the rest sits)\n- HOC: at the junction of the middle 1/3 and the gingival 1/3 of the [buccal / lingual] surface (clasp origin sits in the suprabulge area; clasp tip engages the infrabulge below this line)\n\nPlease send the full-contour wax-up back BEFORE final firing for surveyor verification. Once approved, complete the porcelain application and return for cementation.\n\nEnclosed: final impression, opposing impression, bite registration in MI, tripoded diagnostic cast (as reference for path of insertion).\n\nThank you.",
+ "lab-rpd": "Please fabricate [mandibular / maxillary] RPD framework using Vitallium alloy.\nMajor connector: [lingual bar / palatal plate].\nRest seats: [Rest seats].\nGuide planes: [Guide planes].\nClasps:\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut #[Abutment 1]\n- 18 gauge wrought wire reciprocal arm on lingual of #[Abutment 1]\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut #[Abutment 2]\n- 18 gauge wrought wire reciprocal arm on lingual of #[Abutment 2]\nTissue stops marked on cast.\nRetentive loops on areas: [Retentive loop areas].\nReturn framework for try-in.\nThank you.",
+ "lab-survey-crown": "Please fabricate PFM survey crown(s) for #[tooth] to be fitted with [mandibular / maxillary] RPD framework. Metal: high-noble alloy. Shade [A2].\n\nCrown design — integrate the following surveyed features (working cast tripoded; tripod marks and path of insertion marked in red):\n\n- Metal occlusal thickness: 0.5-1.0 mm at the rest seat area (total tooth reduction 2.5-3.0 mm there; 1.5 mm elsewhere)\n- Rest seat: [mesial / distal / cingulum] — 1.5 mm deep × 2.5 mm wide, floor angled toward the long axis of the tooth (positive seat)\n- Guide plane: [mesial / distal] proximal surface flat and parallel to the RPD path of insertion (per tripod marks on the enclosed working cast)\n- Undercut: [0.01\" cast clasp / 0.02\" wrought wire] at [mid-buccal / MB / DB / ML / DL], in the gingival 1/3 (clasp tip engages the infrabulge area from the opposite direction the rest sits)\n- HOC: at the junction of the middle 1/3 and the gingival 1/3 of the [buccal / lingual] surface (clasp origin sits in the suprabulge area; clasp tip engages the infrabulge below this line)\n\nPlease send the full-contour wax-up back BEFORE final firing for surveyor verification. Once approved, complete the porcelain application and return for cementation.\n\nEnclosed: final impression, opposing impression, bite registration in MI, tripoded diagnostic cast (as reference for path of insertion).\n\nThank you.",
  "lab-ii-rpd": "Please fabricate [mandibular / maxillary] interim immediate acrylic removable partial denture. Use existing teeth [Reference teeth] as a reference for occlusal plane. [Teeth to extract] will be extracted. Please set posterior teeth over the residual ridge and do not increase VDO. Please place wrought wire clasps on [Clasp teeth]. Please use Trubyte Classic posterior tooth mold [Posterior tooth mold] 10°, tooth shade [Trubyte shade]. Please use acrylic shade: 50% OR (original) + 50% DK (dark). Please set teeth, festoon, process & polish, and return for delivery.\nThank you.",
 };
 
@@ -3177,7 +3177,7 @@ const REF_DATA = {
  blocks: [
  { type: "script",
  caption: "Lab Rx",
- body: "Please fabricate all-ceramic emax CAD/CAM crown (lithium disilicate) for site #[tooth] ([Straumann / Nobel / Dentsply EV] [Implant Diameter] mm): Shade LT [A2]. Please crystallize and return it for delivery. Thank you.",
+ body: "Please fabricate all-ceramic emax CAD/CAM crown (lithium disilicate) for site #[tooth] ([Straumann / Nobel / Dentsply EV] [Implant Diameter] mm): Shade [LT / MT / HT] [A2]. Please crystallize and return it for delivery. Thank you.",
  note: "LT (low translucency) is the default for posterior cement-retained crowns; HT is selected for esthetic anteriors." },
  { type: "cards", caption: "What to send with this Rx", cards: [
  { title: "Supplements", rows: [
@@ -3259,7 +3259,7 @@ const REF_DATA = {
  blocks: [
  { type: "script",
  caption: "Lab Rx",
- body: "Please fabricate [maxillary / mandibular] full arch flat plane occlusal guard. Please process in dual layer acrylic with VDO raised to create at least 1 mm space measured between the tips of the canines & all posterior teeth during eccentric movements (pin +3 mm). Please achieve all of the following:\n(a) point-to-flat-plane contact in centric (buccal cusps & incisal edges of mandibular teeth)\n(b) 1-2 mm of freedom in centric\n(c) minimal incisal guidance, but enough to disclude posterior teeth in protrusion\n(d) canine guidance during lateral excursion\nPlease return for delivery. Thank you.",
+ body: "Please fabricate [maxillary / mandibular] full arch flat plane occlusal guard. Please process in dual layer acrylic with VDO raised to create at least 1 mm space measured between the tips of the canines & all posterior teeth during eccentric movements (pin +3 mm). Please achieve all of the following:\n(a) point-to-flat-plane contact in centric (buccal cusps & incisal edges of opposing teeth)\n(b) 1-2 mm of freedom in centric\n(c) minimal incisal guidance, but enough to disclude posterior teeth in protrusion\n(d) canine guidance during lateral excursion\nPlease return for delivery. Thank you.",
  note: "Maxillary is the default arch unless the patient has a prognathic occlusion or severely worn lower anteriors." },
  { type: "cards", caption: "What to send with this Rx", cards: [
  { title: "Supplements", rows: [
@@ -3320,7 +3320,7 @@ const REF_DATA = {
  { type: "script",
  caption: "Lab Rx",
  body: "F/[Arch]: Please reline the denture with heat-cured acrylic resin, shade L199-OR. Please add the posterior palatal seal as indicated on the impression. Please polish and return for delivery. Thank you.",
- note: "F/M = maxillary, F/D = mandibular. The patient is dentureless during the turnaround — provide an interim immediate denture or schedule chairside reline." },
+ note: "F/U = full upper, F/L = full lower, F/F = both arches. The patient is dentureless during the turnaround — provide an interim immediate denture or schedule chairside reline." },
  { type: "cards", caption: "What to send with this Rx", cards: [
  { title: "Supplements", rows: [
  ["Denture with reline impression", "intaglio relieved 0.5 mm, light-body PVS impression taken in CR"],
@@ -3338,7 +3338,7 @@ const REF_DATA = {
  blocks: [
  { type: "script",
  caption: "Lab Rx",
- body: "Please fabricate [mandibular / maxillary] RPD framework using Vitallium alloy.\nMajor connector: [lingual bar / palatal plate].\nRest seats: [Rest seats].\nGuide planes: [Guide planes].\nClasps:\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [Abutment 1]\n- 18 gauge wrought wire reciprocal arm on lingual of [Abutment 1]\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [Abutment 2]\n- 18 gauge wrought wire reciprocal arm on lingual of [Abutment 2]\nTissue stops marked on cast.\nRetentive loops on areas: [Retentive loop areas].\nReturn framework for try-in.\nThank you.",
+ body: "Please fabricate [mandibular / maxillary] RPD framework using Vitallium alloy.\nMajor connector: [lingual bar / palatal plate].\nRest seats: [Rest seats].\nGuide planes: [Guide planes].\nClasps:\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut #[Abutment 1]\n- 18 gauge wrought wire reciprocal arm on lingual of #[Abutment 1]\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut #[Abutment 2]\n- 18 gauge wrought wire reciprocal arm on lingual of #[Abutment 2]\nTissue stops marked on cast.\nRetentive loops on areas: [Retentive loop areas].\nReturn framework for try-in.\nThank you.",
  note: "This is the manual fallback. For a case-specific Rx generated from your survey + design, use the RPD Design Helper — it produces a script with your exact rest seats, clasp types, and undercut measurements." },
  { type: "cards", caption: "What to send with this Rx", cards: [
  { title: "Supplements", rows: [
@@ -5624,6 +5624,7 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  const DISPLAY_LABEL = {
  "Straumann / Nobel / Dentsply EV": "Implant brand",
  "mandibular / maxillary": "Arch",
+ "maxillary / mandibular": "Arch",
  "lingual bar / palatal plate": "Major connector",
  "titanium / gold-hue / zirconia": "Abutment material",
  "cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown": "Planned crown",
@@ -5632,6 +5633,9 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  "0.01\" cast clasp / 0.02\" wrought wire": "Clasp type / undercut depth",
  "mid-buccal / MB / DB / ML / DL": "Undercut location",
  "buccal / lingual": "HOC surface",
+ "LT / MT / HT": "Translucency",
+ "Abutment 1": "Abutment tooth (mesial / 1st)",
+ "Abutment 2": "Abutment tooth (distal / 2nd)",
  "##-##": "Bridge span",
  "A2": "Shade",
  "gingival shade": "Gingival shade",
@@ -5792,9 +5796,11 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  <option value="">— select Trubyte shade —</option>
  {/* Trubyte Bioform / Portrait IPN denture-tooth shades. The
  most common in UIC clinics (per the IPD example script)
- is 81. Numeric values listed lightest to darkest within
- the Bioform line; Portrait IPN shares the numbering. */}
- {["59","62","65","66","67","69","77","81","91","92","93","102"]
+ is 81. Listed in catalog numeric order; lightest at the
+ top of each series. Bioform 59-77 = traditional lighter
+ series; 81-93 = mid-range; 102-105 = darker series. */}
+ {["59","60","62","64","65","66","67","69","70","77","78","79","80",
+ "81","82","83","86","91","92","93","102","103","104","105"]
  .map(s => <option key={s} value={s}>{s}</option>)}
  </select>
  )}
