@@ -16997,9 +16997,12 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  })
 .join("; ");
 
- // ─── Abutment preparations ──
- // Maps to Lab 4 form elements #1 (guide planes) + #3 (undercut
- // modification method) + #4 (HOC adjustments). One entry per abutment.
+ // ─── Abutment preparations (single consolidated field per the UIC
+ // paper form). The paper form has ONE box labelled
+ // "Abutment preparations, guide planes, recontouring, restorations:"
+ // — so guide planes, undercut modifications (composite / survey
+ // crown / enameloplasty), HOC adjustments, axial recontouring, and
+ // esthetic-driven exceptions all collapse into one line per abutment.
  const HOC_ADJUST_LABELS = {
  "lower-DB": "lower DB HOC",
  "lower-MB": "lower MB HOC",
@@ -17012,35 +17015,32 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  "composite": "composite addition",
  "survey-crown": "survey crown",
  };
+ const ESTHETIC_LABELS = {
+ "no-buccal-clasp": "no buccal clasp (esthetic)",
+ "no-visible-metal": "no visible metal (esthetic)",
+ };
  const abutmentPrepLines = (result.abutmentDesigns || [])
 .map(a => {
  const parts = [];
  if (a.guidePlane) parts.push(`${a.guidePlane.surface[0].toUpperCase()} guide plane`);
  const attrs = a.attrs || {};
- // Modification: engine-flagged survey crown OR explicit operator pick.
  if (a.surveyCrown?.indicated) {
  parts.push("survey crown");
  } else if (attrs.modification && attrs.modification !== "auto" && attrs.modification !== "none" && MODIFICATION_LABELS[attrs.modification]) {
  parts.push(MODIFICATION_LABELS[attrs.modification]);
  }
  if (a.crownLengthening?.indicated) parts.push("crown lengthening");
- // HOC adjustment per Lab 4 form element #4.
  if (attrs.hocAdjustment && attrs.hocAdjustment !== "none" && HOC_ADJUST_LABELS[attrs.hocAdjustment]) {
  parts.push(HOC_ADJUST_LABELS[attrs.hocAdjustment]);
  }
  if (attrs.recontour) parts.push(`axial recontouring (${attrs.recontour})`);
+ if (attrs.esthetic && attrs.esthetic !== "none" && ESTHETIC_LABELS[attrs.esthetic]) {
+ parts.push(ESTHETIC_LABELS[attrs.esthetic]);
+ }
  return parts.length? `#${a.tooth} ${parts.join(", ")}`: null;
  })
 .filter(Boolean)
 .join("; ");
-
- // ─── Minor connectors (Lab 4 form element #6) ──
- // Each clasp assembly + indirect retainer has a minor connector that
- // joins it to the major connector. Enumerate per the form convention.
- const minorConnectorList = [
-...(result.abutmentDesigns || []).map(a => `#${a.tooth} (clasp assembly)`),
-...(result.indirectRetainers || []).map(r => `#${r.tooth} (indirect retainer)`),
- ].join(", ");
 
  // ─── Rationale lines ──
  // Two modes:
@@ -17308,91 +17308,31 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  Partial Denture Design
  </div>
 
+ {/* Layout mirrors the actual UIC paper form field-by-field:
+ Framework metal → Major connector → Abutment teeth →
+ Abutment preparations (consolidated) → Direct retainers table →
+ Indirect retainers → Facings/pontics/tube teeth → Retention webbing.
+ Path of insertion, HOC adjustments, undercut modifications, and
+ esthetic exceptions all fold into the "Abutment preparations" line
+ because that's how the paper form is laid out. */}
  {fieldRow("Framework metal", result.framework.material)}
+ {fieldRow("Major connector", `${result.majorConnector.type}${result.majorConnector.width? ` (${result.majorConnector.width})`: ""}`)}
  {fieldRow("Abutment teeth", (result.abutmentDesigns || []).map(a => `#${a.tooth}`).join(", "))}
- {fieldRow("Path of insertion", (() => {
- const k = result.kennedy?.class;
- if (k == null) return "—";
- const tiltHint = k === "I" || k === "II"? " (anterior tilt for distal undercut engagement)"
- : k === "III" || k === "IV"? " (level — single-level POI)": "";
- return `Per surveyed cast${tiltHint}`;
- })())}
 
- {/* Lab 4 Element 1 — Guide planes (with POI reference) */}
- <div style={{ marginBottom: "10px", marginTop: "14px" }}>
- <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px", color: "var(--accent)" }}>1 · Guide planes</div>
- <div style={{ border: "1px solid var(--ink)", padding: "6px 8px", minHeight: "28px", fontSize: "11px" }}>
- {(result.abutmentDesigns || []).filter(a => a.guidePlane).map(a => `#${a.tooth} ${a.guidePlane.surface}${a.guidePlane.length? ` (${a.guidePlane.length})`: ""}`).join("; ") || "—"}
- </div>
- </div>
-
- {/* Lab 4 Element 3 — Undercuts + modification method */}
- <div style={{ marginBottom: "10px" }}>
- <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px", color: "var(--accent)" }}>3 · Undercuts + modification method</div>
- <div style={{ border: "1px solid var(--ink)", padding: "6px 8px", minHeight: "28px", fontSize: "11px" }}>
- {(() => {
- const lines = (result.abutmentDesigns || []).map(a => {
- const attrs = a.attrs || {};
- const ucBits = [];
- const ucLoc = a.effectiveUndercutLocation || attrs.undercutLocation;
- if (ucLoc && ucLoc !== "none") ucBits.push(`${attrs.undercutDepth || 0.01}" ${ucLoc}`);
- if (a.surveyCrown?.indicated) ucBits.push("survey crown");
- else if (attrs.modification && attrs.modification !== "auto" && attrs.modification !== "none") {
- const lab = MODIFICATION_LABELS[attrs.modification];
- if (lab) ucBits.push(lab);
- }
- return ucBits.length? `#${a.tooth} ${ucBits.join(", ")}`: null;
- }).filter(Boolean);
- return lines.join("; ") || "—";
- })()}
- </div>
- </div>
-
- {/* Lab 4 Element 4 — HOC adjustments */}
- <div style={{ marginBottom: "10px" }}>
- <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px", color: "var(--accent)" }}>4 · HOC adjustments</div>
- <div style={{ border: "1px solid var(--ink)", padding: "6px 8px", minHeight: "28px", fontSize: "11px" }}>
- {(() => {
- const lines = (result.abutmentDesigns || []).map(a => {
- const attrs = a.attrs || {};
- if (attrs.hocAdjustment && attrs.hocAdjustment !== "none" && HOC_ADJUST_LABELS[attrs.hocAdjustment]) {
- return `#${a.tooth} ${HOC_ADJUST_LABELS[attrs.hocAdjustment]}`;
- }
- return null;
- }).filter(Boolean);
- return lines.join("; ") || "—";
- })()}
- </div>
- </div>
-
- {/* Esthetic constraints (Dr. Shahin's Design Case convention) */}
- {(() => {
- const ESTHETIC_LABELS = {
- "no-buccal-clasp": "no buccal clasp (high smile line)",
- "no-visible-metal": "no visible metal",
- };
- const lines = (result.abutmentDesigns || []).map(a => {
- const attrs = a.attrs || {};
- if (attrs.esthetic && attrs.esthetic !== "none" && ESTHETIC_LABELS[attrs.esthetic]) {
- return `#${a.tooth} ${ESTHETIC_LABELS[attrs.esthetic]}`;
- }
- return null;
- }).filter(Boolean);
- if (lines.length === 0) return null;
- return (
- <div style={{ marginBottom: "10px" }}>
- <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px", color: "var(--accent)" }}>Esthetic constraints</div>
- <div style={{ border: "1px solid var(--ink)", padding: "6px 8px", minHeight: "28px", fontSize: "11px" }}>{lines.join("; ")}</div>
- </div>
-);
- })()}
-
- {/* Lab 4 Element 2 — Rest seats (and Element 5 — Clasps) in the
- same per-tooth table; clean UIC convention is one row per
- abutment with both shown. The "Rest" column carries element 2,
- the "Clasp" column carries element 5. */}
  <div style={{ marginBottom: "12px" }}>
- <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px", color: "var(--accent)" }}>2 + 5 · Rest seats + Clasps (Direct retainers)</div>
+ <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px" }}>Abutment preparations, guide planes, recontouring, restorations:</div>
+ <div style={{
+ border: "1px solid var(--ink)", padding: "6px 8px",
+ minHeight: "36px", fontSize: "11px", whiteSpace: "pre-wrap",
+ }}>
+ {abutmentPrepLines || ""}
+ </div>
+ </div>
+
+ {/* Direct retainers table — the form has one row per abutment with
+ columns: tooth # / clasp / rest / retention / bracing. */}
+ <div style={{ marginBottom: "12px" }}>
+ <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px" }}>Direct retainers:</div>
  <table style={{
  width: "100%", borderCollapse: "collapse", fontSize: "11px",
  border: "1px solid var(--ink)",
@@ -17431,17 +17371,9 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  </table>
  </div>
 
- {fieldRow("2 (cont) · Indirect retainers, additional rests", indirectList)}
- {fieldRow("6 · Minor connectors", minorConnectorList)}
- {fieldRow("7 · Major connector", `${result.majorConnector.type}${result.majorConnector.width? ` (${result.majorConnector.width})`: ""}`)}
-
- {/* Framework bases (Lattice/Mesh/Tube Tooth/Facings) — not one of
- the 7 enumerated elements but part of the framework drawn on the
- cast; lives below the element list per UIC convention. */}
- <div style={{ marginTop: "16px", paddingTop: "8px", borderTop: "1px dotted var(--rule)" }}>
+ {fieldRow("Indirect retainers, additional rests", indirectList)}
  {fieldRow("Facings, metal pontics, tube teeth", facingsList)}
- {fieldRow("Retention webbing (lattice / mesh)", webbingList)}
- </div>
+ {fieldRow("Retention webbing", webbingList)}
  </div>
 
  {/* Rationale column */}
