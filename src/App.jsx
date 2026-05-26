@@ -25430,6 +25430,7 @@ const PATHWAYS = [
  "Functional CL = full-thickness flap + osseous recontouring. Reduce buccal + interproximal + lingual bone to establish 3 mm clearance from new crown margin to bone crest. Healing 6-8 weeks for crown prep; longer (3-6 months) before definitive impressioning if the patient is a smoker or healing slowly.",
  "Pre-surgical consult between restorative + perio: agree on the planned crown margin location BEFORE surgery. Marking the planned margin with a perio probe + surgical pen on the tooth before flap reflection saves rework.",
  "Post-op management: ibuprofen 600 mg q6h × 48 hr, CHX rinse BID × 14 days, soft diet 1 week, suture removal 7-10 days. Warn about gingival recession risk — interproximal papilla often doesn't return to its original height.",
+ "CDT codes (CDT 2024): D4249 (clinical crown lengthening — hard tissue) for functional CL with bone removal — per tooth. Esthetic CL with gingivectomy only bills D4210 (gingivectomy or gingivoplasty — 4+ contiguous teeth per quadrant) or D4211 (gingivectomy — 1-3 teeth per quadrant). If a soft-tissue graft is added to the CL for thin biotype, add D4277 (free gingival graft, first tooth) or D4273 (connective tissue graft, first tooth). Restorative codes for the final crown bill separately on a different visit (D2740/D2750/etc.).",
  ],
  phases: [
  { label: "Pre-surgical planning", count: 2 },
@@ -25452,6 +25453,7 @@ const PATHWAYS = [
  "Donor site planning: palatal vault between #4 and #14, at least 2 mm from gingival margin and 2 mm from greater palatine artery (which exits the greater palatine foramen and runs anteriorly). Use the patient's anatomy + a periodontal probe to map the artery before incision.",
  "Suturing technique critical: sling sutures on the recipient site to coronally advance + immobilize the graft. Periosteal sutures on the FGG to prevent slippage. Failure to immobilize = graft sloughs in 48 hours.",
  "Post-op: NO mechanical hygiene on the surgical site for 14 days — CHX rinse only. Sutures out at 10-14 days. Final esthetic + functional result evaluated at 6 months; full maturation 1 year.",
+ "CDT codes (CDT 2024): D4277 (Free soft tissue graft procedure — first tooth, implant, or edentulous tooth position in graft) — FGG. D4278 (Free soft tissue graft procedure — each additional contiguous tooth, implant, or edentulous tooth position in same graft site). D4273 (Autogenous connective tissue graft procedure — first tooth, implant, or edentulous tooth position) — CTG. D4283 (Connective tissue graft procedure — each additional contiguous tooth, implant, or edentulous tooth position). D4275 (Non-autogenous CTG, e.g., AlloDerm). Pre-surgical scaling (D4341/D4342) and post-op evaluation (D0170) bill separately.",
  ],
  phases: [
  { label: "Indication & technique choice", count: 2 },
