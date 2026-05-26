@@ -5564,19 +5564,17 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  return (
  <>
  <Hairline />
- <div style={{ marginBottom: "12px" }}>
- <div style={{ fontSize: "10px", fontWeight: 600, marginBottom: "8px",
- textTransform: "uppercase", letterSpacing: "0.06em",
- color: "var(--ink-soft)" }}>
- Customize this Rx ({placeholders.length} {placeholders.length === 1? "field": "fields"})
- </div>
- {/* Single column so the picker order matches the placeholder's order
- of appearance in the rendered note below — students fill the form
- top-to-bottom and the substitution lands in the same top-to-bottom
- sequence in the Rx text. */}
- <div style={{ display: "grid", gap: "10px", gridTemplateColumns: "1fr" }}>
+ {/* Compact, header-less stack — each row is a small label above its
+ picker, in the same source-appearance order as the placeholders
+ below. No section title (the rendered Rx underneath makes the
+ purpose obvious). */}
+ <div style={{ display: "flex", flexDirection: "column", gap: "6px",
+ marginBottom: "10px" }}>
  {placeholders.map(p => (
- <Field key={p.key} label={p.key}>
+ <div key={p.key} style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+ <label style={{ fontSize: "10px", color: "var(--ink-faint)",
+ letterSpacing: "0.04em", textTransform: "uppercase",
+ fontFamily: "'Geist', sans-serif" }}>{p.key}</label>
  {p.type === "dropdown" && (
  <select value={values[p.key] || ""}
  onChange={e => onChange(p.key, e.target.value)}
@@ -5680,9 +5678,8 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  onChange={v => onChange(p.key, v)}
  placeholder={p.key} />
  )}
- </Field>
- ))}
  </div>
+ ))}
  </div>
  </>
  );
