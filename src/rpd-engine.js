@@ -68,12 +68,24 @@ const RPD_ABUTMENT_DEFAULTS = {
  distalRestPossible: true,
  occlusalInterference: false, // blocks rest seat at mesial
  existingRestorations: "none", // none | small | extensive
+ existingCrown: "none", // none | compatible | obstructing — pre-existing
+ // crown on the tooth. "obstructing" means the crown can't host an RPD
+ // feature in porcelain and needs to be re-done as a survey crown.
  enamelIntegrityAtRestSeat: "sufficient",
  undercutLocation: "mid-buccal", // mid-buccal | mesio-buccal | disto-buccal | none
  undercutDepth: 0.01, // inches
  attachedGingivaAdequate: true,
  highFrenum: false, // in I-bar approach path
  softTissueUndercut: "none", // none | leq-1mm | gt-1mm
+ // Lab 4 form element #3 — undercut/contour modification method. "auto"
+ // lets the engine pick based on the rest of the attrs (extreme tilt,
+ // short crown, existing crown obstructing, etc); the other values are
+ // explicit overrides for when the operator has already decided.
+ modification: "auto", // auto | none | enameloplasty | composite | survey-crown
+ // Lab 4 form element #4 — HOC adjustments needed at this abutment.
+ // "none" by default; specify which surface needs lowering when the
+ // surveyed HOC sits too coronally for the planned clasp tip.
+ hocAdjustment: "none", // none | lower-DB | lower-MB | lower-DL | lower-ML | general
 };
 
 // Verbatim rationale strings (from NotebookLM-sourced materials).
@@ -1597,6 +1609,19 @@ function computeSideToward(tooth, span, arch) {
  * survey crown. Returns a SurveyCrownSpec object when indicated, or null.
  */
 function evaluateSurveyCrown(attrs) {
+ // Explicit operator override takes precedence over the auto-detect.
+ if (attrs.modification && attrs.modification !== "auto") {
+ if (attrs.modification === "survey-crown") {
+ return {
+ indicated: true,
+ reason: "operator-specified — survey crown planned for this abutment",
+ note: "PFM survey crown. Total of 2.5–3.0mm occlusal tooth reduction at the rest seat area; 0.5–1mm for metal thickness. Rest seats and guide planes are completed in METAL, not porcelain. Survey the wax-up on the surveyor BEFORE final firing to verify HOC, axial undercut, ideal guide plane, and positive rest seat.",
+ };
+ }
+ // Operator selected enameloplasty / composite / none — survey crown
+ // explicitly not the chosen modification.
+ return null;
+ }
  const needsSurveyCrown = (attrs.enamelIntegrityAtRestSeat === "insufficient" ||
  attrs.existingRestorations === "extensive" ||
  attrs.tilt === "extreme" ||
@@ -1610,7 +1635,7 @@ function evaluateSurveyCrown(attrs) {
  return {
  indicated: true,
  reason,
- note: "PFM survey crown required. Total of 2.5–3.0mm occlusal tooth reduction at the rest seat area; 0.5–1mm for metal thickness. Rest seats and guide planes must be completed in METAL, not porcelain. Use surveyor BEFORE CEMENTATION to verify HOC, axial undercuts, ideal guide planes, and positive rest seats.",
+ note: "PFM survey crown. Total of 2.5–3.0mm occlusal tooth reduction at the rest seat area; 0.5–1mm for metal thickness. Rest seats and guide planes are completed in METAL, not porcelain. Survey the wax-up on the surveyor BEFORE final firing to verify HOC, axial undercut, ideal guide plane, and positive rest seat.",
  };
 }
 

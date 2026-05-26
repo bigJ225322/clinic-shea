@@ -16971,18 +16971,49 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
 .join("; ");
 
  // ─── Abutment preparations ──
+ // Maps to Lab 4 form elements #1 (guide planes) + #3 (undercut
+ // modification method) + #4 (HOC adjustments). One entry per abutment.
+ const HOC_ADJUST_LABELS = {
+ "lower-DB": "lower DB HOC",
+ "lower-MB": "lower MB HOC",
+ "lower-DL": "lower DL HOC",
+ "lower-ML": "lower ML HOC",
+ "general": "general axial re-contour",
+ };
+ const MODIFICATION_LABELS = {
+ "enameloplasty": "enameloplasty",
+ "composite": "composite addition",
+ "survey-crown": "survey crown",
+ };
  const abutmentPrepLines = (result.abutmentDesigns || [])
 .map(a => {
  const parts = [];
  if (a.guidePlane) parts.push(`${a.guidePlane.surface[0].toUpperCase()} guide plane`);
- if (a.surveyCrown?.indicated) parts.push("survey crown");
- if (a.crownLengthening?.indicated) parts.push("crown lengthening");
  const attrs = a.attrs || {};
+ // Modification: engine-flagged survey crown OR explicit operator pick.
+ if (a.surveyCrown?.indicated) {
+ parts.push("survey crown");
+ } else if (attrs.modification && attrs.modification !== "auto" && attrs.modification !== "none" && MODIFICATION_LABELS[attrs.modification]) {
+ parts.push(MODIFICATION_LABELS[attrs.modification]);
+ }
+ if (a.crownLengthening?.indicated) parts.push("crown lengthening");
+ // HOC adjustment per Lab 4 form element #4.
+ if (attrs.hocAdjustment && attrs.hocAdjustment !== "none" && HOC_ADJUST_LABELS[attrs.hocAdjustment]) {
+ parts.push(HOC_ADJUST_LABELS[attrs.hocAdjustment]);
+ }
  if (attrs.recontour) parts.push(`axial recontouring (${attrs.recontour})`);
  return parts.length? `#${a.tooth} ${parts.join(", ")}`: null;
  })
 .filter(Boolean)
 .join("; ");
+
+ // ─── Minor connectors (Lab 4 form element #6) ──
+ // Each clasp assembly + indirect retainer has a minor connector that
+ // joins it to the major connector. Enumerate per the form convention.
+ const minorConnectorList = [
+...(result.abutmentDesigns || []).map(a => `#${a.tooth} (clasp assembly)`),
+...(result.indirectRetainers || []).map(r => `#${r.tooth} (indirect retainer)`),
+ ].join(", ");
 
  // ─── Rationale lines ──
  // Two modes:
@@ -17306,6 +17337,7 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  </div>
 
  {fieldRow("Indirect retainers, additional rests", indirectList)}
+ {fieldRow("Minor connectors", minorConnectorList)}
  {fieldRow("Facings, metal pontics, tube teeth", facingsList)}
  {fieldRow("Retention webbing", webbingList)}
  </div>
@@ -19434,6 +19466,35 @@ function RPDToothEditor({ tooth, caseInput, result, onUpdateTooth, onClose, hori
  <div style={rowStyle}>
  <span>Attached gingiva adequate</span>
  <input type="checkbox" checked={!!attrs.attachedGingivaAdequate} onChange={(e) => setAttr("attachedGingivaAdequate", e.target.checked)} />
+ </div>
+ <div style={rowStyle}>
+ <span>Existing crown</span>
+ <select style={selectStyle} value={attrs.existingCrown || "none"} onChange={(e) => setAttr("existingCrown", e.target.value)}>
+ <option value="none">None (natural tooth)</option>
+ <option value="compatible">Has crown — compatible (features can be added)</option>
+ <option value="obstructing">Has crown — obstructing (re-do as survey crown)</option>
+ </select>
+ </div>
+ <div style={rowStyle}>
+ <span>Modification method (Lab 4 #3)</span>
+ <select style={selectStyle} value={attrs.modification || "auto"} onChange={(e) => setAttr("modification", e.target.value)}>
+ <option value="auto">Auto (engine picks)</option>
+ <option value="none">None — natural anatomy adequate</option>
+ <option value="enameloplasty">Enameloplasty (chairside contour in enamel)</option>
+ <option value="composite">Composite addition (etch + bond + composite)</option>
+ <option value="survey-crown">Survey crown (lab-fabricated)</option>
+ </select>
+ </div>
+ <div style={rowStyle}>
+ <span>HOC adjustment (Lab 4 #4)</span>
+ <select style={selectStyle} value={attrs.hocAdjustment || "none"} onChange={(e) => setAttr("hocAdjustment", e.target.value)}>
+ <option value="none">None</option>
+ <option value="lower-DB">Lower DB</option>
+ <option value="lower-MB">Lower MB</option>
+ <option value="lower-DL">Lower DL</option>
+ <option value="lower-ML">Lower ML</option>
+ <option value="general">General axial re-contour</option>
+ </select>
  </div>
  </>
 )}
