@@ -21729,6 +21729,10 @@ const PATHWAY_GROUPS = {
  "cd-implant-supported-lower",
  "cd-rapid-need",
  ]},
+ { label: "Post-delivery & maintenance", ids: [
+ "cd-adjustment",
+ "cd-reline-lab",
+ ]},
  { label: "Special patients", ids: [
  "cd-anxious-firsttime",
  "cd-xerostomic",
@@ -22918,6 +22922,60 @@ const PATHWAYS = [
  { guideId: "cd", chapterId: "cd-ch14" },
  { guideId: "cd", chapterId: "cd-ch26" }, // Clinical remount + selective grinding at delivery // Processing
  { guideId: "cd", chapterId: "cd-ch15" }, // Delivery
+ { guideId: "cd", chapterId: "cd-ch23" }, // Post-delivery complaints
+ ],
+ },
+ {
+ id: "cd-adjustment",
+ domain: "cd",
+ label: "Post-delivery CD adjustment",
+ description: "Patient returns 24 hours, 1 week, or weeks later after CD delivery with a complaint — sore spot, food trapped under flange, denture moves when speaking or biting, occlusion feels off. Adjustment is the highest-volume CD chair-side visit and the moment that determines whether the patient becomes a successful denture wearer or returns the prosthesis. Per Swade p.94, the protocol is: interview + palpate (sore spots can exist without visible evidence), Thompson stick to transfer sore-spot location to denture, PIP paste for high-pressure intaglio areas, disclosing wax for over-extended borders, occlusion check + selective grinding. Counsel: 'sore spots will still feel tender for a few days even after adjustment — that's normal healing, not a failed adjustment.'",
+ keyDecisions: [
+ "Interview-then-palpate sequence (Swade p.94 step 2): ask the patient where it hurts AND palpate both maxillary and mandibular ridges fully — patients often have sore spots in places they can't articulate, especially on the lingual flange or distal maxillary tuberosity. Palpate firmly with index finger.",
+ "Thompson stick technique for sore-spot transfer (Swade p.94 step 3): wet the Thompson stick (be gentle, the stick stings on irritated tissue), mark the sore spot intraorally, retract cheeks so the ink doesn't transfer to surrounding mucosa, insert denture, leave 5 seconds, remove. The ink mark transfers to the denture intaglio — reduce that exact spot with lab burs.",
+ "PIP paste for general pressure points (Swade p.94 step 4): dry the denture (PIP won't stick to a wet intaglio), thin even layer brushed in ONE direction (so show-through is easy to read), optional Mizzy spray on patient ridge to prevent PIP sticking to tissue, insert denture with LIGHT hand pressure only — do NOT have the patient bite. Leave 5 sec, remove, leave PIP ON the denture (do not clean yet), reduce show-through with lab burs, re-apply PIP, repeat until ideal.",
+ "Disclosing wax for borders (Swade p.94-95 step 5): thin (≤2 mm) ropes of disclosing wax applied to the denture borders, insert + border-mold movements, remove, reduce show-through. Posterior palatal seal extension: Thompson stick from intraoral vibrating-line mark, reduce overextension with bur, feather-edge bevel toward the back. Border extension: pull cheeks while patient lifts tongue — denture should NOT move; run finger along border to detect overextension on tissues.",
+ "Occlusion check (Swade p.95 step 8): at 24-hr follow-up, do NOT adjust occlusion aggressively — the patient is still adapting to the prosthesis and the intaglio adjustments will change occlusion as the denture seats more fully. Mark with horseshoe articulating paper, reduce high spots GENTLY with lab bur, re-evaluate. Goals: even bilateral posterior contact in centric, in protrusion 2 posterior contacts (1/side) + anterior contact.",
+ "Polish OUTSIDE only — never polish the intaglio (you'll lose the tissue-fitted surface). Send to lab support for rag-wheel + pumice polish on the external surface.",
+ "CDT codes: D5410 (Adjust complete denture — maxillary) or D5411 (Adjust complete denture — mandibular) — billed per arch adjusted. UIC-internal subcode D5455 (Post Insertion Adjustment N/C) for in-process adjustments at no charge. Document specific sore-spot location, what was adjusted, and patient's relief in the note.",
+ "Counsel patient at end of visit (Swade note template): 'sore spots will still feel tender even after adjustment — that's normal healing for a few days.' Schedule next adjustment if still uncomfortable in 1 week.",
+ ],
+ phases: [
+ { label: "Interview + IOE + palpate", count: 2 },
+ { label: "Sore-spot transfer (Thompson)", count: 1 },
+ { label: "PIP + disclosing wax", count: 2 },
+ { label: "Occlusion + polish", count: 2 },
+ ],
+ sections: [
+ { guideId: "cd", chapterId: "cd-ch15" }, // Delivery (reference for what was adjusted at delivery)
+ { guideId: "cd", chapterId: "cd-ch23" }, // Post-delivery complaints chapter
+ { guideId: "cd", chapterId: "cd-ch20" }, // Reline / rebase if adjustment isn't enough
+ ],
+ },
+ {
+ id: "cd-reline-lab",
+ domain: "cd",
+ label: "CD lab reline / rebase",
+ description: "Patient with an existing well-functioning denture (often years old) needs the intaglio refreshed to match resorbed ridge anatomy — the denture sits loose, food collects under the base, or the wax-rim trial showed VDO has dropped. Lab reline is the definitive solution when the occlusion + tooth position remain acceptable but the tissue-fitting surface no longer matches the ridge. The 2-week turnaround means the patient is denture-less during processing — manage this with an interim immediate denture, a chairside reline as a stopgap, or counsel the patient to plan around the gap. Per Swade p.96: pre-reline appointment ALWAYS starts with full denture adjustment (sore spots, occlusion, border) — there's no point relining a denture that has uncorrected pressure points.",
+ keyDecisions: [
+ "Pre-reline appointment ALWAYS includes adjustment first (Swade p.96 step 3): CC/IOE/palpate, Thompson stick for sore spots, PIP paste, posterior palatal seal check, border extension check, occlusion check. Reline the corrected denture, not the uncorrected one.",
+ "Decision — reline vs rebase vs new denture: RELINE (D5750/D5751) replaces only the intaglio acrylic, preserves teeth + base + occlusion — indicated when teeth + occlusion are acceptable but tissue fit is poor. REBASE (D5710/D5711) replaces all acrylic except the teeth — indicated when the base is broken, discolored, or compromised but teeth are acceptable. NEW DENTURE (D5110/D5120) when teeth are worn, occlusion is incorrect, or VDO has significantly dropped beyond what reline can correct.",
+ "Patient is denture-less for ~2 weeks during lab processing — counsel at consent. Options: (a) interim immediate denture fabricated before sending the existing one to lab; (b) chairside reline (D5730/D5731) to tide patient over (less predictable, will be replaced by the lab reline); (c) patient accepts gap (soft diet, no public-facing commitments — uncommon).",
+ "Lab reline workflow (Swade p.96 steps 4-10): (1) clean denture thoroughly — ultrasonic in lab support if heavy plaque/calculus; (2) orient denture in patient's mouth, note how it sits (incisal display, midline) — capture orientation since impression will mis-seat if mis-oriented; (3) relieve intaglio uniformly 0.5 mm with lab burs (creates space for impression material); (4) shorten flanges 1 mm uniformly (creates space for border-molded impression); (5) place ONE relief hole (#8 round bur) in the center of the palate ONLY for maxillary — no relief hole for mandibular; (6) load 1-2 mm light-body PVS into intaglio, roll over flanges; (7) seat in correct orientation, patient bites down, border-mold; (8) confirm gingival shade from original lab Rx (or match with gingival shade guide); (9) send to lab with Rx 'Please reline with heat-cured acrylic resin, shade [L199-OR or matched]. Please add the posterior palatal seal as indicated on the impression.'",
+ "Tissue conditioning consideration: if patient has chronic tissue irritation (denture stomatitis, generalized erythema, papillary hyperplasia), apply tissue conditioner (Coe-Comfort soft reline material) for 2-4 weeks BEFORE the lab reline impression — heals the tissue first. Codes: D5850 (Tissue conditioning — max) / D5851 (Tissue conditioning — mand). Reline impression on healed tissue is more accurate than impression on inflamed tissue.",
+ "CDT codes: D5750 (Reline complete maxillary — laboratory) / D5751 (Reline complete mandibular — laboratory). For chairside reline: D5730 / D5731 (complete) or D5740 / D5741 (PARTIAL — different code). For tissue conditioning preceding the reline: D5850 / D5851. For full rebase: D5710 / D5711 (complete) or D5720 / D5721 (partial).",
+ "Lab turnaround per Swade is 5 business days for reline (one of the faster turnarounds). Book the delivery appointment accordingly.",
+ ],
+ phases: [
+ { label: "Pre-reline adjustment", count: 2 },
+ { label: "Decision: reline vs rebase", count: 1 },
+ { label: "Bridge the gap (interim or chairside)", count: 1 },
+ { label: "Impression + lab Rx", count: 2 },
+ { label: "Delivery post-reline", count: 1 },
+ ],
+ sections: [
+ { guideId: "cd", chapterId: "cd-ch20" }, // Reline / rebase reference chapter
+ { guideId: "cd", chapterId: "cd-ch15" }, // Delivery (post-reline)
  { guideId: "cd", chapterId: "cd-ch23" }, // Post-delivery complaints
  ],
  },
