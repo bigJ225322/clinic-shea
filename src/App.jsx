@@ -3490,15 +3490,40 @@ const DEFAULT_INJECTION = {
 // alone, but the buccal cortex is thick enough that IAN is the reliable
 // default at UIC (especially with septocaine).
 // Peds always → buccal infiltration (no block distinction for primary teeth).
+// Primary tooth letter → side mapping. Standard ADA universal:
+// A-E = upper R (max R 2nd molar → max R central incisor)
+// F-J = upper L (max L central → max L 2nd molar)
+// K-O = lower L (mand L 2nd molar → mand L central)
+// P-T = lower R (mand R central → mand R 2nd molar)
+const PRIMARY_RIGHT = new Set(["A","B","C","D","E","P","Q","R","S","T"]);
+// Lower primary teeth (K-T) — used for routing to mandibular protocols
+// when isPeds is FALSE but a lower primary letter still warrants
+// buccal-infiltration rather than IAN (UIC peds uses short blue needle
+// + buccal/PDL for primary mand teeth in young kids; IAN is unreliable).
+const PRIMARY_LOWER = new Set(["K","L","M","N","O","P","Q","R","S","T"]);
+
 const injectionForTooth = (tooth, isPeds) => {
- if (isPeds) return {...DEFAULT_INJECTION, techBuccalInfil: true };
- // Detect primary tooth letters (A–T from the universal lettering system)
- // even when isPeds is false — replace(/\D/g, "") would strip them to
- // an empty string and silently return null. Treat primary teeth like
- // peds: buccal infiltration on the appropriate side.
- const cleaned = (tooth || "").trim().replace(/^#/, "");
- if (/^[A-T]$/i.test(cleaned)) {
+ const cleaned = (tooth || "").trim().replace(/^#/, "").toUpperCase();
+ if (isPeds) {
+ // For peds, derive side from the primary tooth letter so the rebuilt
+ // anesthetic sentence reads "buccal infiltration #F" with side=left
+ // (correct for #F = max L central) instead of defaulting right.
+ if (/^[A-T]$/.test(cleaned)) {
+ return {...DEFAULT_INJECTION,
+ side: PRIMARY_RIGHT.has(cleaned)? "right": "left",
+ techBuccalInfil: true };
+ }
  return {...DEFAULT_INJECTION, techBuccalInfil: true };
+ }
+ // Detect primary tooth letters (A–T) when isPeds is false (e.g. peds
+ // patient seen in an adult ICC chair as a one-off). Treat the lower
+ // primary letters (K-T) like adult mandibular teeth would be in
+ // peds practice — buccal infiltration + PDL, NOT IAN (mandibular
+ // foramen position in young kids makes IAN unreliable).
+ if (/^[A-T]$/.test(cleaned)) {
+ return {...DEFAULT_INJECTION,
+ side: PRIMARY_RIGHT.has(cleaned)? "right": "left",
+ techBuccalInfil: true };
  }
  const num = parseInt(cleaned.replace(/\D/g, ""), 10);
  if (!num || num < 1 || num > 32) return null;
