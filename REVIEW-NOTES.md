@@ -2364,3 +2364,89 @@ Outstanding for next iter:
 - A few internal rpd-engine.js comment artifacts: `// (corrected per NotebookLM/)` trailing slash where a faculty name was scrubbed; "Among -preferred" / "are -acceptable" leading-hyphen artifacts (functional, not user-visible). User-review-only.
 - `same same-day` in pedo extraction at line 24296 (functional but stylistic; "follow the same same-day access-and-fill workflow" — minor).
 - The PE_PARTS Category view does not visually distinguish DMD-only vs AS-only tracks (acceptable per earlier note).
+
+---
+
+### Iter 36 — post-compact continuation: Swade fact-check vs Cases tab
+
+Resumed continuous /loop after context compaction. User direction: "continue debugging, fact-checking, and accuracy checking (accurate to swade and primary UIC resources) the Cases tab information."
+
+**Swade page references verified against actual PDF content:**
+
+PFM crown workflow (pages 55-67):
+- ✓ PFM dimensions (p.58): axial 1.25-1.50mm / occlusal 1.5-2.0mm / finish line 1.0-1.25mm deep chamfer — MATCHES App.jsx
+- ✓ Dual-cord protocol (pp.55/66): smaller bottom no tail + larger top with tail — MATCHES; Swade note template uses "#00 & #0" specifically
+- ✓ Etch+bond sequence (pp.56/60): enamel first→dentin→wait 15s→rinse 5s→Gluma 45s→wait 15s→air dry→rinse 15s→ScotchBond 20s→air thin 5s→light cure 10s — MATCHES
+- ✓ Garrison matrix (p.55): "plastic wedge" during placement, "wooden wedge" for pre-wedge step 7 — MATCHES dir-class2
+
+Endo RCT (pages 119-121):
+- ✓ Anesthesia recipe (p.119 step 4) — MATCHES
+- ✓ Vortex orifice opener (p.119 step 9) — note template confirms #20/.08 size
+- ✓ Irrigation regimen (p.121): 1% NaOCl, 17% EDTA, 1% NaOCl — MATCHES
+- ✓ Obturation (p.120 step 21): master cone + sealer + pump 3x + heat Calamus — MATCHES (Endoseal MTA name from note template)
+- ✓ "Confirm tooth restorable" (p.119 step 2) — MATCHES
+
+Endo Tooth Anatomy (pages 122-124):
+- ⚠ FIXED: max 2nd premolar — App.jsx said "1 canal primary, 1 root/2 canals alternate" but Swade lists 50/50; updated to reflect Swade's actual 50/50 phrasing
+- ⚠ FIXED: mand 2nd premolar — App.jsx said "nearly always 1", Swade lists "1 canal primary, 15% alt 2 canals"; updated to match Swade
+- ⚠ FIXED: mand 1st molar "10-15%" alt canal — Swade lists "otherwise" without %, clarified in keyDecision
+
+Class III/IV/V composites (pages 41-46):
+- ✓ Class IV WIDE bevel 0.5-2.0 mm (p.43 step 7) — MATCHES App.jsx
+- ✓ Class III narrower bevel 0.25-0.5 mm (p.41 step 7) — MATCHES
+- ✓ Class V cord placement (p.45 step 9) — MATCHES App.jsx (#0 cord with Hemodent from note template)
+
+Amalgam (pages 35-36):
+- ✓ Amalgamation 9-12s @ 3600 cpm (p.35 step 11) — MATCHES App.jsx
+- ✓ CDT codes (p.36): D2140/D2150/D2160/D2161 — MATCHES
+
+RMGI + Sealants (pages 49-51):
+- ✓ RMGI cavity conditioner protocol (p.49) — MATCHES App.jsx
+- ✓ Sealant etch enamel 30s (p.51) — MATCHES App.jsx
+
+SSC (pages 150-151):
+- ✓ Prep criteria 1.5-2.0mm occlusal / 4-10° taper / 30-40° bevel (p.150 step 6) — MATCHES
+- ✓ Cementation: fill crown 80% FujiCEM, seat lingual-roll-buccal, bite stick, 3 min cotton roll (p.151 step 11) — MATCHES
+
+Peds Class II (pages 140-141):
+- ✓ Garrison sectional default + "gold matrix band is used in peds, but honestly it sucks, I'd just use a Garrison" — MATCHES verbatim
+
+Peds sealants (page 134):
+- ✓ Etch 30 sec — MATCHES
+
+Denture workflow (page 80):
+- ✓ Full 8-clinical-appointment / 5-lab-step canonical workflow — MATCHES exactly
+
+OS Extractions (pages 161-167):
+- ✓ Anesthesia recipes (p.161 step 6) — MATCHES (with PSA/nasopalatine additions noted as clinical refinements)
+- ✓ Forceps table (p.165-167) — FIXED confusing parenthetical and "( kit)" scrub artifact in #87/cowhorn entry
+- ✓ Mandibular molars #17 anatomical or #87 cowhorn — MATCHES Swade exactly
+- ✓ Maxillary molars #89 (#1-3) / #90 (#14-16) — MATCHES
+- ⚠ MINOR: Swade lists needle as "3/8 round cutting" but the OS-literature standard is "reverse-cutting" — clarified the App.jsx wording to acknowledge both
+
+Perio (pages 21-32):
+- ✓ POE/Prophy/Perio Maintenance chapter splits (p.21-22) — MATCHES
+- ✓ Prophy steps (p.26): Cavitron → prophy cup if gross plaque → floss → hand instruments — MATCHES App.jsx
+- ✓ SRP UR+LR / UL+LL split (p.22) — MATCHES App.jsx
+- ✓ SRP anesthesia (p.28): IAN if 3+ mand, buccal infs for 1-2, PSA+MSA+ASA+greater palatine for full max — MATCHES verbatim
+- ✓ Perio re-eval D0170 + 4-6 week interval (p.30-31) — MATCHES
+- ✓ Perio maintenance updates perio chart at every visit (p.32) — MATCHES
+- NOTE: Swade has a typo at p.22: "D4243 (Sc/Rp 1-3 teeth/quad)" — correct CDT code is D4342. App.jsx uses the correct D4342 (one of the rare cases App.jsx is MORE accurate than Swade).
+
+Urgent care (page 11):
+- ✓ Wisdom-tooth referral note template (#1/#16/#17/#32 → PGOS) — MATCHES App.jsx
+
+**Mis-citation fixed:**
+- ⚠ FIXED: "Swade p.65" cited for intaglio decontamination in ind-recement — page 65 covers provisional cementation, not permanent crown intaglio decontamination. Removed citation; kept the clinically-accurate content (Al2O3 air-abrasion + ultrasonic alcohol + MDP primer protocol).
+
+**Scrub artifacts fixed:**
+- "the the school" → "the school" (multiple instances)
+- "the the affiliated" → "the affiliated" (multiple instances)
+- "the -the school" → "the school" (multiple instances)
+- "(312) 996-7297" → "[on-call pediatric dentistry resident — get this from your clinic manager]" (peds resident phone scrub)
+- "801 South Paulina Street, Chicago, IL. 60612" → "consult your clinic manager for current address" (UIC COD literal address scrub at line 1309)
+
+**Test/build status:** 1021/1021 tests passing throughout iter, builds clean.
+
+**Iter 36 commits:** 1 commit (`0434da2`), pushed live to Vercel.
+
