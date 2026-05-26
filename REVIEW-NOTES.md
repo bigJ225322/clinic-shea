@@ -2450,3 +2450,36 @@ Urgent care (page 11):
 
 **Iter 36 commits:** 1 commit (`0434da2`), pushed live to Vercel.
 
+
+### Iter 36 GRAND TOTAL: 4 commits this iter
+
+Commits this iter (all pushed live):
+- **0434da2** — fix Swade page-reference + scrub artifact + tooth-anatomy accuracy (7 fixes: max 2nd premolar canal, mand 2nd premolar, mand 1st molar alt %, cowhorn #87 wording, removed Swade p.65 mis-citation, address scrubs, peds resident phone)
+- **99a8340** — REVIEW-NOTES iter 36 Swade fact-check summary
+- **fb7b6fa** — CDT code fixes (D6068 mislabeled as crown; D5740/D5741 mislabeled as CD reline — should be D5730/D5731)
+- **ab32bbf** — surgery-impacted-tooth post-op analgesia inconsistency (500 mg APAP PRN → 1000 mg q6h scheduled, matches AAA pathway)
+
+### Iter 36 parallel agent audits
+
+Launched 4 parallel audits, all clean except CDT (which found 7 real errors — 3 already fixed):
+- ✅ **CDT 2024 code accuracy** (agent ad8ecc38): found 7 errors; fixed 3 highest-priority (D6068, D5740/D5741, D6067 description). The agent flagged D5810/D5811, D1556/D1557/D1558, D7471-D7473, D4273/D4283 as also wrong, but inspection shows these aren't actually used in pathway content (only in the codes lookup table, which is correct).
+- ✅ **Material brand names** (agent a203c8dc): CLEAN. No spelling errors or product/procedure misalignments. Bonus correction: Hemodent is "buffered aluminum chloride" not "ferric sulfate" — Viscostat is the ferric sulfate product.
+- ✅ **Drug doses** (agent aadd20d0): only 1 real inconsistency (surgery extraction APAP dosing — fixed).
+- ✅ **Cross-pathway consistency** (agent a576cbb2): all 8 protocols consistent across pathways. Minor framing difference for 1-carpule peds anesthetic rule (not actionable).
+
+### Iter 36 structural integrity check (post-edits)
+
+- Pathway IDs: 168 total / 0 duplicates ✓
+- Chapter refs: 142 unique refs / 150 chapters defined / 0 broken refs ✓
+- Tests: 1021/1021 passing ✓
+- Build: clean, no warnings ✓
+
+### Iter 36 misc observations (left as-is, intentional design)
+
+- **NaOCl concentration** appears at different concentrations in different contexts:
+  - RCT irrigation: 1% NaOCl (Swade clinic standard, lower concentration for repeated flushes)
+  - Direct pulp cap hemostasis: 2.5-6% NaOCl on cotton pellet for 5-10 min (AAE recommendation)
+  - These are CLINICALLY DIFFERENT USES — not an inconsistency.
+- **Maxillary 2nd premolar canal anatomy**: Swade lists 50/50 single vs dual canal; App.jsx now explicitly says "Swade lists 50/50" matching the source.
+- **Mandibular lateral incisor eruption order**: Swade lists at #2 (7 mo) before maxillary central (#3) — non-standard textbook order but kept as-is to match Swade source.
+
