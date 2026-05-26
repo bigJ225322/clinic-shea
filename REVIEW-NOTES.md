@@ -2518,3 +2518,37 @@ Commits in chronological order:
 
 Tests: 1021/1021 passing throughout. Build: clean. All pushed to main and live on Vercel.
 
+
+### Iter 37 — coverage gap audit (after user prompt about Dentistry Files folder)
+
+User asked if I had read every relevant file in `/Users/jakeshea/Documents/Dentistry Files/` and reviewed the lecture-titles docx. Honest answer was NO — the folder has 51 top-level entries with many subfolders. Spawned a folder-survey agent + read the lecture-titles docx + read the Vital Bleaching lecture (UIC, Chang + Lamb 2024).
+
+#### Gaps closed this iter
+
+1. **`dir-vital-bleaching`** (commit `44b5e9a`) — built from the UIC Vital Bleaching lecture. Three delivery formats (at-home tray, in-office, OTC), agent decision (CP vs HP), sensitivity management, restoration counsel, CDT D9972-D9975.
+
+2. **`dir-dentin-hypersensitivity`** (commit `e2f6ab3`) — built from standard hydrodynamic-theory + treatment-ladder references (no dedicated UIC lecture found in folder). Diagnosis vs pulpitis, etiology-first treatment, KNO3/Gluma/varnish/RMGI ladder, CDT D9910/D9911.
+
+#### Gaps remaining (documented for next iter / user decision)
+
+| Gap | Status | Source file |
+|---|---|---|
+| Diastema closure | **Partially covered** in `dir-direct-veneer` (mentions diastema as use case). Could split into dedicated pathway if needed. | `All/8 9 Diastema Closure .pptx` + huddle docx |
+| Dental trauma (avulsion + luxation + fracture triage) | **Partially covered** — `surgery-avulsed-tooth` exists. Could expand to general trauma triage. | `Endo Lectures/TRAUMA guidelines UIC.key.pdf.pptx` |
+| TMD / orofacial pain (screening + initial mgmt) | **NOT covered** — significant gap, full semester of source content available | `Orofacial Pain/` folder + `dost prep source mat/TMD Basics.pdf` |
+| Periodontal surgery (gingivectomy, flap, osseous, regeneration) | **Partially covered** — `perio-gingival-graft` + `perio-crown-lengthening` exist. Gingivectomy, flap, osseous, regenerative procedures not separate pathways. | `DAOB Phase 2 War Chest/Periodontics/` |
+| Geriatrics treatment-planning considerations | **NOT covered** — cross-cutting consideration, not a procedure | `ALL DxTP FILES/Geriatrics.pdf` + Dost handout |
+| Dentofacial deformities (orthognathic referral) | **NOT covered** — specialty referral pathway | top-level 21MB PDF |
+| Salivary gland disorders | **NOT covered** | `O.S. Lectures/Management of Salivary Gland disorders 2024.pdf` |
+| Oral pathology lesion differential | **Partially covered** — `pedo-oral-pathology` exists for peds; adult oral-path differential gap | `Oral Pathology/` folder |
+| Caries Risk Assessment workflow | **Likely covered** in restorative COE — verify | `ALL DxTP FILES/CRA in TX planning.pdf` |
+| Endo retreatment depth (multiple PDFs available) | **Partially covered** — `endo-retreatment` exists. Could be deepened with `Problem Avoidance in Endo Clinic.pdf` content. | `Endo Lectures/` PDFs |
+
+#### Files NOT yet read (for future deep-dive)
+
+- `Complications and Post-Op Management copy.pdf` (4.8 MB) — surgical emergencies
+- `Wound Healing Lecture.pdf` (28 MB) — supports all surgical pathways
+- `Retention – The Student Version.pptx` (45 MB) — RPD retention deep dive
+- `Tx Dx- Overview.pdf` — diagnosis & treatment planning
+- All of `Orofacial Pain/`, `ALL DxTP FILES/`, `Oral Pathology/`, `O.S. Lectures/`, `DAOB Phase 2 War Chest/`, `Endo Lectures/` folder contents
+
