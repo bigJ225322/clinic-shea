@@ -21655,6 +21655,10 @@ const PATHWAY_GROUPS = {
  ]},
  ],
  perio: [
+ { label: "Examination", ids: [
+ "perio-coe",
+ "perio-prophy",
+ ]},
  { label: "Non-surgical", ids: [
  "perio-srp",
  "perio-maintenance",
@@ -25261,6 +25265,32 @@ const PATHWAYS = [
  sections: [],
  },
  // ── Periodontics ────────────────────────────────────────────────────────
+ {
+ id: "perio-coe",
+ domain: "perio",
+ label: "Adult comprehensive oral exam (COE)",
+ description: "First visit for a new patient at the clinic. Per Swade p.12, a COE has THREE parts spread across multiple appointments: (1) perio COE (perio chair) — perio chart + EPR + radiographs, (2) restorative COE (restorative chair) — odontogram + caries risk + photo + endo testing, (3) treatment plan presentation (with the same instructor who did the restorative COE). The perio COE goes first so restorative faculty can take perio diagnosis into account during tx planning. Both COEs require a current pano + FMX before the visit — patients can bring outside radiographs if diagnostic quality. The case turns on (a) getting all three components done in the right sequence with the right instructor, (b) accurate caries-risk + perio-staging classification driving the treatment plan, (c) clear patient communication about the multi-visit nature of the exam.",
+ keyDecisions: [
+ "Confirm radiographic baseline before starting: pano + FMX taken within last 3 years (FMX every 3 years per radiographic guidelines), BWs every 6-12 months per caries risk. Outside radiographs are acceptable if diagnostic quality. Patients without baseline radiographs need a radiology referral BEFORE the COE — clinic can't see them otherwise.",
+ "Visit 1 — Perio COE (perio chair, Swade p.13-14): med hx + meds/allergies (Ctrl+R to refresh), tobacco cessation forms if smoker (D1320.1 + D1320.2), BP + pulse, EOE + IOE (clinical exam tab), full perio chart (probing depths, BOP, recession, mucogingival defects, mobility, furcation, free gingival margin), perio EPR (Periodontal Exam / Diagnosis / Prognosis / Treatment Plan tabs — Diagnosis tab uses AAP 2017 Stage I-IV + Grade A-C), facebow + bite registration + diagnostic impressions if phase 2/3 treatment planned.",
+ "Visit 2 — Restorative COE (restorative chair, Swade p.15): med hx review (no need to re-do if same day as perio COE), caries risk documentation (D0604) → caries risk code D060X (low/moderate/high) drives recall interval, dental history, full odontogram (caries, fractured tooth/restoration, decalcification, open contact, overhanging margin, abfraction — use 'Add Finding' magnifying glass, NOT 'Plan'), existing restorations charted under Dental Txs, intraoral photos (D0350), endo testing on suspect teeth (D0460), implant consult triggered if implants in tx plan.",
+ "Visit 3 — Treatment plan presentation: instructor who did restorative COE is the same instructor for tx plan + all phase 3 work. Present staged tx plan with patient (Phase I emergencies/perio, Phase II caries control + indirect prep, Phase III prosthetic, Phase IV maintenance). Patient signs treatment plan in Axium.",
+ "Perio diagnosis drives the Phase I plan: gingivitis → prophy + OHI; Stage I-II periodontitis → SRP + re-eval; Stage III → SRP + likely perio referral. Smoking, diabetes (HbA1c ≥7), or rapid bone loss → Grade C → shorter maintenance interval. Document staging + grading in the perio EPR Diagnosis tab.",
+ "Caries risk drives the recall interval + preventive code use: low risk → 6 month recall, no fluoride varnish needed; moderate risk → 6 month recall with fluoride varnish (D1206) + OHI emphasis; high risk → 3-4 month recall with fluoride varnish + SDF/sealants/diet counsel.",
+ "CDT codes per Swade workflow: D0150A (Initial Assessments — first visit, perio COE) → D0150B (Additional Assessments — restorative COE if perio COE was first) → D0150C (Tx Plan Developed — at presentation visit). If restorative is first visit instead, use D0150A there and D0150B at perio COE. Bundled: D0274 (4 BWs) or D0220+D0230 PAs as appropriate, D0210 (FMX every 3 years), D0330 (pano), D0350 (photos), D0475 (diagnostic casts — N/C), D0604 (caries risk doc), D060X (caries risk finding), D0460 (pulp vitality), D1320.1/D1320.2 (tobacco if applicable), D1330 (OHI), D1310 (nutritional counseling).",
+ "Most common error: doing restorative COE before perio COE — perio diagnosis informs tx planning, so restorative faculty wants to see the perio dx first. If unavoidable (e.g., perio chair fully booked), document D0150A at restorative COE and D0150B at perio COE later.",
+ ],
+ phases: [
+ { label: "Pre-visit + baseline radiographs", count: 1 },
+ { label: "Perio COE", count: 2 },
+ { label: "Restorative COE", count: 2 },
+ { label: "Tx plan presentation", count: 1 },
+ ],
+ sections: [
+ { guideId: "perio", chapterId: "perio-ch1" }, // Perio charting
+ { guideId: "perio", chapterId: "perio-ch2" }, // Diagnosis AAP staging/grading
+ ],
+ },
  {
  id: "perio-prophy",
  domain: "perio",
