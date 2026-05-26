@@ -116,6 +116,7 @@ const TEMPLATES = {
  "lab-ii-denture": "F/F: Please fabricate maxillary and mandibular interim complete dentures. Use existing teeth [6, 11, 22, 27] as reference. [6, 11, 22, 27] will be extracted. Please set posterior teeth over the residual ridge and do not increase VDO. Please use Trubyte Classic anterior tooth mold [4H] and posterior teeth mold [F30] 10°. Please use tooth shade [81] for all teeth. Please use acrylic shade: 50% OR (original) + 50% DK (dark). Please set teeth, festoon, process & polish, and return for delivery. Thank you.",
  "lab-reline": "F/[M or D]: Please reline the denture with heat-cured acrylic resin, shade L199-OR. Please add the posterior palatal seal as indicated on the impression. Please polish and return for delivery. Thank you.",
  "lab-rpd": "Please fabricate [mandibular / maxillary] RPD framework using Vitallium alloy.\nMajor connector: [lingual bar / palatal plate].\nRest seats: [21-MO, 28-DO].\nGuide planes: [21-D, 28-D].\nClasps:\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [21]\n- 18 gauge wrought wire reciprocal arm on lingual of [21]\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut [28]\n- 18 gauge wrought wire reciprocal arm on lingual of [28]\nTissue stops marked on cast.\nRetentive loops on areas: [18, 19, 20, 29, 30].\nReturn framework for try-in.\nThank you.",
+ "lab-survey-crown": "Please fabricate PFM survey crown(s) for [tooth #(s)] to be fitted with [mandibular / maxillary] RPD framework. Metal: high-noble alloy.\n\nCrown design — integrate the following surveyed features (working cast tripoded; tripod marks and path of insertion marked in red):\n\nFor [tooth #]:\n- Metal occlusal thickness: 0.5-1.0 mm at the rest seat area (total tooth reduction 2.5-3.0 mm there; 1.5 mm elsewhere)\n- Rest seat: [mesial / distal / cingulum] — 1.5 mm deep × 2.5 mm wide, floor angled toward the long axis of the tooth (positive seat)\n- Guide plane: [mesial / distal] proximal surface flat and parallel to the RPD path of insertion (per tripod marks on the enclosed working cast)\n- Undercut: [0.01\" cast clasp / 0.02\" wrought wire] at [mid-buccal / MB / DB / ML / DL], in the gingival 1/3 (clasp tip engages the infrabulge area from the opposite direction the rest sits)\n- HOC: at the junction of the middle 1/3 and the gingival 1/3 of the [buccal / lingual] surface (clasp origin sits in the suprabulge area; clasp tip engages the infrabulge below this line)\n\nPlease send the full-contour wax-up back BEFORE final firing for surveyor verification. Once approved, complete the porcelain application and return for cementation.\n\nEnclosed: final impression, opposing impression, bite registration in MI, tripoded diagnostic cast (as reference for path of insertion).\n\nThank you.",
  "lab-ii-rpd": "Please fabricate [mandibular / maxillary] interim immediate acrylic removable partial denture. Use existing teeth [22-28] as a reference for occlusal plane. [18 and 28] will be extracted. Please set posterior teeth over the residual ridge and do not increase VDO. Please place wrought wire clasps on [22 and 27]. Please use Trubyte Classic posterior tooth mold F30 10°, tooth shade 81. Please use acrylic shade: 50% OR (original) + 50% DK (dark). Please set teeth, festoon, process & polish, and return for delivery.\nThank you.",
 };
 
@@ -2358,6 +2359,7 @@ const CATEGORIES = [
  { id: "lab-ii-denture", label: "Interim Immediate Dentures" },
  { id: "lab-reline", label: "Lab Reline" },
  { id: "lab-rpd", label: "Partial Dentures (RPD)" },
+ { id: "lab-survey-crown", label: "Survey Crown (for RPD abutment)" },
  { id: "lab-ii-rpd", label: "Interim Immediate Partial" },
  ]},
  { id: "lab-workflow", label: "Workflow", procedures: [
@@ -3317,6 +3319,31 @@ const REF_DATA = {
  ]},
  { type: "prose", heading: "Turnaround", lines: [
  "Partial framework: 9 business days. After framework try-in, the lab needs another 9 days for tooth set-up + acrylic processing — total ~3 weeks from final impression to delivery.",
+ ]},
+ ],
+ },
+
+ "lab-survey-crown": {
+ verdict: "PFM survey crown — sent BEFORE the framework Rx, when an RPD abutment can't host the planned rest seat / guide plane / undercut / HOC in enamel and needs the features engineered into a crown. The crown is designed to integrate with a framework that doesn't exist yet, so the Rx encodes every surveyed feature plus the path of insertion.",
+ blocks: [
+ { type: "script",
+ caption: "Lab Rx",
+ body: "Please fabricate PFM survey crown(s) for [tooth #(s)] to be fitted with [mandibular / maxillary] RPD framework. Metal: high-noble alloy.\n\nCrown design — integrate the following surveyed features (working cast tripoded; tripod marks and path of insertion marked in red):\n\nFor [tooth #]:\n- Metal occlusal thickness: 0.5-1.0 mm at the rest seat area (total tooth reduction 2.5-3.0 mm there; 1.5 mm elsewhere)\n- Rest seat: [mesial / distal / cingulum] — 1.5 mm deep × 2.5 mm wide, floor angled toward the long axis of the tooth (positive seat)\n- Guide plane: [mesial / distal] proximal surface flat and parallel to the RPD path of insertion (per tripod marks on the enclosed working cast)\n- Undercut: [0.01\" cast clasp / 0.02\" wrought wire] at [mid-buccal / MB / DB / ML / DL], in the gingival 1/3 (clasp tip engages the infrabulge area from the opposite direction the rest sits)\n- HOC: at the junction of the middle 1/3 and the gingival 1/3 of the [buccal / lingual] surface (clasp origin sits in the suprabulge area; clasp tip engages the infrabulge below this line)\n\nPlease send the full-contour wax-up back BEFORE final firing for surveyor verification. Once approved, complete the porcelain application and return for cementation.\n\nEnclosed: final impression, opposing impression, bite registration in MI, tripoded diagnostic cast (as reference for path of insertion).\n\nThank you.",
+ note: "Sent before the framework Rx, not alongside it. The survey crown gets cemented, a NEW master impression is taken of the crowned arch, and then a separate framework Rx is generated." },
+ { type: "cards", caption: "What to send with this Rx", cards: [
+ { title: "Supplements", rows: [
+ ["Final impression", "of the prepped tooth, single-cord PVS"],
+ ["Opposing impression", "alginate"],
+ ["Bite registration", "in MI"],
+ ["Tripoded diagnostic cast", "with tripod marks + path of insertion in red — the lab uses this to mount their working cast at the same path of insertion you've designed for"],
+ ["Photograph / sketch of planned contours", "optional but helps the lab"],
+ ]},
+ ]},
+ { type: "prose", heading: "Verify the wax-up before final firing", lines: [
+ "Ask the laboratory to send back the full-contour wax-up before they apply porcelain. Tripod the lab's working cast (using your tripod dots), lower the analyzing rod, and verify: positive rest seat, ideal HOC at the planned location, 0.01\" usable undercut at the gingival 1/3 on the planned surface, guide plane parallel to the path of insertion. If anything is wrong, mark on the wax-up with a pencil and send back. Cheaper to re-wax than to refire.",
+ ]},
+ { type: "prose", heading: "Turnaround", lines: [
+ "PFM crown: 12 business days. The wax-up verification step adds another 3-5 business days. Plan for ~3-4 weeks from prep to cementation, then a follow-up appointment for the new master impression before the framework Rx goes out.",
  ]},
  ],
  },
@@ -17282,22 +17309,90 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  </div>
 
  {fieldRow("Framework metal", result.framework.material)}
- {fieldRow("Major connector", `${result.majorConnector.type}${result.majorConnector.width? ` (${result.majorConnector.width})`: ""}`)}
  {fieldRow("Abutment teeth", (result.abutmentDesigns || []).map(a => `#${a.tooth}`).join(", "))}
+ {fieldRow("Path of insertion", (() => {
+ const k = result.kennedy?.class;
+ if (k == null) return "—";
+ const tiltHint = k === "I" || k === "II"? " (anterior tilt for distal undercut engagement)"
+ : k === "III" || k === "IV"? " (level — single-level POI)": "";
+ return `Per surveyed cast${tiltHint}`;
+ })())}
 
- <div style={{ marginBottom: "12px" }}>
- <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px" }}>Abutment preparations, guide planes, recontouring, restorations:</div>
- <div style={{
- border: "1px solid var(--ink)", padding: "6px 8px",
- minHeight: "36px", fontSize: "11px", whiteSpace: "pre-wrap",
- }}>
- {abutmentPrepLines || ""}
+ {/* Lab 4 Element 1 — Guide planes (with POI reference) */}
+ <div style={{ marginBottom: "10px", marginTop: "14px" }}>
+ <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px", color: "var(--accent)" }}>1 · Guide planes</div>
+ <div style={{ border: "1px solid var(--ink)", padding: "6px 8px", minHeight: "28px", fontSize: "11px" }}>
+ {(result.abutmentDesigns || []).filter(a => a.guidePlane).map(a => `#${a.tooth} ${a.guidePlane.surface}${a.guidePlane.length? ` (${a.guidePlane.length})`: ""}`).join("; ") || "—"}
  </div>
  </div>
 
- {/* Direct retainers table */}
+ {/* Lab 4 Element 3 — Undercuts + modification method */}
+ <div style={{ marginBottom: "10px" }}>
+ <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px", color: "var(--accent)" }}>3 · Undercuts + modification method</div>
+ <div style={{ border: "1px solid var(--ink)", padding: "6px 8px", minHeight: "28px", fontSize: "11px" }}>
+ {(() => {
+ const lines = (result.abutmentDesigns || []).map(a => {
+ const attrs = a.attrs || {};
+ const ucBits = [];
+ const ucLoc = a.effectiveUndercutLocation || attrs.undercutLocation;
+ if (ucLoc && ucLoc !== "none") ucBits.push(`${attrs.undercutDepth || 0.01}" ${ucLoc}`);
+ if (a.surveyCrown?.indicated) ucBits.push("survey crown");
+ else if (attrs.modification && attrs.modification !== "auto" && attrs.modification !== "none") {
+ const lab = MODIFICATION_LABELS[attrs.modification];
+ if (lab) ucBits.push(lab);
+ }
+ return ucBits.length? `#${a.tooth} ${ucBits.join(", ")}`: null;
+ }).filter(Boolean);
+ return lines.join("; ") || "—";
+ })()}
+ </div>
+ </div>
+
+ {/* Lab 4 Element 4 — HOC adjustments */}
+ <div style={{ marginBottom: "10px" }}>
+ <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px", color: "var(--accent)" }}>4 · HOC adjustments</div>
+ <div style={{ border: "1px solid var(--ink)", padding: "6px 8px", minHeight: "28px", fontSize: "11px" }}>
+ {(() => {
+ const lines = (result.abutmentDesigns || []).map(a => {
+ const attrs = a.attrs || {};
+ if (attrs.hocAdjustment && attrs.hocAdjustment !== "none" && HOC_ADJUST_LABELS[attrs.hocAdjustment]) {
+ return `#${a.tooth} ${HOC_ADJUST_LABELS[attrs.hocAdjustment]}`;
+ }
+ return null;
+ }).filter(Boolean);
+ return lines.join("; ") || "—";
+ })()}
+ </div>
+ </div>
+
+ {/* Esthetic constraints (Dr. Shahin's Design Case convention) */}
+ {(() => {
+ const ESTHETIC_LABELS = {
+ "no-buccal-clasp": "no buccal clasp (high smile line)",
+ "no-visible-metal": "no visible metal",
+ };
+ const lines = (result.abutmentDesigns || []).map(a => {
+ const attrs = a.attrs || {};
+ if (attrs.esthetic && attrs.esthetic !== "none" && ESTHETIC_LABELS[attrs.esthetic]) {
+ return `#${a.tooth} ${ESTHETIC_LABELS[attrs.esthetic]}`;
+ }
+ return null;
+ }).filter(Boolean);
+ if (lines.length === 0) return null;
+ return (
+ <div style={{ marginBottom: "10px" }}>
+ <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px", color: "var(--accent)" }}>Esthetic constraints</div>
+ <div style={{ border: "1px solid var(--ink)", padding: "6px 8px", minHeight: "28px", fontSize: "11px" }}>{lines.join("; ")}</div>
+ </div>
+);
+ })()}
+
+ {/* Lab 4 Element 2 — Rest seats (and Element 5 — Clasps) in the
+ same per-tooth table; clean UIC convention is one row per
+ abutment with both shown. The "Rest" column carries element 2,
+ the "Clasp" column carries element 5. */}
  <div style={{ marginBottom: "12px" }}>
- <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px" }}>Direct retainers:</div>
+ <div style={{ fontWeight: 600, fontSize: "11px", marginBottom: "4px", color: "var(--accent)" }}>2 + 5 · Rest seats + Clasps (Direct retainers)</div>
  <table style={{
  width: "100%", borderCollapse: "collapse", fontSize: "11px",
  border: "1px solid var(--ink)",
@@ -17336,10 +17431,17 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  </table>
  </div>
 
- {fieldRow("Indirect retainers, additional rests", indirectList)}
- {fieldRow("Minor connectors", minorConnectorList)}
+ {fieldRow("2 (cont) · Indirect retainers, additional rests", indirectList)}
+ {fieldRow("6 · Minor connectors", minorConnectorList)}
+ {fieldRow("7 · Major connector", `${result.majorConnector.type}${result.majorConnector.width? ` (${result.majorConnector.width})`: ""}`)}
+
+ {/* Framework bases (Lattice/Mesh/Tube Tooth/Facings) — not one of
+ the 7 enumerated elements but part of the framework drawn on the
+ cast; lives below the element list per UIC convention. */}
+ <div style={{ marginTop: "16px", paddingTop: "8px", borderTop: "1px dotted var(--rule)" }}>
  {fieldRow("Facings, metal pontics, tube teeth", facingsList)}
- {fieldRow("Retention webbing", webbingList)}
+ {fieldRow("Retention webbing (lattice / mesh)", webbingList)}
+ </div>
  </div>
 
  {/* Rationale column */}
@@ -19494,6 +19596,14 @@ function RPDToothEditor({ tooth, caseInput, result, onUpdateTooth, onClose, hori
  <option value="lower-DL">Lower DL</option>
  <option value="lower-ML">Lower ML</option>
  <option value="general">General axial re-contour</option>
+ </select>
+ </div>
+ <div style={rowStyle}>
+ <span>Esthetic constraint</span>
+ <select style={selectStyle} value={attrs.esthetic || "none"} onChange={(e) => setAttr("esthetic", e.target.value)}>
+ <option value="none">None</option>
+ <option value="no-buccal-clasp">No buccal clasp (high smile line)</option>
+ <option value="no-visible-metal">No visible metal at all</option>
  </select>
  </div>
  </>

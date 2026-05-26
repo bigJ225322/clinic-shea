@@ -86,6 +86,12 @@ const RPD_ABUTMENT_DEFAULTS = {
  // "none" by default; specify which surface needs lowering when the
  // surveyed HOC sits too coronally for the planned clasp tip.
  hocAdjustment: "none", // none | lower-DB | lower-MB | lower-DL | lower-ML | general
+ // Esthetic constraint per Dr. Shahin's Design Case format — "No clasp
+ // due to esthetic" type annotations on anterior abutments. The engine
+ // already softens clasp choice in the maxillary anterior; this flag
+ // surfaces the operator-confirmed esthetic-driven decision in the
+ // output for transcription onto the paper form.
+ esthetic: "none", // none | no-buccal-clasp | no-visible-metal
 };
 
 // Verbatim rationale strings (from NotebookLM-sourced materials).
