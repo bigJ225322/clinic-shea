@@ -23001,7 +23001,7 @@ const PATHWAYS = [
  keyDecisions: [
  "Pre-wedge BEFORE prepping — wooden wedge mesial and distal for MOD, expands the PDL and makes restoring contact easier.",
  "Matrix system: Garrison sectional kit (contoured band + plastic wedge + Garrison ring, burnish) is preferred for proximal contact, OR Tofflemire universal matrix + wooden wedge + burnish if sectional unavailable. The Garrison ring + wedge combination is critical — a flat Tofflemire band alone gives open contacts.",
- "Isolation: Isodry (default) or rubber dam — both are acceptable; tie floss to the clamp if using rubber dam.",
+ "Isolation: Isodry (UIC predoc default for operative). Tie floss to the clamp on the Isodry if seated. Rubber dam is reserved for endo and peds pulp therapy at UIC predoc.",
  "Etch + bond sequence: etch enamel first, then dentin with 35% phosphoric acid → wait 15s → rinse 5s → lightly dry (dentin glossy without pooling). Apply Gluma 45s → wait 15s → air dry → rinse 15s → lightly dry. Apply ScotchBond Universal in vigorous scrub for 20s → air thin 5s → light cure 10s. Gluma is a very common desensitization step for posterior composite.",
  "Place gingival increment first (1.5–2 mm), light cure 20–40 sec, then build incrementally up the box. Cure the final increment 60 sec.",
  "Check the contact with floss before dismissing — floss should snap through with resistance. A loose contact is a redo, not a polish. Codes: D2392 (2-surface) or D2393 (3-surface).",
@@ -23122,7 +23122,7 @@ const PATHWAYS = [
  "Polish with progressive grit Soflex discs (medium → fine → superfine) and finish with felt + diamond polishing paste.",
  "Photograph at delivery with shade tab adjacent — useful for refining future cases and for patient record.",
  "Class IV bevel: create a WIDE bevel 0.5-2.0 mm for esthetics (color blending across the larger restoration) and exposure of more enamel rod surface for the bond. Wider than the Class III 0.25-0.5 mm bevel because Class IV restorations span the incisal edge and benefit from invisible margin transitions. Etch + Gluma + ScotchBond sequence same as Class I/II. Code: D2335 (Resin-based comp — 4+ surf, ant).",
- "Reference: the Anterior Layering Technique video — the canonical method for the dentin-enamel layering on Class IV. Worth watching before any anterior corner buildup.",
+ "Reference: search 'Style Italiano anterior layering' or the UIC Latta lecture on YouTube for the dentin-enamel layering method on Class IV — the canonical references for stratified anterior composite. Worth watching before any anterior corner buildup.",
  ],
  phases: [
  { label: "Planning & wax-up", count: 2 },
@@ -23176,7 +23176,7 @@ const PATHWAYS = [
  label: "Class V RMGI (root surface)",
  description: "Cervical or root-surface caries where the gingival margin sits apical to the CEJ — there is no enamel to bond to. Resin-modified glass ionomer (RMGI, Ketac Nano or Fuji II LC) is the material of choice here because it bonds chemically to dentin without an adhesive step and continuously releases fluoride into the surrounding tooth. Composite over an exposed root surface is a setup for failure; the bond strength to root dentin alone is unreliable.",
  keyDecisions: [
- "If the lesion margin is fully on root surface (no enamel), RMGI is the default. Composite needs an enamel margin to anchor the bond.",
+ "For pure root-surface lesions, RMGI is the default — fluoride release plus tolerance of mild moisture, both critical near the gingival sulcus. Modern universal adhesives can bond composite to root dentin, but the recurrent-caries risk and moisture challenge favor RMGI on the root surface.",
  "Condition the cavity: polyacrylic acid 15 sec → lightly air-dry WITHOUT rinsing (dentin should look just-moist, not glistening wet, not dry) → light cure 10 sec. Polyacrylic acid (not phosphoric) is the conditioner for the dentin surface under pure RMGI — it preserves the ionic bond. Selective phosphoric etch of any pure-enamel margin is still acceptable in a sandwich technique.",
  "Mix and place RMGI quickly — working time is 2–3 minutes. The capsule form (auto-mix) is more reliable than hand-mix for this reason.",
  "Light cure each increment 20 sec. Cure even though it's resin-modified — the dual-cure component is the reason for the longer working time.",
@@ -23309,7 +23309,7 @@ const PATHWAYS = [
  "Indication check: caries-free OR enamel-limited non-cavitated lesion. If lesion has progressed into dentin (cavitated, radiolucency on bitewing), it's a Class I composite case (see dir-ch10), not a sealant.",
  "Use fluoride-free pumice for the prophy step — fluoride interferes with the etch and bond.",
  "Isodry is the standard isolation — no anesthesia needed because there's no clamp to seat.",
- "Etch enamel 30 sec → rinse → lightly air-dry, optional bond step (faculty usually want it done), Ultradent UltraSeal XT Plus (the sealant material stocked in the peds clinic), thick — apply sparingly, 20-sec cure.",
+ "Etch enamel 30 sec → rinse → lightly air-dry, apply Scotchbond Universal 20s + air thin + cure 10s (UIC faculty want this even though textbook calls it optional — better penetration into pits and fissures, higher long-term retention rate). Apply Ultradent UltraSeal XT Plus (the sealant material stocked in the peds and adult clinics) thinly — over-application causes occlusal interference. Light cure 20s.",
  "Check occlusion with articulating paper before dismissing — sealant high on occlusion needs adjustment with a fine finishing bur.",
  ],
  phases: [
