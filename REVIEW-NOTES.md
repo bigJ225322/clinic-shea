@@ -2581,3 +2581,35 @@ User clarified UIC predoctoral clinical scope:
 - Tests: 1021/1021 throughout
 - Polish-audit agent for content quality still running in background
 
+
+### Iter 37 FINAL — 10 commits, all live
+
+After agent audit results, addressed top-priority findings:
+- **High-confidence polish (commit `dc62508`):**
+  - perio-srp description sentence fragment fixed
+  - pedo-anterior-crown-selection lowercase sentence start fixed
+  - perio-prophy Cavitron-with-Isodry added (Swade-norm consistency)
+  - perio-acute-abscess PCN allergy + clindamycin downgrade added
+- **CDT-code backfill (commits `e1be0f8`, `ca4583c`):**
+  - perio-crown-lengthening: D4249 + D4210/D4211 + graft adjunct codes
+  - perio-gingival-graft: D4277/D4278 (FGG) + D4273/D4283 (CTG) + D4275 (non-autogenous)
+  - perio-acute-abscess: D7510 (I&D), D0140 (limited eval), D4341/D4342 SRP follow-up
+- **Cost-figure cleanup (commit `6e6e886`):**
+  - dir-bruxer-management: removed $300-500 / $150 figures (verdict-first violation), replaced with D9944 CDT + Axium fee-schedule reference
+
+### Iter 37 GRAND TOTAL: 10 commits, ~95 UIC-scope pathways total
+
+Iter 37 commits chronological:
+1. `d926e4d` — Remove dir-vital-bleaching (not UIC)
+2. `781eac8` — Add cd-adjustment + cd-reline-lab
+3. `1b882f4` — Collapse 3 rpd-broken-* / repair-rpd-* duplicate pairs
+4. `d6a7e09` — Add perio-coe (adult comprehensive exam)
+5. `cefaaa4` — Add rpd-reline pathway
+6. `3342b24` — REVIEW-NOTES iter 37 progress
+7. `dc62508` — 4 high-confidence polish fixes
+8. `e1be0f8` — CDT codes in perio surgical pathways
+9. `ca4583c` — CDT codes in perio-acute-abscess
+10. `6e6e886` — dir-bruxer-management cost cleanup
+
+Tests: 1021/1021 throughout. Build: clean. All live on Vercel.
+
