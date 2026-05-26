@@ -22980,6 +22980,7 @@ const PATHWAYS = [
  "Material: e.max for moderate load; zirconia for heavy occlusal load.",
  "Adhesive cementation — the bond holds the cusps together against masticatory force.",
  "Recommend nightguard if grinding is suspected even if not confirmed.",
+ "CDT codes (onlay): D2642 (porc/cer 2-surface) / D2643 (3-surface) / D2644 (4+ surface). Crown alternative: D2740 (porcelain/ceramic) or D2750 (PFM high noble). If a nightguard is added: D9944 + I9002.",
  ],
  phases: [
  { label: "Workflow + onlay specifics", count: 2 },
@@ -23084,6 +23085,7 @@ const PATHWAYS = [
  "Adhesive cementation for ceramic (HF + silane + bond + resin cement); conventional cement for gold.",
  "Verify proximal contact engagement with floss before final cure.",
  "Don't proceed if a crack line is detected during prep — convert to onlay or full crown.",
+ "CDT codes (inlay): D2610 (porc/cer 1-surface) / D2620 (2-surface) / D2630 (3+ surface). Cast metal alternative: D2510 (1-surface) / D2520 (2-surface) / D2530 (3+ surface). Per-step subcodes A/B/C in digital workflows.",
  ],
  phases: [
  { label: "Workflow choice", count: 2 },
