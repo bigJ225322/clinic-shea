@@ -5461,6 +5461,40 @@ function parseLabPlaceholders(body) {
  const text = m[1];
  if (seen.has(text)) continue;
  let type, options;
+ // ── Suppression rules run BEFORE type-detection so they take
+ // precedence over the slash-separated dropdown rule (which would
+ // otherwise eat anything containing " / ").
+ // ────────────────────────────────────────────────────────────────
+ if (/^\s*\d+G\s+\d+\s*mm\s*\/\s*\d+G\s+\d+\s*mm\s*$/.test(text)) {
+ // Needle-gauge bracket "[ 30G 25mm / 27G 35 mm ]" — appears in every
+ // template that includes the "Applied 20% topical benzocaine" sentence.
+ // The Anesthetic section is the canonical needle picker: it writes to
+ // fields.injections[].needle, and renderTemplate rebuilds the entire
+ // anesthetic sentence (including the gauge) when the user picks an
+ // injection technique. Surfacing the bracket here as a dropdown gives
+ // a redundant input that doesn't even feed the same code path.
+ continue;
+ }
+ if (text === "Name" || text === "Student Name" || text === "Instructor") {
+ // Names are filled by the dedicated Names field at the bottom of the
+ // form (or, for urgent-care consults, by the consultations array in
+ // f.examFindings). The bracket-form picker would either duplicate
+ // the Names field or write to the wrong code path. Skip.
+ continue;
+ }
+ if (text === "color" || text === "contour" || text === "consistency") {
+ // Perio templates use "[color], [contour], [consistency] gingiva"
+ // and the EXAM_FINDINGS_CONFIG already exposes a dedicated
+ // gingiva-dropdowns triple (renderTemplate substitutes from
+ // ef["gingival color"] / "gingival contour" / "gingival consistency").
+ // Suppress here so we don't render duplicate text inputs.
+ continue;
+ }
+ if (text === "Posterior tooth mold" && hasAnteriorMould) {
+ // Suppressed — auto-populated by the [Anterior tooth mold] picker
+ // (which emits both anterior and posterior mould codes).
+ continue;
+ }
  if (/\s\/\s/.test(text)) {
  // Slash-separated: "Straumann / Nobel / Dentsply EV". Split only on
  // WHITESPACE-padded slashes so embedded brand syntax like
@@ -5489,35 +5523,6 @@ function parseLabPlaceholders(body) {
  // student picks Maxillary or Mandibular and the abbreviation
  // (M / D) substitutes correctly.
  type = "arch";
- } else if (text === "Name") {
- // Urgent care template has 3x "Dr. [Name] -- {type} consult:" lines.
- // The consultations block is rebuilt from f.examFindings.consultations
- // (see renderTemplate consultations handler), so a single shared
- // bracket-form input would write the same name to all three. Skip.
- continue;
- } else if (/^\s*\d+G\s+\d+\s*mm\s*\/\s*\d+G\s+\d+\s*mm\s*$/.test(text)) {
- // Needle-gauge bracket "[ 30G 25mm / 27G 35 mm ]" — appears in every
- // template that includes the "Applied 20% topical benzocaine" sentence.
- // The Anesthetic section is the canonical needle picker: it writes to
- // fields.injections[].needle, and renderTemplate rebuilds the entire
- // anesthetic sentence (including the gauge) when the user picks an
- // injection technique. Surfacing the bracket here as a dropdown gives
- // a redundant input that doesn't even feed the same code path.
- continue;
- } else if (text === "Student Name" || text === "Instructor") {
- // Peds templates end with "- [Student Name] / Dr. [Instructor]" —
- // those are filled by the Names field at the bottom of the form,
- // not by this bracket-picker stack. Suppress them here so non-lab
- // templates can still surface the rest of their bracket pickers
- // (e.g. peds needle-gauge "[ 30G 25mm / 27G 35 mm ]").
- continue;
- } else if (text === "color" || text === "contour" || text === "consistency") {
- // Perio templates use "[color], [contour], [consistency] gingiva"
- // and the EXAM_FINDINGS_CONFIG already exposes a dedicated
- // gingiva-dropdowns triple (renderTemplate substitutes from
- // ef["gingival color"] / "gingival contour" / "gingival consistency").
- // Suppress here so we don't render duplicate text inputs.
- continue;
  } else if (text === "Anterior tooth mold") {
  // Render the full Tooth Mould Picker inline. Its Apply button
  // emits both anterior and posterior mould codes — the
@@ -5525,14 +5530,11 @@ function parseLabPlaceholders(body) {
  // below and auto-filled by the same picker.
  type = "tooth-mould";
  } else if (text === "Posterior tooth mold") {
- if (hasAnteriorMould) {
- // Suppressed — auto-populated by the [Anterior tooth mold]
- // picker above.
- continue;
- }
- // Standalone posterior mould (lab-ii-rpd: patient keeps natural
- // anteriors; only the posteriors are being replaced). Render the
- // same Tooth Mould Picker but write only to this key.
+ // (When hasAnteriorMould is true, the top-of-loop suppression
+ // already skipped this. Reaching here means standalone posterior
+ // mould — lab-ii-rpd: patient keeps natural anteriors and only
+ // posteriors are replaced. Render the full Tooth Mould Picker
+ // but write only to this key.)
  type = "tooth-mould-posterior-only";
  } else if (text === "Trubyte shade") {
  // Trubyte Bioform / Portrait IPN denture-tooth shade. Dropdown
