@@ -6427,7 +6427,7 @@ function AgeInput({ value, onChange, peds }) {
 
  if (peds) {
  return (
- <Select value={value} onChange={onChange} prominent>
+ <Select value={value || ""} onChange={onChange} prominent>
  <option value="">— Age —</option>
  {Array.from({ length: 17 }, (_, i) => i + 1).map(n => (
  <option key={n} value={String(n)}>{n}</option>
@@ -6444,7 +6444,7 @@ function AgeInput({ value, onChange, peds }) {
  const over89 = value && parseInt(value, 10) > 89;
  return (
  <>
- <input type="text" inputMode="numeric" value={value} placeholder="e.g. 42"
+ <input type="text" inputMode="numeric" value={value || ""} placeholder="e.g. 42"
  onChange={(e) => handleChange(e.target.value)}
  onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
  style={{...inputStyle,
@@ -7849,7 +7849,12 @@ function OdontogramField({ value, onChange, placeholder, bullet = "-", seedOnFoc
  const start = el.selectionStart;
  const end = el.selectionEnd;
  const insert = `\n${bullet} `;
- const next = value.slice(0, start) + insert + value.slice(end);
+ // Guard against value being undefined on first render (the seed-on-focus
+ // effect at line 7838 may not have populated it yet) — without this
+ // guard, hitting Enter before the seed lands throws
+ // "Cannot read properties of undefined (reading 'slice')".
+ const safeValue = value || "";
+ const next = safeValue.slice(0, start) + insert + safeValue.slice(end);
  onChange(next);
  // Restore caret position after React commits the new value.
  requestAnimationFrame(() => {
@@ -7861,7 +7866,7 @@ function OdontogramField({ value, onChange, placeholder, bullet = "-", seedOnFoc
  };
 
  return (
- <textarea ref={ref} value={value}
+ <textarea ref={ref} value={value || ""}
  placeholder={placeholder}
  onFocus={handleFocus}
  onChange={(e) => {
@@ -9056,7 +9061,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  </div>
 )}
  {field.type === "textarea"? (
- <textarea value={value} onChange={onChange}
+ <textarea value={value || ""} onChange={onChange}
  placeholder={field.placeholder} rows={1}
  style={{
 ...inputStyle,
@@ -9064,7 +9069,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  fontFamily: "'Geist', sans-serif", fontSize: "13px",
  }} />
 ): field.type === "select"? (
- <select value={value} onChange={onChange}
+ <select value={value || ""} onChange={onChange}
  style={{...inputStyle, fontSize: "13px" }}>
  {field.options.map(opt => (
  <option key={opt} value={opt}>
@@ -9090,7 +9095,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  onChange={(v) => update(field.label, v)} />
 ): (
  <>
- <input type="text" value={value}
+ <input type="text" value={value || ""}
  onChange={e => update(field.label, e.target.value)}
  placeholder={field.placeholder}
  style={{...inputStyle, fontSize: "13px" }} />
@@ -10294,7 +10299,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <AgeInput value={fields.age} onChange={v=>setField("age",v)} peds={isClinicPeds} />
  </Field>
  <Field label="Gender">
- <Select value={fields.gender} onChange={v=>setField("gender",v)}>
+ <Select value={fields.gender || ""} onChange={v=>setField("gender",v)}>
  <option value="">—</option>
  <option value="male">male</option>
  <option value="female">female</option>
@@ -10304,7 +10309,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
 )}
  {!isLabScript &&!isClinicPeds &&!isClinicChicago && procedureId!== "273" && (
  <Field label="Clinic">
- <Select value={fields.clinic} onChange={v=>setField("clinic",v)}>
+ <Select value={fields.clinic || ""} onChange={v=>setField("clinic",v)}>
  <option value="">— Select a clinic —</option>
  <option value="Gershwin">Gershwin</option>
  <option value="Vivaldi">Vivaldi</option>
@@ -10752,7 +10757,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
 )}
  {needsBrushing && (
  <Field label="Brushing">
- <Select value={fields.brushing} onChange={v => setField("brushing", v)}>
+ <Select value={fields.brushing || "2x a day"} onChange={v => setField("brushing", v)}>
  <option value="2x a day">2x a day</option>
  <option value="1x a day">1x a day</option>
  <option value="3x a day">3x a day</option>
@@ -10762,7 +10767,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
 )}
  {needsFlossing && (
  <Field label="Flossing">
- <Select value={fields.flossing} onChange={v => setField("flossing", v)}>
+ <Select value={fields.flossing || "1x a day"} onChange={v => setField("flossing", v)}>
  <option value="1x a day">1x a day</option>
  <option value="2-3 times per week">2-3 times per week</option>
  <option value="3-4 times per week">3-4 times per week</option>
@@ -23831,13 +23836,13 @@ const PATHWAYS = [
  {
  id: "cd-iid",
  domain: "cd",
- label: "Needs remaining teeth extracted before CD (CID)",
- description: "Most common CD scenario. Patient has anteriors still present (and often posteriors with poor prognosis); the surgeon extracts at the same visit as denture insertion. The prosthesis is fabricated before extraction using a cast prepared with the to-be-extracted teeth filed off the cast — so the immediate denture has the right tissue contour but no try-in over the actual ridge is possible. Plan tissue conditioning at 2–4 weeks (Coe-Comfort / Coe-Soft) and a hard lab reline at 3–6 months as the ridge remodels.",
+ label: "Needs remaining teeth extracted before CD (IID — Immediate Denture)",
+ description: "Most common CD scenario. Patient has anteriors still present (and often posteriors with poor prognosis); the surgeon extracts at the same visit as denture insertion. The prosthesis is fabricated before extraction using a cast prepared with the to-be-extracted teeth filed off the cast — so the immediate denture has the right tissue contour but no try-in over the actual ridge is possible. Plan tissue conditioning at 2–4 weeks (Coe-Comfort — the tissue conditioner) and a hard lab reline at 3–6 months as the ridge remodels.",
  keyDecisions: [
  "Pre-extraction records + diagnostic impression include the to-be-extracted teeth.",
  "Cast is modified pre-processing: teeth trimmed off, alveolus contoured by the lab.",
  "Patient leaves the surgical visit with the denture in place.",
- "Tissue conditioning at 2–4 weeks (Coe-Comfort / Coe-Soft, not a hard reline yet — the tissue is still healing); hard lab reline at 3–6 months as ridge remodels.",
+ "Tissue conditioning at 2–4 weeks with Coe-Comfort (the GC America tissue conditioner — soft, short-term, replaced every 2-4 weeks); NOT Coe-Soft (the long-term soft reline material — wrong scope at this stage, the tissue is still healing). Hard lab reline (GC Reline or equivalent) at 3–6 months as ridge remodels.",
  "Counsel patient on diet (soft for first 2 weeks) and immediate post-op care.",
  "CDT codes: D5130 (Immediate denture, maxillary) / D5140 (Immediate denture, mandibular) — this is the conventional immediate denture, which is the patient's long-term prosthesis. Tissue conditioning at 2-4 weeks bills D5850 (max) / D5851 (mand). Hard lab reline at 3-6 months bills D5750 (max) / D5751 (mand). For an interim transitional appliance instead (replaced later by definitive CD), use D5810/D5811 — that's a different scope of treatment. Extractions are billed separately by the surgeon: D7140 (simple) per tooth, or D7210 (surgical) per tooth as appropriate.",
  ],
