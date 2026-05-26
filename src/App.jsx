@@ -5442,6 +5442,10 @@ function parseLabPlaceholders(body) {
  options = text.split(/\s+or\s+/).map(s => s.trim()).filter(Boolean);
  } else if (text === "A2") {
  type = "shade";
+ } else if (text === "gingival shade") {
+ // Trubyte gingival shade picker — used by the complete-dentures
+ // and (eventually) reline lab Rxs to spec the acrylic flange shade.
+ type = "gingival-shade";
  } else if (text === "tooth") {
  type = "tooth";
  } else if (text === "Implant Diameter") {
@@ -5571,6 +5575,10 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  <ShadeInput value={values[p.key] || ""}
  onChange={v => onChange(p.key, v)}
  compact />
+ )}
+ {p.type === "gingival-shade" && (
+ <GingivalShadeInput value={values[p.key] || ""}
+ onChange={v => onChange(p.key, v)} />
  )}
  {p.type === "tooth" && (
  <TextInput value={values[p.key] || ""}
