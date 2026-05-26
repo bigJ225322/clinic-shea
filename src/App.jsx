@@ -2490,6 +2490,12 @@ function flattenCategory(cat) {
 // substituting #N and A2 placeholders) and pasted into Axium's Labs > Details
 // field. Inserted right after Restorative in the dropdown order.
 // Excludes misc (Axium workflows / lookup references — no notes there).
+//
+// Within each category, procedures that have no TEMPLATES body are dropped —
+// the note builder has nothing to render for them. The lab category, in
+// particular, includes a "Workflow" group (How to Submit a Lab Script, Tooth
+// Requisition, Lab Turn-Around Time) that lives in the Steps tab nav but
+// has no Rx text, so those entries get filtered out here.
 const FLAT_CATEGORIES = (() => {
  const ordered = [];
  for (const cat of CATEGORIES) {
@@ -2500,7 +2506,18 @@ const FLAT_CATEGORIES = (() => {
  if (lab) ordered.push(lab);
  }
  }
- return ordered.map(flattenCategory);
+ return ordered
+.map(cat => ({
+...cat,
+ groups: cat.groups
+.map(grp => ({
+...grp,
+ procedures: grp.procedures.filter(p => TEMPLATES[p.id]),
+ }))
+.filter(grp => grp.procedures.length > 0),
+ }))
+.filter(cat => cat.groups.length > 0)
+.map(flattenCategory);
 })();
 
 // Browse tab: every category. Lab Scripts used to be filtered out because the
