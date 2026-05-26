@@ -21525,14 +21525,14 @@ function Guides() {
 const PATHWAY_DOMAINS = [
  { id: "direct", label: "Direct" },
  { id: "indirect", label: "Indirect" },
- { id: "endo", label: "Endodontics" },
- { id: "surgery", label: "Oral Surgery" },
+ { id: "endo", label: "Endo" },
+ { id: "surgery", label: "OS" },
  { id: "perio", label: "Perio" },
  { id: "pedo", label: "Pediatrics" },
  { id: "rpd", label: "RPD" },
  { id: "cd", label: "CD" },
  { id: "cross", label: "Cross-disciplinary" },
- { id: "repair", label: "Repair situations" },
+ { id: "repair", label: "Repair" },
  { id: "ref", label: "Ref" },
 ];
 
