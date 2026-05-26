@@ -22667,6 +22667,7 @@ const PATHWAYS = [
  "Verify all rests seat and clasps engage at framework try-in.",
  "Wax try-in evaluates tooth setup esthetics + occlusion before processing.",
  "Faculty checks the design form before lab Rx submission.",
+ "CDT codes: D5213 (maxillary cast-metal RPD) / D5214 (mandibular). Per-step subcodes A (final impression) / B (framework try-in) / C (wax try-in) / D (delivery). Survey crowns billed separately as D2750 per crown.",
  ],
  phases: [
  { label: "Records & planning", count: 3 },
@@ -23257,6 +23258,7 @@ const PATHWAYS = [
  "Major connector: A-P palatal strap is the engine's default for Kennedy IV — provides anterior + posterior bracing across the palate without the bulk of full coverage. (Full palatal plate is scoped exclusively to Class I per McCracken; Class IV doesn't get auto-routed there.)",
  "Modified ridge-lap pontic; verify floss passes cleanly.",
  "7 esthetic parameters checked at wax try-in before processing — last reversible moment.",
+ "CDT codes: D5213 (max cast-metal RPD — Class IV is almost always maxillary) with per-step subcodes A/B/C/D. If the patient declined an FPD or implant, document the alternative treatment options in the consent — alternative codes would have been D6240/D6750 (FPD) or D6010 + D6058 + D6065 (implant + abutment + crown).",
  ],
  phases: [
  { label: "Records & planning", count: 4 },
