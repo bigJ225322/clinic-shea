@@ -10271,6 +10271,12 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  highlighted placeholders that the Steps tab exposes. */}
  {(() => {
  if (!/\[[^\]]+\]/.test(rawTemplate)) return null;
+ // Bridge scripts (lab-bridge, lab-bridge-cast, lab-porcelain) opt
+ // out of the "Customize this Rx" form — their only bracket is the
+ // [##-##] span, which the student can edit faster directly in the
+ // rendered Rx than via two chart-style pickers above it.
+ const BRIDGE_LAB_IDS = new Set(["lab-bridge", "lab-bridge-cast", "lab-porcelain"]);
+ if (BRIDGE_LAB_IDS.has(procedureId)) return null;
  return (
  <LabPlaceholderInputs
  rawTemplate={rawTemplate}
