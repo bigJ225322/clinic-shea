@@ -1773,12 +1773,16 @@ function pickRestSeat({ tooth, isDE, sideToward, arch }) {
  };
  }
  if (isCanine) {
- // Mandibular canines: ML ball rest (cingulum too flat for positive stop).
- // Maxillary canines: cingulum rest (cingulum anatomically adequate).
+ // Mandibular canines: ball rest on the side facing the span (cingulum
+ // too flat for positive stop). When #22 faces a distal gap the rest
+ // goes on the DL line angle; when #27 faces a mesial gap the rest
+ // goes on the ML line angle.
+ // Maxillary canines: cingulum rest on the side facing the span.
  if (arch === "mandibular") {
+ const surface = sideToward === "mesial" ? "mesio-lingual" : "disto-lingual";
  return {
- surface: "mesio-lingual", type: "ball", bur: "inverted cone",
- dimensions: "1.5 mm diameter hemispherical depression on mesio-lingual line angle; positioned at mesial 1/3 of lingual surface above cingulum",
+ surface, type: "ball", bur: "inverted cone",
+ dimensions: `1.5 mm diameter hemispherical depression on ${surface} line angle; positioned at ${sideToward} 1/3 of lingual surface above cingulum`,
  };
  }
  return {
@@ -1788,14 +1792,15 @@ function pickRestSeat({ tooth, isDE, sideToward, arch }) {
  }
  // Other anteriors (incisors as bounding abutments — rare).
  // Mandibular incisors lack a prominent cingulum, so a cingulum rest is
- // unreliable — switch to ML ball rest (same approach used elsewhere for
- // mand anteriors at lines 1001, 1352, 1445, 2205). For maxillary
- // incisors, cingulum rest works because the cingulum is anatomically
- // adequate.
+ // unreliable — switch to ball rest on the side facing the span (same
+ // approach used elsewhere for mand anteriors at lines 1001, 1352, 1445,
+ // 2205). For maxillary incisors, cingulum rest works because the
+ // cingulum is anatomically adequate.
  if (arch === "mandibular") {
+ const surface = sideToward === "mesial" ? "mesio-lingual" : "disto-lingual";
  return {
- surface: "mesio-lingual", type: "ball", bur: "inverted cone",
- dimensions: "1.5 mm diameter hemispherical depression on mesio-lingual line angle; positioned at mesial 1/3 of lingual surface above cingulum (mandibular incisor cingulum is too flat for a positive cingulum rest stop)",
+ surface, type: "ball", bur: "inverted cone",
+ dimensions: `1.5 mm diameter hemispherical depression on ${surface} line angle; positioned at ${sideToward} 1/3 of lingual surface above cingulum (mandibular incisor cingulum is too flat for a positive cingulum rest stop)`,
  };
  }
  return {
@@ -1881,6 +1886,12 @@ function pickClaspMechanic({
 }) {
  const isDE = (span.type === "distal-extension");
  const inEsthetic = RPD_ESTHETIC_ZONE.has(tooth);
+ // Derive arch from tooth number (1-16 maxillary, 17-32 mandibular).
+ // Used to choose "palatal" vs "lingual" wording for the reciprocal arm.
+ // Without this, every reciprocation read "Cast lingual reciprocal arm"
+ // even for maxillary teeth — which surveys palatal in UIC's convention.
+ const toothNum = parseInt(tooth, 10);
+ const reciprocalSurface = (toothNum >= 1 && toothNum <= 16) ? "palatal" : "lingual";
 
  // ── DE branch ────────────────────────────────────────────────────────
  if (isDE) {
@@ -1903,7 +1914,7 @@ function pickClaspMechanic({
  claspType: "Combination",
  claspRationale: `${RPD_RATIONALE.clasp["Combination"]} (${claspContras[0].text})`,
  retentiveArm: "18ga wrought wire retentive arm engaging 0.02\" mesio-buccal undercut",
- reciprocation: { type: "arm", text: "Cast lingual reciprocal arm", rationale: RPD_RATIONALE.reciprocation.arm },
+ reciprocation: { type: "arm", text: `Cast ${reciprocalSurface} reciprocal arm`, rationale: RPD_RATIONALE.reciprocation.arm },
  claspTier: "strong",
  claspAlternative: null,
  claspAlternativeRationale: null,
@@ -1928,7 +1939,17 @@ function pickClaspMechanic({
  // path didn't catch it.
  const isMandIncisor = RPD_MAND_INCISORS.has(tooth);
  const isMaxLateral = tooth === 7 || tooth === 10;
- const tooSmallForIBar = isMandIncisor || isMaxLateral;
+ // Mandibular canines (#22, #27): routinely lack a strong labial buccal
+ // undercut and have short interproximal gingival height — Retainers
+ // lecture defaults mand canines to Rest Only with cingulum / ML ball,
+ // NOT I-bar esthetic. Only allow I-bar on a mand canine if the user
+ // explicitly set a mid-buccal or mesio-buccal undercut (positive
+ // indication, not the engine guessing).
+ const isMandCanine = tooth === 22 || tooth === 27;
+ const mandCanineHasUsableBuccalUndercut =
+ isMandCanine && (userUndercut === "mid-buccal" || userUndercut === "mesio-buccal");
+ const tooSmallForIBar = isMandIncisor || isMaxLateral ||
+ (isMandCanine && !mandCanineHasUsableBuccalUndercut);
  const useEstheticIBar = inEsthetic && claspContras.length === 0
  && userUndercut !== "disto-buccal" && userUndercut !== "none"
  && !tooSmallForIBar;
@@ -1951,9 +1972,16 @@ function pickClaspMechanic({
  // Design Case I where #6 and #11 had Rest Only on max canines, and
  // McCracken's general approach for small anterior abutments.
  if (tooSmallForIBar && inEsthetic) {
+ const toothLabel = isMandIncisor ? "Mandibular incisor"
+ : isMaxLateral ? "Maxillary lateral incisor"
+ : isMandCanine ? "Mandibular canine"
+ : "Anterior tooth";
+ const rationaleDetail = isMandCanine
+ ? "lacks a strong labial buccal undercut and the interproximal gingival height is short — Retainers lecture defaults mand canines to Rest Only with cingulum/ML ball, not I-bar esthetic. If the survey shows a measurable mid-buccal or mesio-buccal undercut, set userUndercut to that value to allow an esthetic I-bar."
+ : "anatomy (small crown, narrow B-L width, short single root, minimal usable buccal undercut depth) cannot support an I-bar (esthetic) clasp";
  return {
  claspType: "Rest Only (no clasp)",
- claspRationale: `${isMandIncisor ? "Mandibular incisor" : "Maxillary lateral incisor"} anatomy (small crown, narrow B-L width, short single root, minimal usable buccal undercut depth) cannot support an I-bar (esthetic) clasp. Rest-only design is the only anatomically-appropriate choice; cross-arch retention must come from posterior clasps and bracing via the major connector contact.`,
+ claspRationale: `${toothLabel} ${rationaleDetail}. Rest-only design is the anatomically-appropriate choice; cross-arch retention must come from posterior clasps and bracing via the major connector contact.`,
  retentiveArm: "None — major connector contact provides bracing; retention via posterior clasps",
  reciprocation: null,
  claspTier: "common",
@@ -1983,7 +2011,7 @@ function pickClaspMechanic({
  retentiveArm: `Cast retentive arm engaging 0.01" ${userUndercut} undercut`,
  reciprocation: {
  type: "arm",
- text: userUndercut === "disto-lingual" ? "Cast buccal reciprocal arm": "Cast lingual reciprocal arm",
+ text: userUndercut === "disto-lingual" ? "Cast buccal reciprocal arm": `Cast ${reciprocalSurface} reciprocal arm`,
  rationale: RPD_RATIONALE.reciprocation.arm,
  },
  claspTier: inScope ? "common": "judgment",
@@ -2007,7 +2035,7 @@ function pickClaspMechanic({
  retentiveArm: `Cast circumferential retentive arm engaging 0.01" ${effectiveUndercut} undercut`,
  reciprocation: {
  type: "arm",
- text: isLingualUndercutAkers ? "Cast buccal reciprocal arm" : "Cast lingual reciprocal arm",
+ text: isLingualUndercutAkers ? "Cast buccal reciprocal arm" : `Cast ${reciprocalSurface} reciprocal arm`,
  rationale: RPD_RATIONALE.reciprocation.arm,
  },
  claspTier: "strong",
