@@ -21835,7 +21835,7 @@ const GUIDES = [
  tagline: "What the lab does between your appointments, in lab-workflow sequence. Useful when you want to do these steps yourself, when you need to evaluate what the lab returned, or when something goes wrong and you need to know why.",
  chapters: [
  { id: "ind-ch17", num: 17, title: "Dental stones", stub: true },
- { id: "ind-ch18", num: 18, title: "Mounting on Mark 320 / Whip Mix 8500", stub: true },
+ { id: "ind-ch18", num: 18, title: "Mounting on Denar Mark 320 (UIC standard articulator)", stub: true },
  { id: "ind-ch19", num: 19, title: "Die trimming", stub: true },
  { id: "ind-ch20", num: 20, title: "Wax-up + lost-wax casting", stub: true },
  { id: "ind-ch21", num: 21, title: "Porcelain application, characterization, bisque bake", stub: true },
@@ -21875,7 +21875,7 @@ const GUIDES = [
  { id: "cd-ch4", num: 4, title: "Final PVS impression", stub: true },
  { id: "cd-ch5", num: 5, title: "Boxing & pouring", stub: true },
  { id: "cd-ch6", num: 6, title: "Face-bow (edentulous)", stub: true },
- { id: "cd-ch7", num: 7, title: "Mounting on Mark 320", stub: true },
+ { id: "cd-ch7", num: 7, title: "Mounting on Denar Mark 320", stub: true },
  { id: "cd-ch8", num: 8, title: "VDO determination — phonetics + face measurement + speaking space", stub: true },
  { id: "cd-ch9", num: 9, title: "CR registration — bimanual Dawson + record bases + bite registration material", stub: true },
  { id: "cd-ch10", num: 10, title: "Tooth selection — mold, shade, gingival shade, anterior + posterior set-up criteria", stub: true },
@@ -21908,7 +21908,7 @@ const GUIDES = [
  tagline: "Procedural deep-dives covering mounting, surveying, custom tray, survey-crown prep specifics, PIP + Mizzy, and the occlusal adjustment sequence. For active clinic use, the RPD Design Helper builds the design directly from case inputs and the RPD pathways in the Cases tab carry the appointment-by-appointment workflow.",
  chapters: [
  { id: "rpd-ch1", num: 1, title: "Facebow record (Denar — partially edentulous)", stub: true },
- { id: "rpd-ch2", num: 2, title: "Mount diagnostic casts (Denar 320)", stub: true },
+ { id: "rpd-ch2", num: 2, title: "Mount diagnostic casts (Denar Mark 320)", stub: true },
  { id: "rpd-ch3", num: 3, title: "How to survey a cast", stub: true },
  { id: "rpd-ch4", num: 4, title: "Custom tray fabrication", stub: true },
  { id: "rpd-ch5", num: 5, title: "Single-step final impression (tooth-supported, no altered cast)", stub: true },
