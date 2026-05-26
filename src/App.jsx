@@ -105,9 +105,9 @@ const TEMPLATES = {
  // Tooth + shade substitution works for single-tooth cases. Bridge spans and
  // RPD designs use [bracket] placeholders — students fill those in manually.
  "lab-pfm": "Please pour impression & fabricate PFM crown for #30 using high-noble alloy.\nOcclusal and interproximal contacts should be in porcelain.\n1-2 mm metal collar on the lingual margin, no metal collar on the buccal margin.\nShade A2.\nThank you.",
- "lab-implant-cast": "Please pour final impression & create soft tissue cast for implant-supported crown, #30.\nImplant replica is provided for [Straumann / Nobel / Dentsply EV] Implant diameter [4.8] mm.\nPlease return working cast for mount.\nThank you.",
- "lab-abutment": "Please fabricate an Atlantis custom abutment for [Straumann / Nobel / Dentsply EV] Implant diameter [4.8] mm for #30.\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown]\nThank you.",
- "lab-implant-crown": "Please fabricate all-ceramic emax CAD/CAM crown (lithium disilicate) for site #30 ([Straumann / Nobel / Dentsply EV] [4.8] mm): Shade LT A2. Please crystallize and return it for delivery. Thank you.",
+ "lab-implant-cast": "Please pour final impression & create soft tissue cast for implant-supported crown, #30.\nImplant replica is provided for [Straumann / Nobel / Dentsply EV] Implant diameter [Implant Diameter] mm.\nPlease return working cast for mount.\nThank you.",
+ "lab-abutment": "Please fabricate an Atlantis custom abutment for [Straumann / Nobel / Dentsply EV] Implant diameter [Implant Diameter] mm for #30.\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown]\nThank you.",
+ "lab-implant-crown": "Please fabricate all-ceramic emax CAD/CAM crown (lithium disilicate) for site #30 ([Straumann / Nobel / Dentsply EV] [Implant Diameter] mm): Shade LT A2. Please crystallize and return it for delivery. Thank you.",
  "lab-bridge-cast": "Please pour impression for PFM bridge from [##-##].\nPlease section dies & return working cast for mounting.\nThank you.",
  "lab-bridge": "Please fabricate PFM bridge from [##-##] using high-noble alloy.\nOcclusal and interproximal contacts should be in porcelain.\n2-3 mm metal collar on the lingual margins, no metal collar on the buccal margins.\nModified ridge lap pontic design.\nPlease return metal framework for try-in.\nThank you.",
  "lab-porcelain": "Please apply porcelain to metal framework for PFM bridge from [##-##].\nShade A2.\nThank you.",
@@ -3136,7 +3136,7 @@ const REF_DATA = {
  blocks: [
  { type: "script",
  caption: "Lab Rx",
- body: "Please pour final impression & create soft tissue cast for implant-supported crown, #[tooth].\nImplant replica is provided for [Straumann / Nobel / Dentsply EV] Implant diameter [4.8] mm.\nPlease return working cast for mount.\nThank you.",
+ body: "Please pour final impression & create soft tissue cast for implant-supported crown, #[tooth].\nImplant replica is provided for [Straumann / Nobel / Dentsply EV] Implant diameter [Implant Diameter] mm.\nPlease return working cast for mount.\nThank you.",
  note: "Pick one brand from the bracket and confirm the diameter from your implant chart." },
  { type: "cards", caption: "What to send with this Rx", cards: [
  { title: "Supplements", rows: [
@@ -3157,7 +3157,7 @@ const REF_DATA = {
  blocks: [
  { type: "script",
  caption: "Lab Rx",
- body: "Please fabricate an Atlantis custom abutment for [Straumann / Nobel / Dentsply EV] Implant diameter [4.8] mm for #[tooth].\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown]\nThank you.",
+ body: "Please fabricate an Atlantis custom abutment for [Straumann / Nobel / Dentsply EV] Implant diameter [Implant Diameter] mm for #[tooth].\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown]\nThank you.",
  note: "Titanium is the default for most cases; gold-hue or zirconia is selected for esthetic anteriors." },
  { type: "cards", caption: "What to send with this Rx", cards: [
  { title: "Supplements", rows: [
@@ -3177,7 +3177,7 @@ const REF_DATA = {
  blocks: [
  { type: "script",
  caption: "Lab Rx",
- body: "Please fabricate all-ceramic emax CAD/CAM crown (lithium disilicate) for site #[tooth] ([Straumann / Nobel / Dentsply EV] [4.8] mm): Shade LT [A2]. Please crystallize and return it for delivery. Thank you.",
+ body: "Please fabricate all-ceramic emax CAD/CAM crown (lithium disilicate) for site #[tooth] ([Straumann / Nobel / Dentsply EV] [Implant Diameter] mm): Shade LT [A2]. Please crystallize and return it for delivery. Thank you.",
  note: "LT (low translucency) is the default for posterior cement-retained crowns; HT is selected for esthetic anteriors." },
  { type: "cards", caption: "What to send with this Rx", cards: [
  { title: "Supplements", rows: [
@@ -5444,6 +5444,11 @@ function parseLabPlaceholders(body) {
  type = "shade";
  } else if (text === "tooth") {
  type = "tooth";
+ } else if (text === "Implant Diameter") {
+ // Implant diameter — rendered as a brand-aware dropdown by the
+ // LabPlaceholderInputs component (which knows which brand was
+ // picked in the sibling [Straumann / Nobel / Dentsply EV] field).
+ type = "implant-diameter";
  } else if (text === "##-##") {
  type = "span";
  } else if (/^\d+\s*-\s*\d+$/.test(text)) {
@@ -5615,6 +5620,26 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  <MultiToothInput value={values[p.key] || ""}
  onChange={v => onChange(p.key, v)} />
  )}
+ {p.type === "implant-diameter" && (() => {
+ // Brand-aware diameter list. If a brand was picked in a sibling
+ // placeholder ("Straumann / Nobel / Dentsply EV"), narrow to
+ // that brand's clinical lineup; otherwise show the union.
+ const brand = values["Straumann / Nobel / Dentsply EV"] || "";
+ const DIAM_BY_BRAND = {
+ "Straumann": ["3.0", "3.3", "4.1", "4.8", "6.5"],
+ "Nobel": ["3.0", "3.5", "4.3", "5.0", "6.0"],
+ "Dentsply EV": ["3.0", "3.6", "4.2", "4.8", "5.4"],
+ };
+ const opts = DIAM_BY_BRAND[brand] || ["3.0", "3.3", "3.5", "3.6", "4.0", "4.1", "4.2", "4.3", "4.5", "4.8", "5.0", "5.4", "6.0", "6.5"];
+ return (
+ <select value={values[p.key] || ""}
+ onChange={e => onChange(p.key, e.target.value)}
+ style={selectStyle}>
+ <option value="">— select mm —</option>
+ {opts.map(d => <option key={d} value={d}>{d} mm</option>)}
+ </select>
+ );
+ })()}
  {(p.type === "number" || p.type === "text") && (
  <TextInput value={values[p.key] || ""}
  onChange={v => onChange(p.key, v)}
