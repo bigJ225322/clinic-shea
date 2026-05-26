@@ -24574,7 +24574,7 @@ const PATHWAYS = [
  "Bone removal: 702 surgical bur with copious sterile saline irrigation. Remove buccal plate to expose the cervical third of the root only — preserve as much bone as possible for future restoration.",
  "Sectioning: through the furcation for multi-rooted teeth; vertical through the long axis for single-rooted teeth. Use a periotome / luxator to mobilize each fragment, then elevate.",
  "Socket management: thorough curettage of granulation tissue, irrigation with sterile saline, gelatin sponge or socket preservation graft (D7953 if implant is planned). Per Swade p.164: 3-0 chromic gut on a 3/8 round cutting needle (Swade's stated kit; reverse-cutting is the more common term in OS literature for tough tissue), simple interrupted; figure-8 over socket if hemostasis is incomplete.",
- "Post-op: ibuprofen 600 mg q6h scheduled × 48 hr + acetaminophen 500 mg PRN. Antibiotics only if pre-op infection or immunocompromised. Recall at 7-10 days for suture removal.",
+ "Post-op: ibuprofen 600 mg q6h scheduled × 48 hr + acetaminophen 1000 mg q6h scheduled (alternating with ibuprofen, offset by 3 hr) for breakthrough — same dosing as the acute-apical-abscess pathway. Opioids are not first-line: scheduled NSAID + APAP is more effective than codeine/oxy for dentoalveolar surgical pain. Antibiotics only if pre-op infection or immunocompromised. Recall at 7-10 days for suture removal.",
  ],
  phases: [
  { label: "Pre-op & flap", count: 2 },
