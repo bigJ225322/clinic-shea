@@ -106,7 +106,7 @@ const TEMPLATES = {
  // RPD designs use [bracket] placeholders — students fill those in manually.
  "lab-pfm": "Please pour impression & fabricate PFM crown for [tooth] using high-noble alloy.\nOcclusal and interproximal contacts should be in porcelain.\n1-2 mm metal collar on the lingual margin, no metal collar on the buccal margin.\nShade [A2].\nThank you.",
  "lab-implant-cast": "Please pour final impression & create soft tissue cast for implant-supported crown, [tooth].\nImplant replica is provided for [Straumann / Nobel / Dentsply EV] Implant diameter [Implant Diameter] mm.\nPlease return working cast for mount.\nThank you.",
- "lab-abutment": "Please fabricate an Atlantis custom abutment for [Straumann / Nobel / Dentsply EV] Implant diameter [Implant Diameter] mm for [tooth].\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown]\nThank you.",
+ "lab-abutment": "Please fabricate an Atlantis custom abutment for [tooth] ([Straumann / Nobel / Dentsply EV] Implant, [Implant Diameter] mm diameter).\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown]\nThank you.",
  "lab-implant-crown": "Please fabricate all-ceramic emax CAD/CAM crown (lithium disilicate) for site [tooth] ([Straumann / Nobel / Dentsply EV] [Implant Diameter] mm): Shade LT [A2]. Please crystallize and return it for delivery. Thank you.",
  "lab-bridge-cast": "Please pour impression for PFM bridge from [##-##].\nPlease section dies & return working cast for mounting.\nThank you.",
  "lab-bridge": "Please fabricate PFM bridge from [##-##] using high-noble alloy.\nOcclusal and interproximal contacts should be in porcelain.\n2-3 mm metal collar on the lingual margins, no metal collar on the buccal margins.\nModified ridge lap pontic design.\nPlease return metal framework for try-in.\nThank you.",
@@ -3157,7 +3157,7 @@ const REF_DATA = {
  blocks: [
  { type: "script",
  caption: "Lab Rx",
- body: "Please fabricate an Atlantis custom abutment for [Straumann / Nobel / Dentsply EV] Implant diameter [Implant Diameter] mm for #[tooth].\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown]\nThank you.",
+ body: "Please fabricate an Atlantis custom abutment for #[tooth] ([Straumann / Nobel / Dentsply EV] Implant, [Implant Diameter] mm diameter).\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown]\nThank you.",
  note: "Titanium is the default for most cases; gold-hue or zirconia is selected for esthetic anteriors." },
  { type: "cards", caption: "What to send with this Rx", cards: [
  { title: "Supplements", rows: [
@@ -5424,6 +5424,12 @@ function TextInput({ value, onChange, placeholder }) {
 // otherwise → text input (free entry; gives placeholder as hint)
 function parseLabPlaceholders(body) {
  if (!body) return [];
+ // Pre-scan: detect whether the template uses both anterior AND posterior
+ // mould placeholders. If both, the anterior picker emits both values and
+ // we suppress the posterior placeholder. If only posterior (e.g.
+ // lab-ii-rpd, where the patient keeps natural anteriors), render a
+ // mould picker that writes only to the posterior key.
+ const hasAnteriorMould = /\[Anterior tooth mold\]/.test(body);
  const matches = [...body.matchAll(/\[([^\]]+)\]/g)];
  const seen = new Map();
  for (const m of matches) {
@@ -5458,6 +5464,27 @@ function parseLabPlaceholders(body) {
  // student picks Maxillary or Mandibular and the abbreviation
  // (M / D) substitutes correctly.
  type = "arch";
+ } else if (text === "Anterior tooth mold") {
+ // Render the full Tooth Mould Picker inline. Its Apply button
+ // emits both anterior and posterior mould codes — the
+ // [Posterior tooth mold] placeholder (if present) is suppressed
+ // below and auto-filled by the same picker.
+ type = "tooth-mould";
+ } else if (text === "Posterior tooth mold") {
+ if (hasAnteriorMould) {
+ // Suppressed — auto-populated by the [Anterior tooth mold]
+ // picker above.
+ continue;
+ }
+ // Standalone posterior mould (lab-ii-rpd: patient keeps natural
+ // anteriors; only the posteriors are being replaced). Render the
+ // same Tooth Mould Picker but write only to this key.
+ type = "tooth-mould-posterior-only";
+ } else if (text === "Trubyte shade") {
+ // Trubyte Bioform / Portrait IPN denture-tooth shade. Dropdown
+ // of standard catalog shades; clinically the student picks one
+ // (the most common in UIC clinics is 81).
+ type = "trubyte-shade";
  } else if (/^Abutment(\s+\d+)?$/.test(text)) {
  // Abutment slot ("Abutment 1", "Abutment 2", ...) → single tooth
  // input. Used by lab-rpd for the wrought-wire clasp abutment
@@ -5574,11 +5601,39 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  purpose obvious). */}
  <div style={{ display: "flex", flexDirection: "column", gap: "6px",
  marginBottom: "10px" }}>
- {placeholders.map(p => (
+ {placeholders.map(p => {
+ // Tooth Mould Picker carries its own header ("Tooth Mould Picker
+ // — Portrait / Bioform IPN") that fully describes the input.
+ // Showing an "ANTERIOR TOOTH MOLD" mini-label above it just
+ // adds noise — suppress for the mould-picker types.
+ const hideLabel = p.type === "tooth-mould" || p.type === "tooth-mould-posterior-only";
+ // Friendlier display labels for noisy keys (slash-separated brand
+ // / option lists). The key itself stays as the lookup id; only
+ // the visible label is replaced.
+ const DISPLAY_LABEL = {
+ "Straumann / Nobel / Dentsply EV": "Implant brand",
+ "mandibular / maxillary": "Arch",
+ "lingual bar / palatal plate": "Major connector",
+ "titanium / gold-hue / zirconia": "Abutment material",
+ "cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown": "Planned crown",
+ "mesial / distal / cingulum": "Rest seat location",
+ "mesial / distal": "Guide plane surface",
+ "0.01\" cast clasp / 0.02\" wrought wire": "Clasp type / undercut depth",
+ "mid-buccal / MB / DB / ML / DL": "Undercut location",
+ "buccal / lingual": "HOC surface",
+ "##-##": "Bridge span",
+ "A2": "Shade",
+ "gingival shade": "Gingival shade",
+ "Implant Diameter": "Implant diameter",
+ };
+ const labelText = DISPLAY_LABEL[p.key] || p.key;
+ return (
  <div key={p.key} style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+ {!hideLabel && (
  <label style={{ fontSize: "10px", color: "var(--ink-faint)",
  letterSpacing: "0.04em", textTransform: "uppercase",
- fontFamily: "'Geist', sans-serif" }}>{p.key}</label>
+ fontFamily: "'Geist', sans-serif" }}>{labelText}</label>
+ )}
  {p.type === "dropdown" && (
  <select value={values[p.key] || ""}
  onChange={e => onChange(p.key, e.target.value)}
@@ -5690,13 +5745,52 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  </select>
  );
  })()}
+ {p.type === "tooth-mould" && (
+ // Full ToothMouldSelector rendered inline. Picking facial form +
+ // proportion + width + cusp angle and pressing Apply writes both
+ // the anterior mould code and the "posterior + cusp-angle" string
+ // into the same labPlaceholders map the renderTemplate reads from,
+ // so [Anterior tooth mold] / [Posterior tooth mold] in the lab Rx
+ // both resolve from a single picker action. The standalone
+ // ToothMouldSelector above the LabPlaceholderInputs form is
+ // suppressed by the NoteBuilder gate (see needsMould check) when
+ // this inline picker is present.
+ <ToothMouldSelector compact onApply={(sel) => {
+ onChange("Anterior tooth mold", sel.anterior);
+ onChange("Posterior tooth mold", `${sel.posterior} ${sel.cuspAngle}`);
+ }} />
+ )}
+ {p.type === "tooth-mould-posterior-only" && (
+ // Posterior-only: lab-ii-rpd (interim immediate RPD where the
+ // patient keeps natural anteriors and only posteriors are being
+ // prosthesized). The mould chart still requires picking a facial
+ // form + cusp angle to derive the posterior mould, so we render
+ // the full picker but only write to the posterior key.
+ <ToothMouldSelector compact onApply={(sel) => {
+ onChange("Posterior tooth mold", `${sel.posterior} ${sel.cuspAngle}`);
+ }} />
+ )}
+ {p.type === "trubyte-shade" && (
+ <select value={values[p.key] || ""}
+ onChange={e => onChange(p.key, e.target.value)}
+ style={selectStyle}>
+ <option value="">— select Trubyte shade —</option>
+ {/* Trubyte Bioform / Portrait IPN denture-tooth shades. The
+ most common in UIC clinics (per the IPD example script)
+ is 81. Numeric values listed lightest to darkest within
+ the Bioform line; Portrait IPN shares the numbering. */}
+ {["59","62","65","66","67","69","77","81","91","92","93","102"]
+ .map(s => <option key={s} value={s}>{s}</option>)}
+ </select>
+ )}
  {(p.type === "number" || p.type === "text") && (
  <TextInput value={values[p.key] || ""}
  onChange={v => onChange(p.key, v)}
- placeholder={p.key} />
+ placeholder={labelText} />
  )}
  </div>
- ))}
+ );
+ })}
  </div>
  </>
  );
@@ -10305,8 +10399,12 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  {/* Portrait/Bioform IPN tooth-mould picker — surfaces only when the
  selected template mentions denture-tooth selection (wax-rim try-in
  templates, IPD lab Rx, RPD lab Rx). Chair-side reference; computed
- codes go into fields.toothMold for templates that read it. */}
- {needsMould && (
+ codes go into fields.toothMold for templates that read it.
+ Lab scripts that expose [Anterior tooth mold] as a bracket
+ placeholder get the picker inline via LabPlaceholderInputs
+ (rendered in source order), so the standalone picker would be a
+ duplicate — suppress it for those templates. */}
+ {needsMould && !/\[(?:Anterior|Posterior) tooth mold\]/.test(rawTemplate) && (
  <>
  <Hairline />
  <ToothMouldSelector compact onApply={(sel) => {
