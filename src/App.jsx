@@ -10066,13 +10066,15 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  const needsBrushing = useMemo(() => /\bbrushing 2x a day\b/.test(rawTemplate), [rawTemplate]);
  const needsFlossing = useMemo(() => /\bflossing 1x a day\b/.test(rawTemplate), [rawTemplate]);
  const needsIntraoralPhotos = useMemo(() => /Took intraoral photos/i.test(rawTemplate), [rawTemplate]);
- // Behavior (Frankl scale): peds templates ship with "- behavior: F4 --"
- // as the default. Show the dropdown for any template with that line.
- const needsBehavior = useMemo(() => /^[ \t]*-[ \t]*behavior:[ \t]*F4\b/m.test(rawTemplate), [rawTemplate]);
- // Class II resin composite ships with both matrix options separated by
- // " / " so the student knows the choice. When that pattern is in the
- // template, surface a matrix selector in the form.
- const needsMatrix = useMemo(() => /Placed Garrison system with matrix band & wedge, burnished\. \/ Gold matrix band placed\./.test(rawTemplate),
+ // Behavior (Frankl scale): peds templates ship with a "- behavior:"
+ // line. Original templates used "F4" as the default; new templates use
+ // "F[ 1 / 2 / 3 / 4 ]" as a picker placeholder. Match on the line itself
+ // so the gate doesn't silently break when the default value changes.
+ const needsBehavior = useMemo(() => /^[ \t]*-[ \t]*behavior:/im.test(rawTemplate), [rawTemplate]);
+ // Matrix selector: any template that mentions a matrix system (Garrison
+ // sectional for posterior composite, or gold/Tofflemire band) surfaces
+ // the picker. Loose pattern so the gate survives template copy edits.
+ const needsMatrix = useMemo(() => /Placed Garrison system with matrix band|Gold matrix band placed|Placed Tofflemire/.test(rawTemplate),
  [rawTemplate]);
 
  // Regenerate the note when needed.
@@ -17700,10 +17702,15 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  // ─── Direct retainers table data ──
  const directRetainers = (result.abutmentDesigns || []).map(a => {
  const attrs = a.attrs || {};
+ // Cingulum rests don't have a mesial/distal axis — they sit on
+ // the lingual cingulum, period. Don't prefix with M/D for those.
+ // Occlusal rests are correctly surface-oriented (MO, DO).
  const restCell = a.restSeat
-? `${a.restSeat.surface?.[0]?.toUpperCase() || ""}${a.restSeat.type === "cingulum"? "O cingulum": "O"}`
+? (a.restSeat.type === "cingulum"
+? "Cingulum"
+: `${a.restSeat.surface?.[0]?.toUpperCase() || ""}O`)
 : "—";
- // Examples: "MO", "DO" (mesio-occlusal, disto-occlusal)
+ // Examples: "MO", "DO" (mesio-occlusal, disto-occlusal); "Cingulum" for cingulum rests.
  const retention = a.claspType?.includes("Rest Only")
 ? "—"
 : `${attrs.undercutDepth || "0.01\""} ${(() => {
@@ -27225,7 +27232,17 @@ function Pathways() {
  return pathwayById.get(id);
  }).filter(Boolean),
  })).filter(b => b.items.length > 0);
- const leftover = pathwaysInDomain.filter(p =>!used.has(p.id));
+ // Pathways that are deliberately removed from user-visible Cases
+ // groups but still need to exist in PATHWAYS so cross-tab links
+ // don't break. The user previously asked to cut "Pre-prosthetic +
+ // infection management" from the OS section entirely; these two
+ // pathways are the leftover scaffolding kept only for those
+ // outside-Cases references. Don't surface them in "Other".
+ const SUPPRESSED_FROM_OTHER = new Set([
+ "surgery-pre-prosthetic",
+ "surgery-odontogenic-infection",
+ ]);
+ const leftover = pathwaysInDomain.filter(p =>!used.has(p.id) &&!SUPPRESSED_FROM_OTHER.has(p.id));
  if (leftover.length > 0) {
  groupedBuckets.push({ label: "Other", items: leftover });
  }
