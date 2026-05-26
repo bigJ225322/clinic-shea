@@ -5902,12 +5902,18 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
  const isActive = String(activeTooth) === k;
  const next = {...sels };
 
- if (isSel && isActive) {
+ if (isSel && (isActive ||!withSurfaces)) {
+ // (a) Selected + active → deselect (and clear active).
+ // (b) Selected when surfaces aren't in play → deselect on a single
+ // click. There's no surfaces card to focus, so the
+ // "make-active-then-deselect-on-second-click" branch below is
+ // pointless and surprises the user.
  delete next[k];
  setActiveTooth(null);
  } else if (isSel &&!isActive) {
+ // Selected but not active (with surfaces enabled) → just shift the
+ // surfaces card to point at this tooth; don't deselect.
  setActiveTooth(id);
- // Selection unchanged — no need to re-serialize, just update active.
  return;
  } else {
  next[k] = [];
