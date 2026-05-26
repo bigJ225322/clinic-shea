@@ -10238,13 +10238,13 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <section>
  <div style={cardStyle}>
  <Field label="Category">
- <Select value={categoryId} onChange={handleCategoryChange} prominent>
+ <Select value={categoryId || ""} onChange={handleCategoryChange} prominent>
  <option value="">— Select a category —</option>
  {FLAT_CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
  </Select>
  </Field>
  <Field label="Procedure">
- <Select value={procedureId} onChange={handleProcedureChange} prominent>
+ <Select value={procedureId || ""} onChange={handleProcedureChange} prominent>
  <option value="">{currentCategory? "— Pick a procedure —": "—"}</option>
  {currentCategory?.procedures.map(p =>
  <option key={p.id} value={p.id}>{p.label}</option>)}
