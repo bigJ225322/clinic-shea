@@ -24005,6 +24005,7 @@ const PATHWAYS = [
  "Crystallize step ~25 min for e.max; mill step ~10–15 min.",
  "Adhesive cementation: HF etch (20 sec for e.max) + silane + bond + resin cement.",
  "Inlay vs onlay decided at prep stage — once milled, can't extend coverage.",
+ "CDT codes: inlay D2610 (porc/cer 1-surface) / D2620 (2-surface) / D2630 (3+ surface). Onlay D2642 (porc/cer 2-surface) / D2643 (3-surface) / D2644 (4+ surface). The digital workflow may use per-step subcodes (D26XXA prep, D26XXB scan/design, D26XXC deliver) — check your school's billing convention.",
  ],
  phases: [
  { label: "Digital workflow + scan", count: 2 },
