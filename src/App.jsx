@@ -3469,7 +3469,7 @@ const REF_DATA = {
 // "+ Add another anesthetic" button appends a new one.
 const DEFAULT_INJECTION = {
  needle: "30G 25mm", // "30G 25mm" | "27G 35mm"
- drug: "lidocaine 1:100k epi", // dropdown
+ drug: "2% lidocaine 1:100k epi", // dropdown
  carpules: "1", // "1/4" | "1/2" | "1" | "2" | "3"
  side: "right", // "right" | "left"
  techIAN: false, // IAN + long buccal block
@@ -3687,14 +3687,15 @@ const ENDO_PERIAPICAL_DX = [
 ];
 
 // Anesthetic options from the manual (Local Anesthesia section).
+// Strings match the template body convention: "concentration drug epi".
 const ANESTHETIC_OPTIONS = [
- "lidocaine 1:100k epi",
- "lidocaine 1:50k epi",
- "septocaine 1:100k epi",
- "septocaine 1:200k epi",
- "mepivacaine 3% (no epi)",
- "bupivacaine 1:200k epi",
- "prilocaine 4% (no epi)",
+ "2% lidocaine 1:100k epi",
+ "2% lidocaine 1:50k epi",
+ "4% septocaine 1:100k epi",
+ "4% septocaine 1:200k epi",
+ "3% mepivacaine (no epi)",
+ "0.5% bupivacaine 1:200k epi",
+ "4% prilocaine (no epi)",
 ];
 
 /* ============================================================================
