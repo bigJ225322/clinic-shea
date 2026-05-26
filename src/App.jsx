@@ -5446,6 +5446,15 @@ function parseLabPlaceholders(body) {
  type = "tooth";
  } else if (text === "##-##") {
  type = "span";
+ } else if (/^\d+\s*-\s*\d+$/.test(text)) {
+ // Numeric tooth range like "22-28" — render a from/to picker so the
+ // student picks two endpoints instead of free-typing the range.
+ type = "tooth-range";
+ } else if (/^\d+(\s*(?:,|and)\s*\d+)+$/.test(text)) {
+ // Multi-tooth list like "22 and 27" or "6, 11, 22, 27" — render a
+ // chip-style picker so the student adds/removes individual teeth
+ // rather than free-typing a comma-separated list.
+ type = "tooth-list";
  } else if (/^[\d.]+$/.test(text)) {
  type = "number";
  } else {
@@ -5454,6 +5463,57 @@ function parseLabPlaceholders(body) {
  seen.set(text, { key: text, type, options });
  }
  return [...seen.values()];
+}
+
+// Chip-style multi-tooth picker. Stores the value as a comma-joined string
+// so the substitution into the template ("Please place wrought wire clasps
+// on 22, 27.") reads naturally. Pressing Enter or comma in the draft input
+// commits the tooth as a chip; the × removes one.
+function MultiToothInput({ value, onChange }) {
+ const [draft, setDraft] = useState("");
+ const teeth = value ? value.split(/\s*(?:,|and)\s*/).filter(Boolean) : [];
+ const commit = (raw) => {
+ const t = String(raw || "").trim().replace(/^#/, "");
+ if (!t || teeth.includes(t)) { setDraft(""); return; }
+ onChange([...teeth, t].join(", "));
+ setDraft("");
+ };
+ const remove = (t) => onChange(teeth.filter(x => x !== t).join(", "));
+ return (
+ <div style={{ display: "flex", flexDirection: "column", gap: "4px",
+ border: "1px solid var(--rule)", borderRadius: "3px",
+ padding: "4px 6px", background: "var(--paper)" }}>
+ <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+ {teeth.map(t => (
+ <span key={t} style={{ background: "rgba(122,26,26,0.06)",
+ border: "1px solid var(--accent)", borderRadius: "10px",
+ padding: "1px 8px", fontSize: "11px", color: "var(--accent)",
+ display: "inline-flex", gap: "4px", alignItems: "center",
+ fontFamily: "'JetBrains Mono', monospace" }}>
+ #{t}
+ <button type="button" onClick={() => remove(t)} aria-label={`remove ${t}`}
+ style={{ background: "transparent", border: "none", cursor: "pointer",
+ padding: 0, color: "var(--accent)", fontSize: "13px", lineHeight: 1 }}>×</button>
+ </span>
+ ))}
+ <input type="text" value={draft}
+ onChange={e => setDraft(e.target.value)}
+ onKeyDown={e => {
+ if (e.key === "Enter" || e.key === ",") {
+ e.preventDefault();
+ commit(draft);
+ } else if (e.key === "Backspace" && draft === "" && teeth.length > 0) {
+ remove(teeth[teeth.length - 1]);
+ }
+ }}
+ onBlur={() => draft && commit(draft)}
+ placeholder={teeth.length === 0 ? "type # + Enter" : ""}
+ style={{ border: "none", outline: "none", flex: 1, minWidth: "70px",
+ fontSize: "11px", padding: "2px 4px", background: "transparent",
+ fontFamily: "'JetBrains Mono', monospace" }} />
+ </div>
+ </div>
+ );
 }
 
 function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
@@ -5525,6 +5585,33 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  </div>
  );
  })()}
+ {p.type === "tooth-range" && (() => {
+ // Tooth range like "22-28": render from/to inputs, store as
+ // "from-to" so the substitution preserves the dash-joined format.
+ const v = values[p.key] || "";
+ const [from, to] = v.split("-").map(x => (x || "").trim());
+ const setRange = (f, t) => {
+ const joined = (f || t) ? `${f || ""}-${t || ""}` : "";
+ onChange(p.key, joined);
+ };
+ return (
+ <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+ <input type="text" value={from || ""}
+ placeholder="from #"
+ onChange={e => setRange(e.target.value, to || "")}
+ style={{...selectStyle, flex: 1, minWidth: 0 }} />
+ <span style={{ color: "var(--ink-faint)" }}>—</span>
+ <input type="text" value={to || ""}
+ placeholder="to #"
+ onChange={e => setRange(from || "", e.target.value)}
+ style={{...selectStyle, flex: 1, minWidth: 0 }} />
+ </div>
+ );
+ })()}
+ {p.type === "tooth-list" && (
+ <MultiToothInput value={values[p.key] || ""}
+ onChange={v => onChange(p.key, v)} />
+ )}
  {(p.type === "number" || p.type === "text") && (
  <TextInput value={values[p.key] || ""}
  onChange={v => onChange(p.key, v)}
