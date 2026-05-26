@@ -5548,7 +5548,7 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  <div style={{ fontSize: "10px", fontWeight: 600, marginBottom: "8px",
  textTransform: "uppercase", letterSpacing: "0.06em",
  color: "var(--ink-soft)" }}>
- Lab Rx placeholders ({placeholders.length})
+ Customize this Rx ({placeholders.length} {placeholders.length === 1? "field": "fields"})
  </div>
  {/* Single column so the picker order matches the placeholder's order
  of appearance in the rendered note below — students fill the form
@@ -5579,17 +5579,19 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  )}
  {p.type === "span" && (() => {
  const { mesial, distal } = getSpan(p.key);
+ // ToothSurfaceInput stores "#N" / "#N, #M" style strings; the span
+ // picker stores raw "M-D" without "#". Convert at the boundary so
+ // a single click in the tooth chart drives each end of the span.
+ const cleanOne = v => (v || "").split(",")[0].trim().replace(/^#/, "");
  return (
- <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
- <input type="text" value={mesial}
- placeholder="mesial #"
- onChange={e => setSpan(p.key, e.target.value, distal)}
- style={{...selectStyle, flex: 1, minWidth: 0 }} />
- <span style={{ color: "var(--ink-faint)" }}>—</span>
- <input type="text" value={distal}
- placeholder="distal #"
- onChange={e => setSpan(p.key, mesial, e.target.value)}
- style={{...selectStyle, flex: 1, minWidth: 0 }} />
+ <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: "8px", alignItems: "center" }}>
+ <ToothSurfaceInput value={mesial ? `#${mesial}` : ""}
+ onChange={v => setSpan(p.key, cleanOne(v), distal)}
+ withSurfaces={false} />
+ <span style={{ color: "var(--ink-faint)", fontSize: "13px" }}>—</span>
+ <ToothSurfaceInput value={distal ? `#${distal}` : ""}
+ onChange={v => setSpan(p.key, mesial, cleanOne(v))}
+ withSurfaces={false} />
  </div>
  );
  })()}
