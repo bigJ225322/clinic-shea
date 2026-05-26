@@ -5505,6 +5505,12 @@ function parseLabPlaceholders(body) {
  // Tooth-with-surface designators ("21-MO, 28-DO", "21-D, 28-D")
  // → chart picker that allows per-tooth surface selection.
  type = "tooth-list-with-surfaces";
+ } else if (/^Retentive loop areas?$/i.test(text)) {
+ // RPD "retentive loops on areas: #18, 19, 20, 29, 30" → tooth-
+ // list. The word "areas" doesn't trip the /\bteeth\b/ rule but
+ // clinically these are still teeth (the edentulous-area teeth
+ // the framework's denture-base loops will rest near).
+ type = "tooth-list";
  } else if (/\bteeth\b/i.test(text)) {
  // Descriptive label containing the word "teeth" (plural) like
  // "Reference teeth" / "Teeth to extract" / "Clasp teeth" → also
@@ -5663,8 +5669,12 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  onChange={e => onChange(p.key, e.target.value)}
  style={selectStyle}>
  <option value="">— select arch —</option>
- <option value="M">Maxillary (M)</option>
- <option value="D">Mandibular (D)</option>
+ {/* Standard reline abbreviations: F/U = full upper, F/L =
+ full lower, F/F = full both. Replaces the previous M/D
+ dropdown which used non-standard letters. */}
+ <option value="U">Maxillary (U)</option>
+ <option value="L">Mandibular (L)</option>
+ <option value="F">Both arches (F)</option>
  </select>
  )}
  {p.type === "span" && (() => {
@@ -10425,13 +10435,13 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  highlighted placeholders that the Steps tab exposes. */}
  {(() => {
  if (!/\[[^\]]+\]/.test(rawTemplate)) return null;
- // Only lab-bridge and lab-bridge-cast opt out — the only bracket on
- // those is [##-##] and editing two digits inline is faster than
- // opening two chart pickers. lab-porcelain ("add porcelain to
- // framework") needs the span picker since you're filling in WHICH
- // bridge you're adding porcelain to.
- const BRIDGE_LAB_IDS = new Set(["lab-bridge", "lab-bridge-cast"]);
- if (BRIDGE_LAB_IDS.has(procedureId)) return null;
+ // Previously lab-bridge and lab-bridge-cast opted out, on the
+ // theory that two digits could be edited inline faster than
+ // opening chart pickers. But hiding the standard tooth/shade
+ // fields for lab-* templates removed the inline editor — those
+ // scripts would have left [##-##] literally in the output. Run
+ // the placeholder form for every lab-* template that has
+ // brackets so the student always has a way to fill them in.
  return (
  <LabPlaceholderInputs
  rawTemplate={rawTemplate}
