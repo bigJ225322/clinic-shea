@@ -2279,6 +2279,73 @@ Three commits applied the cleanup:
 
 ### Iter 34 GRAND TOTAL: 9 commits, 1021 tests passing, build green at every push.
 
+---
+
+## Iteration 35 (2026-05-25 — continued /loop 4h post-iter-34)
+
+User said "/loop 4 hours" to continue audit. Spawned 4 parallel audit agents (Cases pathway integrity, Note templates, Codes/Cases alignment, Steps tab body content). All 4 returned with findings:
+
+### Iter 35 commits (in order):
+
+1. **a4560e1** — CRITICAL CLINICAL SAFETY FIX + multi-agent findings:
+   - **Antibiotic prophylaxis safety**: 'Isodry' was incorrectly listed as a procedure requiring premedication (Steps tab → Codes → ANTIBIOTIC PROPHYLAXIS body content). This was a scrub artifact — 'rubber dam clamp' (which CAN cause bacteremia via gingival laceration) had been swapped to 'Isodry' (which does NOT). Restored to 'rubber dam clamp'. Without this fix, students may have premedicated wrong patients or skipped premedication when warranted.
+   - cross-pre-radiation-extractions: added surgery-ch1 (pre-op assessment) + surgery-ch5 (post-op) cross-refs. Extractions are half this case.
+   - cross-dental-photo-composite: '6 intraoral (MI, RB, LB, max occlusal, mand occlusal,...' was 5 items with truncated ellipsis. Corrected to '5 intraoral (...)'.
+   - Codes tab: added D2932 (Prefab resin crown — primary tooth) referenced by pedo-strip-crown; added D7241 (Rem impacted tth, comp bony w/ complications) referenced by surgery-third-molar.
+   - Note templates (POE 1091, Prophy 1196, SRP 1272, Perio Maint 1425): added '& completed nutritional counseling and tobacco cessation' to OHI documentation per Swade pp.25-34. Codes D1310 + D1320.1 + D1320.2 are billed at every hygiene visit; the charting now matches the billing.
+   - Restored 'Cavitron (with Isodry)' per user's explicit correction (Isodry IS used during Cavitron). Multiple templates had reverted to '(with assistant using HVE)'.
+   - 5 surviving 'Vivaldi clinic' note-template strings → 'the clinic'.
+   - Digital prep & scan: 'Isodry isolation whenever possible' → 'rubber dam isolation whenever possible' (clinically right for bonded ceramic per Swade p.106).
+   - 'Chicago office' / 'Chicago Digital clinic' → 'the digital clinic'.
+   - Peds template signatures: 'Sarah Swade / Dr.' → '[Student Name] / Dr. [Instructor]'.
+   - Call-script template: Sarah name → [Student Name], 708-669-9449 → [your contact number], 'College of Dentistry' → 'the school', 'Vivaldi clinic, 3rd floor, check in at room 321' → 'the predoctoral clinic, 3rd floor'.
+
+2. **ed3cd80** — RPD-engine post-scrub artifacts: '(corrected per NotebookLM/)' trailing slash, 'Among -preferred tooth types' / 'are -acceptable' leading hyphens, 'BITE REGISTRATION (-9 — the protocol)' (was Lab 9), 'articulating paper — -specific brand standard', 'Per NotebookLM/:' trailing slash. Plus App.jsx 'molars follow the same same-day' duplicate word in endo-molar-rct.
+
+3. **6f5a592** — additional 'Per X teaching/lecture' attributions: pedo-oral-pathology 'Per the peds oral pathology lecture:' stripped; rpd-recurrent-caries-abutment 'Per Lecture 2 (Diagnosis & Tx Planning), CAMBRA...' simplified to 'CAMBRA reassessment...'; cd-limited-dexterity 'Per Reline/Rebase/Repair teaching, low-force Locator...' → 'Low-force Locator...'.
+
+### Iter 35 — verified clinical preferences preserved post-scrub
+
+User explicitly asked: "i sincerely hope you didn't scrub the UIC-specific preferences, and did only scrub the stated fact that those are UIC-specific preferences." Verified intact:
+
+- Garrison sectional matrix (primary Class II default) ✓
+- T-band as alternative ✓
+- Hemodent in cord-soak retraction ✓
+- RelyX Unicem 2 (self-adhesive cement default for PFM/zirconia FPDs) ✓
+- FujiCem 2 (RMGI fallback) ✓
+- Vitrebond (0.5 mm liner in deep prep) ✓
+- Dycal (small mechanical exposure cap) ✓
+- Gluma desensitization (45s scrub + 15s wait + air dry + 15s rinse + lightly dry) ✓
+- Scotchbond Universal (20s vigorous scrub + 5s air thin + 10s cure) ✓
+- Consepsis (10s disinfectant scrub) ✓
+- Calamus / Endoseal MTA (RCT obturation default) ✓
+- 1% NaOCl + 17% EDTA + 1% NaOCl (RCT irrigation default) ✓
+- Brinker B4/B5/B6 (anterior endo clamps) ✓
+- Renamel nanofill A2 (composite default shade/brand) ✓
+- Ketac Nano RMGI (Class V root-surface default) ✓
+- Ultradent UltraSeal XT Plus (sealant brand) ✓
+- Cavitron + Isodry pairing (the user's specific correction) ✓
+- Low-retention Locator inserts (pink ~1.5 lb, clear ~0.5 lb) for dexterity-compromised CD patients ✓
+- Predoctoral PIP scope (excluded teeth #1/2/8/9/15/16/17/18/31/32 for implants) ✓
+
+### Iter 35 — final structural integrity check
+
+- Defined chapters: 150
+- Referenced chapters: 142
+- Broken chapter refs: 0 ✓
+- Duplicate pathway IDs: 0 ✓
+- Leading-space descriptions (scrub artifact indicator): 0 ✓
+- Vivaldi/Mickey/Hanna/Olga/Arely/Patricia/Lisa stragglers: 0 ✓
+- UIC/Alsaleh/Hill/Rawle/Desai/Sabbagh/Bin Yang/Yuan/Campbell/Liu-Chang-Galang-Boquiren/Avenetti/Baroudi/Steve Weeks/Qian Xie/Shahin stragglers: 0 in user-facing content
+
+### Iter 35 — outstanding for review
+
+- No bleaching pathway exists in Cases (D9972-D9975 codes exist in Codes tab). The user's docx lists 'Vital Teeth Bleaching // Alginate Impression and Working Models' as a D2 Summer Operative topic. Borderline whether to add a dedicated bleaching pathway or leave as a backlog item.
+- 'Sarah Swade' remains in 4 internal locations (code comments + regex pattern that REPLACES the placeholder in note templates + a comment about source-guide attribution). These are not user-facing and reference the document author by name as part of the substitution code; preserved as-is.
+- Internal regex helper at line 3871 (`renderTemplate`): regex pattern `\(with (?:an )?assistant using HVE\)` substitution remains as a safety net for any old template strings; current raw templates use '(with Isodry)' so the regex is a no-op match.
+
+### Iter 35 GRAND TOTAL: 3 commits, 1021 tests passing, build green throughout, 1 CRITICAL clinical safety fix applied.
+
 Outstanding for next iter:
 - A few internal rpd-engine.js comment artifacts: `// (corrected per NotebookLM/)` trailing slash where a faculty name was scrubbed; "Among -preferred" / "are -acceptable" leading-hyphen artifacts (functional, not user-visible). User-review-only.
 - `same same-day` in pedo extraction at line 24296 (functional but stylistic; "follow the same same-day access-and-fill workflow" — minor).
