@@ -25351,7 +25351,7 @@ const PATHWAYS = [
  "Irrigation regimen: 1% NaOCl between every file change → final 1% NaOCl, 17% EDTA, 1% NaOCl. Same as anterior RCT; 1% is the predoc standard (higher concentrations are AAE-acceptable).",
  "Obturation: each canal — master cone + Endoseal MTA sealer → pump 3x → heat Calamus condense. Single-cone or warm vertical with bioceramic sealer is an acceptable alternative; Calamus/Endoseal-MTA is predoc default.",
  "Same-day access-and-fill is the default. If necrotic + PARL, two-visit with Ca(OH)2 intervisit + Cavit + sponge is the AAE-evidence-based exception (NOT the default — flag with faculty before planning).",
- "Crown plan must be in motion before final obturation. Endo-treated molars without cuspal coverage have ~50% 1-year survival. Coronal seal is THE #1 prognostic factor.",
+ "Crown plan must be in motion before final obturation. Endo-treated molars survive substantially longer with cuspal coverage — Aquilino & Caplan 2002 showed ~84% 5-yr survival WITH crown vs ~36% WITHOUT. Coronal seal is THE #1 prognostic factor; no crown plan, no permanent obturation.",
  ],
  phases: [
  { label: "Diagnosis & access", count: 3 },
