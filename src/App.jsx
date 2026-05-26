@@ -18388,14 +18388,81 @@ function GingivalShadeInput({ value, onChange }) {
  );
 }
 
+// Generic circled-(i) popover. Click to toggle, click outside or press
+// Escape to dismiss. Used by the tooth mould picker's "Upper six anterior
+// curve width" hint and could be reused anywhere else that needs a
+// click-to-reveal explanation.
+function InfoPopover({ text }) {
+ const [open, setOpen] = useState(false);
+ const wrapRef = useRef(null);
+ useEffect(() => {
+ if (!open) return;
+ const onClick = (e) => {
+ if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
+ };
+ const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+ document.addEventListener("mousedown", onClick);
+ document.addEventListener("keydown", onKey);
+ return () => {
+ document.removeEventListener("mousedown", onClick);
+ document.removeEventListener("keydown", onKey);
+ };
+ }, [open]);
+ return (
+ <span ref={wrapRef} style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
+ <button type="button" onClick={() => setOpen(o => !o)}
+ aria-label={open ? "Hide hint" : "Show hint"}
+ style={{
+ width: "14px", height: "14px", borderRadius: "50%",
+ border: `1px solid ${open ? "var(--accent)" : "var(--ink-faint)"}`,
+ background: open ? "var(--accent)" : "transparent",
+ color: open ? "white" : "var(--ink-soft)",
+ fontSize: "9px", fontFamily: "'Fraunces', serif",
+ fontStyle: "italic", lineHeight: 1, cursor: "pointer",
+ display: "inline-flex", alignItems: "center", justifyContent: "center",
+ padding: 0, userSelect: "none",
+ }}>i</button>
+ {open && (
+ <div style={{
+ position: "absolute", top: "20px", left: "0",
+ width: "320px", zIndex: 10,
+ padding: "10px 12px", background: "var(--paper)",
+ border: "1px solid var(--accent)", borderRadius: "3px",
+ fontSize: "11px", lineHeight: 1.5, color: "var(--ink)",
+ fontStyle: "normal", textTransform: "none", letterSpacing: 0,
+ boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+ }}>
+ {text}
+ </div>
+ )}
+ </span>
+ );
+}
+
 // Small circled-(i) tooltip showing when the currently-selected cusp angle
 // is clinically appropriate. Click to toggle a popover with the angle's
-// indication text (sourced from TOOTH_MOULD_CUSP_ANGLES[].desc).
+// indication text (sourced from TOOTH_MOULD_CUSP_ANGLES[].desc). Click
+// outside (or press Escape) to dismiss — matches the rest of the app's
+// popover dismiss pattern.
 function CuspAngleInfo({ angle }) {
  const [open, setOpen] = useState(false);
+ const wrapRef = useRef(null);
+ useEffect(() => {
+ if (!open) return;
+ const onClick = (e) => {
+ if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
+ };
+ const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+ document.addEventListener("mousedown", onClick);
+ document.addEventListener("keydown", onKey);
+ return () => {
+ document.removeEventListener("mousedown", onClick);
+ document.removeEventListener("keydown", onKey);
+ };
+ }, [open]);
  if (!angle) return null;
  return (
- <span style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
+ <span ref={wrapRef} style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
  <button type="button" onClick={() => setOpen(o => !o)}
  aria-label={open ? "Hide cusp angle indications" : "Show when this cusp angle is appropriate"}
  style={{
@@ -18853,8 +18920,14 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  </div>
 
  <div>
- <div style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)", marginBottom: "4px" }}>
- 2 · Maxillary central incisor shape <span style={{ textTransform: "none", letterSpacing: 0, fontStyle: "italic", color: "var(--ink-faint)" }}>— proportion (long / medium / short) × facial profile (straight = flat, curved = convex)</span>
+ <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
+ <span style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)" }}>
+ 2 · Maxillary central incisor shape
+ </span>
+ <InfoPopover text="The IPN catalog organizes denture tooth sets by the shape of their MAXILLARY CENTRAL INCISOR — that's the reference tooth for the whole mould (the other anteriors and the posteriors are designed to harmonize with it). You're not measuring the patient's existing central; you're picking the central-incisor proportion you want for the prosthesis. For an edentulous patient, choose based on the patient's face shape, prior denture, family photos, or stated preference. For a partial with remaining anteriors, match the existing centrals. Proportion is long/medium/short × straight (flat facial) vs curved (convex facial)." />
+ <span style={{ fontSize: "10px", color: "var(--ink-faint)", fontStyle: "italic" }}>
+ long / medium / short × straight / curved
+ </span>
  </div>
  <PillRow items={TOOTH_MOULD_PROPORTIONS} value={prop} onChange={setProp}
  getKey={i => i.id} getLabel={i => `${i.id} · ${i.label}`}
@@ -18866,14 +18939,7 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  <span style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)" }}>
  3 · Upper six anterior curve width
  </span>
- <span title="Measure the chord (straight-line) distance from the distal of the right canine (#6) to the distal of the left canine (#11) across the facial surfaces of the upper six anteriors. A Boley gauge or millimeter ruler held flat against the labial of the anteriors works; on a diagnostic cast the same measurement is taken on the cast itself. The chord — not the arc — is the value the Trubyte mould table expects."
- style={{
- display: "inline-flex", alignItems: "center", justifyContent: "center",
- width: "14px", height: "14px", borderRadius: "50%",
- border: "1px solid var(--ink-faint)", color: "var(--ink-faint)",
- fontSize: "9px", fontFamily: "'Geist', sans-serif",
- cursor: "help", userSelect: "none",
- }}>i</span>
+ <InfoPopover text="Measure the chord (straight-line) distance from the distal of the right canine (#6) to the distal of the left canine (#11) across the facial surfaces of the upper six anteriors. A Boley gauge or millimeter ruler held flat against the labial of the anteriors works; on a diagnostic cast the same measurement is taken on the cast itself. The chord — not the arc — is the value the Trubyte mould table expects." />
  </div>
  <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
  <input type="text" inputMode="decimal" placeholder="e.g. 49"
@@ -18947,11 +19013,12 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  cuspAngle: angleMeta?.label,
  brand: angleMeta?.brand,
  })} style={{
- padding: "5px 12px", fontSize: "10px", letterSpacing: "0.12em",
+ padding: "6px 18px", fontSize: "11px", letterSpacing: "0.12em",
  textTransform: "uppercase", background: "var(--accent)",
- color: "white", border: "none", borderRadius: "2px",
+ color: "white", border: "none", borderRadius: "3px",
  cursor: "pointer", fontFamily: "'Geist', sans-serif",
- }}>Apply to form</button>
+ fontWeight: 600,
+ }}>OK</button>
  </div>
  )}
  </>
