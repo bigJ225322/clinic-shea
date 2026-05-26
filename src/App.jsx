@@ -3328,7 +3328,7 @@ const REF_DATA = {
  blocks: [
  { type: "script",
  caption: "Lab Rx",
- body: "Please fabricate PFM survey crown(s) for [tooth #(s)] to be fitted with [mandibular / maxillary] RPD framework. Metal: high-noble alloy.\n\nCrown design — integrate the following surveyed features (working cast tripoded; tripod marks and path of insertion marked in red):\n\nFor [tooth #]:\n- Metal occlusal thickness: 0.5-1.0 mm at the rest seat area (total tooth reduction 2.5-3.0 mm there; 1.5 mm elsewhere)\n- Rest seat: [mesial / distal / cingulum] — 1.5 mm deep × 2.5 mm wide, floor angled toward the long axis of the tooth (positive seat)\n- Guide plane: [mesial / distal] proximal surface flat and parallel to the RPD path of insertion (per tripod marks on the enclosed working cast)\n- Undercut: [0.01\" cast clasp / 0.02\" wrought wire] at [mid-buccal / MB / DB / ML / DL], in the gingival 1/3 (clasp tip engages the infrabulge area from the opposite direction the rest sits)\n- HOC: at the junction of the middle 1/3 and the gingival 1/3 of the [buccal / lingual] surface (clasp origin sits in the suprabulge area; clasp tip engages the infrabulge below this line)\n\nPlease send the full-contour wax-up back BEFORE final firing for surveyor verification. Once approved, complete the porcelain application and return for cementation.\n\nEnclosed: final impression, opposing impression, bite registration in MI, tripoded diagnostic cast (as reference for path of insertion).\n\nThank you.",
+ body: "Please fabricate PFM survey crown(s) for [tooth #(s)] to be fitted with [mandibular / maxillary] RPD framework. Metal: high-noble alloy. Shade [A2].\n\nCrown design — integrate the following surveyed features (working cast tripoded; tripod marks and path of insertion marked in red):\n\nFor [tooth #]:\n- Metal occlusal thickness: 0.5-1.0 mm at the rest seat area (total tooth reduction 2.5-3.0 mm there; 1.5 mm elsewhere)\n- Rest seat: [mesial / distal / cingulum] — 1.5 mm deep × 2.5 mm wide, floor angled toward the long axis of the tooth (positive seat)\n- Guide plane: [mesial / distal] proximal surface flat and parallel to the RPD path of insertion (per tripod marks on the enclosed working cast)\n- Undercut: [0.01\" cast clasp / 0.02\" wrought wire] at [mid-buccal / MB / DB / ML / DL], in the gingival 1/3 (clasp tip engages the infrabulge area from the opposite direction the rest sits)\n- HOC: at the junction of the middle 1/3 and the gingival 1/3 of the [buccal / lingual] surface (clasp origin sits in the suprabulge area; clasp tip engages the infrabulge below this line)\n\nPlease send the full-contour wax-up back BEFORE final firing for surveyor verification. Once approved, complete the porcelain application and return for cementation.\n\nEnclosed: final impression, opposing impression, bite registration in MI, tripoded diagnostic cast (as reference for path of insertion).\n\nThank you.",
  note: "Sent before the framework Rx, not alongside it. The survey crown gets cemented, a NEW master impression is taken of the crowned arch, and then a separate framework Rx is generated." },
  { type: "cards", caption: "What to send with this Rx", cards: [
  { title: "Supplements", rows: [
@@ -6455,9 +6455,13 @@ function RefScript({ caption, body, note }) {
  const [selectedTooth, setSelectedTooth] = useState("");
  const [spanMesial, setSpanMesial] = useState("");
  const [spanDistal, setSpanDistal] = useState("");
+ const [selectedShade, setSelectedShade] = useState("");
 
  const hasToothPlaceholder = body.includes("[tooth]");
  const hasSpanPlaceholder = body.includes("[##-##]");
+ // Lab Rx templates use the literal "[A2]" as the placeholder shade.
+ // Same convention as [tooth] / [##-##] — bracketed default value.
+ const hasShadePlaceholder = body.includes("[A2]");
 
  // Substitute picked values into the body. Each placeholder type
  // substitutes only when fully resolved (both ends of the span, etc.);
@@ -6469,6 +6473,9 @@ function RefScript({ caption, body, note }) {
  }
  if (hasSpanPlaceholder && spanMesial && spanDistal) {
  filledBody = filledBody.replaceAll("[##-##]", `${spanMesial}-${spanDistal}`);
+ }
+ if (hasShadePlaceholder && selectedShade) {
+ filledBody = filledBody.replaceAll("[A2]", selectedShade);
  }
 
  const onCopy = async () => {
@@ -6582,6 +6589,21 @@ function RefScript({ caption, body, note }) {
  {(spanMesial || spanDistal) && (
  <button onClick={() => { setSpanMesial(""); setSpanDistal(""); }}
  style={clearLinkStyle}>clear</button>
+)}
+ </div>
+)}
+ {hasShadePlaceholder && (
+ <div style={{
+ display: "flex", alignItems: "center", gap: "10px",
+ marginBottom: "10px",
+ fontFamily: "'Geist', sans-serif",
+ }}>
+ <label style={labelStyle}>Shade</label>
+ <div style={{ flex: "0 1 110px", minWidth: "100px" }}>
+ <ShadeInput value={selectedShade} onChange={setSelectedShade} compact />
+ </div>
+ {selectedShade && (
+ <button onClick={() => setSelectedShade("")} style={clearLinkStyle}>clear</button>
 )}
  </div>
 )}
