@@ -2552,3 +2552,32 @@ User asked if I had read every relevant file in `/Users/jakeshea/Documents/Denti
 - `Tx Dx- Overview.pdf` — diagnosis & treatment planning
 - All of `Orofacial Pain/`, `ALL DxTP FILES/`, `Oral Pathology/`, `O.S. Lectures/`, `DAOB Phase 2 War Chest/`, `Endo Lectures/` folder contents
 
+
+### Iter 37 (/loop 4h) — UIC scope clarification + within-scope gap closure
+
+User clarified UIC predoctoral clinical scope:
+- IN scope: CD, RPD, direct resto, indirect resto, digital, peds, perio cleanings + exams
+- OUT of scope: bleaching, dental trauma, TMD, perio surgery (beyond crown lengthening + gingival graft), third molars (refer to OMFS)
+
+#### Removed (out-of-scope)
+- **dir-vital-bleaching** (commit `d926e4d`) — bleaching is not a UIC predoctoral procedure. Removed pathway + dir-ch23 chapter stub + cross-reference from dir-dentin-hypersensitivity.
+
+#### Added (within-scope gaps from polish-audit agent)
+- **cd-adjustment** (commit `781eac8`) — Swade p.94 protocol: interview + palpate, Thompson stick, PIP technique, disclosing wax, occlusion check. D5410/D5411 + UIC D5455.
+- **cd-reline-lab** (commit `781eac8`) — Swade p.96 workflow. Adjustment first, then reline. Decision tree reline/rebase/new. D5750/D5751 lab + D5730/D5731 chairside + D5710/D5711 rebase + D5850/D5851 tissue conditioning.
+- **perio-coe** (commit `d6a7e09`) — adult comprehensive oral exam, Swade p.12-15. 3-visit workflow: perio COE → restorative COE → tx plan presentation. D0150A/B/C subcoding sequence. Caries-risk-driven recall interval.
+- **rpd-reline** (commit `cefaaa4`) — chairside (D5740/D5741) vs lab (D5760/D5761) vs remake decision. Tissue conditioning preceding reline. Important note: D5730/D5731 are COMPLETE-denture codes, NOT partial.
+
+#### Polish (structural)
+- **3 duplicate pathway pairs collapsed** (commit `1b882f4`):
+  - rpd-broken-clasp ↔ repair-rpd-clasp (kept rpd-* version, has CDT codes)
+  - rpd-broken-denture-tooth ↔ repair-rpd-denture-tooth (kept rpd-*)
+  - rpd-broken-framework ↔ repair-rpd-framework (kept rpd-*)
+  Repair-triage decision tree (line 22013) now points at canonical rpd-broken-* IDs. Net -69 lines.
+
+#### Iter 37 totals
+- 5 commits, all pushed live on Vercel
+- 1 pathway removed, 4 new pathways added, 3 duplicate pairs collapsed
+- Tests: 1021/1021 throughout
+- Polish-audit agent for content quality still running in background
+
