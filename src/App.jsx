@@ -4336,12 +4336,17 @@ function renderTemplate(raw, f) {
  }
 
  // -------- 6f. Perio re-eval SRP completion date. --------
- // Applies to template 1346. Replaces the "1/1/2000" placeholder with the
- // date the student enters. Leaves "1/1/2000" if the field is empty so the
- // student can see something is expected there.
+ // Applies to template 1346. Replaces the literal "[date]" placeholder
+ // (and the legacy "1/1/2000" stub from older copies) with the date the
+ // student enters. Leaves the placeholder visible if the field is empty
+ // so the student knows to fill it in.
  if (f.srpDate!== undefined) {
  const d = (f.srpDate || "").trim();
- if (d) t = t.replace(/\b1\/1\/2000\b/, d);
+ if (d) {
+ t = t.replace(/\b1\/1\/2000\b/, d);
+ // After: replaces "[date]" (the current placeholder in template 1346).
+ t = t.replace(/\bSRP 4 quads completed \[date\]/, `SRP 4 quads completed ${d}`);
+ }
  }
 
  // -------- 6g. Perio re-eval improvement status + detail. --------
