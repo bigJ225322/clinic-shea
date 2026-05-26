@@ -17707,41 +17707,62 @@ const TOOTH_MOULD_TABLE = {
 // let the student visually match the patient's face shape rather than reading
 // labels. Square = rectangular with parallel sides; Tapering = wide temples
 // narrowing to chin; Ovoid = egg-shape; combinations interpolate.
+// SVG silhouettes are traced from the 7 facial-form icons in the Portrait
+// IPN / Bioform IPN Mould Chart (Dentsply Sirona pub. 905473-Rev10) — page
+// 4 reference card + cross-checked against the maxillary anterior photos on
+// pages 9-10. Each path renders a recognizable central-incisor outline in
+// a 32×40 viewBox: cervical at top with a gentle gingival arch, mesial /
+// distal contacts at the widest point, gently curved incisal edge.
 const TOOTH_MOULD_FORMS = [
  { id: "1", label: "Square",
- path: "M6 4 L26 4 L26 28 L24 36 L8 36 L6 28 Z" },
+ // Parallel sides, gentle gingival arch, gently curved incisal.
+ // Matches catalog moulds 11G, 12E, 12F, 12G, 13D, 13E.
+ path: "M7 5 Q11 3 16 3 Q21 3 25 5 L25 30 Q25 36 16 36 Q7 36 7 30 Z" },
  { id: "2", label: "Square Tapering",
- path: "M5 4 L27 4 L25 22 L21 32 L18 36 L14 36 L11 32 L7 22 Z" },
+ // Wider at cervical, tapers strongly toward a narrower incisal edge.
+ // Matches 21C, 21D, 21E, 21F, 21G, 21J, 22C, 22E, 22G, 22H, 24F, 25G.
+ path: "M6 5 Q10 3 16 3 Q22 3 26 5 Q24 18 22 28 Q19 36 16 36 Q13 36 10 28 Q8 18 6 5 Z" },
  { id: "3", label: "Square Ovoid",
- path: "M6 4 L26 4 L25 18 C24 30 22 36 16 36 C10 36 8 30 7 18 Z" },
+ // Square upper contour, ovoid (curved) lower two-thirds.
+ // Matches 31F, 32B, 32E, 32G, 35E, 36F.
+ path: "M7 5 Q11 3 16 3 Q21 3 25 5 Q26 18 23 28 Q19 36 16 36 Q13 36 9 28 Q6 18 7 5 Z" },
  { id: "4", label: "Tapering",
- path: "M4 4 L28 4 L24 18 L20 30 L17 36 L15 36 L12 30 L8 18 Z" },
+ // Pronounced triangular taper from wide cervical to narrow incisal.
+ path: "M5 5 Q10 3 16 3 Q22 3 27 5 L23 22 L20 32 L18 36 Q16 36 14 36 L12 32 L9 22 Z" },
  { id: "5", label: "Tapering Ovoid",
- path: "M5 4 L27 4 L24 18 C22 30 19 36 16 36 C13 36 10 30 8 18 Z" },
+ // Tapered overall but with ovoid (curved) sides instead of straight.
+ path: "M6 5 Q10 3 16 3 Q22 3 26 5 Q23 18 20 28 Q18 36 16 36 Q14 36 12 28 Q9 18 6 5 Z" },
  { id: "6", label: "Ovoid",
- path: "M16 4 C24 4 26 12 25 22 C24 32 21 36 16 36 C11 36 8 32 7 22 C6 12 8 4 16 4 Z" },
+ // True oval — narrow at cervical and incisal, widest at the middle.
+ path: "M16 3 Q21 3 24 7 Q27 14 26 22 Q24 32 20 36 Q16 37 12 36 Q8 32 6 22 Q5 14 8 7 Q11 3 16 3 Z" },
  { id: "7", label: "Square Tapering Ovoid",
- path: "M6 4 L26 4 L25 16 C24 24 22 30 19 34 C18 36 14 36 13 34 C10 30 8 24 7 16 Z" },
+ // Squared cervical with a tapering profile and curved (ovoid) sides.
+ path: "M7 5 Q11 3 16 3 Q21 3 25 5 Q26 14 24 22 Q21 32 18 35 Q17 36 16 36 Q15 36 14 35 Q11 32 8 22 Q6 14 7 5 Z" },
 ];
 
 // Proportion of tooth (long / medium / short) × facial contour (straight / curved).
-// "Facial contour" here describes the FACIAL SURFACE of the maxillary central
-// incisor — straight = flat / flat-rectangular profile, curved = bulging /
-// convex profile. SVG silhouettes drawn at 16×22 viewBox approximate the
-// frontal outline of a #8 central incisor.
+// Straight = flat / nearly-rectangular labial profile; Curved = bulging / convex
+// labial profile (more ovoid silhouette). 16×22 viewBox, frontal outline of a
+// #8 central incisor with the cervical at the top and incisal at the bottom.
 const TOOTH_MOULD_PROPORTIONS = [
  { id: "1", label: "Long · Straight",
- path: "M3 2 L13 2 L13 18 L11 20 L5 20 L3 18 Z" },
+ // Tall, slim, parallel sides
+ path: "M3 2 Q5 1 8 1 Q11 1 13 2 L13 18 Q13 20 8 20 Q3 20 3 18 Z" },
  { id: "2", label: "Medium · Straight",
- path: "M3 4 L13 4 L13 17 L11 19 L5 19 L3 17 Z" },
+ // Balanced proportions, parallel sides
+ path: "M3 3 Q5 2 8 2 Q11 2 13 3 L13 17 Q13 19 8 19 Q3 19 3 17 Z" },
  { id: "3", label: "Short · Straight",
- path: "M3 6 L13 6 L13 16 L11 18 L5 18 L3 16 Z" },
+ // Stubby, parallel sides
+ path: "M3 5 Q5 4 8 4 Q11 4 13 5 L13 16 Q13 18 8 18 Q3 18 3 16 Z" },
  { id: "4", label: "Long · Curved",
- path: "M5 2 Q3 2 3 5 Q1 10 3 14 Q5 19 8 20 Q11 19 13 14 Q15 10 13 5 Q13 2 11 2 Z" },
+ // Tall, ovoid sides
+ path: "M8 1 Q11 1 12 3 Q14 8 13 13 Q12 18 10 19 Q8 20 6 19 Q4 18 3 13 Q2 8 4 3 Q5 1 8 1 Z" },
  { id: "5", label: "Medium · Curved",
- path: "M5 4 Q3 4 3 7 Q1 11 3 14 Q5 19 8 19 Q11 19 13 14 Q15 11 13 7 Q13 4 11 4 Z" },
+ // Balanced, ovoid sides
+ path: "M8 2 Q11 2 12 4 Q14 8 13 13 Q12 17 10 18 Q8 19 6 18 Q4 17 3 13 Q2 8 4 4 Q5 2 8 2 Z" },
  { id: "6", label: "Short · Curved",
- path: "M5 6 Q3 6 3 9 Q2 12 3 14 Q5 18 8 18 Q11 18 13 14 Q14 12 13 9 Q13 6 11 6 Z" },
+ // Stubby, ovoid sides
+ path: "M8 4 Q11 4 12 6 Q14 9 13 12 Q12 16 10 17 Q8 18 6 17 Q4 16 3 12 Q2 9 4 6 Q5 4 8 4 Z" },
 ];
 
 // Width of upper six anterior teeth on curve, distal-to-distal
