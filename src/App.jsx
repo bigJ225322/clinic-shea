@@ -20680,6 +20680,7 @@ const GUIDES = [
  { id: "dir-ch18", num: 18, title: "Local anesthesia reference — maxillary + mandibular blocks", stub: true },
  { id: "dir-ch19", num: 19, title: "PRR (Preventive Resin Restoration) — small cavitation in a sealable surface", stub: true },
  { id: "dir-ch22", num: 22, title: "SDF (Silver Diamine Fluoride) — non-surgical caries arrest", stub: true },
+ { id: "dir-ch23", num: 23, title: "Vital tooth bleaching — at-home tray, in-office, OTC", stub: true },
  ],
  },
  {
@@ -21560,6 +21561,7 @@ const PATHWAY_GROUPS = {
  "dir-class5-composite",
  "dir-class5-rmgi",
  "dir-direct-veneer",
+ "dir-vital-bleaching",
  ]},
  { label: "Decisions", ids: [
  "dir-deep-caries-decision",
@@ -22253,6 +22255,36 @@ const PATHWAYS = [
  { guideId: "direct", chapterId: "dir-ch15" },
  { guideId: "direct", chapterId: "dir-ch7" },
  { guideId: "direct", chapterId: "dir-ch30" },
+ ],
+ },
+ {
+ id: "dir-vital-bleaching",
+ domain: "direct",
+ label: "Vital tooth bleaching",
+ description: "Patient wants brighter teeth. Vital bleaching is the most-requested esthetic procedure (per Akarslan 2009, 55% of patients are dissatisfied with their tooth color; bleaching is the most-desired treatment). Three delivery formats: dentist-prescribed home-applied custom tray (most predictable, $300-500), in-office hydrogen peroxide gel under gingival barrier (single visit, fastest, $500-600), and over-the-counter strips/prefilled trays (cheapest, $20-100, least controlled). The case turns on (1) selecting realistic candidates — vital teeth, no untreated caries, no leaky restorations, patient counseled that restorations won't lighten; (2) the agent decision (carbamide peroxide for long wear / night-time, hydrogen peroxide for short wear / day-time); (3) managing sensitivity, the #1 adverse effect. The single most common failure is mismatched expectations after bleaching when existing composites and crowns look darker by contrast — counsel the patient BEFORE starting that any restorations in the smile zone will need replacement to match.",
+ keyDecisions: [
+ "Candidate selection: vital teeth, no untreated caries, no leaky restorations, no exposed dentin/root surfaces. Yellow/orange/brown stains respond best (1-3 weeks); blue/gray takes twice as long (2-6 weeks). Nicotine: 1-3 months. Tetracycline: 3-6 months or longer. White-spot/fluorosis lesions may appear MORE prominent after bleaching — counsel before starting. Guarded prognosis (Heywood): history of sensitivity, extremely dark gingival third visible in smile, extensive white spots, translucent teeth or exposed surfaces, unrealistic expectations, non-compliant patient, pregnant/nursing.",
+ "Agent decision — CP vs HP: Carbamide peroxide (CP) breaks down to hydrogen peroxide (HP) + urea; pH > 8.0; active 2-10 hr; intended for long wear / nighttime trays. 15% CP ≈ 5% HP (1/3 conversion). Hydrogen peroxide (HP) directly: pH 5.0; active 30-60 min; intended for short wear / daytime trays or in-office. 10% CP is the ADA-accepted formulation (5 manufacturers). 20% does NOT work twice as fast (equal results at 10 weeks) — higher concentrations only increase sensitivity. There is really no clinical advantage to >10% CP for at-home.",
+ "Dentist-prescribed at-home (predictable, $300-500): take alginate impressions of arch(es) to be bleached → pour stone cast → vacuum-form custom tray with 0.5-1 mm reservoirs on facial of teeth to be bleached, trim tray 0.5 mm short of free gingival margin (avoid soft-tissue irritation) → dispense 10% CP gel + tray to patient → patient wears 2-8 hr/day (night-time preferred since CP active 2-10 hr) for 2-4 weeks for yellow/brown discoloration, longer for blue/gray. Schedule re-evaluation at 2 weeks; reassess shade. Take pre/post photos and shade-tab records.",
+ "In-office bleaching (fastest single visit, $500-600 — Zoom, Pola, Boost): (1) record pre-op shade with Vita Classical + photo, (2) polish teeth with pumice, (3) apply liquid-dam gingival barrier (light-cured) + cheek retractor + tongue/lip protection, (4) apply 25-40% HP gel to facial of teeth being treated, (5) leave 8-10 min then suction (light source is OPTIONAL — no proven improvement, just increases dehydration + sensitivity), (6) repeat 3-4 times per visit, (7) remove barrier, rinse thoroughly. Post-op: 24-48 hr of sensitivity is common.",
+ "OTC option (Crest White Strips, Opalescence Go — $20-100): patient-selected, no exam, no tray fit. Disadvantages: cumbersome, non-selective (treats all anteriors uniformly even if some are restored), gingival irritation, no dental supervision. Useful for mild improvement only. Counsel patients seeking esthetic gain that dentist-prescribed is more predictable.",
+ "Sensitivity management: pre-treat with 5% potassium nitrate (Sensodyne) toothpaste 1-2 weeks before starting + during bleaching. In-tray fluoride or KNO3 desensitizer for 30 min after each bleaching cycle if breakthrough. Pause 1-3 days if sensitivity becomes painful; resume at reduced wear time or every-other-day cycle. Adverse effects (sensitivity + gingival irritation) almost always resolve within 1-2 weeks of stopping.",
+ "Restoration compatibility: existing composites and ceramic restorations will NOT lighten — they remain the original shade and look darker by contrast. Counsel patient at consult that any restoration in the smile zone (especially anterior composites, veneers, crowns) will need REPLACEMENT after bleaching to match the new tooth shade. PMMA provisionals exhibit yellow-orange discoloration on CP exposure — replace any PMMA temporaries before bleaching. Polish + recheck contour at the bleaching post-op.",
+ "Bonding-after-bleaching delay: wait 2 WEEKS after the last bleaching session before placing any new direct composite restoration. Residual peroxide / oxygen at the bonding surface significantly reduces composite-to-enamel bond strength. The same applies before cementing any porcelain restorations.",
+ "CDT codes (CDT 2024): D9972 (External bleaching — per arch, performed in office) for the in-office visit. D9973 (External bleaching — per tooth) when only specific teeth are bleached, typically used for isolated discoloration. D9975 (External bleaching for home application, per arch — includes materials + custom-tray fabrication) for the at-home tray case (bills per arch). D9974 (Internal bleaching, per tooth) is for non-vital endo-treated teeth (walking-bleach technique) — see ind-endo-treated for the non-vital pathway, NOT this one.",
+ ],
+ phases: [
+ { label: "Candidate selection & counsel", count: 2 },
+ { label: "Agent + format decision", count: 2 },
+ { label: "Tray fabrication OR in-office", count: 2 },
+ { label: "Maintenance & re-eval", count: 2 },
+ ],
+ sections: [
+ { guideId: "direct", chapterId: "dir-ch1" }, // Workflow
+ { guideId: "direct", chapterId: "dir-ch2" }, // Isolation (for in-office)
+ { guideId: "direct", chapterId: "dir-ch23" }, // Vital bleaching detail
+ { guideId: "direct", chapterId: "dir-ch7" }, // Polish (post-bleaching)
+ { guideId: "direct", chapterId: "dir-ch31" }, // Pitfalls
  ],
  },
  {
