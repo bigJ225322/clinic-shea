@@ -586,7 +586,7 @@ const CHUNKS = [
 "id": "c045",
 "section": "RPD",
 "title": "RPD RESOURCES",
-"body": "important links\n -​ RPD Manual\n -​ Swade — RPD Design Guide\n -​ RPD Preliminary Design Sheet\n -​ RPD manual from Dalhousie University Dental School\n\nstudy guides\n[1] Removable Prosthodontics\n[2] Diagnosis & Treatment Planning\n[3] Maxillomandibular Relationships & Surveying\n[4] Pre-Prosthetic Procedures\n[5] Major & Minor Connectors\n\n[1] Retainers\n[2] Base, Tissue Support & Final Impression\n[3] Temporary RPD\n\n[1] RPD Sequencing\n[3] RPD Occlusion\n[4] RPD Delivery\n[5] Reline, Rebase, Repair\n\nlab instructions\n -​ Diagnostic Impressions\n -​ Wax Rims for Bite Registration\n -​ Facebow & Mounting Casts\n -​ Surveying & Practice Rest Seats\n -​ Guide Planes & Rest Seats\n -​ RPD Design\n -​ Intraoral Preparations\n -​ Custom Trays\n -​ Framework Try-In & Framework Wax Rims\n -​ Setting Teeth"
+"body": "important links\n -​ RPD Manual\n -​ RPD Design Guide\n -​ RPD Preliminary Design Sheet\n -​ RPD manual from Dalhousie University Dental School\n\nstudy guides\n[1] Removable Prosthodontics\n[2] Diagnosis & Treatment Planning\n[3] Maxillomandibular Relationships & Surveying\n[4] Pre-Prosthetic Procedures\n[5] Major & Minor Connectors\n\n[1] Retainers\n[2] Base, Tissue Support & Final Impression\n[3] Temporary RPD\n\n[1] RPD Sequencing\n[3] RPD Occlusion\n[4] RPD Delivery\n[5] Reline, Rebase, Repair\n\nlab instructions\n -​ Diagnostic Impressions\n -​ Wax Rims for Bite Registration\n -​ Facebow & Mounting Casts\n -​ Surveying & Practice Rest Seats\n -​ Guide Planes & Rest Seats\n -​ RPD Design\n -​ Intraoral Preparations\n -​ Custom Trays\n -​ Framework Try-In & Framework Wax Rims\n -​ Setting Teeth"
 },
 {
 "id": "c046",
@@ -3093,7 +3093,7 @@ const REF_DATA = {
  ]},
  ]},
  { type: "prose", heading: "Turnaround", lines: [
- "Lab turnaround per Swade is 12 business days for PFM crowns. Book the delivery appointment accordingly.",
+ "Lab turnaround is 12 business days for PFM crowns. Book the delivery appointment accordingly.",
  ]},
  ],
  },
@@ -3114,7 +3114,7 @@ const REF_DATA = {
  ]},
  ]},
  { type: "prose", heading: "Turnaround", lines: [
- "Working-cast pour falls under \"model work\" — 5 business days per Swade.",
+ "Working-cast pour falls under \"model work\" — 5 business days.",
  ]},
  ],
  },
@@ -3155,7 +3155,7 @@ const REF_DATA = {
  ]},
  ]},
  { type: "prose", heading: "Turnaround", lines: [
- "Implant crowns are 12 business days per Swade.",
+ "Implant crowns are 12 business days.",
  ]},
  ],
  },
@@ -3235,7 +3235,7 @@ const REF_DATA = {
  ]},
  ]},
  { type: "prose", heading: "Turnaround", lines: [
- "Night guards are 9 business days per Swade.",
+ "Night guards are 9 business days.",
  ]},
  ],
  },
@@ -3295,7 +3295,7 @@ const REF_DATA = {
  ]},
  ]},
  { type: "prose", heading: "Turnaround", lines: [
- "Reline is 5 business days per Swade — among the fastest turnarounds. Still plan for patient to be without their denture for ~1 week.",
+ "Reline is 5 business days — among the fastest turnarounds. Still plan for patient to be without their denture for ~1 week.",
  ]},
  ],
  },
@@ -3310,7 +3310,7 @@ const REF_DATA = {
  { type: "cards", caption: "What to send with this Rx", cards: [
  { title: "Supplements", rows: [
  ["Surveyed master cast", "with tripod marks and path-of-insertion lines"],
- ["Designed RPD drawing", "drawn directly on the printed lab Rx (Swade c099.0 step 20)"],
+ ["Designed RPD drawing", "drawn directly on the printed lab Rx"],
  ["Opposing cast", "mounted"],
  ["Bite registration", "if not hand-articulable"],
  ]},
@@ -3369,9 +3369,9 @@ const REF_DATA = {
  },
 
  "lab-turnaround": {
- verdict: "Plan delivery appointments around the Swade turnaround table. Most prosthetic cases need 9 – 12 business days; reline and model work are quick at 5 days.",
+ verdict: "Plan delivery appointments around the turnaround table. Most prosthetic cases need 9 – 12 business days; reline and model work are quick at 5 days.",
  blocks: [
- { type: "table", caption: "Swade lab turnaround times",
+ { type: "table", caption: "Lab turnaround times",
  headers: ["Time", "Case types"],
  rows: [
  ["5 business days",
@@ -10262,7 +10262,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <Hairline />
  <Field label="Name(s)">
  <TextInput value={fields.names} onChange={v=>setField("names",v)}
- placeholder="S.Swade/Dr. Nice" />
+ placeholder="S.Student/Dr. Nice" />
  </Field>
  <button className="ghost" onClick={handleReset} style={{ width: "100%", marginTop: "10px" }}>
  Clear patient fields
@@ -10813,15 +10813,6 @@ function Browse({
 
  {/* ── Right: steps article ── */}
  <div style={{ position: "relative" }}>
- {currentProcedure && stepsBody && (
- <div style={{
- position: "absolute", top: "-19px", right: "1px",
- fontSize: "11px", color: "var(--ink-faint)",
- fontFamily: "'Geist', sans-serif", lineHeight: 1,
- }}>
- Steps from <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em>
- </div>
-)}
  <article ref={articleRef} style={{
  background: "var(--paper)", border: "1px solid var(--rule)",
  borderRadius: "3px", padding: "32px 36px",
@@ -10876,10 +10867,9 @@ function Browse({
  color: "var(--ink-faint)", fontStyle: "italic",
  fontSize: "13px", padding: "20px 0",
  }}>
- Sarah Swade&apos;s guide doesn&apos;t include a structured steps
- section for this procedure. The Note Builder still has its
- template, and the Class Notebook (Ask) can answer questions
- about it.
+ No structured steps available for this procedure. The Note
+ Builder still has its template, and the Class Notebook (Ask)
+ can answer questions about it.
  </div>
 )}
 
@@ -11377,7 +11367,7 @@ const RVU_CATEGORIES = [
  // Direct: composite (D23xx), amalgam (D21xx), sealants, caries control, ITR.
  { id: "direct", label: "Direct", match: c => /^D2[13]\d{2}$/.test(c) || c === "D2940" || c === "D2941" || c === "D1351" || c === "D1352" },
  // Indirect: crowns (D27xx), recement/prefab adult, FPDs + implants (D6xxx),
- // and UIC's digital crown codes (DD / RD).
+ // and digital crown codes (DD / RD).
  { id: "indirect", label: "Indirect", match: c => /^D27/.test(c) || c === "D2920" || c === "D2921" || c === "D2935" || /^D6/.test(c) || /^DD/.test(c) || /^RD/.test(c) },
  // Perio: D4xxx + adult prophy + tobacco-cessation codes.
  { id: "perio", label: "Perio", match: c => /^D4/.test(c) || c === "D1110" || /^D1320/.test(c) },
@@ -11637,7 +11627,7 @@ function ClickToCopyCode({ code, showSwadeFlag }) {
  onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
  >
  {showSwadeFlag && (
- <span title="Used in the Swade guide" style={{
+ <span title="Common predoc code" style={{
  width: "5px", height: "5px", borderRadius: "50%",
  background: copied ? "var(--teal)" : "var(--accent)",
  display: "inline-block", flexShrink: 0,
@@ -11861,7 +11851,7 @@ function RVUs() {
  <input type="checkbox" checked={swadeOnly}
  onChange={e => setSwadeOnly(e.target.checked)}
  style={{ accentColor: "var(--accent)", cursor: "pointer" }} />
- Hide codes not in <em className="serif" style={{ fontStyle: "italic", margin: "0 -2px" }}>(swade)</em> manual
+ Hide codes not commonly used in predoc clinic
  </label>
  {/* MEE contribution % toggles */}
  {[["D3", showD3Pct, setShowD3Pct], ["D4", showD4Pct, setShowD4Pct]].map(([lbl, val, set]) => (
@@ -12192,7 +12182,7 @@ function RVUs() {
  background: "var(--accent)", display: "inline-block",
  marginRight: "6px", verticalAlign: "middle",
  }} />
- codes referenced in <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual
+ commonly used predoc codes
  {" · "}
  </>
 )}
@@ -20780,7 +20770,7 @@ const GUIDES = [
  "**4c. Axial depth-cut grooves:** use the chamfer diamond. Cut 1.0 mm axial grooves on B + L + M + D.",
  "**4d. Reduce axial walls** to the depth-groove level. Maintain a 6–10° total occlusal convergence (a tapered, parallel-to-itself axial wall).",
  "**4e. Path of draw:** for multiple-unit FPDs, the most-misaligned abutment determines the path. Taper non-parallel abutments inward to achieve common path.",
- "**4f. Finish the margin** with a fine-grit chamfer diamond. Chamfer width: 1.0–1.25 mm for PFM (deep chamfer per Swade); 0.5–0.8 mm for all-metal. Margin location: 0.5–1.0 mm subgingival for esthetic zones, supragingival or equigingival otherwise.",
+ "**4f. Finish the margin** with a fine-grit chamfer diamond. Chamfer width: 1.0–1.25 mm (deep chamfer) for PFM; 0.5–0.8 mm for all-metal. Margin location: 0.5–1.0 mm subgingival for esthetic zones, supragingival or equigingival otherwise.",
  "**4g. Smooth all line angles + surfaces.** Sharp angles concentrate stress; smooth flowing surfaces give the crown material adequate bulk + clean seating.",
  "**4h. Verify reduction with the putty matrix:** seat the matrix, look for 1.5–2.0 mm clearance throughout the prep tooth. **Use a 1.0 mm probe (or condenser) inside the putty** — classic error is acceptable-looking putty clearance from the outside that's actually under-reduced when measured inside.",
  "**4i.** Verify with explorer that no exposed dentin shows undercuts (undercuts trap impression material + interfere with crown seating).",
@@ -22060,9 +22050,9 @@ const PATHWAYS = [
  label: "Class II composite",
  description: "The workhorse of operative dentistry. A posterior tooth with proximal caries needs a composite restoration that reproduces the original contact, contour, and occlusion in a single visit. The case turns on three things — a tight proximal contact (sectional matrix with wedge and ring, never a flat band alone), a moisture-free bonding field (Isodry, not cotton rolls), and adequate light cure energy reaching the gingival floor. Most failures trace back to a weak proximal contact (food trap, recurrent caries) or to inadequate cure at the box floor.",
  keyDecisions: [
- "Pre-wedge BEFORE prepping (Swade Class II step 6, p.39) — wooden wedge mesial and distal for MOD, expands the PDL and makes restoring contact easier.",
- "Matrix system (Swade allows either, p.39 step 9): Garrison sectional kit (contoured band + plastic wedge + Garrison ring, burnish) is preferred for proximal contact, OR Tofflemire universal matrix + wooden wedge + burnish if sectional unavailable. The Garrison ring + wedge combination is critical — a flat Tofflemire band alone gives open contacts.",
- "Isolation: Isodry (default) or rubber dam — both are acceptable per Swade; tie floss to the clamp if using rubber dam.",
+ "Pre-wedge BEFORE prepping — wooden wedge mesial and distal for MOD, expands the PDL and makes restoring contact easier.",
+ "Matrix system: Garrison sectional kit (contoured band + plastic wedge + Garrison ring, burnish) is preferred for proximal contact, OR Tofflemire universal matrix + wooden wedge + burnish if sectional unavailable. The Garrison ring + wedge combination is critical — a flat Tofflemire band alone gives open contacts.",
+ "Isolation: Isodry (default) or rubber dam — both are acceptable; tie floss to the clamp if using rubber dam.",
  "Etch + bond sequence: etch enamel first, then dentin with 35% phosphoric acid → wait 15s → rinse 5s → lightly dry (dentin glossy without pooling). Apply Gluma 45s → wait 15s → air dry → rinse 15s → lightly dry. Apply ScotchBond Universal in vigorous scrub for 20s → air thin 5s → light cure 10s. Gluma is a very common desensitization step for posterior composite.",
  "Place gingival increment first (1.5–2 mm), light cure 20–40 sec, then build incrementally up the box. Cure the final increment 60 sec.",
  "Check the contact with floss before dismissing — floss should snap through with resistance. A loose contact is a redo, not a polish. Codes: D2392 (2-surface) or D2393 (3-surface).",
@@ -22092,7 +22082,7 @@ const PATHWAYS = [
  keyDecisions: [
  "Minimum cavity prep — remove caries-infected dentin only (soft, wet, bacteria-laden), leave caries-affected dentin that is firm and structurally sound. No prophylactic extension.",
  "Etch + bond sequence: etch enamel first then dentin with 35% phosphoric acid → wait 15s → rinse 5s → lightly dry (dentin glossy without pooling). Apply Gluma 45s → wait 15s → air dry → rinse 15s → lightly dry. ScotchBond Universal vigorous scrub 20s → air thin 5s → light cure 10s. Gluma is a very common desensitization step.",
- "Clean prep with Consepsis 10s scrub → 5s rinse → gently air-dry (Swade step 8) BEFORE liner/base placement. If indicated: 0.5 mm Vitrebond RMGI in deepest area → light cure 20s. Dycal only for indirect pulp cap or small mechanical exposure.",
+ "Clean prep with Consepsis 10s scrub → 5s rinse → gently air-dry BEFORE liner/base placement. If indicated: 0.5 mm Vitrebond RMGI in deepest area → light cure 20s. Dycal only for indirect pulp cap or small mechanical exposure.",
  "Increment in 2 mm layers with 20–40 sec cure per layer; cure the final increment 60s. Carve anatomy with IPC / Hollenback before final cure — composite stays sculptable for 20–30 seconds.",
  "Check occlusion with articulating paper at MI and excursive movements. Finish with composite finishing burs, polish with Shofu + Jiffy Brush. Code: D2391 (resin-based composite, 1 surface, posterior).",
  ],
@@ -22121,9 +22111,9 @@ const PATHWAYS = [
  "Gluma sealer is a very common desensitization step under amalgam — 45 sec scrub, 15 sec wait, air dry, 15 sec rinse, lightly dry. Copal varnish is an older alternative; some operators place amalgam without a sealer at all.",
  "Tofflemire universal matrix band + wooden wedge for Class II, with the closed end of the retainer toward the occlusal. Burnish the band against the adjacent tooth before placing the amalgam — this is what creates an anatomic contact.",
  "Overfill the prep — cavosurface margins must be covered. Condense with the small condenser into line angles first, then the large condenser. Carve back to anatomy with 5T, Cleoid-Discoid, ½ Hollenback, anatomic burnisher.",
- "Amalgamation (Swade p.35): 9-12 seconds on medium speed (3600 cpm). Mix should be consistent, shiny, smooth — too short = crumbly, too long = excess setting heat + reduced strength.",
+ "Amalgamation: 9-12 seconds on medium speed (3600 cpm). Mix should be consistent, shiny, smooth — too short = crumbly, too long = excess setting heat + reduced strength.",
  "Check occlusion gently with articulating paper — if the patient bites hard before the amalgam fully sets, it can fracture. Adjust high spots with a high-speed bur, lightly.",
- "Codes per Swade p.36: D2140 (amalgam 1 surface, posterior), D2150 (2 surface), D2160 (3 surface), D2161 (4+ surface). Anterior amalgam (D2110-D2113) is rare in contemporary clinic practice but listed in CDT.",
+ "Codes: D2140 (amalgam 1 surface, posterior), D2150 (2 surface), D2160 (3 surface), D2161 (4+ surface). Anterior amalgam (D2110-D2113) is rare in contemporary clinic practice but listed in CDT.",
  ],
  phases: [
  { label: "Setup", count: 3 },
@@ -22153,7 +22143,7 @@ const PATHWAYS = [
  "Layer dentin shade first (cervical and body), then translucent enamel shade over it. A monochromatic restoration looks flat against natural enamel translucency.",
  "Mylar strip + wedge shapes the proximal. Pre-curve the strip over a mirror handle to give it natural anatomy before placement. When placing liner/base, avoid the facial wall to preserve esthetics — opaque liner showing through facial enamel ruins the result.",
  "Polish in the proximal area with a fine-grit Soflex disc on a slow handpiece. Rough proximal surface = stain, plaque, recurrent caries.",
- "Swade etch + bond sequence (p.41-42): etch enamel-then-dentin with 35% phosphoric acid → wait 15s → rinse 5s → lightly dry. Apply Gluma 45s → wait 15s → air dry → rinse 15s → lightly dry. ScotchBond Universal 20s vigorous scrub → air thin 5s → light cure 10s. Codes: D2330 (1 surf), D2331 (2 surf), D2332 (3 surf) — all anterior.",
+ "Etch + bond sequence: etch enamel-then-dentin with 35% phosphoric acid → wait 15s → rinse 5s → lightly dry. Apply Gluma 45s → wait 15s → air dry → rinse 15s → lightly dry. ScotchBond Universal 20s vigorous scrub → air thin 5s → light cure 10s. Codes: D2330 (1 surf), D2331 (2 surf), D2332 (3 surf) — all anterior.",
  ],
  phases: [
  { label: "Shade & access", count: 2 },
@@ -22178,12 +22168,12 @@ const PATHWAYS = [
  description: "An incisal corner is missing, usually from trauma or a long-standing Class III that broke through to the incisal edge. The aesthetic stakes are the highest in operative dentistry — the restoration sits in the smile line and must reproduce the translucency, halo, and opalescence of natural enamel. A silicone palatal index made from a diagnostic wax-up is the difference between a corner that looks built and one that looks original.",
  keyDecisions: [
  "Diagnostic wax-up + putty palatal index. The index becomes a stop for the lingual shell — without it, the proportions are guesswork.",
- "Bevel the facial enamel margin to blend the composite-enamel interface and disguise the margin (see Class IV bullet below for the Swade-spec 0.5-2.0 mm width).",
+ "Bevel the facial enamel margin to blend the composite-enamel interface and disguise the margin (see Class IV bullet below for the 0.5-2.0 mm width).",
  "Place the lingual enamel shell first against the putty index, then dentin layers, then facial enamel layer. Add a thin halo of translucent shade at the incisal edge for opalescence.",
  "Polish with progressive grit Soflex discs (medium → fine → superfine) and finish with felt + diamond polishing paste.",
  "Photograph at delivery with shade tab adjacent — useful for refining future cases and for patient record.",
- "Swade Class IV bevel (p.43 step 7): create a WIDE bevel 0.5-2.0 mm to maximize esthetics + retention (wider than the Class III 0.25-0.5 mm bevel because Class IV needs more enamel-rod surface for the bond to survive incisal occlusal stress). Etch + Gluma + ScotchBond sequence same as Class I/II. Code: D2335 (Resin-based comp — 4+ surf, ant).",
- "Reference: the Anterior Layering Technique video (linked from Swade p.43) — the canonical method for the dentin-enamel layering on Class IV. Worth watching before any anterior corner buildup.",
+ "Class IV bevel: create a WIDE bevel 0.5-2.0 mm to maximize esthetics + retention (wider than the Class III 0.25-0.5 mm bevel because Class IV needs more enamel-rod surface for the bond to survive incisal occlusal stress). Etch + Gluma + ScotchBond sequence same as Class I/II. Code: D2335 (Resin-based comp — 4+ surf, ant).",
+ "Reference: the Anterior Layering Technique video — the canonical method for the dentin-enamel layering on Class IV. Worth watching before any anterior corner buildup.",
  ],
  phases: [
  { label: "Planning & wax-up", count: 2 },
@@ -22215,7 +22205,7 @@ const PATHWAYS = [
  "Sandwich technique (when the gingival floor is dentin and the coronal margin is enamel): place RMGI as the bottom layer first — condition with polyacrylic acid 15 sec, light air dry without water, cure 10 sec, then place Ketac Nano RMGI as the dentin-floor base and cure 20 sec. Then etch the enamel and the RMGI surface, bond, and place composite over the top. RMGI's chemical bond to dentin + composite's polishability and color in the visible zone.",
  "Match cervical shade — usually one shade darker (higher chroma) than the body of the tooth.",
  "Polish flush with the root surface. A high or rough margin invites plaque retention and re-caries within 1–2 years.",
- "Swade Class V step 9 (p.45): pack a #0 retraction cord soaked in Hemodent if needed for the subgingival margin. Swade etch + Gluma + ScotchBond sequence same as Class I/II. Code: D2330 (1 surf, ant) for anterior Class V; D2391 (1 surf, post) for posterior Class V.",
+ "For subgingival margins: pack a #0 retraction cord soaked in Hemodent if needed. Etch + Gluma + ScotchBond sequence same as Class I/II. Code: D2330 (1 surf, ant) for anterior Class V; D2391 (1 surf, post) for posterior Class V.",
  ],
  phases: [
  { label: "Setup & isolation", count: 2 },
@@ -22238,9 +22228,9 @@ const PATHWAYS = [
  description: "Cervical or root-surface caries where the gingival margin sits apical to the CEJ — there is no enamel to bond to. Resin-modified glass ionomer (RMGI, Ketac Nano or Fuji II LC) is the material of choice here because it bonds chemically to dentin without an adhesive step and continuously releases fluoride into the surrounding tooth. Composite over an exposed root surface is a setup for failure; the bond strength to root dentin alone is unreliable.",
  keyDecisions: [
  "If the lesion margin is fully on root surface (no enamel), RMGI is the default. Composite needs an enamel margin to anchor the bond.",
- "Condition the cavity per Swade RMGI p.49: polyacrylic acid 15 sec → lightly air-dry WITHOUT rinsing (dentin should look just-moist, not glistening wet, not dry) → light cure 10 sec. Polyacrylic acid (not phosphoric) is the conditioner for the dentin surface under pure RMGI — it preserves the ionic bond. Selective phosphoric etch of any pure-enamel margin is still acceptable in a sandwich technique.",
+ "Condition the cavity: polyacrylic acid 15 sec → lightly air-dry WITHOUT rinsing (dentin should look just-moist, not glistening wet, not dry) → light cure 10 sec. Polyacrylic acid (not phosphoric) is the conditioner for the dentin surface under pure RMGI — it preserves the ionic bond. Selective phosphoric etch of any pure-enamel margin is still acceptable in a sandwich technique.",
  "Mix and place RMGI quickly — working time is 2–3 minutes. The capsule form (auto-mix) is more reliable than hand-mix for this reason.",
- "Light cure each increment 20 sec (Swade p.49). Cure even though it's resin-modified — the dual-cure component is the reason for the longer working time.",
+ "Light cure each increment 20 sec. Cure even though it's resin-modified — the dual-cure component is the reason for the longer working time.",
  "Polish gently with a fine-grit disc, not coarse. RMGI surface is softer than composite and roughens easily.",
  ],
  phases: [
@@ -22296,7 +22286,7 @@ const PATHWAYS = [
  "At-home first-line: 5% potassium nitrate toothpaste (Sensodyne Original) BID × 2-4 weeks. Patient brushes normally then leaves a small amount of paste on affected area without rinsing for 1-2 min. Mechanism: K+ ion depolarizes the A-δ fiber, blunting transmission. Alternatives: stannous fluoride (Crest Gum & Sensitivity) — blocks tubules; arginine + calcium carbonate (Colgate Pro-Argin) — biomimetic tubule occlusion.",
  "In-office desensitizing agents: (a) Gluma desensitizer (HEMA + glutaraldehyde) — apply for 30-60s, gently air dry; precipitates plasma proteins in tubules. (b) 5% NaF varnish (Duraflor, Vanish) — paint on, sets on contact with saliva; releases F for tubule remineralization. (c) potassium oxalate (Bisbloc) — precipitates calcium oxalate crystals in tubule lumens. (d) glass ionomer or composite resin tubule occlusion — apply primer + adhesive, cure to seal tubules; for stubborn cases. (e) MI Paste (CPP-ACP) — adjunct for chronic cases. Effect lasts 1-3 months; can repeat as needed.",
  "Restorative endpoint — if exposed root or NCCL (non-carious cervical lesion) is present: place RMGI (Ketac Nano or Fuji II LC) at the gingival floor + composite over enamel margin (sandwich technique — see dir-class5-composite or dir-class5-rmgi). If the lesion is purely on root surface with no enamel margin, RMGI alone is the material of choice (see dir-class5-rmgi). Bevel enamel margins. For abfraction with active occlusion contributing, address occlusion BEFORE restoring — otherwise the restoration debonds.",
- "Post-bleaching sensitivity (if patient is doing OTC strips or home bleaching): pre-treat with 5% KNO3 toothpaste 1-2 weeks before + during. Pause 1-3 days if intolerable. Almost always self-resolving within 1-2 weeks of stopping. Bleaching is not a UIC predoctoral procedure — refer interested patients to private practice.",
+ "Post-bleaching sensitivity (if patient is doing OTC strips or home bleaching): pre-treat with 5% KNO3 toothpaste 1-2 weeks before + during. Pause 1-3 days if intolerable. Almost always self-resolving within 1-2 weeks of stopping. Bleaching is not a predoctoral procedure — refer interested patients to private practice.",
  "Post-SRP sensitivity (transient 1-2 weeks, common): counsel patient at SRP visit that 1-2 weeks of cold sensitivity is expected as gingiva tightens and exposes previously protected root surface. 5% KNO3 toothpaste + fluoride rinse during the healing window usually suffices. If persistent past 4-6 weeks, treat as primary hypersensitivity.",
  "CDT codes: D9910 (Application of desensitizing medicament — billed once per visit regardless of number of teeth treated) for varnish, Gluma, oxalates. D9911 (Application of desensitizing resin for cervical and/or root surface — per tooth) for bonded resin sealing of tubules on a specific tooth. Restorative codes apply if a Class V is placed: D2330/D2331 (anterior composite) or D2391/D2392 (posterior composite) depending on surface count.",
  ],
@@ -22370,7 +22360,7 @@ const PATHWAYS = [
  "Indication check: caries-free OR enamel-limited non-cavitated lesion. If lesion has progressed into dentin (cavitated, radiolucency on bitewing), it's a Class I composite case (see dir-ch10), not a sealant.",
  "Use fluoride-free pumice for the prophy step — fluoride interferes with the etch and bond.",
  "Isodry is the standard isolation — no anesthesia needed because there's no clamp to seat.",
- "Etch enamel 30 sec → rinse → lightly air-dry (Swade sealant p.51), optional bond step (faculty usually want it done), Ultradent UltraSeal XT Plus (the sealant material stocked at, currently in the peds clinic), thick — apply sparingly, 20-sec cure.",
+ "Etch enamel 30 sec → rinse → lightly air-dry, optional bond step (faculty usually want it done), Ultradent UltraSeal XT Plus (the sealant material stocked in the peds clinic), thick — apply sparingly, 20-sec cure.",
  "Check occlusion with articulating paper before dismissing — sealant high on occlusion needs adjustment with a fine finishing bur.",
  ],
  phases: [
@@ -22471,11 +22461,11 @@ const PATHWAYS = [
  id: "ind-conventional-crown",
  domain: "indirect",
  label: "PFM crown",
- description: "Posterior tooth needing a crown via the standard PFM workflow — four clinical sessions with lab steps between. The case turns on prep geometry (1.5–2.0 mm occlusal reduction, 1.25–1.50 mm axial reduction, 1.0–1.25 mm chamfer per Swade PFM spec, 6–10° taper) and an accurate impression captured the same visit. The most common error is under-reduction (the putty matrix looks right from the outside but a 1.0 mm probe inside reveals shy clearance) and on margin contamination from bleeding tissue.",
+ description: "Posterior tooth needing a crown via the standard PFM workflow — four clinical sessions with lab steps between. The case turns on prep geometry (1.5–2.0 mm occlusal reduction, 1.25–1.50 mm axial reduction, 1.0–1.25 mm chamfer, 6–10° taper) and an accurate impression captured the same visit. The most common error is under-reduction (the putty matrix looks right from the outside but a 1.0 mm probe inside reveals shy clearance) and on margin contamination from bleeding tissue.",
  keyDecisions: [
- "Reduction targets (PFM, Swade clinic guide): 1.5–2.0 mm occlusal / 1.25–1.50 mm axial / 1.0–1.25 mm deep chamfer finish line / 6–10° total occlusal convergence. (All-metal uses shallower 0.5–0.8 mm chamfer + 1.0–1.25 mm axial; all-ceramic same as PFM.)",
+ "Reduction targets (PFM): 1.5–2.0 mm occlusal / 1.25–1.50 mm axial / 1.0–1.25 mm deep chamfer finish line / 6–10° total occlusal convergence. (All-metal uses shallower 0.5–0.8 mm chamfer + 1.0–1.25 mm axial; all-ceramic same as PFM.)",
  "Verify reduction with the putty matrix AND a 1.0 mm probe inside the putty — outside-only check misses inner under-reduction.",
- "Cord retraction for subgingival margins — Swade p.55/p.66 teaches a dual-cord technique: #00 bottom (tucked, no tail) + #0 top (with tail for retrieval); soak in Hemodent or ViscoStat 3-5 min. Single-cord is also commonly used at UIC for moderately subgingival margins — dual is the more controlled approach for deeper margins.",
+ "Cord retraction for subgingival margins — a dual-cord technique: #00 bottom (tucked, no tail) + #0 top (with tail for retrieval); soak in Hemodent or ViscoStat 3-5 min. Single-cord is also commonly used for moderately subgingival margins — dual is the more controlled approach for deeper margins.",
  "Tempbond NE on the provisional; gel-stage cleanup 3–4 min after seating.",
  "Faculty signs off on the prep before impression.",
  "CDT codes (CDT 2024): D2750 (Crown, PFM high noble metal) — typical billing code. Material variants: D2740 (porcelain/ceramic), D2790 (full cast high noble metal), D2752 (PFM noble metal), D2753 (PFM titanium / titanium alloys). Per-step subcodes commonly used: D2750A (prep), D2750B (impression / lab), D2750C (delivery / cementation). Provisional may bill D2799 (interim crown).",
@@ -22578,7 +22568,7 @@ const PATHWAYS = [
  "Pontic = modified ridge lap (allows floss to pass under cleanly); NOT saddle.",
  "Framework try-in is the highest-stakes appointment — non-passive metal cannot be made to fit later.",
  "Connector dimensions: ≥9 mm² cross-section for posterior, ≥6 mm² for anterior. Separately, Ante's law applies — total periodontal area of abutments ≥ replaced tooth's periodontal area.",
- "Cement choice (Swade clinic guide): RelyX Unicem 2 (self-adhesive resin cement) for PFM/zirconia FPDs is the default — single-step, no priming dentin/etching tooth. FujiCem 2 (RMGI) is the conservative fallback on retentive preps with primarily dentin margins. Avoid traditional zinc phosphate on contemporary materials.",
+ "Cement choice: RelyX Unicem 2 (self-adhesive resin cement) for PFM/zirconia FPDs is the default — single-step, no priming dentin/etching tooth. FujiCem 2 (RMGI) is the conservative fallback on retentive preps with primarily dentin margins. Avoid traditional zinc phosphate on contemporary materials.",
  "CDT codes (3-unit FPD = 3 separate codes — 2 retainer crowns + 1 pontic): retainer crowns D6750 (PFM high noble metal) — or material variant: D6740 (porc/cer), D6790 (full cast high noble), D6752/D6753 (PFM noble/titanium). Pontic D6240 (PFM high noble) — or D6245 (porc/cer pontic), D6210 (full cast high noble pontic), D6242/D6243 (PFM noble/titanium pontic). Bridges are billed per unit, not as a single procedure.",
  ],
  phases: [
@@ -22849,7 +22839,7 @@ const PATHWAYS = [
  "Lab solder is acceptable for a small, clean break where both fragments are present and the framework geometry is otherwise intact.",
  "Remake threshold: distorted geometry, framework already repaired once, or fragments lost. Solder won't survive load cycling on a fatigued framework.",
  "Take new alginate impressions if remaking — the patient's mouth has changed since the original; don't reuse old casts.",
- "Provide an interim solution while the new framework is being made — Swade's interim PD codes (D5820/D5821) cover this, billed as a separate appliance. The patient can also keep wearing a non-load-bearing broken RPD short-term, but counsel that this risks further fragmentation.",
+ "Provide an interim solution while the new framework is being made — interim PD codes (D5820/D5821) cover this, billed as a separate appliance. The patient can also keep wearing a non-load-bearing broken RPD short-term, but counsel that this risks further fragmentation.",
  ],
  phases: [
  { label: "Triage", count: 1 },
@@ -22909,7 +22899,7 @@ const PATHWAYS = [
  id: "cd-conventional",
  domain: "cd",
  label: "Fully edentulous (Conventional CD)",
- description: "Patient has been edentulous for years, ridges are healed and stable. The canonical 8-clinical-appointment workflow per Swade Denture Steps p.80: (1) COE + diagnostic impressions, (2) border molding + final impression, (3) wax-rim try-in + jaw relation record + facebow + tooth selection, (4) anterior wax try-in, (5) posterior wax try-in, (6) delivery, (7) 24-hour follow-up, (8) 1-week follow-up — with 5 lab steps between (custom trays → master casts/wax rims → mount + anterior setup → posterior setup → processing). The two highest-yield clinical sessions are border molding (region-by-region with greenstick compound through the Hanau torch) and the wax try-in (where you commit to esthetics + VDO + CR before processing). The single most common adult failure is a wax try-in that's never actually evaluated phonetically.",
+ description: "Patient has been edentulous for years, ridges are healed and stable. The canonical 8-clinical-appointment workflow: (1) COE + diagnostic impressions, (2) border molding + final impression, (3) wax-rim try-in + jaw relation record + facebow + tooth selection, (4) anterior wax try-in, (5) posterior wax try-in, (6) delivery, (7) 24-hour follow-up, (8) 1-week follow-up — with 5 lab steps between (custom trays → master casts/wax rims → mount + anterior setup → posterior setup → processing). The two highest-yield clinical sessions are border molding (region-by-region with greenstick compound through the Hanau torch) and the wax try-in (where you commit to esthetics + VDO + CR before processing). The single most common adult failure is a wax try-in that's never actually evaluated phonetically.",
  keyDecisions: [
  "Pre-prosthetic surgical evaluation at COE — before committing to standard impressions, screen for conditions that need surgery first: hyperplastic resorbed ridges, epulis fissuratum, papillomatosis, unfavorable frenum, enlarged maxillary tuberosities, bony prominences / undercuts, jaw-size discrepancies, pressure on mental foramen, limited restorative space, inflammatory papillary hyperplasia, inadequate vestibular depth. Any of these → fill out the Pre-Prosthetic Surgery Form (Axium Links menu) and refer / schedule before the denture workflow proceeds. Skipping this step means the new denture rocks on an unmodified bony undercut or sits on hyperplastic tissue that doesn't support it.",
  "Border molding region-by-region with green/red compound — frenum, buccal vestibule, retromolar pad.",
@@ -22953,16 +22943,16 @@ const PATHWAYS = [
  id: "cd-adjustment",
  domain: "cd",
  label: "Post-delivery CD adjustment",
- description: "Patient returns 24 hours, 1 week, or weeks later after CD delivery with a complaint — sore spot, food trapped under flange, denture moves when speaking or biting, occlusion feels off. Adjustment is the highest-volume CD chair-side visit and the moment that determines whether the patient becomes a successful denture wearer or returns the prosthesis. Per Swade p.94, the protocol is: interview + palpate (sore spots can exist without visible evidence), Thompson stick to transfer sore-spot location to denture, PIP paste for high-pressure intaglio areas, disclosing wax for over-extended borders, occlusion check + selective grinding. Counsel: 'sore spots will still feel tender for a few days even after adjustment — that's normal healing, not a failed adjustment.'",
+ description: "Patient returns 24 hours, 1 week, or weeks later after CD delivery with a complaint — sore spot, food trapped under flange, denture moves when speaking or biting, occlusion feels off. Adjustment is the highest-volume CD chair-side visit and the moment that determines whether the patient becomes a successful denture wearer or returns the prosthesis. The protocol is: interview + palpate (sore spots can exist without visible evidence), Thompson stick to transfer sore-spot location to denture, PIP paste for high-pressure intaglio areas, disclosing wax for over-extended borders, occlusion check + selective grinding. Counsel: 'sore spots will still feel tender for a few days even after adjustment — that's normal healing, not a failed adjustment.'",
  keyDecisions: [
- "Interview-then-palpate sequence (Swade p.94 step 2): ask the patient where it hurts AND palpate both maxillary and mandibular ridges fully — patients often have sore spots in places they can't articulate, especially on the lingual flange or distal maxillary tuberosity. Palpate firmly with index finger.",
- "Thompson stick technique for sore-spot transfer (Swade p.94 step 3): wet the Thompson stick (be gentle, the stick stings on irritated tissue), mark the sore spot intraorally, retract cheeks so the ink doesn't transfer to surrounding mucosa, insert denture, leave 5 seconds, remove. The ink mark transfers to the denture intaglio — reduce that exact spot with lab burs.",
- "PIP paste for general pressure points (Swade p.94 step 4): dry the denture (PIP won't stick to a wet intaglio), thin even layer brushed in ONE direction (so show-through is easy to read), optional Mizzy spray on patient ridge to prevent PIP sticking to tissue, insert denture with LIGHT hand pressure only — do NOT have the patient bite. Leave 5 sec, remove, leave PIP ON the denture (do not clean yet), reduce show-through with lab burs, re-apply PIP, repeat until ideal.",
- "Disclosing wax for borders (Swade p.94-95 step 5): thin (≤2 mm) ropes of disclosing wax applied to the denture borders, insert + border-mold movements, remove, reduce show-through. Posterior palatal seal extension: Thompson stick from intraoral vibrating-line mark, reduce overextension with bur, feather-edge bevel toward the back. Border extension: pull cheeks while patient lifts tongue — denture should NOT move; run finger along border to detect overextension on tissues.",
- "Occlusion check (Swade p.95 step 8): at 24-hr follow-up, do NOT adjust occlusion aggressively — the patient is still adapting to the prosthesis and the intaglio adjustments will change occlusion as the denture seats more fully. Mark with horseshoe articulating paper, reduce high spots GENTLY with lab bur, re-evaluate. Goals: even bilateral posterior contact in centric, in protrusion 2 posterior contacts (1/side) + anterior contact.",
+ "Interview-then-palpate sequence: ask the patient where it hurts AND palpate both maxillary and mandibular ridges fully — patients often have sore spots in places they can't articulate, especially on the lingual flange or distal maxillary tuberosity. Palpate firmly with index finger.",
+ "Thompson stick technique for sore-spot transfer: wet the Thompson stick (be gentle, the stick stings on irritated tissue), mark the sore spot intraorally, retract cheeks so the ink doesn't transfer to surrounding mucosa, insert denture, leave 5 seconds, remove. The ink mark transfers to the denture intaglio — reduce that exact spot with lab burs.",
+ "PIP paste for general pressure points: dry the denture (PIP won't stick to a wet intaglio), thin even layer brushed in ONE direction (so show-through is easy to read), optional Mizzy spray on patient ridge to prevent PIP sticking to tissue, insert denture with LIGHT hand pressure only — do NOT have the patient bite. Leave 5 sec, remove, leave PIP ON the denture (do not clean yet), reduce show-through with lab burs, re-apply PIP, repeat until ideal.",
+ "Disclosing wax for borders: thin (≤2 mm) ropes of disclosing wax applied to the denture borders, insert + border-mold movements, remove, reduce show-through. Posterior palatal seal extension: Thompson stick from intraoral vibrating-line mark, reduce overextension with bur, feather-edge bevel toward the back. Border extension: pull cheeks while patient lifts tongue — denture should NOT move; run finger along border to detect overextension on tissues.",
+ "Occlusion check: at 24-hr follow-up, do NOT adjust occlusion aggressively — the patient is still adapting to the prosthesis and the intaglio adjustments will change occlusion as the denture seats more fully. Mark with horseshoe articulating paper, reduce high spots GENTLY with lab bur, re-evaluate. Goals: even bilateral posterior contact in centric, in protrusion 2 posterior contacts (1/side) + anterior contact.",
  "Polish OUTSIDE only — never polish the intaglio (you'll lose the tissue-fitted surface). Send to lab support for rag-wheel + pumice polish on the external surface.",
- "CDT codes: D5410 (Adjust complete denture — maxillary) or D5411 (Adjust complete denture — mandibular) — billed per arch adjusted. UIC-internal subcode D5455 (Post Insertion Adjustment N/C) for in-process adjustments at no charge. Document specific sore-spot location, what was adjusted, and patient's relief in the note.",
- "Counsel patient at end of visit (Swade note template): 'sore spots will still feel tender even after adjustment — that's normal healing for a few days.' Schedule next adjustment if still uncomfortable in 1 week.",
+ "CDT codes: D5410 (Adjust complete denture — maxillary) or D5411 (Adjust complete denture — mandibular) — billed per arch adjusted. Internal subcode D5455 (Post Insertion Adjustment N/C) for in-process adjustments at no charge. Document specific sore-spot location, what was adjusted, and patient's relief in the note.",
+ "Counsel patient at end of visit: 'sore spots will still feel tender even after adjustment — that's normal healing for a few days.' Schedule next adjustment if still uncomfortable in 1 week.",
  ],
  phases: [
  { label: "Interview + IOE + palpate", count: 2 },
@@ -22980,15 +22970,15 @@ const PATHWAYS = [
  id: "cd-reline-lab",
  domain: "cd",
  label: "CD lab reline / rebase",
- description: "Patient with an existing well-functioning denture (often years old) needs the intaglio refreshed to match resorbed ridge anatomy — the denture sits loose, food collects under the base, or the wax-rim trial showed VDO has dropped. Lab reline is the definitive solution when the occlusion + tooth position remain acceptable but the tissue-fitting surface no longer matches the ridge. The 2-week turnaround means the patient is denture-less during processing — manage this with an interim immediate denture, a chairside reline as a stopgap, or counsel the patient to plan around the gap. Per Swade p.96: pre-reline appointment ALWAYS starts with full denture adjustment (sore spots, occlusion, border) — there's no point relining a denture that has uncorrected pressure points.",
+ description: "Patient with an existing well-functioning denture (often years old) needs the intaglio refreshed to match resorbed ridge anatomy — the denture sits loose, food collects under the base, or the wax-rim trial showed VDO has dropped. Lab reline is the definitive solution when the occlusion + tooth position remain acceptable but the tissue-fitting surface no longer matches the ridge. The 2-week turnaround means the patient is denture-less during processing — manage this with an interim immediate denture, a chairside reline as a stopgap, or counsel the patient to plan around the gap. Pre-reline appointment ALWAYS starts with full denture adjustment (sore spots, occlusion, border) — there's no point relining a denture that has uncorrected pressure points.",
  keyDecisions: [
- "Pre-reline appointment ALWAYS includes adjustment first (Swade p.96 step 3): CC/IOE/palpate, Thompson stick for sore spots, PIP paste, posterior palatal seal check, border extension check, occlusion check. Reline the corrected denture, not the uncorrected one.",
+ "Pre-reline appointment ALWAYS includes adjustment first: CC/IOE/palpate, Thompson stick for sore spots, PIP paste, posterior palatal seal check, border extension check, occlusion check. Reline the corrected denture, not the uncorrected one.",
  "Decision — reline vs rebase vs new denture: RELINE (D5750/D5751) replaces only the intaglio acrylic, preserves teeth + base + occlusion — indicated when teeth + occlusion are acceptable but tissue fit is poor. REBASE (D5710/D5711) replaces all acrylic except the teeth — indicated when the base is broken, discolored, or compromised but teeth are acceptable. NEW DENTURE (D5110/D5120) when teeth are worn, occlusion is incorrect, or VDO has significantly dropped beyond what reline can correct.",
  "Patient is denture-less for ~2 weeks during lab processing — counsel at consent. Options: (a) interim immediate denture fabricated before sending the existing one to lab; (b) chairside reline (D5730/D5731) to tide patient over (less predictable, will be replaced by the lab reline); (c) patient accepts gap (soft diet, no public-facing commitments — uncommon).",
- "Lab reline workflow (Swade p.96 steps 4-10): (1) clean denture thoroughly — ultrasonic in lab support if heavy plaque/calculus; (2) orient denture in patient's mouth, note how it sits (incisal display, midline) — capture orientation since impression will mis-seat if mis-oriented; (3) relieve intaglio uniformly 0.5 mm with lab burs (creates space for impression material); (4) shorten flanges 1 mm uniformly (creates space for border-molded impression); (5) place ONE relief hole (#8 round bur) in the center of the palate ONLY for maxillary — no relief hole for mandibular; (6) load 1-2 mm light-body PVS into intaglio, roll over flanges; (7) seat in correct orientation, patient bites down, border-mold; (8) confirm gingival shade from original lab Rx (or match with gingival shade guide); (9) send to lab with Rx 'Please reline with heat-cured acrylic resin, shade [L199-OR or matched]. Please add the posterior palatal seal as indicated on the impression.'",
+ "Lab reline workflow: (1) clean denture thoroughly — ultrasonic in lab support if heavy plaque/calculus; (2) orient denture in patient's mouth, note how it sits (incisal display, midline) — capture orientation since impression will mis-seat if mis-oriented; (3) relieve intaglio uniformly 0.5 mm with lab burs (creates space for impression material); (4) shorten flanges 1 mm uniformly (creates space for border-molded impression); (5) place ONE relief hole (#8 round bur) in the center of the palate ONLY for maxillary — no relief hole for mandibular; (6) load 1-2 mm light-body PVS into intaglio, roll over flanges; (7) seat in correct orientation, patient bites down, border-mold; (8) confirm gingival shade from original lab Rx (or match with gingival shade guide); (9) send to lab with Rx 'Please reline with heat-cured acrylic resin, shade [L199-OR or matched]. Please add the posterior palatal seal as indicated on the impression.'",
  "Tissue conditioning consideration: if patient has chronic tissue irritation (denture stomatitis, generalized erythema, papillary hyperplasia), apply tissue conditioner (Coe-Comfort soft reline material) for 2-4 weeks BEFORE the lab reline impression — heals the tissue first. Codes: D5850 (Tissue conditioning — max) / D5851 (Tissue conditioning — mand). Reline impression on healed tissue is more accurate than impression on inflamed tissue.",
  "CDT codes: D5750 (Reline complete maxillary — laboratory) / D5751 (Reline complete mandibular — laboratory). For chairside reline: D5730 / D5731 (complete) or D5740 / D5741 (PARTIAL — different code). For tissue conditioning preceding the reline: D5850 / D5851. For full rebase: D5710 / D5711 (complete) or D5720 / D5721 (partial).",
- "Lab turnaround per Swade is 5 business days for reline (one of the faster turnarounds). Book the delivery appointment accordingly.",
+ "Lab turnaround is 5 business days for reline (one of the faster turnarounds). Book the delivery appointment accordingly.",
  ],
  phases: [
  { label: "Pre-reline adjustment", count: 2 },
@@ -23180,7 +23170,7 @@ const PATHWAYS = [
  "Vitrebond over the gutta-percha is mandatory — composite alone does not bond to GP. The Vitrebond is the coronal seal.",
  "Etch + bond protocol applies to the access cavity walls (enamel + dentin), not to the GP itself. Standard 15-sec phosphoric etch, ScotchBond, light cure.",
  "Light cure composite in increments — 20-40 sec each, 60 sec final.",
- "Code D2950 (Core buildup — including pins) per Swade. This is technically a buildup over the obturated canal, not a typical surface restoration.",
+ "Code D2950 (Core buildup — including pins). This is technically a buildup over the obturated canal, not a typical surface restoration.",
  ],
  phases: [
  { label: "Access prep", count: 2 },
@@ -23376,7 +23366,7 @@ const PATHWAYS = [
  "Pre-reline appointment ALWAYS includes adjustment first: PIP the framework, check clasp engagement, check occlusion with horseshoe articulating paper, verify rest seats are seating fully. Relining a framework that doesn't seat passively will lock in the misfit.",
  "Decision — chairside vs lab vs remake: CHAIRSIDE (D5740/D5741) when patient cannot be without the prosthesis for 2 weeks and a temporary fix is acceptable — uses cold-cure acrylic, less predictable, ~3-year service life. LAB (D5760/D5761) when patient can be without prosthesis 2 weeks — heat-cured acrylic, more predictable, ~5-7 year service life. REMAKE (D5213/D5214) when framework itself is distorted, clasps have multiple repairs, or occlusion has shifted beyond what reline can correct.",
  "Tissue conditioning preceding reline (D5850/D5851) if patient has chronic tissue irritation or denture stomatitis under the saddle — apply Coe-Comfort soft reline material for 2-4 weeks BEFORE the reline impression. Heals tissue first so reline impression captures true ridge anatomy, not edematous tissue.",
- "Lab reline workflow: take alginate impression of arch through the existing RPD seated in mouth (border-mold the saddle with the framework in place), or use the framework + light-body PVS impression technique with relieved saddle. Lab Rx: 'Please reline distal-extension saddle(s) with heat-cured acrylic resin, matching original gingival shade.' 5-day turnaround per Swade.",
+ "Lab reline workflow: take alginate impression of arch through the existing RPD seated in mouth (border-mold the saddle with the framework in place), or use the framework + light-body PVS impression technique with relieved saddle. Lab Rx: 'Please reline distal-extension saddle(s) with heat-cured acrylic resin, matching original gingival shade.' 5-day lab turnaround.",
  "Chairside reline workflow (cold-cure PMMA): relieve saddle 1 mm, apply separator to teeth/framework, mix cold-cure PMMA, seat RPD with border-molding movements, hold 5 min until set, remove + trim flash + finish + polish. The acrylic gets hot during set — keep cheek/tongue protected.",
  "CDT codes: D5740 (Reline partial maxillary — chairside) / D5741 (Reline partial mandibular — chairside). D5760 (Reline partial maxillary — laboratory) / D5761 (Reline partial mandibular — laboratory). D5720 / D5721 for partial denture rebase (replaces all acrylic, keeps framework + teeth). D5850 / D5851 for tissue conditioning preceding the reline. (D5730/D5731 are COMPLETE-denture chairside reline codes — different code.)",
  "Counsel patient: reline restores fit but doesn't restore retention if clasps have weakened — clasp tightening (chairside wire bend or wrought-wire replacement) may be needed alongside. Schedule occlusal re-check at delivery + 1-week post-reline.",
@@ -24047,7 +24037,7 @@ const PATHWAYS = [
  description: "Posterior crown where the patient wants metal-free AND is a moderate-to-heavy bruxer — the combination that takes e.max off the table. 3Y monolithic zirconia is the strongest non-metal option; 4Y and 5Y get more translucent but less strong. Cementation is different from e.max: HF doesn't etch zirconia, so the bond protocol is sandblast + MDP-containing primer (Z-Prime Plus, Monobond Plus) + self-adhesive or dual-cure resin cement. Conventional RMGI is acceptable if retention form is adequate.",
  keyDecisions: [
  "Choose 3Y (highest strength) for bruxers; 4Y or 5Y for more translucency in less-stressed sites.",
- "Cementation per Swade: sandblast intaglio (50 µm Al2O3) → MDP primer (Z-Prime Plus or Monobond Plus, includes 10-MDP for chemical bond to zirconia) → RelyX Unicem 2 (self-adhesive resin) for the bond. FujiCem 2 (RMGI) is acceptable when retention form is adequate but is not the primary recommendation for monolithic zirconia.",
+ "Cementation: sandblast intaglio (50 µm Al2O3) → MDP primer (Z-Prime Plus or Monobond Plus, includes 10-MDP for chemical bond to zirconia) → RelyX Unicem 2 (self-adhesive resin) for the bond. FujiCem 2 (RMGI) is acceptable when retention form is adequate but is not the primary recommendation for monolithic zirconia.",
  "HF acid does NOT etch zirconia — common error if cemented like e.max.",
  "Polish any chairside adjustments with a zirconia-specific kit (no glaze layer to worry about).",
  "Counsel: opposing natural enamel may show wear; polish zirconia thoroughly to mitigate.",
@@ -24344,15 +24334,15 @@ const PATHWAYS = [
  id: "endo-anterior-rct",
  domain: "endo",
  label: "Anterior RCT (single canal, vital pulp)",
- description: "A maxillary central, lateral, or canine with irreversible pulpitis but not yet necrotic. Single straight canal makes this the simplest RCT — most failures here aren't anatomic, they're isolation slips and access-prep errors that leave the lingual shoulder of pulp tissue uncleaned. Rubber dam is non-negotiable: this is the one procedure in the clinic where Isodry is not an option, because hypochlorite irrigation must not contact mucosa. Swade's protocol (pp.119-121) is a same-day access-and-fill in one visit; multi-visit with intracanal Ca(OH)2 is the AAE-evidence-based deviation for necrotic teeth with PARL, not Swade's default.",
+ description: "A maxillary central, lateral, or canine with irreversible pulpitis but not yet necrotic. Single straight canal makes this the simplest RCT — most failures here aren't anatomic, they're isolation slips and access-prep errors that leave the lingual shoulder of pulp tissue uncleaned. Rubber dam is non-negotiable: this is the one procedure in the clinic where Isodry is not an option, because hypochlorite irrigation must not contact mucosa. The predoc protocol is a same-day access-and-fill in one visit; multi-visit with intracanal Ca(OH)2 is the AAE-evidence-based deviation for necrotic teeth with PARL, not the default.",
  keyDecisions: [
- "Confirm pulp status — cold test, EPT, percussion, palpation, radiograph. Irreversible pulpitis with vital pulp = Swade's same-day protocol. Necrotic + PARL = AAE-evidence-based deviation: 2 visits with Ca(OH)2 between (NOT Swade's default — RCT-1-Visit protocol applies the same access-and-fill to both, per p.119).",
- "Anesthesia recipe (Swade p.119 step 4): 1 carpule lidocaine 2% 1:100k epi + 1 carpule articaine buccal infiltration for maxillary anteriors. Symptomatic teeth are notoriously difficult to numb — septocaine supplement is often needed.",
+ "Confirm pulp status — cold test, EPT, percussion, palpation, radiograph. Irreversible pulpitis with vital pulp = same-day protocol. Necrotic + PARL = AAE-evidence-based deviation: 2 visits with Ca(OH)2 between (NOT the default — the predoc RCT-1-Visit protocol applies the same access-and-fill to both).",
+ "Anesthesia recipe: 1 carpule lidocaine 2% 1:100k epi + 1 carpule articaine buccal infiltration for maxillary anteriors. Symptomatic teeth are notoriously difficult to numb — septocaine supplement is often needed.",
  "Rubber dam mandatory. Place a single-tooth subgingival anterior clamp (Brinker B4, B5, or B6 — the pointed-jaw designs sized for anteriors). Test the seal with water before starting — sodium hypochlorite leak onto mucosa is a chemical burn.",
- "Access on the lingual surface. The bur enters perpendicular to the lingual, then redirects to follow the long axis of the root. Outline form is a triangle with the base toward the incisal — opens the pulp horn region for the orifice locator. Pre-flare with Vortex orifice opener #20/.08 (Swade step 7).",
+ "Access on the lingual surface. The bur enters perpendicular to the lingual, then redirects to follow the long axis of the root. Outline form is a triangle with the base toward the incisal — opens the pulp horn region for the orifice locator. Pre-flare with Vortex orifice opener #20/.08.",
  "Working length: apex locator first, then confirm with PA radiograph showing the file 0.5–1 mm short of the radiographic apex. Re-establish length after each instrument change.",
- "Irrigation regimen (Swade p.121 note template, UIC standard): 1% NaOCl between every file change → final irrigation sequence 1% NaOCl, 17% EDTA, 1% NaOCl. UIC uses 1% NaOCl; higher concentrations (3-6%) are also within the AAE-accepted range and common in residency programs. Use a side-vented needle 2 mm short of working length, gentle agitation.",
- "Obturate (Swade p.120 step 21): coat master cone with Endoseal MTA sealer → insert into canal → pump up/down 3 times → condense and melt off excess gutta-percha with heat Calamus. Single-cone or warm vertical with bioceramic sealer is an acceptable alternative; the Swade-default Calamus/Endoseal-MTA workflow is what the predoc clinic teaches. Temporary seal: sterile sponge + Cavit. The lingual access gets composite over Vitrebond at the same visit or schedule the definitive restoration within 4 weeks — coronal leakage is the #1 cause of RCT failure.",
+ "Irrigation regimen: 1% NaOCl between every file change → final irrigation sequence 1% NaOCl, 17% EDTA, 1% NaOCl. 1% NaOCl is the standard predoc concentration; higher concentrations (3-6%) are also within the AAE-accepted range and common in residency programs. Use a side-vented needle 2 mm short of working length, gentle agitation.",
+ "Obturate: coat master cone with Endoseal MTA sealer → insert into canal → pump up/down 3 times → condense and melt off excess gutta-percha with heat Calamus. Single-cone or warm vertical with bioceramic sealer is an acceptable alternative; the Calamus/Endoseal-MTA workflow is what the predoc clinic teaches. Temporary seal: sterile sponge + Cavit. The lingual access gets composite over Vitrebond at the same visit or schedule the definitive restoration within 4 weeks — coronal leakage is the #1 cause of RCT failure.",
  ],
  phases: [
  { label: "Diagnosis & access", count: 3 },
@@ -24373,15 +24363,15 @@ const PATHWAYS = [
  id: "endo-premolar-rct",
  domain: "endo",
  label: "Premolar RCT (one or two canals)",
- description: "Premolar canal anatomy per Swade Tooth Anatomy table (p.122-124): maxillary 1st premolar = 2 roots / 2 canals (primary), 1 root / 2 canals (35% alternate). Maxillary 2nd premolar = 1 root / 1 or 2 canals (Swade lists 50/50). Mandibular 1st premolar = 1 root / 1 canal (primary), 1 root / 2 canals (30% alternate). Mandibular 2nd premolar = 1 root / 1 canal (Swade lists 1 canal primary, 15% alt 2). Pre-op PA + bitewing tells you most of the story; CBCT is justified if the radiograph shows asymmetric root anatomy. Treat the orifice as plural until you've proved otherwise — the second canal is most often missed at the lingual/palatal aspect of the pulp chamber floor. Confirm tooth restorable with restorative faculty BEFORE starting (Swade p.119 step 2).",
+ description: "Premolar canal anatomy: maxillary 1st premolar = 2 roots / 2 canals (primary), 1 root / 2 canals (35% alternate). Maxillary 2nd premolar = 1 root / 1 or 2 canals (50/50). Mandibular 1st premolar = 1 root / 1 canal (primary), 1 root / 2 canals (30% alternate). Mandibular 2nd premolar = 1 root / 1 canal primary, 15% alt 2. Pre-op PA + bitewing tells you most of the story; CBCT is justified if the radiograph shows asymmetric root anatomy. Treat the orifice as plural until you've proved otherwise — the second canal is most often missed at the lingual/palatal aspect of the pulp chamber floor. Confirm tooth restorable with restorative faculty BEFORE starting.",
  keyDecisions: [
- "Confirm tooth restorable with restorative faculty before starting (Swade p.119 consent step 2). Emphasize need for final crown in the consent discussion.",
- "Canal anatomy per Swade table (p.122-124): max 1st premolar 2 canals primary (35% have 1 root / 2 canals); max 2nd premolar 50/50 single vs dual canal (assume two until proven otherwise); mand 1st premolar 30% bifurcate to 2 canals; mand 2nd premolar 1 canal primary, 15% alt 2.",
+ "Confirm tooth restorable with restorative faculty before starting. Emphasize need for final crown in the consent discussion.",
+ "Canal anatomy: max 1st premolar 2 canals primary (35% have 1 root / 2 canals); max 2nd premolar 50/50 single vs dual canal (assume two until proven otherwise); mand 1st premolar 30% bifurcate to 2 canals; mand 2nd premolar 1 canal primary, 15% alt 2.",
  "Pre-op PA from two angulations (straight + 20° mesial shift) to detect a second canal. A 'fast-break' on the PA where a root suddenly disappears is the sign of a bifurcation.",
  "Access is oval mesiodistally, longer than for an anterior. Don't stop at the first orifice — explore the entire pulp floor with a DG-16 explorer under loupes / scope.",
  "If two canals: instrument the smaller (often the palatal or lingual canal) first to preserve straight-line access for the more curved canal.",
- "Irrigation regimen (Swade p.121): 1% NaOCl between every file change → final 1% NaOCl, 17% EDTA, 1% NaOCl. Side-vented needle 2 mm short of WL, gentle agitation. UIC uses 1%; higher concentrations are AAE-acceptable.",
- "Obturation (Swade p.120): master cone + Endoseal MTA sealer → pump 3x → heat Calamus condense (per canal). Temporary seal sponge + Cavit.",
+ "Irrigation regimen: 1% NaOCl between every file change → final 1% NaOCl, 17% EDTA, 1% NaOCl. Side-vented needle 2 mm short of WL, gentle agitation. 1% is the predoc standard; higher concentrations are AAE-acceptable.",
+ "Obturation: master cone + Endoseal MTA sealer → pump 3x → heat Calamus condense (per canal). Temporary seal sponge + Cavit.",
  "Restoration plan must be decided at the obturation visit: a premolar with MOD prep needs a crown — composite alone in a cuspally-thin premolar fractures. Coronal seal is THE prognostic factor.",
  ],
  phases: [
@@ -24403,15 +24393,15 @@ const PATHWAYS = [
  id: "endo-molar-rct",
  domain: "endo",
  label: "Molar RCT",
- description: "Mandibular first molar is the most-extracted tooth, and the most-frequent RCT. Per Swade Tooth Anatomy table (p.124): mand 1st molar = 2 roots / 3 canals primary, 2 roots / 4 canals as the alternate (distal canal splits to DB + DL). Maxillary first molar (Swade p.123) = 4 canals (MB2 60%), or 3 canals (40%). Per RCT-1-Visit protocol (Swade pp.119-121), molars follow the same-day access-and-fill workflow as anteriors — multi-visit is the AAE-evidence-based deviation for necrotic teeth with PARL, not Swade's default.",
+ description: "Mandibular first molar is the most-extracted tooth, and the most-frequent RCT. Mand 1st molar = 2 roots / 3 canals primary, 2 roots / 4 canals as the alternate (distal canal splits to DB + DL). Maxillary first molar = 4 canals (MB2 60%), or 3 canals (40%). Per the predoc RCT-1-Visit protocol, molars follow the same-day access-and-fill workflow as anteriors — multi-visit is the AAE-evidence-based deviation for necrotic teeth with PARL, not the default.",
  keyDecisions: [
- "Canal anatomy per Swade Tooth Anatomy table (p.122-124, memorize for clinic): max 1st molar = 4 canals if MB2 present (60% incidence), otherwise 3 canals (40%). Mand 1st molar = 3 canals primary (MB, ML, single distal), alternate 4 canals when distal splits to DB + DL (Swade lists 'otherwise' — endodontic literature places this at ~10-15%).",
- "Pre-op CBCT is justified for any maxillary molar — MB2 incidence (60% per Swade) means flat-radiograph 'two-canal MB' likely misses the smaller orifice.",
+ "Canal anatomy (memorize for clinic): max 1st molar = 4 canals if MB2 present (60% incidence), otherwise 3 canals (40%). Mand 1st molar = 3 canals primary (MB, ML, single distal), alternate 4 canals when distal splits to DB + DL — endodontic literature places this at ~10-15%.",
+ "Pre-op CBCT is justified for any maxillary molar — MB2 incidence (60%) means flat-radiograph 'two-canal MB' likely misses the smaller orifice.",
  "Access shape: rounded triangle for mandibular molars (mesial side wider, accommodating MB + ML); rhomboid for maxillary (palatal corner, MB corner, DB corner) then trough mesial-palatal from MB orifice for MB2.",
  "MB2 hunt: drop explorer just mesial to MB orifice; MB2 usually under a calcified shelf. Trough with #2 round bur or LN bur mesially from MB orifice until orifice locator catches.",
- "Irrigation regimen (Swade p.121 note template): 1% NaOCl between every file change → final 1% NaOCl, 17% EDTA, 1% NaOCl. Same as anterior RCT; UIC uses 1% (higher concentrations are AAE-acceptable).",
- "Obturation (Swade p.120 step 21): each canal — master cone + Endoseal MTA sealer → pump 3x → heat Calamus condense. Single-cone or warm vertical with bioceramic sealer is an acceptable alternative; Calamus/Endoseal-MTA is predoc default.",
- "Same-day access-and-fill is Swade's default. If necrotic + PARL, two-visit with Ca(OH)2 intervisit + Cavit + sponge is the AAE-evidence-based exception (NOT the default — flag with faculty before planning).",
+ "Irrigation regimen: 1% NaOCl between every file change → final 1% NaOCl, 17% EDTA, 1% NaOCl. Same as anterior RCT; 1% is the predoc standard (higher concentrations are AAE-acceptable).",
+ "Obturation: each canal — master cone + Endoseal MTA sealer → pump 3x → heat Calamus condense. Single-cone or warm vertical with bioceramic sealer is an acceptable alternative; Calamus/Endoseal-MTA is predoc default.",
+ "Same-day access-and-fill is the default. If necrotic + PARL, two-visit with Ca(OH)2 intervisit + Cavit + sponge is the AAE-evidence-based exception (NOT the default — flag with faculty before planning).",
  "Crown plan must be in motion before final obturation. Endo-treated molars without cuspal coverage have ~50% 1-year survival. Coronal seal is THE #1 prognostic factor.",
  ],
  phases: [
@@ -24436,7 +24426,7 @@ const PATHWAYS = [
  description: "Patient presents with throbbing pain, often facial swelling, percussion-positive on the offending tooth, and a tooth that does not respond to cold. The pulp is necrotic and the periapical tissues are colonizing the bone. Per the Management of Endodontic Emergencies lecture (2025), the priority is drainage + Ca(OH)2 + Cavit AT THE SAME VISIT — the older 'leave tooth open 24-48 hours' approach is NOT current clinic practice and allows continued bacterial ingress. Open-tooth is reserved only for severe cellulitis when drainage cannot establish. Cellulitis (indurated, no fluctuance) and abscess (fluctuant, drainable) are different entities — cellulitis = no I&D, antibiotics + RCT; abscess = I&D first, antibiotics only if systemic involvement.",
  keyDecisions: [
  "Confirm diagnosis: necrotic pulp + acute periapical inflammation. Cold-negative, EPT-negative, percussion-positive, often radiographic widening of the PDL or frank lesion. Differentiate cellulitis (indurated, no fluctuance — antibiotics + RCT) from abscess (fluctuant — drain first).",
- "Drainage + Ca(OH)2 + Cavit SAME-VISIT (Endo Emergencies 2025 — current UIC default). Drain through the canal preferably, or through a soft-tissue incision if a fluctuant abscess is accessible. Then debride, place Ca(OH)2, seal with Cavit. Leaving the tooth open between visits is the older protocol and is still used at some programs for severe cellulitis or cases where drainage can't be established intraoperatively — talk to your instructor if the case looks like one of those.",
+ "Drainage + Ca(OH)2 + Cavit SAME-VISIT (Endo Emergencies 2025 — current default). Drain through the canal preferably, or through a soft-tissue incision if a fluctuant abscess is accessible. Then debride, place Ca(OH)2, seal with Cavit. Leaving the tooth open between visits is the older protocol and is still used at some programs for severe cellulitis or cases where drainage can't be established intraoperatively — talk to your instructor if the case looks like one of those.",
  "Antibiotics per AAE 2019 (current): not indicated for localized abscess that drains. Indicated for spreading infection, fever > 100.4°F, lymphadenopathy, trismus, or immunocompromised patients. First-line: amoxicillin 500 mg TID × 3-7 days (shorter course non-inferior per recent evidence). PCN allergy: azithromycin 500 mg day 1 → 250 mg × 4 days is a common choice; clindamycin remains an option in the AAE list but has been deprioritized due to C. diff risk per the 2021 AHA update.",
  "Pain management: ibuprofen 600 mg q6h scheduled (not PRN) for 48 hours is more effective than opioids for this pain. Add acetaminophen 1000 mg q6h scheduled if ibuprofen alone isn't enough (alternating offset by 3h).",
  "Schedule the second visit at 7-14 days. The Ca(OH)2 should have resolved the acute inflammation. If pain persists or swelling recurs, reassess for missed canal, vertical root fracture, or referral to Endo Grad Clinic.",
@@ -24492,7 +24482,7 @@ const PATHWAYS = [
  "Pulp must be vital. Asymptomatic OR reversible pulpitis ONLY. Spontaneous pain, lingering cold response, or radiographic periapical changes = full RCT, not vital pulp therapy.",
  "Exposure must be 1 mm or smaller. Larger exposures (especially in a posterior tooth) have lower long-term vitality success — consider partial pulpotomy (remove 2 mm of coronal pulp, then cap) or full RCT.",
  "Hemostasis under 2.5-6% NaOCl on a moist cotton pellet for up to 5-10 minutes (AAE recommendation). If bleeding doesn't stop within that window, the pulp is more inflamed than the symptoms suggested → switch to partial pulpotomy or full RCT.",
- "Material choice per Vital Pulp Therapy 2025 lecture: MTA (ProRoot grey/white) or Biodentine are the preferred materials per current evidence (5-year success ~81% MTA vs ~56% Ca(OH)2 in cited studies). Ca(OH)2 (Dycal/Life) is still routinely placed in UIC clinic and is acceptable when MTA isn't available or the case profile favors it. Place 1-2 mm of MTA/Biodentine over the exposure, RMGI (Fuji II LC or Vitrebond) over that, then composite (or amalgam if bonding can't be controlled).",
+ "Material choice per Vital Pulp Therapy 2025 lecture: MTA (ProRoot grey/white) or Biodentine are the preferred materials per current evidence (5-year success ~81% MTA vs ~56% Ca(OH)2 in cited studies). Ca(OH)2 (Dycal/Life) is still routinely placed and is acceptable when MTA isn't available or the case profile favors it. Place 1-2 mm of MTA/Biodentine over the exposure, RMGI (Fuji II LC or Vitrebond) over that, then composite (or amalgam if bonding can't be controlled).",
  "Coronal seal is THE #1 prognostic factor (Vital Pulp Therapy 2025 lecture; 35-year study showed P <.001 for coronal seal vs all other variables). Place the definitive restoration the SAME VISIT — leaving the cap under a temporary fails by bacterial re-contamination.",
  "Recall at 6 weeks and 6 months with vitality testing and PA. Pulp necrosis in the first year is the expected failure window — discuss this with the patient at consent.",
  ],
@@ -24597,7 +24587,7 @@ const PATHWAYS = [
  description: "An anterior tooth or single-rooted premolar slated for extraction — usually for non-restorability (vertical fracture, extensive caries below crestal bone, hopeless perio), pre-prosthetic planning, or patient preference. The clinical work is straightforward when the tooth is intact and the surrounding bone is normal: anesthetize, sever the periodontal ligament with a periotome, luxate with a straight elevator from the mesial line angle, deliver with forceps using rotation (anterior teeth) or buccolingual rocking (premolars). Atraumatic technique preserves bone for future implant or RPD planning.",
  keyDecisions: [
  "Pre-op assessment: medical history (anticoagulants, bisphosphonates), pre-op radiograph to evaluate root anatomy / divergence / dilaceration, plan socket-management approach (clean vs grafted).",
- "Anesthesia per Swade p.161: maxillary anteriors and premolars — buccal infiltration + greater palatine (or nasopalatine for #6-11) + PDL. Mandibular premolars — IAN block + lingual + mental + buccal infiltration + PDL. Confirm profound anesthesia before starting (instrument-cold test, not just lip numbness).",
+ "Anesthesia: maxillary anteriors and premolars — buccal infiltration + greater palatine (or nasopalatine for #6-11) + PDL. Mandibular premolars — IAN block + lingual + mental + buccal infiltration + PDL. Confirm profound anesthesia before starting (instrument-cold test, not just lip numbness).",
  "Use the periotome first along the entire root circumference — severs the PDL, expands the socket, reduces fracture risk. Then straight elevator from the mesial line angle, pivoting against the alveolar bone (not the adjacent tooth).",
  "Forceps technique: anterior teeth = rotational + apical pressure. MAXILLARY premolars (single buccal + single palatal root on first; single conical root on second) — buccolingual figure-8 + slight rotation, deliver buccally. MANDIBULAR premolars (single conical root, often slightly distally curved) — rotation + apical pressure, delivery direction is the resistance-of-least path (usually buccal or lingual, NOT a fixed rule).",
  "Post-op: inspect the socket (curette ONLY if granulation tissue or root tip remnant), irrigate with sterile saline, place a gelatin sponge if bleeding persists, pressure pack with gauze 30 min. Discuss dry socket prevention and signs.",
@@ -24623,9 +24613,9 @@ const PATHWAYS = [
  description: "A molar (maxillary or mandibular) with an intact crown, slated for extraction. The challenge is the multi-root anatomy: maxillary molars have three divergent roots (palatal, MB, DB) that need expansion in three directions; mandibular molars have two roots (mesial, distal), often fused at the furcation. A periotome around the entire crown, luxation with a small straight elevator into each interproximal area, then forceps with controlled buccolingual rocking. Sectioning is the right move if the roots are clearly divergent on the pre-op radiograph — saves time, saves bone, and prevents root fracture.",
  keyDecisions: [
  "Pre-op PA radiograph: assess root divergence, dilaceration, root-to-sinus proximity (maxillary molars), root-to-IAN proximity (mandibular molars). Refer to oral surgery if root tips overlap the IAN canal.",
- "Anesthesia per Swade p.161: maxillary molars — PSA + buccal infiltration + greater palatine + PDL. Mandibular molars — IAN block + lingual + long buccal + PDL. Verify with cold and percussion before starting.",
+ "Anesthesia: maxillary molars — PSA + buccal infiltration + greater palatine + PDL. Mandibular molars — IAN block + lingual + long buccal + PDL. Verify with cold and percussion before starting.",
  "Sectioning decision: if roots are clearly divergent and the crown is intact, section through the furcation with a 702 surgical-length carbide bur before extraction. Each root delivered individually = faster, less fracture risk.",
- "Forceps for un-sectioned molars per Swade p.165-167: mandibular molars — #17 (anatomical) or #87 (cowhorn — engages furcation directly). Maxillary molars — #89 (UR molars #1-3) and #90 (UL molars #14-16): pointed buccal beak engages MB-DB furcation, rounded palatal beak cups the single palatal root. (Some OS references also call cowhorn #23; #53R/L is NOT in Swade's kit.) Rock buccolingually with steady pressure, no twisting.",
+ "Forceps for un-sectioned molars: mandibular molars — #17 (anatomical) or #87 (cowhorn — engages furcation directly). Maxillary molars — #89 (UR molars #1-3) and #90 (UL molars #14-16): pointed buccal beak engages MB-DB furcation, rounded palatal beak cups the single palatal root. (Some OS references also call cowhorn #23; #53R/L is not in the standard predoc kit.) Rock buccolingually with steady pressure, no twisting.",
  "Post-op socket inspection is critical — check for retained root tips at the apex of each socket. A small tip (< 2 mm) deeply embedded near vital structures can be left and monitored; larger tips should be retrieved.",
  ],
  phases: [
@@ -24651,7 +24641,7 @@ const PATHWAYS = [
  "Flap design: full-thickness mucoperiosteal flap with intrasulcular incision + vertical releasing incision distal to the tooth. Reflect minimally — just enough to access the buccal plate.",
  "Bone removal: 702 surgical bur with copious sterile saline irrigation. Remove buccal plate to expose the cervical third of the root only — preserve as much bone as possible for future restoration.",
  "Sectioning: through the furcation for multi-rooted teeth; vertical through the long axis for single-rooted teeth. Use a periotome / luxator to mobilize each fragment, then elevate.",
- "Socket management: thorough curettage of granulation tissue, irrigation with sterile saline, gelatin sponge or socket preservation graft (D7953 if implant is planned). Per Swade p.164: 3-0 chromic gut on a 3/8 round cutting needle (Swade's stated kit; reverse-cutting is the more common term in OS literature for tough tissue), simple interrupted; figure-8 over socket if hemostasis is incomplete.",
+ "Socket management: thorough curettage of granulation tissue, irrigation with sterile saline, gelatin sponge or socket preservation graft (D7953 if implant is planned). Suture: 3-0 chromic gut on a 3/8 round cutting needle (reverse-cutting is the more common term in OS literature for tough tissue), simple interrupted; figure-8 over socket if hemostasis is incomplete.",
  "Post-op: ibuprofen 600 mg q6h scheduled × 48 hr + acetaminophen 1000 mg q6h scheduled (alternating with ibuprofen, offset by 3 hr) for breakthrough — same dosing as the acute-apical-abscess pathway. Opioids are not first-line: scheduled NSAID + APAP is more effective than codeine/oxy for dentoalveolar surgical pain. Antibiotics only if pre-op infection or immunocompromised. Recall at 7-10 days for suture removal.",
  ],
  phases: [
@@ -24675,7 +24665,7 @@ const PATHWAYS = [
  keyDecisions: [
  "Pell-Gregory class: A (occlusal plane at or above the second molar), B (between occlusal plane and CEJ), C (below CEJ). Winter: mesial / distal / horizontal / vertical angulation. Combined classification dictates difficulty.",
  "IAN proximity: PA or panoramic radiograph showing the IAN canal crossing the root indicates risk. If darkening of the root, deflection of the IAN canal, or root narrowing at the canal — get CBCT and refer.",
- "Predoctoral protocol per Swade p.11 (urgent care wisdom-tooth template): ALL third molars route to PGOS via the Urgent Care wisdom-tooth referral note (#1, #16, #17, #32). Predoctoral chairside extraction of any third molar is exceptional and requires explicit faculty approval — the default move is referral, not extraction.",
+ "Predoctoral protocol (urgent care wisdom-tooth template): ALL third molars route to PGOS via the Urgent Care wisdom-tooth referral note (#1, #16, #17, #32). Predoctoral chairside extraction of any third molar is exceptional and requires explicit faculty approval — the default move is referral, not extraction.",
  "If extracting: surgical technique with flap, buccal-bone removal, distal-bone removal for impacted teeth, sectioning of the crown from the roots, then root delivery. Plan 60-90 min.",
  "Post-op: pre-emptive analgesia (ibuprofen 800 mg 1 hr before procedure), scheduled NSAID + APAP for 48 hr, ice 20 min on / 20 min off for first 24 hr, soft diet 3-5 days. Inform patient of paresthesia risk if IAN was at risk.",
  ],
@@ -24773,7 +24763,7 @@ const PATHWAYS = [
  "Increments smaller (1 mm instead of 2 mm) because primary pulp horns are higher / closer to the surface. Cure each increment per the composite manufacturer's recommended time (typically 20 sec).",
  "Deep but vital lesion — consider partial (1-step) or stepwise (2-step) excavation over complete excavation. AAPD 2022 evidence: leaving caries-affected dentin over the pulp and sealing under a definitive restoration produces fewer pulp exposures than chasing every speck. If the lesion floor stays soft but the cavosurface is sound, a sealed restoration over partial excavation can spare the pulp and avoid a pulpotomy.",
  " prep criteria: 1.0-1.5mm pulpal depth, smooth floor with rounded internal line angles, walls parallel to slightly convergent, marginal ridges + cusp tips preserved. Recommended burs: 329, 330, 55, 56, 169 ( Restorative + Composite Finishing kits). For Class II: isthmus width 1/4-1/3 intercuspal distance (~1mm), axial wall 1.0mm matching external contour, B/L extensions within the line angles of the tooth, no retention grooves.",
- "Class II matrix selection: Garrison sectional kit is Swade's default for primary molars per p.140-141 (sectional matrix band + plastic wedge + Garrison ring, burnish — same kit as adult Class II). Gold matrix band is the listed alternative but Swade explicitly downranks it (\"honestly it sucks, I'd just use a Garrison\"). T-band remains an acceptable third option when neither sectional nor gold band fits. Tofflemire with a universal band is generally too tall for primary molars and tends to overflare — avoid unless nothing else fits.",
+ "Class II matrix selection: Garrison sectional kit is the preferred default for primary molars (sectional matrix band + plastic wedge + Garrison ring, burnish — same kit as adult Class II). Gold matrix band is an alternative but generally inferior. T-band remains an acceptable third option when neither sectional nor gold band fits. Tofflemire with a universal band is generally too tall for primary molars and tends to overflare — avoid unless nothing else fits.",
  "Carve and finish gently — primary teeth have thinner enamel that can fracture under aggressive finishing. Maintain \"sealed tooth\" anatomy on the restoration — inclines and ridges restored without recreating deep pits or grooves. Check occlusion in MI.",
  "Codes: D2391 (1-surface posterior) / D2392 (2-surface) / D2393 (3-surface) for Class I/II; D2330 (1-surface anterior) / D2331 (2-surface) / D2332 (3-surface) / D2335 (4+ surface anterior) for Class III/IV; D2330 or D2391 for Class V depending on facial vs lingual surface.",
  ],
@@ -24799,7 +24789,7 @@ const PATHWAYS = [
  "Sizing: measure the mesial-distal width of the tooth with a Boley gauge or by comparison to the contralateral. Crown sizes 2-7 (mandibular 2/3/4/5/6/7, maxillary D/DLM/E/EUL/F). Try-in must seat to the gingival margin without rocking.",
  "Prep (prep criteria): occlusal reduction 1.5-2.0mm with a diamond football, maintaining general occlusal anatomy (inclines / ridges). Interproximal slices converge 4-10° combined; reduce enough that an explorer passes freely (0.5mm clearance) without nicking the adjacent tooth. Knife-edge margins mesial and distal, just below the gingival margin, continuous and distinct. 30-40° reverse bevel to the occlusal third on buccal and lingual (straight diamond). All reduced surfaces diamond-smooth, line angles rounded.",
  "Festoon and crimp: trim the gingival margin of the crown with crown shears so it doesn't blanch tissue; crimp the cervical band inward with crown-crimping pliers to engage the gingival undercut.",
- "Cement: FujiCEM (RMGI) per Swade SSC protocol (p.151, step 11). Fill the crown 80%, seat lingual then roll to buccal, have the patient bite on a bite stick to fully seat. Clean excess with microbrushes or wet cotton roll. Floss. Patient bites on a cotton roll for 3 min. Re-confirm occlusion (primary molars tolerate <0.5 mm changes).",
+ "Cement: FujiCEM (RMGI). Fill the crown 80%, seat lingual then roll to buccal, have the patient bite on a bite stick to fully seat. Clean excess with microbrushes or wet cotton roll. Floss. Patient bites on a cotton roll for 3 min. Re-confirm occlusion (primary molars tolerate <0.5 mm changes).",
  "Code: D2930 (prefabricated stainless steel crown — primary tooth). This is the single per-tooth code for any conventional or Hall-technique SSC on a primary molar. D2931 (SSC — permanent tooth) is for young permanents (e.g., heavily destroyed first permanent molar bridging into restorative planning). D2932 (prefab resin crown) is the strip-crown / preveneered-SSC code for primary anteriors — separate pathway. Do NOT use D2740 (zirconia/ceramic permanent crown) for primary SSC.",
  ],
  phases: [
@@ -24825,7 +24815,7 @@ const PATHWAYS = [
  "Behavior assessment: pulpotomy + SSC is a 45-60 min appointment in a small child. If cooperation is borderline, refer to pediatric specialist or sedation.",
  "Rubber dam isolation is required for pulp therapy (standard, AAPD positions rubber dam as the gold standard for pulp treatment). Even if you're not certain pulp therapy is needed at the start of the appointment, place the dam early so you're prepared. Floss every clamp and the bite block — aspiration risk.",
  "Caries removal until exposure, then amputate coronal pulp with a sharp #6 or #8 round bur at slow speed. Irrigate with saline; control bleeding with a moist cotton pellet.",
- "Medicament — MTA and Biodentine are the preferred bioactive choices in current AAPD guidance (they induce hard tissue formation in pulpal tissue). Ferric sulfate 15.5% is a hemostatic alternative that's still used, though success rates are slightly lower due to higher internal-resorption rates. Formocresol (1/5 Buckley dilution) is still taught and used in many US programs including portions of UIC peds — toxicity concerns have made it less prominent but it has not been retired from the AAPD list. Use whatever your instructor specifies for the case.",
+ "Medicament — MTA and Biodentine are the preferred bioactive choices in current AAPD guidance (they induce hard tissue formation in pulpal tissue). Ferric sulfate 15.5% is a hemostatic alternative that's still used, though success rates are slightly lower due to higher internal-resorption rates. Formocresol (1/5 Buckley dilution) is still taught and used in many US programs — toxicity concerns have made it less prominent but it has not been retired from the AAPD list. Use whatever your instructor specifies for the case.",
  "Restore with SSC same visit. A temporary filling over a pulpotomy leaks.",
  "Codes: D3220 (therapeutic pulpotomy — primary or permanent) on the pulp-amputation visit + D2930 (prefab stainless steel crown — primary tooth) for the same-visit restoration. If you only do the pulpotomy without same-visit SSC (rare — avoid), the restoration code is added at the follow-up visit.",
  ],
@@ -24929,8 +24919,8 @@ const PATHWAYS = [
  keyDecisions: [
  "Indication: deep pits and fissures with no cavitation, in a child at moderate-to-high caries risk. Cavitated lesion = PRR (Preventive Resin Restoration), not sealant.",
  "Pediatric-size Isodry for 8+, cotton rolls + saliva ejector + bite block for younger. Saliva contamination of the etched enamel is the common failure mode.",
- "Etch with 35% phosphoric acid for 30 SECONDS (Swade p.134 — longer than the 15s used for composite restorations). Rinse, dry thoroughly — frosted matte appearance confirms adequate etch.",
- "Apply Scotchbond Universal bonding agent (faculty usually requires it per Swade p.134) — vigorous scrub 20s, air thin, cure 10s — then sealant material on top. Manipulate sealant into grooves with the applicator tip, microbrush, or explorer. Avoid bubbles. Cure.",
+ "Etch with 35% phosphoric acid for 30 SECONDS (longer than the 15s used for composite restorations). Rinse, dry thoroughly — frosted matte appearance confirms adequate etch.",
+ "Apply Scotchbond Universal bonding agent (faculty usually requires it) — vigorous scrub 20s, air thin, cure 10s — then sealant material on top. Manipulate sealant into grooves with the applicator tip, microbrush, or explorer. Avoid bubbles. Cure.",
  "Check seal with explorer — any tag-back or sticky feel = redo. Recall in 6 months for re-evaluation; sealants need monitoring and repair as they wear. Code: D1351 per tooth (sealant — resin-based, per tooth).",
  ],
  phases: [
@@ -24948,14 +24938,14 @@ const PATHWAYS = [
  id: "pedo-fluoride-varnish",
  domain: "pedo",
  label: "Fluoride varnish",
- description: "Peds recall patient (typically mixed-dentition age, ~0-12) who gets fluoride varnish bundled with the same-visit prophy. 5% sodium fluoride varnish (Duraphat, Vanish, Profluorid Varnish) is brushed onto all tooth surfaces; the varnish sets on contact with saliva and stays in place for 4-6 hours. At UIC the workflow is prophy → exam → instructor check → varnish, then OHI and dismiss. Repeat every 3-6 months depending on caries risk.",
+ description: "Peds recall patient (typically mixed-dentition age, ~0-12) who gets fluoride varnish bundled with the same-visit prophy. 5% sodium fluoride varnish (Duraphat, Vanish, Profluorid Varnish) is brushed onto all tooth surfaces; the varnish sets on contact with saliva and stays in place for 4-6 hours. The standard workflow is prophy → exam → instructor check → varnish, then OHI and dismiss. Repeat every 3-6 months depending on caries risk.",
  keyDecisions: [
  "Dose: pre-loaded unit-dose syringe (0.25 mL = 5.7 mg fluoride). One unit dose covers a full arch at any pediatric age.",
- "Sequence at UIC: applied AFTER the prophy and instructor check, not instead of the prophy. Dry the teeth with gauze, then air-dry, then brush varnish on with the unit-dose brush.",
+ "Sequence: applied AFTER the prophy and instructor check, not instead of the prophy. Dry the teeth with gauze, then air-dry, then brush varnish on with the unit-dose brush.",
  "Application: light dry only — not bone dry. Brush onto all tooth surfaces. Avoid the gingiva and tongue. The varnish turns yellow on contact with saliva (that's normal).",
  "Post-op: soft diet for 4 hours. Patient can brush and floss normally that night — just no extra fluoride rinse on top.",
  "Recall frequency: high caries risk → every 3 months; moderate risk → every 6 months; low risk in children under 6 → 6 months; school-age low risk → annual. Document risk category in the chart at each visit.",
- "Codes at UIC: D1206 (Topical fluoride varnish) is the standard code on the peds recall code set; D1206NC (no-charge variant) is used when the varnish is bundled into a visit that already carries another paid procedure. Use whichever variant matches the day's fee profile.",
+ "Codes: D1206 (Topical fluoride varnish) is the standard code on the peds recall code set; D1206NC (no-charge variant) is used when the varnish is bundled into a visit that already carries another paid procedure. Use whichever variant matches the day's fee profile.",
  ],
  phases: [
  { label: "Risk assessment", count: 1 },
@@ -25320,7 +25310,7 @@ const PATHWAYS = [
  description: "Visit 1 of the three-part adult COE — done in the perio chair before the restorative COE so the restorative faculty has the perio diagnosis in hand when they tx-plan. The visit produces a full perio chart, a perio EPR with AAP 2017 staging + grading, and (if the patient is going into phase 2/3 treatment) mounting records. Requires a current pano + FMX on file before the patient sits down. Restorative COE and tx-plan presentation are separate pathways.",
  keyDecisions: [
  "Confirm radiographic baseline before starting: pano + FMX taken within last 3 years (FMX every 3 years per radiographic guidelines), BWs every 6-12 months per caries risk. Outside radiographs are acceptable if diagnostic quality. Patients without baseline radiographs need a radiology referral BEFORE the COE — clinic can't see them otherwise.",
- "Visit flow (Swade p.13-14): med hx + meds/allergies (Ctrl+R to refresh), tobacco cessation forms if smoker (D1320.1 + D1320.2), BP + pulse, EOE + IOE (clinical exam tab), full perio chart (probing depths, BOP, recession, mucogingival defects, mobility, furcation, free gingival margin), perio EPR (Periodontal Exam / Diagnosis / Prognosis / Treatment Plan tabs — Diagnosis tab uses AAP 2017 Stage I-IV + Grade A-C).",
+ "Visit flow: med hx + meds/allergies (Ctrl+R to refresh), tobacco cessation forms if smoker (D1320.1 + D1320.2), BP + pulse, EOE + IOE (clinical exam tab), full perio chart (probing depths, BOP, recession, mucogingival defects, mobility, furcation, free gingival margin), perio EPR (Periodontal Exam / Diagnosis / Prognosis / Treatment Plan tabs — Diagnosis tab uses AAP 2017 Stage I-IV + Grade A-C).",
  "Mounting records if phase 2/3 work is planned: facebow + bite registration + diagnostic impressions. Skip if the patient is phase 1 only (perio + caries control).",
  "Perio diagnosis drives the Phase I plan: gingivitis → prophy + OHI; Stage I-II periodontitis → SRP + re-eval; Stage III → SRP + likely perio referral. Smoking, diabetes (HbA1c ≥7), or rapid bone loss → Grade C → shorter maintenance interval. Document staging + grading in the perio EPR Diagnosis tab.",
  "CDT codes for this visit: D0150A (Initial Assessments) if Perio COE is the patient's first COE visit, D0150B (Additional Assessments) if restorative COE was done first. Bundled at perio COE: D0210 (FMX every 3 years) or D0330 (pano) if either is due, D0475 (diagnostic casts — N/C) if impressions taken, D1320.1/D1320.2 (tobacco if applicable). Restorative COE handles D0604/D060X caries-risk and D0460 endo testing — not this visit.",
@@ -25340,11 +25330,11 @@ const PATHWAYS = [
  id: "perio-prophy",
  domain: "perio",
  label: "Adult prophy (D1110)",
- description: "Patient without periodontal disease (gingivitis only, no bone loss). Part of Phase I (recall after COE) or Phase IV (every-6-month maintenance for healthy patients). Paired with POE (D0120) at the same appointment — the prophy+POE schedule is every 6 months, with the perio chart updated 1× per year (so every other prophy+POE appointment includes new charting). The endpoint is plaque-free crowns; this is not SRP, no subgingival deep cleaning. (Swade prophy chapter p.26-27, POE/PROPHY/PERIO MAINTENANCE p.21-22.)",
+ description: "Patient without periodontal disease (gingivitis only, no bone loss). Part of Phase I (recall after COE) or Phase IV (every-6-month maintenance for healthy patients). Paired with POE (D0120) at the same appointment — the prophy+POE schedule is every 6 months, with the perio chart updated 1× per year (so every other prophy+POE appointment includes new charting). The endpoint is plaque-free crowns; this is not SRP, no subgingival deep cleaning.",
  keyDecisions: [
  "Indication check — no perio disease, no bone loss, gingivitis at most. Pockets ≥4 mm with bleeding + radiographic bone loss + attachment loss = SRP territory (see perio-srp pathway). Heavy generalized gingival inflammation WITHOUT bone loss (e.g., orthodontic-appliance plaque or pregnancy gingivitis with full-mouth thick calculus) = D4346 (full-mouth scaling in presence of generalized moderate-severe gingival inflammation), a distinct code from D1110 prophy.",
  "Perio chart + EPR update cadence: every other prophy+POE appointment (1× per year). At each visit, decide whether this visit needs new probing (perio chair) or surface debridement only (restorative chair).",
- "Instrumentation sequence (Swade p.26 step 5): Cavitron with Isodry first for gross calculus; if patient has dense buildup, prophy cup first to remove gross plaque, then Cavitron. Floss interproximals to remove gross plaque. Finish with hand instruments — don't forget interproximals.",
+ "Instrumentation sequence: Cavitron with Isodry first for gross calculus; if patient has dense buildup, prophy cup first to remove gross plaque, then Cavitron. Floss interproximals to remove gross plaque. Finish with hand instruments — don't forget interproximals.",
  "Endpoint check with 11/12 ODU explorer at THREE specific spots before instructor check: line angles, CEJ, and under the contact. If those feel clean, you're done.",
  "Polish AFTER instructor swipes the prophy — keeps prophy paste debris out of the perio chart and final inspection.",
  "OHI + nutritional counseling + tobacco cessation are required at every prophy visit (D1330 / D1310 / D1320.1 / D1320.2).",
@@ -25364,14 +25354,14 @@ const PATHWAYS = [
  id: "perio-srp",
  domain: "perio",
  label: "SRP (D4341/D4342)",
- description: "A patient with Stage II–III periodontitis (4-5 mm pockets with bleeding, calculus, or 5 mm+ pockets) needs definitive non-surgical therapy. SRP differs from a prophy in three ways: anesthesia is required (subgingival instrumentation hurts), the endpoint is calculus-free root surfaces (not plaque-free crowns), and you bill by quadrant (D4341 if 4+ teeth involved per quadrant, D4342 if 1-3 teeth). The clinic typically schedules SRP in two visits — UR+LR in one visit, UL+LL in the next (right-side / left-side split per Swade p.22) — so anesthesia stays on one side at a time. Maintenance interval converts from 6 months to 3-4 months after SRP.",
+ description: "A patient with Stage II–III periodontitis (4-5 mm pockets with bleeding, calculus, or 5 mm+ pockets) needs definitive non-surgical therapy. SRP differs from a prophy in three ways: anesthesia is required (subgingival instrumentation hurts), the endpoint is calculus-free root surfaces (not plaque-free crowns), and you bill by quadrant (D4341 if 4+ teeth involved per quadrant, D4342 if 1-3 teeth). The clinic typically schedules SRP in two visits — UR+LR in one visit, UL+LL in the next (right-side / left-side split) — so anesthesia stays on one side at a time. Maintenance interval converts from 6 months to 3-4 months after SRP.",
  keyDecisions: [
  "Confirm staging (AAP 2017/2018 per engine + HelpPopup): BL <15% with CAL 1-2 mm = Stage I (initial periodontitis — NOT gingivitis); BL 15-33% with CAL 3-4 mm or PD 4-5 mm = Stage II; BL into the middle third of root, CAL ≥5 mm, or PD ≥6 mm = Stage III. Pure gingivitis (no bone loss, BOP only) = prophy + OHI. Borderline Stage I with stable pockets may stay on prophy; Stage II+ is SRP territory. Heavy generalized inflammation without bone loss may instead route to D4346 (full-mouth scaling) — different code, different patient.",
  "Grade modifiers (AAP 2017/2018): smoking ≥10 cig/day, HbA1c ≥7, or BL/age >1.0 push the case to Grade C (rapid progression) → shorter recall (3 months) and earlier surgical-perio referral if SRP fails to close pockets to ≤4 mm at re-eval. Mobility ≥2, <20 remaining teeth, or severe ridge defect elevate Stage III → Stage IV (rehabilitation complexity).",
- "Anesthesia (Swade SRP protocol p.28): for mandibular, IAN if 3+ teeth require SRP, otherwise buccal infiltrations for 1-2 teeth; mental nerve block useful especially with septocaine. For maxillary, appropriate buccal + palatal infiltrations; aim for PSA + MSA + ASA + greater palatine if all maxillary teeth need SRP. Default agent is 2% lidocaine 1:100k epi; septocaine is an option for breakthrough. Anesthetize the quadrant before starting — subgingival calculus removal without anesthesia is patient torture and breaks rapport.",
- "Instrumentation sequence: ultrasonic (Cavitron) for gross calculus removal first (medium-power universal tip, foot pedal-paced strokes); ALWAYS use Isodry with Cavitron (per Swade clinic-practice norm). Then hand instrumentation (Gracey 1-2 anteriors, 11-12 mesial posterior, 13-14 distal posterior) for definitive root planing.",
+ "Anesthesia: for mandibular, IAN if 3+ teeth require SRP, otherwise buccal infiltrations for 1-2 teeth; mental nerve block useful especially with septocaine. For maxillary, appropriate buccal + palatal infiltrations; aim for PSA + MSA + ASA + greater palatine if all maxillary teeth need SRP. Default agent is 2% lidocaine 1:100k epi; septocaine is an option for breakthrough. Anesthetize the quadrant before starting — subgingival calculus removal without anesthesia is patient torture and breaks rapport.",
+ "Instrumentation sequence: ultrasonic (Cavitron) for gross calculus removal first (medium-power universal tip, foot pedal-paced strokes); ALWAYS use Isodry with Cavitron. Then hand instrumentation (Gracey 1-2 anteriors, 11-12 mesial posterior, 13-14 distal posterior) for definitive root planing.",
  "Endpoint check: explorer detects no calculus, no rough surface. Visible plaque alone isn't the endpoint; calculus is. Subgingival calculus that's been there 10 years feels glassy-smooth — it's not finished until you can run an explorer along the root surface and it feels like polished glass.",
- "Re-evaluation 4-6 weeks post-SRP — billed as a separate appointment, D0170 (re-eval, limited problem-focused) per Swade p.30-31. At re-eval: full 6-point probe + plaque disclosure + O'Leary index. Pockets should reduce 1-2 mm, BOP should decrease. Residual 5+ mm pockets after SRP route to perio specialist or surgical referral. Maintenance interval going forward: 3 months for Grade C, 4 months for Grade B, 6 months for Grade A.",
+ "Re-evaluation 4-6 weeks post-SRP — billed as a separate appointment, D0170 (re-eval, limited problem-focused). At re-eval: full 6-point probe + plaque disclosure + O'Leary index. Pockets should reduce 1-2 mm, BOP should decrease. Residual 5+ mm pockets after SRP route to perio specialist or surgical referral. Maintenance interval going forward: 3 months for Grade C, 4 months for Grade B, 6 months for Grade A.",
  ],
  phases: [
  { label: "Diagnosis & anesthesia", count: 2 },
@@ -25392,7 +25382,7 @@ const PATHWAYS = [
  id: "perio-maintenance",
  domain: "perio",
  label: "Perio maintenance (D4910)",
- description: "A patient with previous SRP returning at the 3-4 month maintenance interval. The procedure is in between a prophy and a re-SRP: full-mouth ultrasonic + hand-instrumentation, with anesthesia for any quadrants that re-developed pockets. The clinical task is to identify the quadrants where instrumentation needs to go subgingival again vs the quadrants stable enough for surface debridement. Full 6-point perio chart is updated at EVERY maintenance visit (Swade p.32) — that's the data feed that decides which quadrants stay on maintenance vs escalate back to SRP. Annual re-charting is the prophy-patient cadence, not maintenance.",
+ description: "A patient with previous SRP returning at the 3-4 month maintenance interval. The procedure is in between a prophy and a re-SRP: full-mouth ultrasonic + hand-instrumentation, with anesthesia for any quadrants that re-developed pockets. The clinical task is to identify the quadrants where instrumentation needs to go subgingival again vs the quadrants stable enough for surface debridement. Full 6-point perio chart is updated at EVERY maintenance visit — that's the data feed that decides which quadrants stay on maintenance vs escalate back to SRP. Annual re-charting is the prophy-patient cadence, not maintenance.",
  keyDecisions: [
  "Re-chart pocket depths at the maintenance visit. Sites that have increased >1 mm or developed new bleeding = quadrant gets anesthesia + sub-gingival instrumentation. Stable sites = surface debridement only.",
  "Confirm patient is following the recommended interval. Skipped maintenance visits (6+ months instead of 3) are the #1 cause of perio recurrence — recharting at this visit will show new pocket formation.",
