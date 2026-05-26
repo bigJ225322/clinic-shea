@@ -12104,11 +12104,11 @@ const RVU_CATEGORIES = [
  // and digital crown codes (DD / RD).
  { id: "indirect", label: "Indirect", match: c => /^D27/.test(c) || c === "D2920" || c === "D2921" || c === "D2935" || /^D6/.test(c) || /^DD/.test(c) || /^RD/.test(c) },
  // Perio: D4xxx + adult prophy + tobacco-cessation codes.
- { id: "perio", label: "Perio", match: c => /^D4/.test(c) || c === "D1110" || /^D1320/.test(c) },
+ { id: "perio", label: "Perio", match: c => /^D4/.test(c) || c === "D1110" || /^D1320/.test(c) || c === "D1330" },
  // CD: complete denture / immediate CD / interim CD / overdenture.
  { id: "cd", label: "CD", match: c => /^D5(11|12|13|14|81|82|86)/.test(c) },
  // RPD: cast metal / flexible / interim partial dentures.
- { id: "rpd", label: "RPD", match: c => /^D5(21|22|23|24|25|26|27|28)/.test(c) },
+ { id: "rpd", label: "RPD", match: c => /^D5(21|22|23|24|25|26|27|28|86)/.test(c) },
  // Repair: denture adjustments, repairs, rebases, relines (CD or RPD).
  { id: "repair", label: "Repair", match: c => /^D5(41|42|43|51|52|53|55|56|57|61|62|63|64|65|66|67|71|72|73|74|75|76)/.test(c) },
  // Peds: child prophy / fluoride / OHI / diet, primary-tooth pulp therapy
