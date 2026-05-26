@@ -3487,7 +3487,15 @@ const DEFAULT_INJECTION = {
 // Peds always → buccal infiltration (no block distinction for primary teeth).
 const injectionForTooth = (tooth, isPeds) => {
  if (isPeds) return {...DEFAULT_INJECTION, techBuccalInfil: true };
- const num = parseInt((tooth || "").replace(/\D/g, ""), 10);
+ // Detect primary tooth letters (A–T from the universal lettering system)
+ // even when isPeds is false — replace(/\D/g, "") would strip them to
+ // an empty string and silently return null. Treat primary teeth like
+ // peds: buccal infiltration on the appropriate side.
+ const cleaned = (tooth || "").trim().replace(/^#/, "");
+ if (/^[A-T]$/i.test(cleaned)) {
+ return {...DEFAULT_INJECTION, techBuccalInfil: true };
+ }
+ const num = parseInt(cleaned.replace(/\D/g, ""), 10);
  if (!num || num < 1 || num > 32) return null;
  const isRight = num <= 8 || num >= 25;
  const side = isRight? "right": "left";
@@ -22328,7 +22336,9 @@ const PATHWAY_DOMAINS = [
  { id: "indirect", label: "Indirect" },
  { id: "endo", label: "Endo" },
  { id: "surgery", label: "OS" },
- { id: "perio", label: "Perio" },
+ // Perio pill removed per user — pathways stay in PATHWAYS array but
+ // the domain filter no longer surfaces them in the Cases tab. Re-add
+ // this entry to bring them back.
  { id: "pedo", label: "Peds" },
  { id: "rpd", label: "RPD" },
  { id: "cd", label: "CD" },
@@ -22414,10 +22424,9 @@ const PATHWAY_GROUPS = {
  "surgery-dry-socket",
  "surgery-post-op-bleed",
  ]},
- { label: "Pre-prosthetic + infection management", ids: [
- "surgery-pre-prosthetic",
- "surgery-odontogenic-infection",
- ]},
+ // "Pre-prosthetic + infection management" section removed per user
+ // (pathways stay in PATHWAYS so links from other tabs don't break;
+ // the OS group just no longer surfaces them as a sub-section).
  ],
  pedo: [
  // Restorative covers operative work in primary teeth (composite, SSC,
@@ -22628,7 +22637,8 @@ const WIZARDS = {
  options: [
  { label: "Intracoronal — no cuspal involvement (inlay)", pathway: "ind-inlay" },
  { label: "Cuspal coverage (onlay)", pathway: "ind-onlay-bruxer" },
- { label: "¾ crown (conservative posterior)", pathway: "ind-3-4-crown" },
+ // 3/4 crown option removed per user — pathway stays in PATHWAYS so
+ // other tabs can still link to it, just not surfaced as a Cases choice.
  { label: "Same-day CAD/CAM inlay or onlay", pathway: "ind-cad-cam-inlay-onlay" },
  { label: "Fractured cusp — diagnose + plan", pathway: "ind-fractured-cusp" },
  { label: "Anterior veneers", pathway: "ind-veneers" },
