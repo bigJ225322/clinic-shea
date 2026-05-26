@@ -5476,6 +5476,13 @@ function parseLabPlaceholders(body) {
  // templates can still surface the rest of their bracket pickers
  // (e.g. peds needle-gauge "[ 30G 25mm / 27G 35 mm ]").
  continue;
+ } else if (text === "color" || text === "contour" || text === "consistency") {
+ // Perio templates use "[color], [contour], [consistency] gingiva"
+ // and the EXAM_FINDINGS_CONFIG already exposes a dedicated
+ // gingiva-dropdowns triple (renderTemplate substitutes from
+ // ef["gingival color"] / "gingival contour" / "gingival consistency").
+ // Suppress here so we don't render duplicate text inputs.
+ continue;
  } else if (text === "Anterior tooth mold") {
  // Render the full Tooth Mould Picker inline. Its Apply button
  // emits both anterior and posterior mould codes — the
