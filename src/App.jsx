@@ -21722,6 +21722,7 @@ const PATHWAY_GROUPS = {
  "rpd-broken-denture-tooth",
  "rpd-broken-framework",
  "rpd-loose-rpd",
+ "rpd-reline",
  "rpd-valplast-repair",
  ]},
  ],
@@ -23344,6 +23345,34 @@ const PATHWAYS = [
  { guideId: "rpd", chapterId: "rpd-ch11" }, // Pressure points
  { guideId: "rpd", chapterId: "rpd-ch12" }, // Occlusal adjustment
  { guideId: "rpd", chapterId: "rpd-ch18" }, // Repair (reline / rebase if framework OK)
+ ],
+ },
+ {
+ id: "rpd-reline",
+ domain: "rpd",
+ label: "RPD reline / rebase",
+ description: "Patient with an existing well-functioning RPD framework needs the acrylic saddle/base refreshed to match resorbed ridge anatomy under the distal extension or saddle. Common at the 5-year + interval, especially in Class I/II distal extension cases where ridge resorption progresses without tooth-supported stability. Reline preserves the metal framework + clasps + teeth — only the tissue-fitting acrylic is replaced. Chairside reline buys time (lower cost, single visit, less predictable) vs lab reline (2-week turnaround, more predictable, definitive). Always do framework + occlusion adjustment FIRST before relining — a reline locked onto an interfering framework will fail.",
+ keyDecisions: [
+ "Diagnose vs other RPD problems first (see rpd-loose-rpd pathway): rule out occlusal interference, framework fit issue, or clasp deformation before deciding the RPD needs reline. Reline is for ridge-resorption-driven looseness specifically, not adjustment issues.",
+ "Pre-reline appointment ALWAYS includes adjustment first: PIP the framework, check clasp engagement, check occlusion with horseshoe articulating paper, verify rest seats are seating fully. Relining a framework that doesn't seat passively will lock in the misfit.",
+ "Decision — chairside vs lab vs remake: CHAIRSIDE (D5740/D5741) when patient cannot be without the prosthesis for 2 weeks and a temporary fix is acceptable — uses cold-cure acrylic, less predictable, ~3-year service life. LAB (D5760/D5761) when patient can be without prosthesis 2 weeks — heat-cured acrylic, more predictable, ~5-7 year service life. REMAKE (D5213/D5214) when framework itself is distorted, clasps have multiple repairs, or occlusion has shifted beyond what reline can correct.",
+ "Tissue conditioning preceding reline (D5850/D5851) if patient has chronic tissue irritation or denture stomatitis under the saddle — apply Coe-Comfort soft reline material for 2-4 weeks BEFORE the reline impression. Heals tissue first so reline impression captures true ridge anatomy, not edematous tissue.",
+ "Lab reline workflow: take alginate impression of arch through the existing RPD seated in mouth (border-mold the saddle with the framework in place), or use the framework + light-body PVS impression technique with relieved saddle. Lab Rx: 'Please reline distal-extension saddle(s) with heat-cured acrylic resin, matching original gingival shade.' 5-day turnaround per Swade.",
+ "Chairside reline workflow (cold-cure PMMA): relieve saddle 1 mm, apply separator to teeth/framework, mix cold-cure PMMA, seat RPD with border-molding movements, hold 5 min until set, remove + trim flash + finish + polish. The acrylic gets hot during set — keep cheek/tongue protected.",
+ "CDT codes: D5740 (Reline partial maxillary — chairside) / D5741 (Reline partial mandibular — chairside). D5760 (Reline partial maxillary — laboratory) / D5761 (Reline partial mandibular — laboratory). D5720 / D5721 for partial denture rebase (replaces all acrylic, keeps framework + teeth). D5850 / D5851 for tissue conditioning preceding the reline. (D5730/D5731 are COMPLETE-denture chairside reline codes — different code.)",
+ "Counsel patient: reline restores fit but doesn't restore retention if clasps have weakened — clasp tightening (chairside wire bend or wrought-wire replacement) may be needed alongside. Schedule occlusal re-check at delivery + 1-week post-reline.",
+ ],
+ phases: [
+ { label: "Diagnose + adjust first", count: 2 },
+ { label: "Chairside vs lab decision", count: 1 },
+ { label: "Tissue conditioning if needed", count: 1 },
+ { label: "Impression + reline", count: 2 },
+ ],
+ sections: [
+ { guideId: "rpd", chapterId: "rpd-ch18" }, // Repair / reline
+ { guideId: "rpd", chapterId: "rpd-ch10" }, // PIP (pre-reline)
+ { guideId: "rpd", chapterId: "rpd-ch12" }, // Occlusal recheck post-reline
+ { guideId: "rpd", chapterId: "rpd-ch16" }, // Pitfalls
  ],
  },
  {
