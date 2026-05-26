@@ -1574,6 +1574,7 @@ const RVU_DATA = [
  { code: "D1320.3", desc: "Tobacco counseling — follow-up with patient", rvu: 1 },
  { code: "D1330", desc: "Oral hygiene instructions", rvu: 1 },
  { code: "D1351", desc: "Sealant - per tooth", rvu: 1 },
+ { code: "D1352", desc: "Preventive resin restoration (moderate-to-high caries risk)", rvu: 2 },
  { code: "D1354", desc: "Interim caries arresting medicament application-SDF", rvu: 2 },
  { code: "D1355", desc: "Sealant-per tooth N/C", rvu: 1 },
  { code: "D1510", desc: "Space maint - Fixed - Unilateral", rvu: 5 },
@@ -23327,12 +23328,12 @@ const PATHWAYS = [
  id: "dir-prr",
  domain: "direct",
  label: "PRR (Preventive Resin Restoration)",
- description: "The case in between a sealant and a Class I composite — a small cavitation that needs restoration AND surrounding pits/fissures that are still sealable. Restore the cavitation with composite, seal the rest of the occlusal at the same visit. One visit, one tooth, one code (D2391 — cannot bill sealant separately on the same tooth same day). Most often a peds case; minimal-prep philosophy applies. The case turns on knowing when to expand to a full Class I composite (if caries extends into grooves) vs staying minimal (if cavitation is localized to one or two pits).",
+ description: "The case in between a sealant and a Class I composite — a small cavitation that needs restoration AND surrounding pits/fissures that are still sealable. Restore the cavitation with composite, seal the rest of the occlusal at the same visit. One visit, one tooth, one code (D1352 — the dedicated PRR code; do not bill D2391 + D1351 separately on the same tooth same day). Most often a peds case; minimal-prep philosophy applies. The case turns on knowing when to expand to a full Class I composite (if caries extends into grooves) vs staying minimal (if cavitation is localized to one or two pits).",
  keyDecisions: [
  "PRR is the minimal-prep case — drill only the cavitation, seal everything else on the occlusal. If caries follows the grooves and you find yourself extending the prep, the case has become a Class I composite, not a PRR.",
  "Depth is typically 1.0-1.5 mm, restricted to pits unless caries dictates more.",
  "Etch the ENTIRE occlusal surface so the sealant placement step works — not just the cavitation.",
- "Code D2391 (Resin-based composite — 1 surface, posterior) covers both the composite and the sealant overlay. Do NOT bill D1351 separately on the same tooth same day (DHS won't cover both).",
+ "Code D1352 (Preventive resin restoration in a moderate-to-high caries risk patient) is the dedicated PRR code. It covers both the composite and the sealant overlay in one billable item — do NOT bill D2391 + D1351 separately on the same tooth same day. If the case extends beyond the cavitation into the grooves, it becomes a Class I composite and bills D2391 instead.",
  "Peds workflow: present to instructor before bringing patient back, weigh the patient, 1 carpule anesthesia limit, Isodry preferred for moisture control, 100% O2 at end if nitrous used.",
  ],
  phases: [
