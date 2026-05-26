@@ -10255,7 +10255,14 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  RMGI, 3076 Final Impression, 3204 Crown Delivery). */}
  {(() => {
  const showCord = /Placed (?:#\d+\s+)?gingival retraction cords?/i.test(rawTemplate);
- const showCrownType = /\bPFM\b/.test(rawTemplate);
+ // Crown-type dropdown (PFM vs all-ceramic) is for clinical templates
+ // where the SAME procedure can be done with either material (crown prep,
+ // core buildup, final impression, delivery). Lab scripts ship one per
+ // material — lab-pfm IS PFM by definition; lab-implant-crown IS e.max
+ // CAD/CAM by definition. Switching material on a lab script is the wrong
+ // mental model (you'd pick a different script entirely).
+ const isLabScript = typeof procedureId === "string" && procedureId.startsWith("lab-");
+ const showCrownType = /\bPFM\b/.test(rawTemplate) && !isLabScript;
  if (!showCord && !showCrownType) return null;
  return (
  <>
