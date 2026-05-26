@@ -5495,6 +5495,15 @@ function parseLabPlaceholders(body) {
  // (see renderTemplate consultations handler), so a single shared
  // bracket-form input would write the same name to all three. Skip.
  continue;
+ } else if (/^\s*\d+G\s+\d+\s*mm\s*\/\s*\d+G\s+\d+\s*mm\s*$/.test(text)) {
+ // Needle-gauge bracket "[ 30G 25mm / 27G 35 mm ]" — appears in every
+ // template that includes the "Applied 20% topical benzocaine" sentence.
+ // The Anesthetic section is the canonical needle picker: it writes to
+ // fields.injections[].needle, and renderTemplate rebuilds the entire
+ // anesthetic sentence (including the gauge) when the user picks an
+ // injection technique. Surfacing the bracket here as a dropdown gives
+ // a redundant input that doesn't even feed the same code path.
+ continue;
  } else if (text === "Student Name" || text === "Instructor") {
  // Peds templates end with "- [Student Name] / Dr. [Instructor]" —
  // those are filled by the Names field at the bottom of the form,
@@ -5680,7 +5689,6 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  "A2": "Shade",
  "gingival shade": "Gingival shade",
  "Implant Diameter": "Implant diameter",
- " 30G 25mm / 27G 35 mm ": "Needle size",
  };
  // Fall back to the bracket key when no friendly label is defined.
  // Trim incidental whitespace (some templates have " X / Y " brackets
