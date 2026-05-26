@@ -26990,6 +26990,20 @@ function Pathways() {
  </button>
 );
  })}
+ {/* "All" pill — matches the Codes tab convention. Clicking it
+ unsets domainId so no specific domain is active and surfaces
+ every pathway in PATHWAYS (filtered by searchQuery if set). */}
+ <button onClick={() => { setShowAllDomains(true); setDomainId(null); setPathwayId(null); }} style={{
+ padding: "7px 14px", borderRadius: "100px",
+ border: `1px solid ${showAllDomains? "var(--accent)": "var(--rule)"}`,
+ background: showAllDomains? "var(--accent)": "transparent",
+ color: showAllDomains? "var(--paper, white)": "var(--ink-soft)",
+ fontSize: "0.85rem", fontWeight: 500, cursor: "pointer",
+ fontFamily: "'Geist', sans-serif",
+ transition: "all 120ms ease",
+ }}>
+ All
+ </button>
  </div>
 
  {/* Scenario pills — same pill family as the domain pills above, but
