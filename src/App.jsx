@@ -23913,8 +23913,11 @@ const PATHWAYS = [
  "Counsel: 'There is no such thing as a perfect denture — there's a denture you adapt to.' Set the expectation early: dentures function at roughly 30% of natural dentition.",
  "CDT codes: D5110 (Complete denture — maxillary) / D5120 (Complete denture — mandibular). Per-step subcodes commonly used: D5110A (records / facebow / impressions), D5110B (wax try-in), D5110C (delivery). I9002 (Lab quality review) may apply at delivery. Adjustments at 24h/1wk: D5410 (Adjust complete denture, max) / D5411 (Adjust complete denture, mand).",
  ],
+ // phases sum to 17 = sections.length. Pre-prosthetic eval is a screening
+ // step described in keyDecisions and has no dedicated cd-ch chapter, so
+ // its count is 0 (the heading still renders for visual continuity).
  phases: [
- { label: "Pre-prosthetic eval", count: 1 },
+ { label: "Pre-prosthetic eval", count: 0 },
  { label: "Records", count: 4 },
  { label: "Mounting", count: 3 },
  { label: "VDO & CR", count: 2 },
