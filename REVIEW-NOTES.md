@@ -2483,3 +2483,38 @@ Launched 4 parallel audits, all clean except CDT (which found 7 real errors — 
 - **Maxillary 2nd premolar canal anatomy**: Swade lists 50/50 single vs dual canal; App.jsx now explicitly says "Swade lists 50/50" matching the source.
 - **Mandibular lateral incisor eruption order**: Swade lists at #2 (7 mo) before maxillary central (#3) — non-standard textbook order but kept as-is to match Swade source.
 
+
+### Iter 36 EXTENDED — additional fixes after first commit
+
+After the initial 5-commit summary, ran 2 more parallel audit agents:
+
+**UI text consistency agent** (a7b5aade): found 7 issues, all fixed:
+1. cross-cd-iod-implants: garbled "t provide implant-supported maxillary full occupation..." trailing fragment with mismatched quote → restored to complete sentence
+2. rpd-kennedy4-anterior: "the 7 esthetic parameters" → "The"
+3. cross-rpd-to-implants: "predoc scope" → "Predoc scope"
+4. cross-anterior-implant-esthetic description: "predoc scope" → "Predoc scope"
+5. cross-anterior-implant-esthetic keyDecision: " PREDOC SCOPE" → "Predoc scope" (trim leading space + sentence case)
+6. endo-retreatment: " pre-doc default" → "Pre-doc default"
+7. endo-broken-instrument: " pre-doc default" → "Pre-doc default"
+8. surgery-third-molar: "predoctoral protocol" → "Predoctoral protocol"
+9. endo-premolar-rct: "predoc scope" → "Predoc scope"
+
+**Note builder + lab Rx agent** (a6b6e1a1): found 8 minor issues, fixed 2 high-confidence:
+1. lab-ii-rpd: "Trubyte classic" → "Trubyte Classic" (brand name capitalization)
+2. Crown endo access fill template (×2): "BW taken recently show" → "BWs taken recently show" (subject-verb agreement)
+3. Other issues (Renamel capitalization drift, lab reline title/body) were stylistic — left as-is.
+
+### Iter 36 FINAL TOTAL: 8 commits, all pushed live
+
+Commits in chronological order:
+1. `0434da2` — Swade page-reference + scrub artifact + tooth-anatomy
+2. `99a8340` — REVIEW-NOTES Swade fact-check summary
+3. `fb7b6fa` — CDT code D6068, D5740/D5741 fixes
+4. `ab32bbf` — surgery-impacted-tooth post-op analgesia (matches AAA)
+5. `1613959` — REVIEW-NOTES iter 36 grand total
+6. `a855c81` — 6 UI text fixes
+7. `2f86fa7` — endo-premolar-rct capitalization
+8. `1753144` — Note + Lab Rx polish (Trubyte + BWs)
+
+Tests: 1021/1021 passing throughout. Build: clean. All pushed to main and live on Vercel.
+
