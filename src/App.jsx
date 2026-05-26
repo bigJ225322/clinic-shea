@@ -6903,28 +6903,53 @@ function RefProse({ heading, lines }) {
 }
 
 // Renders a copy-able lab Rx body in a monospace block. Bracket placeholders
-// like [shade] or [tooth] or [##-##] are visually distinct so students know
-// what to fill in before sending. The component auto-detects two kinds of
-// tooth placeholders and renders the matching picker(s):
+// like [tooth] or [##-##] are visually distinct so students know what to fill
+// in before sending. The component auto-detects several placeholder types
+// and renders the matching picker(s):
 //
-// [tooth] → single-tooth dropdown (PFM crown, implant cast/abutment/crown)
+// [tooth] → single-tooth dropdown
 // [##-##] → bridge-span dropdowns (mesial + distal abutments)
+// [A2] → shade picker (VITA classical)
+// [X / Y / Z] → dropdown with the slash-separated options
 //
 // Picked values substitute into both the displayed Rx and the copy output.
-// Other bracket placeholders ([A2] shade, brand choices, etc.) stay
-// highlighted as plain template placeholders for now.
+// Brackets without a matching pattern (free-text fields like
+// [Reference teeth], [Rest seats], custom inputs) stay highlighted as
+// plain template placeholders — students fill those in manually.
 function RefScript({ caption, body, note }) {
  const [copied, setCopied] = useState(false);
  const [selectedTooth, setSelectedTooth] = useState("");
  const [spanMesial, setSpanMesial] = useState("");
  const [spanDistal, setSpanDistal] = useState("");
  const [selectedShade, setSelectedShade] = useState("");
+ // Slash-separated dropdown values, keyed by the literal bracket text.
+ // Covers placeholders like [Straumann / Nobel / Dentsply EV],
+ // [maxillary / mandibular], [LT / MT / HT], etc. that previously stayed
+ // as untouchable highlighted text in the rendered Rx body.
+ const [dropdownValues, setDropdownValues] = useState({});
 
  const hasToothPlaceholder = body.includes("[tooth]");
  const hasSpanPlaceholder = body.includes("[##-##]");
  // Lab Rx templates use the literal "[A2]" as the placeholder shade.
  // Same convention as [tooth] / [##-##] — bracketed default value.
  const hasShadePlaceholder = body.includes("[A2]");
+
+ // Pull out slash-separated dropdown brackets (deduped, preserves order
+ // of first appearance). Same detection rule as parseLabPlaceholders.
+ const dropdownBrackets = useMemo(() => {
+ const matches = [...body.matchAll(/\[([^\]]+)\]/g)];
+ const seen = new Map();
+ for (const m of matches) {
+ const text = m[1];
+ if (seen.has(text)) continue;
+ // Whitespace-padded slash so embedded brand syntax like
+ // "cement-retained CAD/CAM emax" stays intact as a single option.
+ if (/\s\/\s/.test(text)) {
+ seen.set(text, text.split(/\s+\/\s+/).map(s => s.trim()).filter(Boolean));
+ }
+ }
+ return [...seen.entries()].map(([key, options]) => ({ key, options }));
+ }, [body]);
 
  // Substitute picked values into the body. Each placeholder type
  // substitutes only when fully resolved (both ends of the span, etc.);
@@ -6939,6 +6964,10 @@ function RefScript({ caption, body, note }) {
  }
  if (hasShadePlaceholder && selectedShade) {
  filledBody = filledBody.replaceAll("[A2]", selectedShade);
+ }
+ for (const [key, value] of Object.entries(dropdownValues)) {
+ if (!value) continue;
+ filledBody = filledBody.replaceAll(`[${key}]`, value);
  }
 
  const onCopy = async () => {
@@ -7070,6 +7099,49 @@ function RefScript({ caption, body, note }) {
 )}
  </div>
 )}
+ {/* Slash-separated dropdown placeholders ([Straumann / Nobel / Dentsply EV],
+ [maxillary / mandibular], [LT / MT / HT], etc). Each renders a small
+ dropdown; picking a value substitutes into the Rx body. Same friendly
+ label map as the Note builder uses. */}
+ {dropdownBrackets.map(({ key, options }) => {
+ const DISPLAY_LABEL = {
+ "Straumann / Nobel / Dentsply EV": "Implant brand",
+ "mandibular / maxillary": "Arch",
+ "maxillary / mandibular": "Arch",
+ "lingual bar / palatal plate": "Major connector",
+ "titanium / gold-hue / zirconia": "Abutment material",
+ "cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown": "Planned crown",
+ "mesial / distal / cingulum": "Rest seat location",
+ "mesial / distal": "Guide plane surface",
+ "0.01\" cast clasp / 0.02\" wrought wire": "Clasp / undercut depth",
+ "mid-buccal / MB / DB / ML / DL": "Undercut location",
+ "buccal / lingual": "HOC surface",
+ "LT / MT / HT": "Translucency",
+ };
+ const label = DISPLAY_LABEL[key] || key;
+ const value = dropdownValues[key] || "";
+ return (
+ <div key={key} style={{
+ display: "flex", alignItems: "center", gap: "10px",
+ marginBottom: "8px",
+ fontFamily: "'Geist', sans-serif",
+ }}>
+ <label style={labelStyle}>{label}</label>
+ <select value={value}
+ onChange={e => setDropdownValues(v => ({ ...v, [key]: e.target.value }))}
+ style={{ ...pickerStyle, maxWidth: "320px" }}>
+ <option value="">—</option>
+ {options.map(opt => (
+ <option key={opt} value={opt}>{opt}</option>
+ ))}
+ </select>
+ {value && (
+ <button onClick={() => setDropdownValues(v => ({ ...v, [key]: "" }))}
+ style={clearLinkStyle}>clear</button>
+ )}
+ </div>
+ );
+ })}
  <pre style={{
  background: "var(--card)",
  border: "1px solid var(--rule-soft)",
