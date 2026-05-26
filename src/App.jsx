@@ -7894,6 +7894,16 @@ function parseToothSelection(value) {
  if (!isNaN(a) && !isNaN(b)) {
  const lo = Math.min(a, b);
  const hi = Math.max(a, b);
+ // Tooth numbers 1-16 are maxillary, 17-32 are mandibular.
+ // A hand-typed range that crosses the 16↔17 boundary
+ // (e.g. "#15-20", "#16-17") is almost always a typo — but
+ // the Set ends up with the same numbers either way, and
+ // formatToothSpans already breaks the rendered string at
+ // 16↔17 (guard at the prev===16 && cur===17 check). So we
+ // accept the input verbatim; downstream renderers handle
+ // it correctly. Future-proofing: if a consumer ever treats
+ // the Set as "single arch", this is the spot to flag the
+ // mixed-arch case.
  for (let n = lo; n <= hi; n++) teeth.add(n);
  }
  } else {
