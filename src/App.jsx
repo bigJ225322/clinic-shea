@@ -5410,11 +5410,12 @@ const ROOT_TOKENS = {
  * SMALL PRESENTATIONAL HELPERS
  * ==========================================================================*/
 const labelStyle = {
- // Title-case (not uppercase) per Jake. The 9px uppercase + heavy
- // letter-spacing was loud and made the form headers feel shoutier
- // than the inputs they label. Bumped to 10px for legibility at the
- // gentler case. Italic overrides at the call sites were stripped.
+ // Lowercase, centered field labels per Jake. The uppercase + heavy
+ // letter-spacing variant shouted at students from every field; the
+ // lowercase version reads as a quiet hint above its input. Italic
+ // overrides at the call sites were stripped earlier.
  fontSize: "10px", letterSpacing: "0.04em",
+ textTransform: "lowercase",
  color: "var(--ink-soft)", fontWeight: 500, marginBottom: "3px",
  display: "block", fontFamily: "'Geist', sans-serif",
  whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
@@ -7153,7 +7154,7 @@ function RefScript({ caption, body, note }) {
  };
  const labelStyle = {
  fontWeight: 600, fontSize: "10.5px",
- letterSpacing: "0.07em", textTransform: "uppercase",
+ letterSpacing: "0.07em", textTransform: "lowercase",
  color: "var(--ink-soft)",
  };
  const clearLinkStyle = {
@@ -7711,12 +7712,13 @@ const EXAM_FINDINGS_CONFIG = {
  // Perio Re-Evaluation — full charting, no OHI checkboxes (not in template)
  "1346": [
  {
- // Section order updated 2026-05-27 to match the order the
- // corresponding text appears in the note template (chart → OHI →
- // improvement + interval). Added: "mucogingival defects" input
- // (previously missing despite being in the template); improvement
- // detail input (perioImprovementDetail, captures what specifically
- // improved between SRP and re-eval).
+ // Order: Perio chart → Assessment (maintenance interval) → OHI.
+ // The maintenance interval IS the re-eval visit's Tx decision —
+ // it belongs in Assessment, immediately after the chart that
+ // produced it. OHI sits below as its own section. "What improved"
+ // was cut (redundant with the rationale flow); the inline
+ // "Standard post-SRP interval…" hint was also cut (the option
+ // labels carry enough context).
  title: "Perio chart",
  rows: [
  [
@@ -7740,6 +7742,14 @@ const EXAM_FINDINGS_CONFIG = {
  ],
  },
  {
+ title: "Assessment",
+ rows: [
+ [{ label: "maintenance interval", type: "select",
+ displayLabel: "Maintenance interval",
+ options: ["", "3 months", "4 months", "6 months"] }],
+ ],
+ },
+ {
  title: "OHI",
  fields: [
  { type: "brushing-flossing" },
@@ -7748,22 +7758,6 @@ const EXAM_FINDINGS_CONFIG = {
  { label: "plaque level", type: "select", defaultValue: "moderate",
  options: ["light", "moderate", "heavy"], absorbed: true },
  { label: "plaque area", type: "input", placeholder: "e.g. UR molars, linguals" },
- ],
- },
- {
- title: "Re-eval outcome",
- rows: [
- // perioImprovementDetail binds to the App-level `fields` state
- // (not `findings`), because the renderTemplate substitution at
- // step 6g reads `f.perioImprovementDetail`. The custom flag
- // routes the renderer to a setField-based input.
- [{ perioImprovementDetail: true,
- displayLabel: "What improved",
- placeholder: "e.g. PDs reduced, BoP localized to UL molars" }],
- [{ label: "maintenance interval", type: "select",
- displayLabel: "Maintenance interval",
- options: ["", "3 months", "4 months", "6 months"],
- hint: "Standard post-SRP interval is 3–4 months; 6 months only after multiple stable visits." }],
  ],
  },
  ],
@@ -11471,6 +11465,9 @@ function Browse({
  const stepsBody = useMemo(() => {
  if (!stepsChunk) return null;
  let body = stepsChunk.body;
+ // Defensive: chunk body should always be a string. Guard so a
+ // bad upstream value can't tank the Steps tab render.
+ if (typeof body !== "string") return null;
  const m = body.match(/(^|\n)[^\n]*note template/i);
  body = m? body.slice(0, m.index).trimEnd(): body;
  body = body.replace(/^[^\n]+:\s+(?:steps|instructions|equipment)\n+/i, "");
