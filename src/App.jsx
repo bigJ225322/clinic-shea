@@ -12354,7 +12354,18 @@ function findChunkForProcedure(procedure, chunks, role, opts = {}) {
  const roleSynonyms = role === "steps"
 ? ["steps", "instructions"]
 : [role];
- const matchesRole = (t) => roleSynonyms.some(r => t.includes(r));
+ // Match the role against ONLY the suffix-after-last-colon, not the
+ // whole title. Denture chunks ("DENTURE STEPS — border molding &
+ // final impression: equipment") have "STEPS" in their section prefix,
+ // which made the equipment chunk match role="steps" via substring
+ // contains and win over the actual steps chunk (the equipment chunk
+ // came first in document order). The title format is always
+ // "SECTION — procedure: role", so the suffix check is exact.
+ const matchesRole = (t) => {
+ const colonIdx = t.lastIndexOf(":");
+ const suffix = colonIdx >= 0? t.slice(colonIdx + 1).trim(): t;
+ return roleSynonyms.some(r => suffix.includes(r));
+ };
 
  // Category → section hard-filter. Procedures in these categories must
  // match chunks from the corresponding section, never cross over. Without
