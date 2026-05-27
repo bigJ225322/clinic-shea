@@ -25305,9 +25305,11 @@ const PATHWAYS = [
  "Cement vs screw retention: cement for emergence profile, screw for retrievability.",
  "Shade match to contralateral natural tooth dominates the workflow.",
  ],
+ // phases sum to 7 = sections.length (Material count decremented from
+ // 2 to 1 after ind-ch20 was removed).
  phases: [
  { label: "Digital workflow + shade", count: 2 },
- { label: "Material + planning", count: 2 },
+ { label: "Material", count: 1 },
  { label: "Cementation + reference", count: 2 },
  { label: "Implant fundamentals", count: 2 },
  ],
