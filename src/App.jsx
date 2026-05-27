@@ -3979,18 +3979,14 @@ function renderTemplate(raw, f) {
  t = t.replace(/(\S)[ \t]*\n[ \t]+([a-z(&])/g, "$1 $2");
  t = t.replace(/(^|\n) (?! )/g, "$1");
 
- // Cavitron substitution: "(with Isodry)" → "(with Isodry)"
- // for scaling procedures (POE 1091, SRP 1272, prophy 1196, perio
- // maintenance 1425). Per user correction (iter 33): Isodry DOES fit
- // during cavitron use — it's always used alongside the cavitron in
- // modern clinic practice. The Isodry has built-in HVE suction
- // that handles the cavitron's water spray. The "with assistant using
- // HVE" phrasing in Swade's templates reflects an older workflow where
- // an assistant held the suction tip; in current clinic practice the
- // Isodry replaces that need.
- //
- // (Iter 30 incorrectly reverted this substitution under the false
- // premise that Isodry doesn't fit during cavitron — restored here.)
+ // Scaling-procedure suction substitution: replaces the legacy
+ // "(with an assistant using HVE)" phrasing in Swade's POE/SRP/prophy/
+ // perio-maintenance templates with "(with Isodry)" — current UIC
+ // clinic practice uses the Isodry's built-in HVE suction alongside
+ // the Cavitron, so the assistant-held-suction sentence is outdated.
+ // (Iter 30 incorrectly removed this substitution thinking Isodry
+ // didn't fit during Cavitron use; iter 33 restored it after user
+ // confirmed Isodry does work alongside Cavitron.)
  t = t.replace(/\(with (?:an )?assistant using HVE\)/g, "(with Isodry)");
 
  // -------- 0b. Strip the treatment plan section when the user checks
