@@ -11472,7 +11472,7 @@ function Browse({
  if (!stepsChunk) return null;
  let body = stepsChunk.body;
  const m = body.match(/(^|\n)[^\n]*note template/i);
- body = m? body.slice(0, m.index).trimEnd: body;
+ body = m? body.slice(0, m.index).trimEnd(): body;
  body = body.replace(/^[^\n]+:\s+(?:steps|instructions|equipment)\n+/i, "");
  return body.trim() || null;
  }, [stepsChunk]);
