@@ -18319,28 +18319,42 @@ const TOOTH_MOULD_FORMS = [
 ];
 
 // Proportion of tooth (long / medium / short) × facial contour (straight / curved).
-// Straight = flat / nearly-rectangular labial profile; Curved = bulging / convex
-// labial profile (more ovoid silhouette). 16×22 viewBox, frontal outline of a
-// #8 central incisor with the cervical at the top and incisal at the bottom.
+//
+// PROPORTION is the cervical-incisal length of the tooth: long, medium, or short.
+// FACIAL CONTOUR (per Portrait IPN p. 5) is the labial-surface profile in SIDE
+// view — assessed by holding a flat device (Dentsply Sirona Tooth Indicator
+// #98981) against the patient's labial surface:
+//   - Straight: the labial surface is flat, the indicator sits flush head-to-toe.
+//   - Curved: the labial surface is convex, the indicator contacts only at the
+//             middle bulge with daylight at the cervical and incisal.
+//
+// To make the distinction VISIBLE in the picker, these SVGs draw a side-profile
+// (mesio-distal cross-section) of the tooth — cervical at top, incisal at
+// bottom — with the LABIAL face on the right of each glyph and the LINGUAL
+// face on the left. The straight variants render the right edge as a vertical
+// line; the curved variants render it as a convex bulge. Length scales the
+// overall glyph height to reflect long / medium / short proportion. 16×22
+// viewBox; box edges on the lingual side stay constant so the proportion
+// signal reads clearly against the labial profile signal.
 const TOOTH_MOULD_PROPORTIONS = [
- { id: "1", label: "Long · Straight",
- // Tall, slim, parallel sides
- path: "M3 2 Q5 1 8 1 Q11 1 13 2 L13 18 Q13 20 8 20 Q3 20 3 18 Z" },
- { id: "2", label: "Medium · Straight",
- // Balanced proportions, parallel sides
- path: "M3 3 Q5 2 8 2 Q11 2 13 3 L13 17 Q13 19 8 19 Q3 19 3 17 Z" },
- { id: "3", label: "Short · Straight",
- // Stubby, parallel sides
- path: "M3 5 Q5 4 8 4 Q11 4 13 5 L13 16 Q13 18 8 18 Q3 18 3 16 Z" },
- { id: "4", label: "Long · Curved",
- // Tall, ovoid sides
- path: "M8 1 Q11 1 12 3 Q14 8 13 13 Q12 18 10 19 Q8 20 6 19 Q4 18 3 13 Q2 8 4 3 Q5 1 8 1 Z" },
- { id: "5", label: "Medium · Curved",
- // Balanced, ovoid sides
- path: "M8 2 Q11 2 12 4 Q14 8 13 13 Q12 17 10 18 Q8 19 6 18 Q4 17 3 13 Q2 8 4 4 Q5 2 8 2 Z" },
- { id: "6", label: "Short · Curved",
- // Stubby, ovoid sides
- path: "M8 4 Q11 4 12 6 Q14 9 13 12 Q12 16 10 17 Q8 18 6 17 Q4 16 3 12 Q2 9 4 6 Q5 4 8 4 Z" },
+ { id: "1", label: "Long · Straight (flat labial)",
+   // Tall glyph, RIGHT (labial) edge is straight vertical line.
+   path: "M5 2 Q6 1 8 1 L13 1 L13 21 L8 21 Q6 21 5 20 Z" },
+ { id: "2", label: "Medium · Straight (flat labial)",
+   // Medium glyph, straight labial.
+   path: "M5 4 Q6 3 8 3 L13 3 L13 19 L8 19 Q6 19 5 18 Z" },
+ { id: "3", label: "Short · Straight (flat labial)",
+   // Short glyph, straight labial.
+   path: "M5 6 Q6 5 8 5 L13 5 L13 17 L8 17 Q6 17 5 16 Z" },
+ { id: "4", label: "Long · Curved (convex labial)",
+   // Tall glyph, RIGHT (labial) edge bulges outward in a smooth convex curve.
+   path: "M5 2 Q6 1 8 1 L11 1 Q14 6 14 11 Q14 16 11 21 L8 21 Q6 21 5 20 Z" },
+ { id: "5", label: "Medium · Curved (convex labial)",
+   // Medium glyph, convex labial.
+   path: "M5 4 Q6 3 8 3 L11 3 Q14 7 14 11 Q14 15 11 19 L8 19 Q6 19 5 18 Z" },
+ { id: "6", label: "Short · Curved (convex labial)",
+   // Short glyph, convex labial.
+   path: "M5 6 Q6 5 8 5 L11 5 Q14 8 14 11 Q14 14 11 17 L8 17 Q6 17 5 16 Z" },
 ];
 
 // Width of upper six anterior teeth on curve, distal-to-distal
@@ -18550,12 +18564,15 @@ function InfoPopover({ text }) {
  {open && (
  <div style={{
  position: "absolute", top: "20px", left: "0",
- width: "320px", zIndex: 10,
+ width: "340px", zIndex: 10,
  padding: "10px 12px", background: "var(--paper)",
  border: "1px solid var(--accent)", borderRadius: "3px",
  fontSize: "11px", lineHeight: 1.5, color: "var(--ink)",
  fontStyle: "normal", textTransform: "none", letterSpacing: 0,
  boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+ // Preserve newlines in the text prop so callers can split a long
+ // explanation into paragraphs with \n\n rather than passing JSX.
+ whiteSpace: "pre-wrap",
  }}>
  {text}
  </div>
@@ -19047,16 +19064,16 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  <div>
  <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
  <span style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)" }}>
- 2 · Maxillary central incisor shape
+ 2 · Proportion & facial contour
  </span>
- <InfoPopover text="The IPN catalog organizes denture tooth sets by the shape of their MAXILLARY CENTRAL INCISOR — that's the reference tooth for the whole mould (the other anteriors and the posteriors are designed to harmonize with it). You're not measuring the patient's existing central; you're picking the central-incisor proportion you want for the prosthesis. For an edentulous patient, choose based on the patient's face shape, prior denture, family photos, or stated preference. For a partial with remaining anteriors, match the existing centrals. Proportion is long/medium/short × straight (flat facial) vs curved (convex facial)." />
+ <InfoPopover text={`The IPN catalog organizes denture tooth sets by the shape of their MAXILLARY CENTRAL INCISOR. Pick the central-incisor proportion + labial contour you want for the prosthesis.\n\nPROPORTION (cervical-incisal length): long, medium, or short. For an edentulous patient choose based on face shape, prior denture, or family photos; for a partial with remaining anteriors match the existing centrals.\n\nFACIAL CONTOUR (labial-surface profile in SIDE view): straight = flat labial surface; curved = convex (bulging) labial surface. The Portrait IPN p.5 method uses the Dentsply Sirona Tooth Indicator (#98981) — a small flat device held against the patient's labial surface. If the indicator sits flush head-to-toe → STRAIGHT. If the indicator contacts only the middle bulge with daylight at the cervical and incisal → CURVED.\n\nThe glyph for each option shows a side-profile cross-section of the tooth (lingual on the left, labial on the right). Straight options have a vertical right edge; curved options have a bulging right edge.`} />
  <span style={{ fontSize: "10px", color: "var(--ink-faint)", fontStyle: "italic" }}>
  long / medium / short × straight / curved
  </span>
  </div>
  <PillRow items={TOOTH_MOULD_PROPORTIONS} value={prop} onChange={setProp}
  getKey={i => i.id} getLabel={i => `${i.id} · ${i.label}`}
- svgViewBox="0 0 16 22" svgWidth={22} svgHeight={30} />
+ svgViewBox="0 0 16 22" svgWidth={26} svgHeight={34} />
  </div>
 
  <div>
