@@ -24934,11 +24934,12 @@ const PATHWAYS = [
  "Occlusal max + mand: recline patient. Position occlusal mirror posterior to last teeth at a 45° angle. Heat mirror with torch / hot water / air-water syringe (optional, prevents fog); patient breathes through nose. For MAX: retractors angled UPWARD + backward (smiling face). For MAND: retractors angled DOWNWARD + backward (frowning face). Capture entire arch in a 'birds-eye view'. Output: max arch appears upside-down U; mand arch appears upright U.",
  "Photo set deliverable: 1 printed full-page composite (BW or color) showing 9-photo grid with patient name + doctor name + date in center. Pass/fail; can retake without faculty supervision.",
  ],
+ // The 9-photo composite workflow lives entirely in keyDecisions above
+ // — there are no dedicated chapters for "Frontal repose," "Lateral
+ // intraoral," etc. The single section below is just the shade-taking
+ // tie-in. Phases collapsed to match.
  phases: [
- { label: "Setup + materials", count: 1 },
- { label: "Extraoral photos (3)", count: 3 },
- { label: "Intraoral photos (6)", count: 6 },
- { label: "Composite assembly", count: 1 },
+ { label: "Related reference", count: 1 },
  ],
  sections: [
  // Use existing guide chapters for related content
