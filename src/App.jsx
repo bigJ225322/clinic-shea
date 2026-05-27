@@ -5410,15 +5410,14 @@ const ROOT_TOKENS = {
  * SMALL PRESENTATIONAL HELPERS
  * ==========================================================================*/
 const labelStyle = {
- fontSize: "9px", letterSpacing: "0.12em", textTransform: "uppercase",
+ // Title-case (not uppercase) per Jake. The 9px uppercase + heavy
+ // letter-spacing was loud and made the form headers feel shoutier
+ // than the inputs they label. Bumped to 10px for legibility at the
+ // gentler case. Italic overrides at the call sites were stripped.
+ fontSize: "10px", letterSpacing: "0.04em",
  color: "var(--ink-soft)", fontWeight: 500, marginBottom: "3px",
  display: "block", fontFamily: "'Geist', sans-serif",
  whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
- // Centered (2026-05-27 per Jake) — all form field labels share this
- // one alignment. Was previously default-left, with random italic
- // Title-case overrides scattered through ExamFindings creating an
- // inconsistent look between sections of the same form. Italic overrides
- // were also stripped at the call sites.
  textAlign: "center",
 };
 const inputStyle = {
@@ -6625,17 +6624,16 @@ function Checkbox({ checked, onChange, label, hint }) {
 
 // Small section label inside a card (between Hairlines).
 function SubsectionLabel({ children }) {
- // Letter-spacing 0.16em adds space after every character including the
- // first, which visually pushes the leading glyph ~1px right of where
- // a non-letter-spaced paragraph would start. Compensate with a small
- // negative marginLeft so this label and the body text below it line
- // up at the same x edge (common typography correction for tracked caps).
+ // Centered subsection header (2026-05-27 per Jake). Letter-spacing
+ // is preserved on the tracked caps; with centering the marginLeft
+ // optical-correction trick isn't needed (the whole block is
+ // symmetric about its center).
  return (
  <div style={{
  fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
  color: "var(--accent)", fontWeight: 500, marginBottom: "10px",
- marginLeft: "-0.08em",
  fontFamily: "'Geist', sans-serif",
+ textAlign: "center",
  }}>{children}</div>
 );
 }
@@ -8419,8 +8417,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  const selStyle = {...inputStyle, fontSize: "13px", flex: 1, minWidth: 0 };
  return (
  <div key="gingiva-dropdowns" style={{ marginBottom: "9px" }}>
- <label style={{...labelStyle, fontSize: "10px", textTransform: "none",
- letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" }}>
+ <label style={{...labelStyle, fontSize: "10px", color: "var(--ink-soft)" }}>
  Gingiva
  </label>
  <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
@@ -8982,10 +8979,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  };
  return (
  <div key="perio-aap-dropdowns" style={{ marginBottom: "9px" }}>
- <label style={{
-...labelStyle, fontSize: "10px", textTransform: "none",
- letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic",
- }}>AAP</label>
+ <label style={{ ...labelStyle, fontSize: "10px", color: "var(--ink-soft)" }}>AAP</label>
  <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
  {/* Stage */}
  <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
@@ -9056,11 +9050,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  <div key="perio-ada-dropdown" style={{ marginBottom: "9px" }}>
  <div style={{ display: "flex", alignItems: "center", gap: "6px",
  marginBottom: "5px" }}>
- <label style={{
-...labelStyle, fontSize: "10px", textTransform: "none",
- letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic",
- marginBottom: 0,
- }}>ADA</label>
+ <label style={{ ...labelStyle, fontSize: "10px", color: "var(--ink-soft)", marginBottom: 0 }}>ADA</label>
  <HelpPopup>
  <div style={{ fontWeight: 600, marginBottom: "7px" }}>ADA Case Type</div>
  {[
@@ -9115,10 +9105,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  const val = findings[field.label] || "";
  return (
  <div key={field.label} style={{ marginBottom: "9px" }}>
- <label style={{
-...labelStyle, fontSize: "10px", textTransform: "none",
- letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic",
- }}>
+ <label style={{ ...labelStyle, fontSize: "10px", color: "var(--ink-soft)" }}>
  {display}
  </label>
  <div style={{ display: "flex" }}>
@@ -9160,10 +9147,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  {display? (
  <label style={{
 ...labelStyle, marginBottom: 0, flex: 1,
- fontSize: "10px", textTransform: "none",
- letterSpacing: "0.04em", color: "var(--ink-soft)",
- fontStyle: "italic",
- }}>
+ fontSize: "10px", color: "var(--ink-soft)" }}>
  {display}
  </label>
 ): <span style={{ flex: 1 }} />}
@@ -11359,7 +11343,6 @@ function PrivacyBanner() {
  marginTop: "18px", marginBottom: 0,
  fontSize: "11px", lineHeight: 1.6,
  color: "var(--ink-faint)",
- fontStyle: "italic",
  textAlign: "center",
  }}>
  Notes and patient fields stay local to your browser — nothing is sent or stored anywhere else.
