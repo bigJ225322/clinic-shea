@@ -11597,6 +11597,11 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  const basePool = proc.pinnedCodes
 ? proc.pinnedCodes.map(c => withRvuDesc(c, extracted.find(x => x.code === c)?.desc))
 : extracted.map(({ code, desc }) => withRvuDesc(code, desc));
+ // Permanent anterior set (#6-11 max, #22-27 mand). Used by both
+ // the RCT endo-code filter and the restorative-code filter below.
+ // Inlined here because rpd-engine doesn't export a combined Mx+Mn
+ // anterior set — only RPD_MAX_ANTERIOR (#6-11).
+ const PERM_ANTERIOR = new Set([6,7,8,9,10,11,22,23,24,25,26,27]);
  // RCT (5472) only: filter endo codes by tooth type. The
  // Swade manual lists all six endo codes (D3310 anterior,
  // D3320 premolar, D3330 molar — each with A access and B
@@ -11607,11 +11612,45 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  const raw = (fields.tooth || "").split(",")[0].trim().replace(/^#/, "").split("-")[0];
  const n = parseInt(raw, 10);
  if (!n || n < 1 || n > 32) return null;
- if (RPD_ANTERIOR.has(n)) return "anterior";
+ if (PERM_ANTERIOR.has(n)) return "anterior";
  if (RPD_FIRST_PREMOLARS.has(n) || RPD_SECOND_PREMOLARS.has(n)) return "premolar";
  if (RPD_FIRST_MOLARS.has(n) || RPD_SECOND_MOLARS.has(n) || RPD_THIRD_MOLARS.has(n)) return "molar";
  return null;
  })();
+
+ // Restorative code resolution: composite (D2330-D2335 ant /
+ // D2391-D2394 post) and amalgam (D2140-D2161) codes vary by
+ // (a) tooth type and (b) surface count. Parse the first tooth +
+ // its surface letters from fields.tooth (e.g. "27-MIDFL" → tooth
+ // 27, surfaces "MIDFL" → 5 surfaces, anterior → D2335). When the
+ // tooth string is missing or unparseable, fall through to the
+ // template's default codes.
+ const restoCodes = (() => {
+ const raw = (fields.tooth || "").split(",")[0].trim().replace(/^#/, "");
+ const [toothStr, surfacesStr = ""] = raw.split("-");
+ const toothNum = parseInt(toothStr, 10);
+ if (!toothNum || toothNum < 1 || toothNum > 32) return null;
+ // Count distinct surface letters. M/I/D/F/L for anteriors,
+ // M/O/D/B/L for posteriors. "MIDFL" → 5; "MO" → 2; "OB" → 2.
+ const surfaces = new Set(
+ surfacesStr.toUpperCase().split("").filter(c => "MODBFLI".includes(c))
+);
+ const nSurf = surfaces.size;
+ if (nSurf === 0) return null;
+ const isAnt = PERM_ANTERIOR.has(toothNum);
+ // Composite code by (ant/post × surface count). Posterior 4+ is
+ // D2394 (added to the catalog at RVU 220).
+ const compositeKey = isAnt
+ ? (nSurf <= 1? "D2330": nSurf === 2? "D2331": nSurf === 3? "D2332": "D2335")
+ : (nSurf <= 1? "D2391": nSurf === 2? "D2392": nSurf === 3? "D2393": "D2394");
+ // Amalgam by surface count (posterior only — there are no
+ // anterior amalgams in modern practice).
+ const amalgamKey = nSurf <= 1? "D2140": nSurf === 2? "D2150": nSurf === 3? "D2160": "D2161";
+ return { compositeKey, amalgamKey };
+ })();
+ // Composite/amalgam code groups — used by the restorative filter.
+ const COMPOSITE_CODES = new Set(["D2330","D2331","D2332","D2335","D2391","D2392","D2393","D2394"]);
+ const AMALGAM_CODES = new Set(["D2140","D2150","D2160","D2161"]);
  let codes = basePool.filter(({ code }) => {
  if (code === "D1110" || code === "D1120") return prophyChecked;
  if (code === "D1310") return nutriChecked && prophyChecked;
@@ -11625,8 +11664,35 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  if (rctToothType!== "premolar" && (code === "D3320A" || code === "D3320B")) return false;
  if (rctToothType!== "molar" && (code === "D3330A" || code === "D3330B")) return false;
  }
+ // Restorative composite/amalgam code-family filter: when the
+ // procedure's pool contains multiple variants (e.g. D2392 +
+ // D2393 for Class II composite), keep only the one matching
+ // the current tooth + surface count.
+ if (restoCodes) {
+ if (COMPOSITE_CODES.has(code) && code!== restoCodes.compositeKey) return false;
+ if (AMALGAM_CODES.has(code) && code!== restoCodes.amalgamKey) return false;
+ }
  return true;
  });
+ // If the restorative filter computed a target code that wasn't in
+ // the original pool (e.g. tooth 8 → D2335 anterior 4+, but the
+ // template only lists D2392/D2393 posterior pair), inject the
+ // computed code so the student still gets a useful row. Most
+ // common when the user types an anterior tooth on a posterior
+ // template or picks 4+ surfaces on a 2-3 surf template.
+ if (restoCodes) {
+ const poolCompositeKeys = basePool.map(c => c.code).filter(c => COMPOSITE_CODES.has(c));
+ const poolAmalgamKeys = basePool.map(c => c.code).filter(c => AMALGAM_CODES.has(c));
+ const hasComposite = poolCompositeKeys.length > 0;
+ const hasAmalgam = poolAmalgamKeys.length > 0;
+ const computedInPool = (k) => basePool.some(c => c.code === k);
+ if (hasComposite && !computedInPool(restoCodes.compositeKey)) {
+ codes = [...codes, withRvuDesc(restoCodes.compositeKey)];
+ }
+ if (hasAmalgam && !computedInPool(restoCodes.amalgamKey)) {
+ codes = [...codes, withRvuDesc(restoCodes.amalgamKey)];
+ }
+ }
  // Inject the matching caries risk code right after D0604 (if present)
  if (hasCariesRiskField && selectedRisk && CARIES_CODES[selectedRisk]) {
  const d0604Idx = codes.findIndex(c => c.code === "D0604");
