@@ -27909,7 +27909,17 @@ const TABS = [
  // customized guide for the scenario it belongs to). The Guides
  // component + GUIDES const are retained because the Cases patcher
  // reads them; they're just not directly navigable as a top-level tab.
- { id: "pathways", label: "Cases", hint: "Customized guide for your patient case" },
+ //
+ // ── SIDELINED 2026-05-26 ────────────────────────────────────────────
+ // Cases is being rebuilt from the ground up on a DxTP + Swade-anchored
+ // foundation (see CASES-FOUNDATION.md and CASES-PROCEDURES.md in the
+ // repo root). The PATHWAYS array, PATHWAY_GROUPS, and the Pathways
+ // component are all still in the build — only the top-level nav entry
+ // is commented out so students can't reach the current (about-to-be-
+ // rewritten) procedure set from the live site. Restore this line to
+ // bring the tab back when the rebuild is ready.
+ //
+ // { id: "pathways", label: "Cases", hint: "Customized guide for your patient case" },
 ];
 
 // Engine names are exported from src/rpd-engine.js directly. Tests import
