@@ -12110,6 +12110,29 @@ function Browse({
  }}>
  Steps by <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em>
  </div>
+ {/* Session label — left-side counterpart to "Steps by (swade)".
+ Shows "Procedure A + Procedure B" when 2+ slots are in the
+ session. Same quiet styling, hugs the left margin. Empty
+ slots ("— ") are filtered out so the label doesn't read
+ "Class V + —" mid-build. */}
+ {slots.length > 1 && (() => {
+ const labels = slots
+.map(id => id? findProcedure(id)?.label: null)
+.filter(Boolean);
+ if (labels.length === 0) return null;
+ return (
+ <div style={{
+ position: "absolute", bottom: "100%", left: "4px",
+ transform: "translateY(-4px)",
+ fontSize: "11px", color: "var(--ink-faint)",
+ fontFamily: "'Geist', sans-serif", lineHeight: 1,
+ pointerEvents: "none", whiteSpace: "nowrap",
+ maxWidth: "70%", overflow: "hidden", textOverflow: "ellipsis",
+ }}>
+ {labels.join(" + ")}
+ </div>
+);
+ })()}
  <article ref={articleRef} style={{
  background: "var(--paper)", border: "1px solid var(--rule)",
  borderRadius: "3px", padding: "32px 36px",
@@ -13523,6 +13546,10 @@ function RVUs() {
 );
  })()}
 
+ {/* Caption only renders alongside the table (i.e. when a category is
+ selected or a search is active). Same gate as the table above so the
+ cream void on the empty starting state stays clean. */}
+ {!(activeCategory === null && search.trim() === "") && (
  <p style={{
  marginTop: "14px", fontSize: "11px",
  color: "var(--ink-faint)", fontStyle: "italic",
@@ -13542,6 +13569,7 @@ function RVUs() {
 )}
  fees from fee guide (Oct 2025)
  </p>
+)}
  </div>
  </div>
 );
@@ -21574,7 +21602,7 @@ function RPDHelper() {
  overflow: "hidden",
  textOverflow: "ellipsis",
  }}>
- {result.kennedy.description}.
+ {result.kennedy.description}
  </span>
  )}
  </div>
