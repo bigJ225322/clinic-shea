@@ -12369,11 +12369,18 @@ function findChunkForProcedure(procedure, chunks, role, opts = {}) {
  // final impression: equipment") have "STEPS" in their section prefix,
  // which made the equipment chunk match role="steps" via substring
  // contains and win over the actual steps chunk (the equipment chunk
- // came first in document order). The title format is always
- // "SECTION — procedure: role", so the suffix check is exact.
+ // came first in document order). The title format for procedure-
+ // specific chunks is always "SECTION — procedure: role", so REQUIRE
+ // a colon — that gates out category-level overview chunks like
+ // "DENTURE STEPS — clinical & laboratory steps for complete denture
+ // fabrication" which has no role suffix but was previously matching
+ // role="steps" via the word "steps" in the title prefix, then tying
+ // and winning on document order over the actual procedure-specific
+ // steps chunks (Delivery, Adjustment, etc.).
  const matchesRole = (t) => {
  const colonIdx = t.lastIndexOf(":");
- const suffix = colonIdx >= 0? t.slice(colonIdx + 1).trim(): t;
+ if (colonIdx === -1) return false;
+ const suffix = t.slice(colonIdx + 1).trim();
  return roleSynonyms.some(r => suffix.includes(r));
  };
 
