@@ -150,14 +150,28 @@ const CATEGORY_LABELS = {
 };
 ```
 
-**KeyDecisions rendering** in the Pathways component handles BOTH forms:
-```jsx
-{selectedPathway.keyDecisions.map((d, i) => {
-  const text = typeof d === "string" ? d : d.text;
-  const source = typeof d === "string" ? null : d.source;
-  return <li>...{renderInline(text)}...{source && <footnote>[{source}]</footnote>}...</li>;
-})}
-```
+**KeyDecisions rendering — REMOVED 2026-05-27 per user feedback.** The
+"What's specific to this scenario" framing belonged to the old scenario-
+builder model. Pathways are now generic procedures. The keyDecisions
+field is still tolerated in data (legacy pathways may still have it) but
+the renderer no longer surfaces it. New pathways should omit the field
+entirely.
+
+**Lab Rx callout** (added 2026-05-27) replaces the keyDecisions section
+between Description and Sequence. Pathways set `labRx: [templateId, ...]`
+referencing the existing `TEMPLATES` (LAB_SCRIPTS) data. The renderer
+looks up each template id and shows the Rx text in a monospace block on
+a paper-colored background. Spotlights the "central-lab interactions"
+angle that's central to the Cases-tab differentiator.
+
+**Source citations on labSteps — no longer rendered.** Source field stays
+in data (per CASES-FOUNDATION.md trust rules — every claim has a source
+we can audit), but it's hidden from the UI. It's a data-integrity tool,
+not student-facing copy.
+
+**Sequence card promoted to visual hero.** Border thickened, accent-color
+left edge (3px), more padding (20px 26px when open), larger uppercase
+header (0.95rem). Drop-shadow + radius increased for prominence.
 
 **Card-header badges** under the h2 title, conditional on `phase`/`category`
 existing on the pathway:

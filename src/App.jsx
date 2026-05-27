@@ -22620,12 +22620,8 @@ const PATHWAYS = [
  category: "dentures",
  phase: "phase3",
  label: "Test rendering demo — REMOVE before going live",
- description: "Throwaway pathway used to verify the new renderer visual treatment (phase badge, category badge, dual keyDecision form, lab-step bands interleaved between phases). This entry will be removed before the Cases tab is unhidden for students. None of the content below is clinically meaningful.",
- keyDecisions: [
- { text: "First key decision — new object form, has a source citation that should render as a monospace footnote underneath this line.", source: "Test source: PDF A p. 12" },
- { text: "Second key decision — also new object form with source.", source: "Test source: PDF B p. 5-7" },
- "Third key decision — legacy string form with NO source. The renderer should display this without a footnote, proving backward compatibility.",
- ],
+ description: "Throwaway pathway used to verify the new renderer visual treatment: phase + category badges in the header, Lab Rx callout card spotlighting central-lab interactions, the Sequence card as the visual hero with lab-step bands interleaved between clinical phases. The keyDecisions section is gone (generic procedures don't need 'what's specific to this scenario' framing). None of the content below is clinically meaningful.",
+ labRx: ["lab-ff"],
  phases: [
  { label: "Records", count: 2 },
  { label: "Mounting", count: 2 },
@@ -27566,45 +27562,59 @@ function Pathways() {
  margin: "0", fontStyle: "italic", color: "var(--ink-soft)",
  lineHeight: 1.55, fontSize: "0.85rem",
  }}>{selectedPathway.description}</p>
- {selectedPathway.keyDecisions && selectedPathway.keyDecisions.length > 0 && (
+ {/* keyDecisions section removed 2026-05-27 — the "What's specific to this
+ scenario" framing belonged to the old scenario-builder model. Pathways
+ are now generic procedures; the Sequence card + Lab Rx callout below
+ carry the substantive content. The keyDecisions field is still tolerated
+ in pathway data (some legacy entries may still use it) but no longer
+ rendered. Source citations on labSteps are also no longer rendered;
+ they stay in the data per CASES-FOUNDATION.md trust rules but they're a
+ data-integrity tool, not student-facing copy. */}
+ </div>
+
+ {/* Lab Rx callout — central-lab interactions spotlight. Pathways set
+ a `labRx: [templateId, ...]` array; each id is looked up in
+ TEMPLATES (the LAB_SCRIPTS data) and rendered. */}
+ {selectedPathway.labRx && selectedPathway.labRx.length > 0 && (
  <div style={{
- marginTop: "16px",
- paddingTop: "14px",
- borderTop: "1px dotted var(--rule-soft, var(--rule))",
+ background: "var(--card, white)",
+ border: "1px solid var(--rule)",
+ padding: "18px 22px", borderRadius: "3px",
+ marginBottom: "16px",
+ boxShadow: "0 1px 2px rgba(26, 22, 18, 0.03), 0 4px 12px rgba(26, 22, 18, 0.025)",
  }}>
  <div style={{
  fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.1em",
- color: "var(--accent)", fontWeight: 600, marginBottom: "8px",
- }}>What's specific to this scenario</div>
- <ul style={{
- margin: 0, paddingLeft: "18px", lineHeight: 1.55,
- fontSize: "0.85rem", color: "var(--ink-soft)",
- }}>
- {selectedPathway.keyDecisions.map((d, i) => {
- // Support both legacy string form and new {text, source} object form.
- // Pathways built post-2026-05-27 use the object form; legacy pathways
- // (now in PATHWAYS_LEGACY_2026_05) used strings.
- const text = typeof d === "string" ? d : d.text;
- const source = typeof d === "string" ? null : d.source;
+ color: "var(--accent)", fontWeight: 600, marginBottom: "12px",
+ }}>Lab Rx</div>
+ {selectedPathway.labRx.map((rxId, i) => {
+ const rxText = TEMPLATES[rxId];
+ if (!rxText) return null;
  return (
- <li key={i} style={{ marginBottom: source ? "10px" : "4px" }}>
- {renderInline(text)}
- {source && (
- <div style={{
- fontSize: "0.66rem", color: "var(--ink-faint)",
- fontFamily: '"JetBrains Mono", monospace',
- marginTop: "3px", opacity: 0.75,
+ <div key={i} style={{
+ marginBottom: i < selectedPathway.labRx.length - 1 ? "16px" : 0,
  }}>
- [{source}]
+ <div style={{
+ fontSize: "0.72rem", color: "var(--ink-faint)",
+ fontFamily: '"JetBrains Mono", monospace',
+ marginBottom: "6px", opacity: 0.85,
+ }}>{rxId}</div>
+ <pre style={{
+ margin: 0,
+ fontFamily: '"JetBrains Mono", monospace',
+ fontSize: "0.78rem", lineHeight: 1.55,
+ color: "var(--ink-soft)",
+ whiteSpace: "pre-wrap",
+ background: "var(--paper, #FBF8F2)",
+ padding: "12px 14px",
+ borderRadius: "2px",
+ border: "1px solid var(--rule-soft, var(--rule))",
+ }}>{rxText}</pre>
+ </div>
+ );
+ })}
  </div>
  )}
- </li>
- );
-})}
- </ul>
- </div>
-)}
- </div>
 
  {/* TOC — id used by the floating right-sidebar to know when the
  in-page TOC has fully scrolled out of view (only then does the
@@ -27616,14 +27626,16 @@ function Pathways() {
  {resolvedSections.length > 0 && (
  <div id="pw-toc" style={{
  background: "var(--card, white)",
- border: "1px solid var(--rule-soft)",
- padding: sequenceOpen ? "14px 18px" : "10px 18px", borderRadius: "2px",
+ border: "1px solid var(--rule)",
+ borderLeft: "3px solid var(--accent)",
+ padding: sequenceOpen ? "20px 26px" : "14px 26px", borderRadius: "3px",
  marginBottom: "20px",
  transition: "padding 160ms ease",
+ boxShadow: "0 1px 2px rgba(26, 22, 18, 0.04), 0 6px 20px rgba(26, 22, 18, 0.04)",
  }}>
  <div style={{
  display: "flex", justifyContent: "space-between", alignItems: "baseline",
- marginBottom: sequenceOpen ? "8px" : "0",
+ marginBottom: sequenceOpen ? "14px" : "0",
  }}>
  <button
  type="button"
@@ -27632,8 +27644,8 @@ function Pathways() {
  aria-label={sequenceOpen ? "Collapse sequence" : "Expand sequence"}
  style={{
  all: "unset", cursor: "pointer",
- display: "flex", alignItems: "baseline", gap: "8px",
- fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.08em",
+ display: "flex", alignItems: "baseline", gap: "10px",
+ fontSize: "0.95rem", textTransform: "uppercase", letterSpacing: "0.1em",
  color: "var(--accent)", fontWeight: 600,
  }}
  >
@@ -27756,15 +27768,9 @@ function Pathways() {
  color: "var(--ink-soft)", fontStyle: "italic",
  }}>{ls.body}</div>
  )}
- {ls.source && (
- <div style={{
- fontSize: "0.66rem", color: "var(--ink-faint)",
- fontFamily: '"JetBrains Mono", monospace',
- marginTop: "6px", opacity: 0.75,
- }}>
- [{ls.source}]
- </div>
- )}
+ {/* source citation no longer rendered (2026-05-27) — kept in
+ the labStep data per CASES-FOUNDATION trust rules but not
+ surfaced to students; it's a data-integrity tool. */}
  </div>
  );
 
