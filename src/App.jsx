@@ -3583,6 +3583,17 @@ const DEFAULT_FIELDS = {
  // abfraction/abrasion cases (cervical wear); failing restoration
  // replacement is the less common scenario.
  cervicalLesionType: "NCCL",
+ // retentiveGroove — Class V (2046) only. Checkbox: did the student
+ // place a retentive groove + M,D incisal retentive points (i.e., the
+ // tooth has no enamel to bond to in the gingival aspect)? Default
+ // false because most NCCLs at student level don't need a groove —
+ // enamel still surrounds the lesion and resin bonds adequately.
+ retentiveGroove: false,
+ // gingivalMargin — Class V (2046) only. Where the gingival cavosurface
+ // margin lies: "enamel" / "cementum" / "dentin". Drives the parenthetical
+ // that follows the retentive-groove sentence. Default "cementum" matches
+ // the template's baseline phrasing.
+ gingivalMargin: "cementum",
  // Exam findings (only used by COE / POE templates that have these stubs).
  // Keyed by the literal stub label as it appears in the template, e.g.
  // "soft tissue conditions" matches "- soft tissue conditions:" in the
@@ -3613,6 +3624,11 @@ const DEFAULT_FIELDS = {
  // perioImproved: perio re-eval improvement status. "improved" or "not improved".
  // Substitutes into "Patient's periodontal health has [status] — [detail]."
  perioImproved: "improved",
+ // maintenanceInterval: perio re-eval (1346) maintenance interval pick.
+ // Substitutes "[3 / 4 / 6] months" (or legacy "X months") in the
+ // template. Default empty so the placeholder stays visible until the
+ // student picks; see renderTemplate step 6f2.
+ maintenanceInterval: "",
  // perioImprovementDetail: free-text explanation for the improvement note.
  perioImprovementDetail: "",
  // Perio COE Dx engine inputs (procedure 573). Bucketed clinical inputs
@@ -4416,6 +4432,20 @@ function renderTemplate(raw, f) {
  t = t.replace(/has improved —\s*\./, replacement);
  }
 
+ // -------- 6f2. Perio re-eval (1346) maintenance interval. --------
+ // The maintenance-interval field used to live in EXAM_FINDINGS_CONFIG
+ // for 1346 (and substituted via the generic examFindings loop). Moved
+ // to NoteBuilder body (writes to fields.maintenanceInterval) so it
+ // renders adjacent to perioImproved + perioImprovementDetail. Regex
+ // matches the new "[3 / 4 / 6] months" placeholder form and the
+ // legacy "Nmonths" form (older templates).
+ if (f.maintenanceInterval && f.maintenanceInterval.trim()) {
+ t = t.replace(
+ /(perio maintenance interval of )(?:\[\s*3\s*\/\s*4\s*\/\s*6\s*\]\s*months?|\d+\s*months?)/,
+ `$1${f.maintenanceInterval}`
+);
+ }
+
  // -------- 6h. Endo (RCT, template 5472). --------
  // Substitutes the template's prose placeholders from the structured Endo
  // fields. Only fires when the template contains the matching anchor
@@ -4454,6 +4484,41 @@ function renderTemplate(raw, f) {
  /\[\s*(Removed existing failing [^\]]+? restoration\. Excavated decay using high & slow speed burs\.)\s*\]/,
  "$1"
 );
+ }
+
+ // -------- 6h-pre1. Class V (2046) retentive groove + margin. --------
+ // Template ships with: "[ Placed gingival retentive groove & M,D incisal
+ // retentive points (gingival margin in cementum / dentin — no enamel
+ // to bond to). ]"
+ //
+ // Two form controls drive this:
+ // retentiveGroove (checkbox): if false, strip the entire bracket.
+ // if true, unwrap and rewrite the parenthetical based on gingivalMargin.
+ // gingivalMargin (enamel | cementum | dentin):
+ // "enamel" → "(gingival margin in enamel)" — drop "no enamel to bond
+ // to" since by definition there IS enamel.
+ // "cementum"/"dentin" → "(gingival margin in cementum — no enamel
+ // to bond to)" — keep the "why we needed a groove" clause.
+ //
+ // Pattern is tight (matches the exact baseline phrasing) so it can
+ // sit before step 6h-pre without colliding with anything else.
+ {
+ const grooveBracket = /\s*\[\s*Placed gingival retentive groove & M,D incisal retentive points \(gingival margin in cementum \/ dentin — no enamel to bond to\)\.\s*\]/;
+ if (grooveBracket.test(t)) {
+ if (f.retentiveGroove === false) {
+ // Strip the entire bracket (including any leading whitespace)
+ t = t.replace(grooveBracket, "");
+ } else {
+ const margin = f.gingivalMargin || "cementum";
+ const parenthetical = margin === "enamel"
+ ? `(gingival margin in enamel)`
+ : `(gingival margin in ${margin} — no enamel to bond to)`;
+ t = t.replace(
+ grooveBracket,
+ ` Placed gingival retentive groove & M,D incisal retentive points ${parenthetical}.`
+);
+ }
+ }
  }
 
  // -------- 6h-pre. Removed-existing-restoration toggle. --------
@@ -4996,20 +5061,9 @@ function renderTemplate(raw, f) {
  // canonical entry point and handles substitution above. Duplicate form
  // field removed to avoid double-input UI confusion.
 
- // "perio maintenance interval of 4 months" — substitute interval.
- // The template currently ships with "[3 / 4 / 6] months" as the
- // placeholder; older versions used the literal "X months". The
- // regex below matches either form so the substitution works
- // regardless of template version.
- if (label === "maintenance interval") {
- if (v.trim()) {
- t = t.replace(
- /(perio maintenance interval of )(?:\[\s*3\s*\/\s*4\s*\/\s*6\s*\]\s*months?|\d+\s*months?)/,
- `$1${v}`
- );
- }
- continue;
- }
+ // Note: maintenance interval used to be handled here when it was an
+ // ExamFindings field. It moved to fields.maintenanceInterval (rendered
+ // in NoteBuilder body) and substitutes via renderTemplate step 6f2.
 
  // ---- end urgent care special cases ----
 
@@ -5649,6 +5703,14 @@ function parseLabPlaceholders(body) {
  // brackets via renderTemplate step 6h-pre0. Rendering these long
  // sentence-brackets as raw TextInputs gave students two prose
  // fields where they really had a single binary clinical decision.
+ continue;
+ }
+ if (/^\s*Placed gingival retentive groove & M,D incisal retentive points/i.test(text)) {
+ // Class V (2046) retentive-groove bracket — handled by a checkbox
+ // + "Gingival margin in" dropdown in NoteBuilder. The bracket
+ // contains " / " (cementum / dentin) which would otherwise trigger
+ // the slash-separated dropdown rule and split mid-phrase.
+ // Substitution lives in renderTemplate step 6h-pre1.
  continue;
  }
  if (text === "date") {
@@ -7571,8 +7633,7 @@ const EXAM_FINDINGS_CONFIG = {
  title: "Diagnoses",
  rows: [
  [{ label: "diagnosis tooth", type: "input", displayLabel: "Tooth #",
- placeholder: "e.g. 8, 14 — diagnosis requires a specific tooth",
- hint: "Unlike the HPI location field, a diagnosis must name a tooth — not a quadrant. If you only know a quadrant, the diagnosis is still pending." }],
+ placeholder: "e.g. 8, 14 — diagnosis requires a specific tooth" }],
  [
  { label: "pulpal diagnosis", type: "select",
  options: ["", "Normal pulp", "Reversible pulpitis",
@@ -7819,13 +7880,14 @@ const EXAM_FINDINGS_CONFIG = {
  // Perio Re-Evaluation — full charting, no OHI checkboxes (not in template)
  "1346": [
  {
- // Order: Perio chart → Assessment (maintenance interval) → OHI.
- // The maintenance interval IS the re-eval visit's Tx decision —
- // it belongs in Assessment, immediately after the chart that
- // produced it. OHI sits below as its own section. "What improved"
- // was cut (redundant with the rationale flow); the inline
- // "Standard post-SRP interval…" hint was also cut (the option
- // labels carry enough context).
+ // Order: Perio chart → OHI → (NoteBuilder body renders Assessment
+ // with periodontal health + rationale + maintenance interval just
+ // before NV, so the form flows top-down matching the rendered
+ // note's order). The Maintenance interval used to live in its own
+ // Assessment section here, but Jake wanted it adjacent to the
+ // periodontal-health + rationale fields (which live in NoteBuilder
+ // for state-architecture reasons), so it moved up to NoteBuilder
+ // and writes to fields.maintenanceInterval.
  title: "Perio chart",
  rows: [
  [
@@ -7846,14 +7908,6 @@ const EXAM_FINDINGS_CONFIG = {
  placeholder: "e.g. recession #6 + #11" },
  ],
  [{ type: "gingiva-dropdowns" }],
- ],
- },
- {
- title: "Assessment",
- rows: [
- [{ label: "maintenance interval", type: "select",
- displayLabel: "Maintenance interval",
- options: ["", "3 months", "4 months", "6 months"] }],
  ],
  },
  {
@@ -9308,45 +9362,53 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  <ProbingDepthsField value={value}
  onChange={(v) => update(field.label, v)} />
 ): field.type === "uc-tooth-or-quadrant"? (
- // Urgent-care location picker: free-text tooth number input OR a
- // 2×2 quadrant grid (UR/UL/LR/LL). The grid is laid out in the
- // dentist's-view orientation a student would see in a chart —
- // patient's upper-right is top-left of the grid, patient's
- // lower-left is bottom-right. Clicking a quadrant fills the
- // input; clicking the already-selected quadrant clears it.
- // Typed input (e.g. "#8") takes precedence; the grid highlights
- // the matching quadrant if the typed value is a UR/UL/LR/LL token.
+ // Urgent-care location picker: proper TeethSelectorPanel for tooth-
+ // specific HPI OR a 2×2 quadrant grid (UR/UL/LR/LL) when the patient
+ // can only localize to a region. The quadrant grid sits flush
+ // beneath the tooth picker (no top-border + 0 gap) so it reads as
+ // an extension of the same control. Picking a quadrant overwrites
+ // the field with just the quadrant code; picking teeth overwrites
+ // with the tooth list. Clicking the already-active quadrant clears.
  (() => {
  const QUADS = ["UR", "UL", "LR", "LL"];
  return (
  <>
- <input type="text" value={value || ""}
- onChange={e => update(field.label, e.target.value)}
- placeholder={field.placeholder}
- style={{...inputStyle, fontSize: "13px" }} />
+ <TeethSelectorPanel value={value}
+ onChange={(v) => update(field.label, v)}
+ placeholder={field.placeholder} />
  <div style={{
  display: "grid",
  gridTemplateColumns: "1fr 1fr",
- gap: "4px",
- marginTop: "6px",
- maxWidth: "180px",
+ gap: "0",
+ marginTop: "-1px",
  }}>
- {QUADS.map((q) => {
+ {QUADS.map((q, idx) => {
  const active = value === q;
+ // Round only outer corners so the 2×2 reads as one unit
+ // glued to the tooth picker above.
+ const corners = idx === 0? "0 0 0 0"
+ : idx === 1? "0 0 0 0"
+ : idx === 2? "0 0 0 2px"
+ : "0 0 2px 0";
  return (
  <button key={q}
  type="button"
  onClick={() => update(field.label, active? "": q)}
  style={{
- padding: "8px 0",
+ padding: "9px 0",
  fontSize: "12px",
  fontFamily: "'Geist', sans-serif",
  fontWeight: active? 600: 500,
  letterSpacing: "0.06em",
- background: active? "var(--accent)": "var(--paper)",
+ background: active? "var(--accent)": "var(--paper-soft)",
  color: active? "#fff": "var(--ink-soft)",
  border: `1px solid ${active? "var(--accent)": "var(--rule)"}`,
- borderRadius: "2px",
+ // Collapse the borders shared with neighbors so the grid
+ // reads as a continuous extension of the tooth picker.
+ borderTop: active? `1px solid var(--accent)`: "none",
+ borderLeft: (idx % 2 === 1 && !active)? "none": `1px solid ${active? "var(--accent)": "var(--rule)"}`,
+ borderRadius: corners,
+ marginLeft: idx % 2 === 1? "-1px": 0,
  cursor: "pointer",
  transition: "background 140ms, color 140ms, border-color 140ms",
  }}>
@@ -9437,9 +9499,14 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  if (section.type === "endo-test-rows") {
  const OPTS = ["-", "+", "++", "+++"];
  const endoLbl = {
- fontSize: "10px", letterSpacing: "0.04em", textTransform: "none",
- color: "var(--ink-soft)", fontWeight: 500, fontStyle: "italic",
+ // Match the global labelStyle voice — Title-case, centered, not
+ // italic. Earlier this section had its own italic label style
+ // that drifted from every other label in the app; alignment with
+ // labelStyle keeps urgent-care looking like the rest of the form.
+ fontSize: "10px", letterSpacing: "0.04em",
+ color: "var(--ink-soft)", fontWeight: 500,
  fontFamily: "'Geist', sans-serif", display: "block", marginBottom: "3px",
+ textAlign: "center",
  };
  const percPalp = (prefix, field, lbl) => {
  const val = findings[`${prefix} ${field}`] || "";
@@ -10376,6 +10443,12 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  /\[\s*Pt has non-carious cervical lesion/i.test(rawTemplate) &&
  /\[\s*Removed existing failing [BMD]+ resin composite restoration/i.test(rawTemplate),
  [rawTemplate]);
+ // Class V retentive-groove bracket — only surfaces a checkbox +
+ // gingival-margin dropdown when the exact template phrasing is present.
+ // See renderTemplate step 6h-pre1.
+ const needsRetentiveGroove = useMemo(() =>
+ /\[\s*Placed gingival retentive groove & M,D incisal retentive points/i.test(rawTemplate),
+ [rawTemplate]);
  const needsDentalHistory = useMemo(() => /dental history:/i.test(rawTemplate), [rawTemplate]);
  const needsLastDentist = useMemo(() => /last time at dentist:/i.test(rawTemplate), [rawTemplate]);
  const needsBrushing = useMemo(() => /\bbrushing 2x a day\b/.test(rawTemplate), [rawTemplate]);
@@ -10681,7 +10754,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </Field>
 )}
  {procedureId === "1346" && (
- <Field label="SRP completed">
+ <Field label="SRP Completed">
  <TextInput value={fields.srpDate || ""}
  onChange={v => setField("srpDate", v)}
  placeholder="e.g. 3/15/2025" />
@@ -11164,6 +11237,22 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </Field>
  </div>
  </div>
+ {/* Maintenance interval — moved here from the ExamFindings
+ "Assessment" section per Jake so it sits in flow with the
+ periodontal-health + rationale fields (and just above NV).
+ Writes to fields.maintenanceInterval; substitution lives in
+ renderTemplate step 6f2. */}
+ <div style={{ marginTop: "10px", maxWidth: "220px" }}>
+ <Field label="Maintenance interval">
+ <Select value={fields.maintenanceInterval || ""}
+ onChange={v => setField("maintenanceInterval", v)}>
+ <option value="">— Select —</option>
+ <option value="3 months">3 months</option>
+ <option value="4 months">4 months</option>
+ <option value="6 months">6 months</option>
+ </Select>
+ </Field>
+ </div>
  </>
 )}
 
@@ -11253,6 +11342,45 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <option value="existing">Failing existing restoration — excavate decay</option>
  </Select>
  </Field>
+ </>
+)}
+ {needsRetentiveGroove && (
+ // Retentive-groove checkbox + gingival-margin dropdown. The checkbox
+ // gates the entire "Placed gingival retentive groove & M,D incisal
+ // retentive points (…)" sentence. When checked, the margin dropdown
+ // chooses the parenthetical — enamel drops "no enamel to bond to";
+ // cementum / dentin keep it. See renderTemplate step 6h-pre1.
+ <>
+ <Hairline />
+ <div style={{ display: "flex", gap: "12px", alignItems: "flex-end", flexWrap: "wrap" }}>
+ <label style={{
+ display: "flex", alignItems: "center", gap: "10px",
+ fontSize: "13px", color: "var(--ink)",
+ cursor: "pointer", padding: "6px 0",
+ paddingBottom: fields.retentiveGroove? "13px": "6px",
+ }}>
+ <input type="checkbox"
+ checked={fields.retentiveGroove === true}
+ onChange={e => setField("retentiveGroove", e.target.checked)}
+ style={{
+ width: "16px", height: "16px",
+ accentColor: "var(--accent)", cursor: "pointer",
+ }} />
+ <span>Placed gingival retentive groove &amp; M,D incisal retentive points</span>
+ </label>
+ {fields.retentiveGroove && (
+ <div style={{ flex: "1 1 180px", minWidth: 0 }}>
+ <Field label="Gingival margin in">
+ <Select value={fields.gingivalMargin || "cementum"}
+ onChange={v => setField("gingivalMargin", v)}>
+ <option value="enamel">enamel</option>
+ <option value="cementum">cementum</option>
+ <option value="dentin">dentin</option>
+ </Select>
+ </Field>
+ </div>
+ )}
+ </div>
  </>
 )}
  {needsRemovedRestoration && !needsCervicalLesionType && (
