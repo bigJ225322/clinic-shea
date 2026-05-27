@@ -27563,13 +27563,12 @@ function Pathways() {
  <div style={{
  background: "var(--card, white)",
  border: "1px solid var(--rule)",
- padding: "20px 24px", borderRadius: "3px",
- marginBottom: "16px",
- boxShadow: "0 1px 2px rgba(26, 22, 18, 0.03), 0 4px 12px rgba(26, 22, 18, 0.025)",
+ padding: "12px 18px", borderRadius: "3px",
+ marginBottom: "14px",
  }}>
  <h2 className="serif" style={{
- fontSize: "1.4rem", fontWeight: 400, color: "var(--ink)",
- margin: "0 0 10px",
+ fontSize: "1.15rem", fontWeight: 400, color: "var(--ink)",
+ margin: "0 0 4px",
  }}>{selectedPathway.label}</h2>
  {/* Phase badge dropped 2026-05-27 per user feedback — most Cases-tab
  procedures will be Phase III anyway (since Phase I is mostly
@@ -27578,21 +27577,21 @@ function Pathways() {
  future filtering, just not surfaced in the card header. */}
  {selectedPathway.category && (
  <div style={{
- display: "flex", gap: "6px", marginBottom: "12px",
- fontSize: "0.62rem", textTransform: "uppercase",
+ display: "flex", gap: "6px", marginBottom: "6px",
+ fontSize: "0.6rem", textTransform: "uppercase",
  letterSpacing: "0.14em", fontWeight: 600, flexWrap: "wrap",
  }}>
  <span style={{
  background: "var(--card, white)",
  border: "1px solid var(--accent)",
  color: "var(--accent)",
- padding: "2px 9px", borderRadius: "2px",
+ padding: "1px 7px", borderRadius: "2px",
  }}>{CATEGORY_LABELS[selectedPathway.category] || selectedPathway.category}</span>
  </div>
  )}
  <p style={{
  margin: "0", fontStyle: "italic", color: "var(--ink-soft)",
- lineHeight: 1.55, fontSize: "0.85rem",
+ lineHeight: 1.45, fontSize: "0.78rem",
  }}>{selectedPathway.description}</p>
  {/* keyDecisions section removed 2026-05-27. Lab Rx top-level callout
  removed 2026-05-27 — showing the lab Rx upfront before the student
@@ -27763,11 +27762,17 @@ function Pathways() {
  const labSteps = selectedPathway.labSteps || [];
 
  // Helper: render a single lab-step band. Paper-colored background +
- // accent left bar to visually distinguish from clinical visit blocks
- // (which use the ink left bar).
+ // accent left bar. Lab bands are RIGHT-ALIGNED on the page and take
+ // ~68% width — they share a middle overlap band with the clinical
+ // visit blocks (which are left-aligned at the same width). The
+ // result is a timeline-style zig-zag: clinic work toward the left,
+ // lab work toward the right, both flowing through a shared center.
  const renderLabStep = (ls, key) => (
  <div key={key} style={{
  marginTop: "14px",
+ marginLeft: "auto",
+ marginRight: "0",
+ width: "68%",
  background: "var(--paper, #FBF8F2)",
  borderLeft: "4px solid var(--accent)",
  borderRadius: "3px",
@@ -27825,6 +27830,9 @@ function Pathways() {
  rendered.push(
  <div key={pi} style={{
  marginTop: pi === 0 ? "0" : "16px",
+ marginLeft: "0",
+ marginRight: "auto",
+ width: "68%",
  background: "var(--card, white)",
  border: "1px solid var(--rule-soft, var(--rule))",
  borderLeft: "4px solid var(--ink)",
