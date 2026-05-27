@@ -11787,7 +11787,7 @@ const cardStyle = {
  // A whisper of shadow — invisible at first glance, but makes the page feel
  // layered rather than flat-papery. The vertical offset is intentional:
  // page background sits "behind" the cards at a slight angle.
- boxShadow: "0 1px 2px rgba(26, 22, 18, 0.03), 0 4px 12px rgba(26, 22, 18, 0.025)",
+ boxShadow: "0 1px 3px rgba(26, 22, 18, 0.06), 0 6px 18px rgba(26, 22, 18, 0.05)",
  padding: "22px 22px 14px", borderRadius: "3px",
 };
 const twoCol = { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" };
@@ -23153,7 +23153,7 @@ function Guides() {
  background: "var(--card, white)",
  border: "1px solid var(--rule)",
  padding: "24px 28px", borderRadius: "3px",
- boxShadow: "0 1px 2px rgba(26, 22, 18, 0.03), 0 4px 12px rgba(26, 22, 18, 0.025)",
+ boxShadow: "0 1px 3px rgba(26, 22, 18, 0.06), 0 6px 18px rgba(26, 22, 18, 0.05)",
  }}>
  <GuideChapter chapter={chapter} />
  </div>
@@ -28519,7 +28519,7 @@ function Pathways() {
  background: "var(--card, white)",
  border: "1px solid var(--rule)",
  padding: "24px 28px", borderRadius: "3px",
- boxShadow: "0 1px 2px rgba(26, 22, 18, 0.03), 0 4px 12px rgba(26, 22, 18, 0.025)",
+ boxShadow: "0 1px 3px rgba(26, 22, 18, 0.06), 0 6px 18px rgba(26, 22, 18, 0.05)",
  marginBottom: "16px",
  scrollMarginTop: "16px",
  }}>
