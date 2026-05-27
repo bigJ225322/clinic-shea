@@ -106,7 +106,7 @@ const TEMPLATES = {
  // RPD designs use [bracket] placeholders — students fill those in manually.
  "lab-pfm": "Please pour impression & fabricate PFM crown for #[tooth] using high-noble alloy.\nOcclusal and interproximal contacts should be in porcelain.\n1-2 mm metal collar on the lingual margin, no metal collar on the buccal margin.\nShade [A2].\nThank you.",
  "lab-implant-cast": "Please pour final impression & create soft tissue cast for implant-supported crown, #[tooth].\nImplant replica is provided for [Straumann / Nobel / Dentsply EV] Implant diameter [Implant Diameter] mm.\nPlease return working cast for mount.\nThank you.",
- "lab-abutment": "Please fabricate an Atlantis custom abutment for #[tooth] ([Straumann / Nobel / Dentsply EV] Implant, [Implant Diameter] mm diameter).\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown]\nThank you.",
+ "lab-abutment": "Please fabricate an Atlantis custom abutment for #[tooth] ([Straumann / Nobel / Dentsply EV] Implant, [Implant Diameter] mm diameter).\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown / screw-retained CAD/CAM emax / screw-retained PFM]\nThank you.",
  "lab-implant-crown": "Please fabricate all-ceramic emax CAD/CAM crown (lithium disilicate) for site #[tooth] ([Straumann / Nobel / Dentsply EV] [Implant Diameter] mm): Shade [LT / MT / HT] [A2]. Please crystallize and return it for delivery. Thank you.",
  "lab-bridge-cast": "Please pour impression for PFM bridge from [##-##].\nPlease section dies & return working cast for mounting.\nThank you.",
  "lab-bridge": "Please fabricate PFM bridge from [##-##] using high-noble alloy.\nOcclusal and interproximal contacts should be in porcelain.\n2-3 mm metal collar on the lingual margins, no metal collar on the buccal margins.\nModified ridge lap pontic design.\nPlease return metal framework for try-in.\nThank you.",
@@ -3176,7 +3176,7 @@ const REF_DATA = {
  blocks: [
  { type: "script",
  caption: "Lab Rx",
- body: "Please fabricate an Atlantis custom abutment for #[tooth] ([Straumann / Nobel / Dentsply EV] Implant, [Implant Diameter] mm diameter).\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown]\nThank you.",
+ body: "Please fabricate an Atlantis custom abutment for #[tooth] ([Straumann / Nobel / Dentsply EV] Implant, [Implant Diameter] mm diameter).\nAbutment type: [titanium / gold-hue / zirconia]\nEmergence profile: default\nPlanned Crown: [cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown / screw-retained CAD/CAM emax / screw-retained PFM]\nThank you.",
  note: "Titanium is the default for most cases; gold-hue or zirconia is selected for esthetic anteriors." },
  { type: "cards", caption: "What to send with this Rx", cards: [
  { title: "Supplements", rows: [
@@ -5737,7 +5737,7 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  "maxillary / mandibular": "Arch",
  "lingual bar / palatal plate": "Major connector",
  "titanium / gold-hue / zirconia": "Abutment material",
- "cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown": "Planned crown",
+ "cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown / screw-retained CAD/CAM emax / screw-retained PFM": "Planned crown",
  "mesial / distal / cingulum": "Rest seat location",
  "mesial / distal": "Guide plane surface",
  "0.01\" cast clasp / 0.02\" wrought wire": "Clasp type / undercut depth",
@@ -7235,7 +7235,7 @@ function RefScript({ caption, body, note }) {
  "maxillary / mandibular": "Arch",
  "lingual bar / palatal plate": "Major connector",
  "titanium / gold-hue / zirconia": "Abutment material",
- "cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown": "Planned crown",
+ "cement-retained CAD/CAM emax / cement-retained PFM / cement-retained full gold crown / screw-retained CAD/CAM emax / screw-retained PFM": "Planned crown",
  "mesial / distal / cingulum": "Rest seat location",
  "mesial / distal": "Guide plane surface",
  "0.01\" cast clasp / 0.02\" wrought wire": "Clasp / undercut depth",
