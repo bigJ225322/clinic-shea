@@ -14771,17 +14771,14 @@ function PETimeline({ pes, selectedId, onSelect, groupBy = "semester", onGroupBy
  : PE_SEMESTERS.map(s => ({ id: s.id, label: s.label, isCategory: false }));
  return (
  <div style={{ marginBottom: "20px" }}>
+ {/* The "TIMELINE" / "BY CATEGORY" header was redundant with the
+ Semester/Category toggle on the right (the active button names
+ the current view). Cut per Jake — the toggle alone communicates
+ the group-by state. */}
  <div style={{
- display: "flex", alignItems: "center", justifyContent: "space-between",
+ display: "flex", alignItems: "center", justifyContent: "flex-end",
  marginBottom: "10px",
  }}>
- <div style={{
- fontSize: "10px", letterSpacing: "0.22em",
- textTransform: "uppercase", color: "var(--accent)",
- fontWeight: 500,
- }}>
- {groupBy === "type" ? "By Category" : "Timeline"}
- </div>
  {onGroupByChange && (
  <div style={{
  display: "flex", background: "var(--paper-soft)",
@@ -15236,20 +15233,10 @@ function PEs({ onShowSteps }) {
  <PETimeline pes={PES_ALL} selectedId={selectedId} onSelect={handleSelect}
  groupBy={groupBy} onGroupByChange={setGroupBy} />
 
- {/* Detail panel — full-width */}
+ {/* Detail panel — full-width. Empty state renders nothing per Jake;
+ the timeline boxes are clickable affordance enough. */}
  <div>
- {selectedPE? (
- <PEDetail pe={selectedPE} onShowSteps={onShowSteps} />
-): (
- <div style={{
- color: "var(--ink-faint)", fontSize: "13px",
- fontStyle: "italic", textAlign: "center",
- paddingTop: "80px",
- fontFamily: "'Fraunces', serif",
- }}>
- Click any exam box above to see prerequisites, codes, and details.
- </div>
-)}
+ {selectedPE && <PEDetail pe={selectedPE} onShowSteps={onShowSteps} />}
  </div>
  </div>
 );
