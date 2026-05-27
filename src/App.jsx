@@ -7381,7 +7381,7 @@ function RefScript({ caption, body, note }) {
  marginBottom: "10px",
  fontFamily: "'Geist', sans-serif",
  }}>
- <label htmlFor="lab-rx-span-mesial" style={labelStyle}>Mesial abutment</label>
+ <label htmlFor="lab-rx-span-mesial" style={labelStyle}>Mesial Abutment</label>
  <select id="lab-rx-span-mesial"
  value={spanMesial}
  onChange={e => setSpanMesial(e.target.value)}
@@ -7391,7 +7391,7 @@ function RefScript({ caption, body, note }) {
  <option key={n} value={n}>#{n}</option>
 ))}
  </select>
- <label htmlFor="lab-rx-span-distal" style={labelStyle}>Distal abutment</label>
+ <label htmlFor="lab-rx-span-distal" style={labelStyle}>Distal Abutment</label>
  <select id="lab-rx-span-distal"
  value={spanDistal}
  onChange={e => setSpanDistal(e.target.value)}
@@ -8659,7 +8659,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  </div>
  {/* Calc */}
  <div>
- <label style={lblStyle}>Interproximal calc.</label>
+ <label style={lblStyle}>Interproximal Calc.</label>
  <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
  <select value={calcDist}
  onChange={e => update("calc distribution", e.target.value)}
@@ -8740,7 +8740,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  return (
  <div key="peds-history" style={{ marginBottom: "9px" }}>
  <div style={{ marginBottom: "8px" }}>
- <label style={lblS}>Medical history</label>
+ <label style={lblS}>Medical History</label>
  <input type="text"
  value={fields.medHistory || ""}
  onChange={e => setField("medHistory", e.target.value)}
@@ -8945,7 +8945,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  const lblS = { ...labelStyle, fontSize: "10px", color: "var(--ink-soft)" };
  return (
  <div key="peds-caries-risk" style={{ marginBottom: "9px" }}>
- <label style={lblS}>Caries risk</label>
+ <label style={lblS}>Caries Risk</label>
  <select value={fields.pedsCariesRisk || "High"}
  onChange={e => setField("pedsCariesRisk", e.target.value)}
  style={{...inputStyle, fontSize: "13px" }}>
@@ -9022,7 +9022,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  </select>
  </div>
  <div>
- <label style={lblStyle}>Plaque level</label>
+ <label style={lblStyle}>Plaque Level</label>
  <select value={findings["plaque level"] || "moderate"}
  onChange={e => update("plaque level", e.target.value)}
  style={selStyle}>
@@ -9652,7 +9652,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  </select>
  </div>
  <div style={{ flex: 1 }}>
- <label style={endoLbl}>Cold test</label>
+ <label style={endoLbl}>Cold Test</label>
  <input type="text"
  value={findings[`${prefix} cold`] || ""}
  onChange={e => update(`${prefix} cold`, e.target.value)}
@@ -11927,11 +11927,11 @@ function Browse({
  const toggleItem = (key) => setItemsChecked(c => ({...c, [key]:!c[key] }));
 
  const groupMeta = {
- sterilization: { label: "Sterilization", icon: "⚙" },
- locker: { label: "Your Locker", icon: "❏" },
- clinic: { label: "In Clinic", icon: "✦" },
- unit: { label: "In the Unit", icon: "◐" },
- other: { label: "Other", icon: "·" },
+ sterilization: { label: "Sterilization" },
+ locker: { label: "Your Locker" },
+ clinic: { label: "In Clinic" },
+ unit: { label: "In the Unit" },
+ other: { label: "Other" },
  };
 
  // ── Jump behavior ────────────────────────────────────────────────────
@@ -13238,7 +13238,7 @@ function RVUs() {
  <div>
  {/* Search input */}
  <div style={{ marginBottom: "12px" }}>
- <label style={labelStyle}>Search code or description</label>
+ <label style={labelStyle}>Search Code Or Description</label>
  <input type="text" value={search}
  onChange={e => setSearch(e.target.value)}
  placeholder="e.g. crown, D2740, prophy"
@@ -21194,7 +21194,7 @@ function RPDInputsForm({ caseInput, onUpdate }) {
  <div style={grid}>
  {/* Arch lives in the Mx/Mn toggle above the chart, not here. */}
  <div style={field}>
- <label style={labelText}>Opposing arch</label>
+ <label style={labelText}>Opposing Arch</label>
  <select style={ctrl} value={pf.opposingArch || "natural"} onChange={(e) => setFactor("opposingArch", e.target.value)}>
  <option value="natural">Natural dentition</option>
  <option value="complete_denture">Complete denture</option>
@@ -21203,14 +21203,14 @@ function RPDInputsForm({ caseInput, onUpdate }) {
  </select>
  </div>
  <div style={field}>
- <label style={labelText}>Design intent</label>
+ <label style={labelText}>Design Intent</label>
  <select style={ctrl} value={pf.designIntent || "definitive"} onChange={(e) => setFactor("designIntent", e.target.value)}>
  <option value="definitive">Definitive RPD</option>
  <option value="interim">Interim (IPD)</option>
  </select>
  </div>
  <div style={field}>
- <label style={labelText}>Ridge resorption</label>
+ <label style={labelText}>Ridge Resorption</label>
  <select style={ctrl} value={m.ridgeResorption || "mild"} onChange={(e) => setMeasurement("ridgeResorption", e.target.value)}>
  <option value="mild">Mild</option>
  <option value="moderate">Moderate</option>
@@ -21218,7 +21218,7 @@ function RPDInputsForm({ caseInput, onUpdate }) {
  </select>
  </div>
  <div style={field}>
- <label style={labelText}>Interocclusal space</label>
+ <label style={labelText}>Interocclusal Space</label>
  <select style={ctrl} value={m.interocclusalSpace || "normal"} onChange={(e) => setMeasurement("interocclusalSpace", e.target.value)}>
  <option value="normal">Normal</option>
  <option value="limited">Limited</option>
@@ -21226,19 +21226,19 @@ function RPDInputsForm({ caseInput, onUpdate }) {
  </select>
  </div>
  <div style={field}>
- <label style={labelText}>Vestibular depth (mm)</label>
+ <label style={labelText}>Vestibular Depth (mm)</label>
  <input type="number" style={ctrl} value={m.vestibularDepth?? ""}
  onChange={(e) => setMeasurement("vestibularDepth", e.target.value === ""? undefined: Number(e.target.value))} />
  </div>
  {caseInput.arch === "mandibular" && (
  <div style={field}>
- <label style={labelText}>Lingual sulcus depth (mm)</label>
+ <label style={labelText}>Lingual Sulcus Depth (mm)</label>
  <input type="number" style={ctrl} value={m.lingualSulcusDepth?? ""}
  onChange={(e) => setMeasurement("lingualSulcusDepth", e.target.value === ""? undefined: Number(e.target.value))} />
  </div>
 )}
  <div style={field}>
- <label style={labelText}>Months since most recent extraction</label>
+ <label style={labelText}>Months Since Most Recent Extraction</label>
  <input type="number" style={ctrl} value={pf.monthsSinceExtraction?? ""}
  placeholder="leave blank if none"
  onChange={(e) => setFactor("monthsSinceExtraction", e.target.value === ""? undefined: Number(e.target.value))} />
@@ -21247,7 +21247,7 @@ function RPDInputsForm({ caseInput, onUpdate }) {
  block and 3-month recall recommendation. Required: risk
  assessment BEFORE every RPD treatment plan. */}
  <div style={field}>
- <label style={labelText}>Caries risk (CAMBRA)</label>
+ <label style={labelText}>Caries Risk (CAMBRA)</label>
  <select style={ctrl} value={pf.cariesRisk || "moderate"} onChange={(e) => setFactor("cariesRisk", e.target.value)}>
  <option value="low">Low</option>
  <option value="moderate">Moderate</option>
@@ -21260,7 +21260,7 @@ function RPDInputsForm({ caseInput, onUpdate }) {
  via the per-tooth perioPrognosis attribute; this is the overall
  patient-level risk for ongoing perio disease activity. */}
  <div style={field}>
- <label style={labelText}>Perio risk (overall)</label>
+ <label style={labelText}>Perio Risk (Overall)</label>
  <select style={ctrl} value={pf.perioRisk || "low"} onChange={(e) => setFactor("perioRisk", e.target.value)}>
  <option value="low">Low</option>
  <option value="moderate">Moderate</option>
@@ -21271,7 +21271,7 @@ function RPDInputsForm({ caseInput, onUpdate }) {
  choice (Facing vs Mesh), and clasp esthetic considerations
  (I-bar esthetic vs Akers in display zone). */}
  <div style={field}>
- <label style={labelText}>Esthetic demand</label>
+ <label style={labelText}>Esthetic Demand</label>
  <select style={ctrl} value={pf.estheticDemand || "moderate"} onChange={(e) => setFactor("estheticDemand", e.target.value)}>
  <option value="low">Low</option>
  <option value="moderate">Moderate</option>
