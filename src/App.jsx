@@ -22624,7 +22624,7 @@ const PATHWAYS = [
  labRx: ["lab-ff"],
  phases: [
  { label: "Visit A (placeholder)", count: 1 },
- { label: "Visit B (placeholder)", count: 1 },
+ { label: "Visit B (placeholder) — demo inline + detail in same visit", count: 2 },
  { label: "Visit C (placeholder)", count: 1 },
  ],
  labSteps: [
@@ -22649,8 +22649,15 @@ const PATHWAYS = [
  source: "Test source: Articulator+Facebow.pdf p. 11",
  },
  ],
+ // Section entries marked `inline: true` render as a highlighted clickable
+ // title within the visit's numbered list. Clicking expands the Swade
+ // chapter content right there; clicking elsewhere on the page closes it.
+ // No separate collapsible card appears below the Sequence for these.
+ // Reserved for "elementary" chapters that don't merit a full card
+ // (facebow steps, boxing+pouring, posterior palatal seal carving).
  sections: [
  { guideId: "cd", chapterId: "cd-ch1" },
+ { guideId: "cd", chapterId: "cd-ch6", inline: true }, // Face-bow — elementary; demos inline-expand
  { guideId: "cd", chapterId: "cd-ch8" },
  { guideId: "cd", chapterId: "cd-ch15" },
  ],
@@ -26987,6 +26994,14 @@ function Pathways() {
  // Section collapse state — Set of anchorIds that are collapsed. Empty by
  // default (everything expanded). Resets when a new pathway is picked.
  const [collapsedSections, setCollapsedSections] = useState(() => new Set);
+ // Inline-expansion state — for section entries marked `inline: true`. These
+ // are "elementary" chapters (e.g. facebow steps) that don't deserve a full
+ // collapsible card below the Sequence; they appear as a highlighted clickable
+ // title within the visit's step list and expand a small inline panel right
+ // there. Only one inline section is expanded at a time. Clicking elsewhere
+ // on the page closes it (see effect below). Holds the anchorId of the
+ // currently-expanded inline section, or null if none.
+ const [expandedInlineSection, setExpandedInlineSection] = useState(null);
  // Sequence box (the in-page TOC enumerating phases + numbered steps) is
  // closed by default. Visible "Sequence ▾" header in the TOC card acts
  // as the toggle. Right-side floating chapter sidebar still gives quick
@@ -27065,6 +27080,28 @@ function Pathways() {
  useEffect(() => {
  setWizardPath(["root"]);
  }, [domainId, viewMode]);
+
+ // Close the inline-expanded section when the user clicks anywhere outside
+ // any inline-section element. We tag the inline section row with
+ // `data-inline-section` so we can detect "click within an inline section"
+ // and let the button's own onClick decide (which lets clicking a DIFFERENT
+ // inline section switch the expanded one, instead of closing then needing
+ // a second click).
+ useEffect(() => {
+ if (!expandedInlineSection) return;
+ const handler = (e) => {
+ if (e.target.closest && e.target.closest('[data-inline-section]')) return;
+ setExpandedInlineSection(null);
+ };
+ document.addEventListener('mousedown', handler);
+ return () => document.removeEventListener('mousedown', handler);
+ }, [expandedInlineSection]);
+
+ // Also close the inline expansion when the pathway changes — leaving an
+ // expansion open across pathway changes would be a confusing stale state.
+ useEffect(() => {
+ setExpandedInlineSection(null);
+ }, [pathwayId]);
 
  // Wizard helpers ------------------------------------------------------
  // The Wizard mode is currently HIDDEN — with subgrouped pills + only
@@ -27656,7 +27693,9 @@ function Pathways() {
  // reflects the current state: if any section is expanded, the
  // button collapses everything; if everything is already collapsed,
  // it expands everything. Per-card chevrons stay for fine control.
- const usable = resolvedSections.filter(s => !s.unresolved);
+ // Inline sections don't have a card to collapse, so they're excluded
+ // from this list.
+ const usable = resolvedSections.filter(s => !s.unresolved && !(s.ref && s.ref.inline === true));
  const allCollapsed = usable.length > 0 && usable.every(s => collapsedSections.has(s.anchorId));
  const handleClick = () => {
  if (allCollapsed) {
@@ -27704,6 +27743,49 @@ function Pathways() {
  // the visit's chapter list. The inline [lab] tag tells the student
  // at a glance which rows are chair work vs lab work.
  const isLab = s.ref && s.ref.kind === "lab";
+ // Inline-expand mode: a section entry marked `inline: true` is rendered
+ // as a clickable highlighted title with no separate card below. Clicking
+ // it expands the Swade chapter content right under the row; clicking
+ // elsewhere on the page closes the expansion. Used for "elementary"
+ // chapters (facebow steps, boxing+pouring) that don't merit a full card.
+ const isInline = s.ref && s.ref.inline === true;
+ if (isInline && !s.unresolved) {
+ const isOpen = expandedInlineSection === s.anchorId;
+ return (
+ <li
+ key={s.i}
+ data-inline-section={s.anchorId}
+ style={{ marginBottom: "3px", fontSize: "0.9rem" }}
+ >
+ <button
+ type="button"
+ onClick={() => setExpandedInlineSection(prev => prev === s.anchorId? null: s.anchorId)}
+ aria-expanded={isOpen}
+ style={{
+ all: "unset",
+ cursor: "pointer",
+ color: "var(--accent)",
+ borderBottom: isOpen? "1px solid var(--accent)": "1px dashed var(--accent)",
+ fontWeight: 500,
+ transition: "border-color 120ms ease",
+ }}
+ >{s.chapter.title}</button>
+ {isOpen && (
+ <div style={{
+ marginTop: "8px",
+ marginBottom: "6px",
+ padding: "10px 14px",
+ background: "var(--paper, #FBF8F2)",
+ borderLeft: "2px solid var(--accent)",
+ borderRadius: "3px",
+ fontSize: "0.85rem",
+ }}>
+ <GuideChapter chapter={s.chapter} hideHeader />
+ </div>
+ )}
+ </li>
+ );
+ }
  return (
  <li key={s.i} style={{ marginBottom: "3px", fontSize: "0.9rem" }}>
  {isLab && (
@@ -27880,9 +27962,13 @@ function Pathways() {
  )}
 
  {/* Sections rendered inline — each is a collapsible card with a
- subtle chevron on the far right of the title. */}
+ subtle chevron on the far right of the title.
+ Sections marked `inline: true` are NOT rendered here — they
+ appear only within the Sequence card as a clickable highlighted
+ title that expands inline. They have no separate card below. */}
  {resolvedSections.map((s, i) => {
  if (s.unresolved) return null;
+ if (s.ref && s.ref.inline === true) return null;
  const isCollapsed = collapsedSections.has(s.anchorId);
  return (
  <div key={i} id={s.anchorId} style={{
@@ -27945,14 +28031,15 @@ function Pathways() {
 );
  })}
 
- {/* Floating sidebar TOC — subtle and see-through until hover. */}
+ {/* Floating sidebar TOC — subtle and see-through until hover.
+ Inline sections are excluded — they have no card to scroll to. */}
  <PathwaySidebarTOC
- sections={resolvedSections}
+ sections={resolvedSections.filter(s => !(s.ref && s.ref.inline === true))}
  activeIdx={activeSectionIdx}
  collapsedSections={collapsedSections}
  onToggle={toggleSection}
  onCollapseAll={() => setCollapsedSections(new Set(
- resolvedSections.filter(s =>!s.unresolved).map(s => s.anchorId)
+ resolvedSections.filter(s =>!s.unresolved && !(s.ref && s.ref.inline === true)).map(s => s.anchorId)
 ))}
  onExpandAll={() => setCollapsedSections(new Set)}
  />
