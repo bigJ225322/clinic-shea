@@ -3574,6 +3574,15 @@ const DEFAULT_FIELDS = {
  // "Removed existing failing X restoration" portion while leaving the
  // "Excavated decay…" continuation intact.
  removedExistingRestoration: true,
+ // cervicalLesionType — Class V (2046) only. Picks between the two
+ // etiology brackets baked into the template:
+ // "NCCL": keep the non-carious cervical lesion bracket; strip the
+ // "Removed existing failing… restoration" bracket
+ // "existing": strip the NCCL bracket; keep the restoration bracket
+ // Default "NCCL" because most Class Vs at student level are
+ // abfraction/abrasion cases (cervical wear); failing restoration
+ // replacement is the less common scenario.
+ cervicalLesionType: "NCCL",
  // Exam findings (only used by COE / POE templates that have these stubs).
  // Keyed by the literal stub label as it appears in the template, e.g.
  // "soft tissue conditions" matches "- soft tissue conditions:" in the
@@ -4415,6 +4424,37 @@ function renderTemplate(raw, f) {
  // substitution checks for a non-empty value (so empty fields leave the
  // template's defaults in place — visible to the student as a hint).
  // Order matches the standard note's top-to-bottom flow.
+
+ // -------- 6h-pre0. Class V (2046) cervical lesion etiology. --------
+ // Class V template ships with two bracketed alternatives:
+ // [ Pt has non-carious cervical lesion … ] [ Removed existing failing
+ // B resin composite restoration. Excavated decay … ]
+ // The student picks one in the form (cervicalLesionType: "NCCL" |
+ // "existing"). We unwrap the chosen bracket (strip the `[ ` and ` ]`
+ // markers) and delete the other one entirely. Default "NCCL" — most
+ // Class Vs at student level are abfraction/abrasion, not restoration
+ // failures.
+ if (f.cervicalLesionType === "NCCL") {
+ // Keep NCCL bracket (unwrap), strip restoration bracket
+ t = t.replace(
+ /\[\s*(Pt has non-carious cervical lesion that does not require caries excavation\. Surface roughened with diamond burs\.)\s*\]/,
+ "$1"
+);
+ t = t.replace(
+ /\s*\[\s*Removed existing failing [^\]]+? restoration\. Excavated decay using high & slow speed burs\.\s*\]/,
+ ""
+);
+ } else if (f.cervicalLesionType === "existing") {
+ // Strip NCCL bracket, keep restoration bracket (unwrap)
+ t = t.replace(
+ /\[\s*Pt has non-carious cervical lesion that does not require caries excavation\. Surface roughened with diamond burs\.\s*\]\s*/,
+ ""
+);
+ t = t.replace(
+ /\[\s*(Removed existing failing [^\]]+? restoration\. Excavated decay using high & slow speed burs\.)\s*\]/,
+ "$1"
+);
+ }
 
  // -------- 6h-pre. Removed-existing-restoration toggle. --------
  // Affects every template whose body mentions removing a failing existing
@@ -5599,6 +5639,16 @@ function parseLabPlaceholders(body) {
  // gingiva-dropdowns triple (renderTemplate substitutes from
  // ef["gingival color"] / "gingival contour" / "gingival consistency").
  // Suppress here so we don't render duplicate text inputs.
+ continue;
+ }
+ if (/^\s*Pt has non-carious cervical lesion/i.test(text) ||
+ /^\s*Removed existing failing [BMD]+ resin composite restoration\. Excavated decay using high & slow speed burs\./i.test(text)) {
+ // Class V (2046) etiology brackets — handled by the dedicated
+ // "Cervical lesion type" dropdown rendered in NoteBuilder, which
+ // writes to fields.cervicalLesionType and substitutes both
+ // brackets via renderTemplate step 6h-pre0. Rendering these long
+ // sentence-brackets as raw TextInputs gave students two prose
+ // fields where they really had a single binary clinical decision.
  continue;
  }
  if (text === "date") {
@@ -10317,6 +10367,15 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  // (see renderTemplate step 6h-pre).
  const needsRemovedRestoration = useMemo(() => /Removed existing failing|Completely removed (?:existing )?failing/i.test(rawTemplate),
  [rawTemplate]);
+ // Class V (2046) ships with a two-bracket binary: NCCL etiology vs
+ // existing restoration failure. When both brackets are present, we
+ // render a single "Lesion etiology" dropdown instead of two long-prose
+ // TextInputs + the generic "Removed existing restoration?" checkbox.
+ // See renderTemplate step 6h-pre0.
+ const needsCervicalLesionType = useMemo(() =>
+ /\[\s*Pt has non-carious cervical lesion/i.test(rawTemplate) &&
+ /\[\s*Removed existing failing [BMD]+ resin composite restoration/i.test(rawTemplate),
+ [rawTemplate]);
  const needsDentalHistory = useMemo(() => /dental history:/i.test(rawTemplate), [rawTemplate]);
  const needsLastDentist = useMemo(() => /last time at dentist:/i.test(rawTemplate), [rawTemplate]);
  const needsBrushing = useMemo(() => /\bbrushing 2x a day\b/.test(rawTemplate), [rawTemplate]);
@@ -10327,10 +10386,16 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  // "F[ 1 / 2 / 3 / 4 ]" as a picker placeholder. Match on the line itself
  // so the gate doesn't silently break when the default value changes.
  const needsBehavior = useMemo(() => /^[ \t]*-[ \t]*behavior:/im.test(rawTemplate), [rawTemplate]);
- // Matrix selector: any template that mentions a matrix system (Garrison
- // sectional for posterior composite, or gold/Tofflemire band) surfaces
- // the picker. Loose pattern so the gate survives template copy edits.
- const needsMatrix = useMemo(() => /Placed Garrison system with matrix band|Gold matrix band placed|Placed Tofflemire/.test(rawTemplate),
+ // Matrix selector: ONLY the peds Class II composite template (6406) ships
+ // the matrix as a binary choice ("Placed Garrison system… / Gold matrix
+ // band placed."). For every other template (1549 amalgam → Tofflemire,
+ // 1745 Class II composite → Garrison, 2742 core buildup → Garrison), the
+ // matrix is baked into the prose and there's no substitution wired up —
+ // showing a Garrison/Gold dropdown there was decorative and misleading
+ // (changing it did nothing). Narrowed to the peds "/"-joined pattern so
+ // the picker only surfaces where it actually swaps the rendered phrase.
+ const needsMatrix = useMemo(() =>
+ /Placed Garrison system with matrix band & wedge, burnished\. \/ Gold matrix band placed\./.test(rawTemplate),
  [rawTemplate]);
 
  // Regenerate the note when needed.
@@ -10912,12 +10977,18 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <span>Placed cord?</span>
  </label>
  {fields.cordPlaced && (
- <>
+ // Top + Bottom cord paired in their own flex row so they
+ // stay side-by-side regardless of available width (the outer
+ // flex wraps the pair, not the individual cords). flex: 1
+ // splits remaining space evenly between the two selects.
+ <div style={{
+ display: "flex", gap: "12px", flex: "1 1 280px", minWidth: 0,
+ }}>
  {/* Top cord — primary, visible at the sulcus margin.
  For single-cord templates this is the only cord. For
  crown-prep (two-cord technique) this is the larger
  outer cord that sits visible above the bottom cord. */}
- <div style={{ minWidth: "150px" }}>
+ <div style={{ flex: 1, minWidth: 0 }}>
  <Field label="Top cord">
  <Select value={fields.cordSize || "0"} onChange={v => setField("cordSize", v)}>
  <option value="000">000 — Ultra Fine</option>
@@ -10934,7 +11005,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  phrasing gets stripped at substitution). Default "00"
  matches template 2821's stock "#00 & #0" — students
  explicitly clear it for single-cord cases. */}
- <div style={{ minWidth: "150px" }}>
+ <div style={{ flex: 1, minWidth: 0 }}>
  <Field label="Bottom cord">
  <Select value={fields.cordSizeBottom || ""} onChange={v => setField("cordSizeBottom", v)}>
  <option value="">— none (single cord) —</option>
@@ -10947,7 +11018,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </Select>
  </Field>
  </div>
- </>
+ </div>
  )}
  </div>
  )}
@@ -11172,7 +11243,23 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </>
 )}
 
- {needsRemovedRestoration && (
+ {needsCervicalLesionType && (
+ <>
+ <Hairline />
+ <Field label="Lesion etiology">
+ <Select value={fields.cervicalLesionType || "NCCL"}
+ onChange={v => setField("cervicalLesionType", v)}>
+ <option value="NCCL">Non-carious cervical lesion (NCCL) — no caries</option>
+ <option value="existing">Failing existing restoration — excavate decay</option>
+ </Select>
+ </Field>
+ </>
+)}
+ {needsRemovedRestoration && !needsCervicalLesionType && (
+ // Suppress the generic "Removed existing restoration?" checkbox
+ // when the cervical-lesion dropdown is showing (Class V 2046) —
+ // the dropdown's two options already cover that choice and showing
+ // both controls invited contradictory selections.
  <>
  <Hairline />
  <label style={{
@@ -11656,7 +11743,13 @@ function Browse({
  // ── Render ───────────────────────────────────────────────────────────
  return (
  <div className="layout" style={{
- display: "grid", gridTemplateColumns: "minmax(300px, 380px) 1fr",
+ // Left column: navigation + search + items list. Right column: the
+ // steps article (the actual content students read). Per Jake, the
+ // left column was wider than needed — the procedure picker and item
+ // checklists don't need that much horizontal room, and the steps
+ // article gets squeezed when bullet text wraps mid-clause. Trimmed
+ // by ~30% (380 → 270 max) so the right pane gets more breathing room.
+ display: "grid", gridTemplateColumns: "minmax(210px, 270px) 1fr",
  gap: "44px", alignItems: "start",
  }}>
 
@@ -11767,18 +11860,34 @@ function Browse({
  return (
  <div key={key} style={{
  background: "var(--paper)", border: "1px solid var(--rule)",
- borderRadius: "3px", padding: "14px 16px", marginBottom: "10px",
+ borderRadius: "3px", padding: "16px 18px 14px", marginBottom: "12px",
  }}>
+ {/* Bucket header: larger Fraunces title matches the steps-article h2
+ voice (just scaled down), so the items panel reads as a peer of
+ the right-hand content card rather than as small utility chrome.
+ Earlier 13px/500 felt like form-label tier and got visually lost. */}
  <div style={{
- display: "flex", alignItems: "center", gap: "8px",
- marginBottom: "10px", paddingBottom: "8px",
+ display: "flex", alignItems: "baseline", gap: "10px",
+ marginBottom: "12px", paddingBottom: "10px",
  borderBottom: "1px solid var(--rule-soft)",
  }}>
- <span style={{ color: "var(--accent)", fontSize: "14px" }}>{meta.icon}</span>
- <span className="serif" style={{ fontSize: "13px", fontWeight: 500 }}>
+ <span style={{
+ color: "var(--accent)", fontSize: "13px",
+ position: "relative", top: "-1px",
+ }}>{meta.icon}</span>
+ <span className="serif" style={{
+ fontSize: "19px", fontWeight: 500,
+ letterSpacing: "-0.005em", color: "var(--ink)",
+ lineHeight: 1.1,
+ }}>
  {meta.label}
  </span>
- <span style={{ marginLeft: "auto", fontSize: "10px", color: "var(--ink-faint)" }}>
+ <span style={{
+ marginLeft: "auto", fontSize: "11px",
+ color: "var(--ink-faint)",
+ fontFamily: "'Geist', sans-serif",
+ fontVariantNumeric: "tabular-nums",
+ }}>
  {items.length}
  </span>
  </div>
