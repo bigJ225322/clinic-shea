@@ -4023,15 +4023,28 @@ function renderTemplate(raw, f) {
  }
 
  // -------- 0c. tookBitewings = false strips the bitewings phrase. --------
- // POE: "Took 4 bitewings; updated odontogram with…"
- // Peds: "Took 4 bitewings & updated odontogram with…"
- // Unchecking drops the "Took 4 bitewings; " / " & " join and capitalizes
- // the following "updated" → "Updated" so the sentence remains
- // grammatical when the bitewings phrase is removed.
+ // POE: "Took 4 bitewings; updated odontogram with radiographic & clinical hard tissue findings:"
+ // Peds: "Took 4 bitewings & updated odontogram with radiographic & intraoral hard tissue findings:"
+ // Unchecking does three things:
+ // 1. Drops "Took 4 bitewings; " / " & " prefix.
+ // 2. Capitalizes the following "updated" → "Updated".
+ // 3. Drops "radiographic & " (no bitewings → no radiographs → only
+ // clinical/intraoral findings remain in the sentence).
  if (f.tookBitewings === false) {
+ // Drop the "Took 4 bitewings; " / " & " prefix and capitalize the
+ // first letter of "updated" that follows.
  t = t.replace(
  /Took 4 bitewings(?:;\s*|\s*&\s*)(\w)/g,
  (_m, c) => c.toUpperCase()
+);
+ // Drop "radiographic & " from "updated odontogram with radiographic
+ // & {clinical|intraoral} hard tissue findings" — no bitewings means
+ // no radiographic findings. Preserves the original case of "updated"
+ // (which the prefix-strip above may have just capitalized to
+ // "Updated") via a capture group.
+ t = t.replace(
+ /(updated) odontogram with radiographic & (clinical|intraoral) hard tissue findings/gi,
+ (_m, upd, kind) => `${upd} odontogram with ${kind} hard tissue findings`
 );
  }
 
