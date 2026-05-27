@@ -18250,14 +18250,14 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  </thead>
  <tbody>
  {directRetainers.length === 0? (
- <tr><td colSpan={5} style={{ padding: "8px", fontStyle: "italic", color: "var(--ink-soft)" }}>No abutments</td></tr>
+ <tr><td colSpan={5} style={{ padding: "8px", fontStyle: "italic", color: "var(--ink-soft)", textAlign: "left" }}>No abutments</td></tr>
 ): directRetainers.map((r, i) => (
  <tr key={i}>
- <td style={{ padding: "4px 6px", borderRight: "1px solid var(--rule)", borderBottom: i === directRetainers.length - 1? "none": "1px solid var(--rule)" }}>#{r.tooth}</td>
- <td style={{ padding: "4px 6px", borderRight: "1px solid var(--rule)", borderBottom: i === directRetainers.length - 1? "none": "1px solid var(--rule)" }}>{r.clasp}</td>
- <td style={{ padding: "4px 6px", borderRight: "1px solid var(--rule)", borderBottom: i === directRetainers.length - 1? "none": "1px solid var(--rule)" }}>{r.rest}</td>
- <td style={{ padding: "4px 6px", borderRight: "1px solid var(--rule)", borderBottom: i === directRetainers.length - 1? "none": "1px solid var(--rule)" }}>{r.retention}</td>
- <td style={{ padding: "4px 6px", borderBottom: i === directRetainers.length - 1? "none": "1px solid var(--rule)" }}>{r.bracing}</td>
+ <td style={{ padding: "4px 6px", textAlign: "left", borderRight: "1px solid var(--rule)", borderBottom: i === directRetainers.length - 1? "none": "1px solid var(--rule)" }}>#{r.tooth}</td>
+ <td style={{ padding: "4px 6px", textAlign: "left", borderRight: "1px solid var(--rule)", borderBottom: i === directRetainers.length - 1? "none": "1px solid var(--rule)" }}>{r.clasp}</td>
+ <td style={{ padding: "4px 6px", textAlign: "left", borderRight: "1px solid var(--rule)", borderBottom: i === directRetainers.length - 1? "none": "1px solid var(--rule)" }}>{r.rest}</td>
+ <td style={{ padding: "4px 6px", textAlign: "left", borderRight: "1px solid var(--rule)", borderBottom: i === directRetainers.length - 1? "none": "1px solid var(--rule)" }}>{r.retention}</td>
+ <td style={{ padding: "4px 6px", textAlign: "left", borderBottom: i === directRetainers.length - 1? "none": "1px solid var(--rule)" }}>{r.bracing}</td>
  </tr>
 ))}
  </tbody>
