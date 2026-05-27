@@ -23122,7 +23122,7 @@ const PATHWAYS = [
  id: "dir-class1",
  domain: "direct",
  label: "Class I composite",
- description: "A single-surface restoration in a pit or fissure — almost always occlusal on a posterior tooth, occasionally the lingual pit (cingulum) of a maxillary lateral incisor. The simplest restorative case and the one most likely to be over-prepared. Modern adhesion lets you preserve every millimetre of sound tooth structure; the prep is whatever the caries demands, not a geometric textbook outline. Most Class I failures come from over-reduction during prep or from leaving the occlusal anatomy flat instead of carving cusp tips, fossae, and developmental grooves back in.",
+ description: "A single-surface occlusal restoration in a pit or fissure on a posterior tooth. The simplest restorative case and the one most likely to be over-prepared. Modern adhesion lets you preserve every millimetre of sound tooth structure; the prep is whatever the caries demands, not a geometric textbook outline. Most Class I failures come from over-reduction during prep or from leaving the occlusal anatomy flat instead of carving cusp tips, fossae, and developmental grooves back in.",
  keyDecisions: [
  "Minimum cavity prep — remove caries-infected dentin only (soft, wet, bacteria-laden), leave caries-affected dentin that is firm and structurally sound. No prophylactic extension.",
  "Etch + bond sequence: etch enamel first then dentin with 35% phosphoric acid → wait 15s → rinse 5s → lightly dry (dentin glossy without pooling). Apply Gluma 45s → wait 15s → air dry → rinse 15s → lightly dry. ScotchBond Universal vigorous scrub 20s → air thin 5s → light cure 10s. Gluma is a very common desensitization step.",
