@@ -23608,10 +23608,11 @@ const PATHWAYS = [
  "Color match the patient at the try-in stage with Variolink try-in paste, NOT after delivery.",
  "CDT codes: D2962 (Labial veneer — porcelain laminate, laboratory) per tooth. D2960 (Resin/composite veneer, indirect/direct) is the alternative for chairside direct composite veneers. Diagnostic wax-up + mock-up may bill D9310 (consultation) at planning visit. Per-tooth billing — a 6-veneer case codes 6× D2962.",
  ],
+ // phases sum to 6 = sections.length (Wax-up planning phase removed
+ // along with ind-ch20).
  phases: [
  { label: "Workflow + shade", count: 2 },
  { label: "Material choice", count: 2 },
- { label: "Wax-up planning", count: 1 },
  { label: "Cementation", count: 1 },
  { label: "Reference", count: 1 },
  ],
