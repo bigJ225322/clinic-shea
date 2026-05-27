@@ -12092,18 +12092,20 @@ function Browse({
  </section>
 
  {/* ── Right: steps article ── */}
- <div>
- {/* "Steps by (swade)" attribution — sits ABOVE the article on the
- cream background, hugging the right margin. Was previously
- absolute-positioned inside the article's whitespace; per Jake it
- should live outside the white card. Lowercase parenthetical +
- italic serif keeps it a quiet humble nod to the unofficial
- student-authored source rather than a citation. */}
+ <div style={{ position: "relative" }}>
+ {/* "Steps by (swade)" attribution — absolute-positioned ABOVE the
+ wrapper so it doesn't consume grid row height. With alignItems:
+ start on the parent grid, that lets the article's top align
+ cleanly with the left-column Section/Procedure card top. The
+ attribution lives in the cream-background gap above the row;
+ it's quiet enough (11px ink-faint) that floating it up there
+ reads fine. */}
  <div style={{
- textAlign: "right",
+ position: "absolute", bottom: "100%", right: "4px",
+ transform: "translateY(-4px)",
  fontSize: "11px", color: "var(--ink-faint)",
  fontFamily: "'Geist', sans-serif", lineHeight: 1,
- marginBottom: "8px", paddingRight: "4px",
+ pointerEvents: "none", whiteSpace: "nowrap",
  }}>
  Steps by <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em>
  </div>
