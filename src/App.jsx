@@ -27554,9 +27554,8 @@ function Pathways() {
  }
  // Walk phases; assign sections by count, render each group with a header.
  let cursor = 0;
- return (
- <div>
- {phases.map((phase, pi) => {
+ const rendered = [];
+ phases.forEach((phase, pi) => {
  const slice = resolvedSections.slice(cursor, cursor + phase.count);
  const startNum = cursor + 1;
  cursor += phase.count;
@@ -27567,8 +27566,8 @@ function Pathways() {
  // under their headers ("Phase 8 — Follow-up" with nothing
  // underneath). Hiding empty phases keeps the Sequence TOC
  // legible even when the underlying data is mid-edit.
- if (slice.length === 0) return null;
- return (
+ if (slice.length === 0) return;
+ rendered.push(
  <div key={pi} style={{ marginTop: pi === 0 ? "0" : "12px" }}>
  <div style={{
  fontSize: "0.66rem", textTransform: "uppercase",
@@ -27583,8 +27582,30 @@ function Pathways() {
  </ol>
  </div>
  );
- })}
+ });
+ // Catch-all: if phases.count sums to LESS than sections.length, the
+ // trailing sections would be silently dropped from the Sequence TOC.
+ // Render them under an "Additional" header so they appear in the
+ // index. Pathway authors should fix the phase counts to consume the
+ // sections cleanly, but this guard prevents the bug from hiding
+ // chapters until they do.
+ if (cursor < resolvedSections.length) {
+ const tail = resolvedSections.slice(cursor);
+ rendered.push(
+ <div key="tail" style={{ marginTop: "12px" }}>
+ <div style={{
+ fontSize: "0.66rem", textTransform: "uppercase",
+ letterSpacing: "0.12em", color: "var(--ink-faint)",
+ fontWeight: 500, marginBottom: "4px", opacity: 0.85,
+ }}>Additional</div>
+ <ol start={cursor + 1} style={{ margin: "0 0 0 16px", paddingLeft: "20px", lineHeight: 1.6 }}>
+ {tail.map(renderRow)}
+ </ol>
  </div>
+ );
+ }
+ return (
+ <div>{rendered}</div>
  );
  })()}
  </div>
