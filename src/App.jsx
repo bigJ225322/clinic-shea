@@ -27536,26 +27536,23 @@ function Pathways() {
  fontSize: "1.4rem", fontWeight: 400, color: "var(--ink)",
  margin: "0 0 10px",
  }}>{selectedPathway.label}</h2>
- {(selectedPathway.phase || selectedPathway.category) && (
+ {/* Phase badge dropped 2026-05-27 per user feedback — most Cases-tab
+ procedures will be Phase III anyway (since Phase I is mostly
+ single-appointment items that don't benefit from multi-visit
+ sequencing). The `phase` field stays in pathway data for potential
+ future filtering, just not surfaced in the card header. */}
+ {selectedPathway.category && (
  <div style={{
  display: "flex", gap: "6px", marginBottom: "12px",
  fontSize: "0.62rem", textTransform: "uppercase",
  letterSpacing: "0.14em", fontWeight: 600, flexWrap: "wrap",
  }}>
- {selectedPathway.phase && (
- <span style={{
- background: "var(--accent)", color: "var(--paper, #FBF8F2)",
- padding: "3px 9px", borderRadius: "2px",
- }}>{PHASE_LABELS[selectedPathway.phase] || selectedPathway.phase}</span>
- )}
- {selectedPathway.category && (
  <span style={{
  background: "var(--card, white)",
  border: "1px solid var(--accent)",
  color: "var(--accent)",
  padding: "2px 9px", borderRadius: "2px",
  }}>{CATEGORY_LABELS[selectedPathway.category] || selectedPathway.category}</span>
- )}
  </div>
  )}
  <p style={{
@@ -27792,16 +27789,31 @@ function Pathways() {
  // legible even when the underlying data is mid-edit.
  if (slice.length === 0) return;
  rendered.push(
- <div key={pi} style={{ marginTop: pi === 0 ? "0" : "12px" }}>
+ <div key={pi} style={{
+ marginTop: pi === 0 ? "0" : "14px",
+ background: "var(--card, white)",
+ border: "1px solid var(--rule-soft, var(--rule))",
+ borderRadius: "3px",
+ padding: "12px 16px",
+ }}>
  <div style={{
- fontSize: "0.66rem", textTransform: "uppercase",
- letterSpacing: "0.12em", color: "var(--ink-faint)",
- fontWeight: 500, marginBottom: "4px", opacity: 0.85,
- }}>Phase {pi + 1} — {phase.label}</div>
- {/* Steps indented under the phase header — marginLeft offsets
+ display: "flex", alignItems: "baseline", gap: "10px",
+ marginBottom: "8px", flexWrap: "wrap",
+ }}>
+ <span style={{
+ fontSize: "0.6rem", textTransform: "uppercase",
+ letterSpacing: "0.14em", color: "var(--paper, #FBF8F2)",
+ background: "var(--ink)", fontWeight: 600,
+ padding: "2px 7px", borderRadius: "2px",
+ }}>Visit {pi + 1}</span>
+ <span style={{
+ fontSize: "0.82rem", fontWeight: 500, color: "var(--ink)",
+ }}>{phase.label}</span>
+ </div>
+ {/* Steps indented under the visit header — marginLeft offsets
  the whole list (numbers + text) right of the header's left
  edge so the hierarchy reads at a glance. */}
- <ol start={startNum} style={{ margin: "0 0 0 16px", paddingLeft: "20px", lineHeight: 1.6 }}>
+ <ol start={startNum} style={{ margin: "0 0 0 8px", paddingLeft: "20px", lineHeight: 1.6 }}>
  {slice.map(renderRow)}
  </ol>
  </div>
@@ -27820,13 +27832,19 @@ function Pathways() {
  if (cursor < resolvedSections.length) {
  const tail = resolvedSections.slice(cursor);
  rendered.push(
- <div key="tail" style={{ marginTop: "12px" }}>
+ <div key="tail" style={{
+ marginTop: "14px",
+ background: "var(--card, white)",
+ border: "1px solid var(--rule-soft, var(--rule))",
+ borderRadius: "3px",
+ padding: "12px 16px",
+ }}>
  <div style={{
- fontSize: "0.66rem", textTransform: "uppercase",
- letterSpacing: "0.12em", color: "var(--ink-faint)",
- fontWeight: 500, marginBottom: "4px", opacity: 0.85,
+ fontSize: "0.6rem", textTransform: "uppercase",
+ letterSpacing: "0.14em", color: "var(--ink-faint)",
+ fontWeight: 600, marginBottom: "8px",
  }}>Additional</div>
- <ol start={cursor + 1} style={{ margin: "0 0 0 16px", paddingLeft: "20px", lineHeight: 1.6 }}>
+ <ol start={cursor + 1} style={{ margin: "0 0 0 8px", paddingLeft: "20px", lineHeight: 1.6 }}>
  {tail.map(renderRow)}
  </ol>
  </div>
