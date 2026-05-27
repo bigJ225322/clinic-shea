@@ -27002,11 +27002,11 @@ function Pathways() {
  // on the page closes it (see effect below). Holds the anchorId of the
  // currently-expanded inline section, or null if none.
  const [expandedInlineSection, setExpandedInlineSection] = useState(null);
- // Sequence box (the in-page TOC enumerating phases + numbered steps) is
- // closed by default. Visible "Sequence ▾" header in the TOC card acts
- // as the toggle. Right-side floating chapter sidebar still gives quick
- // jumps, so the in-card sequence is supplementary detail.
- const [sequenceOpen, setSequenceOpen] = useState(false);
+ // Sequence (in-page TOC of phases + numbered steps + interleaved lab
+ // bands) is always rendered when a pathway has sections. The previous
+ // collapsible "Sequence ▾" header was removed 2026-05-27 — burying the
+ // canonical visit list behind a dropdown made the most important content
+ // of the pathway feel optional. It's the centerpiece now, not a sidebar.
  // Floating sidebar TOC — track which section is the active one based on
  // scroll position, so we can highlight it in the sidebar.
  const [activeSectionIdx, setActiveSectionIdx] = useState(0);
@@ -27594,59 +27594,17 @@ function Pathways() {
  margin: "0", fontStyle: "italic", color: "var(--ink-soft)",
  lineHeight: 1.55, fontSize: "0.85rem",
  }}>{selectedPathway.description}</p>
- {/* keyDecisions section removed 2026-05-27 — the "What's specific to this
- scenario" framing belonged to the old scenario-builder model. Pathways
- are now generic procedures; the Sequence card + Lab Rx callout below
- carry the substantive content. The keyDecisions field is still tolerated
- in pathway data (some legacy entries may still use it) but no longer
- rendered. Source citations on labSteps are also no longer rendered;
- they stay in the data per CASES-FOUNDATION.md trust rules but they're a
+ {/* keyDecisions section removed 2026-05-27. Lab Rx top-level callout
+ removed 2026-05-27 — showing the lab Rx upfront before the student
+ sees the workflow doesn't make sense; lab Rx content belongs inside
+ the specific lab band it relates to (e.g. the "submit to lab for
+ processing" lab step carries the F/F Rx). The labRx pathway-level
+ field is still tolerated in data but no longer surfaced as its own
+ card. Source citations on labSteps are not rendered either — they
+ stay in the data per CASES-FOUNDATION.md trust rules (and per Jake's
+ copyright concern about appearing UIC-endorsed) but they're a
  data-integrity tool, not student-facing copy. */}
  </div>
-
- {/* Lab Rx callout — central-lab interactions spotlight. Pathways set
- a `labRx: [templateId, ...]` array; each id is looked up in
- TEMPLATES (the LAB_SCRIPTS data) and rendered. */}
- {selectedPathway.labRx && selectedPathway.labRx.length > 0 && (
- <div style={{
- background: "var(--card, white)",
- border: "1px solid var(--rule)",
- padding: "18px 22px", borderRadius: "3px",
- marginBottom: "16px",
- boxShadow: "0 1px 2px rgba(26, 22, 18, 0.03), 0 4px 12px rgba(26, 22, 18, 0.025)",
- }}>
- <div style={{
- fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.1em",
- color: "var(--accent)", fontWeight: 600, marginBottom: "12px",
- }}>Lab Rx</div>
- {selectedPathway.labRx.map((rxId, i) => {
- const rxText = TEMPLATES[rxId];
- if (!rxText) return null;
- return (
- <div key={i} style={{
- marginBottom: i < selectedPathway.labRx.length - 1 ? "16px" : 0,
- }}>
- <div style={{
- fontSize: "0.72rem", color: "var(--ink-faint)",
- fontFamily: '"JetBrains Mono", monospace',
- marginBottom: "6px", opacity: 0.85,
- }}>{rxId}</div>
- <pre style={{
- margin: 0,
- fontFamily: '"JetBrains Mono", monospace',
- fontSize: "0.78rem", lineHeight: 1.55,
- color: "var(--ink-soft)",
- whiteSpace: "pre-wrap",
- background: "var(--paper, #FBF8F2)",
- padding: "12px 14px",
- borderRadius: "2px",
- border: "1px solid var(--rule-soft, var(--rule))",
- }}>{rxText}</pre>
- </div>
- );
- })}
- </div>
- )}
 
  {/* TOC — id used by the floating right-sidebar to know when the
  in-page TOC has fully scrolled out of view (only then does the
@@ -27656,47 +27614,19 @@ function Pathways() {
  the student doesn't see empty phase headers under a Sequence
  toggle that opens to nothing. */}
  {resolvedSections.length > 0 && (
- <div id="pw-toc" style={{
- background: "var(--card, white)",
- border: "1px solid var(--rule)",
- borderLeft: "3px solid var(--accent)",
- padding: sequenceOpen ? "20px 26px" : "14px 26px", borderRadius: "3px",
- marginBottom: "20px",
- transition: "padding 160ms ease",
- boxShadow: "0 1px 2px rgba(26, 22, 18, 0.04), 0 6px 20px rgba(26, 22, 18, 0.04)",
- }}>
+ <div style={{ marginBottom: "20px" }}>
+ {/* Collapse-all / Expand-all toggle for the per-step detail cards
+ below the sequence. Inline sections are excluded — they don't
+ have a card to collapse. Sits unobtrusively at the top right,
+ above the first visit block. */}
  <div style={{
- display: "flex", justifyContent: "space-between", alignItems: "baseline",
- marginBottom: sequenceOpen ? "14px" : "0",
+ display: "flex", justifyContent: "flex-end",
+ marginBottom: "10px",
  }}>
- <button
- type="button"
- onClick={() => setSequenceOpen(o => !o)}
- aria-expanded={sequenceOpen}
- aria-label={sequenceOpen ? "Collapse sequence" : "Expand sequence"}
- style={{
- all: "unset", cursor: "pointer",
- display: "flex", alignItems: "baseline", gap: "10px",
- fontSize: "0.95rem", textTransform: "uppercase", letterSpacing: "0.1em",
- color: "var(--accent)", fontWeight: 600,
- }}
- >
- <span>Sequence</span>
- <span aria-hidden="true" style={{
- fontSize: "0.85rem", lineHeight: 1, opacity: 0.75,
- transition: "transform 160ms ease",
- transform: sequenceOpen ? "rotate(0deg)" : "rotate(-90deg)",
- }}>▾</span>
- </button>
- {sequenceOpen && (() => {
- // Collapse-all / Expand-all toggle. Single button whose label
- // reflects the current state: if any section is expanded, the
- // button collapses everything; if everything is already collapsed,
- // it expands everything. Per-card chevrons stay for fine control.
- // Inline sections don't have a card to collapse, so they're excluded
- // from this list.
+ {(() => {
  const usable = resolvedSections.filter(s => !s.unresolved && !(s.ref && s.ref.inline === true));
- const allCollapsed = usable.length > 0 && usable.every(s => collapsedSections.has(s.anchorId));
+ if (usable.length === 0) return null;
+ const allCollapsed = usable.every(s => collapsedSections.has(s.anchorId));
  const handleClick = () => {
  if (allCollapsed) {
  setCollapsedSections(new Set);
@@ -27726,11 +27656,11 @@ function Pathways() {
  e.currentTarget.style.borderColor = "var(--rule)";
  e.currentTarget.style.color = "var(--ink-soft)";
  }}
- >{allCollapsed ? "Expand all" : "Collapse all"}</button>
+ >{allCollapsed ? "Expand all steps" : "Collapse all steps"}</button>
  );
  })()}
  </div>
- {sequenceOpen && (() => {
+ {(() => {
  // Phase-aware TOC rendering. If the pathway has a `phases` array, render
  // each phase as a sub-section with its own ordered list (numbering keeps
  // running across phases so the section card numbers match the card-side
@@ -27755,7 +27685,7 @@ function Pathways() {
  <li
  key={s.i}
  data-inline-section={s.anchorId}
- style={{ marginBottom: "3px", fontSize: "0.9rem" }}
+ style={{ marginBottom: "4px", fontSize: "0.95rem" }}
  >
  <button
  type="button"
@@ -27787,7 +27717,7 @@ function Pathways() {
  );
  }
  return (
- <li key={s.i} style={{ marginBottom: "3px", fontSize: "0.9rem" }}>
+ <li key={s.i} style={{ marginBottom: "4px", fontSize: "0.95rem" }}>
  {isLab && (
  <span style={{
  display: "inline-block",
@@ -27833,38 +27763,39 @@ function Pathways() {
  const labSteps = selectedPathway.labSteps || [];
 
  // Helper: render a single lab-step band. Paper-colored background +
- // dashed border to visually distinguish from clinical phase blocks.
+ // accent left bar to visually distinguish from clinical visit blocks
+ // (which use the ink left bar).
  const renderLabStep = (ls, key) => (
  <div key={key} style={{
- marginTop: "12px",
+ marginTop: "14px",
  background: "var(--paper, #FBF8F2)",
  borderLeft: "4px solid var(--accent)",
  borderRadius: "3px",
- padding: "10px 14px",
+ padding: "14px 18px",
  }}>
  <div style={{
- display: "flex", alignItems: "baseline", gap: "8px",
- marginBottom: ls.body ? "6px" : "0", flexWrap: "wrap",
+ display: "flex", alignItems: "baseline", gap: "10px",
+ marginBottom: ls.body ? "8px" : "0", flexWrap: "wrap",
  }}>
  <span style={{
- fontSize: "0.6rem", textTransform: "uppercase",
+ fontSize: "0.62rem", textTransform: "uppercase",
  letterSpacing: "0.14em", color: "var(--paper, #FBF8F2)",
  background: "var(--accent)", fontWeight: 600,
- padding: "2px 7px", borderRadius: "2px",
+ padding: "3px 8px", borderRadius: "2px",
  }}>Lab</span>
  <span style={{
- fontSize: "0.78rem", fontWeight: 500, color: "var(--ink)",
+ fontSize: "0.85rem", fontWeight: 500, color: "var(--ink)",
  }}>{ls.title}</span>
  {ls.turnaround && (
  <span style={{
- fontSize: "0.7rem", color: "var(--ink-faint)",
+ fontSize: "0.72rem", color: "var(--ink-faint)",
  marginLeft: "auto", fontStyle: "italic",
  }}>{ls.turnaround}</span>
  )}
  </div>
  {ls.body && (
  <div style={{
- fontSize: "0.8rem", lineHeight: 1.55,
+ fontSize: "0.85rem", lineHeight: 1.65,
  color: "var(--ink-soft)", fontStyle: "italic",
  }}>{ls.body}</div>
  )}
@@ -27893,31 +27824,31 @@ function Pathways() {
  if (slice.length === 0) return;
  rendered.push(
  <div key={pi} style={{
- marginTop: pi === 0 ? "0" : "14px",
+ marginTop: pi === 0 ? "0" : "16px",
  background: "var(--card, white)",
  border: "1px solid var(--rule-soft, var(--rule))",
  borderLeft: "4px solid var(--ink)",
  borderRadius: "3px",
- padding: "12px 16px",
+ padding: "18px 22px",
  }}>
  <div style={{
  display: "flex", alignItems: "baseline", gap: "10px",
- marginBottom: "8px", flexWrap: "wrap",
+ marginBottom: "12px", flexWrap: "wrap",
  }}>
  <span style={{
- fontSize: "0.6rem", textTransform: "uppercase",
+ fontSize: "0.62rem", textTransform: "uppercase",
  letterSpacing: "0.14em", color: "var(--paper, #FBF8F2)",
  background: "var(--ink)", fontWeight: 600,
- padding: "2px 7px", borderRadius: "2px",
+ padding: "3px 8px", borderRadius: "2px",
  }}>Visit {pi + 1}</span>
  <span style={{
- fontSize: "0.82rem", fontWeight: 500, color: "var(--ink)",
+ fontSize: "0.9rem", fontWeight: 500, color: "var(--ink)",
  }}>{phase.label}</span>
  </div>
  {/* Steps indented under the visit header — marginLeft offsets
  the whole list (numbers + text) right of the header's left
  edge so the hierarchy reads at a glance. */}
- <ol start={startNum} style={{ margin: "0 0 0 8px", paddingLeft: "20px", lineHeight: 1.6 }}>
+ <ol start={startNum} style={{ margin: "0 0 0 8px", paddingLeft: "24px", lineHeight: 1.85 }}>
  {slice.map(renderRow)}
  </ol>
  </div>
