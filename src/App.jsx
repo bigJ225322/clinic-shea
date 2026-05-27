@@ -5368,6 +5368,14 @@ function renderTemplate(raw, f) {
  /\n\s*Removed supragingival[^]*?prophy paste\.\s*/i,
  "\n\n"
  );
+ // 4. Strip the OHI sentence ("Reviewed OHI with demonstration ...").
+ // Per Jake: if no prophy this visit, no OHI offered either. This
+ // also removes whatever extension the OHI-checkboxes added (e.g.
+ // "& completed nutritional counseling and tobacco cessation.").
+ t = t.replace(
+ /\s*Reviewed OHI with demonstration[^.]*\.\s*/i,
+ "\n\n"
+);
  }
 
  // -------- 7c. Nitrous (peds). --------
@@ -7849,12 +7857,13 @@ const EXAM_FINDINGS_CONFIG = {
  ],
  },
  {
- // OHI section stays visible even in POE-only mode (no prophy) —
- // students still typically do OHI at exam visits. Checkboxes
- // default OFF; checking adds "& completed nutritional counseling
- // and tobacco cessation" to the "Reviewed OHI with demonstration"
- // sentence via renderTemplate's OHI substitution.
+ // OHI section hides in POE-only mode (no prophy this visit).
+ // Per Jake: if no prophy, no "Reviewed OHI with demonstration"
+ // sentence and no nutritional/tobacco offer. The poeOnly
+ // substitution in renderTemplate also strips the OHI sentence
+ // from the rendered note when poeOnly is true.
  title: "OHI",
+ poeOnlyHide: true,
  fields: [
  { label: "nutritional counseling", type: "ohi-checkbox" },
  { label: "tobacco cessation", type: "ohi-checkbox" },
@@ -7865,7 +7874,7 @@ const EXAM_FINDINGS_CONFIG = {
  // "No treatments planned" sits right-aligned in the section header
  // (moved here from the Findings odontogram label, where it floated
  // disconnected from the treatment plan it actually gates).
- headerCheckbox: { field: "noTreatmentsPlanned", label: "No treatments planned" },
+ headerCheckbox: { field: "noTreatmentsPlanned", label: "No treatments" },
  fields: [
  { label: "treatment plan", type: "odontogram", hideLabel: true,
  placeholder: "List each treatment on its own line. Press Enter to add another.", seedOnFocus: true },
@@ -8010,7 +8019,7 @@ const EXAM_FINDINGS_CONFIG = {
  title: "Treatment plan",
  // "No treatments planned" right-aligned in header (was on the
  // hidden-label treatment-plan field; section-level reads better).
- headerCheckbox: { field: "noTreatmentsPlanned", label: "No treatments planned" },
+ headerCheckbox: { field: "noTreatmentsPlanned", label: "No treatments" },
  fields: [
  { label: "treatment plan", type: "odontogram", hideLabel: true,
  placeholder: "List each treatment on its own line. Press Enter to add another.",
