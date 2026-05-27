@@ -25904,14 +25904,14 @@ const PATHWAYS = [
  id: "pedo-indirect-pulp-therapy",
  domain: "pedo",
  label: "Primary IPT",
- description: "A primary molar with deep caries approaching the pulp, but no signs or symptoms of irreversible pulpitis — no spontaneous pain, no fistula, no PARL. The traditional move is to keep excavating until clean and then pulpotomy if you expose. IPT instead leaves a thin layer of stained, caries-affected dentin over the pulp and seals it under a definitive restoration. Contemporary IPT evidence shows >90% success at 3 years — higher than pulpotomy in long-term studies — because sparing the pulp avoids the surgical insult entirely. The decision turns on certainty of vitality before starting and a definitive restoration immediately after.",
+ description: "A primary molar with deep caries approaching the pulp, but no signs or symptoms of irreversible pulpitis — no spontaneous pain, no fistula, no PARL. The traditional move is to keep excavating until clean and then pulpotomy if you expose. IPT instead leaves a thin layer of stained, caries-affected dentin over the pulp and seals it under a definitive restoration. Contemporary evidence shows favorable IPT outcomes — sparing the pulp avoids the surgical insult of pulpotomy entirely. The decision turns on certainty of vitality before starting and a definitive restoration immediately after.",
  keyDecisions: [
  "Indication: deep caries near the pulp, no spontaneous pain history, no nocturnal pain, no PARL on radiograph, no fistula, no internal/external resorption. Pain that's purely cold-provoked and stops with the stimulus = reversible pulpitis = candidate. Sensitivity at night or unprovoked = exclude.",
  "Confirm vitality before committing — palpation, percussion, and radiographic check. A tooth headed for necrosis is not an IPT candidate; you'll end up reopening within months.",
  "Excavation technique: remove all caries at the DEJ to leave caries-free walls; carefully remove soft carious dentin over the pulp but stop before exposure. The stained dentin that remains over the pulp is the deliberate endpoint — not a failure of complete excavation.",
  "Liner over the remaining caries-affected dentin: calcium hydroxide (Dycal/Theracal), MTA, or Biodentine. GIC (Vitrebond) is also acceptable as a base. Taught options.",
  "Restore definitively in the same visit — SSC preferred for posterior, composite acceptable. ITR/temporary restoration over IPT defeats the purpose; bacteria leak in, and the residual caries reactivates.",
- "Follow up at 6 months clinically, 12 months radiographically. Success indicators: no symptoms, no PARL development, no internal resorption. AAPD evidence supports IPT as the deep-caries strategy of choice over stepwise excavation in primary teeth.",
+ "Follow up at 6 months clinically, 12 months radiographically. Success indicators: no symptoms, no PARL development, no internal resorption. IPT is the preferred deep-caries strategy over stepwise excavation in primary teeth.",
  ],
  phases: [
  { label: "Vitality confirmation", count: 1 },
