@@ -4245,23 +4245,25 @@ function renderTemplate(raw, f) {
  /Placed #0(\s+gingival retraction cords?)/g,
  `Placed #${top}$1`
 );
- // Variant B + crown-prep two-cord variant ("Placed gingival
- // retraction cord(s) #00 & #0"). Two cases:
- // - bottom cord IS specified → rewrite the WHOLE phrase with both
- // sizes + the two-cord-technique parenthetical.
- // - bottom cord NOT specified → rewrite to single cord and drop
- // the parenthetical AND the "& #0" piece.
+ // Variant B + two-cord variant ("Placed gingival retraction
+ // cord(s) #00 & #0 soaked …"). The optional `(two-cord
+ // technique …)` parenthetical is matched as a non-capturing
+ // group so the regex fires on both 2821 Crown Prep (with
+ // parenthetical) and 3076 Final Impression (without). Two cases:
+ // - bottom cord IS specified → rewrite the WHOLE phrase with
+ // both sizes. Preserve the parenthetical only on templates
+ // that originally had it (2821).
+ // - bottom cord NOT specified → rewrite to single cord and
+ // drop both the "& #0" piece AND any parenthetical.
+ const twoCordPattern = /Placed gingival retraction cords?\s+#0+\s*&\s*#0\s+soaked\s+(in|with)\s+Hemodent(\s*\(two-cord technique[^)]*\))?/g;
  if (bottom) {
- t = t.replace(
- /Placed gingival retraction cords?\s+#0+\s*&\s*#0\s+soaked\s+(in|with)\s+Hemodent\s*\(two-cord technique[^)]*\)/g,
- `Placed gingival retraction cords #${bottom} & #${top} soaked $1 Hemodent (two-cord technique — bottom cord submerged for hemostasis, top cord visible for sulcus expansion)`
- );
+ t = t.replace(twoCordPattern, (_m, prep, paren) =>
+ `Placed gingival retraction cords #${bottom} & #${top} soaked ${prep} Hemodent${paren? " (two-cord technique — bottom cord submerged for hemostasis, top cord visible for sulcus expansion)": ""}`
+);
  } else {
- // Drop the two-cord parenthetical + the "& #0" segment.
- t = t.replace(
- /Placed gingival retraction cords?\s+#0+\s*&\s*#0\s+soaked\s+(in|with)\s+Hemodent\s*\(two-cord technique[^)]*\)/g,
- `Placed gingival retraction cord #${top} soaked $1 Hemodent`
- );
+ t = t.replace(twoCordPattern, (_m, prep) =>
+ `Placed gingival retraction cord #${top} soaked ${prep} Hemodent`
+);
  }
  // Variant B (residual, post-cord form): "Placed gingival
  // retraction cord(s) #0" without an "& #0" twin — covers any
@@ -11039,12 +11041,13 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  RMGI, 3076 Final Impression, 3204 Crown Delivery). */}
  {(() => {
  const showCord = /Placed (?:#\d+\s+)?gingival retraction cords?/i.test(rawTemplate);
- // The Bottom cord selector only makes sense for templates that ship
- // with the two-cord-technique phrasing (currently just 2821 Crown
- // Prep). On single-cord templates the substitution regex wouldn't
- // fire even if a bottom size were picked, so the selector would be
- // visible noise. Gate it explicitly.
- const isTwoCordTemplate = /two-cord technique/i.test(rawTemplate);
+ // The Bottom cord selector renders for any template that ships
+ // two cords ("#00 & #0" / "cords #X & #Y"). Currently matches 2821
+ // Crown Prep AND 3076 Final Impression. Earlier gate looked for the
+ // literal "two-cord technique" parenthetical, which only 2821 has,
+ // so 3076 silently got the single-cord widget and its #00 & #0 in
+ // the rendered note couldn't be edited.
+ const isTwoCordTemplate = /gingival retraction cords?\s+#\d+\s*&\s*#\d+/i.test(rawTemplate);
  // Crown-type dropdown (PFM vs all-ceramic) is for clinical templates
  // where the SAME procedure can be done with either material (crown prep,
  // core buildup, final impression, delivery). Lab scripts ship one per
