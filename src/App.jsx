@@ -11695,9 +11695,10 @@ function PrivacyBanner() {
  marginTop: "18px", marginBottom: 0,
  fontSize: "11px", lineHeight: 1.6,
  color: "var(--ink-faint)",
+ fontStyle: "italic",
  textAlign: "center",
  }}>
- Notes and patient fields stay local to your browser — nothing is sent or stored anywhere else.
+ Notes and patient fields stay local to your browser — nothing is sent or stored anywhere.
  <br />
  Clicking codes copies to clipboard. Don't forget your name.
  </p>
