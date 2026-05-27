@@ -22596,9 +22596,74 @@ function Guides() {
 // ║ rpd-kennedy3 → ind-conventional-crown → fan-out by family.               ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
 
-const PATHWAY_DOMAINS = [];
-const PATHWAY_GROUPS = {};
-const PATHWAYS = [];
+// ─── TEMPORARY: test pathway for visual-review of the new schema ──────────
+// This block exists so Jake can see the new card layout (phase badge,
+// category badge, dual keyDecision form, lab-step bands) rendered live on
+// Vercel before any real content lands. Remove this entire block + re-hide
+// the Cases tab before building cd-conventional in Step 3.
+// See CASES-BUILD-PLAN.md "The temporary-unhide-for-visual-review pattern".
+
+const PATHWAY_DOMAINS = [
+ { id: "test", label: "Test" },
+];
+
+const PATHWAY_GROUPS = {
+ test: [
+ { label: "Renderer demo", ids: ["test-rendering-demo"] },
+ ],
+};
+
+const PATHWAYS = [
+ {
+ id: "test-rendering-demo",
+ domain: "test",
+ category: "dentures",
+ phase: "phase3",
+ label: "Test rendering demo — REMOVE before going live",
+ description: "Throwaway pathway used to verify the new renderer visual treatment (phase badge, category badge, dual keyDecision form, lab-step bands interleaved between phases). This entry will be removed before the Cases tab is unhidden for students. None of the content below is clinically meaningful.",
+ keyDecisions: [
+ { text: "First key decision — new object form, has a source citation that should render as a monospace footnote underneath this line.", source: "Test source: PDF A p. 12" },
+ { text: "Second key decision — also new object form with source.", source: "Test source: PDF B p. 5-7" },
+ "Third key decision — legacy string form with NO source. The renderer should display this without a footnote, proving backward compatibility.",
+ ],
+ phases: [
+ { label: "Records", count: 2 },
+ { label: "Mounting", count: 2 },
+ { label: "Delivery", count: 1 },
+ ],
+ labSteps: [
+ {
+ after: -1,
+ title: "Pre-procedure prep",
+ body: "Example of a lab step with after: -1, meaning it appears BEFORE the first phase. Tests the pre-phase-loop branch of the renderer.",
+ source: "Test source: PDF A p. 3",
+ turnaround: "Before patient arrives",
+ },
+ {
+ after: 0,
+ title: "Pour preliminary cast",
+ body: "Example of a lab step between phase 0 (Records) and phase 1 (Mounting). The most common pattern — work the lab does between the records appointment and the mounting appointment.",
+ source: "Test source: CD Lab Boxing.pdf p. 3-7",
+ turnaround: "1 week before next visit",
+ },
+ {
+ after: 1,
+ title: "Mount on articulator + verify pin",
+ body: "Example of a lab step between phase 1 (Mounting) and phase 2 (Delivery). No turnaround on this one to verify the layout adapts.",
+ source: "Test source: Articulator+Facebow.pdf p. 11",
+ },
+ ],
+ sections: [
+ { guideId: "cd", chapterId: "cd-ch1" },
+ { guideId: "cd", chapterId: "cd-ch2" },
+ { guideId: "cd", chapterId: "cd-ch7" },
+ { guideId: "cd", chapterId: "cd-ch8" },
+ { guideId: "cd", chapterId: "cd-ch15" },
+ ],
+ },
+];
+
+// ─── End of temporary test pathway block ──────────────────────────────────
 
 // Phase + category labels for the pathway card header badges.
 // The IDs map to the UIC TP framework (from Tx Dx- Overview.pdf) and the
@@ -28072,16 +28137,17 @@ const TABS = [
  // component + GUIDES const are retained because the Cases patcher
  // reads them; they're just not directly navigable as a top-level tab.
  //
- // ── SIDELINED 2026-05-26 ────────────────────────────────────────────
- // Cases is being rebuilt from the ground up on a DxTP + Swade-anchored
- // foundation (see CASES-FOUNDATION.md and CASES-PROCEDURES.md in the
- // repo root). The PATHWAYS array, PATHWAY_GROUPS, and the Pathways
- // component are all still in the build — only the top-level nav entry
- // is commented out so students can't reach the current (about-to-be-
- // rewritten) procedure set from the live site. Restore this line to
- // bring the tab back when the rebuild is ready.
- //
- // { id: "pathways", label: "Cases", hint: "Customized guide for your patient case" },
+ // ── TEMPORARILY UNHIDDEN 2026-05-27 for visual-review of new schema ─
+ // Cases is mid-rebuild on a DxTP + Swade-anchored foundation (see
+ // CASES-FOUNDATION.md / CASES-PROCEDURES.md / CASES-BUILD-PLAN.md).
+ // Currently only a throwaway test-rendering-demo pathway is in the
+ // new PATHWAYS array — exists so Jake can review the new card layout
+ // (phase + category badges, lab-step bands, dual keyDecision form)
+ // live before any real content lands. The next commit removes the
+ // test data and either keeps the tab unhidden (if proceeding straight
+ // to cd-conventional) or re-hides it (if making schema adjustments
+ // first).
+ { id: "pathways", label: "Cases", hint: "Customized guide for your patient case" },
 ];
 
 // Engine names are exported from src/rpd-engine.js directly. Tests import
