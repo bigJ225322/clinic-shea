@@ -179,7 +179,7 @@ const CHUNKS = [
 "id": "c014.0",
 "section": "EXAMS",
 "title": "URGENT CARE — urgent care: equipment",
-"body": "urgent care: equipment\n ●​ from sterilization: exam kit, radiograph kit, blood glucose meter, electric pulp tester (with tip & toothpaste), patient goggles,\n blood glucose kit\n ●​ from locker: blood pressure cuff, pen, loupes and/or eye protection\n ●​ in unit: EndoIce, cotton swab"
+"body": "urgent care: equipment\n ●​ from sterilization: exam kit, radiograph kit, blood glucose meter, electric pulp tester (with tip & toothpaste), patient goggles,\n blood glucose kit\n ●​ from locker: blood pressure cuff, pen, loupes and/or eye protection\n ●​ in unit: Endo Ice, cotton swab"
 },
 {
 "id": "c014.1",
@@ -11993,16 +11993,14 @@ function Browse({
  {/* Bucket header: larger Fraunces title matches the steps-article h2
  voice (just scaled down), so the items panel reads as a peer of
  the right-hand content card rather than as small utility chrome.
- Earlier 13px/500 felt like form-label tier and got visually lost. */}
+ Earlier 13px/500 felt like form-label tier and got visually lost.
+ The decorative Unicode icons (⚙ ❏ ✦) were removed per Jake — the
+ bucket label alone reads clearly without them. */}
  <div style={{
  display: "flex", alignItems: "baseline", gap: "10px",
  marginBottom: "12px", paddingBottom: "10px",
  borderBottom: "1px solid var(--rule-soft)",
  }}>
- <span style={{
- color: "var(--accent)", fontSize: "13px",
- position: "relative", top: "-1px",
- }}>{meta.icon}</span>
  <span className="serif" style={{
  fontSize: "19px", fontWeight: 500,
  letterSpacing: "-0.005em", color: "var(--ink)",
@@ -12073,20 +12071,18 @@ function Browse({
  </section>
 
  {/* ── Right: steps article ── */}
- <div style={{ position: "relative" }}>
- {/* "Steps by (swade)" attribution — sits in the upper-right of the
- steps article. Reinstated per Jake after the May 26 strip-Swade
- pass. Lowercase parenthetical + italic serif keeps it as a quiet
- humble acknowledgment of the unofficial student-authored source,
- rather than a citation that could read as a UIC endorsement claim.
- Positioned in the wrapper (not the article) so it doesn't scroll
- with the article's overflow content. */}
+ <div>
+ {/* "Steps by (swade)" attribution — sits ABOVE the article on the
+ cream background, hugging the right margin. Was previously
+ absolute-positioned inside the article's whitespace; per Jake it
+ should live outside the white card. Lowercase parenthetical +
+ italic serif keeps it a quiet humble nod to the unofficial
+ student-authored source rather than a citation. */}
  <div style={{
- position: "absolute", top: "12px", right: "18px",
- zIndex: 1,
+ textAlign: "right",
  fontSize: "11px", color: "var(--ink-faint)",
  fontFamily: "'Geist', sans-serif", lineHeight: 1,
- pointerEvents: "none",
+ marginBottom: "8px", paddingRight: "4px",
  }}>
  Steps by <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em>
  </div>
