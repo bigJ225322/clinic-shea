@@ -130,24 +130,89 @@ Each PATHWAYS entry, when fully built, looks like:
 - Verify build passes (`npx vite build`)
 - Commit message names this as the rename commit and explains the rebuild
 
-### Step 2 — Renderer prep (commit 2)
-- Modify `keyDecisions` rendering to handle BOTH old (string) and NEW (object
-  with `{text, source}`) forms, since the legacy array will need to keep
-  rendering if we ever turn it back on for reference. Use a helper:
-  ```js
-  function renderKeyDecision(kd) {
-    if (typeof kd === 'string') return { text: kd, source: null };
-    return kd;
-  }
-  ```
-- Add a `LabStepBand` component in the Cases card renderer that:
-  - Renders between phases per the `after` index
-  - Visual: paper-colored background (slightly different from clinical phase
-    blocks), "LAB" tag in accent color, italic body, monospace source
-    footnote underneath
-  - Includes turnaround text if present
-- Phase + category visual indicators on the pathway card header
-- Build passes, no rendering crashes (test by setting a tiny test pathway)
+### Step 2 — Renderer prep (DONE — commit 4881ad0)
+
+What was added (so future-Claude doesn't reimplement):
+
+**`PHASE_LABELS` + `CATEGORY_LABELS` constants** at module scope, near the
+new empty PATHWAYS array. Maps schema ids to display strings:
+
+```js
+const PHASE_LABELS = {
+  urgent: "Urgent", dx: "Diagnostic",
+  phase1: "Phase I", phase2: "Phase II",
+  phase3: "Phase III", phase4: "Phase IV",
+};
+const CATEGORY_LABELS = {
+  operative: "Operative", digital: "Digital", fixed: "Fixed",
+  dentures: "Dentures", perio: "Perio", endo: "Endo",
+  os: "OS", sti: "STI", iod: "IOD", pedo: "Pedo",
+};
+```
+
+**KeyDecisions rendering** in the Pathways component handles BOTH forms:
+```jsx
+{selectedPathway.keyDecisions.map((d, i) => {
+  const text = typeof d === "string" ? d : d.text;
+  const source = typeof d === "string" ? null : d.source;
+  return <li>...{renderInline(text)}...{source && <footnote>[{source}]</footnote>}...</li>;
+})}
+```
+
+**Card-header badges** under the h2 title, conditional on `phase`/`category`
+existing on the pathway:
+- Phase badge: solid accent background, paper-colored text, padding `3px 9px`
+- Category badge: white card background, accent border, accent text, padding `2px 9px`
+- Both: `0.62rem`, uppercase, `0.14em` letter-spacing, 600 weight
+- Hidden entirely when neither field is set (so legacy pathways unchanged)
+
+**Lab-step band rendering** interleaved within the existing `phases.forEach`
+loop. The helper function `renderLabStep(ls, key)` produces:
+- Paper-colored background (`var(--paper, #FBF8F2)`)
+- Dashed border (`var(--rule-soft, var(--rule))`)
+- Header row (flex, baseline alignment, wrappable):
+  - "Lab" tag: solid accent block, paper-colored text, `0.6rem`, uppercase
+  - Title: `0.78rem`, weight 500, ink color
+  - Turnaround (optional): `0.7rem`, ink-faint, italic, right-aligned via `marginLeft: auto`
+- Body: `0.8rem`, line-height 1.55, ink-soft, italic
+- Source (optional): `0.66rem`, ink-faint, monospace, opacity 0.75
+
+**`after` index semantics:**
+- `after: -1` → lab band renders before phase 0 (loop pre-pass)
+- `after: N` → lab band renders between phase N and phase N+1 (after the
+  phase's `rendered.push(...)`)
+- Multiple lab steps can share the same `after` value — they render in
+  array order
+
+**Backward compatibility verified**: a pathway without `phase`, `category`,
+or `labSteps` fields renders exactly as before. The legacy keyDecisions
+(strings) also render with no source footnote.
+
+**Build verification: `npx vite build` passes.** Bundle size 2.29 MB
+(unchanged from Step 1 since the new renderer code is tiny vs the legacy
+data that got tree-shaken).
+
+### The temporary-unhide-for-visual-review pattern
+
+Before Step 3 lands, this pattern is useful and worth captureing for the rest
+of the build:
+
+1. Write a **test pathway** (or the next real model pathway).
+2. **Temporarily unhide the Cases tab** by uncommenting the `{ id: "pathways", label: "Cases", ... }` entry in the TABS array (near line 27916).
+3. Add the test/model pathway to `PATHWAYS` and a matching minimal entry to
+   `PATHWAY_DOMAINS` + `PATHWAY_GROUPS` so the picker can reach it.
+4. Commit + push.
+5. User reviews live on Vercel.
+6. Adjust visual treatment / content based on feedback.
+7. For the test-pathway flow: subsequent commit removes the test data
+   and re-hides the tab. For the real-pathway flow: tab stays unhidden as
+   more content lands; the rebuild becomes incrementally usable.
+
+The test-pathway approach is a one-time-only proof-of-concept before
+`cd-conventional` lands, to verify the visual treatment of phase
+badges + lab bands works as intended. After cd-conventional is built,
+this pattern continues with real pathways — the test/throwaway phase
+ends.
 
 ### Step 3 — Build `cd-conventional` (commit 3)
 **This is the first real pathway.** Read sequentially:
