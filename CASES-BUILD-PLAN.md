@@ -559,6 +559,165 @@ If you're picking this up cold:
 
 ---
 
+## Scope clarifications from Jake (2026-05-27) — READ BEFORE BUILDING ANY OF THESE FAMILIES
+
+These narrow the rebuild significantly. The Step 6 source-map tables above
+list more pathways than we should actually build. Use this section as the
+final scope filter.
+
+### Implants — SHELVED entirely for now
+
+Jake's words: "we are only loosely involved with implants — i actually
+don't know much about the process other than that we don't place them.
+I know we have to go to appointments related to them, and maybe fabricate
+a surgical guide, which i bet we have a resource on, but there's way more
+content on implants which suggest we are way more involved than we actually
+are. We take them to the implant consult appointment, and then we get a
+resident, but i don't know much beyond that."
+
+Concrete: shelf the entire implant family until we have a clear UIC
+pathway. Don't build:
+- `ind-single-implant-crown`
+- `cd-iod-canine-roots`
+- `cd-implant-supported-lower` (2-implant Mn IOD)
+- `rpd-implant-hybrid`
+- `cross-anterior-implant-esthetic`
+- `cross-cd-iod-implants`
+- `cross-rpd-to-implants`
+
+If we revisit later, the workflow we'd build is roughly: predoc takes
+patient to the implant consult appointment → predoc connects with the
+implant resident → predoc may fabricate a surgical guide (Swade chunk
+278 references `D6190 Implant surgical guide`) → predoc returns the
+patient to the resident for placement. **None of the placement,
+abutment fabrication, or crown restoration steps belong to the predoc
+in any depth I (Claude) currently understand.** The current pathway
+content overstates predoc involvement.
+
+### Oral Surgery — narrowest possible scope
+
+Jake's words: "we really just extract teeth. There's some students that
+use the surgical handpiece to do some minor stuff, but we can probably
+not cover it. It's very very straight forward, and there are not
+multi-step, or especially no lab steps involved. There's followups, but
+they're not worth our time to illuminate."
+
+Concrete: only build extraction pathways. Skip everything else.
+- ✅ `surgery-simple-ext` — single-rooted extraction
+- ✅ `surgery-multi-rooted-ext` — molar extraction
+- ❌ `surgery-surgical-ext` (flap + bone removal) — skip; surgical
+  handpiece work is minor and not multi-step
+- ❌ `surgery-dry-socket`, `surgery-post-op-bleed` — follow-up scenarios,
+  not multi-visit workflows
+- ❌ `surgery-third-molar` — already cut
+- ❌ `surgery-fractured-anterior` — overlaps with endo trauma; cover in
+  the endo/trauma pathway instead
+
+OS pathways: **2 total** (down from ~6 in the previous plan).
+
+### Perio — clinic-focused, no surgery
+
+Jake's words: "I'm hoping you keep a good scope of Perio too. We have to
+know a lot about it, (well, what's involved with the appointments, as in
+the theory behind what we're doing) but 0 surgery stuff. Just perio
+maintenance, SRP, prophy (restorative chair, but technically perio), and
+perio COE. Don't start getting into the weeds because we have the
+content available to us. We're keeping this clinic-focused."
+
+Concrete:
+- ✅ `perio-coe` — the Perio COE Dx engine pathway
+- ✅ `perio-prophy` — adult prophy (done in restorative chair but technically perio)
+- ✅ `perio-srp` — scaling + root planing
+- ✅ `perio-maintenance` — recall perio maintenance
+- ❌ `perio-acute-abscess` — see note below
+- ❌ `perio-crown-lengthening` — already cut (referral)
+- ❌ `perio-gingival-graft` — already cut (referral)
+
+Perio pathways: **4 total** (down from ~8 in the previous plan).
+
+### Acute perio abscess — not its own pathway
+
+Jake's words: "Acute perio abscess is literally just an outcome of an
+urgent care appointment, or other exams, i guess, but mostly urgent care.
+Beyond knowing how it presents, how it works, don't see reason for a
+whole pathway. Result is always Endo. If it requries drainage, that's not
+something we're doing."
+
+Concrete: don't build `perio-acute-abscess` as a standalone pathway. The
+recognition + outcome ("this is acute perio abscess; refer to endo or
+drainage by faculty/OS") could appear as a keyDecision in `perio-coe` or
+in an urgent-care reference. Probably skip entirely.
+
+### Veneers — UIC UG doesn't do them at all
+
+Jake's words: "I don't think we do veneers at all. Don't do any veneer
+stuff."
+
+Concrete: cut all veneer pathways from the rebuild scope.
+- ❌ `ind-veneers` — indirect anterior veneers (the 6-unit case)
+- ❌ `dir-direct-veneer` — chairside direct composite veneer (also a
+  veneer; Jake said "don't do any veneer stuff")
+- ❌ `repair-veneer-debond`
+
+### Zirconia repairs — shelved
+
+Jake's words: "Idk if we even do zirconia repairs. Shelf that one for
+now."
+
+Concrete: don't build `repair-zirconia-chip`. Revisit if UIC content
+shows it's actually done at UG.
+
+### Pedo — shelved entirely for now
+
+Jake's words: "Pedo stuff is also not very multi step, and there are zero
+lab steps. All crowns are SSC (same day), everything is same day, and we
+don't do RCT in peds. So... Let's not do Pedo here. At least not yet."
+
+Concrete: shelf the ENTIRE Pedo family from this rebuild. The Cases tab
+differentiator is multi-visit + lab-steps; pedo procedures are largely
+single-visit with no lab steps. The Steps tab + the Note Builder +
+Swade chunks already serve the per-appointment view that pedo needs.
+
+Don't build:
+- All `pedo-*` pathways (composite, SSC, pulpotomy, IPT, pulpectomy,
+  sealant, fluoride varnish, behavior management, local anesthetic,
+  strip crown, primary anterior class III, anterior crown selection,
+  space maintainer, primary trauma, oral pathology, extraction,
+  POE/recall, tx sequencing, radiograph selection, oral surgery,
+  medications reference, deep caries decision)
+
+**This means the Peds pill is removed from the picker entirely for the
+rebuild.** Revisit if multi-visit pedo workflows emerge (space maintainers
+might be the only candidate — they do involve a lab step for fabrication).
+
+### Net effect on the rebuild
+
+Previous plan target was ~30-40 pathways across all families. With the
+scope clarifications:
+
+| Family | Was | Now |
+|---|---|---|
+| Direct / Operative | 10 | 9 (cut dir-direct-veneer) |
+| Indirect / Fixed | 14 | 11 (cut ind-veneers, ind-single-implant-crown; need to verify ind-cracked-tooth-syndrome) |
+| Digital | 2 | 2 |
+| Endo | 9 | 9 |
+| OS | 6 | 2 (extraction only) |
+| Perio | 5 | 4 |
+| CD | 5 | 2 (cut cd-iod-canine-roots, cd-implant-supported-lower; keep cd-conventional, cd-iid; merge cd-adjustment + cd-reline-lab) |
+| RPD | 8 | 7 (cut rpd-implant-hybrid) |
+| Pedo | 15 | **0 (shelved)** |
+| Cross | 8 | ~3-4 (cut all implant-cross; keep cross-anterior-trauma, cross-pre-radiation-extractions, cross-caries-risk, maybe cross-sdf-arrest) |
+| **TOTAL** | **~80** | **~50** |
+
+About 50 pathways across the active families. Much more manageable.
+
+The anterior-trauma cross-pathway (`cross-anterior-trauma`) needs a
+rewrite: previously it discussed three replacement options (implant /
+3-unit FPD / Kennedy IV RPD). With implants shelved, the discussion
+pivots to FPD vs RPD vs leave-it-alone or refer-for-implant-consult.
+
+---
+
 ## User answers locked in (don't re-ask)
 
 These are decided. Don't ask again unless you encounter a contradiction:
