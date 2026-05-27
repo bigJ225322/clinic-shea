@@ -23936,10 +23936,12 @@ const PATHWAYS = [
  "Counsel patient on diet (soft for first 2 weeks) and immediate post-op care.",
  "CDT codes: D5130 (Immediate denture, maxillary) / D5140 (Immediate denture, mandibular) — this is the conventional immediate denture, which is the patient's long-term prosthesis. Tissue conditioning at 2-4 weeks bills D5850 (max) / D5851 (mand). Hard lab reline at 3-6 months bills D5750 (max) / D5751 (mand). For an interim transitional appliance instead (replaced later by definitive CD), use D5810/D5811 — that's a different scope of treatment. Extractions are billed separately by the surgeon: D7140 (simple) per tooth, or D7210 (surgical) per tooth as appropriate.",
  ],
+ // phases sum to 18 = sections.length.
  phases: [
- { label: "Records", count: 4 },
- { label: "Mounting", count: 3 },
- { label: "Setup", count: 3 },
+ { label: "IID context", count: 1 },
+ { label: "Records", count: 5 },
+ { label: "Mounting + VDO + CR", count: 4 },
+ { label: "Setup + try-in", count: 3 },
  { label: "Process & deliver", count: 4 },
  { label: "Follow-up", count: 1 },
  ],
