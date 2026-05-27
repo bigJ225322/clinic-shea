@@ -24135,10 +24135,12 @@ const PATHWAYS = [
  "Faculty signs off on the RPD design before crown prep.",
  "CDT codes (per-procedure, sequential): D2750 (PFM crown, high noble metal) at the survey-crown visits — typical material default. D5213/D5214 (maxillary/mandibular cast-metal RPD) at the RPD fabrication that follows. Each is billed independently — the survey crown is its own complete procedure that precedes the RPD impression.",
  ],
+ // phases sum to 8 = sections.length (Material count decremented from
+ // 2 to 1 after ind-ch3 was removed).
  phases: [
  { label: "RPD-side planning", count: 3 },
  { label: "Indirect workflow", count: 2 },
- { label: "Material + framework", count: 2 },
+ { label: "Material", count: 1 },
  { label: "Cementation + reference", count: 2 },
  ],
  sections: [
