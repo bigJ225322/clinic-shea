@@ -4912,10 +4912,14 @@ function renderTemplate(raw, f) {
  // field removed to avoid double-input UI confusion.
 
  // "perio maintenance interval of 4 months" — substitute interval.
+ // The template currently ships with "[3 / 4 / 6] months" as the
+ // placeholder; older versions used the literal "X months". The
+ // regex below matches either form so the substitution works
+ // regardless of template version.
  if (label === "maintenance interval") {
  if (v.trim()) {
  t = t.replace(
- /(perio maintenance interval of )\d+\s*months?/,
+ /(perio maintenance interval of )(?:\[\s*3\s*\/\s*4\s*\/\s*6\s*\]\s*months?|\d+\s*months?)/,
  `$1${v}`
  );
  }
@@ -5410,6 +5414,12 @@ const labelStyle = {
  color: "var(--ink-soft)", fontWeight: 500, marginBottom: "3px",
  display: "block", fontFamily: "'Geist', sans-serif",
  whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+ // Centered (2026-05-27 per Jake) — all form field labels share this
+ // one alignment. Was previously default-left, with random italic
+ // Title-case overrides scattered through ExamFindings creating an
+ // inconsistent look between sections of the same form. Italic overrides
+ // were also stripped at the call sites.
+ textAlign: "center",
 };
 const inputStyle = {
  width: "100%", padding: "7px 10px", fontSize: "13px",
@@ -5543,6 +5553,25 @@ function parseLabPlaceholders(body) {
  // gingiva-dropdowns triple (renderTemplate substitutes from
  // ef["gingival color"] / "gingival contour" / "gingival consistency").
  // Suppress here so we don't render duplicate text inputs.
+ continue;
+ }
+ if (text === "date") {
+ // "[date]" appears in perio re-eval (1346, for SRP date) and RCT
+ // (5472, for endo consult date / BW PA date). Both templates have
+ // dedicated date inputs that substitute these placeholders via the
+ // renderTemplate step 6f (perio) / 6h (endo) substitutions. The
+ // generic bracket picker would create a duplicate DATE input.
+ continue;
+ }
+ if (/^\s*3\s*\/\s*4\s*\/\s*6\s*$/.test(text)) {
+ // "[3 / 4 / 6]" is the perio maintenance interval placeholder in
+ // template 1346. The EXAM_FINDINGS_CONFIG section for 1346 has a
+ // structured "Maintenance interval" select (3 months / 4 months /
+ // 6 months) that substitutes this placeholder via step-11b's
+ // generic labPlaceholders mechanism — but the structured field is
+ // labeled "Maintenance interval" with full options, which is the
+ // student-facing input. Suppress the raw bracket picker so they
+ // don't see two pickers for the same value.
  continue;
  }
  if (text === "Posterior tooth mold" && hasAnteriorMould) {
@@ -7674,6 +7703,12 @@ const EXAM_FINDINGS_CONFIG = {
  // Perio Re-Evaluation — full charting, no OHI checkboxes (not in template)
  "1346": [
  {
+ // Section order updated 2026-05-27 to match the order the
+ // corresponding text appears in the note template (chart → OHI →
+ // improvement + interval). Added: "mucogingival defects" input
+ // (previously missing despite being in the template); improvement
+ // detail input (perioImprovementDetail, captures what specifically
+ // improved between SRP and re-eval).
  title: "Perio chart",
  rows: [
  [
@@ -7689,20 +7724,11 @@ const EXAM_FINDINGS_CONFIG = {
  [
  { label: "O’Leary plaque index", type: "input", placeholder: "%",
  hint: "Perio Chart → Clipboard → O’Leary" },
+ { label: "mucogingival defects", type: "input",
+ displayLabel: "Mucogingival defects",
+ placeholder: "e.g. recession #6 + #11" },
  ],
  [{ type: "gingiva-dropdowns" }],
- ],
- },
- {
- // The "Improvement — what's better" input lives in the top-level
- // Assessment section above (perioImproved + perioImprovementDetail
- // dropdown/textinput pair). Keeping only maintenance interval here.
- title: "Reeval outcome",
- rows: [
- [{ label: "maintenance interval", type: "select",
- displayLabel: "Maintenance interval",
- options: ["", "3 months", "4 months", "6 months"],
- hint: "Standard post-SRP interval is 3–4 months; 6 months only after multiple stable visits." }],
  ],
  },
  {
@@ -7714,6 +7740,22 @@ const EXAM_FINDINGS_CONFIG = {
  { label: "plaque level", type: "select", defaultValue: "moderate",
  options: ["light", "moderate", "heavy"], absorbed: true },
  { label: "plaque area", type: "input", placeholder: "e.g. UR molars, linguals" },
+ ],
+ },
+ {
+ title: "Re-eval outcome",
+ rows: [
+ // perioImprovementDetail binds to the App-level `fields` state
+ // (not `findings`), because the renderTemplate substitution at
+ // step 6g reads `f.perioImprovementDetail`. The custom flag
+ // routes the renderer to a setField-based input.
+ [{ perioImprovementDetail: true,
+ displayLabel: "What improved",
+ placeholder: "e.g. PDs reduced, BoP localized to UL molars" }],
+ [{ label: "maintenance interval", type: "select",
+ displayLabel: "Maintenance interval",
+ options: ["", "3 months", "4 months", "6 months"],
+ hint: "Standard post-SRP interval is 3–4 months; 6 months only after multiple stable visits." }],
  ],
  },
  ],
@@ -8394,8 +8436,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
 
  if (field.type === "radiographic-findings") {
  const distOpts = ["generalized", "localized", "none"];
- const lblStyle = {...labelStyle, fontSize: "10px", textTransform: "none",
- letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" };
+ const lblStyle = { ...labelStyle, fontSize: "10px", color: "var(--ink-soft)" };
  const compactSel = {
 ...inputStyle, fontSize: "12px",
  padding: "5px 6px", width: "auto",
@@ -8516,8 +8557,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  // standard PatientFields renders it because the Peds template has
  // "allergies:"). Here we cover the fields specific to the Peds
  // template format: medical history + medications + IUTD.
- const lblS = {...labelStyle, fontSize: "10px", textTransform: "none",
- letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" };
+ const lblS = { ...labelStyle, fontSize: "10px", color: "var(--ink-soft)" };
  const inS = {...inputStyle, fontSize: "13px" };
  return (
  <div key="peds-history" style={{ marginBottom: "9px" }}>
@@ -8557,8 +8597,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  }
 
  if (field.type === "peds-dental-history") {
- const lblS = {...labelStyle, fontSize: "10px", textTransform: "none",
- letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" };
+ const lblS = { ...labelStyle, fontSize: "10px", color: "var(--ink-soft)" };
  const inS = {...inputStyle, fontSize: "13px" };
  const brushOpts = ["1x a day", "2x a day", "3x a day", "after each meal"];
  const flossOpts = ["1x a day", "1x a week", "2-3 times per week", "3-4 times per week", "never"];
@@ -8597,8 +8636,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  }
 
  if (field.type === "peds-occlusal") {
- const lblS = {...labelStyle, fontSize: "10px", textTransform: "none",
- letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" };
+ const lblS = { ...labelStyle, fontSize: "10px", color: "var(--ink-soft)" };
  const inS = {...inputStyle, fontSize: "13px" };
  return (
  <div key="peds-occlusal" style={{ marginBottom: "9px" }}>
@@ -8726,8 +8764,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
 
  // Peds caries-risk and behavior selects bind to fields (not findings).
  if (field.pedsCariesRisk) {
- const lblS = {...labelStyle, fontSize: "10px", textTransform: "none",
- letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" };
+ const lblS = { ...labelStyle, fontSize: "10px", color: "var(--ink-soft)" };
  return (
  <div key="peds-caries-risk" style={{ marginBottom: "9px" }}>
  <label style={lblS}>Caries risk</label>
@@ -8740,8 +8777,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
 );
  }
  if (field.pedsBehavior) {
- const lblS = {...labelStyle, fontSize: "10px", textTransform: "none",
- letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" };
+ const lblS = { ...labelStyle, fontSize: "10px", color: "var(--ink-soft)" };
  return (
  <div key="peds-behavior" style={{ marginBottom: "9px" }}>
  <label style={lblS}>Behavior (Frankl)</label>
@@ -8753,6 +8789,21 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  </div>
 );
  }
+ // Perio re-eval (1346): "What improved" free-text. Binds to
+ // fields.perioImprovementDetail so the renderTemplate step-6g
+ // substitution can splice it into the "has improved —." sentence.
+ if (field.perioImprovementDetail) {
+ const lblS = { ...labelStyle, fontSize: "10px", color: "var(--ink-soft)" };
+ return (
+ <div key="perio-improvement-detail" style={{ marginBottom: "9px" }}>
+ <label style={lblS}>{field.displayLabel || "What improved"}</label>
+ <input type="text" value={fields.perioImprovementDetail || ""}
+ onChange={e => setField("perioImprovementDetail", e.target.value)}
+ placeholder={field.placeholder}
+ style={{...inputStyle, fontSize: "13px" }} />
+ </div>
+);
+ }
 
  if (field.type === "brushing-flossing") {
  const brushOpts = ["1x", "2x", "3x"];
@@ -8760,8 +8811,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  const techOpts = ["poor", "average", "good"];
  const plaqOpts = ["light", "moderate", "heavy"];
  const selStyle = {...inputStyle, fontSize: "13px" };
- const lblStyle = {...labelStyle, fontSize: "10px", textTransform: "none",
- letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic" };
+ const lblStyle = { ...labelStyle, fontSize: "10px", color: "var(--ink-soft)" };
  return (
  <div key="brushing-flossing" style={{ marginBottom: "9px" }}>
  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "8px" }}>
@@ -8811,10 +8861,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  const grade = findings["AAP grade"] || "";
  const caseType = findings["ADA case type"] || "";
  const selStyle = {...inputStyle, fontSize: "13px", width: "56px", padding: "6px 8px" };
- const lblStyle = {
-...labelStyle, fontSize: "10px", textTransform: "none",
- letterSpacing: "0.04em", color: "var(--ink-soft)", fontStyle: "italic",
- };
+ const lblStyle = { ...labelStyle, fontSize: "10px", color: "var(--ink-soft)" };
  const grpLabel = { fontSize: "11px", color: "var(--ink-soft)",
  fontFamily: "'Geist', sans-serif" };
  const updateAAP = (newStage, newGrade) => {
