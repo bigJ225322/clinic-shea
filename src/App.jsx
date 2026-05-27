@@ -45,7 +45,7 @@ const TEMPLATES = {
  "703": " S\n\n - y/o female patient presents to the clinic for Restorative COE with CC: “”\n - medical history:\n - medications:\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: last time at dentist:; brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n O\n\n Completed extraoral exam & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n\n Updated odontogram with radiographic & clinical hard tissue findings:\n -\n\n - occlusal assessment:\n - endo testing:\n\n A\n - TMJ conditions: WNL\n - soft tissue conditions: WNL\n - hard tissue conditions: WNL\n - caries risk:\n - pulpal diagnosis: WNL\n - occlusal conditions: WNL\n - esthetic considerations: WNL\n\n P\n - Took diagnostic impressions, facebow, & bite registration.\n - Took intraoral photos.\n\n - NV: treatment plan",
  "807": " y/o female patient presents to the clinic for treatment plan presentation.\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n All treatment options, costs, & timelines were thoroughly reviewed with the patient. Discussed advantages & disadvantages of treatments. Pt’s\n questions were answered & pt understood treatment options. Pt opts for optimal treatment plan. Verbal and written consent obtained.\n\n Specific treatments discussed (replace examples with patient-specific items):\n — [example] Pt understands crown on #X needs to be removed & caries needs to be evaluated/excavated before tooth can be deemed restorable. Pt understands that if tooth is nonrestorable, extraction & implant or adding tooth to RPD are tx options.\n — [example] Pt understands caries on #X approximates pulp, and that pulp may be exposed during excavation. Pt understands tooth may need RCT + crown.\n —\n\n NV:",
  "871": " y/o female patient presents to the implant clinic for #4 STI consultation.\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Patient was evaluated for UG STI placement #4. Patient is provisionally recommended for UG STI placement pending CBCT review and OS resident sign-off.\n\n NV:",
- "1091": " - y/o female patient presents to the clinic for POE\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n POE:\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n - caries risk:\n\n Took 4 bitewings; updated odontogram with radiographic & clinical hard tissue findings:\n -\n - endo testing:\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed supragingival & subgingival plaque & calculus using Cavitron (with Isodry) & hand instruments. Flossed. Polished with\n prophy paste. Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation.\n\n Treatment planned for the following treatments:\n -\n Thoroughly reviewed all treatment options, costs, & timelines with pt. Discussed advantages & disadvantages of treatments. Answered pt’s\n questions. Pt understood treatment options. Obtained verbal and written consent for tx plan.\n\n - NV:",
+ "1091": " - y/o female patient presents to the clinic for POE\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n POE:\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n - caries risk:\n\n Took 4 bitewings; updated odontogram with radiographic & clinical hard tissue findings:\n -\n - endo testing:\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed supragingival & subgingival plaque & calculus using Cavitron (with Isodry) & hand instruments. Flossed. Polished with\n prophy paste. Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation.\n\n Treatment planned for the following treatments:\n -\n\n Thoroughly reviewed all treatment options, costs, & timelines with pt. Discussed advantages & disadvantages of treatments. Answered pt’s\n questions. Pt understood treatment options. Obtained verbal and written consent for tx plan.\n\n - NV:",
  "1196": " - y/o female patient presents to the clinic for prophy\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed plaque & calculus using Cavitron (with Isodry) & hand instruments. Flossed. Polished with prophy paste.\n\n Patient is brushing 2x per day and flossing 1x per day. Patient technique is average — moderate generalized plaque with heavy plaque on.\n Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation. Emphasized that patient needs to.\n\n - NV:",
  "1272": " - y/o female patient presents to the clinic for SRP of UR.\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n SRP UR:\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35mm ] needle as IAN & long buccal\n block on right / buccal infiltrations of UR quadrant & greater palatine block on R.\n\n Completed SRP using Cavitron (with Isodry) & hand instruments to remove supragingival and subgingival plaque & calculus.\n Flossed.\n\n Gave pt post-op instructions re: numbness, sore gums, tooth sensitivity, bleeding, ibuprofen/acetaminophen regimen.\n\n Patient is brushing 2x per day and flossing 1x per day. Patient technique is average — moderate generalized plaque with heavy plaque on.\n Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation. Emphasized that patient needs to.\n\n - NV:",
  "1346": " - y/o female patient presents to the clinic for perio re-evaluation after SRP 4 quads completed [date]\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Perio re-eval:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - O’Leary plaque index:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Patient is brushing 2x per day and flossing 1x per day. Patient technique is average — moderate generalized plaque with heavy plaque on.\n\n Patient’s periodontal health has improved —. Upon evaluation, patient will be placed on perio maintenance interval of [3 / 4 / 6] months.\n\n - NV:",
@@ -84,7 +84,7 @@ const TEMPLATES = {
  "5062": " - y/o female patient presents to the digital clinic for #19 digital e.max crown prep\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35mm ] needle as IAN & long buccal\n block on right / buccal infiltration #19.\n\n #19 digital e.max crown prep & scan:\n Completed crown prep to ideal form. Placed gingival retraction cords #00 & #0 soaked in Hemodent. Scanned prep, opposing arch, & occlusion using\n TRIOS intraoral scanner. Verified margins, occlusal clearance, & interproximal contacts on scan.\n\n Selected shade LT-A2 for #19 digital crown. Pt used hand mirror & confirmed shade verbally.\n\n #19 provisional:\n Fabricated provisional using Integrity shade A2. Adjusted to ideal shape with satisfactory marginal adaptation. Cemented with UltraTemp.\n Removed excess cement & flossed. Occlusal & excursive contacts evaluated with articulating paper & adjusted to ideal — pt is not occluding on Integrity. Interproximal contacts\n evaluated with floss & are satisfactory.\n\n NV: #19 digital e.max crown delivery",
  "5305": " - y/o female patient presents to the clinic for #19-MODB digital e.max onlay delivery\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [ 30G 25mm / 27G 35mm ] needle as IAN & long buccal\n block on right / buccal infiltration #19.\n\n #19-MODB digital e.max onlay delivery:\n\n Removed sprue & prepared onlay for pre-crystallization try-in. Placed Isodry (size M). Removed provisional onlay. Removed temporary cement with\n a scaler. Cleaned tooth with pumice & prophy angle\n\n Pre-crystallization try-in:\n - Marginal adaptation satisfactory; verified visually, tactilely, & radiographically (BW taken).\n - Interproximal contacts adjusted with a bur; contacts are satisfactory as evaluated with floss.\n - Occlusal & excursive contacts adjusted with a bur; contacts are satisfactory as evaluated with articulating paper.\n\n Crystallization try-in:\n - [ Stains added? ]. Crystallized using regular glaze and regular firing cycle. [ spray glaze and speed firing cycle ]\n - Crystallized restoration tried in. Adjusted [surfaces].\n - Pt expressed satisfaction with final shade of restoration.\n - Total number of restorations milled: 1 [reason]\n\n Cementation -- Panavia F2.0 resin cement:\n - Restoration intaglio cleaned with Ivoclean 20s, rinsed, dried; etched with 5% HF acid 20s, rinsed, dried; primed with Clearfil ceramic primer 1m,\n dried.\n - Tooth isolated with Isodry. Scrubbed with Consepsis, rinsed, dried; primed with Primer A+B 30s, dried.\n - Mixed Panavia cement pastes A&B (shade TC). Cemented restoration. Removed excess cement. Flossed. Light cured 20s per side.\n - Took BW to verify closed margins. Verified interproximal contacts. Evaluated & adjusted occlusal contacts & excursive contacts to ideal. Polished\n ceramic.\n - Pt is satisfied with bite & esthetics. Gave verbal post-op instructions re: 24 hr set, uneven bite, sore injection site.\n\n NV:",
  "5472": " - y/o female patient presents to the implant clinic for #12 RCT -- same day access & fill\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n CC: “”\n\n Re-confirmed findings from endo consult visit [date] (approx 1 month ago):\n - EOE: WNL\n - IOE: WNL\n - symptoms: pain on chewing\n - #12 is restorable as confirmed with Dr.?\n\n Endo tests:\n - #: percussion +++, palpation +++, probing X mm, mobility 1, cold test NR\n - #: percussion -, palpation -, probing X mm, mobility 0, cold test 2/2 s\n\n Radiographic exam:\n - Re-evaluated BW & PA taken [date]\n - Periapical radiolucency #12\n\n Diagnosis #12:\n - Pulpal dx: necrotic pulp\n - Periapical dx: symptomatic apical periodontitis\n\n Thoroughly reviewed treatment options, timelines, & costs with the pt. Discussed advantages & disadvantages of treatment. Answered pt’s\n questions, pt understood tx options. Pt opts to proceed with RCT #12. Specifically discussed need for pt to return to primary dentist for a crown.\n Verbal & written consent obtained.\n\n #12 RCT:\n\n Applied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi + 1 carpule of 4% articaine 1:100k epi with [ 30G 25mm / 27G 35mm ] needle as buccal infiltration #12.\n\n Rubber dam placed. Excavated caries completely. Accessed, completely unroofed pulp chamber, & achieved straight-line access. Located 2 canals.\n Pre-flared with Vortex orifice opener #20/.08. Determined WL with electronic apex locator. Confirmed WL with WM radiograph taken straight and\n from distal. Created guide path with #10, #15 SS files. Cleansed & shaped canals with powered rotary files. Reconfirmed patency and copious\n irrigation with 1% NaOCl throughout procedure. Fitted master cones and took radiograph.\n\n Buccal canal -- WL X.X mm (reference point: buccal cusp tip)\n Palatal canal -- WL X.X mm (reference point: palatal cusp tip)\n MAF: X (buccal & palatal)\n\n Final irrigation with 1% NaOCl, then 17% EDTA (1 min dwell to remove smear layer), then 1% NaOCl. Dried canals with needle aspiration and paper points. Coated master cone with Endoseal MTA sealer, inserted and pumped 3x, removed and re-coated, re-inserted and pumped 3x, seated fully. Condensed & melted off excess gutta-percha with heat Calamus. Took post-op radiograph. Placed sponge & Cavit.\n\n POI given verbally. Pt tolerated procedure well and left in stable condition.\n\n - NV:",
- "5985": " - y/o female presents to UG Peds with mother for initial/recall appt.\n - RMH with mother. No changes.\n - allergies:, no medications, IUTD\n - dental history: brushes 2x a day, flosses 1x a day, mother helps with brushing & flossing\n - caries risk: HIGH\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology, generalized mild gingivitis, generalized moderate plaque\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n\n Took 4 bitewings & updated odontogram with radiographic & intraoral hard tissue findings:\n - mixed dentition\n -\n - occlusal assessment:\n\n Treatment planned for the following treatments:\n -\n Findings & treatment options, advantages & disadvantages, reviewed with parent. Treatment plan formulated & discussed, all questions were\n answered. Mother signed treatment plan.\n\n Prophy completed.\n - Removed plaque & calculus using hand instruments. Flossed. Polished with prophy paste.\n - Fluoride varnish applied.\n - OHI given; brushing & flossing were demonstrated with mother & pt; advised to brush 2x daily + floss 1x daily\n - Nutritional counseling completed. Advised to limit sugary drinks & snacks, and when consumed, to shorten duration.\n\n - behavior: F[ 1 / 2 / 3 / 4 ]\n - NV: 6 month recall\n - [Student Name] / Dr. [Instructor]",
+ "5985": " - y/o female presents to UG Peds with mother for initial/recall appt.\n - RMH with mother. No changes.\n - allergies:, no medications, IUTD\n - dental history: brushes 2x a day, flosses 1x a day, mother helps with brushing & flossing\n - caries risk: HIGH\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology, generalized mild gingivitis, generalized moderate plaque\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n\n Took 4 bitewings & updated odontogram with radiographic & intraoral hard tissue findings:\n - mixed dentition\n -\n - occlusal assessment:\n\n Treatment planned for the following treatments:\n -\n\n Findings & treatment options, advantages & disadvantages, reviewed with parent. Treatment plan formulated & discussed, all questions were\n answered. Mother signed treatment plan.\n\n Prophy completed.\n - Removed plaque & calculus using hand instruments. Flossed. Polished with prophy paste.\n - Fluoride varnish applied.\n - OHI given; brushing & flossing were demonstrated with mother & pt; advised to brush 2x daily + floss 1x daily\n - Nutritional counseling completed. Advised to limit sugary drinks & snacks, and when consumed, to shorten duration.\n\n - behavior: F[ 1 / 2 / 3 / 4 ]\n - NV: 6 month recall\n - [Student Name] / Dr. [Instructor]",
  "6038": " - y/o female presents to UG Peds with mother for #A SDF\n - RMH with mother. No changes.\n - allergies:, no medications, IUTD\n\n Discussed with parent and patient the disadvantages of SDF, including: staining carious lesions black (showed pictures), possible transient soft\n tissue staining, failure to arrest caries with future need for restoration. Parent understood risks and consented to SDF placement.\n\n Isolated with cotton rolls. Thoroughly dried teeth. Applied SDF to #A in a scrubbing motion. Allowed 60s to air dry. Blotted excess SDF with gauze.\n\n - behavior: F[ 1 / 2 / 3 / 4 ]\n - NV: 6 month recall\n - [Student Name] / Dr. [Instructor]",
  "6095": " - y/o female presents to UG Peds with mother for #3, #14, #19, #30 sealants\n - RMH with mother. No changes.\n - allergies:, no medications, IUTD\n\n Sealants — #3, #14, #19, #30\n Tooth cleaned with pumice & prophy angle. Isodry placed (size P). Etched with 35% phosphoric acid for 30s, rinsed 15s, gently dried. Applied\n Scotchbond Universal 20s, air dried 5s, cured 10s. Applied Ultradent UltraSeal XT Plus to occlusal surface & buccal pit of mandibular molars /\n lingual groove of maxillary molars. Light cured 20s. Repeated for all four permanent first molars (#3, #14, #19, #30). Occlusion evaluated with\n articulating paper -- occlusion is satisfactory, pt is not occluding on sealant.\n\n Patient released in good condition.\n\n - behavior: F[ 1 / 2 / 3 / 4 ]\n - NV: 6 month recall\n - [Student Name] / Dr. [Instructor]",
  "6173": " - y/o female presents to UG Peds with mother for #A-MO preventative resin restoration\n - RMH with mother. No changes.\n - allergies:, no medications, IUTD\n\n Titrated to 40% nitrous oxide / 60% oxygen at 4L/min. Administered for 45 minutes. Applied 20% topical benzocaine & administered 1 carpule of\n 2% lidocaine 1:100k epi as IAN & long buccal block on right/ buccal infiltration #A.\n\n #A-MO PRR\n Placed Isodry (size P). Excavated shallow decay using high & slow speed burs. Prepared minimal cavity preparation to ideal form (caries only — sound enamel/dentin preserved). Etched entire occlusal surface with 35%\n phosphoric acid for 15s, rinsed 5s, gently dried. Applied Scotchbond Universal 20s, air dried 5s, cured 10s. Applied shade A2 Renamel nanofill composite to cavitation only, cured 20s. Applied Ultradent UltraSeal XT Plus over the composite restoration and across the remainder of the occlusal surface (including buccal pit / lingual groove), light cured 20s.\n Restoration finished & polished. Occlusion evaluated with articulating paper & adjusted to ideal.\n\n Patient given 100% oxygen at 4L/min for 5 minutes. Patient released in good condition. Informed mother that pt is still numb, monitor lip & soft\n tissue biting.\n\n - behavior: F[ 1 / 2 / 3 / 4 ]\n - NV: 6 month recall\n - [Student Name] / Dr. [Instructor]",
@@ -305,7 +305,7 @@ const CHUNKS = [
 "id": "c022.2",
 "section": "EXAMS",
 "title": "POE — POE: note template",
-"body": "POE: note template\n - y/o female patient presents to the clinic for POE\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n POE:\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n - caries risk: high (see completed caries risk form)\n\n Took 4 bitewings; updated odontogram with radiographic & clinical hard tissue findings:\n -\n - endo testing:\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed supragingival & subgingival plaque & calculus using Cavitron (with Isodry) & hand instruments. Flossed. Polished with\n prophy paste. Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation.\n\n Treatment planned for the following treatments:\n -\n Thoroughly reviewed all treatment options, costs, & timelines with pt. Discussed advantages & disadvantages of treatments. Answered pt’s\n questions. Pt understood treatment options. Obtained verbal and written consent for tx plan.\n\n - NV:"
+"body": "POE: note template\n - y/o female patient presents to the clinic for POE\n - medical history: RMH; no changes\n - allergies:\n - blood pressure:\n - blood glucose:\n - temperature: ºF\n - dental history: brushing 2x a day & flossing 1x a day\n\n COVID-19:\n Took pt’s temperature & pt used hand sanitizer upon entry to clinic. Pt wore face mask except when in dental chair during active treatment.\n Completed COVID-19 screening form, pt responds “NO” to all questions & is approved for treatment today.\n\n POE:\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n - caries risk: high (see completed caries risk form)\n\n Took 4 bitewings; updated odontogram with radiographic & clinical hard tissue findings:\n -\n - endo testing:\n\n Prophy:\n\n Updated perio EPR & perio chart:\n - probing depths:\n - bleeding on probing:\n - recession:\n - furcation:\n - mobility:\n - mucogingival defects:\n - [color], [contour], [consistency] gingiva\n\n Removed supragingival & subgingival plaque & calculus using Cavitron (with Isodry) & hand instruments. Flossed. Polished with\n prophy paste. Reviewed OHI with demonstration & completed nutritional counseling and tobacco cessation.\n\n Treatment planned for the following treatments:\n -\n\n Thoroughly reviewed all treatment options, costs, & timelines with pt. Discussed advantages & disadvantages of treatments. Answered pt’s\n questions. Pt understood treatment options. Obtained verbal and written consent for tx plan.\n\n - NV:"
 },
 {
 "id": "c023",
@@ -947,7 +947,7 @@ const CHUNKS = [
 "id": "c063.2",
 "section": "PEDS",
 "title": "PEDS INITIAL/RECALL — peds initial/recall: note template",
-"body": "peds initial/recall: note template\n - y/o female presents to UG Peds with mother for initial/recall appt.\n - RMH with mother. No changes.\n - allergies:, no medications, IUTD\n - dental history: brushes 2x a day, flosses 1x a day, mother helps with brushing & flossing\n - caries risk: HIGH\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology, generalized mild gingivitis, generalized moderate plaque\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n\n Took 4 bitewings & updated odontogram with radiographic & intraoral hard tissue findings:\n - mixed dentition\n -\n - occlusal assessment:\n\n Treatment planned for the following treatments:\n -\n Findings & treatment options, advantages & disadvantages, reviewed with parent. Treatment plan formulated & discussed, all questions were\n answered. Mother signed treatment plan.\n\n Prophy completed.\n - Removed plaque & calculus using hand instruments. Flossed. Polished with prophy paste.\n - Fluoride varnish applied.\n - OHI given; brushing & flossing were demonstrated with mother & pt; advised to brush 2x daily + floss 1x daily\n - Nutritional counseling completed. Advised to limit sugary drinks & snacks, and when consumed, to shorten duration.\n\n - behavior: F[ 1 / 2 / 3 / 4 ]\n - NV: 6 month recall\n - [Student Name] / Dr. [Instructor]"
+"body": "peds initial/recall: note template\n - y/o female presents to UG Peds with mother for initial/recall appt.\n - RMH with mother. No changes.\n - allergies:, no medications, IUTD\n - dental history: brushes 2x a day, flosses 1x a day, mother helps with brushing & flossing\n - caries risk: HIGH\n\n Completed extraoral & intraoral exam:\n - EOE: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\n - TMJ: WNL - no deviation, no crepitus, no locking\n - IOE: WNL - no soft tissue pathology, generalized mild gingivitis, generalized moderate plaque\n - oral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\n\n Took 4 bitewings & updated odontogram with radiographic & intraoral hard tissue findings:\n - mixed dentition\n -\n - occlusal assessment:\n\n Treatment planned for the following treatments:\n -\n\n Findings & treatment options, advantages & disadvantages, reviewed with parent. Treatment plan formulated & discussed, all questions were\n answered. Mother signed treatment plan.\n\n Prophy completed.\n - Removed plaque & calculus using hand instruments. Flossed. Polished with prophy paste.\n - Fluoride varnish applied.\n - OHI given; brushing & flossing were demonstrated with mother & pt; advised to brush 2x daily + floss 1x daily\n - Nutritional counseling completed. Advised to limit sugary drinks & snacks, and when consumed, to shorten duration.\n\n - behavior: F[ 1 / 2 / 3 / 4 ]\n - NV: 6 month recall\n - [Student Name] / Dr. [Instructor]"
 },
 {
 "id": "c064",
@@ -2243,12 +2243,14 @@ const RVU_DATA = [
 const CATEGORIES = [
  { id: "exams", label: "Exams", groups: [
  { id: "exam-procs", label: "Procedures", procedures: [
- { id: "273", label: "Screening" },
+ // Order per Jake: most common at top (POE, COEs, treatment-plan
+ // presentation), then screening, then urgent care and consults.
  { id: "1091", label: "POE (Periodic Oral Exam)" },
- { id: "374", label: "Urgent Care" },
- { id: "448", label: "Urgent Care — Wisdom Tooth" },
  { id: "573", label: "Perio COE" },
  { id: "703", label: "Restorative COE" },
+ { id: "273", label: "Screening" },
+ { id: "374", label: "Urgent Care" },
+ { id: "448", label: "Urgent Care — Wisdom Tooth" },
  { id: "807", label: "Treatment Plan Presentation" },
  { id: "871", label: "Implant Consult" },
  ]},
@@ -3674,10 +3676,15 @@ const DEFAULT_FIELDS = {
  pedsIUTD: true, // immunizations up-to-date (default true)
  pedsMotherHelps: true, // mother helps with brushing & flossing (default true)
  pedsCariesRisk: "High", // "Low" | "Moderate" | "High"
- pedsMolarL: "I", // left molar relationship: "I" | "II" | "III"
- pedsMolarR: "I", // right molar relationship
- pedsCanineL: "I", // left canine relationship
- pedsCanineR: "I", // right canine relationship
+ // Peds occlusal: default empty (blank to omit). If left untouched,
+ // the "- occlusal assessment:" line gets stripped from the rendered
+ // note. Pre-fix the defaults were "I" so every Peds note silently
+ // got "Class I molar bilaterally; Class I canine bilaterally" baked
+ // in even when the student hadn't actually charted occlusion.
+ pedsMolarL: "", // left molar: "" | "I" | "II" | "III"
+ pedsMolarR: "", // right molar
+ pedsCanineL: "", // left canine
+ pedsCanineR: "", // right canine
  pedsProphyCompleted: true, // prophy section in note (default true)
  pedsNutritionalCounseling: true, // nutritional counseling line (default true)
  pedsBehavior: "F4", // Frankl behavior scale: "F1" | "F2" | "F3" | "F4"
@@ -4738,19 +4745,34 @@ function renderTemplate(raw, f) {
  t = t.replace(/(-[ \t]*caries risk:[ \t]*)HIGH\b/i,
  (_m, lead) => `${lead}${f.pedsCariesRisk.toUpperCase()}`);
  }
- // Peds occlusal assessment: "- occlusal assessment:" → Class summary
+ // Peds occlusal assessment: "- occlusal assessment:" → Class summary.
+ // If all four pickers are untouched (empty), strip the stub line
+ // entirely — no auto-default to Class I bilaterally just because the
+ // student didn't pick something.
  {
- const ml = f.pedsMolarL || "I";
- const mr = f.pedsMolarR || "I";
- const cl = f.pedsCanineL || "I";
- const cr = f.pedsCanineR || "I";
+ const ml = f.pedsMolarL || "";
+ const mr = f.pedsMolarR || "";
+ const cl = f.pedsCanineL || "";
+ const cr = f.pedsCanineR || "";
+ const anyPicked = ml || mr || cl || cr;
+ if (anyPicked) {
+ // Fill in any unpicked side with the picked side (or "I" if both
+ // missing) so the summary reads sensibly even when only one
+ // side / one row was charted.
+ const fml = ml || mr || "I";
+ const fmr = mr || ml || "I";
+ const fcl = cl || cr || "I";
+ const fcr = cr || cl || "I";
  const parts = [];
- parts.push(ml === mr? `Class ${ml} molar bilaterally`
-: `Class ${mr} molar right, Class ${ml} molar left`);
- parts.push(cl === cr? `Class ${cl} canine bilaterally`
-: `Class ${cr} canine right, Class ${cl} canine left`);
- const occlusal = parts.join("; ");
- t = t.replace(/(-[ \t]*occlusal assessment:)[ \t]*$/im, `$1 ${occlusal}`);
+ parts.push(fml === fmr? `Class ${fml} molar bilaterally`
+ : `Class ${fmr} molar right, Class ${fml} molar left`);
+ parts.push(fcl === fcr? `Class ${fcl} canine bilaterally`
+ : `Class ${fcr} canine right, Class ${fcl} canine left`);
+ t = t.replace(/(-[ \t]*occlusal assessment:)[ \t]*$/im, `$1 ${parts.join("; ")}`);
+ } else {
+ // Strip the empty "- occlusal assessment:" line entirely.
+ t = t.replace(/^[ \t]*-[ \t]*occlusal assessment:[ \t]*\n?/im, "");
+ }
  }
  // Peds prophy section: strip "Prophy completed." block when false.
  // Template has leading-space artifact on every line — both "Prophy
@@ -5201,10 +5223,15 @@ function renderTemplate(raw, f) {
  }
  }
 
- // Brushing & flossing frequency substitution
+ // Brushing & flossing frequency substitution. Dropdown stores
+ // full-token strings now ("1x/day", "a few times per week" etc.);
+ // formatBrush translates the "Nx/day" tokens to "Nx per day" prose
+ // and passes the "a few times per week" sentence through as-is.
  const formatBrush = (v) => {
- if (v === "1x") return "1x per day";
- if (v === "3x") return "3x per day";
+ if (v === "1x/day" || v === "1x") return "1x per day";
+ if (v === "3x/day" || v === "3x") return "3x per day";
+ if (v === "a few times per week") return "a few times per week";
+ if (v === "2x/day" || v === "2x") return "2x per day";
  return "2x per day"; // default
  };
  const formatFloss = (v) => {
@@ -5215,7 +5242,9 @@ function renderTemplate(raw, f) {
  };
  const brushFreq = ef["brushing frequency"];
  const flossFreq = ef["flossing frequency"];
- if (brushFreq) t = t.replace(/brushing \d+x per day/, `brushing ${formatBrush(brushFreq)}`);
+ // Brushing regex now also matches "a few times per week" (no digit
+ // pattern) — the new "few times" option needed a broader match.
+ if (brushFreq) t = t.replace(/brushing (?:\d+x per day|a few times per week)/, `brushing ${formatBrush(brushFreq)}`);
  if (flossFreq) t = t.replace(/flossing [\dx-]+ per \w+/, `flossing ${formatFloss(flossFreq)}`);
 
  // Plaque level + area + technique + emphasis substitutions
@@ -7594,7 +7623,7 @@ const EXAM_FINDINGS_CONFIG = {
  { label: "endo testing", type: "input", placeholder: "blank to omit" },
  ],
  [{ label: "occlusal assessment", type: "input",
- placeholder: "Class I; no wear facets" }],
+ placeholder: "blank to omit" }],
  [{ label: "odontogram", type: "odontogram",
  displayLabel: "Updated Odontogram With Clinical And Radiographic Findings",
  placeholder: "List each finding on its own line. Press Enter to add another.",
@@ -8827,7 +8856,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  if (field.type === "peds-dental-history") {
  const lblS = { ...labelStyle, fontSize: "10px", color: "var(--ink-soft)" };
  const inS = {...inputStyle, fontSize: "13px" };
- const brushOpts = ["1x a day", "2x a day", "3x a day", "after each meal"];
+ const brushOpts = ["1x a day", "2x a day", "3x a day", "a few times per week"];
  const flossOpts = ["1x a day", "1x a week", "2-3 times per week", "3-4 times per week", "never"];
  return (
  <div key="peds-dental-history" style={{ marginBottom: "9px" }}>
@@ -8935,8 +8964,9 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  ].map(([key, lbl]) => (
  <div key={key}>
  <label style={{...lblS, fontSize: "9px" }}>{lbl}</label>
- <select value={fields[key] || "I"}
+ <select value={fields[key] || ""}
  onChange={e => setField(key, e.target.value)} style={inS}>
+ <option value="">— Select —</option>
  {["I", "II", "III"].map(o => (
  <option key={o} value={o}>Class {o}</option>
 ))}
@@ -9034,7 +9064,11 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  }
 
  if (field.type === "brushing-flossing") {
- const brushOpts = ["1x", "2x", "3x"];
+ // Brushing options carry their own unit ("/day" or "few times per
+ // week") inside the dropdown — the old "/day" suffix outside the
+ // select assumed every option was per-day, which left no room for
+ // a "few times per week" option Jake wanted.
+ const brushOpts = ["1x/day", "2x/day", "3x/day", "a few times per week"];
  const flossOpts = ["1x/week", "2x/week", "3-4x/week", "1x/day"];
  const techOpts = ["poor", "average", "good"];
  const plaqOpts = ["light", "moderate", "heavy"];
@@ -9045,15 +9079,11 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "8px" }}>
  <div>
  <label style={lblStyle}>Brushing</label>
- <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
- <select value={findings["brushing frequency"] || "2x"}
+ <select value={findings["brushing frequency"] || "2x/day"}
  onChange={e => update("brushing frequency", e.target.value)}
- style={{...selStyle, flex: 1 }}>
+ style={selStyle}>
  {brushOpts.map(o => <option key={o} value={o}>{o}</option>)}
  </select>
- <span style={{ color: "var(--ink-soft)", fontSize: "12px",
- fontFamily: "'Geist', sans-serif", whiteSpace: "nowrap" }}>/day</span>
- </div>
  </div>
  <div>
  <label style={lblStyle}>Flossing</label>
@@ -11266,7 +11296,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <option value="2x a day">2x a day</option>
  <option value="1x a day">1x a day</option>
  <option value="3x a day">3x a day</option>
- <option value="after each meal">after each meal</option>
+ <option value="a few times per week">a few times per week</option>
  </Select>
  </Field>
 )}
@@ -12336,11 +12366,15 @@ function Browse({
  const idLabel = (currentProcedure?.label || "").toLowerCase();
  const idCat = (currentProcedure?.categoryId || "").toLowerCase();
  const templ = TEMPLATES[currentProcedure?.id] || "";
+ // Match the procedure's own identity (label/category) OR a clear
+ // marker in its note template — not the steps body. Perio COE
+ // steps mention "wax rims" only as a contingency for partially
+ // edentulous patients, not because Perio COE is a denture
+ // procedure. Body-text match was poaching the picker into perio.
  const matchesMould =
  /denture|wax[- ]rim|partial|\bipd\b|\brpd\b/i.test(idLabel) ||
  /denture|wax[- ]rim|partial|\bipd\b|\brpd\b/i.test(idCat) ||
- /tooth mol[dn]|denture tooth|trubyte|wax[- ]rim/i.test(stepsBody || "") ||
- /tooth mol[dn]|denture tooth|trubyte|wax[- ]rim/i.test(templ);
+ /tooth mol[dn]|denture tooth|trubyte/i.test(templ);
  if (!matchesMould) return null;
  return (
  <div style={{ marginTop: "24px" }}>
