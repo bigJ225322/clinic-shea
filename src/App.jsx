@@ -5705,12 +5705,16 @@ function parseLabPlaceholders(body) {
  // fields where they really had a single binary clinical decision.
  continue;
  }
- if (/^\s*Placed gingival retentive groove & M,D incisal retentive points/i.test(text)) {
- // Class V (2046) retentive-groove bracket — handled by a checkbox
- // + "Gingival margin in" dropdown in NoteBuilder. The bracket
- // contains " / " (cementum / dentin) which would otherwise trigger
- // the slash-separated dropdown rule and split mid-phrase.
- // Substitution lives in renderTemplate step 6h-pre1.
+ if (/^\s*Placed gingival retentive groove & M,D incisal retentive points \(gingival margin in cementum/i.test(text)) {
+ // Class V composite (2046) retentive-groove bracket WITH the
+ // cementum/dentin parenthetical — handled by a checkbox +
+ // "Gingival margin in" dropdown in NoteBuilder. The bracket
+ // contains " / " inside the parenthetical which would otherwise
+ // trigger the slash-separated dropdown rule and split mid-phrase
+ // ("cementum" + "dentin — no enamel to bond to)" as fake options).
+ // The RMGI Class V (2243) variant without the parenthetical falls
+ // through and renders as a normal TextInput placeholder, which is
+ // fine — students rarely edit it. Substitution lives in step 6h-pre1.
  continue;
  }
  if (text === "date") {
@@ -10444,10 +10448,16 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  /\[\s*Removed existing failing [BMD]+ resin composite restoration/i.test(rawTemplate),
  [rawTemplate]);
  // Class V retentive-groove bracket — only surfaces a checkbox +
- // gingival-margin dropdown when the exact template phrasing is present.
+ // gingival-margin dropdown when the EXACT 2046 phrasing with the
+ // cementum/dentin parenthetical is present. RMGI Class V (2243)
+ // ships a simpler bracket "[ Placed gingival retentive groove & M,D
+ // incisal retentive points. ]" without the parenthetical — that
+ // template doesn't need the margin dropdown (RMGI bonds chemically
+ // to dentin so the enamel-bond-availability distinction is moot)
+ // and the substitution regex below wouldn't match it anyway.
  // See renderTemplate step 6h-pre1.
  const needsRetentiveGroove = useMemo(() =>
- /\[\s*Placed gingival retentive groove & M,D incisal retentive points/i.test(rawTemplate),
+ /\[\s*Placed gingival retentive groove & M,D incisal retentive points \(gingival margin in cementum/i.test(rawTemplate),
  [rawTemplate]);
  const needsDentalHistory = useMemo(() => /dental history:/i.test(rawTemplate), [rawTemplate]);
  const needsLastDentist = useMemo(() => /last time at dentist:/i.test(rawTemplate), [rawTemplate]);
@@ -11022,6 +11032,12 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  RMGI, 3076 Final Impression, 3204 Crown Delivery). */}
  {(() => {
  const showCord = /Placed (?:#\d+\s+)?gingival retraction cords?/i.test(rawTemplate);
+ // The Bottom cord selector only makes sense for templates that ship
+ // with the two-cord-technique phrasing (currently just 2821 Crown
+ // Prep). On single-cord templates the substitution regex wouldn't
+ // fire even if a bottom size were picked, so the selector would be
+ // visible noise. Gate it explicitly.
+ const isTwoCordTemplate = /two-cord technique/i.test(rawTemplate);
  // Crown-type dropdown (PFM vs all-ceramic) is for clinical templates
  // where the SAME procedure can be done with either material (crown prep,
  // core buildup, final impression, delivery). Lab scripts ship one per
@@ -11050,19 +11066,23 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <span>Placed cord?</span>
  </label>
  {fields.cordPlaced && (
- // Top + Bottom cord paired in their own flex row so they
- // stay side-by-side regardless of available width (the outer
- // flex wraps the pair, not the individual cords). flex: 1
- // splits remaining space evenly between the two selects.
+ // Top + (optional) Bottom cord paired in their own flex row so
+ // they stay side-by-side regardless of available width (the
+ // outer flex wraps the pair, not the individual cords). flex: 1
+ // splits remaining space evenly between the two selects. Bottom
+ // cord only renders for two-cord templates (currently 2821).
  <div style={{
- display: "flex", gap: "12px", flex: "1 1 280px", minWidth: 0,
+ display: "flex", gap: "12px",
+ flex: isTwoCordTemplate? "1 1 280px": "0 0 auto", minWidth: 0,
  }}>
  {/* Top cord — primary, visible at the sulcus margin.
  For single-cord templates this is the only cord. For
  crown-prep (two-cord technique) this is the larger
  outer cord that sits visible above the bottom cord. */}
- <div style={{ flex: 1, minWidth: 0 }}>
- <Field label="Top cord">
+ <div style={{
+ flex: isTwoCordTemplate? 1: "0 0 150px", minWidth: 0,
+ }}>
+ <Field label={isTwoCordTemplate? "Top cord": "Cord size"}>
  <Select value={fields.cordSize || "0"} onChange={v => setField("cordSize", v)}>
  <option value="000">000 — Ultra Fine</option>
  <option value="00">00 — Extra Fine</option>
@@ -11073,11 +11093,11 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </Select>
  </Field>
  </div>
- {/* Bottom cord — only relevant for two-cord technique.
- Empty = single-cord mode (template's "& #0" / two-cord
- phrasing gets stripped at substitution). Default "00"
- matches template 2821's stock "#00 & #0" — students
- explicitly clear it for single-cord cases. */}
+ {isTwoCordTemplate && (
+ // Bottom cord — only for the two-cord technique template
+ // (2821 Crown Prep). Empty strips the two-cord parenthetical
+ // and reduces to single-cord wording. Default "00" matches
+ // template 2821's stock "#00 & #0".
  <div style={{ flex: 1, minWidth: 0 }}>
  <Field label="Bottom cord">
  <Select value={fields.cordSizeBottom || ""} onChange={v => setField("cordSizeBottom", v)}>
@@ -11091,6 +11111,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </Select>
  </Field>
  </div>
+ )}
  </div>
  )}
  </div>
