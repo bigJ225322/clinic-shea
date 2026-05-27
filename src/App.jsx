@@ -3638,6 +3638,11 @@ const DEFAULT_FIELDS = {
  // from the note. For Restorative COE, also drops "treatment plan" from
  // "- NV: treatment plan".
  noTreatmentsPlanned: false,
+ // tookBitewings: default true — templates ship with "Took 4 bitewings; …"
+ // baked in. Unchecking strips the bitewings phrase, leaving just the
+ // "Updated odontogram with …" sentence. Applies to POE (1091) and
+ // Peds (5985); other templates don't mention bitewings.
+ tookBitewings: true,
  // Peds Initial/Recall (5985) form fields. Default values match the
  // template's hardcoded examples so the rendered note is reasonable even
  // before the student fills anything out.
@@ -3990,6 +3995,19 @@ function renderTemplate(raw, f) {
  ""
 );
  t = t.replace(/(-\s*NV:)\s*treatment plan\b/, "$1");
+ }
+
+ // -------- 0c. tookBitewings = false strips the bitewings phrase. --------
+ // POE: "Took 4 bitewings; updated odontogram with…"
+ // Peds: "Took 4 bitewings & updated odontogram with…"
+ // Unchecking drops the "Took 4 bitewings; " / " & " join and capitalizes
+ // the following "updated" → "Updated" so the sentence remains
+ // grammatical when the bitewings phrase is removed.
+ if (f.tookBitewings === false) {
+ t = t.replace(
+ /Took 4 bitewings(?:;\s*|\s*&\s*)(\w)/g,
+ (_m, c) => c.toUpperCase()
+);
  }
 
  // -------- 1. Strip the COVID-19 paragraph entirely. --------
@@ -5437,12 +5455,13 @@ const ROOT_TOKENS = {
  * SMALL PRESENTATIONAL HELPERS
  * ==========================================================================*/
 const labelStyle = {
- // Lowercase, centered field labels per Jake. The uppercase + heavy
- // letter-spacing variant shouted at students from every field; the
- // lowercase version reads as a quiet hint above its input. Italic
- // overrides at the call sites were stripped earlier.
+ // Title-case (source text shown as-is), centered field labels per Jake.
+ // Earlier passes went uppercase → lowercase; the all-lowercase variant
+ // mangled acronyms ("PD Range" → "pd range", "BP" → "bp"). Letting the
+ // source string flow through unchanged keeps "Age", "PD Range", "Blood
+ // Glucose" readable while staying quiet (10px, ink-soft, low weight).
+ // Italic overrides at the call sites were stripped earlier.
  fontSize: "10px", letterSpacing: "0.04em",
- textTransform: "lowercase",
  color: "var(--ink-soft)", fontWeight: 500, marginBottom: "3px",
  display: "block", fontFamily: "'Geist', sans-serif",
  whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
@@ -7180,8 +7199,10 @@ function RefScript({ caption, body, note }) {
  cursor: "pointer",
  };
  const labelStyle = {
+ // Title-case (source text as-is) — same rationale as the global
+ // labelStyle: lowercase mangles acronyms like PD/BOP/BP.
  fontWeight: 600, fontSize: "10.5px",
- letterSpacing: "0.07em", textTransform: "lowercase",
+ letterSpacing: "0.07em",
  color: "var(--ink-soft)",
  };
  const clearLinkStyle = {
@@ -7641,6 +7662,11 @@ const EXAM_FINDINGS_CONFIG = {
  },
  {
  title: "Findings",
+ // "Took bitewings?" sits right-aligned in the section header. Default
+ // checked (templates ship with "Took 4 bitewings; …"); unchecking
+ // strips the bitewings phrase. Step 0c in renderTemplate handles the
+ // substitution.
+ headerCheckbox: { field: "tookBitewings", label: "Took bitewings?" },
  rows: [
  [
  { label: "caries risk", type: "select", options: ["", "Low", "Moderate", "High"] },
@@ -7649,7 +7675,7 @@ const EXAM_FINDINGS_CONFIG = {
  [{ label: "odontogram", type: "odontogram",
  displayLabel: "Updated odontogram with clinical and radiographic findings",
  placeholder: "List each finding on its own line. Press Enter to add another.",
- seedOnFocus: true, showNoTxPlanCheckbox: true }],
+ seedOnFocus: true }],
  ],
  },
  { type: "prophy-toggle" },
@@ -7680,6 +7706,10 @@ const EXAM_FINDINGS_CONFIG = {
  },
  {
  title: "Treatment plan",
+ // "No treatments planned" sits right-aligned in the section header
+ // (moved here from the Findings odontogram label, where it floated
+ // disconnected from the treatment plan it actually gates).
+ headerCheckbox: { field: "noTreatmentsPlanned", label: "No treatments planned" },
  fields: [
  { label: "treatment plan", type: "odontogram", hideLabel: true,
  placeholder: "List each treatment on its own line. Press Enter to add another.", seedOnFocus: true },
@@ -7817,6 +7847,8 @@ const EXAM_FINDINGS_CONFIG = {
  },
  {
  title: "Findings",
+ // "Took bitewings?" right-aligned in header; default checked.
+ headerCheckbox: { field: "tookBitewings", label: "Took bitewings?" },
  rows: [
  [{ label: "odontogram", type: "odontogram",
  displayLabel: "Radiographic & intraoral hard tissue findings",
@@ -7827,10 +7859,13 @@ const EXAM_FINDINGS_CONFIG = {
  },
  {
  title: "Treatment plan",
+ // "No treatments planned" right-aligned in header (was on the
+ // hidden-label treatment-plan field; section-level reads better).
+ headerCheckbox: { field: "noTreatmentsPlanned", label: "No treatments planned" },
  fields: [
  { label: "treatment plan", type: "odontogram", hideLabel: true,
  placeholder: "List each treatment on its own line. Press Enter to add another.",
- seedOnFocus: true, showNoTxPlanCheckbox: true },
+ seedOnFocus: true },
  ],
  },
  {
@@ -9599,7 +9634,40 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  }
  return (
  <div key={i} style={{ marginTop: i === 0? "4px": "16px" }}>
+ {section.headerCheckbox? (
+ // Section header with a right-aligned checkbox (e.g. "No
+ // treatments planned" on Treatment Plan, "Took bitewings?" on
+ // Findings). 3-column grid keeps the SubsectionLabel optically
+ // centered while the checkbox parks at the right edge.
+ <div style={{
+ display: "grid", gridTemplateColumns: "1fr auto 1fr",
+ alignItems: "center", marginBottom: "10px",
+ }}>
+ <span />
+ <div style={{
+ fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
+ color: "var(--accent)", fontWeight: 500,
+ fontFamily: "'Geist', sans-serif",
+ textAlign: "center",
+ }}>{section.title}</div>
+ <label style={{
+ justifySelf: "end",
+ display: "flex", alignItems: "center", gap: "5px",
+ fontSize: "10px", color: "var(--ink-soft)",
+ cursor: "pointer", fontFamily: "'Geist', sans-serif",
+ whiteSpace: "nowrap", letterSpacing: "0.02em",
+ }}>
+ <input type="checkbox"
+ checked={!!fields[section.headerCheckbox.field]}
+ onChange={e => setField(section.headerCheckbox.field, e.target.checked)}
+ style={{ width: "13px", height: "13px",
+ accentColor: "var(--teal)", cursor: "pointer", margin: 0 }} />
+ <span>{section.headerCheckbox.label}</span>
+ </label>
+ </div>
+): (
  <SubsectionLabel>{section.title}</SubsectionLabel>
+)}
  {fields}
  </div>
 );
@@ -11769,6 +11837,22 @@ function Browse({
 
  {/* ── Right: steps article ── */}
  <div style={{ position: "relative" }}>
+ {/* "Steps by (swade)" attribution — sits in the upper-right of the
+ steps article. Reinstated per Jake after the May 26 strip-Swade
+ pass. Lowercase parenthetical + italic serif keeps it as a quiet
+ humble acknowledgment of the unofficial student-authored source,
+ rather than a citation that could read as a UIC endorsement claim.
+ Positioned in the wrapper (not the article) so it doesn't scroll
+ with the article's overflow content. */}
+ <div style={{
+ position: "absolute", top: "12px", right: "18px",
+ zIndex: 1,
+ fontSize: "11px", color: "var(--ink-faint)",
+ fontFamily: "'Geist', sans-serif", lineHeight: 1,
+ pointerEvents: "none",
+ }}>
+ Steps by <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em>
+ </div>
  <article ref={articleRef} style={{
  background: "var(--paper)", border: "1px solid var(--rule)",
  borderRadius: "3px", padding: "32px 36px",
