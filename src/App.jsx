@@ -24634,10 +24634,11 @@ const PATHWAYS = [
  "Hygiene counseling: retained roots accumulate caries fast if uncleaned.",
  "Counsel: overdenture retention dramatically better than conventional CD.",
  ],
+ // phases sum to 16 = sections.length.
  phases: [
  { label: "IOD context", count: 1 },
- { label: "Records", count: 3 },
- { label: "Mounting + VDO", count: 2 },
+ { label: "Records", count: 5 },
+ { label: "Mounting + VDO + CR", count: 3 },
  { label: "Setup + try-in", count: 2 },
  { label: "Process + attachment pickup", count: 3 },
  { label: "Delivery + follow-up", count: 2 },
