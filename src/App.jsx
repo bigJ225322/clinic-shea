@@ -24677,9 +24677,10 @@ const PATHWAYS = [
  "Insert maintenance: replace every 6–12 months.",
  ],
  phases: [
+ // phases sum to 17 = sections.length.
  { label: "Implant overdenture context", count: 1 },
- { label: "Records", count: 3 },
- { label: "Mounting + VDO", count: 2 },
+ { label: "Records", count: 5 },
+ { label: "Mounting + VDO + CR", count: 3 },
  { label: "Setup + try-in", count: 2 },
  { label: "Process + attachment pickup", count: 3 },
  { label: "Delivery + maintenance", count: 3 },
