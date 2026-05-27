@@ -3587,10 +3587,14 @@ const DEFAULT_FIELDS = {
  // cordPlaced: "Placed cord?" checkbox — when true, shows cord size selector.
  // Default = true: every template ships with the cord-placement sentence;
  // unchecking strips it from the rendered note (renderTemplate 6c2).
- // cordSize: the selected cord size (replaces #0 in template).
+ // cordSize: the top cord size (replaces top #0 in two-cord template).
+ // cordSizeBottom: the bottom cord size (replaces bottom #0 in two-cord template).
+ // Default "00" matches template 2821's stock "#00 & #0" two-cord phrasing.
+ // Empty bottom strips the two-cord parenthetical and reduces to single-cord wording.
  // crownType: PFM or all-ceramic dropdown (replaces "PFM" in template).
  cordPlaced: true,
  cordSize: "0",
+ cordSizeBottom: "00",
  crownType: "PFM",
  // cc: Chief complaint — typed text inserted into the CC: curly-quote placeholder.
  cc: "",
@@ -4190,15 +4194,38 @@ function renderTemplate(raw, f) {
  // For dual-cord (#00 & #0, template 3076), only the larger #0 is
  // replaced — that's the size the form's cordSize field controls.
  if (f.cordPlaced && f.cordSize) {
+ const top = f.cordSize; // "top" (more occlusal / visible) cord
+ const bottom = (f.cordSizeBottom || "").trim(); // optional "bottom"
  // Variant A: 2821-style ("Placed #0 gingival retraction cord")
+ // Only fires for the legacy single-cord templates.
  t = t.replace(
  /Placed #0(\s+gingival retraction cords?)/g,
- `Placed #${f.cordSize}$1`
+ `Placed #${top}$1`
 );
- // Variant B: post-cord ("Placed gingival retraction cord(s) #0")
+ // Variant B + crown-prep two-cord variant ("Placed gingival
+ // retraction cord(s) #00 & #0"). Two cases:
+ // - bottom cord IS specified → rewrite the WHOLE phrase with both
+ // sizes + the two-cord-technique parenthetical.
+ // - bottom cord NOT specified → rewrite to single cord and drop
+ // the parenthetical AND the "& #0" piece.
+ if (bottom) {
  t = t.replace(
- /(Placed gingival retraction cords?\s+(?:#00 & )?)#0(?=\s+soaked)/g,
- `$1#${f.cordSize}`
+ /Placed gingival retraction cords?\s+#0+\s*&\s*#0\s+soaked\s+(in|with)\s+Hemodent\s*\(two-cord technique[^)]*\)/g,
+ `Placed gingival retraction cords #${bottom} & #${top} soaked $1 Hemodent (two-cord technique — bottom cord submerged for hemostasis, top cord visible for sulcus expansion)`
+ );
+ } else {
+ // Drop the two-cord parenthetical + the "& #0" segment.
+ t = t.replace(
+ /Placed gingival retraction cords?\s+#0+\s*&\s*#0\s+soaked\s+(in|with)\s+Hemodent\s*\(two-cord technique[^)]*\)/g,
+ `Placed gingival retraction cord #${top} soaked $1 Hemodent`
+ );
+ }
+ // Variant B (residual, post-cord form): "Placed gingival
+ // retraction cord(s) #0" without an "& #0" twin — covers any
+ // remaining single-cord templates the above rewrites didn't catch.
+ t = t.replace(
+ /(Placed gingival retraction cords?\s+)#0(?=\s+soaked)/g,
+ `$1#${top}`
 );
  }
  // -------- 6c2. Cord stripping when "Placed cord?" is unchecked. --------
@@ -6746,7 +6773,7 @@ function InjectionEditor({ index, total, injection, tooth, isSRP, onChange, onRe
 
  <SubsectionLabel>Technique</SubsectionLabel>
  <p style={{ fontSize: "11px", color: "var(--ink-faint)",
- margin: "-6px 0 8px", lineHeight: 1.45, fontStyle: "italic" }}>
+ margin: "-6px 0 8px", lineHeight: 1.45 }}>
  Pick one or more. Topical benzocaine is implied.
  </p>
  <div style={{ display: "flex", flexDirection: "column", gap: "2px",
@@ -10803,10 +10830,11 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <Hairline />
  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
  {showCord && (
- <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+ <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", alignItems: "flex-end" }}>
  <label style={{
  display: "flex", alignItems: "center", gap: "8px",
  fontSize: "13px", color: "var(--ink)", cursor: "pointer",
+ paddingBottom: "7px",
  }}>
  <input type="checkbox"
  checked={fields.cordPlaced === true}
@@ -10816,7 +10844,13 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <span>Placed cord?</span>
  </label>
  {fields.cordPlaced && (
- <div style={{ minWidth: "160px" }}>
+ <>
+ {/* Top cord — primary, visible at the sulcus margin.
+ For single-cord templates this is the only cord. For
+ crown-prep (two-cord technique) this is the larger
+ outer cord that sits visible above the bottom cord. */}
+ <div style={{ minWidth: "150px" }}>
+ <Field label="Top cord">
  <Select value={fields.cordSize || "0"} onChange={v => setField("cordSize", v)}>
  <option value="000">000 — Ultra Fine</option>
  <option value="00">00 — Extra Fine</option>
@@ -10825,7 +10859,27 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <option value="2">2 — Thick</option>
  <option value="3">3 — Extra Thick</option>
  </Select>
+ </Field>
  </div>
+ {/* Bottom cord — only relevant for two-cord technique.
+ Empty = single-cord mode (template's "& #0" / two-cord
+ phrasing gets stripped at substitution). Default "00"
+ matches template 2821's stock "#00 & #0" — students
+ explicitly clear it for single-cord cases. */}
+ <div style={{ minWidth: "150px" }}>
+ <Field label="Bottom cord">
+ <Select value={fields.cordSizeBottom || ""} onChange={v => setField("cordSizeBottom", v)}>
+ <option value="">— none (single cord) —</option>
+ <option value="000">000 — Ultra Fine</option>
+ <option value="00">00 — Extra Fine</option>
+ <option value="0">0 — Fine</option>
+ <option value="1">1 — Medium</option>
+ <option value="2">2 — Thick</option>
+ <option value="3">3 — Extra Thick</option>
+ </Select>
+ </Field>
+ </div>
+ </>
  )}
  </div>
  )}
