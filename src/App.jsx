@@ -22651,7 +22651,7 @@ const PATHWAYS = [
  ],
  sections: [
  { guideId: "cd", chapterId: "cd-ch1" },
- { guideId: "cd", chapterId: "cd-ch2" },
+ { guideId: "cd", chapterId: "cd-ch2", kind: "lab" }, // Custom tray fab — lab work
  { guideId: "cd", chapterId: "cd-ch7" },
  { guideId: "cd", chapterId: "cd-ch8" },
  { guideId: "cd", chapterId: "cd-ch15" },
@@ -27700,8 +27700,30 @@ function Pathways() {
  // section index). If no phases, fall back to a single flat list — keeps
  // backward compat with pathways that haven't been phase-grouped yet.
  const phases = selectedPathway.phases;
- const renderRow = (s) => (
- <li key={s.i} style={{ marginBottom: "2px", fontSize: "0.9rem" }}>
+ const renderRow = (s) => {
+ // Optional kind marker: a section entry may carry { kind: "lab" } to
+ // indicate the chapter is actually lab work even though it lives in
+ // the visit's chapter list. The inline [lab] tag tells the student
+ // at a glance which rows are chair work vs lab work.
+ const isLab = s.ref && s.ref.kind === "lab";
+ return (
+ <li key={s.i} style={{ marginBottom: "3px", fontSize: "0.9rem" }}>
+ {isLab && (
+ <span style={{
+ display: "inline-block",
+ fontSize: "0.55rem",
+ textTransform: "uppercase",
+ letterSpacing: "0.12em",
+ fontWeight: 600,
+ color: "var(--paper, #FBF8F2)",
+ background: "var(--accent)",
+ padding: "1px 5px",
+ borderRadius: "2px",
+ marginRight: "7px",
+ verticalAlign: "middle",
+ transform: "translateY(-1px)",
+ }}>lab</span>
+ )}
  {s.unresolved? (
  <span style={{ color: "var(--ink-faint)", fontStyle: "italic" }}>
  (unresolved: {s.ref.chapterId})
@@ -27714,6 +27736,7 @@ function Pathways() {
 )}
  </li>
  );
+ };
  if (!phases || phases.length === 0) {
  return (
  <ol style={{ margin: 0, paddingLeft: "20px", lineHeight: 1.6 }}>
@@ -27735,7 +27758,7 @@ function Pathways() {
  <div key={key} style={{
  marginTop: "12px",
  background: "var(--paper, #FBF8F2)",
- border: "1px dashed var(--rule-soft, var(--rule))",
+ borderLeft: "4px solid var(--accent)",
  borderRadius: "3px",
  padding: "10px 14px",
  }}>
@@ -27793,6 +27816,7 @@ function Pathways() {
  marginTop: pi === 0 ? "0" : "14px",
  background: "var(--card, white)",
  border: "1px solid var(--rule-soft, var(--rule))",
+ borderLeft: "4px solid var(--ink)",
  borderRadius: "3px",
  padding: "12px 16px",
  }}>
