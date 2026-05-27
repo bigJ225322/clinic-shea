@@ -5574,6 +5574,16 @@ function parseLabPlaceholders(body) {
  // don't see two pickers for the same value.
  continue;
  }
+ if (/^\s*1\s*\/\s*2\s*\/\s*3\s*\/\s*4\s*$/.test(text)) {
+ // "[ 1 / 2 / 3 / 4 ]" — the Frankl behavior-scale placeholder used
+ // in every peds note template (e.g. "- behavior: F[ 1 / 2 / 3 / 4 ]").
+ // The dedicated "Behavior (Frankl)" select renders via the
+ // pedsBehavior flag in EXAM_FINDINGS_CONFIG and writes to
+ // fields.pedsBehavior, which renderTemplate step 6 substitutes
+ // into the placeholder. The raw bracket picker here would be a
+ // duplicate of that input with no labels for the F1-F4 meanings.
+ continue;
+ }
  if (text === "Posterior tooth mold" && hasAnteriorMould) {
  // Suppressed — auto-populated by the [Anterior tooth mold] picker
  // (which emits both anterior and posterior mould codes).
@@ -13133,6 +13143,7 @@ function RVUs() {
  marginTop: "14px", fontSize: "11px",
  color: "var(--ink-faint)", fontStyle: "italic",
  lineHeight: 1.5,
+ textAlign: "center",
  }}>
  {!swadeOnly && (
  <>
@@ -16941,7 +16952,15 @@ function RPDPaperFormArchDrawing({
  const rawAy = cy + rad.y * (R + 58);
  const ax = Math.max(LABEL_PAD, Math.min(VIEW_W - LABEL_PAD, rawAx));
  const ay = rawAy;
- const ax2 = Math.max(LABEL_PAD, Math.min(VIEW_W - LABEL_PAD, ax + rad.x * 30));
+ // ax2 = ax (same x) so the clasp name and the undercut depth/loc
+ // line are vertically aligned — both share text-anchor="middle"
+ // so equal x centers them on the same axis. The vertical offset
+ // (rad.y * 30) still pushes the second line radially outward
+ // (above for maxillary / below for mandibular), keeping the two
+ // labels from overlapping. The previous code applied rad.x * 30
+ // too, which threw "0.01" MB" off-center relative to "Akers" on
+ // every tooth not at the dead-center top/bottom of the arch.
+ const ax2 = ax;
  const ay2 = ay + rad.y * 30;
  // Clasp name text → selects the clasp element. Undercut spec text →
  // selects the undercut. For Rest-only abutments (no clasp), the
