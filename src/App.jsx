@@ -4164,12 +4164,11 @@ function renderTemplate(raw, f) {
 
  // -------- 6b. Crown type (core buildup, crown prep, delivery). --------
  // When the user selects All-Ceramic, replace every "PFM" occurrence
- // PLUS swap the cement brand from RelyX (the PFM/cast default)
- // to Panavia (the all-ceramic / resin-cement standard). RelyX Unicem
- // would technically work for ceramics too, but the conventional
- // teaching is Panavia F2.0 for e.max, so the note should reflect that.
- // The crown-delivery template (3204) is the primary site of "RelyX" —
- // template 5305 already uses Panavia explicitly so no swap needed.
+ // PLUS swap "RelyX" (the bracket option for PFM/cast cement) to
+ // "Panavia" (the bracket option for all-ceramic). Crown-delivery
+ // template 3204's bracket reads "[ FujiCEM / RelyX ]" by default —
+ // becomes "[ FujiCEM / Panavia ]" for all-ceramic. Template 5305
+ // already uses Panavia explicitly in narrative so no swap needed.
  if (f.crownType && f.crownType !== "PFM") {
  t = t.replace(/\bPFM\b/g, f.crownType);
  if (f.crownType === "all-ceramic") {
