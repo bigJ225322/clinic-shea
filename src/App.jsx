@@ -13258,7 +13258,7 @@ function RVUs() {
  <input type="checkbox" checked={swadeOnly}
  onChange={e => setSwadeOnly(e.target.checked)}
  style={{ accentColor: "var(--accent)", cursor: "pointer" }} />
- Hide codes not used in&nbsp;<em className="serif" style={{ fontStyle: "italic" }}>(swade)</em>&nbsp;manual
+ <span>Hide codes not used in <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> manual</span>
  </label>
  {/* MEE contribution % toggles */}
  {[["D3", showD3Pct, setShowD3Pct], ["D4", showD4Pct, setShowD4Pct]].map(([lbl, val, set]) => (
