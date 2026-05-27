@@ -12244,7 +12244,17 @@ function Browse({
  fontSize: "30px", margin: "0 0 24px", fontWeight: 400,
  letterSpacing: "-0.01em", lineHeight: 1.15,
  color: "var(--accent)",
- }}>{currentProcedure.label}</h2>
+ }}>
+ {/* Fraunces' italic-ish ampersand is too ornate at h2 size — it
+ competes with the (shea) signature in the title. Render `&`
+ in Geist sans (lighter weight) so the rest of the title keeps
+ its serif charm but the ampersand reads as a quiet connector. */}
+ {currentProcedure.label.split(/(\s&\s)/).map((p, i) =>
+ p === " & "
+ ? <span key={i} style={{ fontFamily: "'Geist', sans-serif", fontWeight: 300 }}> &amp; </span>
+ : <Fragment key={i}>{p}</Fragment>
+)}
+ </h2>
  <div className="hairline" style={{ margin: "0 0 22px" }} />
 
  {REF_DATA[currentProcedure?.id]? (
