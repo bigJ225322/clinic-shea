@@ -22573,7 +22573,40 @@ function Guides() {
  * at the top, and shows each section inline. Stub chapters render as
  * "Coming soon" placeholders until populated.
  * ==========================================================================*/
-const PATHWAY_DOMAINS = [
+
+// ╔══════════════════════════════════════════════════════════════════════════╗
+// ║ CASES TAB — REBUILD IN PROGRESS (started 2026-05-27)                     ║
+// ║                                                                          ║
+// ║ The active PATHWAYS, PATHWAY_GROUPS, and PATHWAY_DOMAINS below this      ║
+// ║ comment are EMPTY because we're rebuilding from scratch on a DxTP +      ║
+// ║ Swade-anchored foundation. See in repo root:                             ║
+// ║   - CASES-FOUNDATION.md      (the philosophy + three trust rules)        ║
+// ║   - CASES-PROCEDURES.md      (extracted UIC content + keep/cut list)     ║
+// ║   - CASES-BUILD-PLAN.md      (the execution recipe + scope decisions)    ║
+// ║                                                                          ║
+// ║ The previous data is preserved further down in this file as              ║
+// ║ PATHWAYS_LEGACY_2026_05, PATHWAY_GROUPS_LEGACY_2026_05, and              ║
+// ║ PATHWAY_DOMAINS_LEGACY_2026_05 — dead code, not referenced by any live   ║
+// ║ render path. Kept for one-paste recovery if a specific old pathway       ║
+// ║ keyDecision needs to be referenced during the rebuild.                   ║
+// ║                                                                          ║
+// ║ The Cases tab is sidelined from the live nav (see the TABS array near   ║
+// ║ the bottom of this file). It won't be restored until enough new         ║
+// ║ pathways are populated. Build order: cd-conventional →                   ║
+// ║ rpd-kennedy3 → ind-conventional-crown → fan-out by family.               ║
+// ╚══════════════════════════════════════════════════════════════════════════╝
+
+const PATHWAY_DOMAINS = [];
+const PATHWAY_GROUPS = {};
+const PATHWAYS = [];
+
+// ─── Legacy data — DO NOT REFERENCE FROM LIVE CODE ──────────────────────────
+// One-paste recovery: if a specific legacy entry is needed, copy it into the
+// active arrays above and verify it against CASES-FOUNDATION.md's trust rules
+// (limited scope, no citation handles, no over-certain qualifiers) before
+// putting it back into live use.
+
+const PATHWAY_DOMAINS_LEGACY_2026_05 = [
  { id: "direct", label: "Direct" },
  { id: "indirect", label: "Indirect" },
  { id: "surgery", label: "OS" },
@@ -22602,7 +22635,7 @@ const PATHWAY_DOMAINS = [
 // directs the student into one specific scenario. The current flat pill grid
 // stays the default for reference-style use; the wizard would be the
 // guided-decision mode.
-const PATHWAY_GROUPS = {
+const PATHWAY_GROUPS_LEGACY_2026_05 = {
  direct: [
  // All restoration classes ordered numerically — composite + amalgam +
  // RMGI sit together since the student's actual decision tree starts at
@@ -23088,7 +23121,7 @@ const WIZARDS = {
  },
 };
 
-const PATHWAYS = [
+const PATHWAYS_LEGACY_2026_05 = [
  // ── Direct ──────────────────────────────────────────────────────────────
  {
  id: "dir-class2",
