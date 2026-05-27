@@ -265,37 +265,191 @@ Root files:
 
 Same per-pathway recipe. Same review pattern.
 
-### Step 6 — Fan-out to siblings
+### Step 6 — Fan-out to siblings — comprehensive source map
 
-After the three model pathways are reviewed + approved, build:
+After the three model pathways are reviewed + approved. Each pathway below
+lists the PDFs to read before writing it. Paths are relative to the
+Dentistry Files root (`/Users/jakeshea/Desktop/HY Folders/Dentistry Files/`).
+A path of `01CR/` means `01 Clinical Reference/`.
 
-- **CD family** (~3-4 more): `cd-iid` (immediate interim denture),
-  `cd-adjustment`, `cd-reline-lab`, `cd-iod-canine-roots`,
-  `cd-implant-supported-lower` (2-implant Mn overdenture)
-- **RPD family** (~5-7 more): `rpd-distal-extension` (Kennedy I/II with altered
-  cast), `rpd-kennedy4-anterior`, `rpd-broken-clasp`, `rpd-broken-denture-tooth`,
-  `rpd-broken-framework`, `rpd-loose-rpd`, `rpd-reline`, `rpd-implant-hybrid`
-- **Indirect family** (~10-15 more): `ind-digital-emax`, `ind-cad-cam-inlay-onlay`,
-  `ind-veneers`, `ind-bridge`, `ind-survey-crown`, `ind-recement`,
-  `ind-failing-existing-crown`, `ind-crown-endo-access-fill`, `ind-inlay`,
-  `ind-post-and-core`, `ind-single-implant-crown`, `ind-cracked-tooth-syndrome`,
-  `ind-onlay-vs-crown-decision`
-- **Direct family** (~10 pathways): all dir-class1 through dir-class5, dir-amalgam,
-  dir-sealant, dir-prr, dir-direct-veneer, dir-deep-caries-decision (read from
-  Operative and Restorative folder + Swade chunks)
-- **Endo family** (~9 pathways): endo-diagnosis-workflow, endo-anterior-rct,
-  endo-premolar-rct, endo-molar-rct, endo-direct-pulp-cap, endo-indirect-pulp-cap,
-  endo-necrotic-acute (urgent I&D), endo-necrotic-chronic, endo-broken-instrument
-- **Surgery family** (~5 pathways): surgery-simple-ext, surgery-multi-rooted-ext,
-  surgery-surgical-ext (faculty-supervised), surgery-dry-socket, surgery-post-op-bleed
-- **Perio family** (~5 pathways): perio-coe (the Dx engine pathway),
-  perio-prophy, perio-srp, perio-maintenance, perio-acute-abscess
-- **Pedo family** (decision pending; if user confirms Option A, ~10-15 pathways
-  from the Pedo folder content)
-- **Urgent/cross family** (~5 pathways): cross-anterior-trauma,
-  cross-cd-iod-implants, cross-rpd-to-implants, cross-anterior-implant-esthetic,
-  cross-pre-radiation-extractions, cross-odontogenic-infection-airway-risk,
-  cross-caries-risk, cross-sdf-arrest
+If a pathway's row says "**Gap**: ...", we don't have enough UIC source to
+write it confidently yet — flag for Jake to share more content, or skip
+that pathway in this rebuild.
+
+#### CD / IOD family (Category: Dentures or IOD · Phase III/IV)
+
+| Pathway | Primary UIC sources |
+|---|---|
+| `cd-conventional` *(model — built in Step 3)* | Full source map listed in Step 3 above |
+| `cd-iid` (immediate interim denture) | `01CR/Complete Dentures/ALL CD FILES/IMMEDIATE DENTURES - Dr. Agrawal.pdf`; `Immediate Dentures_1_ (1).pdf`; `Immediate Dentures_1_.pdf`; Han lecture `Dx and Tx Planning (Spring 2025).pdf` slides 49-50 on IID prosthesis planning (VDO + lip support) |
+| `cd-adjustment` | `01CR/Complete Dentures/ALL CD FILES/Complete Denture Delivery and follow-up.pdf` (follow-up section); same delivery PDF; Swade chunk 4374 (CD adjustment note template) |
+| `cd-reline-lab` | `01CR/Complete Dentures/ALL CD FILES/Reline rebase and repair - Bin Yang.pdf`; Swade chunk 4454 (F/ lab reline note template) |
+| `cd-iod-canine-roots` | **Gap**: No dedicated UIC tooth-retained-overdenture lecture in folder. Use the `Comprehensive CD Guide.docx` IOD section + the Implantology folder lectures cross-referenced + Swade chunks for the overall workflow. If insufficient, flag for additional content. |
+| `cd-implant-supported-lower` (2-implant Mn OD) | **Gap**: same as above. `01CR/Implantology/IMPLANT TBL LECTURE.pptx` may have attachment coverage. Han lecture slides 49+ touch on IOD context. Likely need additional UIC IOD-specific content from Jake. |
+
+#### RPD family (Category: Dentures · Phase III or IV)
+
+| Pathway | Primary UIC sources |
+|---|---|
+| `rpd-kennedy3` *(model — built in Step 4)* | Full source map listed in Step 4 above |
+| `rpd-distal-extension` (Kennedy I/II) | `01CR/Removable Partial Dentures/ALL RPD FILES/RPD Treatment Sequence Fall 2022.pdf` (sequencing); `Lecture 4-Part A_RPD Sequencing.pdf`, `Lecture 4_Part B_Treatment sequence...pdf`; `RPD Fall 2022 Final Impressions.pdf` (altered-cast technique section); `Fall RPD 22 Combination Syndrome.pdf` (Kennedy I considerations); `Design Case II- BS- Fall 2022.pdf` (worked Kennedy I/II example) |
+| `rpd-kennedy4-anterior` | Same sequencing lectures as above; `RPD Fall 2022 Setting denture teeth.pdf` (anterior esthetic considerations); `Comprehensive RPD Guide.docx` (Kennedy IV section) |
+| `rpd-broken-clasp` | `01CR/Removable Partial Dentures/ALL RPD FILES/Reline_Rebase_Repair of RPD Fall 2022.pdf`; Swade chunks for repair note templates |
+| `rpd-broken-denture-tooth` | Same as broken-clasp |
+| `rpd-broken-framework` | Same as broken-clasp + `Comprehensive RPD Guide.docx` for the remake-vs-repair decision logic |
+| `rpd-loose-rpd` | `Reline_Rebase_Repair of RPD Fall 2022.pdf` (causes of loose RPD section); `Fall RPD 22 Combination Syndrome.pdf` (combination-syndrome-driven looseness) |
+| `rpd-reline` | `Reline_Rebase_Repair of RPD Fall 2022.pdf`; Swade chunk for F/ reline procedure |
+| `rpd-implant-hybrid` | **Gap**: cross-references RPD lectures + Implantology folder. `RPD Fall 2022 Retainers.pdf` (attachment retainers section). Likely needs additional content. |
+| `rpd-interim-immediate` (was "Summer RPD 2023 Interim RPD") | `01CR/Removable Partial Dentures/ALL RPD FILES/Summer RPD 2023- Interim Removable Partial Denture-BS.pdf`; Swade `lab-ii-rpd` Rx template (chunk 120) |
+
+#### Indirect / Fixed Prosth family (Category: Fixed or Digital · Phase III)
+
+| Pathway | Primary UIC sources |
+|---|---|
+| `ind-conventional-crown` *(model — built in Step 5)* | Full source map listed in Step 5 above |
+| `ind-digital-emax` | `01CR/Digital Dentistry/Phase 1 DAOB Digital Dentistry/2024- Intraoral scan introduction- presentation.pdf`; `CAD CAM Dentistry Oveview- 2024.pdf`; `Design Studio- steps.pdf`; `DAOB Phase 2 Digital Dentistry/Posterior crown prep #5.pdf`; Swade chunk 5062 (e.max crown prep note template) |
+| `ind-cad-cam-inlay-onlay` | `01CR/Digital Dentistry/Phase 1 DAOB Digital Dentistry/Inlays and Onlays Overview.pdf`; `Inlays to Onlay criteria.pdf`; `DAOB Phase 2 Digital Dentistry/#14 Onlay & #30 Inlay.pdf`; `Inlay Scan and Design.pdf`; Swade chunks 5004 (digital inlay prep) and 5032 (digital onlay prep) |
+| `ind-veneers` | **Gap**: No dedicated UIC veneer lecture in the Fixed Prosth folder. The current pathway content may not be UIC-anchored. Use `01CR/Fixed Prosthodontics/Phase 1 DAOB Fixed Prosth/Modified version Posterior FPD Preparation and Pontic Design.pdf` for prep principles transferred to anterior + `Shade Taking and Porcelain Characterization.pdf` for shade. May need additional UIC veneer content from Jake; consider deferring or building lightly. |
+| `ind-bridge` | `01CR/Fixed Prosthodontics/Phase 2 DAOB Fixed Prosth/Metal Framework Fabrication & Try-in.pdf`; `Information to include on lab prescription for FPD metal framework fabrication.pdf`; `Information to include in lab prescription for FPD porcelain addition.pdf`; `PFM Porcelain Application and Final Contouring.pdf`; Phase 1 `Modified version Posterior FPD Preparation and Pontic Design.pdf` (pontic design) |
+| `ind-survey-crown` | Cross-reference: `01CR/Removable Partial Dentures/ALL RPD FILES/Lecture 3_Maxillo-mandibular relationship_SHAHIN_2025.pdf` + `RPD Fall 2023 -Lab 4- Introduction to RPD Design-BS.pdf` (surveyed features integrated into crown); Fixed Prosth Phase 1 `Review and Overview.pdf` for crown workflow basis; Swade `lab-survey-crown` template (chunk 119) |
+| `ind-recement` | **Gap**: No dedicated UIC re-cement lecture. Use Swade chunks for re-cement note templates + the Fixed Prosth Phase 1 `Review and Overview.pdf` cementation section. Decision logic (re-cement vs remake) is mostly clinical principles. |
+| `ind-failing-existing-crown` | Cross-reference: Fixed Prosth `Assessing Tooth Restorability Part 1.pdf` + `Part 2.pdf` (decision logic for restorability of teeth under existing crowns) |
+| `ind-crown-endo-access-fill` | `01CR/Endodontics/Restoring Endodontically Treated Teeth.pdf`; `01CR/Endodontics/Week 7 -Restoring Endodontically Treated Teeth.pdf`; Swade chunk 3319 (crown endo access fill note template) |
+| `ind-inlay` | `01CR/Fixed Prosthodontics/Phase 1 DAOB Fixed Prosth/Modified version Posterior FPD Preparation and Pontic Design.pdf` (prep principles); cross-reference with `ind-cad-cam-inlay-onlay` digital lectures for material/cement considerations |
+| `ind-post-and-core` | `01CR/Endodontics/Restoring Endodontically Treated Teeth.pdf` (ferrule + post discussion); `01CR/Endodontics/Week 7 -Restoring Endodontically Treated Teeth.pdf`; Fixed Prosth Phase 1 `Review and Overview.pdf` for restorability assessment |
+| `ind-single-implant-crown` | `01CR/Implantology/IMPLANT TBL LECTURE.pdf` (implant restoration coverage); `Peri-implantitis lecture Final.pdf` (residual cement concern); Swade chunks 4574-4812 (implant impression → custom abutment → cement note templates) |
+| `ind-cracked-tooth-syndrome` | **Gap**: No dedicated UIC cracked-tooth-syndrome lecture in folder. Use Fixed Prosth `Assessing Tooth Restorability Part 2.pdf` for restorability decision logic. Mostly principles-based. |
+| `ind-onlay-vs-crown-decision` | Fixed Prosth `Assessing Tooth Restorability Part 1.pdf` + `Part 2.pdf` (the decision pathway); Digital `Inlays to Onlay criteria.pdf` (when to expand from inlay to onlay) |
+
+#### Direct / Operative family (Category: Operative · Phase I)
+
+The Operative and Restorative folder is **sparse on lectures** — content is in
+the "From All folder" subfolder which has mostly study guides + exam material.
+The Swade chunks below are the primary source for the per-appointment workflow;
+UIC PDFs supplement with prep principles and grading criteria.
+
+| Pathway | Primary UIC sources |
+|---|---|
+| `dir-class1` | `01CR/Operative and Restorative/From All folder/Class I Composite 2024.docx`; Swade chunks for Class I composite note templates |
+| `dir-class2` | `01CR/Operative and Restorative/From All folder/HUDDLE for Class II composite.docx`; `Class II Amalgam #3 MO.pdf`; `Class II PE Instructions 2024.pdf`; `Shea_Jacob_Slot Prep Tips Part 1_2024.pdf` + `Part 2_2024.pdf` (these are by Jake!) |
+| `dir-class3` | Swade chunks (Class III composite note template); `01CR/Operative and Restorative/From All folder/Operative Dent Final Exam Study Guide.pdf` (Class III section) |
+| `dir-class4` | `01CR/Operative and Restorative/From All folder/8 9 Diastema Closure.pptx`; `Diastema Closure Huddle Students 2023.docx` (Class IV + diastema closure principles); Swade chunks |
+| `dir-class5` | `01CR/Operative and Restorative/From All folder/Operative Dent Final Exam Study Guide.pdf`; Swade chunks |
+| `dir-amalgam` | `01CR/Operative and Restorative/From All folder/Class II Amalgam #3 MO.pdf`; `DAOB 312 Amalgam Removal Huddle (5).docx`; Swade chunks |
+| `dir-sealant` | Swade chunks (sealant note template + lab procedure); cross-reference Pedo `DOST 331 Pediatric Restorative (1).pptx` for prevention principles |
+| `dir-prr` | Swade chunks (PRR note template); same Pedo cross-reference |
+| `dir-direct-veneer` | `01CR/Operative and Restorative/Direct Veneer Pics/*.png` (10+ technique screenshots — these are Jake's reference images for direct veneer technique); Swade chunks for note template |
+| `dir-deep-caries-decision` | Decision pathway — pulls from `dir-class1`/`dir-class2` deep-caries handling + `endo-direct-pulp-cap`. Cross-reference: `01CR/Endodontics/Vital pulp therapy 2025.pdf` |
+
+#### Endo family (Category: Endo · Phase I or Urgent)
+
+| Pathway | Primary UIC sources |
+|---|---|
+| `endo-diagnosis-workflow` | `01CR/Endodontics/ENDO Notes.pdf`; `Hindy lecture.pdf` (pulpal + periapical Dx terminology); cross-reference `01CR/Treatment Planning and Diagnosis/ALL DxTP FILES/endo_eval_and_tx_planning_3-25-2020 - Copy(1).pdf` |
+| `endo-anterior-rct` | `01CR/Endodontics/Phase 1 DAOB Endodontics/week 2 anterior access.pdf`; `week 3 WL determination.pdf`; `week 3 principles of root canal preparation.pdf`; `week 4 Guide path preparation, hand Niti preparation.pdf`; Swade chunks (anterior RCT note + steps); `Crown-Down, Step-Back Manual Weeks-Baker 2015.doc` |
+| `endo-premolar-rct` | `01CR/Endodontics/Phase 1 DAOB Endodontics/week 2 Premolar Access.pdf` + same WL/prep weeks as anterior; Swade chunks |
+| `endo-molar-rct` | `01CR/Endodontics/Phase 1 DAOB Endodontics/week 1 Molar Access.pdf` + same WL/prep weeks; `DAOB Phase 2 Endodontics/week 5 Engin-Driven Rotary preparation.pdf`; `week 6 Engin-Driven Rotary preparation II.pdf`; `week 7 obturation.pdf`; Swade chunks (molar RCT note + steps); `Powered Canal Preparation Method Vortex Blue 150518.doc` (Vortex orifice opener reference) |
+| `endo-direct-pulp-cap` | `01CR/Endodontics/Endo Lectures/Vital pulp therapy 2025.pdf`; Swade chunks for direct pulp cap procedure |
+| `endo-indirect-pulp-cap` | Same `Vital pulp therapy 2025.pdf`; cross-reference `dir-deep-caries-decision` |
+| `endo-necrotic-acute` (acute I&D) | `01CR/Endodontics/Endo Lectures/Management of Endodontic Emergencies DAOB 303 322 DBCS 327 2025.pdf`; `01CR/Endodontics/Management of Endodontic Emergencies DAOB 303 322 DBCS 327 2024 mod 200326.pdf`; Swade chunks (acute apical abscess note template) |
+| `endo-necrotic-chronic` | Same emergency-management lectures; `01CR/Endodontics/Problem Avoidance in Endo Clinic.pdf` |
+| `endo-broken-instrument` | `01CR/Endodontics/DAOB Phase 2 Endodontics/week 8 Endodontic problem solving.pdf`; `Problem Avoidance in Endo Clinic.pdf` |
+| `endo-trauma-replantation` (avulsion) | `01CR/Endodontics/Endo Lectures/TRAUMA guidelines UIC.key.pdf.pptx` (the TRAUMA lecture); `New Techniques in Endo.pdf` for follow-up content |
+| `endo-fractured-anterior` (Ellis II/III) | TRAUMA lecture (same); `01CR/Endodontics/Endo Lectures/Vital pulp therapy 2025.pdf` for vital pulp therapy decision on Ellis III with pulp exposure |
+
+#### Surgery / OS family (Category: OS · Phase I or Urgent)
+
+| Pathway | Primary UIC sources |
+|---|---|
+| `surgery-simple-ext` | `01CR/Oral Surgery/OS Surgical Principles Instrumentation.pptx`; Swade chunks for simple extraction note template + steps |
+| `surgery-multi-rooted-ext` | Same `OS Surgical Principles Instrumentation.pptx`; `01CR/Oral Surgery/OS Lectures/Complications and Post-Op Management.pdf` (sectioning when needed); Swade chunks |
+| `surgery-surgical-ext` (faculty-supervised) | `01CR/Oral Surgery/Impacted Teeth_weyh 2024.pdf` (surgical flap technique principles); `OS Lectures/Complications and Post-Op Management.pdf`; Swade chunks |
+| `surgery-dry-socket` | `01CR/Oral Surgery/Complications and Post-Op Management copy.pdf`; `01CR/Oral Surgery/Wound Healing Lecture.pdf`; Swade chunks for dry-socket note template |
+| `surgery-post-op-bleed` | Same `Complications and Post-Op Management copy.pdf`; Swade chunks |
+| `surgery-fractured-anterior` (trauma — to be reconciled with `endo-fractured-anterior` since they overlap) | TRAUMA lecture + `01CR/Endodontics/Endo Lectures/Vital pulp therapy 2025.pdf`. **Decision needed during build**: merge into one cross-trauma pathway or keep distinct entries |
+
+#### Perio family (Category: Perio · Phase I, IV, or Urgent)
+
+| Pathway | Primary UIC sources |
+|---|---|
+| `perio-coe` (the Dx engine pathway) | `01CR/Periodontics/Updated Study Manual for Periodontology - revised 11-11-20.pdf`; `Student Presentation- Periodontal Screening and Recording_SA_FA 5-12-22.pdf`; AAP 2018 framework is encoded in the existing perio Dx engine in App.jsx (functional implementation, not a citation) |
+| `perio-prophy` | Swade chunks (adult prophy note + steps); cross-reference `01CR/Periodontics/Phase 1 DAOB Periodontics/Week 2- Overview of the Non-Surgical Periodontal Therapy.pdf` |
+| `perio-srp` | `01CR/Periodontics/Phase 1 DAOB Periodontics/Week 2- Overview of the Non-Surgical Periodontal Therapy.pdf`; `Week 3- 4-6 Post SRP Reevaluation- Dr. Ashrafi.pdf` (the post-SRP re-evaluation timing); Swade chunks |
+| `perio-maintenance` | Cross-reference: `01CR/Treatment Planning and Diagnosis/ALL DxTP FILES/Periodontal aspects of treatment planning 2020-Ashrafi(1)(1).pdf`; `Week 3- 4-6 Post SRP Reevaluation- Dr. Ashrafi.pdf`; Swade chunks |
+| `perio-acute-abscess` | **Gap**: no dedicated UIC acute-abscess perio lecture. Use principles from `Updated Study Manual for Periodontology` + `Week 1- Highly Destructive Form of Periodontitis-Dr. Ashrafi.pdf`. Pulp-test differential from `endo-diagnosis-workflow` cross-reference. |
+
+#### Pedo family (Category: Pedo · keep per Option A) — **COVERAGE IS THIN**
+
+The Pediatric Dentistry folder at `01CR/Pediatric Dentistry/` is **empty**.
+DOST 331 coursework has only 3 weeks of content (Week 1 Allergic Reaction,
+Week 2 JIA/TMJ, Week 3 Pediatric Restorative). The Dentistry Files root has
+`Pediatrics Comprehensive Cases.docx`.
+
+| Pathway | Available sources |
+|---|---|
+| `pedo-composite` | `02 Coursework and Exams/DOST 331/Week 3 Dost/DOST 331 Pediatric Restorative (1).pptx`; Swade chunks for note templates; `Pediatrics Comprehensive Cases.docx` |
+| `pedo-stainless-crown` (SSC) | `02 Coursework and Exams/DOST 331/Week 3 Dost/DOST 331 Pediatric Restorative (1).pptx`; Swade chunks; `01CR/Operative and Restorative/From All folder/SSC Criteria Sheets.pdf`; `SSC PE #2 Rubric.pdf` |
+| `pedo-pulpotomy` | Same Week 3 Pediatric Restorative + Swade chunks |
+| `pedo-strip-crown` (primary anterior) | Same + Swade chunks |
+| `pedo-sealant`, `pedo-fluoride-varnish` | Swade chunks; `Pediatrics Comprehensive Cases.docx` |
+| `pedo-space-maintainer` | Swade chunks; `Pediatrics Comprehensive Cases.docx` |
+| `pedo-primary-trauma`, `pedo-extraction` | Swade chunks; cross-reference TRAUMA lecture (note: primary tooth trauma protocol DIFFERS from permanent — don't replant primary) |
+| `pedo-poe-recall`, `pedo-behavior-management`, `pedo-local-anesthetic` | Swade chunks (these are mostly clinical-workflow chapters that Swade covers in depth) |
+| `pedo-deep-caries-or-pulpotomy` decision | Same Week 3 Pediatric Restorative + cross-reference `dir-deep-caries-decision` |
+| `pedo-medications-reference` (reference-only) | Cross-reference adult Pharmacology folder; Swade chunks |
+
+**Gap flagged**: Pedo coverage in the available source PDFs is significantly
+thinner than CD/RPD/FPD. Recommend either (a) doing the Pedo pathways from
+Swade chunks alone as the primary source (since Swade has comprehensive Pedo
+coverage already), or (b) flagging for Jake to share more Pedo lecture
+content if it exists.
+
+#### Urgent / cross family (multi-domain combos)
+
+| Pathway | Primary UIC sources |
+|---|---|
+| `cross-anterior-trauma` (multi-option discussion) | TRAUMA lecture; `Vital pulp therapy 2025.pdf`; cross-reference with implant + FPD + RPD pathways for the replacement options discussion |
+| `cross-cd-iod-implants` (existing CD → add implants) | Implantology folder + CD `Comprehensive CD Guide.docx` IOD section + Han lecture slides 49+ |
+| `cross-rpd-to-implants` (RPD patient → implants) | RPD `Retainers.pdf` (attachment options); Implantology folder |
+| `cross-anterior-implant-esthetic` (anterior single-implant) | Implantology `IMPLANT TBL LECTURE.pdf`; `Peri-implantitis lecture Final.pdf` |
+| `cross-pre-radiation-extractions` (pre-radiation oncology coordination) | Han lecture (`Dx and Tx Planning (Spring 2025).pdf`) slides 35-50 on pre-prosthetic surgical considerations; Swade chunks for extraction note templates |
+| `cross-odontogenic-infection-airway-risk` (urgent infection management) | `01CR/Oral Surgery/OS Lectures/Odontogenic infections 2025.pdf`; `01CR/Oral Surgery/OS Management of Medical Emergencies.pdf`; cross-reference `endo-necrotic-acute` |
+| `cross-caries-risk` (CAMBRA case-typing) | `01CR/Treatment Planning and Diagnosis/ALL DxTP FILES/CRA in TX planning.pdf` (caries-risk-in-TP); Swade chunks |
+| `cross-sdf-arrest` (SDF for caries arrest) | Cross-reference `dir-class1` + `pedo-sealant`/`pedo-fluoride-varnish`; Swade chunks for SDF note template |
+
+#### Repair sub-family (currently mixed across domains)
+
+| Pathway | Primary UIC sources |
+|---|---|
+| `repair-cd-fracture` | `01CR/Complete Dentures/ALL CD FILES/Reline rebase and repair - Bin Yang.pdf` |
+| `repair-loose-cd` | Same + `Comprehensive CD Guide.docx` adjustment section |
+| `repair-crown-bridge-loss` (= `ind-recement`) | Already covered above under `ind-recement` |
+| `repair-veneer-debond` | **Gap**: same gap as `ind-veneers`. Use cementation/bonding principles from Fixed Prosth folder. |
+| `repair-fractured-porcelain-pfm` | `01CR/Fixed Prosthodontics/DAOB Phase 2 Fixed Prosth/PFM Porcelain Application and Final Contouring.pdf` (for understanding what's failing); intraoral repair principles |
+| `repair-zirconia-chip` | **Gap**: no dedicated UIC zirconia-repair content. The current pathway's mention of CoJet / tribochemical silica coating + MDP primer is principles-based, not UIC-specific. May need to defer or simplify. |
+| `repair-tooth-loss-after-rpd` | `01CR/Removable Partial Dentures/ALL RPD FILES/Reline_Rebase_Repair of RPD Fall 2022.pdf`; cross-reference `rpd-broken-clasp` |
+
+---
+
+#### Summary of source-coverage gaps
+
+Pathways flagged with **Gap** above (need additional content from Jake or
+should be deferred / built lightly from principles):
+
+- `cd-iod-canine-roots`, `cd-implant-supported-lower` — tooth-retained + 2-implant
+  overdenture content
+- `rpd-implant-hybrid` — RPD + implant coordination
+- `ind-veneers` — anterior veneer lecture content
+- `ind-recement` (mostly fine from Swade); `ind-failing-existing-crown` (decision
+  logic only); `ind-cracked-tooth-syndrome` (no dedicated lecture)
+- `perio-acute-abscess` — no dedicated acute-abscess lecture
+- All Pedo pathways — thin coverage; recommend Swade-primary approach
+- `repair-veneer-debond`, `repair-zirconia-chip` — thin coverage
+
+These don't block the rebuild. The three model pathways (cd-conventional,
+rpd-kennedy3, ind-conventional-crown) have comprehensive coverage. Gaps can
+be addressed later as Jake shares more content or as we accept that some
+pathways are principles-based rather than UIC-lecture-anchored.
 
 Fan-out commits group by family (one commit per family is fine if individually
 reviewed in a batch).
