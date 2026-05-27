@@ -4890,11 +4890,13 @@ function renderTemplate(raw, f) {
 
  // Special-case: "treatment plan" — replaces the lone dash stub under
  // "Treatment planned for the following treatments:" with the user's list.
+ // Trailing "\n" inserts a blank line between the last treatment and the
+ // "Thoroughly reviewed all treatment options…" paragraph that follows.
  if (label === "treatment plan") {
  const tp = v.startsWith("-")? v: `- ${v}`;
  t = t.replace(
  /(Treatment planned for the following treatments:)\n[ \t]*-[ \t]*(?=\n|$)/i,
- (_m, heading) => `${heading}\n${tp}`
+ (_m, heading) => `${heading}\n${tp}\n`
 );
  continue;
  }
@@ -5271,11 +5273,23 @@ function renderTemplate(raw, f) {
 );
  }
 
- // OHI: conditional nutritional counseling / tobacco cessation
- // Templates now read "Reviewed OHI with demonstration." — we insert
- // "& completed..." if one or both checkboxes are checked.
+ // OHI: conditional nutritional counseling / tobacco cessation.
+ // Templates SHIP with the full sentence baked in ("Reviewed OHI with
+ // demonstration & completed nutritional counseling and tobacco
+ // cessation.") so we (a) normalize back to the bare form, then (b)
+ // conditionally append based on checkbox state. Pre-fix, the
+ // substitution expected templates to ship in the bare form and only
+ // ran when a box was checked — so unchecking did nothing and the
+ // full sentence stayed regardless of state.
  const nutriCounsel = ef["nutritional counseling"] === true;
  const tobaccoCess = ef["tobacco cessation"] === true;
+ // Step a: normalize. Match "Reviewed OHI with demonstration" through
+ // the next period (whatever it carries — "completed X and Y." or just ".").
+ t = t.replace(
+ /Reviewed OHI with demonstration[^.]*\./,
+ "Reviewed OHI with demonstration."
+);
+ // Step b: append based on checkboxes.
  if (nutriCounsel && tobaccoCess) {
  t = t.replace(
  /Reviewed OHI with demonstration\./,
@@ -5325,9 +5339,17 @@ function renderTemplate(raw, f) {
  // surgically strip only the heading + the "Removed supragingival..."
  // sentence; perio chart + OHI sentence stay intact.
  if (f.poeOnly === true) {
- // 1. Strip the "Prophy:" heading line (perio chart no longer needs to live under it).
+ // 1. Strip the "Prophy:" heading line.
  t = t.replace(/\n+\s*Prophy:\s*\n+/, "\n\n");
- // 2. Strip the scaling/cleaning sentence (the actual prophy work). The
+ // 2. Strip the perio chart block — heading + every dash-bulleted
+ // sub-line (probing depths, BoP, recession, furcation, mobility,
+ // mucogingival defects, gingiva). Per Jake: if no prophy this
+ // visit, no perio chart either — these are charted as one workflow.
+ t = t.replace(
+ /\n\s*Updated perio EPR & perio chart:\s*\n(?:[ \t]*-[ \t]*[^\n]*\n)*/i,
+ "\n\n"
+);
+ // 3. Strip the scaling/cleaning sentence (the actual prophy work). The
  // sentence spans two source lines: "Removed... Flossed. Polished with\nprophy paste."
  t = t.replace(
  /\n\s*Removed supragingival[^]*?prophy paste\.\s*/i,
@@ -7814,8 +7836,12 @@ const EXAM_FINDINGS_CONFIG = {
  ],
  },
  {
+ // OHI section stays visible even in POE-only mode (no prophy) —
+ // students still typically do OHI at exam visits. Checkboxes
+ // default OFF; checking adds "& completed nutritional counseling
+ // and tobacco cessation" to the "Reviewed OHI with demonstration"
+ // sentence via renderTemplate's OHI substitution.
  title: "OHI",
- poeOnlyHide: true,
  fields: [
  { label: "nutritional counseling", type: "ohi-checkbox" },
  { label: "tobacco cessation", type: "ohi-checkbox" },
@@ -9738,7 +9764,14 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
 
  // sections can declare `rows` (array of field arrays) for horizontal layout,
  // or the standard `fields` array for the default vertical stack.
- const fields = section.rows
+ // RENAMED to fieldEls to avoid shadowing the `fields` prop from the
+ // ExamFindings parameter list — the headerCheckbox render below
+ // needs to read the form state, not this local React-element array.
+ // Pre-fix: `const fields = ...` made `fields[checkboxField]` evaluate
+ // to undefined inside the headerCheckbox, so the "Took bitewings?"
+ // toggle always rendered unchecked regardless of state — and clicks
+ // toggled the wrong direction.
+ const fieldEls = section.rows
 ? section.rows.map((row, ri) => (
  <div key={ri} style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
  {row.map((f2, fi) => (
@@ -9757,7 +9790,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  summary={section.summary}
  defaultOpen={false}
  >
- {fields}
+ {fieldEls}
  </Disclosure>
  </div>
 );
@@ -9798,7 +9831,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
 ): (
  <SubsectionLabel>{section.title}</SubsectionLabel>
 )}
- {fields}
+ {fieldEls}
  </div>
 );
  })}
