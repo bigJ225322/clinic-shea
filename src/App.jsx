@@ -23643,10 +23643,12 @@ const PATHWAYS = [
  "Cement choice: RelyX Unicem 2 (self-adhesive resin cement) for PFM/zirconia FPDs is the predoc default for bridges — the longer span + load distribution stresses the cement layer more than a single crown, so resin cement is preferred over RMGI. FujiCEM (RMGI) acceptable on retentive preps with primarily dentin margins. Avoid traditional zinc phosphate on contemporary materials.",
  "CDT codes (3-unit FPD = 3 separate codes — 2 retainer crowns + 1 pontic): retainer crowns D6750 (PFM high noble metal) — or material variant: D6740 (porc/cer), D6790 (full cast high noble), D6752/D6753 (PFM noble/titanium). Pontic D6240 (PFM high noble) — or D6245 (porc/cer pontic), D6210 (full cast high noble pontic), D6242/D6243 (PFM noble/titanium pontic). Bridges are billed per unit, not as a single procedure.",
  ],
+ // phases sum to 5 = sections.length (Framework try-in phase removed
+ // along with ind-ch3 — short-span bridges don't get a separate
+ // metal-substructure try-in).
  phases: [
  { label: "Workflow + bridge design", count: 2 },
  { label: "Material", count: 1 },
- { label: "Framework try-in", count: 1 },
  { label: "Cementation", count: 1 },
  { label: "Reference", count: 1 },
  ],
