@@ -8005,19 +8005,30 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG, showW 
  const inputRef = useRef(null);
 
  // Position the panel centered ON THE INPUT FIELD, with viewport-edge
- // clamping so it never goes partially off-screen.
+ // clamping so it never goes partially off-screen. Flip above the input
+ // if there isn't enough room below for the ~220px panel.
  useLayoutEffect(() => {
  if (!open) return;
  const update = () => {
  if (!inputRef.current) return;
  const r = inputRef.current.getBoundingClientRect();
  const vpW = window.innerWidth;
+ const vpH = window.innerHeight;
  const panelW = Math.min(520, vpW - 32);
  const inputCenter = r.left + r.width / 2;
  const idealLeft = inputCenter - panelW / 2;
  // Clamp: stay at least 16px from each viewport edge.
  const clampedLeft = Math.max(16, Math.min(idealLeft, vpW - panelW - 16));
- setPanelTop(r.bottom + 2);
+ // Vertical: prefer below the input. If less than ~240px below, flip
+ // above (panel is ~220px tall for a full odontogram). Always clamp
+ // to at least 8px from the top of the viewport.
+ const panelHeight = 240;
+ const spaceBelow = vpH - r.bottom;
+ const flipAbove = spaceBelow < panelHeight && r.top > panelHeight;
+ const top = flipAbove
+ ? Math.max(8, r.top - panelHeight - 2)
+ : r.bottom + 2;
+ setPanelTop(top);
  setPanelLeft(clampedLeft);
  };
  update();
