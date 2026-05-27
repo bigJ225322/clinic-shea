@@ -23537,9 +23537,11 @@ const PATHWAYS = [
  "Faculty signs off on the prep before impression.",
  "CDT codes (CDT 2024): D2750 (Crown, PFM high noble metal) — typical billing code. Material variants: D2740 (porcelain/ceramic), D2790 (full cast high noble metal), D2752 (PFM noble metal), D2753 (PFM titanium / titanium alloys). Per-step subcodes commonly used: D2750A (prep), D2750B (impression / lab), D2750C (delivery / cementation). Provisional may bill D2799 (interim crown).",
  ],
+ // phases sum to 6 = sections.length (ind-ch3 was removed but the
+ // Material & framework count wasn't decremented; fixed here).
  phases: [
  { label: "Workflow & records", count: 2 },
- { label: "Material & framework", count: 2 },
+ { label: "Material", count: 1 },
  { label: "Cementation + follow-up", count: 2 },
  { label: "Reference", count: 1 },
  ],
