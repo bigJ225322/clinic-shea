@@ -24747,8 +24747,9 @@ const PATHWAYS = [
  "Prescribe pilocarpine or cevimeline; counsel saliva substitutes for symptomatic relief.",
  "Schedule more frequent follow-ups — tissue irritation occurs faster in xerostomia.",
  ],
+ // phases sum to 8 = sections.length.
  phases: [
- { label: "Records", count: 1 },
+ { label: "Records + custom tray", count: 2 },
  { label: "Border + impression", count: 2 },
  { label: "Liner + seal", count: 2 },
  { label: "Diagnose + manage", count: 2 },
