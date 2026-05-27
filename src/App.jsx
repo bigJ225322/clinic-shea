@@ -23689,7 +23689,7 @@ const PATHWAYS = [
  "Material choice: PFM or zirconia for posterior load (e.max acceptable for light occlusal stress only).",
  "Cement with RMGI if retention form is good; resin cement if ferrule is short.",
  "Check for fracture lines with transillumination before commitment to crown vs extraction.",
- "Timing matters — coronal seal is the #1 prognostic factor for RCT survival. Complete the definitive crown within 4 weeks of obturation; longer than that risks bacterial recontamination through the temporary restoration. If patient delays > 4 weeks, the access cavity needs to be reopened and re-cleaned before final restoration.",
+ "Timing matters — coronal seal is a dominant prognostic factor for RCT survival. Complete the definitive crown within 4 weeks of obturation; longer than that risks bacterial recontamination through the temporary restoration. If patient delays > 4 weeks, the access cavity needs to be reopened and re-cleaned before final restoration.",
  "Subgingival margins should be avoided where possible — when margins violate the biologic width (≤2 mm of supracrestal tissue attachment) the result is chronic inflammation, bone loss, and pocket formation. If subgingival margin is unavoidable, plan crown lengthening (6-8 week healing) BEFORE crown prep.",
  "CDT codes: D2750 (PFM high noble) or D2740 (porc/cer) for the crown, D2950 (core buildup, including any pins) for the foundation. If a post is needed: D2954 (prefabricated post, in addition to core buildup). The endo procedure (D3310/D3320/D3330) is billed separately at the RCT visit, not at the crown visit.",
  ],
@@ -25409,7 +25409,7 @@ const PATHWAYS = [
  "Access on the lingual surface. The bur enters perpendicular to the lingual, then redirects to follow the long axis of the root. Outline form is a triangle with the base toward the incisal — opens the pulp horn region for the orifice locator. Pre-flare with Vortex orifice opener #20/.08.",
  "Working length: apex locator first, then confirm with a PA radiograph showing the file 0.5–1 mm short of the radiographic apex. Confirm patency throughout the instrumentation sequence; re-check WL if the file is suddenly riding short or the apex locator reading changes.",
  "Irrigation regimen: 1% NaOCl between every file change → final irrigation sequence 1% NaOCl, 17% EDTA, 1% NaOCl. 1% NaOCl is the standard predoc concentration; higher concentrations (3-6%) are also clinically acceptable. Use a side-vented needle 2 mm short of working length, gentle agitation.",
- "Obturate: coat master cone with Endoseal MTA sealer → insert into canal → pump up/down 3 times → condense and melt off excess gutta-percha with heat Calamus. Single-cone or warm vertical with bioceramic sealer is an acceptable alternative; the Calamus/Endoseal-MTA workflow is what the predoc clinic teaches. Temporary seal: sterile sponge + Cavit. The lingual access gets composite over Vitrebond at the same visit or schedule the definitive restoration within 4 weeks — coronal leakage is the #1 cause of RCT failure.",
+ "Obturate: coat master cone with Endoseal MTA sealer → insert into canal → pump up/down 3 times → condense and melt off excess gutta-percha with heat Calamus. Single-cone or warm vertical with bioceramic sealer is an acceptable alternative; the Calamus/Endoseal-MTA workflow is what the predoc clinic teaches. Temporary seal: sterile sponge + Cavit. The lingual access gets composite over Vitrebond at the same visit or schedule the definitive restoration within 4 weeks — coronal leakage is a leading cause of RCT failure.",
  ],
  phases: [
  { label: "Diagnosis & access", count: 3 },
@@ -25439,7 +25439,7 @@ const PATHWAYS = [
  "If two canals: instrument the smaller (often the palatal or lingual canal) first to preserve straight-line access for the more curved canal.",
  "Irrigation regimen: 1% NaOCl between every file change → final 1% NaOCl, 17% EDTA, 1% NaOCl. Side-vented needle 2 mm short of WL, gentle agitation. 1% is the predoc standard; higher concentrations are also clinically acceptable.",
  "Obturation: master cone + Endoseal MTA sealer → pump 3x → heat Calamus condense (per canal). Temporary seal sponge + Cavit.",
- "Restoration plan must be decided at the obturation visit: a premolar with MOD prep needs a crown — composite alone in a cuspally-thin premolar fractures. Coronal seal is THE prognostic factor.",
+ "Restoration plan must be decided at the obturation visit: a premolar with MOD prep needs a crown — composite alone in a cuspally-thin premolar fractures. Coronal seal is a dominant prognostic factor.",
  ],
  phases: [
  { label: "Diagnosis & access", count: 3 },
@@ -25550,7 +25550,7 @@ const PATHWAYS = [
  "Exposure must be ~1 mm or smaller for best success. Larger exposures (especially in a posterior tooth) have lower long-term vitality success — proceed to full RCT. Cvek-style partial pulpotomy is occasionally indicated for trauma cases in young patients (apexogenesis) but is not the standard predoc move for a carious exposure.",
  "Hemostasis under 1% NaOCl on a moist cotton pellet for up to 5-10 minutes (matches the predoc clinic stock — some texts cite 2.5% to 6% NaOCl for VPT hemostasis, but the 1% on tray is what's used and adequate when bleeding is mild). If bleeding doesn't stop within that window, the pulp is more inflamed than the symptoms suggested → proceed to full RCT.",
  "Material choice per Vital Pulp Therapy 2025 lecture: MTA (ProRoot grey/white) or Biodentine are the preferred materials per current evidence (5-year success ~81% MTA vs ~56% Ca(OH)2 in cited studies). Ca(OH)2 (Dycal/Life) is still routinely placed and is acceptable when MTA isn't available or the case profile favors it. Place 1-2 mm of MTA/Biodentine over the exposure, RMGI (Fuji II LC or Vitrebond) over that, then composite (or amalgam if bonding can't be controlled).",
- "Coronal seal is THE #1 prognostic factor (Vital Pulp Therapy 2025 lecture; 35-year study showed P <.001 for coronal seal vs all other variables). Place the definitive restoration the SAME VISIT — leaving the cap under a temporary fails by bacterial re-contamination.",
+ "Coronal seal is the most important prognostic factor (per the Vital Pulp Therapy 2025 lecture). Place the definitive restoration the SAME VISIT — leaving the cap under a temporary fails by bacterial re-contamination.",
  "Recall at 6 weeks and 6 months with vitality testing and PA. Pulp necrosis in the first year is the expected failure window — discuss this with the patient at consent.",
  ],
  phases: [
@@ -26454,7 +26454,7 @@ const PATHWAYS = [
  description: "A patient with previous SRP returning at the 3-4 month maintenance interval. The procedure is in between a prophy and a re-SRP: full-mouth ultrasonic + hand-instrumentation, with anesthesia for any quadrants that re-developed pockets. The clinical task is to identify the quadrants where instrumentation needs to go subgingival again vs the quadrants stable enough for surface debridement. Full 6-point perio chart is updated at EVERY maintenance visit — that's the data feed that decides which quadrants stay on maintenance vs escalate back to SRP. Annual re-charting is the prophy-patient cadence, not maintenance.",
  keyDecisions: [
  "Re-chart pocket depths at the maintenance visit. Sites that have increased >1 mm or developed new bleeding = quadrant gets anesthesia + sub-gingival instrumentation. Stable sites = surface debridement only.",
- "Confirm patient is following the recommended interval. Skipped maintenance visits (6+ months instead of 3) are the #1 cause of perio recurrence — recharting at this visit will show new pocket formation.",
+ "Confirm patient is following the recommended interval. Skipped maintenance visits (6+ months instead of 3) are a leading cause of perio recurrence — recharting at this visit will show new pocket formation.",
  "OHI re-assessment: ask about brushing technique, interproximal aids (floss, interdental brushes, water flosser). Watch the patient demonstrate. Most patients have drifted from the technique they learned at SRP.",
  "If 4+ sites have re-developed 5+ mm pockets, treat as a re-SRP not a maintenance — bill D4341/D4342 instead of D4910. Document the clinical changes.",
  "Maintenance interval stays at 3-4 months indefinitely. Patients sometimes try to extend to 6 months — refuse unless 2+ consecutive maintenance visits show no pocket changes.",
