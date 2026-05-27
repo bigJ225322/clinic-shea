@@ -303,9 +303,162 @@ This phase mapping is also the keep/cut filter:
 - If it doesn't fit any phase OR isn't part of a UG predoc's TP role in
   any phase → cut or merge
 
-#### `Patient Disposition & Case Type.pdf` — TBD
+#### `Patient Disposition & Case Type.pdf` — UIC operational tracking sheet [4 pp]
 
-#### `Risk Assessment and patient evaluation and diagnotic process PDF with highlight.pdf` — TBD
+This file is **not a lecture** — it's the Excel-as-PDF spreadsheet template
+students use to maintain their patient roster. Found in the DxTP folder
+because TP planning meetings reference this dashboard.
+
+**Sheet 1 (Patient roster columns):**
+- Axium Number, Patient Name (Last, First), Language, Patient Status
+- Patient Letter (Y/N, Letter Type)
+- **Current Phase of Care** (the active phase of the TP)
+- **Active Patients procedure-tracking columns**, each with (Y/N, #):
+  - Operative
+  - Digital
+  - Fixed
+  - Dentures
+  - Perio
+  - Endo
+  - OS
+  - Ortho
+  - STI (Single Tooth Implant)
+  - IOD (Implant Overdenture)
+- Last POE Date, Next POE due Date, Prophy/Maint Due Date
+- General Comments Regarding Patient
+- Transfer columns: Current Provider, D4/AS, D3
+
+**Sheet 2 — Language dropdown:** English / Spanish / Cantonese / Mandarin / Other
+
+**Sheet 3 — Validations (Letter → Phase mapping — THE UIC TAXONOMY):**
+| Letter | Phase |
+|---|---|
+| A | COE/Tx Plan |
+| B | Phase I |
+| C | Phase II |
+| S | Phase III |
+| D | Phase IV |
+| Custom | (no fixed mapping) |
+
+(Note: "S" for Phase III is the legacy UIC code, not an alphabetic
+continuation. Phase III = reconstructive = the S letter on the roster.)
+
+**Sheet 4 — Patient status dropdown:** Active / Recall
+
+**Implications for Cases:**
+
+This roster confirms the **canonical UIC procedure taxonomy** the school
+actually uses in patient management:
+
+```
+Operative · Digital · Fixed · Dentures · Perio · Endo · OS · Ortho · STI · IOD
+```
+
+Notable differences from current Cases `PATHWAY_DOMAINS`:
+- **No "Pedo"** — separate clinic with its own tracker, not on the UG predoc
+  roster (the current Pedo pathway domain may be more appropriate as its
+  own tab or sidelined here)
+- **No "RPD" as its own column** — RPDs roll into the "Dentures" bucket
+  alongside CD/IID/IOD. The current `cd-` and `rpd-` pathway split could
+  collapse to a unified Dentures group with Kennedy-class + edentulous-
+  arch sub-grouping
+- **"Digital" is its own bucket** — separate from Fixed. Currently
+  `ind-digital-emax` and `ind-cad-cam-inlay-onlay` sit under Indirect; UIC
+  treats Digital as a tracked category in its own right (because it's a
+  separate clinic location)
+- **STI and IOD are separate from Fixed** — implant restoration isn't lumped
+  with crown+bridge work at the roster level. Current Cases puts
+  `ind-single-implant-crown` and `cross-anterior-implant-esthetic` under
+  Indirect; the operational taxonomy says implant restoration is its own
+  tracking bucket
+- **"Ortho" exists on the roster** but is referral-only at UG predoc. Worth
+  recognizing in TP scope (the predoc plans the timing around ortho), not
+  as a how-to-perform pathway
+
+**The combined framework — phase + category:**
+
+A pathway's organization could carry two axes:
+- **Phase** (Urgent / Diagnostic / I / II / III / IV) = where in the TP
+- **Category** (one of the 10 above) = which clinic / which discipline
+
+Phase tells the student WHY this matters in the TP. Category tells them
+WHERE this happens. Both are useful, and the spreadsheet uses both.
+
+#### `Risk Assessment and patient evaluation and diagnotic process PDF with highlight.pdf` — Textbook chapter [39 pp, first 10 read]
+
+This is a **textbook chapter excerpt** (Stefanac & Nesbit, Treatment
+Planning in Dentistry, 3rd ed., Ch 1: "Patient Evaluation, Risk Assessment,
+and the Diagnostic Process") — not a UIC lecture. Filed in the DxTP folder
+because it's the required-textbook chapter cited in `Tx Dx- Overview.pdf`.
+
+Content (the patient-evaluation framework):
+
+- **Diagnostic sequential process** (slide-equivalent of Box 1.2 checklist):
+  - **R: Recognize risks** — be aware of adverse events that may occur
+  - **P: Patient evaluation** — review medical history; identify medications;
+    examine for signs/symptoms; review labs + imaging; obtain medical
+    consultation if needed
+  - **A: Antibiotics, Analgesics, Anesthesia, Anxiety** — prophylactic
+    abx need, NSAID-aspirin bleeding risk, LA + vasoconstrictor concerns,
+    sedative needs
+  - **B: Bleeding, Breathing, Blood pressure** — abnormal hemostasis,
+    respiratory difficulty, BP control
+  - **C: Capacity to tolerate care** — cardiovascular + emotional capacity
+  - **D: Drugs, Devices** — drug interactions; prosthetic devices (heart
+    valves, joints, pacemakers, AVF, defibrillators)
+  - **E: Equipment, Emergencies** — equipment compatibility (e.g.,
+    electrocautery near pacemakers); anticipated medical emergencies
+  - **F: Follow-up care** — analgesics, abx prophylaxis post-op, patient
+    contact
+
+- **Medical-history conditions organized by body system** (with relevance
+  to dental tx noted):
+  - Cardiovascular: heart failure, MI, angina, HTN, heart murmur, MVP,
+    rheumatic fever, congenital heart disease, artificial heart valve,
+    arrhythmias, CABG/angioplasty/stent
+  - Hematologic: inherited bleeding disorders, blood transfusion hx,
+    anemia, leukemia/lymphoma, anticoagulant/antiplatelet use
+  - Neurologic: stroke, epilepsy/seizures (Dilantin gingival overgrowth)
+  - Behavioral/psychiatric: drug interactions with vasoconstrictors,
+    xerostomia from psych drugs, anxiety management
+  - GI: ulcers (NSAID caution), hepatitis (infection control)
+
+**Implications for Cases:**
+
+This is the foundation content for any "case-typing" or "risk assessment"
+pathway. The cross-caries-risk pathway already exists; analogous medical-
+risk pathways could be added for cardiac / bleeding / immunocompromised
+patients. But this is **Steps-tab territory** more than Cases-tab — Cases
+is about the procedural workflow, Steps is about the per-appointment
+checklist. The medical-risk content belongs in Steps (under PE/COE
+chunks) or in a reference doc.
+
+**Will not pull from this PDF for Cases pathway content** — covered better
+by Swade's medical-history coverage in the COE chunks and by the Han
+lecture's surgical-considerations content.
+
+---
+
+## Source-reading status — DxTP folder complete enough to make decisions
+
+Read so far:
+- ✅ `Dx and Tx Planning (Spring 2025).pdf` — Han, medical+surgical
+  considerations
+- ✅ `Tx Dx- Overview.pdf` — **the canonical 6-phase framework**
+- ✅ `Patient Disposition & Case Type.pdf` — **the 10-category UIC roster
+  taxonomy**
+- ✅ `Risk Assessment.pdf` — Stefanac & Nesbit Ch 1 (medical risk
+  framework, will not be used for pathway content)
+
+**Deferred** (not needed for the keep/cut decision; will read when
+populating individual pathways):
+- Per-domain TP lectures (RPD Lecture 2, CD intro, FPD overview, etc.)
+- Problem List cases 1–4 + keys (these are exam material)
+- Periodontal aspects of TP (Ashrafi), Ortho considerations, Endo
+  eval+TP, Prosth Considerations, Geriatrics, Pros Considerations (all
+  domain-specific deep-dives)
+
+We now have what we need to produce the keep/cut list.
 
 ### Domain TP lectures (where the comprehensive procedure list actually lives)
 
@@ -514,11 +667,219 @@ read" column will be filled when DxTP extraction is complete.
 
 ---
 
-## Decisions log
+## Keep / Cut / Reframe / Merge list — DRAFT for review
 
-Decisions about what to do with specific pathways. Append as we go.
+Applying the DxTP framework (6 phases × 10 categories) to the current
+PATHWAYS array. Each entry is tagged with:
+- **Category** (UIC roster taxonomy: Operative/Digital/Fixed/Dentures/Perio/Endo/OS/STI/IOD; or "Diagnostic" / "Urgent" for cross-domain phases)
+- **Phase** (Urgent / Dx / I / II / III / IV)
+- **Verdict** (KEEP / CUT / REFRAME / MERGE / DEFER)
 
-*(Empty — fills as we go through the keep/cut review.)*
+A note on "MERGE": means roll this pathway's content into another as a
+keyDecision variant or material modifier, rather than maintaining it as
+a standalone pathway. Reduces clutter on the picker without losing the
+clinical content.
+
+"DEFER" means a borderline judgment call — flagged for explicit user
+input below.
+
+### Direct / Operative (Category: Operative · Phase I)
+
+| Pathway | Category | Phase | Verdict | Reason |
+|---|---|---|---|---|
+| dir-class1 | Operative | I | **KEEP** | Core Phase I procedure |
+| dir-class2 | Operative | I | **KEEP** | Core Phase I procedure |
+| dir-class3 | Operative | I | **KEEP** | Core Phase I procedure |
+| dir-class4 | Operative | I | **KEEP** | Core Phase I procedure |
+| dir-class5 | Operative | I | **KEEP** | Core Phase I procedure |
+| dir-amalgam | Operative | I | **KEEP** | Still taught at UIC |
+| dir-sealant | Operative | I (preventive) | **KEEP** | Preventive — Phase I |
+| dir-prr | Operative | I | **KEEP** | Preventive Resin Restoration |
+| dir-direct-veneer | Operative | I | **KEEP** | Chairside direct composite veneer (not indirect) |
+| dir-deep-caries-decision | Diagnostic+Operative | Dx → I | **KEEP** | Decision pathway (when to pulp cap vs RCT) |
+
+### Indirect / Fixed (Category: Fixed · Phase III)
+
+| Pathway | Category | Phase | Verdict | Reason |
+|---|---|---|---|---|
+| ind-conventional-crown | Fixed | III | **KEEP** (model pathway) | Foundation crown workflow |
+| ind-digital-emax | Digital | III | **KEEP** | Digital clinic chairside workflow |
+| ind-veneers | Fixed | III | **KEEP** | 6-unit anterior veneers |
+| ind-bridge | Fixed | III | **KEEP** | 3-unit FPD |
+| ind-survey-crown | Fixed | III | **KEEP** | Specifically for RPD prep — distinct workflow |
+| ind-endo-treated | Fixed | III | **MERGE** into ind-conventional-crown as a keyDecision variant | "Crown on endo tooth" is conventional crown + ferrule consideration |
+| ind-recement | Fixed (repair) | IV | **KEEP** | Common urgent visit |
+| ind-bruxer-crown | Fixed | III | **MERGE** into ind-conventional-crown as a material-choice keyDecision | Patient-modifier, not separate workflow |
+| ind-fractured-cusp | Fixed | III | **KEEP** | Decision pathway — onlay vs crown after cusp loss |
+| ind-failing-existing-crown | Fixed | III | **KEEP** | Decision pathway — repair vs remake |
+| ind-crown-removal | Fixed | III (intra-procedural step) | **MERGE** into ind-failing-existing-crown | Crown removal is a step within "failing crown" workflow |
+| ind-crown-endo-access-fill | Operative | I | **KEEP** | Actually operative (composite over RCT access); fine as own pathway |
+| ind-inlay | Fixed | III | **KEEP** | Inlay distinct from onlay/crown |
+| ind-onlay-bruxer | Fixed | III | **MERGE** into ind-onlay-vs-crown-decision as a bruxer variant | Patient-modifier |
+| ind-anterior-crown-esthetic | Fixed | III | **MERGE** into ind-conventional-crown as anterior-esthetic variant | Material + shade variant, not separate workflow |
+| ind-post-and-core | Fixed | III | **KEEP** | Distinct from crown (additional pre-crown step) |
+| ind-large-span-fpd | Fixed | III | **CUT** | Large-span FPDs (>3 unit) exceed UG predoc scope per PIP |
+| ind-zirconia-posterior | Fixed | III | **MERGE** into ind-conventional-crown as material variant | Material modifier |
+| ind-3-4-crown | Fixed | III | **DEFER** | Uncommon at UG; could merge into conventional crown — *you tell me if UG does 3/4 crowns at UIC* |
+| ind-cad-cam-inlay-onlay | Digital | III | **KEEP** | Digital clinic distinct workflow |
+| ind-single-implant-crown | STI | III | **KEEP** | Distinct STI workflow |
+| ind-cracked-tooth-syndrome | Fixed | III | **KEEP** | Decision pathway (Cracked Tooth Dx → restoration choice) |
+| ind-onlay-vs-crown-decision | Fixed | III | **KEEP** | Decision pathway |
+
+### Endo (Category: Endo · Phase I or Urgent)
+
+| Pathway | Category | Phase | Verdict | Reason |
+|---|---|---|---|---|
+| endo-diagnosis-workflow | Diagnostic+Endo | Dx | **KEEP** | The Endo Dx workflow — critical |
+| endo-anterior-rct | Endo | I | **KEEP** | Core RCT |
+| endo-premolar-rct | Endo | I | **KEEP** | Core RCT |
+| endo-molar-rct | Endo | I | **KEEP** | Core RCT |
+| endo-direct-pulp-cap | Endo | I | **KEEP** | Vital pulp therapy |
+| endo-indirect-pulp-cap | Endo | I | **KEEP** | VPT alternative |
+| endo-vital-pulp-therapy | Endo | I | **MERGE** with endo-direct-pulp-cap | Same clinical concept; reduces redundancy |
+| endo-emergency-incision-and-drainage | Endo | Urgent | **KEEP** | Urgent care pathway |
+| endo-retreatment | Endo | I | **KEEP** as referral | UG refers to PG Endo |
+| endo-trauma-replantation | Endo + OS | Urgent | **KEEP** | Avulsion replantation |
+| endo-fractured-anterior | Endo + Operative | Urgent | **MERGE** with surgery-fractured-anterior into a single cross-trauma-fractured-anterior pathway | Both pathways are the same case; just different starting domains |
+
+### Surgery / OS (Category: OS · Phase I or Urgent)
+
+| Pathway | Category | Phase | Verdict | Reason |
+|---|---|---|---|---|
+| surgery-simple-ext | OS | I | **KEEP** | Core Phase I |
+| surgery-multi-rooted-ext | OS | I | **KEEP** | Core Phase I |
+| surgery-surgical-ext | OS | I | **KEEP** | Faculty-supervised; already disclaimed in description |
+| surgery-third-molar | OS | I/II | **KEEP** as referral | UG refers to PGOS |
+| surgery-dry-socket | OS | Urgent | **KEEP** | Post-op urgent |
+| surgery-post-op-bleed | OS | Urgent | **KEEP** | Post-op urgent |
+| surgery-fractured-anterior | OS + Endo | Urgent | **MERGE** with endo-fractured-anterior | See note above |
+| cross-odontogenic-infection-airway-risk | OS + Endo | Urgent | **KEEP** | Safety-critical pathway |
+
+### Perio (Category: Perio · varies)
+
+| Pathway | Category | Phase | Verdict | Reason |
+|---|---|---|---|---|
+| perio-coe | Diagnostic+Perio | Dx | **KEEP** | THE Perio Dx engine lives here |
+| perio-prophy | Perio | I or IV | **KEEP** | Phase I (adult prophy) or IV (recall prophy) |
+| perio-srp | Perio | I | **KEEP** | Core Phase I |
+| perio-maintenance | Perio | IV | **KEEP** | Core Phase IV |
+| perio-acute-abscess | Perio | Urgent | **KEEP** | Urgent care |
+| perio-crown-lengthening | Perio | II | **KEEP** as referral | Already reframed; recognize+refer |
+| perio-gingival-graft | Perio | II | **KEEP** as referral | Already reframed; recognize+refer |
+| cross-pre-prosthetic-surgery | OS | II | **KEEP** as referral | Already reframed |
+
+### CD / IOD (Category: Dentures or IOD · Phase III)
+
+| Pathway | Category | Phase | Verdict | Reason |
+|---|---|---|---|---|
+| cd-conventional | Dentures | III | **KEEP** (model pathway) | Foundation CD workflow |
+| cd-iid | Dentures | III | **KEEP** | Immediate Interim Denture workflow |
+| cd-adjustment | Dentures | IV | **KEEP** | Phase IV maintenance adjustment |
+| cd-reline-lab | Dentures | IV | **KEEP** | Phase IV lab reline |
+| cd-iod-canine-roots | Dentures (tooth-retained OD) | III | **KEEP** | Distinct tooth-retained overdenture workflow |
+| cd-implant-supported-lower | IOD | III | **KEEP** | 2-implant Mn overdenture — UG scope per PIP |
+| cd-anxious-firsttime | Dentures | III | **MERGE** into cd-conventional as keyDecision variant | Patient-modifier |
+| cd-xerostomic | Dentures | III | **MERGE** into cd-conventional | Patient-modifier |
+| cd-rapid-need | Dentures | III | **MERGE** into cd-conventional | Workflow-modifier |
+| cd-limited-dexterity | Dentures | III | **MERGE** into cd-conventional | Patient-modifier |
+
+### RPD (Category: Dentures · Phase III or IV)
+
+| Pathway | Category | Phase | Verdict | Reason |
+|---|---|---|---|---|
+| rpd-kennedy3 | Dentures (RPD) | III | **KEEP** (model pathway) | Foundation RPD workflow |
+| rpd-distal-extension | Dentures (RPD) | III | **KEEP** | Kennedy I/II with altered-cast variation |
+| rpd-kennedy4-anterior | Dentures (RPD) | III | **KEEP** | Anterior single-tooth RPD distinct |
+| rpd-broken-clasp | Dentures (RPD) | IV (repair) | **KEEP** | Common repair scenario |
+| rpd-broken-denture-tooth | Dentures (RPD) | IV | **KEEP** | Common repair scenario |
+| rpd-broken-framework | Dentures (RPD) | IV | **KEEP** | Often ends in remake decision |
+| rpd-valplast-repair | Dentures (RPD) | IV | **DEFER** | *Is Valplast (flexible RPD) used at UIC UG predoc?* If not, **CUT** |
+| rpd-loose-rpd | Dentures (RPD) | IV | **KEEP** | Common complaint scenario |
+| rpd-reline | Dentures (RPD) | IV | **KEEP** | Distinct from broken-clasp; lab reline workflow |
+| rpd-implant-hybrid | Dentures (RPD) + STI/IOD | III | **KEEP** | Implant-retained RPD scenario |
+| rpd-first-time-patient | Dentures (RPD) | III | **MERGE** into rpd-kennedy3 | Patient-modifier |
+| rpd-tmd-considering | Dentures (RPD) | III | **MERGE** into rpd-kennedy3 as keyDecision | TMD recognition flag |
+| rpd-recurrent-caries-abutment | Dentures (RPD) | IV | **MERGE** into rpd-maintenance flow (new pathway?) or into perio-maintenance | Recall finding — not a separate workflow |
+
+### Pedo — **HOW SHOULD THIS BE HANDLED?**
+
+The Patient Disposition spreadsheet doesn't list Pedo on the UG predoc
+roster — pedo is tracked separately in the UG Pedo clinic. **Two options:**
+
+- **Option A**: Keep all Pedo pathways in Cases under a Pedo pill (current
+  state). Pro: UG students do perform pedo procedures and Cases serves
+  them too. Con: mixes adult and pedo workflows in one nav.
+- **Option B**: Cut all Pedo pathways from Cases (out of UG predoc adult-
+  clinic roster). Pro: Cases matches the UIC adult-clinic taxonomy
+  cleanly. Con: pedo students lose the multi-visit lab-step view.
+- **Option C**: Spin Pedo into its own tab. Pro: clean separation. Con:
+  build cost.
+
+⏳ **Need your decision before listing per-pathway verdicts for Pedo.**
+
+Pedo pathways currently: pedo-composite, pedo-stainless-crown,
+pedo-pulpotomy, pedo-indirect-pulp-therapy, pedo-pulpectomy, pedo-lstr,
+pedo-sealant, pedo-fluoride-varnish, pedo-behavior-management,
+pedo-local-anesthetic, pedo-strip-crown, pedo-primary-anterior-class3,
+pedo-anterior-crown-selection, pedo-space-maintainer, pedo-primary-trauma,
+pedo-oral-pathology, pedo-extraction, pedo-poe-recall, pedo-tx-sequencing,
+pedo-radiograph-selection, pedo-oral-surgery, pedo-medications-reference,
+pedo-deep-caries-or-pulpotomy.
+
+### Cross (multi-domain combos)
+
+| Pathway | Category | Phase | Verdict | Reason |
+|---|---|---|---|---|
+| cross-cd-rpd | Dentures (RPD+CD) | III | **KEEP** | Common combined edentulous arch workflow |
+| cross-survey-crown | Fixed (overlap with ind-survey-crown) | III | **MERGE** into ind-survey-crown | Same workflow under two IDs |
+| cross-full-mouth-rehab | (out of scope) | — | **CUT** | Full-mouth rehab exceeds UG scope per philosophy |
+| cross-cd-iod-implants | IOD | III | **KEEP** | Existing-CD → add implants workflow |
+| cross-rpd-to-implants | Dentures + STI/IOD | III | **KEEP** | Transition workflow |
+| cross-anterior-trauma | Urgent (multi-domain) | Urgent → III | **KEEP** | The decision pathway for max anterior trauma — implant vs FPD vs RPD |
+| cross-dental-photo-composite | Operative (technique) | I | **MERGE** into dir-class4 or dir-direct-veneer | Photography is a technique, not its own workflow |
+| cross-anterior-implant-esthetic | STI | III | **KEEP** | Specifically for #6-11 esthetic-zone implant (and PIP-excluded #8/#9 → PG referral) |
+| cross-pre-radiation-extractions | OS + Dentures | I (urgent timing) | **KEEP** | Medical-context case; coordination with oncology |
+| cross-cementation-re-cement | Fixed (technique) | III/IV | **MERGE** into ind-recement | Same workflow |
+| cross-radiograph-protocols | Diagnostic | Dx | **CUT** | Belongs in Steps tab (per-appointment) or as Reference doc |
+| cross-caries-risk | Diagnostic | Dx | **KEEP** | CAMBRA case-typing — feeds TP |
+| cross-sdf-arrest | Operative (preventive) | I | **KEEP** | Distinct preventive workflow |
+| cross-veneer-debond | Fixed (repair) | IV | **MERGE** into ind-recement as ceramic-veneer variant | Same workflow |
+
+### Pedo-specific reference
+
+| Pathway | Verdict | Reason |
+|---|---|---|
+| pedo-medications-reference | **DEFER (pending Pedo decision)** | Reference data, not a workflow; if Pedo stays in Cases, keep |
+
+---
+
+## Summary of the keep/cut list
+
+By count (current PATHWAYS array has ~100 pathways):
+
+| Verdict | Adult pathways | Pedo pathways | Total |
+|---|---|---|---|
+| KEEP as standalone | ~55 | TBD (depends on Option A/B/C) | TBD |
+| MERGE into another | ~16 | TBD | TBD |
+| KEEP as referral | 5 (perio-CL, perio-graft, cross-pre-prosth-surg, surgery-3rd-molar, endo-retreatment) | TBD | TBD |
+| CUT entirely | 3 (ind-large-span-fpd, cross-full-mouth-rehab, cross-radiograph-protocols) | TBD | TBD |
+| DEFER (pending input) | ~4 | TBD | TBD |
+
+## Questions for you before any code cuts
+
+1. **Pedo disposition** — Option A (keep), B (cut), or C (own tab)?
+2. **ind-3-4-crown** — does UG predoc do 3/4 crowns at UIC, or merge it into conventional crown?
+3. **rpd-valplast-repair** — does UIC UG predoc see/repair Valplast (flexible) RPDs, or cut?
+4. **The MERGE candidates** — particularly the patient-modifier merges
+   (cd-anxious/xerostomic/rapid-need/limited-dexterity, rpd-first-time-patient/tmd-considering,
+   ind-bruxer-crown, ind-zirconia-posterior, ind-anterior-crown-esthetic): are you OK with these
+   being absorbed into the model pathway as keyDecision variants, or do you want them as
+   standalone pathways for findability?
+5. **The KEEP-as-referral pathways** (perio-CL, perio-graft, cross-pre-prosthetic-surgery,
+   surgery-third-molar, endo-retreatment): keep all five, or trim further?
+
+Once you respond to those five, I'll execute the cuts as comment-blocks per the
+`CASES-FOUNDATION.md` disposition rule (recoverable; not deleted).
 
 ---
 
