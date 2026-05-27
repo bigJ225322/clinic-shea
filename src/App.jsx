@@ -25338,9 +25338,10 @@ const PATHWAYS = [
  "Counsel on xerostomia + tissue radiation effects on prosthesis comfort.",
  "Long-term: tissue conditioner liners may be needed continuously.",
  ],
+ // phases sum to 12 = sections.length.
  phases: [
- { label: "Medical context", count: 1 },
- { label: "Workflow type", count: 1 },
+ { label: "Medical context (pre-/post-op surgical)", count: 2 },
+ { label: "Workflow type", count: 2 },
  { label: "Records", count: 3 },
  { label: "Setup + try-in", count: 2 },
  { label: "Process + reline", count: 2 },
@@ -26451,8 +26452,9 @@ const PATHWAYS = [
  "Endpoint check: explorer detects no calculus, no rough surface. Visible plaque alone isn't the endpoint; calculus is. Subgingival calculus that's been there 10 years feels glassy-smooth — it's not finished until you can run an explorer along the root surface and it feels like polished glass.",
  "Re-evaluation 4-6 weeks post-SRP — billed as a separate appointment, D0170 (re-eval, limited problem-focused). At re-eval: full 6-point probe + plaque disclosure + O'Leary index. Pockets should reduce 1-2 mm, BOP should decrease. Residual 5+ mm pockets after SRP route to perio specialist or surgical referral. Maintenance interval going forward: 3 months for Grade C, 4 months for Grade B, 6 months for Grade A.",
  ],
+ // phases sum to 7 = sections.length.
  phases: [
- { label: "Diagnosis & anesthesia", count: 2 },
+ { label: "Diagnosis & anesthesia", count: 3 },
  { label: "Instrumentation", count: 2 },
  { label: "Re-eval & maintenance", count: 2 },
  ],
