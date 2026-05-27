@@ -23377,7 +23377,7 @@ const PATHWAYS = [
  // direct restoration code — the workflow exists to support a crown.
  domain: "indirect",
  label: "Core buildup (D2950)",
- description: "A heavily damaged tooth — usually post-endodontic, or with extensive caries — needs a foundation under the crown that will follow. The core replaces missing tooth structure and creates the bulk that the crown prep will be cut into. Modern cores are dual-cure resin composite (Bisco Light-Core, Build-It FR) bonded with a dual-cure adhesive to dentin. The key is that the core must support the crown ferrule — at least 1.5–2 mm of sound tooth structure should remain coronal to the margin after the crown prep.",
+ description: "A heavily damaged tooth — usually post-endodontic, or with extensive caries — needs a foundation under the crown that will follow. The core replaces missing tooth structure and creates the bulk that the crown prep will be cut into. Cores are dual-cure resin composite (Bisco Light-Core is the UIC stock material per Swade's materials list) bonded with a dual-cure adhesive to dentin. The key is that the core must support the crown ferrule — at least 1.5–2 mm of sound tooth structure should remain coronal to the margin after the crown prep.",
  keyDecisions: [
  "Confirm 1.5–2 mm of sound tooth structure remains for the crown ferrule before committing to the core-and-crown plan. Without ferrule, consider extraction over heroic core build.",
  "Use a dual-cure bonding agent and dual-cure composite — light alone won't penetrate the bulk of a deep core, and a self-cure-only core is unreliable.",
@@ -23742,7 +23742,7 @@ const PATHWAYS = [
  keyDecisions: [
  "First-line material: monolithic 3Y zirconia (strongest non-metal option).",
  "Cast gold remains the most durable choice if the patient accepts the appearance.",
- "Cementation: sandblast + MDP primer (Z-Prime Plus / Monobond Plus) + resin cement.",
+ "Cementation: sandblast + MDP-containing primer + resin cement.",
  "Fabricate a nightguard concurrent with the crown — strongly recommended given the parafunction that led to the original wear.",
  "Counsel patient: even zirconia chips under bruxism without a nightguard.",
  "CDT codes: crown = D2740 (porcelain/ceramic — monolithic zirconia falls here) OR D2790 (full cast high noble metal) for cast gold. Nightguard = D9944 (Occlusal guard — hard appliance, full arch) typically billed in two parts: D9944A (records / impression) at the first visit, D9944B (delivery) at the second. I9002 lab quality review may also apply at delivery.",
@@ -25070,11 +25070,11 @@ const PATHWAYS = [
  id: "repair-zirconia-chip",
  domain: "repair",
  label: "Porcelain chip on a zirconia crown (or layered zirconia)",
- description: "Layered zirconia (3Y core + feldspathic veneer) chips at the veneered surface — a well-documented failure mode, especially in bruxers. The repair protocol differs from PFM: HF etch does NOT work on zirconia (zirconia isn't a silica-based ceramic, no glassy phase to etch). The surface must be tribochemically silica-coated (CoJet) or air-abraded with silica-coated alumina, then silane primer + MDP-containing primer (Z-Prime Plus, Clearfil Ceramic Primer), then composite. Skip the silica coating step and the composite will debond within months.",
+ description: "Layered zirconia (3Y core + feldspathic veneer) chips at the veneered surface — a known failure mode, especially in bruxers. The repair protocol differs from PFM: HF etch does not work on zirconia (no glassy phase to etch). The surface must be silica-coated (chairside tribochemical kit) or air-abraded with silica-coated alumina, then silane primer + MDP-containing primer, then composite. Skip the silica coating step and the composite will debond within months.",
  keyDecisions: [
- "DO NOT use HF etch on zirconia — no glassy phase to etch. HF will damage the surface without creating bond.",
- "Tribochemical silica coating (CoJet) OR silica-coated alumina air abrasion (Rocatec) is the required surface treatment.",
- "Silane + MDP-containing primer (Z-Prime Plus, Clearfil Ceramic Primer) before composite.",
+ "Do not use HF etch on zirconia — no glassy phase to etch. HF will damage the surface without creating a bond.",
+ "Silica coating (tribochemical) OR silica-coated alumina air abrasion is the required surface treatment.",
+ "Silane + MDP-containing primer before composite.",
  "Composite repair lasts 1–2 years typically on zirconia (shorter than PFM repair due to harder substrate); counsel the patient.",
  "If the chip is large, in primary occlusion, or recurrent → remake. Layered zirconia in bruxers should be replaced with monolithic zirconia.",
  ],
@@ -25098,7 +25098,7 @@ const PATHWAYS = [
  id: "ind-zirconia-posterior",
  domain: "indirect",
  label: "Posterior crown — patient wants metal-free + bruxism is a concern",
- description: "Posterior crown where the patient wants metal-free AND is a moderate-to-heavy bruxer — the combination that takes e.max off the table. 3Y monolithic zirconia is the strongest non-metal option; 4Y and 5Y get more translucent but less strong. Cementation is different from e.max: HF doesn't etch zirconia, so the bond protocol is sandblast + MDP-containing primer (Z-Prime Plus, Monobond Plus) + self-adhesive or dual-cure resin cement. Conventional RMGI is acceptable if retention form is adequate.",
+ description: "Posterior crown where the patient wants metal-free AND is a moderate-to-heavy bruxer — the combination that takes e.max off the table. 3Y monolithic zirconia is the strongest non-metal option; 4Y and 5Y get more translucent but less strong. Cementation is different from e.max: HF doesn't etch zirconia, so the bond protocol is sandblast + MDP-containing primer + self-adhesive or dual-cure resin cement. Conventional RMGI is acceptable if retention form is adequate.",
  keyDecisions: [
  "Choose 3Y (highest strength) for bruxers; 4Y or 5Y for more translucency in less-stressed sites.",
  "Cementation: sandblast the intaglio → MDP-containing primer (needed for chemical bond to zirconia) → resin cement. RMGI (FujiCEM) is acceptable when retention form is adequate but resin cement is generally preferred for monolithic zirconia.",
