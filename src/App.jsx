@@ -22600,6 +22600,33 @@ const PATHWAY_DOMAINS = [];
 const PATHWAY_GROUPS = {};
 const PATHWAYS = [];
 
+// Phase + category labels for the pathway card header badges.
+// The IDs map to the UIC TP framework (from Tx Dx- Overview.pdf) and the
+// UIC Patient Disposition roster taxonomy. Pathway entries carry a
+// `phase` field (one of the keys below) and a `category` field
+// (one of the keys below the phases).
+const PHASE_LABELS = {
+ urgent: "Urgent",
+ dx: "Diagnostic",
+ phase1: "Phase I",
+ phase2: "Phase II",
+ phase3: "Phase III",
+ phase4: "Phase IV",
+};
+
+const CATEGORY_LABELS = {
+ operative: "Operative",
+ digital: "Digital",
+ fixed: "Fixed",
+ dentures: "Dentures",
+ perio: "Perio",
+ endo: "Endo",
+ os: "OS",
+ sti: "STI",
+ iod: "IOD",
+ pedo: "Pedo",
+};
+
 // ─── Legacy data — DO NOT REFERENCE FROM LIVE CODE ──────────────────────────
 // One-paste recovery: if a specific legacy entry is needed, copy it into the
 // active arrays above and verify it against CASES-FOUNDATION.md's trust rules
@@ -27448,6 +27475,28 @@ function Pathways() {
  fontSize: "1.4rem", fontWeight: 400, color: "var(--ink)",
  margin: "0 0 10px",
  }}>{selectedPathway.label}</h2>
+ {(selectedPathway.phase || selectedPathway.category) && (
+ <div style={{
+ display: "flex", gap: "6px", marginBottom: "12px",
+ fontSize: "0.62rem", textTransform: "uppercase",
+ letterSpacing: "0.14em", fontWeight: 600, flexWrap: "wrap",
+ }}>
+ {selectedPathway.phase && (
+ <span style={{
+ background: "var(--accent)", color: "var(--paper, #FBF8F2)",
+ padding: "3px 9px", borderRadius: "2px",
+ }}>{PHASE_LABELS[selectedPathway.phase] || selectedPathway.phase}</span>
+ )}
+ {selectedPathway.category && (
+ <span style={{
+ background: "var(--card, white)",
+ border: "1px solid var(--accent)",
+ color: "var(--accent)",
+ padding: "2px 9px", borderRadius: "2px",
+ }}>{CATEGORY_LABELS[selectedPathway.category] || selectedPathway.category}</span>
+ )}
+ </div>
+ )}
  <p style={{
  margin: "0", fontStyle: "italic", color: "var(--ink-soft)",
  lineHeight: 1.55, fontSize: "0.85rem",
@@ -27466,9 +27515,27 @@ function Pathways() {
  margin: 0, paddingLeft: "18px", lineHeight: 1.55,
  fontSize: "0.85rem", color: "var(--ink-soft)",
  }}>
- {selectedPathway.keyDecisions.map((d, i) => (
- <li key={i} style={{ marginBottom: "4px" }}>{renderInline(d)}</li>
-))}
+ {selectedPathway.keyDecisions.map((d, i) => {
+ // Support both legacy string form and new {text, source} object form.
+ // Pathways built post-2026-05-27 use the object form; legacy pathways
+ // (now in PATHWAYS_LEGACY_2026_05) used strings.
+ const text = typeof d === "string" ? d : d.text;
+ const source = typeof d === "string" ? null : d.source;
+ return (
+ <li key={i} style={{ marginBottom: source ? "10px" : "4px" }}>
+ {renderInline(text)}
+ {source && (
+ <div style={{
+ fontSize: "0.66rem", color: "var(--ink-faint)",
+ fontFamily: '"JetBrains Mono", monospace',
+ marginTop: "3px", opacity: 0.75,
+ }}>
+ [{source}]
+ </div>
+ )}
+ </li>
+ );
+})}
  </ul>
  </div>
 )}
@@ -27581,8 +27648,66 @@ function Pathways() {
  );
  }
  // Walk phases; assign sections by count, render each group with a header.
+ // Lab steps (the new schema field, post-rebuild) are interleaved between
+ // phases per their `after` index — `after: -1` means before phase 0;
+ // `after: N` means between phase N and phase N+1.
  let cursor = 0;
  const rendered = [];
+ const labSteps = selectedPathway.labSteps || [];
+
+ // Helper: render a single lab-step band. Paper-colored background +
+ // dashed border to visually distinguish from clinical phase blocks.
+ const renderLabStep = (ls, key) => (
+ <div key={key} style={{
+ marginTop: "12px",
+ background: "var(--paper, #FBF8F2)",
+ border: "1px dashed var(--rule-soft, var(--rule))",
+ borderRadius: "3px",
+ padding: "10px 14px",
+ }}>
+ <div style={{
+ display: "flex", alignItems: "baseline", gap: "8px",
+ marginBottom: ls.body ? "6px" : "0", flexWrap: "wrap",
+ }}>
+ <span style={{
+ fontSize: "0.6rem", textTransform: "uppercase",
+ letterSpacing: "0.14em", color: "var(--paper, #FBF8F2)",
+ background: "var(--accent)", fontWeight: 600,
+ padding: "2px 7px", borderRadius: "2px",
+ }}>Lab</span>
+ <span style={{
+ fontSize: "0.78rem", fontWeight: 500, color: "var(--ink)",
+ }}>{ls.title}</span>
+ {ls.turnaround && (
+ <span style={{
+ fontSize: "0.7rem", color: "var(--ink-faint)",
+ marginLeft: "auto", fontStyle: "italic",
+ }}>{ls.turnaround}</span>
+ )}
+ </div>
+ {ls.body && (
+ <div style={{
+ fontSize: "0.8rem", lineHeight: 1.55,
+ color: "var(--ink-soft)", fontStyle: "italic",
+ }}>{ls.body}</div>
+ )}
+ {ls.source && (
+ <div style={{
+ fontSize: "0.66rem", color: "var(--ink-faint)",
+ fontFamily: '"JetBrains Mono", monospace',
+ marginTop: "6px", opacity: 0.75,
+ }}>
+ [{ls.source}]
+ </div>
+ )}
+ </div>
+ );
+
+ // Lab steps that happen before the first phase (after: -1)
+ labSteps.filter(ls => ls.after === -1).forEach((ls, lsi) => {
+ rendered.push(renderLabStep(ls, `lab-pre-${lsi}`));
+ });
+
  phases.forEach((phase, pi) => {
  const slice = resolvedSections.slice(cursor, cursor + phase.count);
  const startNum = cursor + 1;
@@ -27610,6 +27735,10 @@ function Pathways() {
  </ol>
  </div>
  );
+ // Lab steps that happen after THIS phase (between phase pi and pi+1).
+ labSteps.filter(ls => ls.after === pi).forEach((ls, lsi) => {
+ rendered.push(renderLabStep(ls, `lab-${pi}-${lsi}`));
+ });
  });
  // Catch-all: if phases.count sums to LESS than sections.length, the
  // trailing sections would be silently dropped from the Sequence TOC.
