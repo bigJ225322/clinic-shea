@@ -19071,6 +19071,9 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  long / medium / short × straight / curved
  </span>
  </div>
+ <div style={{ fontSize: "9px", color: "var(--ink-faint)", fontStyle: "italic", marginBottom: "6px", letterSpacing: "0.02em" }}>
+ glyphs are side-profile views — lingual on the left, labial on the right; straight options have a vertical labial edge, curved options bulge outward
+ </div>
  <PillRow items={TOOTH_MOULD_PROPORTIONS} value={prop} onChange={setProp}
  getKey={i => i.id} getLabel={i => `${i.id} · ${i.label}`}
  svgViewBox="0 0 16 22" svgWidth={26} svgHeight={34} />
