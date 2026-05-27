@@ -7551,7 +7551,7 @@ const EXAM_FINDINGS_CONFIG = {
  [{ label: "occlusal assessment", type: "input",
  placeholder: "Class I; no wear facets" }],
  [{ label: "odontogram", type: "odontogram",
- displayLabel: "Updated odontogram with clinical and radiographic findings",
+ displayLabel: "Updated Odontogram With Clinical And Radiographic Findings",
  placeholder: "List each finding on its own line. Press Enter to add another.",
  seedOnFocus: true, showNoTxPlanCheckbox: true }],
  ],
@@ -7562,7 +7562,7 @@ const EXAM_FINDINGS_CONFIG = {
  [
  { label: "impressions", type: "ohi-checkbox" },
  { label: "facebow", type: "ohi-checkbox" },
- { label: "bite registration", type: "ohi-checkbox", displayLabel: "Bite reg." },
+ { label: "bite registration", type: "ohi-checkbox", displayLabel: "Bite Reg." },
  ],
  ],
  },
@@ -7578,7 +7578,7 @@ const EXAM_FINDINGS_CONFIG = {
  title: "HPI",
  rows: [
  [
- { label: "location", type: "uc-tooth-or-quadrant", displayLabel: "Area / tooth",
+ { label: "location", type: "uc-tooth-or-quadrant", displayLabel: "Area / Tooth",
  placeholder: "e.g. #8, #14 — or pick a quadrant the pt points to" },
  { label: "inception", type: "input", placeholder: "e.g. 3 days ago" },
  ],
@@ -7596,7 +7596,7 @@ const EXAM_FINDINGS_CONFIG = {
  [
  { label: "spontaneous pain", type: "yn-toggle" },
  { label: "lingering pain", type: "yn-toggle" },
- { label: "pain wakes pt up at night", type: "yn-toggle", displayLabel: "Wakes pt" },
+ { label: "pain wakes pt up at night", type: "yn-toggle", displayLabel: "Wakes Pt" },
  ],
  [
  { label: "triggers", type: "input", placeholder: "e.g. cold, biting, heat" },
@@ -7608,7 +7608,7 @@ const EXAM_FINDINGS_CONFIG = {
  { label: "treatment/evaluation thus far", type: "input", placeholder: "e.g. none" },
  { label: "last pain medication taken & effectiveness", type: "input",
  placeholder: "e.g. Advil 400mg, moderate relief",
- displayLabel: "Last pain med. & effectiveness" },
+ displayLabel: "Last Pain Med. & Effectiveness" },
  ],
  [{ label: "anything else?", type: "input", placeholder: "blank to omit" }],
  ],
@@ -7620,14 +7620,14 @@ const EXAM_FINDINGS_CONFIG = {
  fields: [
  { label: "EOE", type: "textarea",
  placeholder: "Pt appears generally healthy in the dental chair. No visible asymmetries. EOE WNL with normal skin texture and color, normal facial movements, no visible/palpable masses, no lymphadenopathy, normal facial muscle movement & palpation, and normal TMJ movement and palpation bilaterally." },
- { label: "ioe description", type: "input", displayLabel: "IOE — dentition",
+ { label: "ioe description", type: "input", displayLabel: "IOE — Dentition",
  placeholder: "e.g. heavily restored, complete dentition" },
  ],
  },
  {
  title: "Radiographs",
  rows: [
- [{ label: "radiograph findings", type: "input", displayLabel: "Radiographs reveal",
+ [{ label: "radiograph findings", type: "input", displayLabel: "Radiographs Reveal",
  placeholder: "e.g. periapical radiolucency on #8, widened PDL" }],
  ],
  },
@@ -7653,7 +7653,7 @@ const EXAM_FINDINGS_CONFIG = {
  {
  title: "Plan",
  rows: [
- [{ label: "pt opts for", type: "input", displayLabel: "Pt opts for",
+ [{ label: "pt opts for", type: "input", displayLabel: "Pt Opts For",
  placeholder: "e.g. RCT, extraction, no treatment at this time" }],
  ],
  },
@@ -7669,9 +7669,9 @@ const EXAM_FINDINGS_CONFIG = {
  {
  title: "Findings",
  rows: [
- [{ label: "wt-ioe", type: "input", displayLabel: "IOE reveals",
+ [{ label: "wt-ioe", type: "input", displayLabel: "IOE Reveals",
  placeholder: "e.g. distal operculum on #32 inflamed, pus expression, partial eruption" }],
- [{ label: "wt-pano", type: "input", displayLabel: "Panoramic radiograph reveals",
+ [{ label: "wt-pano", type: "input", displayLabel: "Panoramic Radiograph Reveals",
  placeholder: "e.g. impacted #1, #16, #17, #32 with #32 mesioangular" }],
  ],
  },
@@ -7679,7 +7679,7 @@ const EXAM_FINDINGS_CONFIG = {
  title: "Assessment",
  rows: [
  [{ label: "pericoronitis severity", type: "select",
- displayLabel: "Pericoronitis severity",
+ displayLabel: "Pericoronitis Severity",
  options: ["", "mild", "moderate", "severe"] }],
  ],
  },
@@ -7687,11 +7687,11 @@ const EXAM_FINDINGS_CONFIG = {
  title: "Plan",
  rows: [
  [{ label: "extraction teeth", type: "input",
- displayLabel: "Teeth referred for extraction",
+ displayLabel: "Teeth Referred For Extraction",
  placeholder: "e.g. #1, #16, #17, #32 (or just #32)",
  hint: "Comma-separated tooth numbers. Defaults to all four 3rd molars if blank." }],
  [{ label: "wt-consult-date", type: "input",
- displayLabel: "Consult appointment scheduled for",
+ displayLabel: "Consult Appointment Scheduled For",
  placeholder: "e.g. 6/1/2026, 3:00 PM" }],
  ],
  },
@@ -7703,7 +7703,7 @@ const EXAM_FINDINGS_CONFIG = {
  title: "Specific treatments discussed",
  fields: [
  { label: "specific treatments", type: "odontogram", bullet: "—",
- displayLabel: "Each line becomes a — bullet in the note",
+ displayLabel: "Each Line Becomes A — Bullet In The Note",
  placeholder: "Describe each treatment the patient was counseled on. Press Enter to add another." },
  ],
  },
@@ -7750,7 +7750,7 @@ const EXAM_FINDINGS_CONFIG = {
  [
  { label: "impressions", type: "ohi-checkbox" },
  { label: "facebow", type: "ohi-checkbox" },
- { label: "bite registration", type: "ohi-checkbox", displayLabel: "Bite reg." },
+ { label: "bite registration", type: "ohi-checkbox", displayLabel: "Bite Reg." },
  ],
  ],
  },
@@ -7788,7 +7788,7 @@ const EXAM_FINDINGS_CONFIG = {
  { label: "endo testing", type: "input", placeholder: "blank to omit" },
  ],
  [{ label: "odontogram", type: "odontogram",
- displayLabel: "Updated odontogram with clinical and radiographic findings",
+ displayLabel: "Updated Odontogram With Clinical And Radiographic Findings",
  placeholder: "List each finding on its own line. Press Enter to add another.",
  seedOnFocus: true }],
  ],
@@ -7959,7 +7959,7 @@ const EXAM_FINDINGS_CONFIG = {
  headerCheckbox: { field: "tookBitewings", label: "Took bitewings?" },
  rows: [
  [{ label: "odontogram", type: "odontogram",
- displayLabel: "Radiographic & intraoral hard tissue findings",
+ displayLabel: "Radiographic & Intraoral Hard Tissue Findings",
  placeholder: "List each finding on its own line. Press Enter to add another.",
  seedOnFocus: true }],
  [{ type: "peds-occlusal" }],
@@ -8022,7 +8022,14 @@ const EXAM_FINDINGS_CONFIG = {
  ],
 };
 
-const titleCaseLabel = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+// Title-case every word: split on spaces, capitalize first char of each word,
+// preserve internal capitalization so acronyms (BoP, PD, OHI) survive. Per Jake
+// the form labels should be true Title Case ("Plaque Level", not "Plaque level").
+// All words capitalized — no a/the/of skip-list, because med-tech labels read
+// cleaner with consistent capitalization (e.g. "Out Of Range" not "Out of Range").
+const titleCaseLabel = (s) => s.split(/\s+/)
+.map(w => w.length === 0 ? w : w.charAt(0).toUpperCase() + w.slice(1))
+.join(" ");
 
 // Probing depths field — two dropdowns (1–8mm + "8+") for the typical range.
 // Selecting "8+" in either dropdown switches to a free-text input for
@@ -10016,7 +10023,7 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
 
  {/* Four staging fields on one row: Recession, BOP, BL %, Teeth Lost */}
  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "12px" }}>
- <Field label="Recession at max PD (mm)">
+ <Field label="Recession At Max PD (mm)">
  <TextInput value={fields.perioCOEMaxRecession || ""}
  onChange={v => setField("perioCOEMaxRecession", v.replace(/[^\d.]/g, ""))}
  placeholder="0 if none" />
@@ -10040,7 +10047,7 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
  <option value=">33">&gt;33% (mid third+)</option>
  </Select>
  </Field>
- <Field label="Teeth lost from perio">
+ <Field label="Teeth Lost From Perio">
  <Select value={fields.perioCOETeethLost || ""}
  onChange={v => setField("perioCOETeethLost", v)}>
  <option value="">— select —</option>
@@ -10786,12 +10793,12 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  taken __" lines, since they reference the same prior
  visit in the standard template. */}
  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
- <Field label="Consult date">
+ <Field label="Consult Date">
  <TextInput value={fields.endoConsultDate || ""}
  onChange={v => setField("endoConsultDate", v)}
  placeholder="e.g. 3/15/2025" />
  </Field>
- <Field label="Consult timing">
+ <Field label="Consult Timing">
  <TextInput value={fields.endoConsultMonthsAgo || ""}
  onChange={v => setField("endoConsultMonthsAgo", v)}
  placeholder="e.g. 2 months ago" />
@@ -10815,7 +10822,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
 
  {/* 6. Restorability confirmer — fills "Dr.?" in the
  "restorable as confirmed with Dr. __" line. */}
- <Field label="Restorability confirmed by">
+ <Field label="Restorability Confirmed By">
  <TextInput value={fields.endoRestorableBy || ""}
  onChange={v => setField("endoRestorableBy", v)}
  placeholder="e.g. Dr. Lopez" />
@@ -10826,7 +10833,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  packed into a single row of narrow inputs for density.
  Probing is mm-only (we append "mm" in the substitution).
  Mobility: 0–3. Cold test: NR, n/n s formats are common. */}
- <Field label="Endo tests — affected tooth">
+ <Field label="Endo Tests — Affected Tooth">
  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr", gap: "6px" }}>
  <TextInput value={fields.endoAffPercussion || ""}
  onChange={v => setField("endoAffPercussion", v)}
@@ -10848,7 +10855,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
 
  {/* 8. Endo tests — control tooth. Tooth number on its own
  row so it's clear which tooth the values apply to. */}
- <Field label="Endo tests — control tooth">
+ <Field label="Endo Tests — Control Tooth">
  <div style={{ display: "grid", gridTemplateColumns: "70px 1fr 1fr 1fr 1fr 1fr", gap: "6px" }}>
  <TextInput value={fields.endoControlTooth || ""}
  onChange={v => setField("endoControlTooth", v)}
@@ -10874,12 +10881,12 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  {/* 9. Radiographic findings — two prose lines under
  "Radiographic exam:". Free text — student types what
  the BW/PA actually shows. */}
- <Field label="Periapical radiolucency (radiograph line 1)">
+ <Field label="Periapical Radiolucency (Radiograph Line 1)">
  <TextInput value={fields.endoRadioFinding1 || ""}
  onChange={v => setField("endoRadioFinding1", v)}
  placeholder="e.g. #12" />
  </Field>
- <Field label="Other radiograph finding (line 2)">
+ <Field label="Other Radiograph Finding (Line 2)">
  <TextInput value={fields.endoRadioFinding2 || ""}
  onChange={v => setField("endoRadioFinding2", v)}
  placeholder="e.g. #12 large DO composite approaching pulp" />
@@ -10903,7 +10910,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
 
  {/* 11. Procedure detail — canal count + MAF */}
  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
- <Field label="# canals">
+ <Field label="# Canals">
  <TextInput value={fields.endoNumCanals || ""}
  onChange={v => setField("endoNumCanals", v)}
  inputMode="numeric"
@@ -11082,7 +11089,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <div style={{
  flex: isTwoCordTemplate? 1: "0 0 150px", minWidth: 0,
  }}>
- <Field label={isTwoCordTemplate? "Top cord": "Cord size"}>
+ <Field label={isTwoCordTemplate? "Top Cord": "Cord Size"}>
  <Select value={fields.cordSize || "0"} onChange={v => setField("cordSize", v)}>
  <option value="000">000 — Ultra Fine</option>
  <option value="00">00 — Extra Fine</option>
@@ -11099,7 +11106,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  // and reduces to single-cord wording. Default "00" matches
  // template 2821's stock "#00 & #0".
  <div style={{ flex: 1, minWidth: 0 }}>
- <Field label="Bottom cord">
+ <Field label="Bottom Cord">
  <Select value={fields.cordSizeBottom || ""} onChange={v => setField("cordSizeBottom", v)}>
  <option value="">— none (single cord) —</option>
  <option value="000">000 — Ultra Fine</option>
@@ -11188,7 +11195,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  gap: "10px",
  }}>
  {needsLastDentist && (
- <Field label="Last dentist visit">
+ <Field label="Last Dentist Visit">
  <TextInput
  value={fields.lastDentist}
  onChange={v => setField("lastDentist", v)}
@@ -11241,7 +11248,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <SubsectionLabel>Assessment</SubsectionLabel>
  <div style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
  <div style={{ flex: "0 0 auto" }}>
- <Field label="Periodontal health">
+ <Field label="Periodontal Health">
  <Select value={fields.perioImproved || "improved"}
  onChange={v => setField("perioImproved", v)}>
  <option value="improved">improved</option>
@@ -11264,7 +11271,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  Writes to fields.maintenanceInterval; substitution lives in
  renderTemplate step 6f2. */}
  <div style={{ marginTop: "10px", maxWidth: "220px" }}>
- <Field label="Maintenance interval">
+ <Field label="Maintenance Interval">
  <Select value={fields.maintenanceInterval || ""}
  onChange={v => setField("maintenanceInterval", v)}>
  <option value="">— Select —</option>
@@ -11356,7 +11363,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  {needsCervicalLesionType && (
  <>
  <Hairline />
- <Field label="Lesion etiology">
+ <Field label="Lesion Etiology">
  <Select value={fields.cervicalLesionType || "NCCL"}
  onChange={v => setField("cervicalLesionType", v)}>
  <option value="NCCL">Non-carious cervical lesion (NCCL) — no caries</option>
@@ -11391,7 +11398,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </label>
  {fields.retentiveGroove && (
  <div style={{ flex: "1 1 180px", minWidth: 0 }}>
- <Field label="Gingival margin in">
+ <Field label="Gingival Margin In">
  <Select value={fields.gingivalMargin || "cementum"}
  onChange={v => setField("gingivalMargin", v)}>
  <option value="enamel">enamel</option>
@@ -11431,7 +11438,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  {needsMatrix && (
  <>
  <Hairline />
- <Field label="Matrix system">
+ <Field label="Matrix System">
  <Select value={fields.pedsMatrix || "Garrison"}
  onChange={v => setField("pedsMatrix", v)}>
  <option value="Garrison">Garrison + wedge, burnished</option>
