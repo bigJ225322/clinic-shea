@@ -22576,11 +22576,13 @@ function Guides() {
 const PATHWAY_DOMAINS = [
  { id: "direct", label: "Direct" },
  { id: "indirect", label: "Indirect" },
- { id: "endo", label: "Endo" },
  { id: "surgery", label: "OS" },
- // Perio pill removed per user — pathways stay in PATHWAYS array but
- // the domain filter no longer surfaces them in the Cases tab. Re-add
- // this entry to bring them back.
+ // Perio + Endo pills removed per user — pathways stay in PATHWAYS array
+ // and PATHWAY_GROUPS still has perio/endo entries, but the domain filter
+ // no longer surfaces them in the Cases tab. Re-add { id: "perio", ... }
+ // and/or { id: "endo", ... } to this array (in the appropriate slot —
+ // perio was between OS and Peds; endo was between Indirect and OS) to
+ // bring them back.
  { id: "pedo", label: "Peds" },
  { id: "rpd", label: "RPD" },
  { id: "cd", label: "CD" },
