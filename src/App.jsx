@@ -2139,7 +2139,7 @@ const RVU_DATA = [
  { code: "D7994", desc: "Surgical Placement: Zygomatic Implant", rvu: 10 },
  { code: "D8010", desc: "Limited ortho - primary", rvu: 15 },
  { code: "D8020", desc: "Limited ortho - transitional", rvu: 15 },
- { code: "D8030", desc: "Limtd Adoles Fixed", rvu: 15 },
+ { code: "D8030", desc: "Limited Adolescent Fixed", rvu: 15 },
  { code: "D8090", desc: "Comprehensive Adult Fixed", rvu: 30 },
  { code: "D8099", desc: "Comprehensive orthodontic treatment, adult dentition (CDT D8090; 'Delta' UIC internal payer variant)", rvu: 30 },
  { code: "D8210", desc: "Inter Removable Functional", rvu: 5 },
@@ -24865,7 +24865,7 @@ const PATHWAYS = [
  id: "cross-anterior-trauma",
  domain: "cross",
  label: "Anterior trauma — multiple options to discuss with patient",
- description: "Patient lost a maxillary anterior tooth from trauma — sports injury, fall, MVA. Three replacement options need to be presented: (1) implant (best long-term, requires 4–6 months healing and bone graft sometimes), (2) 3-unit FPD (immediate restoration, sacrifices adjacent teeth), (3) Kennedy IV RPD (removable, lowest cost, lowest patient satisfaction long-term). Discuss timeline, cost, and tooth-structure preservation explicitly. Provide a flipper or Essix as interim if implant is the chosen path.",
+ description: "Patient lost a maxillary anterior tooth from trauma — sports injury, fall, MVA. Three replacement options need to be presented: (1) implant (best long-term, requires 4–6 months healing and bone graft sometimes — placement is a referral to the Implant Clinic/OS; UG predoc role is the restoration phase only, and only on non-excluded teeth per PIP), (2) 3-unit FPD (immediate restoration, sacrifices adjacent teeth), (3) Kennedy IV RPD (removable, lowest cost, lowest patient satisfaction long-term). Discuss timeline, cost, and tooth-structure preservation explicitly. Provide a flipper or Essix as interim if implant is the chosen path.",
  keyDecisions: [
  "Three options to present: implant, 3-unit FPD, Kennedy IV RPD.",
  "Implant best long-term but requires 4–6 mo healing + possible bone graft.",
