@@ -2157,7 +2157,7 @@ const RVU_DATA = [
  { code: "D8020", desc: "Limited ortho - transitional", rvu: 15 },
  { code: "D8030", desc: "Limtd Adoles Fixed", rvu: 15 },
  { code: "D8090", desc: "Comprehensive Adult Fixed", rvu: 30 },
- { code: "D8099", desc: "Comprehen Adult Fixed Delta", rvu: 30 },
+ { code: "D8099", desc: "Comprehensive orthodontic treatment, adult dentition (CDT D8090; 'Delta' UIC internal payer variant)", rvu: 30 },
  { code: "D8210", desc: "Inter Removable Functional", rvu: 5 },
  { code: "D8660", desc: "Pre-ortho treatment visit", rvu: 3 },
  { code: "D8670", desc: "Periodic ortho treatment visit", rvu: 3 },
