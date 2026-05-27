@@ -180,10 +180,153 @@ existing phase styling stays unchanged.
 
 ## DxTP-derived comprehensive procedure list
 
-⏳ **TO BE FILLED** after reading the DxTP lectures.
+⏳ **In progress** — extracting from each domain's TP lecture (the canonical
+"comprehensive treatment list" doesn't live in a single master document;
+it's distributed across domain TP lectures).
 
-When this section is populated, it should be the canonical answer to "which
-pathways belong in Cases." Each entry will look like:
+### What each DxTP-folder lecture actually covers (extracted 2026-05-26)
+
+The DxTP folder name is misleading — these aren't the procedure-skeleton
+lectures. They're the **shared TP framework** lectures.
+
+#### `Dx and Tx Planning (Spring 2025).pdf` — Michael Han, OMS [62 pp]
+
+Actually titled "Medical and Surgical Considerations in Routine Patient
+Care." Two halves:
+
+**Part 1 — Medical Considerations** (~slides 1–34):
+- The dentist-physician relationship for medical clearance
+- The principle: dentist owns the dental procedure detail; physician owns
+  the medical condition detail. "Clearance" is a poorly-framed concept;
+  the dentist should ask specific questions, not request blanket clearance
+- Running example: 67y/F on warfarin for AFib needing FMX + alveoloplasty +
+  CD. The medical-clearance letter pattern that fails is "Coumadin
+  discontinued 5 days pre, restart 1 day post" — leads to CVA in one case
+  because the physician answered the wrong question
+- Lesson: ask "is it safe to render this specific dental procedure given
+  this patient's specific medical condition" rather than "please clear for
+  dentistry"
+
+**Part 2 — Oral Surgical Considerations in Comprehensive Dental Care**
+(~slides 35–62):
+- Treatment goals framework: **healthy dentition (natural or prosthetic)**,
+  **healthy periodontium**, **healthy TMJ**, **absence of pathology**
+- Surgical interventions that support those goals (the predoc recognizes +
+  refers; OMS performs):
+  - **Healthy dentition**: extraction of hopeless teeth (restorative,
+    endodontic, periodontal hopeless), removal of exostoses preventing OH
+  - **Foundation for sound prostheses**:
+    - Hard tissue contour/bulk: alveoloplasty/alveolectomy, torus/exostosis/
+      undercut removal, bone graft / sinus lift
+    - Soft tissue: soft tissue grafting (attached gingiva augmentation),
+      vestibuloplasty, frenectomy
+    - Interarch relationship: bone graft, jaw repositioning (orthognathic)
+  - **Special prosthetic cases**: immediate dentures (must account for final
+    prosthesis VDO + lip support)
+  - "Pseudo-Class III" — resorption-driven jaw relationship issue that
+    presents like Class III malocclusion; needs orthognathic if to be
+    corrected
+
+**Takeaway for Cases scope**:
+- Confirms pre-prosthetic surgery (alveoloplasty, torus removal,
+  vestibuloplasty, frenectomy, FGG, bone graft, sinus lift) belongs in
+  Cases as **recognition + referral** pathways the predoc owns during TP.
+  Han's lecture says explicitly: "You do not have to be a surgeon, but you
+  DO have to know the options/considerations."
+- Confirms immediate dentures (CD/IID) are explicitly in scope and need to
+  coordinate with extractions
+- Confirms orthognathic surgery is recognition-only at the UG level (no
+  predoc role beyond identifying the pseudo-Class-III pattern and
+  referring)
+
+#### `Tx Dx- Overview.pdf` — Dr. Sharif Mohammad (course director DAOB 323/301) [8 pp]
+
+**This is the canonical UIC treatment-planning framework.** This is the
+structural skeleton Cases must align to. Source: course director for the
+TP course.
+
+**TP philosophy (slide 6):**
+- Diagnosis precedes treatment planning, which precedes treatment
+- Treatment plans are phased
+- Each phase requires a re-evaluation
+- Treatment plans expire after 12 months
+- "Not set in stone" — modifiable per patient case (slide 8)
+
+**The six TP phases (slide 7):**
+1. **Urgent Care phase** — SOAP Note format for Tx notes (immediate
+   emergencies that bypass the diagnostic phase: acute apical abscess,
+   acute perio abscess, dental trauma, fractured tooth, post-op
+   bleeding, dry socket, odontogenic infection with airway concern)
+2. **Diagnostic phase** — generation of problem list and diagnosis
+   (COE, POE, perio chart, treatment-plan presentation)
+3. **Phase I Treatment** — disease control / elimination / prevention /
+   stabilization (operative restorations, SRP, simple extractions of
+   non-restorable teeth, endo on restorable teeth, sealants, OHI,
+   fluoride varnish, SDF, caries-risk management, smoking cessation,
+   nutritional counseling)
+4. **Phase II Treatment** — surgical and/or orthodontic (pre-prosthetic
+   surgery, crown lengthening, soft-tissue grafts, implant placement,
+   ortho intervention — almost entirely *recognize + refer* at the UG
+   level; the UG performs simple alveoloplasty + simple frenectomy
+   under faculty supervision in some cases)
+5. **Phase III Treatment** — reconstructive (crowns, bridges, inlays,
+   onlays, veneers, RPDs, CDs, IODs, implant restorations,
+   post-and-core, survey crowns)
+6. **Phase IV Treatment** — maintenance (perio maintenance, recall
+   exam, recall prophy)
+
+**Course context (slides 4–5):**
+- Required textbook: *Treatment Planning in Dentistry, 3rd ed.*
+  (Stefanac & Nesbit) — this is the foundation text for UIC TP
+- D2 (DAOB 323) and AS (DAOB 301) grading: 2 mini case
+  presentations, 4 Case 1–4 Axium ED exercises, performance exam,
+  attendance
+
+**Implications for Cases:**
+
+The pill organization could shift from domain-based (Direct / Indirect /
+OS / RPD / CD / Pedo) to phase-based (Urgent / Phase I / Phase II / Phase
+III / Phase IV) — or both, with phase as the primary lens. Phase-based
+makes the *why does this matter in the TP* visible, which is what the
+user keeps emphasizing.
+
+Each pathway should declare a `phase` field: "urgent" | "diagnostic" |
+"phase1" | "phase2" | "phase3" | "phase4". Some pathways span phases
+(e.g., cd-conventional starts in Diagnostic with the COE + diagnostic
+impressions, but the bulk lives in Phase III). For span-pathways, declare
+the *primary* phase and note the span.
+
+This phase mapping is also the keep/cut filter:
+- If a pathway represents a procedure done in one of the six phases → keep
+- If it's a recognition + referral case relevant to a phase decision → keep,
+  framed as referral
+- If it doesn't fit any phase OR isn't part of a UG predoc's TP role in
+  any phase → cut or merge
+
+#### `Patient Disposition & Case Type.pdf` — TBD
+
+#### `Risk Assessment and patient evaluation and diagnotic process PDF with highlight.pdf` — TBD
+
+### Domain TP lectures (where the comprehensive procedure list actually lives)
+
+These need to be read for the per-domain procedure-skeleton + visit-sequence:
+
+- **RPD**: `Lecture 2_Diagnosis and Treatment planning_ Sabbagh_2024.pdf`,
+  `Lecture 4-Part A_RPD Sequencing.pdf`, `Lecture 4_Part B_Treatment sequence
+  Removable Partial Dentures_SHAHIN_2025.pdf`
+- **CD**: `Comprehensive CD Guide.docx`, `Prosthodontics intro(1)_2025_BB.pdf`,
+  `Treatment planning.pdf` (in the CD folder)
+- **FPD**: `Review and Overview.pdf` (Phase 1), `Assessing Tooth Restorability
+  Part 1 + 2.pdf`
+- **Endo**: `endo_eval_and_tx_planning_3-25-2020.pdf` (in DxTP folder)
+- **Perio**: `Periodontal aspects of treatment planning 2020-Ashrafi.pdf`
+  (in DxTP folder)
+- **Pedo**: `Pediatrics Comprehensive Cases.docx` (in repo root)
+
+Read order plan: shared TP framework (DxTP folder) first, then per-domain
+TP lectures (in priority order: CD → RPD → FPD → others).
+
+### Final canonical list (entries below to be populated as I read)
 
 ```
 ### Conventional complete denture (CD/F-F)
@@ -191,12 +334,11 @@ pathways belong in Cases." Each entry will look like:
   try-in + jaw relations + facebow + tooth selection → anterior wax try-in →
   posterior wax try-in → delivery → 24-hr followup → 1-week followup
 - Lab steps between visits: [5 lab blocks — populated from CD PDFs]
-- Source: DxTP-master p. X-Y; Comprehensive CD Guide
+- Source: domain TP lecture + Comprehensive CD Guide
 - Maps to current pathway: cd-conventional
 ```
 
-The decision for each current PATHWAYS entry — keep / cut / reframe / merge —
-depends on whether DxTP frames it as part of the predoc's TP scope.
+⏳ TO BE FILLED.
 
 ---
 
