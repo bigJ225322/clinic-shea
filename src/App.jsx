@@ -25211,10 +25211,11 @@ const PATHWAYS = [
  "Faster lab processing options: SR Ivocap, microwave-cured.",
  "Patient briefed up front: 'fast' delivery may need 1–2 follow-ups for fit refinement.",
  ],
+ // phases sum to 12 = sections.length.
  phases: [
  { label: "Workflow context", count: 1 },
- { label: "Records", count: 3 },
- { label: "Mount + setup", count: 2 },
+ { label: "Records", count: 4 },
+ { label: "Mount + CR + setup", count: 3 },
  { label: "Try-in + processing", count: 2 },
  { label: "Delivery", count: 2 },
  ],
