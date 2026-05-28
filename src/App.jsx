@@ -28735,29 +28735,26 @@ function Pathways() {
  e.currentTarget.style.transform = "translateY(0)";
  };
 
- // Compute within-track arrow segments (visit→visit, lab→lab).
+ // Build the chronological sequence of tiles. The arrows trace this
+ // sequence: V1 → L1 → V2 → L2 → ... → Vn, zigzagging between the two
+ // tracks. Visits without a following lab (e.g. V6→V7→V8 follow-ups)
+ // get straight horizontal arrows on the top row.
+ const sequence = [];
+ for (let i = 0; i < phases.length; i++) {
+ sequence.push({ key: `v-${i}` });
+ const labIdx = labSteps.findIndex((ls) => ls.after === i);
+ if (labIdx !== -1) sequence.push({ key: `l-${labIdx}` });
+ }
  const arrows = [];
  if (schematicPositions) {
- for (let i = 0; i < phases.length - 1; i++) {
- const a = schematicPositions[`v-${i}`];
- const b = schematicPositions[`v-${i + 1}`];
+ for (let i = 0; i < sequence.length - 1; i++) {
+ const a = schematicPositions[sequence[i].key];
+ const b = schematicPositions[sequence[i + 1].key];
  if (!a || !b) continue;
  arrows.push({
  srcX: a.x + a.width, srcY: a.y + a.height / 2,
  dstX: b.x - 2, dstY: b.y + b.height / 2,
- stroke: "var(--ink-soft)", marker: "pathway-arrow-ink",
- id: `v-arrow-${i}`,
- });
- }
- for (let i = 0; i < labSteps.length - 1; i++) {
- const a = schematicPositions[`l-${i}`];
- const b = schematicPositions[`l-${i + 1}`];
- if (!a || !b) continue;
- arrows.push({
- srcX: a.x + a.width, srcY: a.y + a.height / 2,
- dstX: b.x - 2, dstY: b.y + b.height / 2,
- stroke: "var(--accent)", marker: "pathway-arrow-accent",
- id: `l-arrow-${i}`,
+ id: `arrow-${i}`,
  });
  }
  }
@@ -28797,21 +28794,17 @@ function Pathways() {
  }}
  >
  <defs>
- <marker id="pathway-arrow-ink" viewBox="0 0 10 10"
+ <marker id="pathway-arrow-head" viewBox="0 0 10 10"
  refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
  <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink-soft)" />
- </marker>
- <marker id="pathway-arrow-accent" viewBox="0 0 10 10"
- refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
- <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)" />
  </marker>
  </defs>
  {arrows.map((a) => (
  <line key={a.id}
  x1={a.srcX} y1={a.srcY}
  x2={a.dstX} y2={a.dstY}
- stroke={a.stroke} strokeWidth="1.5"
- markerEnd={`url(#${a.marker})`}
+ stroke="var(--ink-soft)" strokeWidth="1.5"
+ markerEnd="url(#pathway-arrow-head)"
  />
  ))}
  </svg>
