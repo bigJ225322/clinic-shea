@@ -27924,23 +27924,43 @@ function Pathways() {
  //   { kind: "section", index } — section index in resolvedSections
  //   { kind: "lab", index } — lab step index in labSteps
  const [pathwayPopup, setPathwayPopup] = useState(null);
+ // popupSourceRect captures the clicked tile's bounding box (viewport
+ // coords). The modal uses this to FLIP-animate: start at the tile's
+ // position + size, expand + flip into the centered modal on open;
+ // reverse the animation back to the tile's rect on close.
+ const [popupSourceRect, setPopupSourceRect] = useState(null);
  // Closing flag drives the exit flip animation in PathwayPopupModal —
  // the popup stays mounted for one animation duration after the user
- // closes it, then unmounts. POPUP_EXIT_MS must match the CSS exit
- // animation duration in PathwayPopupModal.
+ // closes it, then unmounts. POPUP_EXIT_MS must be ≥ the modal's close
+ // animation duration.
  const [pathwayPopupClosing, setPathwayPopupClosing] = useState(false);
- const POPUP_EXIT_MS = 260;
+ const POPUP_EXIT_MS = 340;
+ const openPathwayPopup = (target, event) => {
+ if (event && event.currentTarget) {
+ const r = event.currentTarget.getBoundingClientRect();
+ setPopupSourceRect({
+ left: r.left, top: r.top,
+ width: r.width, height: r.height,
+ });
+ } else {
+ setPopupSourceRect(null);
+ }
+ setPathwayPopupClosing(false);
+ setPathwayPopup(target);
+ };
  const closePathwayPopup = () => {
  setPathwayPopupClosing(true);
  setTimeout(() => {
  setPathwayPopup(null);
  setPathwayPopupClosing(false);
+ setPopupSourceRect(null);
  }, POPUP_EXIT_MS);
  };
  // Close popup when the pathway changes (stale state would survive).
  useEffect(() => {
  setPathwayPopup(null);
  setPathwayPopupClosing(false);
+ setPopupSourceRect(null);
  }, [pathwayId]);
  // Close popup on Escape.
  useEffect(() => {
@@ -28762,17 +28782,51 @@ function Pathways() {
  const labIdx = labSteps.findIndex((ls) => ls.after === i);
  if (labIdx !== -1) sequence.push({ key: `l-${labIdx}` });
  }
+ // Arrow geometry per case. The lab row is offset half a tile to the
+ // right of the visit row (cols 2-3 for L1, cols 1-2 for V1), so an
+ // edge-to-edge arrow (V1.right → L1.left) actually points LEFTWARD —
+ // not what we want. Instead, use the source-edge facing the destination
+ // direction, and pull the destination endpoint back ARROW_OFFSET pixels
+ // so the arrowhead marker lands clear of the destination tile's border
+ // (the SVG sits at z-index 0, tiles at z-index 1, so an arrowhead with
+ // its body inside the tile would be hidden).
+ const ARROW_OFFSET = 8;
  const arrows = [];
  if (schematicPositions) {
  for (let i = 0; i < sequence.length - 1; i++) {
- const a = schematicPositions[sequence[i].key];
- const b = schematicPositions[sequence[i + 1].key];
+ const srcKey = sequence[i].key;
+ const dstKey = sequence[i + 1].key;
+ const a = schematicPositions[srcKey];
+ const b = schematicPositions[dstKey];
  if (!a || !b) continue;
- arrows.push({
- srcX: a.x + a.width, srcY: a.y + a.height / 2,
- dstX: b.x - 2, dstY: b.y + b.height / 2,
- id: `arrow-${i}`,
- });
+ const isSrcVisit = srcKey.startsWith("v-");
+ const isDstVisit = dstKey.startsWith("v-");
+ let srcX, srcY, dstX, dstY;
+ if (isSrcVisit && isDstVisit) {
+ // V → V (both top row, no lab between — V6→V7→V8). Horizontal
+ // arrow: src = source's right-middle, dst = destination's left
+ // edge minus offset.
+ srcX = a.x + a.width;
+ srcY = a.y + a.height / 2;
+ dstX = b.x - ARROW_OFFSET;
+ dstY = b.y + b.height / 2;
+ } else if (isSrcVisit && !isDstVisit) {
+ // V → L (top to bottom, slight right shift). src = bottom-center
+ // of V, dst = above top-center of L by ARROW_OFFSET so the
+ // arrowhead clears the lab tile's border.
+ srcX = a.x + a.width / 2;
+ srcY = a.y + a.height;
+ dstX = b.x + b.width / 2;
+ dstY = b.y - ARROW_OFFSET;
+ } else {
+ // L → V (bottom to top, slight right shift). src = top-center of
+ // L, dst = below bottom-center of V by ARROW_OFFSET.
+ srcX = a.x + a.width / 2;
+ srcY = a.y;
+ dstX = b.x + b.width / 2;
+ dstY = b.y + b.height + ARROW_OFFSET;
+ }
+ arrows.push({ srcX, srcY, dstX, dstY, id: `arrow-${i}` });
  }
  }
 
@@ -28833,7 +28887,7 @@ function Pathways() {
  if (el) schematicTileRefs.current.set(`v-${pi}`, el);
  else schematicTileRefs.current.delete(`v-${pi}`);
  }}
- onClick={() => setPathwayPopup({ kind: "visit", phaseIndex: pi })}
+ onClick={(e) => openPathwayPopup({ kind: "visit", phaseIndex: pi }, e)}
  onMouseEnter={onTileEnter}
  onMouseLeave={onTileLeave}
  style={{
@@ -28866,7 +28920,7 @@ function Pathways() {
  if (el) schematicTileRefs.current.set(`l-${lsi}`, el);
  else schematicTileRefs.current.delete(`l-${lsi}`);
  }}
- onClick={() => setPathwayPopup({ kind: "lab", index: lsi })}
+ onClick={(e) => openPathwayPopup({ kind: "lab", index: lsi }, e)}
  onMouseEnter={onTileEnter}
  onMouseLeave={onTileLeave}
  style={{
@@ -28919,7 +28973,7 @@ function Pathways() {
  for (let i = 0; i < pi; i++) startIdx += phases[i].count;
  const phaseSections = resolvedSections.slice(startIdx, startIdx + phase.count);
  return (
- <PathwayPopupModal title={phase.label} eyebrow={`Visit ${pi + 1}`} closing={pathwayPopupClosing} onClose={closePathwayPopup}>
+ <PathwayPopupModal title={phase.label} eyebrow={`Visit ${pi + 1}`} closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
  {/* If the phase carries its own structured detail (used when the
  Steps-tab chapters don't cover the visit's workflow on their
  own — e.g. follow-up visits), render it first, then the
@@ -28965,7 +29019,7 @@ function Pathways() {
  if (!s || s.unresolved) return null;
  const title = s.ref?.label || s.chapter.title;
  return (
- <PathwayPopupModal title={title} closing={pathwayPopupClosing} onClose={closePathwayPopup}>
+ <PathwayPopupModal title={title} closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
  <GuideChapter chapter={s.chapter} hideHeader />
  </PathwayPopupModal>
  );
@@ -28974,7 +29028,7 @@ function Pathways() {
  const ls = labSteps[pathwayPopup.index];
  if (!ls) return null;
  return (
- <PathwayPopupModal title={ls.title} eyebrow="Lab" closing={pathwayPopupClosing} onClose={closePathwayPopup}>
+ <PathwayPopupModal title={ls.title} eyebrow="Lab" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
  {ls.turnaround && (
  <div style={{
  fontSize: "0.75rem", color: "var(--ink-faint)",
@@ -29013,7 +29067,8 @@ function Pathways() {
 // lab band on the pathway schematic. Click outside or Escape to close.
 // Body is whatever children are passed in (chapter content for sections,
 // labStep body+detail for lab steps).
-function PathwayPopupModal({ title, eyebrow, children, onClose, closing }) {
+function PathwayPopupModal({ title, eyebrow, children, onClose, closing, sourceRect }) {
+ const cardRef = useRef(null);
  // Lock body scroll while open so the page behind doesn't move when the
  // user scrolls inside the modal.
  useEffect(() => {
@@ -29021,6 +29076,78 @@ function PathwayPopupModal({ title, eyebrow, children, onClose, closing }) {
  document.body.style.overflow = "hidden";
  return () => { document.body.style.overflow = prev; };
  }, []);
+ // FLIP open animation: the modal is mounted at its final centered
+ // position, then we INVERT to the source-tile rect (translate + scale
+ // + edge-on rotation) and PLAY back to identity. Visually the clicked
+ // tile appears to lift off, flip toward the viewer, and grow into the
+ // popup.
+ useEffect(() => {
+ const card = cardRef.current;
+ if (!card) return;
+ // Fallback when no source rect (e.g., opened programmatically) —
+ // simple flip-in from edge-on.
+ if (!sourceRect) {
+ card.style.transformOrigin = "center center";
+ card.style.transform = "rotateY(-74deg) scale(0.7)";
+ card.style.opacity = "0";
+ void card.getBoundingClientRect();
+ card.style.transition = "transform 360ms cubic-bezier(0.2, 0.7, 0.3, 1), opacity 240ms ease-out";
+ card.style.transform = "rotateY(0deg) scale(1)";
+ card.style.opacity = "1";
+ return;
+ }
+ const finalRect = card.getBoundingClientRect();
+ const fcx = finalRect.left + finalRect.width / 2;
+ const fcy = finalRect.top + finalRect.height / 2;
+ const scx = sourceRect.left + sourceRect.width / 2;
+ const scy = sourceRect.top + sourceRect.height / 2;
+ const dx = scx - fcx;
+ const dy = scy - fcy;
+ const scale = Math.max(0.12, Math.min(
+ sourceRect.width / finalRect.width,
+ sourceRect.height / finalRect.height
+ ));
+ card.style.transformOrigin = "center center";
+ // INVERT: start at the source tile's screen position + size, rotated
+ // edge-on so it looks like the tile pivoting up out of the schematic.
+ card.style.transform = `translate(${dx}px, ${dy}px) scale(${scale}) rotateY(-78deg)`;
+ card.style.opacity = "0.45";
+ void card.getBoundingClientRect();
+ // PLAY: animate to identity (final centered modal at full size).
+ card.style.transition = "transform 460ms cubic-bezier(0.2, 0.7, 0.28, 1.02), opacity 280ms ease-out 60ms";
+ card.style.transform = "translate(0px, 0px) scale(1) rotateY(0deg)";
+ card.style.opacity = "1";
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ }, []);
+ // FLIP close animation: reverse — animate back to the source-tile
+ // rect, edge-on rotation, fading out. Driven by the `closing` flag
+ // which the parent sets shortly before unmounting (the parent uses
+ // setTimeout to delay unmount until this finishes).
+ useEffect(() => {
+ if (!closing) return;
+ const card = cardRef.current;
+ if (!card) return;
+ if (!sourceRect) {
+ card.style.transition = "transform 280ms cubic-bezier(0.4, 0, 0.7, 0.3), opacity 240ms ease-in";
+ card.style.transform = "rotateY(74deg) scale(0.7)";
+ card.style.opacity = "0";
+ return;
+ }
+ const finalRect = card.getBoundingClientRect();
+ const fcx = finalRect.left + finalRect.width / 2;
+ const fcy = finalRect.top + finalRect.height / 2;
+ const scx = sourceRect.left + sourceRect.width / 2;
+ const scy = sourceRect.top + sourceRect.height / 2;
+ const dx = scx - fcx;
+ const dy = scy - fcy;
+ const scale = Math.max(0.12, Math.min(
+ sourceRect.width / finalRect.width,
+ sourceRect.height / finalRect.height
+ ));
+ card.style.transition = "transform 320ms cubic-bezier(0.5, 0, 0.75, 0.2), opacity 240ms ease-in 60ms";
+ card.style.transform = `translate(${dx}px, ${dy}px) scale(${scale}) rotateY(78deg)`;
+ card.style.opacity = "0";
+ }, [closing, sourceRect]);
  return (
  <div
  onClick={onClose}
@@ -29031,32 +29158,16 @@ function PathwayPopupModal({ title, eyebrow, children, onClose, closing }) {
  display: "flex", alignItems: "flex-start", justifyContent: "center",
  padding: "60px 20px 40px",
  overflowY: "auto",
- perspective: "1200px",
- animation: closing ? "fade-out 240ms ease forwards" : "fade-in 180ms ease",
+ perspective: "1600px",
+ animation: closing ? "fade-out 280ms ease forwards" : "fade-in 220ms ease",
  }}
  >
- {/* Scoped keyframes for the modal flip-in / flip-out animation. The
- card rotates around Y axis while scaling and fading — gives the
- "card approaches the user" feel without going crazy. */}
  <style>{`
- @keyframes pathway-popup-in {
- from { transform: rotateY(-70deg) scale(0.78); opacity: 0; }
- to { transform: rotateY(0deg) scale(1); opacity: 1; }
- }
- @keyframes pathway-popup-out {
- from { transform: rotateY(0deg) scale(1); opacity: 1; }
- to { transform: rotateY(70deg) scale(0.78); opacity: 0; }
- }
- @keyframes fade-in {
- from { opacity: 0; }
- to { opacity: 1; }
- }
- @keyframes fade-out {
- from { opacity: 1; }
- to { opacity: 0; }
- }
+ @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+ @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
  `}</style>
  <div
+ ref={cardRef}
  role="dialog"
  aria-modal="true"
  aria-label={title}
@@ -29069,11 +29180,8 @@ function PathwayPopupModal({ title, eyebrow, children, onClose, closing }) {
  width: "100%",
  padding: "26px 30px",
  position: "relative",
- transformOrigin: "center center",
  transformStyle: "preserve-3d",
- animation: closing
- ? "pathway-popup-out 240ms cubic-bezier(0.4, 0.0, 0.7, 0.3) forwards"
- : "pathway-popup-in 280ms cubic-bezier(0.2, 0.6, 0.3, 1.0) backwards",
+ willChange: "transform, opacity",
  }}
  >
  <button
