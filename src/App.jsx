@@ -23382,8 +23382,16 @@ const PATHWAYS = [
  { label: "Anterior teeth try-in", count: 1 },
  { label: "Posterior teeth try-in", count: 1 },
  { label: "Delivery + clinical remount", count: 2 },
- { label: "24-hour follow-up", count: 1 },
- { label: "1-week follow-up", count: 1 },
+ {
+ label: "24-hour follow-up",
+ count: 1,
+ detail: "The patient comes back having worn the new dentures continuously since insertion (standard UIC instruction for the first 24 hours: do not remove). The workflow is interview, then palpate, then mark sore spots, then adjust.\n\nStart by asking specifically about pain, sore spots, food trapping, and speech issues — patients often answer \"fine\" to a generic \"how are you,\" so be direct. Then palpate both ridges and the denture borders firmly with your index finger; sore spots exist in places patients cannot articulate, especially on the lingual flange or distal tuberosity.\n\nUse the Thompson stick to transfer sore spots from tissue to denture: wet the stick (it stings on irritated tissue, be gentle), mark the spot intraorally, retract the cheek so ink doesn't transfer to adjacent mucosa, insert the denture for 5 seconds, remove. The ink mark transfers to the denture intaglio — reduce that exact spot with a lab bur.\n\nFor general pressure points, use PIP paste: dry the denture (PIP won't stick to a wet intaglio), brush a thin layer in one direction so show-through is easy to read, optional Mizzy spray on the patient's ridge to prevent PIP sticking to tissue, insert with LIGHT hand pressure only — do NOT have the patient bite. Leave 5 sec, remove, leave PIP ON the denture (do not clean yet), reduce show-through with lab burs, re-apply, repeat until ideal.\n\nDisclosing wax for borders: thin ropes on the denture borders, insert with border-molding movements, remove, reduce show-through. Posterior palatal seal extension: Thompson-stick from the intraoral vibrating-line mark, reduce overextension with a bur, feather toward the back. Pull cheeks while the patient lifts the tongue — the denture should NOT move; run a finger along the border to detect overextension.\n\nOcclusion check at 24 hours: do NOT adjust aggressively. The patient is still adapting and the intaglio adjustments will change occlusion as the denture seats more fully. Mark with horseshoe articulating paper, reduce high spots gently, re-evaluate. Goal: even bilateral posterior contact in centric.\n\nPolish OUTSIDE only — never the intaglio (every detail of the records phase lives in that surface). Counsel: \"sore spots will still feel tender a few days even after adjustment — that's normal healing, not a failed adjustment.\" Schedule the 1-week follow-up before the patient leaves.",
+ },
+ {
+ label: "1-week follow-up",
+ count: 1,
+ detail: "At the 1-week visit the patient should be wearing the dentures most of the day with increasing comfort. Complaints evolve from the diffuse acute soreness of 24 hours to more specific issues: a single persistent sore spot, food trapping under a flange, speech difficulty with certain sounds, or a sense that the denture moves when chewing.\n\nUse the same interview + palpate + Thompson + PIP + disclosing wax workflow as the 24-hour visit. Two changes in emphasis:\n\nOcclusion adjustment can be more aggressive now. The patient has had time to seat the dentures fully and adapt to the prosthesis; remaining occlusal interferences are stable and can be marked and reduced confidently. Mark in centric and excursions with horseshoe articulating paper, reduce posterior heavy contacts first, refine to even bilateral contact.\n\nAssess denture stability. If the denture rocks or unseats during function despite border and intaglio adjustments, consider a chairside tissue conditioner (Coe Comfort) as a temporary cushion, or plan a hard reline at 3-4 months after delivery — the standard UIC interval. Earlier reline indicates a problem with the impression or processing fit, not a normal maintenance event.\n\nReinforce home care: brush the dentures externally daily with a denture brush and mild soap (not toothpaste — too abrasive), leave them OUT overnight in water or denture cleanser to rest the tissues, return at 4 weeks unless symptoms recur sooner.\n\nFinal counsel: dentures function at roughly 30% of natural dentition efficiency. Set the expectation that some functional limitations (hard foods, sticky foods) are permanent realities of the prosthesis, not failures of fit. There is no such thing as a perfect denture — there is only a denture you adapt to.",
+ },
  ],
  labSteps: [
  {
@@ -27820,8 +27828,31 @@ function Pathways() {
  // layout settles and on window resize. Arrows are drawn between
  // chronologically-adjacent tiles (V1→L1→V2→L2→...).
  const schematicGridRef = useRef(null);
+ const schematicScrollRef = useRef(null);
  const schematicTileRefs = useRef(new Map());
  const [schematicPositions, setSchematicPositions] = useState(null);
+ // Wheel-to-horizontal-scroll on the schematic: a vertical mouse-wheel
+ // or trackpad gesture over the schematic scrolls horizontally instead
+ // (which is the natural axis here). Falls through to page-vertical
+ // scroll once the schematic is at its left/right edge so the user
+ // can still scroll past it.
+ useEffect(() => {
+ const el = schematicScrollRef.current;
+ if (!el) return;
+ const onWheel = (e) => {
+ if (e.deltaY === 0) return;
+ const maxScroll = el.scrollWidth - el.clientWidth;
+ if (maxScroll <= 1) return; // no horizontal overflow → don't hijack
+ const scrollingDown = e.deltaY > 0;
+ const atEnd = el.scrollLeft >= maxScroll - 1;
+ const atStart = el.scrollLeft <= 0;
+ if ((scrollingDown && atEnd) || (!scrollingDown && atStart)) return;
+ e.preventDefault();
+ el.scrollLeft += e.deltaY;
+ };
+ el.addEventListener("wheel", onWheel, { passive: false });
+ return () => el.removeEventListener("wheel", onWheel);
+ }, [pathwayId]);
  useEffect(() => {
  const compute = () => {
  if (!schematicGridRef.current) return;
@@ -28597,11 +28628,12 @@ function Pathways() {
  }
 
  return (
- <div style={{
+ <div ref={schematicScrollRef} style={{
  // Full-bleed: break out of the parent container's max-width so the
  // schematic spans the entire viewport. Combined with overflowX:
  // auto, the user gets horizontal scroll on narrow viewports without
- // squashing tiles.
+ // squashing tiles. Vertical mouse-wheel is also remapped to
+ // horizontal scroll (see useEffect above).
  position: "relative",
  width: "100vw",
  marginLeft: "calc(50% - 50vw)",
@@ -28745,6 +28777,22 @@ function Pathways() {
  const phaseSections = resolvedSections.slice(startIdx, startIdx + phase.count);
  return (
  <PathwayPopupModal title={phase.label} eyebrow={`Visit ${pi + 1}`} onClose={() => setPathwayPopup(null)}>
+ {/* If the phase carries its own structured detail (used when the
+ Steps-tab chapters don't cover the visit's workflow on their
+ own — e.g. follow-up visits), render it first, then the
+ chapter content below as supplementary reference. */}
+ {phase.detail && (
+ <div style={{
+ marginBottom: phaseSections.length > 0 ? "28px" : "0",
+ paddingBottom: phaseSections.length > 0 ? "20px" : "0",
+ borderBottom: phaseSections.length > 0 ? "1px solid var(--rule-soft, var(--rule))" : "none",
+ fontSize: "0.95rem", lineHeight: 1.65, color: "var(--ink)",
+ }}>
+ {phase.detail.split(/\n\n+/).map((para, i) => (
+ <p key={i} style={{ margin: i === 0 ? "0 0 12px" : "12px 0" }}>{para}</p>
+ ))}
+ </div>
+ )}
  {phaseSections.map((s, i) => {
  if (s.unresolved) return (
  <div key={i} style={{ color: "var(--ink-faint)", fontStyle: "italic", marginBottom: "16px" }}>
