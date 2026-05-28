@@ -28791,7 +28791,7 @@ function Pathways() {
  // so the arrowhead marker lands clear of the destination tile's border
  // (the SVG sits at z-index 0, tiles at z-index 1, so an arrowhead with
  // its body inside the tile would be hidden).
- const ARROW_OFFSET = 8;
+ const ARROW_OFFSET = 3;
  const arrows = [];
  if (schematicPositions) {
  for (let i = 0; i < sequence.length - 1; i++) {
