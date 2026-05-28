@@ -27924,14 +27924,31 @@ function Pathways() {
  //   { kind: "section", index } — section index in resolvedSections
  //   { kind: "lab", index } — lab step index in labSteps
  const [pathwayPopup, setPathwayPopup] = useState(null);
+ // Closing flag drives the exit flip animation in PathwayPopupModal —
+ // the popup stays mounted for one animation duration after the user
+ // closes it, then unmounts. POPUP_EXIT_MS must match the CSS exit
+ // animation duration in PathwayPopupModal.
+ const [pathwayPopupClosing, setPathwayPopupClosing] = useState(false);
+ const POPUP_EXIT_MS = 260;
+ const closePathwayPopup = () => {
+ setPathwayPopupClosing(true);
+ setTimeout(() => {
+ setPathwayPopup(null);
+ setPathwayPopupClosing(false);
+ }, POPUP_EXIT_MS);
+ };
  // Close popup when the pathway changes (stale state would survive).
- useEffect(() => { setPathwayPopup(null); }, [pathwayId]);
+ useEffect(() => {
+ setPathwayPopup(null);
+ setPathwayPopupClosing(false);
+ }, [pathwayId]);
  // Close popup on Escape.
  useEffect(() => {
  if (!pathwayPopup) return;
- const onKey = (e) => { if (e.key === "Escape") setPathwayPopup(null); };
+ const onKey = (e) => { if (e.key === "Escape") closePathwayPopup(); };
  document.addEventListener("keydown", onKey);
  return () => document.removeEventListener("keydown", onKey);
+ // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [pathwayPopup]);
  // Schematic tile refs + computed positions for the SVG arrow overlay
  // (added 2026-05-27). Each tile registers itself in tileRefs on mount;
@@ -28902,7 +28919,7 @@ function Pathways() {
  for (let i = 0; i < pi; i++) startIdx += phases[i].count;
  const phaseSections = resolvedSections.slice(startIdx, startIdx + phase.count);
  return (
- <PathwayPopupModal title={phase.label} eyebrow={`Visit ${pi + 1}`} onClose={() => setPathwayPopup(null)}>
+ <PathwayPopupModal title={phase.label} eyebrow={`Visit ${pi + 1}`} closing={pathwayPopupClosing} onClose={closePathwayPopup}>
  {/* If the phase carries its own structured detail (used when the
  Steps-tab chapters don't cover the visit's workflow on their
  own — e.g. follow-up visits), render it first, then the
@@ -28948,7 +28965,7 @@ function Pathways() {
  if (!s || s.unresolved) return null;
  const title = s.ref?.label || s.chapter.title;
  return (
- <PathwayPopupModal title={title} onClose={() => setPathwayPopup(null)}>
+ <PathwayPopupModal title={title} closing={pathwayPopupClosing} onClose={closePathwayPopup}>
  <GuideChapter chapter={s.chapter} hideHeader />
  </PathwayPopupModal>
  );
@@ -28957,7 +28974,7 @@ function Pathways() {
  const ls = labSteps[pathwayPopup.index];
  if (!ls) return null;
  return (
- <PathwayPopupModal title={ls.title} eyebrow="Lab" onClose={() => setPathwayPopup(null)}>
+ <PathwayPopupModal title={ls.title} eyebrow="Lab" closing={pathwayPopupClosing} onClose={closePathwayPopup}>
  {ls.turnaround && (
  <div style={{
  fontSize: "0.75rem", color: "var(--ink-faint)",
@@ -28996,7 +29013,7 @@ function Pathways() {
 // lab band on the pathway schematic. Click outside or Escape to close.
 // Body is whatever children are passed in (chapter content for sections,
 // labStep body+detail for lab steps).
-function PathwayPopupModal({ title, eyebrow, children, onClose }) {
+function PathwayPopupModal({ title, eyebrow, children, onClose, closing }) {
  // Lock body scroll while open so the page behind doesn't move when the
  // user scrolls inside the modal.
  useEffect(() => {
@@ -29014,9 +29031,31 @@ function PathwayPopupModal({ title, eyebrow, children, onClose }) {
  display: "flex", alignItems: "flex-start", justifyContent: "center",
  padding: "60px 20px 40px",
  overflowY: "auto",
- animation: "fade-in 140ms ease",
+ perspective: "1200px",
+ animation: closing ? "fade-out 240ms ease forwards" : "fade-in 180ms ease",
  }}
  >
+ {/* Scoped keyframes for the modal flip-in / flip-out animation. The
+ card rotates around Y axis while scaling and fading — gives the
+ "card approaches the user" feel without going crazy. */}
+ <style>{`
+ @keyframes pathway-popup-in {
+ from { transform: rotateY(-70deg) scale(0.78); opacity: 0; }
+ to { transform: rotateY(0deg) scale(1); opacity: 1; }
+ }
+ @keyframes pathway-popup-out {
+ from { transform: rotateY(0deg) scale(1); opacity: 1; }
+ to { transform: rotateY(70deg) scale(0.78); opacity: 0; }
+ }
+ @keyframes fade-in {
+ from { opacity: 0; }
+ to { opacity: 1; }
+ }
+ @keyframes fade-out {
+ from { opacity: 1; }
+ to { opacity: 0; }
+ }
+ `}</style>
  <div
  role="dialog"
  aria-modal="true"
@@ -29030,6 +29069,11 @@ function PathwayPopupModal({ title, eyebrow, children, onClose }) {
  width: "100%",
  padding: "26px 30px",
  position: "relative",
+ transformOrigin: "center center",
+ transformStyle: "preserve-3d",
+ animation: closing
+ ? "pathway-popup-out 240ms cubic-bezier(0.4, 0.0, 0.7, 0.3) forwards"
+ : "pathway-popup-in 280ms cubic-bezier(0.2, 0.6, 0.3, 1.0) backwards",
  }}
  >
  <button
