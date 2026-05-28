@@ -23377,7 +23377,7 @@ const PATHWAYS = [
  description: "The two clinical inflection points are border molding at Visit 2 and the two-stage wax try-in at Visits 4–5; once processing happens, every error becomes permanent. This is the conventional sequence for a fully-edentulous patient with healed ridges — eight clinical visits and five lab blocks between. Visits 1–3 build the records, Visits 4–5 commit the esthetics and occlusion, Visits 6–8 deliver and refine.",
  phases: [
  { label: "Diagnosis + TP + diagnostic impressions", count: 1 },
- { label: "Border molding + final impression", count: 3 },
+ { label: "Border molding + final impression", count: 2 },
  { label: "Wax-rim try-in + JRR + facebow + tooth selection", count: 4 },
  { label: "Anterior teeth try-in", count: 1 },
  { label: "Posterior teeth try-in", count: 1 },
@@ -23425,9 +23425,11 @@ const PATHWAYS = [
  sections: [
  // Visit 1 — Diagnosis + TP + diagnostic impressions
  { guideId: "cd", chapterId: "cd-ch1" }, // Diagnostic impression
- // Visit 2 — Border molding + final impression (3 chapters)
- { guideId: "cd", chapterId: "cd-ch3" }, // Border molding
- { guideId: "cd", chapterId: "cd-ch4" }, // Final PVS impression
+ // Visit 2 — Border molding + final impression (2 chapters; border
+ // molding and PVS wash are sequential within the same procedure at
+ // this visit, so cd-ch4 stands in for both — student can find
+ // border-molding detail directly in Steps via cd-ch3 if needed)
+ { guideId: "cd", chapterId: "cd-ch4" }, // Final PVS impression (covers border-mold → wash sequence)
  { guideId: "cd", chapterId: "cd-ch17" }, // Posterior palatal seal (clinical vibrating-line marking)
  // Visit 3 — Wax-rim try-in + JRR + facebow + tooth selection (4 chapters)
  { guideId: "cd", chapterId: "cd-ch6" }, // Face-bow (edentulous)
