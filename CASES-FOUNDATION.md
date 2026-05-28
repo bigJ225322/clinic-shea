@@ -48,6 +48,24 @@ So Steps tells you what to do **at** an appointment. Cases tells you what
 happens **between** appointments — and what the whole multi-visit treatment plan
 looks like end-to-end.
 
+### Lab-step comprehensiveness (added 2026-05-27)
+
+Each `labStep` entry between two clinical visits must comprehensively cover
+**all** lab activities that take place in that interval — not a curated
+selection, not just the headline procedure. If between Visit N and Visit N+1
+the lab boxes the impression, pours the master cast, scribes the PPS, blocks
+out undercuts, fabricates the record base, and builds the wax rim, then the
+labStep entry between those two visits must describe all six. The student
+should be able to read one labStep and know everything the lab is doing
+during that interval — that's the whole point of Cases having lab content
+that Steps doesn't.
+
+This is the "totally comprehensive step guide for complex Phase III
+procedures" principle (user directive 2026-05-27). The user-facing UI may
+present the labStep's body as a short summary at the schematic level and
+the full coverage in a click-through popup, but the **data** must always
+carry the comprehensive list.
+
 ---
 
 ## What counts as in-scope for Cases

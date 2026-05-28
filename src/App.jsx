@@ -28526,14 +28526,14 @@ function Pathways() {
  all: "unset",
  cursor: "pointer",
  display: "block",
- marginTop: "14px",
+ marginTop: "28px",
  marginLeft: "auto",
  marginRight: "0",
- width: "68%",
+ width: "48%",
  background: "var(--paper, #FBF8F2)",
  borderLeft: "4px solid var(--accent)",
  borderRadius: "3px",
- padding: "14px 18px",
+ padding: "18px 22px",
  boxSizing: "border-box",
  transition: "box-shadow 140ms ease, transform 140ms ease",
  }}
@@ -28548,7 +28548,7 @@ function Pathways() {
  >
  <div style={{
  display: "flex", alignItems: "baseline", gap: "10px",
- marginBottom: ls.body ? "8px" : "0", flexWrap: "wrap",
+ flexWrap: "wrap",
  }}>
  <span style={{
  fontSize: "0.62rem", textTransform: "uppercase",
@@ -28557,20 +28557,14 @@ function Pathways() {
  padding: "3px 8px", borderRadius: "2px",
  }}>Lab</span>
  <span style={{
- fontSize: "0.85rem", fontWeight: 500, color: "var(--ink)",
+ fontSize: "0.9rem", fontWeight: 500, color: "var(--ink)",
  }}>{ls.title}</span>
- {ls.turnaround && (
- <span style={{
- fontSize: "0.72rem", color: "var(--ink-faint)",
- marginLeft: "auto", fontStyle: "italic",
- }}>{ls.turnaround}</span>
- )}
  </div>
- {ls.body && (
+ {ls.turnaround && (
  <div style={{
- fontSize: "0.85rem", lineHeight: 1.65,
- color: "var(--ink-soft)", fontStyle: "italic",
- }}>{ls.body}</div>
+ fontSize: "0.7rem", color: "var(--ink-faint)",
+ fontStyle: "italic", marginTop: "6px",
+ }}>{ls.turnaround}</div>
  )}
  </button>
  );
@@ -28594,21 +28588,42 @@ function Pathways() {
  // underneath). Hiding empty phases keeps the Sequence TOC
  // legible even when the underlying data is mid-edit.
  if (slice.length === 0) return;
+ // 2026-05-27: visit card is a slim clickable summary tile. No bullet
+ // list inside — clicking opens a popup with the comprehensive steps
+ // for the whole appointment. Narrower (~48%) + larger vertical gap
+ // creates the diagonal staircase flow with the lab bands on the
+ // right.
  rendered.push(
- <div key={pi} style={{
- marginTop: pi === 0 ? "0" : "16px",
+ <button key={pi} type="button"
+ onClick={() => setPathwayPopup({ kind: "visit", phaseIndex: pi })}
+ style={{
+ all: "unset",
+ cursor: "pointer",
+ display: "block",
+ marginTop: pi === 0 ? "0" : "28px",
  marginLeft: "0",
  marginRight: "auto",
- width: "68%",
+ width: "48%",
  background: "var(--card, white)",
  border: "1px solid var(--rule-soft, var(--rule))",
  borderLeft: "4px solid var(--ink)",
  borderRadius: "3px",
  padding: "18px 22px",
- }}>
+ boxSizing: "border-box",
+ transition: "box-shadow 140ms ease, transform 140ms ease",
+ }}
+ onMouseEnter={(e) => {
+ e.currentTarget.style.boxShadow = "0 2px 10px rgba(26, 22, 18, 0.10)";
+ e.currentTarget.style.transform = "translateY(-1px)";
+ }}
+ onMouseLeave={(e) => {
+ e.currentTarget.style.boxShadow = "none";
+ e.currentTarget.style.transform = "translateY(0)";
+ }}
+ >
  <div style={{
  display: "flex", alignItems: "baseline", gap: "10px",
- marginBottom: "12px", flexWrap: "wrap",
+ flexWrap: "wrap",
  }}>
  <span style={{
  fontSize: "0.62rem", textTransform: "uppercase",
@@ -28620,15 +28635,7 @@ function Pathways() {
  fontSize: "0.9rem", fontWeight: 500, color: "var(--ink)",
  }}>{phase.label}</span>
  </div>
- {/* Steps indented under the visit header — bullets, not numbers.
- Numbered substeps implied a tight ordered sequence within a single
- visit; in reality these are reference chapters (each individually
- substantive), not steps you tick off in order. Bullets read more
- honestly. */}
- <ul style={{ margin: "0 0 0 8px", paddingLeft: "20px", lineHeight: 1.85, listStyleType: "disc" }}>
- {slice.map(renderRow)}
- </ul>
- </div>
+ </button>
  );
  // Lab steps that happen after THIS phase (between phase pi and pi+1).
  // Iterate the full labSteps array so the canonical index is used.
@@ -28679,6 +28686,41 @@ function Pathways() {
  Click outside or press Escape to close. */}
  {pathwayPopup && (() => {
  const labSteps = selectedPathway.labSteps || [];
+ const phases = selectedPathway.phases || [];
+ if (pathwayPopup.kind === "visit") {
+ const pi = pathwayPopup.phaseIndex;
+ const phase = phases[pi];
+ if (!phase) return null;
+ // Compute the slice of resolvedSections that belongs to this phase.
+ let startIdx = 0;
+ for (let i = 0; i < pi; i++) startIdx += phases[i].count;
+ const phaseSections = resolvedSections.slice(startIdx, startIdx + phase.count);
+ return (
+ <PathwayPopupModal title={phase.label} eyebrow={`Visit ${pi + 1}`} onClose={() => setPathwayPopup(null)}>
+ {phaseSections.map((s, i) => {
+ if (s.unresolved) return (
+ <div key={i} style={{ color: "var(--ink-faint)", fontStyle: "italic", marginBottom: "16px" }}>
+ (unresolved chapter: {s.ref.chapterId})
+ </div>
+ );
+ const stepLabel = s.ref?.label || s.chapter.title;
+ return (
+ <div key={i} style={{
+ marginBottom: i === phaseSections.length - 1 ? "0" : "28px",
+ paddingBottom: i === phaseSections.length - 1 ? "0" : "20px",
+ borderBottom: i === phaseSections.length - 1 ? "none" : "1px solid var(--rule-soft, var(--rule))",
+ }}>
+ <h3 className="serif" style={{
+ fontSize: "1.05rem", fontWeight: 500, color: "var(--ink)",
+ margin: "0 0 10px",
+ }}>{stepLabel}</h3>
+ <GuideChapter chapter={s.chapter} hideHeader />
+ </div>
+ );
+ })}
+ </PathwayPopupModal>
+ );
+ }
  if (pathwayPopup.kind === "section") {
  const s = resolvedSections[pathwayPopup.index];
  if (!s || s.unresolved) return null;
