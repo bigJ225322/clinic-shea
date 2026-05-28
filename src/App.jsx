@@ -23425,12 +23425,14 @@ const PATHWAYS = [
  sections: [
  // Visit 1 — Diagnosis + TP + diagnostic impressions
  { guideId: "cd", chapterId: "cd-ch1" }, // Diagnostic impression
- // Visit 2 — Border molding + final impression (2 chapters; border
- // molding and PVS wash are sequential within the same procedure at
- // this visit, so cd-ch4 stands in for both — student can find
- // border-molding detail directly in Steps via cd-ch3 if needed)
- { guideId: "cd", chapterId: "cd-ch4" }, // Final PVS impression (covers border-mold → wash sequence)
- { guideId: "cd", chapterId: "cd-ch17" }, // Posterior palatal seal (clinical vibrating-line marking)
+ // Visit 2 — Border molding + final impression. Border-mold the tray
+ // and wash with PVS are sequential within ONE clinical step. The
+ // `label` override combines them into a single bullet; click-through
+ // links to cd-ch3 (border molding deep-dive — first in the sequence;
+ // PVS wash detail is one chapter over in Steps via cd-ch4). PPS
+ // clinical marking stays as a separate step (distinct sub-procedure).
+ { guideId: "cd", chapterId: "cd-ch3", label: "Border molding + final PVS impression" },
+ { guideId: "cd", chapterId: "cd-ch17", label: "Posterior palatal seal — mark vibrating line + scribe extent" },
  // Visit 3 — Wax-rim try-in + JRR + facebow + tooth selection (4 chapters)
  { guideId: "cd", chapterId: "cd-ch6" }, // Face-bow (edentulous)
  { guideId: "cd", chapterId: "cd-ch8" }, // VDO determination
@@ -28485,7 +28487,7 @@ function Pathways() {
  fontWeight: 500,
  transition: "border-color 120ms ease",
  }}
- >{s.chapter.title}</button>
+ >{s.ref?.label || s.chapter.title}</button>
  {isOpen && (
  <div style={{
  marginTop: "8px",
@@ -28528,7 +28530,7 @@ function Pathways() {
  <a href={`#${s.anchorId}`} style={{
  color: "var(--ink)", textDecoration: "none",
  borderBottom: "1px dotted var(--rule)",
- }}>{s.tocLabel}</a>
+ }}>{s.ref?.label || s.tocLabel}</a>
 )}
  </li>
  );
