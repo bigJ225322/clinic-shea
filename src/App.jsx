@@ -23390,6 +23390,7 @@ const PATHWAYS = [
  after: 0,
  title: "Pour diagnostic casts + fabricate custom trays",
  body: "Pour the diagnostic alginates, then build the custom trays using UIC's selective-pressure technique: one sheet of baseplate wax as the spacer with relief over the incisive papilla, mid-palatal raphe, and mandibular crest, under one sheet of Triad light-cure material.",
+ detail: "Pour the alginate impressions in Type III stone, then on each cast outline the tray border in red pencil at the depth of the vestibule (to the hamular notches and vibrating line on the maxillary; to the retromolar pads on the mandibular). Draw a blue line 2 mm inside the red — the tray border itself will sit on the blue line. Mark relief areas in red: mid-palatal raphe, incisive papilla, mandibular crest.\n\nApply Vaseline to the cast, drip-block any undercuts with wax, then adapt one sheet of baseplate wax as the selective-pressure spacer. This single layer is what creates the relief space for the PVS final impression material. Critical: do NOT apply Vaseline again once the spacer is on — if you do, the spacer falls out of the tray when you remove it for border molding.\n\nAdapt one sheet of Triad light-cure material over the spacer, cure about a minute on the cast, cool, then re-cure off the cast. Finish with acrylic burs and verify frenum + muscle clearance. The maxillary tray gets a ½ × ½ × ¼ inch handle in the labial vestibule; the mandibular gets finger rests built from Triad offcuts, sitting over the residual crest and not exceeding two-thirds of the retromolar pad height.",
  source: "Custom tray_Boxing_Technique.pdf (Tan); Custom Tray Grading Sheet 2022 — UIC selective-pressure technique",
  turnaround: "Before Visit 2",
  },
@@ -23397,6 +23398,7 @@ const PATHWAYS = [
  after: 1,
  title: "Box + pour master casts; scribe PPS; fabricate record bases + wax rims",
  body: "Box the PVS final impression, pour the master casts in Type III microstone, scribe the posterior palatal seal on the maxillary cast, and fabricate light-cured record bases topped with wax rims at UIC dimensions (22 mm maxillary, 18 mm mandibular anterior heights).",
+ detail: "Box the PVS final impression by first mixing a pumice-plaster putty (equal parts, thick), then setting the impression into the putty so it extends 3 mm lateral to the impression border and leaves 2 mm of border exposed above the putty. Wrap a boxing-wax wall around the outside, extending 16-18 mm above the highest point of the impression (the finished base will be 15-20 mm thick). Seal the boxing wax to the land area with a heated #7 spatula and water-test the seal before pouring.\n\nPour Type III microstone under vacuum to form the master cast. On the maxillary master cast, mark the posterior palatal seal in red pencil at the vibrating line (transferred via the final impression from your Visit-2 Thompson-stick mark). Scribe the posterior border with a #8 round bur to 1-1.5 mm depth, then feather the carving forward with a #7 spatula to the anterior border at the junction of the hard and soft palate.\n\nBlock out major undercuts on both casts and apply separator, then light-cure one sheet of Triad over each cast (400-500 nm, about 10 minutes) to form the record base — 2 mm uniform thickness, smooth borders, no voids, landmarks (incisive papilla, retromolar pads, residual ridge) visible through the base.\n\nBuild the wax rims atop the record bases to UIC dimensions: maxillary 22 mm anterior height, positioned 8-10 mm labial to the incisive papilla, terminating 2-3 mm anterior to the maxillary tuberosity. Mandibular 18 mm anterior height, not exceeding two-thirds of the retromolar pad. Both rims 3-4 mm wide anteriorly, 4-6 mm wide posteriorly. Keep the occlusal surface completely flat — the clinical try-in at Visit 3 uses it as the reference plane.",
  source: "Custom tray_Boxing_Technique.pdf (Tan, boxing portion); Vibrating line and PPS; Anatomy of edentulous oral cavity + PPS (Obrez); Record Base & Wax Rim Reminders; Record Bases Grading Sheet 2022",
  turnaround: "Before Visit 3",
  },
@@ -23404,6 +23406,7 @@ const PATHWAYS = [
  after: 2,
  title: "Mount master casts on Mark 320; set anterior teeth",
  body: "Mount the casts on the Mark 320 (maxillary by face-bow, mandibular via the CR record; 30° condylar, 15° Bennett, pin at zero), then set the anterior teeth one wax window at a time — never strip the whole rim, you lose every reference.",
+ detail: "Mount the maxillary master cast on the Denar Mark 320 articulator using the face-bow record from Visit 3 — this transfers the spatial relationship of the maxillary arch to the articulator's hinge axis. Then mount the mandibular master cast against the maxillary using the centric-relation record taken at the same visit. Set the condylar inclination to 30°, the Bennett angle to 15° (fixed), and replace the black incisal table with the white one. These are UIC's standard articulator settings for CD setup.\n\nSelect the Trubyte Classic anterior teeth per the mould (e.g., 2N) and shade (e.g., 66C) the patient agreed to at Visit 3. The card carries 6 teeth — one card per arch.\n\nSet the anterior teeth by melting a wax window at one tooth's position at a time. Do NOT strip the whole rim — you lose every reference for the next tooth's position. If a tooth's bucco-lingual space is tight, trim the base of the tooth first; if it still doesn't fit, trim the lingual of the tooth itself. Place three teeth on one side (e.g., #6, #7, #8), then move to the contralateral. Before sealing each tooth in with a small amount of baseplate wax via a #7 spatula, verify the midline, the 1-2 mm vertical and horizontal anterior overlap (incisors should NOT contact in MI), and the smile-line position.",
  source: "Articulator+Facebow.pdf (Tan); Jaw Relation Records (Mohammad); Anterior teeth set up-Technique.pdf (Tan)",
  turnaround: "Before Visit 4",
  },
@@ -23411,6 +23414,7 @@ const PATHWAYS = [
  after: 3,
  title: "Set posterior teeth (monoplane with acrylic balancing ramps)",
  body: "Set 0° monoplane posteriors on a flat plane through two-thirds of the retromolar pad, with acrylic balancing ramps for UIC's bilateral balanced articulation.",
+ detail: "Set 0° monoplane posterior teeth (non-anatomic, flat occlusal surfaces) on a flat plane that runs through two-thirds of the retromolar pad height — that is UIC's reference for the occlusal plane on the mandibular cast. The central grooves of all the mandibular posteriors should align in a single straight line.\n\nPosition each mandibular posterior over the center of the residual ridge — not buccal, not lingual — directly over the ridge crest. The horizontal overlap of the maxillary over the mandibular is about one-third of the tooth, far less than natural occlusion. This positioning resists tipping forces under function.\n\nBuild acrylic balancing ramps so the dentures contact bilaterally in eccentric movements: on lateral excursion, the working-side ramp plus the anterior teeth carry contact; on protrusion, both central incisors contact the lower anteriors AND both posterior ramps contact. That is UIC's bilateral balanced articulation — the alternative to anterior-guidance which only works with PDL feedback. The intent is to keep the denture bases from tipping when the patient excurses.\n\nVerify the incisal pin remains at zero throughout setup. If it drifts up, the VDO recorded at Visit 3 has been lost and the error propagates through every downstream step.",
  source: "Monoplane Set up Grading 2024; Denture occlusion + Hanau's quint (Obrez)",
  turnaround: "Before Visit 5",
  },
@@ -23418,6 +23422,7 @@ const PATHWAYS = [
  after: 4,
  title: "Final wax contouring + processing + lab remount",
  body: "Festoon the polished surfaces, then invest, flask, process, and recover on the master casts. Before removing them, do the lab remount to correct any occlusal drift from processing back to incisal pin = 0.",
+ detail: "After patient sign-off at Visit 5, festoon the polished surfaces of the dentures. Expose the teeth to the CEJ on the facial. Build maxillary and mandibular cuspid eminences for lip and corner-of-mouth support. Carve gingival zeniths slightly distal to each tooth's midline (the lateral incisor is the exception — its zenith stays central). Keep interdental papillae flat or slightly concave; anything bulky impacts food and irritates tissue. Leave a lingual concavity in the mandibular where the tongue will rest. Stipple the facial surfaces with a toothbrush for natural light reflection.\n\nInvest the dentures in a flask, process the acrylic (UIC uses SR Ivocap or pack-and-press), then deflask and recover the dentures on the original master casts.\n\nBefore removing the dentures from the master-cast mountings, perform the laboratory remount on the articulator. Processing always introduces some occlusal drift — the goal is to selectively grind back to incisal pin = 0, restoring centric and bilateral-balanced occlusion. While the dentures are still mounted, fabricate the face-bow remount jig (a small plaster block on the maxillary mounting) so the maxillary spatial relationship can be re-established at delivery for the clinical remount.\n\nRemove the dentures from the master casts, then finish and polish the external surfaces only. The intaglio (tissue-bearing surface) stays untouched — every detail of the records phase lives in that surface; touching it now means losing fit.",
  source: "24_Final_wax_contouring_UIC.pdf; Processing+Festooning.pdf; Complete Denture Delivery and follow-up (Gheisarifar) — lab remount section",
  turnaround: "Before Visit 6",
  },
@@ -27791,6 +27796,24 @@ function Pathways() {
  // on the page closes it (see effect below). Holds the anchorId of the
  // currently-expanded inline section, or null if none.
  const [expandedInlineSection, setExpandedInlineSection] = useState(null);
+ // Schematic-click popup (added 2026-05-27). The schematic at the top
+ // of a pathway is the student's overview; clicking any clinical step
+ // (bullet) or lab band opens a popup with that step's full content.
+ // Replaces the per-step collapsible cards that used to render below
+ // the schematic. Shape:
+ //   null — no popup
+ //   { kind: "section", index } — section index in resolvedSections
+ //   { kind: "lab", index } — lab step index in labSteps
+ const [pathwayPopup, setPathwayPopup] = useState(null);
+ // Close popup when the pathway changes (stale state would survive).
+ useEffect(() => { setPathwayPopup(null); }, [pathwayId]);
+ // Close popup on Escape.
+ useEffect(() => {
+ if (!pathwayPopup) return;
+ const onKey = (e) => { if (e.key === "Escape") setPathwayPopup(null); };
+ document.addEventListener("keydown", onKey);
+ return () => document.removeEventListener("keydown", onKey);
+ }, [pathwayPopup]);
  // Sequence (in-page TOC of phases + numbered steps + interleaved lab
  // bands) is always rendered when a pathway has sections. The previous
  // collapsible "Sequence ▾" header was removed 2026-05-27 — burying the
@@ -28403,51 +28426,9 @@ function Pathways() {
  toggle that opens to nothing. */}
  {resolvedSections.length > 0 && (
  <div style={{ marginBottom: "20px" }}>
- {/* Collapse-all / Expand-all toggle for the per-step detail cards
- below the sequence. Inline sections are excluded — they don't
- have a card to collapse. Sits unobtrusively at the top right,
- above the first visit block. */}
- <div style={{
- display: "flex", justifyContent: "flex-end",
- marginBottom: "10px",
- }}>
- {(() => {
- const usable = resolvedSections.filter(s => !s.unresolved && !(s.ref && s.ref.inline === true));
- if (usable.length === 0) return null;
- const allCollapsed = usable.every(s => collapsedSections.has(s.anchorId));
- const handleClick = () => {
- if (allCollapsed) {
- setCollapsedSections(new Set);
- } else {
- setCollapsedSections(new Set(usable.map(s => s.anchorId)));
- }
- };
- return (
- <button
- onClick={handleClick}
- title={allCollapsed ? "Expand all sections" : "Collapse all sections"}
- style={{
- fontFamily: "'Geist', sans-serif",
- fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.08em",
- color: "var(--ink-soft)", fontWeight: 500,
- background: "transparent",
- border: "1px solid var(--rule)",
- borderRadius: "100px",
- padding: "3px 10px", cursor: "pointer",
- transition: "all 120ms ease",
- }}
- onMouseEnter={(e) => {
- e.currentTarget.style.borderColor = "var(--accent)";
- e.currentTarget.style.color = "var(--ink)";
- }}
- onMouseLeave={(e) => {
- e.currentTarget.style.borderColor = "var(--rule)";
- e.currentTarget.style.color = "var(--ink-soft)";
- }}
- >{allCollapsed ? "Expand all steps" : "Collapse all steps"}</button>
- );
- })()}
- </div>
+ {/* Expand-all/Collapse-all button removed 2026-05-27 — no per-step
+ cards below the schematic anymore; each step opens a popup on
+ click instead. */}
  {(() => {
  // Phase-aware TOC rendering. If the pathway has a `phases` array, render
  // each phase as a sub-section with its own ordered list (numbering keeps
@@ -28461,49 +28442,11 @@ function Pathways() {
  // the visit's chapter list. The inline [lab] tag tells the student
  // at a glance which rows are chair work vs lab work.
  const isLab = s.ref && s.ref.kind === "lab";
- // Inline-expand mode: a section entry marked `inline: true` is rendered
- // as a clickable highlighted title with no separate card below. Clicking
- // it expands the Swade chapter content right under the row; clicking
- // elsewhere on the page closes the expansion. Used for "elementary"
- // chapters (facebow steps, boxing+pouring) that don't merit a full card.
- const isInline = s.ref && s.ref.inline === true;
- if (isInline && !s.unresolved) {
- const isOpen = expandedInlineSection === s.anchorId;
- return (
- <li
- key={s.i}
- data-inline-section={s.anchorId}
- style={{ marginBottom: "4px", fontSize: "0.95rem" }}
- >
- <button
- type="button"
- onClick={() => setExpandedInlineSection(prev => prev === s.anchorId? null: s.anchorId)}
- aria-expanded={isOpen}
- style={{
- all: "unset",
- cursor: "pointer",
- color: "var(--accent)",
- borderBottom: isOpen? "1px solid var(--accent)": "1px dashed var(--accent)",
- fontWeight: 500,
- transition: "border-color 120ms ease",
- }}
- >{s.ref?.label || s.chapter.title}</button>
- {isOpen && (
- <div style={{
- marginTop: "8px",
- marginBottom: "6px",
- padding: "10px 14px",
- background: "var(--paper, #FBF8F2)",
- borderLeft: "2px solid var(--accent)",
- borderRadius: "3px",
- fontSize: "0.85rem",
- }}>
- <GuideChapter chapter={s.chapter} hideHeader />
- </div>
- )}
- </li>
- );
- }
+ // Schematic-click popup pattern (2026-05-27): every step (bullet)
+ // opens a centered popup with the chapter content. The `inline: true`
+ // distinction is gone — all bullets behave the same way now. (The
+ // field is still tolerated in data but ignored by the renderer.)
+ const displayText = s.ref?.label || s.tocLabel;
  return (
  <li key={s.i} style={{ marginBottom: "4px", fontSize: "0.95rem" }}>
  {isLab && (
@@ -28527,10 +28470,25 @@ function Pathways() {
  (unresolved: {s.ref.chapterId})
  </span>
 ): (
- <a href={`#${s.anchorId}`} style={{
- color: "var(--ink)", textDecoration: "none",
+ <button
+ type="button"
+ onClick={() => setPathwayPopup({ kind: "section", index: s.i })}
+ style={{
+ all: "unset",
+ cursor: "pointer",
+ color: "var(--ink)",
  borderBottom: "1px dotted var(--rule)",
- }}>{s.ref?.label || s.tocLabel}</a>
+ transition: "color 120ms ease, border-color 120ms ease",
+ }}
+ onMouseEnter={(e) => {
+ e.currentTarget.style.color = "var(--accent)";
+ e.currentTarget.style.borderBottomColor = "var(--accent)";
+ }}
+ onMouseLeave={(e) => {
+ e.currentTarget.style.color = "var(--ink)";
+ e.currentTarget.style.borderBottomColor = "var(--rule)";
+ }}
+ >{displayText}</button>
 )}
  </li>
  );
@@ -28556,8 +28514,18 @@ function Pathways() {
  // visit blocks (which are left-aligned at the same width). The
  // result is a timeline-style zig-zag: clinic work toward the left,
  // lab work toward the right, both flowing through a shared center.
- const renderLabStep = (ls, key) => (
- <div key={key} style={{
+ // 2026-05-27: the band is a button that opens the lab step's full
+ // detail in a centered popup. `idx` is the index in the full
+ // labSteps array, used as the popup target.
+ const renderLabStep = (ls, idx) => (
+ <button
+ key={`lab-${idx}`}
+ type="button"
+ onClick={() => setPathwayPopup({ kind: "lab", index: idx })}
+ style={{
+ all: "unset",
+ cursor: "pointer",
+ display: "block",
  marginTop: "14px",
  marginLeft: "auto",
  marginRight: "0",
@@ -28566,7 +28534,18 @@ function Pathways() {
  borderLeft: "4px solid var(--accent)",
  borderRadius: "3px",
  padding: "14px 18px",
- }}>
+ boxSizing: "border-box",
+ transition: "box-shadow 140ms ease, transform 140ms ease",
+ }}
+ onMouseEnter={(e) => {
+ e.currentTarget.style.boxShadow = "0 2px 10px rgba(26, 22, 18, 0.10)";
+ e.currentTarget.style.transform = "translateY(-1px)";
+ }}
+ onMouseLeave={(e) => {
+ e.currentTarget.style.boxShadow = "none";
+ e.currentTarget.style.transform = "translateY(0)";
+ }}
+ >
  <div style={{
  display: "flex", alignItems: "baseline", gap: "10px",
  marginBottom: ls.body ? "8px" : "0", flexWrap: "wrap",
@@ -28593,15 +28572,14 @@ function Pathways() {
  color: "var(--ink-soft)", fontStyle: "italic",
  }}>{ls.body}</div>
  )}
- {/* source citation no longer rendered (2026-05-27) — kept in
- the labStep data per CASES-FOUNDATION trust rules but not
- surfaced to students; it's a data-integrity tool. */}
- </div>
+ </button>
  );
 
- // Lab steps that happen before the first phase (after: -1)
- labSteps.filter(ls => ls.after === -1).forEach((ls, lsi) => {
- rendered.push(renderLabStep(ls, `lab-pre-${lsi}`));
+ // Lab steps that happen before the first phase (after: -1).
+ // Iterate the full labSteps array so we pass the canonical index
+ // (used as the popup target).
+ labSteps.forEach((ls, idx) => {
+ if (ls.after === -1) rendered.push(renderLabStep(ls, idx));
  });
 
  phases.forEach((phase, pi) => {
@@ -28653,8 +28631,9 @@ function Pathways() {
  </div>
  );
  // Lab steps that happen after THIS phase (between phase pi and pi+1).
- labSteps.filter(ls => ls.after === pi).forEach((ls, lsi) => {
- rendered.push(renderLabStep(ls, `lab-${pi}-${lsi}`));
+ // Iterate the full labSteps array so the canonical index is used.
+ labSteps.forEach((ls, idx) => {
+ if (ls.after === pi) rendered.push(renderLabStep(ls, idx));
  });
  });
  // Catch-all: if phases.count sums to LESS than sections.length, the
@@ -28691,88 +28670,54 @@ function Pathways() {
  </div>
  )}
 
- {/* Sections rendered inline — each is a collapsible card with a
- subtle chevron on the far right of the title.
- Sections marked `inline: true` are NOT rendered here — they
- appear only within the Sequence card as a clickable highlighted
- title that expands inline. They have no separate card below. */}
- {resolvedSections.map((s, i) => {
- if (s.unresolved) return null;
- if (s.ref && s.ref.inline === true) return null;
- const isCollapsed = collapsedSections.has(s.anchorId);
- return (
- <div key={i} id={s.anchorId} style={{
- background: "var(--card, white)",
- border: "1px solid var(--rule)",
- padding: "24px 28px", borderRadius: "3px",
- boxShadow: "0 1px 4px rgba(26, 22, 18, 0.09), 0 8px 24px rgba(26, 22, 18, 0.07)",
- marginBottom: "16px",
- scrollMarginTop: "16px",
- }}>
- {/* The per-section eyebrow ("Guide name — Section N of M")
- was removed: the floating right-sidebar already shows
- the same information (numbered circle + chapter label)
- and the in-page Reading Order TOC enumerates them all
- up top. Keeping both was duplicate signalling. */}
- {/* Title row + collapse chevron */}
- <button
- type="button"
- onClick={() => toggleSection(s.anchorId)}
- aria-expanded={!isCollapsed}
- aria-label={isCollapsed? "Expand section": "Collapse section"}
- style={{
- display: "flex", alignItems: "baseline",
- width: "100%", textAlign: "left",
- background: "transparent", border: "none",
- padding: 0, margin: 0, cursor: "pointer",
- color: "inherit", font: "inherit",
- }}
- >
- <h2 className="serif" style={{
- fontSize: "1.4rem", fontWeight: 400, color: "var(--ink)",
- margin: 0, flex: 1,
- }}>
- <span style={{
- color: "var(--accent)", fontSize: "0.85rem", fontWeight: 600,
- textTransform: "uppercase", letterSpacing: "0.1em", marginRight: "10px",
- }}>
- Step {s.i + 1}
- </span>
- {s.chapter.title}
- </h2>
- <span
- aria-hidden="true"
- style={{
- marginLeft: "12px", flexShrink: 0,
- fontSize: "1.5rem", lineHeight: 1,
- color: "var(--ink-faint)",
- transition: "transform 160ms ease",
- transform: isCollapsed? "rotate(-90deg)": "rotate(0deg)",
- opacity: 0.7,
- }}
- >▾</span>
- </button>
- {!isCollapsed && (
- <div style={{ marginTop: "4px" }}>
- <GuideChapter chapter={s.chapter} hideHeader />
- </div>
-)}
- </div>
-);
- })}
+ {/* Per-section anchor cards + floating sidebar TOC removed
+ 2026-05-27. The schematic at the top is now the authoritative
+ overview; clicking any clinical step (bullet) or lab band opens
+ a popup with the step's full content. See modal below. */}
 
- {/* Floating sidebar TOC — subtle and see-through until hover.
- Inline sections are excluded — they have no card to scroll to. */}
- <PathwaySidebarTOC
- sections={resolvedSections.filter(s => !(s.ref && s.ref.inline === true))}
- activeIdx={activeSectionIdx}
- collapsedSections={collapsedSections}
- onToggle={toggleSection}
- onCollapseAll={() => setCollapsedSections(new Set(
- resolvedSections.filter(s =>!s.unresolved && !(s.ref && s.ref.inline === true)).map(s => s.anchorId)
-))}
- onExpandAll={() => setCollapsedSections(new Set)}
- />
+ {/* Popup modal — opens on click of a clinical step or lab band.
+ Click outside or press Escape to close. */}
+ {pathwayPopup && (() => {
+ const labSteps = selectedPathway.labSteps || [];
+ if (pathwayPopup.kind === "section") {
+ const s = resolvedSections[pathwayPopup.index];
+ if (!s || s.unresolved) return null;
+ const title = s.ref?.label || s.chapter.title;
+ return (
+ <PathwayPopupModal title={title} onClose={() => setPathwayPopup(null)}>
+ <GuideChapter chapter={s.chapter} hideHeader />
+ </PathwayPopupModal>
+ );
+ }
+ if (pathwayPopup.kind === "lab") {
+ const ls = labSteps[pathwayPopup.index];
+ if (!ls) return null;
+ return (
+ <PathwayPopupModal title={ls.title} eyebrow="Lab" onClose={() => setPathwayPopup(null)}>
+ {ls.turnaround && (
+ <div style={{
+ fontSize: "0.75rem", color: "var(--ink-faint)",
+ fontStyle: "italic", marginBottom: "12px",
+ }}>{ls.turnaround}</div>
+ )}
+ {ls.body && (
+ <p style={{
+ margin: "0 0 14px", fontSize: "0.95rem", lineHeight: 1.6,
+ color: "var(--ink-soft)", fontStyle: "italic",
+ }}>{ls.body}</p>
+ )}
+ {ls.detail && (
+ <div style={{ fontSize: "0.95rem", lineHeight: 1.65, color: "var(--ink)" }}>
+ {ls.detail.split(/\n\n+/).map((para, i) => (
+ <p key={i} style={{ margin: i === 0 ? "0 0 12px" : "12px 0" }}>{para}</p>
+ ))}
+ </div>
+ )}
+ </PathwayPopupModal>
+ );
+ }
+ return null;
+ })()}
  </>
 )}
  </div>
@@ -28783,6 +28728,92 @@ function Pathways() {
 // expands and goes opaque on hover or keyboard focus. Highlights the active
 // section based on scroll position. Clicking a row scrolls to the section
 // (and uncollapses it if collapsed).
+// Centered popup that opens when a student clicks any step (bullet) or
+// lab band on the pathway schematic. Click outside or Escape to close.
+// Body is whatever children are passed in (chapter content for sections,
+// labStep body+detail for lab steps).
+function PathwayPopupModal({ title, eyebrow, children, onClose }) {
+ // Lock body scroll while open so the page behind doesn't move when the
+ // user scrolls inside the modal.
+ useEffect(() => {
+ const prev = document.body.style.overflow;
+ document.body.style.overflow = "hidden";
+ return () => { document.body.style.overflow = prev; };
+ }, []);
+ return (
+ <div
+ onClick={onClose}
+ style={{
+ position: "fixed", inset: 0,
+ background: "rgba(26, 22, 18, 0.55)",
+ zIndex: 1000,
+ display: "flex", alignItems: "flex-start", justifyContent: "center",
+ padding: "60px 20px 40px",
+ overflowY: "auto",
+ animation: "fade-in 140ms ease",
+ }}
+ >
+ <div
+ role="dialog"
+ aria-modal="true"
+ aria-label={title}
+ onClick={(e) => e.stopPropagation()}
+ style={{
+ background: "var(--card, white)",
+ borderRadius: "4px",
+ boxShadow: "0 20px 60px rgba(0, 0, 0, 0.35)",
+ maxWidth: "780px",
+ width: "100%",
+ padding: "26px 30px",
+ position: "relative",
+ }}
+ >
+ <button
+ type="button"
+ onClick={onClose}
+ aria-label="Close"
+ style={{
+ position: "absolute",
+ top: "12px", right: "14px",
+ background: "transparent",
+ border: "none",
+ fontSize: "1.4rem",
+ lineHeight: 1,
+ color: "var(--ink-faint)",
+ cursor: "pointer",
+ padding: "4px 8px",
+ borderRadius: "3px",
+ transition: "color 120ms, background 120ms",
+ }}
+ onMouseEnter={(e) => {
+ e.currentTarget.style.color = "var(--ink)";
+ e.currentTarget.style.background = "var(--paper, #FBF8F2)";
+ }}
+ onMouseLeave={(e) => {
+ e.currentTarget.style.color = "var(--ink-faint)";
+ e.currentTarget.style.background = "transparent";
+ }}
+ >×</button>
+ {eyebrow && (
+ <div style={{
+ fontSize: "0.62rem", textTransform: "uppercase",
+ letterSpacing: "0.16em", fontWeight: 600,
+ color: "var(--accent)",
+ marginBottom: "6px",
+ }}>{eyebrow}</div>
+ )}
+ <h2 className="serif" style={{
+ fontSize: "1.35rem", fontWeight: 400, color: "var(--ink)",
+ margin: "0 0 18px",
+ paddingRight: "30px",
+ lineHeight: 1.25,
+ }}>{title}</h2>
+ <div>{children}</div>
+ </div>
+ </div>
+ );
+}
+
 function PathwaySidebarTOC({ sections, activeIdx, collapsedSections, onToggle, onCollapseAll, onExpandAll }) {
  const [hovered, setHovered] = useState(false);
  // Sidebar should only follow the user while some part of the customized
