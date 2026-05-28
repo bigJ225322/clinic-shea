@@ -28598,17 +28598,26 @@ function Pathways() {
 
  return (
  <div style={{
+ // Full-bleed: break out of the parent container's max-width so the
+ // schematic spans the entire viewport. Combined with overflowX:
+ // auto, the user gets horizontal scroll on narrow viewports without
+ // squashing tiles.
+ position: "relative",
+ width: "100vw",
+ marginLeft: "calc(50% - 50vw)",
+ marginRight: "calc(50% - 50vw)",
  overflowX: "auto",
- marginBottom: "24px",
- padding: "4px 4px 12px",
+ marginBottom: "32px",
+ padding: "4px 28px 14px",
+ boxSizing: "border-box",
  }}>
  <div
  ref={schematicGridRef}
  style={{
  display: "grid",
- gridTemplateColumns: `repeat(${totalCols}, minmax(220px, 1fr))`,
+ gridTemplateColumns: `repeat(${totalCols}, minmax(260px, 1fr))`,
  gridTemplateRows: "auto auto",
- gap: "26px 12px",
+ gap: "32px 14px",
  position: "relative",
  minWidth: "fit-content",
  }}>
