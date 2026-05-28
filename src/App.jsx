@@ -29541,7 +29541,7 @@ const TABS = [
  // per CASES-BUILD-PLAN.md Step 3. After review feedback lands, the
  // workflow is iterate → fan out to siblings (cd-iid, cd-adjustment,
  // cd-reline-lab) → continue with rpd-kennedy3 and ind-conventional-crown.
- { id: "pathways", label: "Cases", hint: "Customized guide for your patient case" },
+ { id: "pathways", label: "Maps", hint: "Visual map of the multi-visit workflow with lab interactions" },
 ];
 
 // Engine names are exported from src/rpd-engine.js directly. Tests import
