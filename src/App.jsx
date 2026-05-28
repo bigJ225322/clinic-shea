@@ -27814,6 +27814,39 @@ function Pathways() {
  document.addEventListener("keydown", onKey);
  return () => document.removeEventListener("keydown", onKey);
  }, [pathwayPopup]);
+ // Schematic tile refs + computed positions for the SVG arrow overlay
+ // (added 2026-05-27). Each tile registers itself in tileRefs on mount;
+ // an effect measures positions relative to the grid container after
+ // layout settles and on window resize. Arrows are drawn between
+ // chronologically-adjacent tiles (V1→L1→V2→L2→...).
+ const schematicGridRef = useRef(null);
+ const schematicTileRefs = useRef(new Map());
+ const [schematicPositions, setSchematicPositions] = useState(null);
+ useEffect(() => {
+ const compute = () => {
+ if (!schematicGridRef.current) return;
+ const gridRect = schematicGridRef.current.getBoundingClientRect();
+ const pos = {};
+ schematicTileRefs.current.forEach((el, key) => {
+ if (!el) return;
+ const r = el.getBoundingClientRect();
+ pos[key] = {
+ x: r.left - gridRect.left,
+ y: r.top - gridRect.top,
+ width: r.width,
+ height: r.height,
+ };
+ });
+ setSchematicPositions(pos);
+ };
+ // setTimeout lets layout settle after the first paint
+ const t = setTimeout(compute, 50);
+ window.addEventListener("resize", compute);
+ return () => {
+ clearTimeout(t);
+ window.removeEventListener("resize", compute);
+ };
+ }, [pathwayId]);
  // Sequence (in-page TOC of phases + numbered steps + interleaved lab
  // bands) is always rendered when a pathway has sections. The previous
  // collapsible "Sequence ▾" header was removed 2026-05-27 — burying the
@@ -28506,8 +28539,12 @@ function Pathways() {
  // visits, the grid has 15 columns (2*N - 1): visits at odd cols,
  // labs at even cols. Trailing visits with no lab between them
  // (V6→V7→V8 here) sit at adjacent odd cols with empty col below.
- // Each tile is a button → opens a popup with full detail.
- // SVG arrows connecting the chronological flow are TBD next pass.
+ // Each tile is a button → opens a popup with full detail. Container
+ // is horizontally scrollable so tiles can be substantially sized
+ // (220px min) without squashing.
+ // Arrows are drawn via an SVG overlay between chronologically
+ // adjacent tiles (V1→L1→V2→L2→...→V8). The overlay's z-index sits
+ // below the tiles so the tiles remain clickable.
  const labSteps = selectedPathway.labSteps || [];
  const totalCols = phases.length * 2 - 1;
  const tileBase = {
@@ -28516,31 +28553,106 @@ function Pathways() {
  display: "flex",
  flexDirection: "column",
  alignItems: "center",
+ justifyContent: "flex-start",
  textAlign: "center",
- borderRadius: "3px",
- padding: "10px 8px",
+ borderRadius: "4px",
+ padding: "18px 14px",
  boxSizing: "border-box",
- minHeight: "92px",
+ minHeight: "140px",
+ position: "relative",
+ zIndex: 1,
  transition: "box-shadow 140ms ease, transform 140ms ease",
  };
  const onTileEnter = (e) => {
- e.currentTarget.style.boxShadow = "0 2px 10px rgba(26, 22, 18, 0.10)";
- e.currentTarget.style.transform = "translateY(-1px)";
+ e.currentTarget.style.boxShadow = "0 4px 14px rgba(26, 22, 18, 0.12)";
+ e.currentTarget.style.transform = "translateY(-2px)";
  };
  const onTileLeave = (e) => {
  e.currentTarget.style.boxShadow = "none";
  e.currentTarget.style.transform = "translateY(0)";
  };
+
+ // Build chronological sequence of tiles for arrow drawing.
+ const sequence = [];
+ for (let i = 0; i < phases.length; i++) {
+ sequence.push({ key: `v-${i}` });
+ const lIdx = labSteps.findIndex(ls => ls.after === i);
+ if (lIdx !== -1) sequence.push({ key: `l-${lIdx}` });
+ }
+ // Compute arrow segments from current positions.
+ const arrows = [];
+ if (schematicPositions) {
+ for (let i = 0; i < sequence.length - 1; i++) {
+ const a = schematicPositions[sequence[i].key];
+ const b = schematicPositions[sequence[i + 1].key];
+ if (!a || !b) continue;
+ // Source = right-middle of from tile. Dest = left-middle of to tile,
+ // offset slightly so the arrowhead doesn't overlap the tile border.
+ const srcX = a.x + a.width;
+ const srcY = a.y + a.height / 2;
+ const dstX = b.x - 2;
+ const dstY = b.y + b.height / 2;
+ arrows.push({ srcX, srcY, dstX, dstY, i });
+ }
+ }
+
  return (
  <div style={{
- display: "grid",
- gridTemplateColumns: `repeat(${totalCols}, minmax(0, 1fr))`,
- gridTemplateRows: "auto auto",
- gap: "16px 6px",
+ overflowX: "auto",
  marginBottom: "24px",
+ padding: "4px 4px 12px",
  }}>
+ <div
+ ref={schematicGridRef}
+ style={{
+ display: "grid",
+ gridTemplateColumns: `repeat(${totalCols}, minmax(220px, 1fr))`,
+ gridTemplateRows: "auto auto",
+ gap: "26px 12px",
+ position: "relative",
+ minWidth: "fit-content",
+ }}>
+ {/* SVG arrow overlay — sits behind tiles (z-index 0 vs tile z-index 1) */}
+ {arrows.length > 0 && (
+ <svg
+ aria-hidden="true"
+ style={{
+ position: "absolute", inset: 0,
+ width: "100%", height: "100%",
+ pointerEvents: "none",
+ zIndex: 0,
+ overflow: "visible",
+ }}
+ >
+ <defs>
+ <marker
+ id="pathway-arrow-head"
+ viewBox="0 0 10 10"
+ refX="9" refY="5"
+ markerWidth="7" markerHeight="7"
+ orient="auto"
+ >
+ <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink-soft)" />
+ </marker>
+ </defs>
+ {arrows.map((a) => (
+ <line
+ key={a.i}
+ x1={a.srcX} y1={a.srcY}
+ x2={a.dstX} y2={a.dstY}
+ stroke="var(--ink-soft)"
+ strokeWidth="1.5"
+ markerEnd="url(#pathway-arrow-head)"
+ />
+ ))}
+ </svg>
+ )}
  {phases.map((phase, pi) => (
  <button key={`v-${pi}`} type="button"
+ ref={(el) => {
+ if (el) schematicTileRefs.current.set(`v-${pi}`, el);
+ else schematicTileRefs.current.delete(`v-${pi}`);
+ }}
  onClick={() => setPathwayPopup({ kind: "visit", phaseIndex: pi })}
  onMouseEnter={onTileEnter}
  onMouseLeave={onTileLeave}
@@ -28550,27 +28662,29 @@ function Pathways() {
  gridRow: 1,
  background: "var(--card, white)",
  border: "1px solid var(--rule-soft, var(--rule))",
- borderTop: "3px solid var(--ink)",
+ borderTop: "4px solid var(--ink)",
  }}
  >
  <div style={{
- fontSize: "0.5rem", textTransform: "uppercase",
- letterSpacing: "0.12em", color: "var(--ink-faint)",
- fontWeight: 700, marginBottom: "6px",
+ fontSize: "0.62rem", textTransform: "uppercase",
+ letterSpacing: "0.16em", color: "var(--ink-faint)",
+ fontWeight: 700, marginBottom: "10px",
  }}>Visit {pi + 1}</div>
  <div style={{
- fontSize: "0.72rem", fontWeight: 500,
- color: "var(--ink)", lineHeight: 1.3,
+ fontSize: "0.95rem", fontWeight: 500,
+ color: "var(--ink)", lineHeight: 1.35,
  }}>{phase.label}</div>
  </button>
  ))}
  {labSteps.map((ls, lsi) => {
- // ls.after is the phase index after which this lab happens
- // (0-indexed). The lab tile sits in col 2*after + 2, row 2.
  const col = 2 * ls.after + 2;
  if (col < 1 || col > totalCols) return null;
  return (
  <button key={`l-${lsi}`} type="button"
+ ref={(el) => {
+ if (el) schematicTileRefs.current.set(`l-${lsi}`, el);
+ else schematicTileRefs.current.delete(`l-${lsi}`);
+ }}
  onClick={() => setPathwayPopup({ kind: "lab", index: lsi })}
  onMouseEnter={onTileEnter}
  onMouseLeave={onTileLeave}
@@ -28580,21 +28694,22 @@ function Pathways() {
  gridRow: 2,
  background: "var(--paper, #FBF8F2)",
  border: "1px solid var(--rule-soft, var(--rule))",
- borderTop: "3px solid var(--accent)",
+ borderTop: "4px solid var(--accent)",
  }}
  >
  <div style={{
- fontSize: "0.5rem", textTransform: "uppercase",
- letterSpacing: "0.12em", color: "var(--accent)",
- fontWeight: 700, marginBottom: "6px",
+ fontSize: "0.62rem", textTransform: "uppercase",
+ letterSpacing: "0.16em", color: "var(--accent)",
+ fontWeight: 700, marginBottom: "10px",
  }}>Lab</div>
  <div style={{
- fontSize: "0.72rem", fontWeight: 500,
- color: "var(--ink)", lineHeight: 1.3,
+ fontSize: "0.95rem", fontWeight: 500,
+ color: "var(--ink)", lineHeight: 1.35,
  }}>{ls.title}</div>
  </button>
  );
  })}
+ </div>
  </div>
  );
  })()}
