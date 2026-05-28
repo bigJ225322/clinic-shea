@@ -23492,7 +23492,7 @@ const PATHWAYS = [
  { label: "Wax-rim try-in + JRR + facebow + tooth selection", count: 4 },
  { label: "Anterior teeth try-in", count: 1 },
  { label: "Posterior teeth try-in", count: 1 },
- { label: "Delivery", count: 2 },
+ { label: "Delivery", count: 2, centralLab: "receive" },
  {
  label: "24-hour follow-up",
  count: 1,
@@ -23539,6 +23539,7 @@ const PATHWAYS = [
  },
  {
  after: 4,
+ centralLab: "send",
  title: "Final wax contouring + processing + lab remount",
  body: "Festoon the polished surfaces, then invest, flask, process, and recover on the master casts. Before removing them, do the lab remount to correct any occlusal drift from processing back to incisal pin = 0.",
  detail: "After patient sign-off at Visit 5, festoon the polished surfaces of the dentures. Expose the teeth to the CEJ on the facial. Build maxillary and mandibular cuspid eminences for lip and corner-of-mouth support. Carve gingival zeniths slightly distal to each tooth's midline (the lateral incisor is the exception — its zenith stays central). Keep interdental papillae flat or slightly concave; anything bulky impacts food and irritates tissue. Leave a lingual concavity in the mandibular where the tongue will rest. Stipple the facial surfaces with a toothbrush for natural light reflection.\n\nInvest the dentures in a flask, process the acrylic (UIC uses SR Ivocap or pack-and-press), then deflask and recover the dentures on the original master casts.\n\nBefore removing the dentures from the master-cast mountings, perform the laboratory remount on the articulator. Processing always introduces some occlusal drift — the goal is to selectively grind back to incisal pin = 0, restoring centric and bilateral-balanced occlusion. While the dentures are still mounted, fabricate the face-bow remount jig (a small plaster block on the maxillary mounting) so the maxillary spatial relationship can be re-established at delivery for the clinical remount.\n\nRemove the dentures from the master casts, then finish and polish the external surfaces only. The intaglio (tissue-bearing surface) stays untouched — every detail of the records phase lives in that surface; touching it now means losing fit.",
@@ -28828,6 +28829,52 @@ function Pathways() {
  }
  arrows.push({ srcX, srcY, dstX, dstY, id: `arrow-${i}` });
  }
+ // Central Lab interactions. For each tile carrying `centralLab:
+ // "send" | "receive"`, draw a dashed arrow between the tile and the
+ // Central Lab strip. Send = tile.bottom → CL.top. Receive = CL.top
+ // → tile.bottom. (For visits in row 1, the receive arrow passes
+ // through the empty row-2 slot below the visit — for cd-conventional
+ // V6/V7/V8 there's no lab below them, so this works cleanly.)
+ const cl = schematicPositions["central-lab"];
+ const CL_OFFSET = 8;
+ if (cl) {
+ phases.forEach((phase, pi) => {
+ const t = schematicPositions[`v-${pi}`];
+ if (!t || !phase.centralLab) return;
+ const cx = t.x + t.width / 2;
+ if (phase.centralLab === "send") {
+ arrows.push({
+ srcX: cx, srcY: t.y + t.height,
+ dstX: cx, dstY: cl.y - CL_OFFSET,
+ dashed: true, id: `cl-send-v-${pi}`,
+ });
+ } else if (phase.centralLab === "receive") {
+ arrows.push({
+ srcX: cx, srcY: cl.y,
+ dstX: cx, dstY: t.y + t.height + CL_OFFSET,
+ dashed: true, id: `cl-recv-v-${pi}`,
+ });
+ }
+ });
+ labSteps.forEach((ls, lsi) => {
+ const t = schematicPositions[`l-${lsi}`];
+ if (!t || !ls.centralLab) return;
+ const cx = t.x + t.width / 2;
+ if (ls.centralLab === "send") {
+ arrows.push({
+ srcX: cx, srcY: t.y + t.height,
+ dstX: cx, dstY: cl.y - CL_OFFSET,
+ dashed: true, id: `cl-send-l-${lsi}`,
+ });
+ } else if (ls.centralLab === "receive") {
+ arrows.push({
+ srcX: cx, srcY: cl.y,
+ dstX: cx, dstY: t.y + t.height + CL_OFFSET,
+ dashed: true, id: `cl-recv-l-${lsi}`,
+ });
+ }
+ });
+ }
  }
 
  return (
@@ -28847,7 +28894,7 @@ function Pathways() {
  style={{
  display: "grid",
  gridTemplateColumns: `repeat(${totalCols}, minmax(160px, 1fr))`,
- gridTemplateRows: "auto auto",
+ gridTemplateRows: "auto auto auto",
  gap: "44px 10px",
  position: "relative",
  minWidth: "fit-content",
@@ -28875,6 +28922,7 @@ function Pathways() {
  x1={a.srcX} y1={a.srcY}
  x2={a.dstX} y2={a.dstY}
  stroke="var(--ink-soft)" strokeWidth="1.5"
+ strokeDasharray={a.dashed ? "5 4" : undefined}
  markerEnd="url(#pathway-arrow-head)"
  />
  ))}
@@ -28957,6 +29005,37 @@ function Pathways() {
  </button>
  );
  })}
+ {/* Central Lab strip (row 3) — represents the external lab that
+ handles things like denture processing. Arrows go from the
+ schematic tiles down to this strip when something is sent out,
+ and back up when something comes in. Non-clickable; just a
+ visual anchor for the send/receive arrows. */}
+ <div
+ ref={(el) => {
+ if (el) schematicTileRefs.current.set("central-lab", el);
+ else schematicTileRefs.current.delete("central-lab");
+ }}
+ style={{
+ gridColumn: "1 / -1",
+ gridRow: 3,
+ display: "flex",
+ alignItems: "center",
+ justifyContent: "center",
+ padding: "14px 18px",
+ minHeight: "62px",
+ background: "var(--ink)",
+ borderRadius: "4px",
+ color: "var(--paper, #FBF8F2)",
+ fontSize: "0.78rem",
+ textTransform: "uppercase",
+ letterSpacing: "0.18em",
+ fontWeight: 700,
+ position: "relative",
+ zIndex: 1,
+ }}
+ >
+ Central Lab
+ </div>
  </div>
  </div>
  );
