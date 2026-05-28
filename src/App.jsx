@@ -28881,7 +28881,11 @@ function Pathways() {
  </svg>
  )}
  {/* Visit row (top track) — V_i spans cols (2i-1, 2i) */}
- {phases.map((phase, pi) => (
+ {phases.map((phase, pi) => {
+ const isSourceTile = pathwayPopup &&
+ pathwayPopup.kind === "visit" &&
+ pathwayPopup.phaseIndex === pi;
+ return (
  <button key={`v-${pi}`} type="button"
  ref={(el) => {
  if (el) schematicTileRefs.current.set(`v-${pi}`, el);
@@ -28897,6 +28901,7 @@ function Pathways() {
  background: "var(--card, white)",
  border: "1px solid var(--rule-soft, var(--rule))",
  borderTop: "4px solid var(--ink)",
+ visibility: isSourceTile ? "hidden" : "visible",
  }}
  >
  <div style={{
@@ -28909,11 +28914,15 @@ function Pathways() {
  color: "var(--ink)", lineHeight: 1.35,
  }}>{phase.label}</div>
  </button>
- ))}
+ );
+ })}
  {/* Lab row (bottom track) — L_i (after phase i) spans cols (2i+2, 2i+3) */}
  {labSteps.map((ls, lsi) => {
  const col = 2 * ls.after + 2;
  if (col < 1 || col + 1 > totalCols + 1) return null;
+ const isSourceTile = pathwayPopup &&
+ pathwayPopup.kind === "lab" &&
+ pathwayPopup.index === lsi;
  return (
  <button key={`l-${lsi}`} type="button"
  ref={(el) => {
@@ -28931,6 +28940,7 @@ function Pathways() {
  border: "1px solid var(--accent)",
  borderTop: "4px solid var(--ink)",
  color: "var(--paper, #FBF8F2)",
+ visibility: isSourceTile ? "hidden" : "visible",
  }}
  >
  <div style={{
