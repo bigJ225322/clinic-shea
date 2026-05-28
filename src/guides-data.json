@@ -539,7 +539,7 @@
          "**Bite fork** matched to the face-bow.",
          "**Hanau torch** + flame source — for softening wax rim surface.",
          "**Sticky wax** as backup adhesion between fork and rim.",
-         "**Maxillary record base + wax rim** (contoured at JRR visit).",
+         "**Maxillary record base + wax rim** (contoured at the jaw-relation visit).",
          "Mirror, marker (43 mm reference), ruler."
         ]
        },
@@ -710,7 +710,7 @@
        {
         "kind": "numbered",
         "items": [
-         "With maxillary mounted, place the mandibular record base + wax rim in occlusion with the maxillary, indexed via the V-points + 2 mm groove (the CR record from JRR visit).",
+         "With maxillary mounted, place the mandibular record base + wax rim in occlusion with the maxillary, indexed via the V-points + 2 mm groove (the CR record from the jaw-relation visit).",
          "Verify: maxillary V-points seat cleanly into mandibular groove. No rocking.",
          "**Flip the articulator** (or use a counter-balance / stabilization frame) so the mandibular plate faces up.",
          "Apply mounting stone to underside of lower mounting plate + top of mandibular cast.",
@@ -726,7 +726,7 @@
        {
         "kind": "numbered",
         "items": [
-         "With centric latch engaged: maxillary + mandibular wax rims should occlude exactly as they did in the patient at JRR visit.",
+         "With centric latch engaged: maxillary + mandibular wax rims should occlude exactly as they did in the patient at the jaw-relation visit.",
          "Incisal pin should rest on the incisal table at 0.",
          "Loosen centric latch and articulate through excursions — should be smooth, no binding.",
          "Cross-check against any face-bow remount jig (if one was made later)."
@@ -749,44 +749,9 @@
         "text": "Vertical Dimension of Occlusion is the inter-arch height when the teeth are in maximum intercuspation. For the edentulous patient, no MI exists — VDO must be reconstructed from non-occlusal cues. Standard teaching: **VDO = VDR − 2–3 mm**. Use multiple methods and cross-check."
        },
        {
-        "kind": "section",
-        "text": "Method 1 — Physiologic rest position (VDR)"
-       },
-       {
-        "kind": "paragraph",
-        "text": "Patient sits upright, eyes forward, relaxed. Measure the inter-pupillary distance between two reference marks (one on the nose, one on the chin) with a Boley gauge. **Subtract 2–3 mm to get VDO.** The freeway space (interocclusal rest space) is normally 2–4 mm."
-       },
-       {
-        "kind": "section",
-        "text": "Method 2 — Phonetics: the 60–70 count"
-       },
-       {
-        "kind": "paragraph",
-        "text": "Patient counts from 60 to 70. The teeth (or wax rims) should **not touch**. This is the closest speaking space, normally ~1 mm. If they touch, VDO is too high — reduce."
-       },
-       {
-        "kind": "section",
-        "text": "Method 3 — Esthetics"
-       },
-       {
-        "kind": "paragraph",
-        "text": "Nasolabial angle 90–95° in men, 100–105° in women. Lip support natural; philtrum visible; no overstretched or collapsed appearance. Lip vermilion plump but not everted."
-       },
-       {
-        "kind": "section",
-        "text": "Method 4 — Patient perception"
-       },
-       {
-        "kind": "paragraph",
-        "text": "Ask: does this feel natural? Comfortable? Too tight? Too open? The patient's proprioception is often surprisingly accurate, especially if they wore a previous denture they were comfortable with. Use as a sanity check."
-       },
-       {
-        "kind": "section",
-        "text": "Method 5 — Previous denture comparison"
-       },
-       {
-        "kind": "paragraph",
-        "text": "If the patient had a previous denture they liked, measure its VDO with a Boley gauge and use as a reference. **Caveat:** if their previous denture was wrong (collapsed VDO from years of wear), repeating that error doesn't help. Cross-check against the other four methods."
+        "kind": "dropdown",
+        "title": "Five methods (expand)",
+        "body": "**Method 1 — Physiologic rest position (VDR).** Patient sits upright, eyes forward, relaxed. Measure the inter-pupillary distance between two reference marks (one on the nose, one on the chin) with a Boley gauge. **Subtract 2–3 mm to get VDO.** Freeway space (interocclusal rest space) is normally 2–4 mm.\n\n**Method 2 — Phonetics: the 60–70 count.** Patient counts from 60 to 70. The teeth (or wax rims) should **not touch** — this is the closest speaking space, normally ~1 mm. If they touch, VDO is too high; reduce.\n\n**Method 3 — Esthetics.** Nasolabial angle 90–95° in men, 100–105° in women. Lip support natural; philtrum visible; no overstretched or collapsed appearance. Lip vermilion plump but not everted.\n\n**Method 4 — Patient perception.** Ask: does this feel natural? Comfortable? Too tight? Too open? The patient's proprioception is often surprisingly accurate, especially if they wore a previous denture they liked. Use as a sanity check.\n\n**Method 5 — Previous denture comparison.** If the patient had a previous denture they liked, measure its VDO with a Boley gauge as a reference. **Caveat:** if their previous denture was wrong (collapsed VDO from years of wear), repeating that error doesn't help. Cross-check against the other four methods."
        },
        {
         "kind": "callout",

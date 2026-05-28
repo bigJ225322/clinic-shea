@@ -23489,19 +23489,19 @@ const PATHWAYS = [
  phases: [
  { label: "Comp. exam + diagnostic impressions", count: 1 },
  { label: "Border molding + final impression", count: 2 },
- { label: "Wax-rim try-in + JRR + facebow + tooth selection", count: 4 },
+ { label: "Wax-rim try-in + jaw relation record + facebow + tooth selection", count: 4, widget: "mouldSelector" },
  { label: "Anterior teeth try-in", count: 1 },
  { label: "Posterior teeth try-in", count: 1 },
- { label: "Delivery", count: 2, centralLab: "receive" },
+ { label: "Delivery", count: 2 },
  {
  label: "24-hour follow-up",
  count: 1,
- detail: "The patient comes back having worn the new dentures continuously since insertion (standard UIC instruction for the first 24 hours: do not remove). The workflow is interview, then palpate, then mark sore spots, then adjust.\n\nStart by asking specifically about pain, sore spots, food trapping, and speech issues — patients often answer \"fine\" to a generic \"how are you,\" so be direct. Then palpate both ridges and the denture borders firmly with your index finger; sore spots exist in places patients cannot articulate, especially on the lingual flange or distal tuberosity.\n\nUse the Thompson stick to transfer sore spots from tissue to denture: wet the stick (it stings on irritated tissue, be gentle), mark the spot intraorally, retract the cheek so ink doesn't transfer to adjacent mucosa, insert the denture for 5 seconds, remove. The ink mark transfers to the denture intaglio — reduce that exact spot with a lab bur.\n\nFor general pressure points, use PIP paste: dry the denture (PIP won't stick to a wet intaglio), brush a thin layer in one direction so show-through is easy to read, optional Mizzy spray on the patient's ridge to prevent PIP sticking to tissue, insert with LIGHT hand pressure only — do NOT have the patient bite. Leave 5 sec, remove, leave PIP ON the denture (do not clean yet), reduce show-through with lab burs, re-apply, repeat until ideal.\n\nDisclosing wax for borders: thin ropes on the denture borders, insert with border-molding movements, remove, reduce show-through. Posterior palatal seal extension: Thompson-stick from the intraoral vibrating-line mark, reduce overextension with a bur, feather toward the back. Pull cheeks while the patient lifts the tongue — the denture should NOT move; run a finger along the border to detect overextension.\n\nOcclusion check at 24 hours: do NOT adjust aggressively. The patient is still adapting and the intaglio adjustments will change occlusion as the denture seats more fully. Mark with horseshoe articulating paper, reduce high spots gently, re-evaluate. Goal: even bilateral posterior contact in centric.\n\nPolish OUTSIDE only — never the intaglio (every detail of the records phase lives in that surface). Counsel: \"sore spots will still feel tender a few days even after adjustment — that's normal healing, not a failed adjustment.\" Schedule the 1-week follow-up before the patient leaves.",
+ detail: "Workflow: interview → palpate → mark sore spots → adjust → light occlusal check.\n\nPatients say \"fine\" to generic questions — ask specifically about pain, food trapping, speech. Palpate both ridges and denture borders firmly; sore spots hide on lingual flanges and distal tuberosities.\n\n**Thompson stick** transfers a sore spot from tissue to denture: mark intraorally, insert 5 sec, reduce the inked spot with a lab bur. **PIP paste** finds general pressure points: dry intaglio, thin layer brushed one direction, light pressure (no biting), 5 sec, reduce show-through, repeat. **Disclosing wax** does the same job for the borders.\n\nOcclusion at 24 hrs is light-touch — the intaglio is still seating. Horseshoe articulating paper, gentle reduction, aim for even bilateral posterior contact. Polish OUTSIDE only. Counsel that tenderness for a few days is normal healing.",
  },
  {
  label: "1-week follow-up",
  count: 1,
- detail: "At the 1-week visit the patient should be wearing the dentures most of the day with increasing comfort. Complaints evolve from the diffuse acute soreness of 24 hours to more specific issues: a single persistent sore spot, food trapping under a flange, speech difficulty with certain sounds, or a sense that the denture moves when chewing.\n\nUse the same interview + palpate + Thompson + PIP + disclosing wax workflow as the 24-hour visit. Two changes in emphasis:\n\nOcclusion adjustment can be more aggressive now. The patient has had time to seat the dentures fully and adapt to the prosthesis; remaining occlusal interferences are stable and can be marked and reduced confidently. Mark in centric and excursions with horseshoe articulating paper, reduce posterior heavy contacts first, refine to even bilateral contact.\n\nAssess denture stability. If the denture rocks or unseats during function despite border and intaglio adjustments, consider a chairside tissue conditioner (Coe Comfort) as a temporary cushion, or plan a hard reline at 3-4 months after delivery — the standard UIC interval. Earlier reline indicates a problem with the impression or processing fit, not a normal maintenance event.\n\nReinforce home care: brush the dentures externally daily with a denture brush and mild soap (not toothpaste — too abrasive), leave them OUT overnight in water or denture cleanser to rest the tissues, return at 4 weeks unless symptoms recur sooner.\n\nFinal counsel: dentures function at roughly 30% of natural dentition efficiency. Set the expectation that some functional limitations (hard foods, sticky foods) are permanent realities of the prosthesis, not failures of fit. There is no such thing as a perfect denture — there is only a denture you adapt to.",
+ detail: "Same workflow as 24 hours, with two shifts:\n\n**Occlusion can be adjusted aggressively now.** The intaglio has seated; remaining interferences are stable. Mark in centric and excursions, reduce posterior heavy contacts first, refine to even bilateral contact.\n\n**Stability check.** If the denture rocks despite border + intaglio adjustments, consider a chairside tissue conditioner (Coe Comfort) or plan a hard reline at 3-4 months (the UIC standard). Earlier reline points to a fit problem, not maintenance.\n\nHome care: brush daily with mild soap (not toothpaste), leave OUT overnight in water. Set the expectation that dentures function at ~30% of natural dentition — some hard-food limits are permanent.",
  },
  ],
  labSteps: [
@@ -23517,7 +23517,7 @@ const PATHWAYS = [
  after: 1,
  title: "Box + pour master casts; scribe PPS; fabricate record bases + wax rims",
  body: "Box the PVS final impression, pour the master casts in Type III microstone, scribe the posterior palatal seal on the maxillary cast, and fabricate light-cured record bases topped with wax rims at UIC dimensions (22 mm maxillary, 18 mm mandibular anterior heights).",
- detail: "Box the PVS final impression by first mixing a pumice-plaster putty (equal parts, thick), then setting the impression into the putty so it extends 3 mm lateral to the impression border and leaves 2 mm of border exposed above the putty. Wrap a boxing-wax wall around the outside, extending 16-18 mm above the highest point of the impression (the finished base will be 15-20 mm thick). Seal the boxing wax to the land area with a heated #7 spatula and water-test the seal before pouring.\n\nPour Type III microstone under vacuum to form the master cast. On the maxillary master cast, mark the posterior palatal seal in red pencil at the vibrating line (transferred via the final impression from your Visit-2 Thompson-stick mark). Scribe the posterior border with a #8 round bur to 1-1.5 mm depth, then feather the carving forward with a #7 spatula to the anterior border at the junction of the hard and soft palate.\n\nBlock out major undercuts on both casts and apply separator, then light-cure one sheet of Triad over each cast (400-500 nm, about 10 minutes) to form the record base — 2 mm uniform thickness, smooth borders, no voids, landmarks (incisive papilla, retromolar pads, residual ridge) visible through the base.\n\nBuild the wax rims atop the record bases to UIC dimensions: maxillary 22 mm anterior height, positioned 8-10 mm labial to the incisive papilla, terminating 2-3 mm anterior to the maxillary tuberosity. Mandibular 18 mm anterior height, not exceeding two-thirds of the retromolar pad. Both rims 3-4 mm wide anteriorly, 4-6 mm wide posteriorly. Keep the occlusal surface completely flat — the clinical try-in at Visit 3 uses it as the reference plane.",
+ detail: "1. Mix a pumice-plaster putty (equal parts, thick). Set the PVS impression into the putty so it extends 3 mm lateral to the impression border with 2 mm of border exposed above the putty.\n\n2. Wrap a boxing-wax wall around the outside, extending 16-18 mm above the highest point of the impression. The finished base will be 15-20 mm thick.\n\n3. Seal the boxing wax to the land area with a heated #7 spatula. Water-test the seal before pouring.\n\n4. Pour Type III microstone under vacuum to form the master cast.\n\n5. On the maxillary master cast, mark the posterior palatal seal in red pencil at the vibrating line — transferred via the final impression from the Visit-2 Thompson-stick mark.\n\n6. Scribe the posterior border with a #8 round bur to 1-1.5 mm depth.\n\n7. Feather the carving forward with a #7 spatula to the anterior border at the junction of hard and soft palate.\n\n8. Block out major undercuts on both casts and apply separator.\n\n9. Light-cure one sheet of Triad over each cast (400-500 nm, ~10 minutes) to form the record base. Target: 2 mm uniform thickness, smooth borders, no voids, landmarks (incisive papilla, retromolar pads, residual ridge) visible through the base.\n\n10. Build wax rims atop the bases to UIC dimensions. Maxillary: 22 mm anterior height, 8-10 mm labial to the incisive papilla, terminating 2-3 mm anterior to the maxillary tuberosity.\n\n11. Mandibular wax rim: 18 mm anterior height, not exceeding two-thirds of the retromolar pad height.\n\n12. Both rims: 3-4 mm wide anteriorly, 4-6 mm wide posteriorly. Keep the occlusal surface completely flat — the Visit 3 clinical try-in uses it as the reference plane.",
  source: "Custom tray_Boxing_Technique.pdf (Tan, boxing portion); Vibrating line and PPS; Anatomy of edentulous oral cavity + PPS (Obrez); Record Base & Wax Rim Reminders; Record Bases Grading Sheet 2022",
  turnaround: "Before Visit 3",
  },
@@ -23525,7 +23525,7 @@ const PATHWAYS = [
  after: 2,
  title: "Mount master casts on Mark 320; set anterior teeth",
  body: "Mount the casts on the Mark 320 (maxillary by face-bow, mandibular via the CR record; 30° condylar, 15° Bennett, pin at zero), then set the anterior teeth one wax window at a time — never strip the whole rim, you lose every reference.",
- detail: "Mount the maxillary master cast on the Denar Mark 320 articulator using the face-bow record from Visit 3 — this transfers the spatial relationship of the maxillary arch to the articulator's hinge axis. Then mount the mandibular master cast against the maxillary using the centric-relation record taken at the same visit. Set the condylar inclination to 30°, the Bennett angle to 15° (fixed), and replace the black incisal table with the white one. These are UIC's standard articulator settings for CD setup.\n\nSelect the Trubyte Classic anterior teeth per the mould (e.g., 2N) and shade (e.g., 66C) the patient agreed to at Visit 3. The card carries 6 teeth — one card per arch.\n\nSet the anterior teeth by melting a wax window at one tooth's position at a time. Do NOT strip the whole rim — you lose every reference for the next tooth's position. If a tooth's bucco-lingual space is tight, trim the base of the tooth first; if it still doesn't fit, trim the lingual of the tooth itself. Place three teeth on one side (e.g., #6, #7, #8), then move to the contralateral. Before sealing each tooth in with a small amount of baseplate wax via a #7 spatula, verify the midline, the 1-2 mm vertical and horizontal anterior overlap (incisors should NOT contact in MI), and the smile-line position.",
+ detail: "1. Mount the maxillary master cast on the Denar Mark 320 articulator using the face-bow record from Visit 3. Transfers the spatial relationship of the maxillary arch to the articulator's hinge axis.\n\n2. Mount the mandibular master cast against the maxillary using the centric-relation record from Visit 3.\n\n3. Set condylar inclination to 30°. Bennett angle to 15° (fixed). Replace the black incisal table with the white one. UIC's standard articulator settings for CD setup.\n\n4. Select the Trubyte Classic anterior teeth per the mould (e.g., 2N) and shade (e.g., 66C) the patient agreed to at Visit 3. Each card carries 6 teeth — one card per arch.\n\n5. Melt a wax window at one tooth's position at a time. Do NOT strip the whole rim — you lose every reference for the next tooth's position.\n\n6. If a tooth's bucco-lingual space is tight, trim the base of the tooth first; if it still doesn't fit, trim the lingual of the tooth itself.\n\n7. Place three teeth on one side (e.g., #6, #7, #8), then move to the contralateral side.\n\n8. Before sealing each tooth in with a small amount of baseplate wax via a #7 spatula, verify: midline, 1-2 mm vertical and horizontal anterior overlap (incisors should NOT contact in MI), smile-line position.",
  source: "Articulator+Facebow.pdf (Tan); Jaw Relation Records (Mohammad); Anterior teeth set up-Technique.pdf (Tan)",
  turnaround: "Before Visit 4",
  },
@@ -23533,19 +23533,28 @@ const PATHWAYS = [
  after: 3,
  title: "Set posterior teeth (monoplane with acrylic balancing ramps)",
  body: "Set 0° monoplane posteriors on a flat plane through two-thirds of the retromolar pad, with acrylic balancing ramps for UIC's bilateral balanced articulation.",
- detail: "Set 0° monoplane posterior teeth (non-anatomic, flat occlusal surfaces) on a flat plane that runs through two-thirds of the retromolar pad height — that is UIC's reference for the occlusal plane on the mandibular cast. The central grooves of all the mandibular posteriors should align in a single straight line.\n\nPosition each mandibular posterior over the center of the residual ridge — not buccal, not lingual — directly over the ridge crest. The horizontal overlap of the maxillary over the mandibular is about one-third of the tooth, far less than natural occlusion. This positioning resists tipping forces under function.\n\nBuild acrylic balancing ramps so the dentures contact bilaterally in eccentric movements: on lateral excursion, the working-side ramp plus the anterior teeth carry contact; on protrusion, both central incisors contact the lower anteriors AND both posterior ramps contact. That is UIC's bilateral balanced articulation — the alternative to anterior-guidance which only works with PDL feedback. The intent is to keep the denture bases from tipping when the patient excurses.\n\nVerify the incisal pin remains at zero throughout setup. If it drifts up, the VDO recorded at Visit 3 has been lost and the error propagates through every downstream step.",
+ detail: "1. Set 0° monoplane posterior teeth (non-anatomic, flat occlusal surfaces) on a flat plane that runs through two-thirds of the retromolar pad height — UIC's reference for the occlusal plane on the mandibular cast.\n\n2. Align the central grooves of all the mandibular posteriors in a single straight line.\n\n3. Position each mandibular posterior over the center of the residual ridge — not buccal, not lingual — directly over the ridge crest. Resists tipping forces under function.\n\n4. Set the horizontal overlap of the maxillary over the mandibular at about one-third of the tooth, far less than natural occlusion.\n\n5. Build acrylic balancing ramps so the dentures contact bilaterally in eccentric movements.\n\n6. On lateral excursion: working-side ramp + anterior teeth carry contact. On protrusion: both central incisors contact the lower anteriors AND both posterior ramps contact. UIC's bilateral balanced articulation — the alternative to anterior-guidance, which only works with PDL feedback. Keeps the denture bases from tipping when the patient excurses.\n\n7. Verify the incisal pin remains at zero throughout setup. If it drifts up, the VDO recorded at Visit 3 has been lost and the error propagates through every downstream step.",
  source: "Monoplane Set up Grading 2024; Denture occlusion + Hanau's quint (Obrez)",
  turnaround: "Before Visit 5",
  },
  {
  after: 4,
- centralLab: "send",
  title: "Final wax contouring + processing + lab remount",
  body: "Festoon the polished surfaces, then invest, flask, process, and recover on the master casts. Before removing them, do the lab remount to correct any occlusal drift from processing back to incisal pin = 0.",
- detail: "After patient sign-off at Visit 5, festoon the polished surfaces of the dentures. Expose the teeth to the CEJ on the facial. Build maxillary and mandibular cuspid eminences for lip and corner-of-mouth support. Carve gingival zeniths slightly distal to each tooth's midline (the lateral incisor is the exception — its zenith stays central). Keep interdental papillae flat or slightly concave; anything bulky impacts food and irritates tissue. Leave a lingual concavity in the mandibular where the tongue will rest. Stipple the facial surfaces with a toothbrush for natural light reflection.\n\nInvest the dentures in a flask, process the acrylic (UIC uses SR Ivocap or pack-and-press), then deflask and recover the dentures on the original master casts.\n\nBefore removing the dentures from the master-cast mountings, perform the laboratory remount on the articulator. Processing always introduces some occlusal drift — the goal is to selectively grind back to incisal pin = 0, restoring centric and bilateral-balanced occlusion. While the dentures are still mounted, fabricate the face-bow remount jig (a small plaster block on the maxillary mounting) so the maxillary spatial relationship can be re-established at delivery for the clinical remount.\n\nRemove the dentures from the master casts, then finish and polish the external surfaces only. The intaglio (tissue-bearing surface) stays untouched — every detail of the records phase lives in that surface; touching it now means losing fit.",
+ detail: "1. After patient sign-off at Visit 5, festoon the polished surfaces of the dentures.\n\n2. Expose the teeth to the CEJ on the facial.\n\n3. Build maxillary and mandibular cuspid eminences for lip and corner-of-mouth support.\n\n4. Carve gingival zeniths slightly distal to each tooth's midline. The lateral incisor is the exception — its zenith stays central.\n\n5. Keep interdental papillae flat or slightly concave. Anything bulky impacts food and irritates tissue.\n\n6. Leave a lingual concavity in the mandibular where the tongue will rest.\n\n7. Stipple the facial surfaces with a toothbrush for natural light reflection.\n\n8. Invest the dentures in a flask. Process the acrylic (UIC uses SR Ivocap or pack-and-press).\n\n9. Deflask and recover the dentures on the original master casts.\n\n10. Before removing the dentures from the master-cast mountings, perform the laboratory remount on the articulator. Processing always introduces some occlusal drift — selectively grind back to incisal pin = 0, restoring centric and bilateral-balanced occlusion.\n\n11. While the dentures are still mounted, fabricate the face-bow remount jig (a small plaster block on the maxillary mounting) so the maxillary spatial relationship can be re-established at delivery for the clinical remount.\n\n12. Remove the dentures from the master casts, then finish and polish the external surfaces only. The intaglio (tissue-bearing surface) stays untouched — every detail of the records phase lives in that surface; touching it now means losing fit.",
  source: "24_Final_wax_contouring_UIC.pdf; Processing+Festooning.pdf; Complete Denture Delivery and follow-up (Gheisarifar) — lab remount section",
  turnaround: "Before Visit 6",
  },
+ ],
+ // Maintenance / repair tracks that branch off the CD lifecycle. Not part
+ // of fabrication — these are the things you do AFTER delivery when
+ // ridge resorption, breakage, or a new complaint brings the patient
+ // back. The schematic shows them tethered to V8 (1-week follow-up) by
+ // a long dashed arrow to make the "downstream-only" relationship visible.
+ branches: [
+ { id: "reline", label: "Reline / rebase / repair", chapterId: "cd-ch20" },
+ { id: "loose", label: "Loose denture differential", chapterId: "cd-ch22" },
+ { id: "complaints", label: "Post-delivery complaints", chapterId: "cd-ch23" },
  ],
  sections: [
  // Visit 1 — Diagnosis + TP + diagnostic impressions
@@ -28596,54 +28605,11 @@ function Pathways() {
  {/* Customized guide */}
  {selectedPathway && (
  <>
- {/* Header — pathway title + clinical-orientation overview +
- scenario-specific key decisions. Overview gives orientation;
- keyDecisions surface the 3–5 things faculty will check at
- checkpoint that the generic procedural chapters miss. */}
- <div style={{
- background: "var(--card, white)",
- border: "1px solid var(--rule)",
- padding: "12px 18px", borderRadius: "3px",
- marginBottom: "14px",
- }}>
- <h2 className="serif" style={{
- fontSize: "1.15rem", fontWeight: 400, color: "var(--ink)",
- margin: "0 0 4px",
- }}>{selectedPathway.label}</h2>
- {/* Phase badge dropped 2026-05-27 per user feedback — most Cases-tab
- procedures will be Phase III anyway (since Phase I is mostly
- single-appointment items that don't benefit from multi-visit
- sequencing). The `phase` field stays in pathway data for potential
- future filtering, just not surfaced in the card header. */}
- {selectedPathway.category && (
- <div style={{
- display: "flex", gap: "6px", marginBottom: "6px",
- fontSize: "0.6rem", textTransform: "uppercase",
- letterSpacing: "0.14em", fontWeight: 600, flexWrap: "wrap",
- }}>
- <span style={{
- background: "var(--card, white)",
- border: "1px solid var(--accent)",
- color: "var(--accent)",
- padding: "1px 7px", borderRadius: "2px",
- }}>{CATEGORY_LABELS[selectedPathway.category] || selectedPathway.category}</span>
- </div>
- )}
- <p style={{
- margin: "0", fontStyle: "italic", color: "var(--ink-soft)",
- lineHeight: 1.45, fontSize: "0.78rem",
- }}>{selectedPathway.description}</p>
- {/* keyDecisions section removed 2026-05-27. Lab Rx top-level callout
- removed 2026-05-27 — showing the lab Rx upfront before the student
- sees the workflow doesn't make sense; lab Rx content belongs inside
- the specific lab band it relates to (e.g. the "submit to lab for
- processing" lab step carries the F/F Rx). The labRx pathway-level
- field is still tolerated in data but no longer surfaced as its own
- card. Source citations on labSteps are not rendered either — they
- stay in the data per CASES-FOUNDATION.md trust rules (and per Jake's
- copyright concern about appearing UIC-endorsed) but they're a
- data-integrity tool, not student-facing copy. */}
- </div>
+ {/* Header card cut 2026-05-28: the schematic below IS the orientation.
+ Title + description + category badge were redundant once the
+ concept map became the primary view — the title is already
+ visible in the selected-scenario pill above, and the description
+ just delayed the user from getting to the workflow. */}
 
  {/* TOC — id used by the floating right-sidebar to know when the
  in-page TOC has fully scrolled out of view (only then does the
@@ -28728,33 +28694,29 @@ function Pathways() {
  </ul>
  );
  }
- // Linear two-track train schematic (2026-05-27 v4). Top row: all
- // clinical visits left-to-right with arrows V1→V2→V3...→V8. Bottom
- // row: all lab sessions left-to-right with arrows L1→L2→L3...→L5.
- // Both tracks are LINEAR within their level — no cross-track arrows.
- // Horizontal alignment preserves chronology: lab i sits in the cols
- // between visit i and visit i+1.
- //
- // Grid: 2*N cols (16 for 8 visits). Visit i spans cols (2i-1, 2i).
- // Lab i (after phase i) spans cols (2i, 2i+1) — offset by 1 col so
- // it sits between visits.
+ // Boustrophedon snake-wrap schematic (2026-05-28). The chronological
+ // sequence V0→L0→V1→L1→... wraps into multiple "lanes" of
+ // LANE_CAPACITY items each. Even-indexed lanes read left-to-right,
+ // odd-indexed lanes right-to-left (mirrored about the grid's center
+ // col). Within every lane the visit/lab zigzag is preserved — visits
+ // on the lane's upper row, labs on the lane's lower row, offset by
+ // one col so a lab sits between adjacent visits. Cross-lane arrows
+ // drop straight down from the last tile of one lane to the first
+ // tile of the next (which lands directly below by construction).
  //
  // Color treatment: visit = white card with dark top border (ink).
  // Lab = inverted — oxblood/accent background with cream text. The
  // contrast spotlights the lab track as "the differentiator content"
- // the Cases tab exists to surface.
- //
- // Container is horizontally scrollable; vertical wheel gestures over
- // the schematic remap to horizontal scroll.
+ // the Maps tab exists to surface.
  const labSteps = selectedPathway.labSteps || [];
- const totalCols = phases.length * 2;
+ const LANE_CAPACITY = 8;
  const tileBase = {
  all: "unset",
  cursor: "pointer",
  display: "flex",
  flexDirection: "column",
  alignItems: "center",
- justifyContent: "flex-start",
+ justifyContent: "center",
  textAlign: "center",
  borderRadius: "4px",
  padding: "18px 14px",
@@ -28773,55 +28735,120 @@ function Pathways() {
  e.currentTarget.style.transform = "translateY(0)";
  };
 
- // Build the chronological sequence of tiles. The arrows trace this
- // sequence: V1 → L1 → V2 → L2 → ... → Vn, zigzagging between the two
- // tracks. Visits without a following lab (e.g. V6→V7→V8 follow-ups)
- // get straight horizontal arrows on the top row.
+ // Build the chronological sequence: V0, (L0?), V1, (L1?), ... Vn.
  const sequence = [];
  for (let i = 0; i < phases.length; i++) {
- sequence.push({ key: `v-${i}` });
+ sequence.push({ kind: "visit", index: i, key: `v-${i}` });
  const labIdx = labSteps.findIndex((ls) => ls.after === i);
- if (labIdx !== -1) sequence.push({ key: `l-${labIdx}` });
+ if (labIdx !== -1) sequence.push({ kind: "lab", index: labIdx, key: `l-${labIdx}` });
  }
- // Arrow geometry per case. The lab row is offset half a tile to the
- // right of the visit row (cols 2-3 for L1, cols 1-2 for V1), so an
- // edge-to-edge arrow (V1.right → L1.left) actually points LEFTWARD —
- // not what we want. Instead, use the source-edge facing the destination
- // direction, and pull the destination endpoint back ARROW_OFFSET pixels
- // so the arrowhead marker lands clear of the destination tile's border
- // (the SVG sits at z-index 0, tiles at z-index 1, so an arrowhead with
- // its body inside the tile would be hidden).
+
+ // Split sequence into lanes of LANE_CAPACITY items each.
+ const lanes = [];
+ for (let i = 0; i < sequence.length; i += LANE_CAPACITY) {
+ lanes.push(sequence.slice(i, i + LANE_CAPACITY));
+ }
+
+ // Compute LTR col positions per lane. Every tile spans 2 cols. The
+ // col-advance between consecutive items is 1 when kinds alternate
+ // (V↔L zigzag, 1-col overlap puts the lab between two visits) and
+ // 2 when kinds match (V→V or L→L sit edge-to-edge, no overlap).
+ const laneData = lanes.map((laneItems) => {
+ const positions = [];
+ let col = 1;
+ for (let i = 0; i < laneItems.length; i++) {
+ positions.push({ ...laneItems[i], ltrCol: col });
+ if (i + 1 < laneItems.length) {
+ col += laneItems[i].kind === laneItems[i + 1].kind ? 2 : 1;
+ }
+ }
+ const width = positions.length > 0
+ ? positions[positions.length - 1].ltrCol + 1
+ : 0;
+ return { positions, width };
+ });
+
+ const numLanes = laneData.length;
+ const maxLaneCols = Math.max(1, ...laneData.map((l) => l.width));
+
+ // Flatten lanes to final grid placements. Odd lanes are mirrored so
+ // the leftmost LTR col (1) maps to the rightmost grid col, which by
+ // construction puts the first tile of lane N directly below the
+ // last tile of lane N-1 — making the cross-lane drop arrow vertical.
+ const allPlacements = [];
+ laneData.forEach((lane, laneIdx) => {
+ const isRTL = laneIdx % 2 === 1;
+ lane.positions.forEach((item) => {
+ const gridCol = isRTL ? maxLaneCols - item.ltrCol : item.ltrCol;
+ const gridRow = laneIdx * 2 + (item.kind === "visit" ? 1 : 2);
+ allPlacements.push({ ...item, gridCol, gridRow, laneIdx, isRTL });
+ });
+ });
+
+ // Maintenance / repair branches. Rendered on a dedicated row below
+ // the main flow, tethered to the LAST chronological visit by a long
+ // dashed arrow that signals "downstream-only, not part of fabrication."
+ const branches = selectedPathway.branches || [];
+ // Branches sit on the LAST main row (the lane's lab row), tucked off
+ // the chronological end as small dashed squares. Putting them on the
+ // same row as the final lab keeps them physically close to V_last
+ // (the last clinical visit), which is the conceptual "exit point"
+ // for these downstream maintenance procedures. The dashed border +
+ // dashed arrow signal that they branch off the main flow.
+ const branchRow = numLanes * 2;
+ const branchPlacements = branches.map((b, idx) => ({
+ ...b,
+ // Cluster at the chronological-end side of the last lane. The last
+ // lane is RTL, so its chronological end is at the LEFT of the grid
+ // (cols 1, 2, 3 sit just under V_last at col 2-3).
+ gridCol: idx + 1,
+ gridRow: branchRow,
+ key: `branch-${b.id}`,
+ }));
+
+ // Arrow geometry. For every adjacent pair in the chronological
+ // sequence, draw one arrow. Within a lane the V↔L zigzag arrows
+ // use center-to-center geometry (works for both LTR and RTL because
+ // the destination's center-x is on whichever side it needs to be).
+ // Same-row arrows (V→V, L→L) need direction awareness so the source
+ // edge faces the destination. Cross-lane drops are vertical (src
+ // bottom-center → dst top-center). ARROW_OFFSET pulls the line's
+ // endpoint back so the arrowhead marker lands clear of the
+ // destination tile's border (SVG is z-index 0, tiles are z-index 1).
  const ARROW_OFFSET = 3;
  const arrows = [];
  if (schematicPositions) {
- for (let i = 0; i < sequence.length - 1; i++) {
- const srcKey = sequence[i].key;
- const dstKey = sequence[i + 1].key;
- const a = schematicPositions[srcKey];
- const b = schematicPositions[dstKey];
+ for (let i = 0; i < allPlacements.length - 1; i++) {
+ const src = allPlacements[i];
+ const dst = allPlacements[i + 1];
+ const a = schematicPositions[src.key];
+ const b = schematicPositions[dst.key];
  if (!a || !b) continue;
- const isSrcVisit = srcKey.startsWith("v-");
- const isDstVisit = dstKey.startsWith("v-");
+ const sameLane = src.laneIdx === dst.laneIdx;
  let srcX, srcY, dstX, dstY;
- if (isSrcVisit && isDstVisit) {
- // V → V (both top row, no lab between — V6→V7→V8). Horizontal
- // arrow: src = source's right-middle, dst = destination's left
- // edge minus offset.
+ if (!sameLane) {
+ srcX = a.x + a.width / 2;
+ srcY = a.y + a.height;
+ dstX = b.x + b.width / 2;
+ dstY = b.y - ARROW_OFFSET;
+ } else if (src.kind === dst.kind) {
+ if (src.isRTL) {
+ srcX = a.x;
+ srcY = a.y + a.height / 2;
+ dstX = b.x + b.width + ARROW_OFFSET;
+ dstY = b.y + b.height / 2;
+ } else {
  srcX = a.x + a.width;
  srcY = a.y + a.height / 2;
  dstX = b.x - ARROW_OFFSET;
  dstY = b.y + b.height / 2;
- } else if (isSrcVisit && !isDstVisit) {
- // V → L (top to bottom, slight right shift). src = bottom-center
- // of V, dst = above top-center of L by ARROW_OFFSET so the
- // arrowhead clears the lab tile's border.
+ }
+ } else if (src.kind === "visit") {
  srcX = a.x + a.width / 2;
  srcY = a.y + a.height;
  dstX = b.x + b.width / 2;
  dstY = b.y - ARROW_OFFSET;
  } else {
- // L → V (bottom to top, slight right shift). src = top-center of
- // L, dst = below bottom-center of V by ARROW_OFFSET.
  srcX = a.x + a.width / 2;
  srcY = a.y;
  dstX = b.x + b.width / 2;
@@ -28829,51 +28856,40 @@ function Pathways() {
  }
  arrows.push({ srcX, srcY, dstX, dstY, id: `arrow-${i}` });
  }
- // Central Lab interactions. For each tile carrying `centralLab:
- // "send" | "receive"`, draw a dashed arrow between the tile and the
- // Central Lab strip. Send = tile.bottom → CL.top. Receive = CL.top
- // → tile.bottom. (For visits in row 1, the receive arrow passes
- // through the empty row-2 slot below the visit — for cd-conventional
- // V6/V7/V8 there's no lab below them, so this works cleanly.)
- const cl = schematicPositions["central-lab"];
- const CL_OFFSET = 8;
- if (cl) {
- phases.forEach((phase, pi) => {
- const t = schematicPositions[`v-${pi}`];
- if (!t || !phase.centralLab) return;
- const cx = t.x + t.width / 2;
- if (phase.centralLab === "send") {
+ // Branch arrows — all dashed. The first one drops from the last main
+ // flow tile (the final clinical visit) into the first branch tile,
+ // signaling "this is where the main flow exits into downstream
+ // maintenance." Subsequent dashed lines chain the branch squares
+ // together so they read as one connected maintenance cluster rather
+ // than three orphan tiles.
+ if (branchPlacements.length > 0) {
+ const lastMain = allPlacements[allPlacements.length - 1];
+ const firstBranch = branchPlacements[0];
+ const a = lastMain && schematicPositions[lastMain.key];
+ const b = firstBranch && schematicPositions[firstBranch.key];
+ if (a && b) {
  arrows.push({
- srcX: cx, srcY: t.y + t.height,
- dstX: cx, dstY: cl.y - CL_OFFSET,
- dashed: true, id: `cl-send-v-${pi}`,
- });
- } else if (phase.centralLab === "receive") {
- arrows.push({
- srcX: cx, srcY: cl.y,
- dstX: cx, dstY: t.y + t.height + CL_OFFSET,
- dashed: true, id: `cl-recv-v-${pi}`,
+ srcX: a.x + a.width / 2,
+ srcY: a.y + a.height,
+ dstX: b.x + b.width / 2,
+ dstY: b.y - ARROW_OFFSET,
+ id: "branch-arrow",
+ dashed: true,
  });
  }
- });
- labSteps.forEach((ls, lsi) => {
- const t = schematicPositions[`l-${lsi}`];
- if (!t || !ls.centralLab) return;
- const cx = t.x + t.width / 2;
- if (ls.centralLab === "send") {
+ for (let i = 0; i < branchPlacements.length - 1; i++) {
+ const src = schematicPositions[branchPlacements[i].key];
+ const dst = schematicPositions[branchPlacements[i + 1].key];
+ if (!src || !dst) continue;
  arrows.push({
- srcX: cx, srcY: t.y + t.height,
- dstX: cx, dstY: cl.y - CL_OFFSET,
- dashed: true, id: `cl-send-l-${lsi}`,
- });
- } else if (ls.centralLab === "receive") {
- arrows.push({
- srcX: cx, srcY: cl.y,
- dstX: cx, dstY: t.y + t.height + CL_OFFSET,
- dashed: true, id: `cl-recv-l-${lsi}`,
+ srcX: src.x + src.width,
+ srcY: src.y + src.height / 2,
+ dstX: dst.x - ARROW_OFFSET,
+ dstY: dst.y + dst.height / 2,
+ id: `branch-chain-${i}`,
+ dashed: true,
  });
  }
- });
  }
  }
 
@@ -28893,8 +28909,8 @@ function Pathways() {
  ref={schematicGridRef}
  style={{
  display: "grid",
- gridTemplateColumns: `repeat(${totalCols}, minmax(160px, 1fr))`,
- gridTemplateRows: "auto auto auto",
+ gridTemplateColumns: `repeat(${maxLaneCols}, minmax(140px, 1fr))`,
+ gridTemplateRows: `repeat(${numLanes * 2}, auto)`,
  gap: "44px 10px",
  position: "relative",
  minWidth: "fit-content",
@@ -28921,121 +28937,97 @@ function Pathways() {
  <line key={a.id}
  x1={a.srcX} y1={a.srcY}
  x2={a.dstX} y2={a.dstY}
- stroke="var(--ink-soft)" strokeWidth="1.5"
- strokeDasharray={a.dashed ? "5 4" : undefined}
+ stroke={a.dashed ? "var(--ink-faint)" : "var(--ink-soft)"}
+ strokeWidth="1.5"
+ strokeDasharray={a.dashed ? "6 5" : undefined}
  markerEnd="url(#pathway-arrow-head)"
  />
  ))}
  </svg>
  )}
- {/* Visit row (top track) — V_i spans cols (2i-1, 2i) */}
- {phases.map((phase, pi) => {
- const isSourceTile = pathwayPopup &&
- pathwayPopup.kind === "visit" &&
- pathwayPopup.phaseIndex === pi;
+ {allPlacements.map((item) => {
+ const isVisit = item.kind === "visit";
+ const phase = isVisit ? phases[item.index] : null;
+ const labStep = isVisit ? null : labSteps[item.index];
+ const isSourceTile = pathwayPopup && (
+ (isVisit && pathwayPopup.kind === "visit" && pathwayPopup.phaseIndex === item.index) ||
+ (!isVisit && pathwayPopup.kind === "lab" && pathwayPopup.index === item.index)
+ );
+ const popupParams = isVisit
+ ? { kind: "visit", phaseIndex: item.index }
+ : { kind: "lab", index: item.index };
  return (
- <button key={`v-${pi}`} type="button"
+ <button key={item.key} type="button"
  ref={(el) => {
- if (el) schematicTileRefs.current.set(`v-${pi}`, el);
- else schematicTileRefs.current.delete(`v-${pi}`);
+ if (el) schematicTileRefs.current.set(item.key, el);
+ else schematicTileRefs.current.delete(item.key);
  }}
- onClick={(e) => openPathwayPopup({ kind: "visit", phaseIndex: pi }, e)}
+ onClick={(e) => openPathwayPopup(popupParams, e)}
  onMouseEnter={onTileEnter}
  onMouseLeave={onTileLeave}
  style={{
  ...tileBase,
- gridColumn: `${2 * pi + 1} / span 2`,
- gridRow: 1,
- background: "var(--card, white)",
- border: "1px solid var(--rule-soft, var(--rule))",
+ gridColumn: `${item.gridCol} / span 2`,
+ gridRow: item.gridRow,
+ background: isVisit ? "var(--card, white)" : "var(--accent)",
+ border: isVisit
+ ? "1px solid var(--rule-soft, var(--rule))"
+ : "1px solid var(--accent)",
  borderTop: "4px solid var(--ink)",
+ color: isVisit ? "var(--ink)" : "var(--paper, #FBF8F2)",
  visibility: isSourceTile ? "hidden" : "visible",
  }}
  >
- <div style={{
- fontSize: "0.62rem", textTransform: "uppercase",
- letterSpacing: "0.16em", color: "var(--ink-faint)",
- fontWeight: 700, marginBottom: "10px",
- }}>Visit {pi + 1}</div>
  <div style={{
  fontSize: "0.92rem", fontWeight: 500,
- color: "var(--ink)", lineHeight: 1.35,
- }}>{phase.label}</div>
- </button>
- );
- })}
- {/* Lab row (bottom track) — L_i (after phase i) spans cols (2i+2, 2i+3) */}
- {labSteps.map((ls, lsi) => {
- const col = 2 * ls.after + 2;
- if (col < 1 || col + 1 > totalCols + 1) return null;
- const isSourceTile = pathwayPopup &&
- pathwayPopup.kind === "lab" &&
- pathwayPopup.index === lsi;
- return (
- <button key={`l-${lsi}`} type="button"
- ref={(el) => {
- if (el) schematicTileRefs.current.set(`l-${lsi}`, el);
- else schematicTileRefs.current.delete(`l-${lsi}`);
- }}
- onClick={(e) => openPathwayPopup({ kind: "lab", index: lsi }, e)}
- onMouseEnter={onTileEnter}
- onMouseLeave={onTileLeave}
- style={{
- ...tileBase,
- gridColumn: `${col} / span 2`,
- gridRow: 2,
- background: "var(--accent)",
- border: "1px solid var(--accent)",
- borderTop: "4px solid var(--ink)",
- color: "var(--paper, #FBF8F2)",
- visibility: isSourceTile ? "hidden" : "visible",
- }}
- >
+ color: isVisit ? "var(--ink)" : "var(--paper, #FBF8F2)",
+ lineHeight: 1.35,
+ }}>{isVisit ? phase.label : labStep.title}</div>
  <div style={{
+ position: "absolute", bottom: "8px", left: "12px",
  fontSize: "0.62rem", textTransform: "uppercase",
  letterSpacing: "0.16em",
- color: "var(--paper, #FBF8F2)",
- opacity: 0.75,
- fontWeight: 700, marginBottom: "10px",
- }}>Lab</div>
- <div style={{
- fontSize: "0.92rem", fontWeight: 500,
- color: "var(--paper, #FBF8F2)", lineHeight: 1.35,
- }}>{ls.title}</div>
+ color: isVisit ? "var(--ink-faint)" : "var(--paper, #FBF8F2)",
+ opacity: isVisit ? 1 : 0.75,
+ fontWeight: 700,
+ }}>{isVisit ? `Visit ${item.index + 1}` : "Lab"}</div>
  </button>
  );
  })}
- {/* Central Lab strip (row 3) — represents the external lab that
- handles things like denture processing. Arrows go from the
- schematic tiles down to this strip when something is sent out,
- and back up when something comes in. Non-clickable; just a
- visual anchor for the send/receive arrows. */}
- <div
+ {branchPlacements.map((branch, bi) => {
+ const isSourceTile = pathwayPopup &&
+ pathwayPopup.kind === "branch" && pathwayPopup.index === bi;
+ return (
+ <button key={branch.key} type="button"
  ref={(el) => {
- if (el) schematicTileRefs.current.set("central-lab", el);
- else schematicTileRefs.current.delete("central-lab");
+ if (el) schematicTileRefs.current.set(branch.key, el);
+ else schematicTileRefs.current.delete(branch.key);
  }}
+ onClick={(e) => openPathwayPopup({ kind: "branch", index: bi }, e)}
+ onMouseEnter={onTileEnter}
+ onMouseLeave={onTileLeave}
  style={{
- gridColumn: "1 / -1",
- gridRow: 3,
- display: "flex",
- alignItems: "center",
- justifyContent: "center",
- padding: "14px 18px",
- minHeight: "62px",
- background: "var(--ink)",
- borderRadius: "4px",
- color: "var(--paper, #FBF8F2)",
- fontSize: "0.78rem",
- textTransform: "uppercase",
- letterSpacing: "0.18em",
- fontWeight: 700,
- position: "relative",
- zIndex: 1,
+ ...tileBase,
+ gridColumn: `${branch.gridCol} / span 1`,
+ gridRow: branch.gridRow,
+ background: "var(--card, white)",
+ border: "1px dashed var(--ink-faint)",
+ borderTop: "1px dashed var(--ink-faint)",
+ color: "var(--ink-soft)",
+ minHeight: "0",
+ aspectRatio: "1 / 1",
+ padding: "8px 8px",
+ alignSelf: "start",
+ visibility: isSourceTile ? "hidden" : "visible",
  }}
  >
- Central Lab
- </div>
+ <div style={{
+ fontSize: "0.7rem", fontWeight: 500,
+ color: "var(--ink-soft)", lineHeight: 1.25,
+ }}>{branch.label}</div>
+ </button>
+ );
+ })}
  </div>
  </div>
  );
@@ -29063,6 +29055,14 @@ function Pathways() {
  const phaseSections = resolvedSections.slice(startIdx, startIdx + phase.count);
  return (
  <PathwayPopupModal title={phase.label} eyebrow={`Visit ${pi + 1}`} closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
+ {/* Phase-specific widget (e.g. tooth mould selector on the wax-rim
+ visit). Rendered above chapter content because it's a chair-side
+ reference tool the student actually uses during the visit. */}
+ {phase.widget === "mouldSelector" && (
+ <div style={{ marginBottom: "24px" }}>
+ <ToothMouldSelector compact />
+ </div>
+ )}
  {/* If the phase carries its own structured detail (used when the
  Steps-tab chapters don't cover the visit's workflow on their
  own — e.g. follow-up visits), render it first, then the
@@ -29113,11 +29113,34 @@ function Pathways() {
  </PathwayPopupModal>
  );
  }
+ if (pathwayPopup.kind === "branch") {
+ const branches = selectedPathway.branches || [];
+ const branch = branches[pathwayPopup.index];
+ if (!branch) return null;
+ const found = CHAPTER_INDEX.get(branch.chapterId);
+ if (!found) return null;
+ return (
+ <PathwayPopupModal title={branch.label} eyebrow="Maintenance" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
+ <GuideChapter chapter={found.chapter} hideHeader />
+ </PathwayPopupModal>
+ );
+ }
  if (pathwayPopup.kind === "lab") {
  const ls = labSteps[pathwayPopup.index];
  if (!ls) return null;
  return (
  <PathwayPopupModal title={ls.title} eyebrow="Lab" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
+ {/* Lab worksheet visual: red-outlined white paper. Lab content
+ reads as "the script the lab tech follows" — distinct from
+ clinical-visit content. The oxblood border + plain white
+ surface evoke a printed lab worksheet stamped with the
+ procedure's accent color. */}
+ <div style={{
+ background: "white",
+ border: "2px solid var(--accent)",
+ borderRadius: "4px",
+ padding: "20px 24px",
+ }}>
  {ls.turnaround && (
  <div style={{
  fontSize: "0.75rem", color: "var(--ink-faint)",
@@ -29137,6 +29160,7 @@ function Pathways() {
  ))}
  </div>
  )}
+ </div>
  </PathwayPopupModal>
  );
  }
