@@ -28500,178 +28500,102 @@ function Pathways() {
  </ul>
  );
  }
- // Walk phases; assign sections by count, render each group with a header.
- // Lab steps (the new schema field, post-rebuild) are interleaved between
- // phases per their `after` index — `after: -1` means before phase 0;
- // `after: N` means between phase N and phase N+1.
- let cursor = 0;
- const rendered = [];
+ // Two-row grid schematic (2026-05-27). All visits on one row, all labs
+ // on a row below. Lab i sits in the column BETWEEN visit i and visit
+ // i+1 (since lab i happens after phase i, before phase i+1). With 8
+ // visits, the grid has 15 columns (2*N - 1): visits at odd cols,
+ // labs at even cols. Trailing visits with no lab between them
+ // (V6→V7→V8 here) sit at adjacent odd cols with empty col below.
+ // Each tile is a button → opens a popup with full detail.
+ // SVG arrows connecting the chronological flow are TBD next pass.
  const labSteps = selectedPathway.labSteps || [];
-
- // Helper: render a single lab-step band. Paper-colored background +
- // accent left bar. Lab bands are RIGHT-ALIGNED on the page and take
- // ~68% width — they share a middle overlap band with the clinical
- // visit blocks (which are left-aligned at the same width). The
- // result is a timeline-style zig-zag: clinic work toward the left,
- // lab work toward the right, both flowing through a shared center.
- // 2026-05-27: the band is a button that opens the lab step's full
- // detail in a centered popup. `idx` is the index in the full
- // labSteps array, used as the popup target.
- const renderLabStep = (ls, idx) => (
- <button
- key={`lab-${idx}`}
- type="button"
- onClick={() => setPathwayPopup({ kind: "lab", index: idx })}
- style={{
+ const totalCols = phases.length * 2 - 1;
+ const tileBase = {
  all: "unset",
  cursor: "pointer",
- display: "block",
- marginTop: "28px",
- marginLeft: "auto",
- marginRight: "0",
- width: "48%",
- background: "var(--paper, #FBF8F2)",
- borderLeft: "4px solid var(--accent)",
+ display: "flex",
+ flexDirection: "column",
+ alignItems: "center",
+ textAlign: "center",
  borderRadius: "3px",
- padding: "18px 22px",
+ padding: "10px 8px",
  boxSizing: "border-box",
+ minHeight: "92px",
  transition: "box-shadow 140ms ease, transform 140ms ease",
- }}
- onMouseEnter={(e) => {
+ };
+ const onTileEnter = (e) => {
  e.currentTarget.style.boxShadow = "0 2px 10px rgba(26, 22, 18, 0.10)";
  e.currentTarget.style.transform = "translateY(-1px)";
- }}
- onMouseLeave={(e) => {
+ };
+ const onTileLeave = (e) => {
  e.currentTarget.style.boxShadow = "none";
  e.currentTarget.style.transform = "translateY(0)";
- }}
- >
- <div style={{
- display: "flex", alignItems: "baseline", gap: "10px",
- flexWrap: "wrap",
- }}>
- <span style={{
- fontSize: "0.62rem", textTransform: "uppercase",
- letterSpacing: "0.14em", color: "var(--paper, #FBF8F2)",
- background: "var(--accent)", fontWeight: 600,
- padding: "3px 8px", borderRadius: "2px",
- }}>Lab</span>
- <span style={{
- fontSize: "0.9rem", fontWeight: 500, color: "var(--ink)",
- }}>{ls.title}</span>
- </div>
- {ls.turnaround && (
- <div style={{
- fontSize: "0.7rem", color: "var(--ink-faint)",
- fontStyle: "italic", marginTop: "6px",
- }}>{ls.turnaround}</div>
- )}
- </button>
- );
-
- // Lab steps that happen before the first phase (after: -1).
- // Iterate the full labSteps array so we pass the canonical index
- // (used as the popup target).
- labSteps.forEach((ls, idx) => {
- if (ls.after === -1) rendered.push(renderLabStep(ls, idx));
- });
-
- phases.forEach((phase, pi) => {
- const slice = resolvedSections.slice(cursor, cursor + phase.count);
- const startNum = cursor + 1;
- cursor += phase.count;
- // Defensive: skip rendering this phase header if there are NO
- // sections to show under it. Many pathways have phases.count
- // sums that don't match sections.length exactly — when that
- // happens, the trailing phases used to render as empty <ol>s
- // under their headers ("Phase 8 — Follow-up" with nothing
- // underneath). Hiding empty phases keeps the Sequence TOC
- // legible even when the underlying data is mid-edit.
- if (slice.length === 0) return;
- // 2026-05-27: visit card is a slim clickable summary tile. No bullet
- // list inside — clicking opens a popup with the comprehensive steps
- // for the whole appointment. Narrower (~48%) + larger vertical gap
- // creates the diagonal staircase flow with the lab bands on the
- // right.
- rendered.push(
- <button key={pi} type="button"
- onClick={() => setPathwayPopup({ kind: "visit", phaseIndex: pi })}
- style={{
- all: "unset",
- cursor: "pointer",
- display: "block",
- marginTop: pi === 0 ? "0" : "28px",
- marginLeft: "0",
- marginRight: "auto",
- width: "48%",
- background: "var(--card, white)",
- border: "1px solid var(--rule-soft, var(--rule))",
- borderLeft: "4px solid var(--ink)",
- borderRadius: "3px",
- padding: "18px 22px",
- boxSizing: "border-box",
- transition: "box-shadow 140ms ease, transform 140ms ease",
- }}
- onMouseEnter={(e) => {
- e.currentTarget.style.boxShadow = "0 2px 10px rgba(26, 22, 18, 0.10)";
- e.currentTarget.style.transform = "translateY(-1px)";
- }}
- onMouseLeave={(e) => {
- e.currentTarget.style.boxShadow = "none";
- e.currentTarget.style.transform = "translateY(0)";
- }}
- >
- <div style={{
- display: "flex", alignItems: "baseline", gap: "10px",
- flexWrap: "wrap",
- }}>
- <span style={{
- fontSize: "0.62rem", textTransform: "uppercase",
- letterSpacing: "0.14em", color: "var(--paper, #FBF8F2)",
- background: "var(--ink)", fontWeight: 600,
- padding: "3px 8px", borderRadius: "2px",
- }}>Visit {pi + 1}</span>
- <span style={{
- fontSize: "0.9rem", fontWeight: 500, color: "var(--ink)",
- }}>{phase.label}</span>
- </div>
- </button>
- );
- // Lab steps that happen after THIS phase (between phase pi and pi+1).
- // Iterate the full labSteps array so the canonical index is used.
- labSteps.forEach((ls, idx) => {
- if (ls.after === pi) rendered.push(renderLabStep(ls, idx));
- });
- });
- // Catch-all: if phases.count sums to LESS than sections.length, the
- // trailing sections would be silently dropped from the Sequence TOC.
- // Render them under an "Additional" header so they appear in the
- // index. Pathway authors should fix the phase counts to consume the
- // sections cleanly, but this guard prevents the bug from hiding
- // chapters until they do.
- if (cursor < resolvedSections.length) {
- const tail = resolvedSections.slice(cursor);
- rendered.push(
- <div key="tail" style={{
- marginTop: "14px",
- background: "var(--card, white)",
- border: "1px solid var(--rule-soft, var(--rule))",
- borderRadius: "3px",
- padding: "12px 16px",
- }}>
- <div style={{
- fontSize: "0.6rem", textTransform: "uppercase",
- letterSpacing: "0.14em", color: "var(--ink-faint)",
- fontWeight: 600, marginBottom: "8px",
- }}>Additional</div>
- <ul style={{ margin: "0 0 0 8px", paddingLeft: "20px", lineHeight: 1.85, listStyleType: "disc" }}>
- {tail.map(renderRow)}
- </ul>
- </div>
- );
- }
+ };
  return (
- <div>{rendered}</div>
+ <div style={{
+ display: "grid",
+ gridTemplateColumns: `repeat(${totalCols}, minmax(0, 1fr))`,
+ gridTemplateRows: "auto auto",
+ gap: "16px 6px",
+ marginBottom: "24px",
+ }}>
+ {phases.map((phase, pi) => (
+ <button key={`v-${pi}`} type="button"
+ onClick={() => setPathwayPopup({ kind: "visit", phaseIndex: pi })}
+ onMouseEnter={onTileEnter}
+ onMouseLeave={onTileLeave}
+ style={{
+ ...tileBase,
+ gridColumn: `${2 * pi + 1} / span 1`,
+ gridRow: 1,
+ background: "var(--card, white)",
+ border: "1px solid var(--rule-soft, var(--rule))",
+ borderTop: "3px solid var(--ink)",
+ }}
+ >
+ <div style={{
+ fontSize: "0.5rem", textTransform: "uppercase",
+ letterSpacing: "0.12em", color: "var(--ink-faint)",
+ fontWeight: 700, marginBottom: "6px",
+ }}>Visit {pi + 1}</div>
+ <div style={{
+ fontSize: "0.72rem", fontWeight: 500,
+ color: "var(--ink)", lineHeight: 1.3,
+ }}>{phase.label}</div>
+ </button>
+ ))}
+ {labSteps.map((ls, lsi) => {
+ // ls.after is the phase index after which this lab happens
+ // (0-indexed). The lab tile sits in col 2*after + 2, row 2.
+ const col = 2 * ls.after + 2;
+ if (col < 1 || col > totalCols) return null;
+ return (
+ <button key={`l-${lsi}`} type="button"
+ onClick={() => setPathwayPopup({ kind: "lab", index: lsi })}
+ onMouseEnter={onTileEnter}
+ onMouseLeave={onTileLeave}
+ style={{
+ ...tileBase,
+ gridColumn: `${col} / span 1`,
+ gridRow: 2,
+ background: "var(--paper, #FBF8F2)",
+ border: "1px solid var(--rule-soft, var(--rule))",
+ borderTop: "3px solid var(--accent)",
+ }}
+ >
+ <div style={{
+ fontSize: "0.5rem", textTransform: "uppercase",
+ letterSpacing: "0.12em", color: "var(--accent)",
+ fontWeight: 700, marginBottom: "6px",
+ }}>Lab</div>
+ <div style={{
+ fontSize: "0.72rem", fontWeight: 500,
+ color: "var(--ink)", lineHeight: 1.3,
+ }}>{ls.title}</div>
+ </button>
+ );
+ })}
+ </div>
  );
  })()}
  </div>
