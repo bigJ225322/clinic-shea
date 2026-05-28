@@ -23407,6 +23407,65 @@ function Guides() {
 // Explicitly disqualified for this build: any "Comprehensive CD Guide" file
 // in any format (.docx/.html/.pdf), any Word doc, any compiled study guide.
 // See CASES-FOUNDATION.md "What counts as a UIC-official source".
+//
+// ─── Swade-fidelity audit (per user directive 2026-05-27) ──────────────
+// Each visit/lab label below is graded against Swade page 80 (canonical
+// UIC clinical outline). The user's directive: "follow Swade as closely
+// as possible; need a good reason to deviate; if something from a
+// UIC lecture is truly valuable, add it but justify it." Per-label:
+//
+// VISITS
+//   V1 "Comp. exam + diagnostic impressions"
+//      → Swade: "diagnosis & treatment planning / take diagnostic
+//        impressions (standard trays)". User asked to specify Comp. exam
+//        (which is what V1 actually is). Faithful in substance.
+//   V2 "Border molding + final impression"           → Swade verbatim.
+//   V3 "Wax-rim try-in + JRR + facebow + tooth selection"
+//                                                    → Swade verbatim.
+//   V4 "Anterior teeth try-in"                       → Swade verbatim.
+//   V5 "Posterior teeth try-in"                      → Swade verbatim.
+//   V6 "Delivery"                                    → Swade verbatim.
+//   V7 "24-hour follow-up"                           → Swade verbatim.
+//   V8 "1-week follow-up"                            → Swade verbatim.
+//
+// LABS
+//   L1 "Pour diagnostic casts + fabricate custom trays"
+//                                                    → Swade verbatim.
+//   L2 "Box + pour master casts; scribe PPS; fabricate record bases + wax rims"
+//      → Swade: "box & pour → master casts / use master casts to
+//        fabricate wax rims". UIC supplements: "scribe PPS" + "fabricate
+//        record bases". Justification: (1) the wax rim physically sits
+//        on a record base — you cannot fabricate the rim without the
+//        base; making it explicit is a clarification of Swade's
+//        compressed phrasing, not new content. (2) PPS scribe is a
+//        substantive lab step from the Obrez vibrating-line/PPS deck
+//        that affects posterior denture seal; omitting it makes the
+//        lab block incomplete per CASES-FOUNDATION lab-comprehensiveness
+//        principle. Both supplements stay.
+//   L3 "Mount master casts on Mark 320; set anterior teeth"
+//      → Swade: "mount master casts on articulator / set anterior teeth
+//        on wax rims". UIC supplement: "Mark 320" (specific articulator).
+//        Justification: harmless brand detail — the student needs to know
+//        which articulator. Keep.
+//   L4 "Set posterior teeth (monoplane with acrylic balancing ramps)"
+//      → Swade: "set posterior teeth on wax rims (monoplane / lingualized
+//        / minimal festooning)". UIC supplement: "acrylic balancing ramps"
+//        (UIC predoc standard). Justification: this IS the UIC predoc
+//        scheme (Monoplane Set up Grading 2024 sheet); accurate to UIC
+//        practice. Keep.
+//   L5 "Final wax contouring + processing + lab remount"
+//      → Swade: "instructor approves denture setup → send to lab".
+//        Differs because Swade ends the bullet at the handoff; the
+//        lab fabrication after the handoff is the content the Cases
+//        tab exists to surface. Justification: this is the Cases-tab
+//        differentiator per CASES-FOUNDATION ("Cases tells you what
+//        happens between appointments"). Keep.
+//
+// Description prose, popup detail (body + detail fields), and V7/V8
+// phase.detail are my synthesis from UIC slide decks + clinical
+// procedure facts, in my own phrasing — not Swade verbatim. If you want
+// these tightened toward Swade's wording, point at specific Swade
+// chunks and I'll rewrite to track them.
 // ─────────────────────────────────────────────────────────────────────────
 
 const PATHWAY_DOMAINS = [
@@ -23433,7 +23492,7 @@ const PATHWAYS = [
  { label: "Wax-rim try-in + JRR + facebow + tooth selection", count: 4 },
  { label: "Anterior teeth try-in", count: 1 },
  { label: "Posterior teeth try-in", count: 1 },
- { label: "Delivery + clinical remount", count: 2 },
+ { label: "Delivery", count: 2 },
  {
  label: "24-hour follow-up",
  count: 1,
@@ -27879,14 +27938,18 @@ function Pathways() {
  // an effect measures positions relative to the grid container after
  // layout settles and on window resize. Arrows are drawn between
  // chronologically-adjacent tiles (V1→L1→V2→L2→...).
- // Schematic grid container ref — used for auto-scrolling the schematic
- // to the top of the viewport when a pathway is selected (so the user
- // sees the whole progression at a glance instead of having to scroll
- // down past the picker).
+ // Schematic refs + position state for the linear-train layout (2026-05-27
+ // v4). schematicScrollRef = outer wrapper (has overflow-x: auto; wheel
+ // handler attaches here). schematicGridRef = inner 2-row grid (SVG
+ // arrows are positioned inside this, and the scrollIntoView target).
+ // schematicTileRefs holds per-tile DOM refs so the SVG can measure
+ // their positions and draw arrows.
  const schematicGridRef = useRef(null);
+ const schematicScrollRef = useRef(null);
+ const schematicTileRefs = useRef(new Map());
+ const [schematicPositions, setSchematicPositions] = useState(null);
  useEffect(() => {
  if (!pathwayId) return;
- // Two RAFs lets the schematic mount + lay out before we measure.
  requestAnimationFrame(() => {
  requestAnimationFrame(() => {
  const el = schematicGridRef.current;
@@ -27894,6 +27957,52 @@ function Pathways() {
  el.scrollIntoView({ behavior: "smooth", block: "start" });
  });
  });
+ }, [pathwayId]);
+ // Compute tile positions for the SVG arrow overlay. Re-runs on pathway
+ // change + window resize.
+ useEffect(() => {
+ const compute = () => {
+ if (!schematicGridRef.current) return;
+ const gridRect = schematicGridRef.current.getBoundingClientRect();
+ const pos = {};
+ schematicTileRefs.current.forEach((el, key) => {
+ if (!el) return;
+ const r = el.getBoundingClientRect();
+ pos[key] = {
+ x: r.left - gridRect.left,
+ y: r.top - gridRect.top,
+ width: r.width,
+ height: r.height,
+ };
+ });
+ setSchematicPositions(pos);
+ };
+ const t = setTimeout(compute, 50);
+ window.addEventListener("resize", compute);
+ return () => {
+ clearTimeout(t);
+ window.removeEventListener("resize", compute);
+ };
+ }, [pathwayId]);
+ // Vertical mouse-wheel / trackpad gesture over the schematic scrolls it
+ // horizontally (the train's natural axis). Falls through to page scroll
+ // at the schematic's left/right edge so the user can scroll past it.
+ useEffect(() => {
+ const el = schematicScrollRef.current;
+ if (!el) return;
+ const onWheel = (e) => {
+ if (e.deltaY === 0) return;
+ const maxScroll = el.scrollWidth - el.clientWidth;
+ if (maxScroll <= 1) return;
+ const scrollingDown = e.deltaY > 0;
+ const atEnd = el.scrollLeft >= maxScroll - 1;
+ const atStart = el.scrollLeft <= 0;
+ if ((scrollingDown && atEnd) || (!scrollingDown && atStart)) return;
+ e.preventDefault();
+ el.scrollLeft += e.deltaY;
+ };
+ el.addEventListener("wheel", onWheel, { passive: false });
+ return () => el.removeEventListener("wheel", onWheel);
  }, [pathwayId]);
  // Sequence (in-page TOC of phases + numbered steps + interleaved lab
  // bands) is always rendered when a pathway has sections. The previous
@@ -28581,13 +28690,26 @@ function Pathways() {
  </ul>
  );
  }
- // Wrap-pair schematic (2026-05-27 v3). Each phase becomes a (visit,
- // lab) pair stacked as a column — visit on top, lab below (or empty
- // placeholder if no lab follows this visit). Pairs flow horizontally
- // with flex-wrap, so when the row exceeds viewport width the next
- // pairs snake to a new row below instead of horizontally scrolling.
- // Each tile is a clickable button that opens a popup with full detail.
+ // Linear two-track train schematic (2026-05-27 v4). Top row: all
+ // clinical visits left-to-right with arrows V1→V2→V3...→V8. Bottom
+ // row: all lab sessions left-to-right with arrows L1→L2→L3...→L5.
+ // Both tracks are LINEAR within their level — no cross-track arrows.
+ // Horizontal alignment preserves chronology: lab i sits in the cols
+ // between visit i and visit i+1.
+ //
+ // Grid: 2*N cols (16 for 8 visits). Visit i spans cols (2i-1, 2i).
+ // Lab i (after phase i) spans cols (2i, 2i+1) — offset by 1 col so
+ // it sits between visits.
+ //
+ // Color treatment: visit = white card with dark top border (ink).
+ // Lab = inverted — oxblood/accent background with cream text. The
+ // contrast spotlights the lab track as "the differentiator content"
+ // the Cases tab exists to surface.
+ //
+ // Container is horizontally scrollable; vertical wheel gestures over
+ // the schematic remap to horizontal scroll.
  const labSteps = selectedPathway.labSteps || [];
+ const totalCols = phases.length * 2;
  const tileBase = {
  all: "unset",
  cursor: "pointer",
@@ -28599,11 +28721,13 @@ function Pathways() {
  borderRadius: "4px",
  padding: "18px 14px",
  boxSizing: "border-box",
- minHeight: "140px",
+ minHeight: "150px",
+ position: "relative",
+ zIndex: 1,
  transition: "box-shadow 140ms ease, transform 140ms ease",
  };
  const onTileEnter = (e) => {
- e.currentTarget.style.boxShadow = "0 4px 14px rgba(26, 22, 18, 0.12)";
+ e.currentTarget.style.boxShadow = "0 4px 14px rgba(26, 22, 18, 0.15)";
  e.currentTarget.style.transform = "translateY(-2px)";
  };
  const onTileLeave = (e) => {
@@ -28611,42 +28735,101 @@ function Pathways() {
  e.currentTarget.style.transform = "translateY(0)";
  };
 
+ // Compute within-track arrow segments (visit→visit, lab→lab).
+ const arrows = [];
+ if (schematicPositions) {
+ for (let i = 0; i < phases.length - 1; i++) {
+ const a = schematicPositions[`v-${i}`];
+ const b = schematicPositions[`v-${i + 1}`];
+ if (!a || !b) continue;
+ arrows.push({
+ srcX: a.x + a.width, srcY: a.y + a.height / 2,
+ dstX: b.x - 2, dstY: b.y + b.height / 2,
+ stroke: "var(--ink-soft)", marker: "pathway-arrow-ink",
+ id: `v-arrow-${i}`,
+ });
+ }
+ for (let i = 0; i < labSteps.length - 1; i++) {
+ const a = schematicPositions[`l-${i}`];
+ const b = schematicPositions[`l-${i + 1}`];
+ if (!a || !b) continue;
+ arrows.push({
+ srcX: a.x + a.width, srcY: a.y + a.height / 2,
+ dstX: b.x - 2, dstY: b.y + b.height / 2,
+ stroke: "var(--accent)", marker: "pathway-arrow-accent",
+ id: `l-arrow-${i}`,
+ });
+ }
+ }
+
  return (
- <div ref={schematicGridRef} style={{
- // Full-bleed: span the entire viewport regardless of the parent
- // container's max-width.
+ <div ref={schematicScrollRef} style={{
  position: "relative",
  width: "100vw",
  marginLeft: "calc(50% - 50vw)",
  marginRight: "calc(50% - 50vw)",
- padding: "4px 28px 24px",
- boxSizing: "border-box",
- display: "flex",
- flexWrap: "wrap",
- gap: "20px 14px",
- alignItems: "flex-start",
+ overflowX: "auto",
  marginBottom: "32px",
+ padding: "4px 28px 14px",
+ boxSizing: "border-box",
  scrollMarginTop: "12px",
  }}>
- {phases.map((phase, pi) => {
- const labIdx = labSteps.findIndex(ls => ls.after === pi);
- const lab = labIdx !== -1 ? labSteps[labIdx] : null;
- return (
- <div key={`pair-${pi}`} style={{
- display: "flex",
- flexDirection: "column",
- gap: "14px",
- flex: "1 1 260px",
- minWidth: "260px",
- maxWidth: "360px",
- }}>
- {/* Visit tile (top) */}
- <button type="button"
+ <div
+ ref={schematicGridRef}
+ style={{
+ display: "grid",
+ gridTemplateColumns: `repeat(${totalCols}, minmax(160px, 1fr))`,
+ gridTemplateRows: "auto auto",
+ gap: "44px 10px",
+ position: "relative",
+ minWidth: "fit-content",
+ }}
+ >
+ {arrows.length > 0 && (
+ <svg
+ aria-hidden="true"
+ style={{
+ position: "absolute", inset: 0,
+ width: "100%", height: "100%",
+ pointerEvents: "none",
+ zIndex: 0,
+ overflow: "visible",
+ }}
+ >
+ <defs>
+ <marker id="pathway-arrow-ink" viewBox="0 0 10 10"
+ refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+ <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink-soft)" />
+ </marker>
+ <marker id="pathway-arrow-accent" viewBox="0 0 10 10"
+ refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+ <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)" />
+ </marker>
+ </defs>
+ {arrows.map((a) => (
+ <line key={a.id}
+ x1={a.srcX} y1={a.srcY}
+ x2={a.dstX} y2={a.dstY}
+ stroke={a.stroke} strokeWidth="1.5"
+ markerEnd={`url(#${a.marker})`}
+ />
+ ))}
+ </svg>
+ )}
+ {/* Visit row (top track) — V_i spans cols (2i-1, 2i) */}
+ {phases.map((phase, pi) => (
+ <button key={`v-${pi}`} type="button"
+ ref={(el) => {
+ if (el) schematicTileRefs.current.set(`v-${pi}`, el);
+ else schematicTileRefs.current.delete(`v-${pi}`);
+ }}
  onClick={() => setPathwayPopup({ kind: "visit", phaseIndex: pi })}
  onMouseEnter={onTileEnter}
  onMouseLeave={onTileLeave}
  style={{
  ...tileBase,
+ gridColumn: `${2 * pi + 1} / span 2`,
+ gridRow: 1,
  background: "var(--card, white)",
  border: "1px solid var(--rule-soft, var(--rule))",
  borderTop: "4px solid var(--ink)",
@@ -28658,47 +28841,49 @@ function Pathways() {
  fontWeight: 700, marginBottom: "10px",
  }}>Visit {pi + 1}</div>
  <div style={{
- fontSize: "0.95rem", fontWeight: 500,
+ fontSize: "0.92rem", fontWeight: 500,
  color: "var(--ink)", lineHeight: 1.35,
  }}>{phase.label}</div>
  </button>
- {/* Lab tile (bottom) or invisible placeholder so pairs align */}
- {lab ? (
- <button type="button"
- onClick={() => setPathwayPopup({ kind: "lab", index: labIdx })}
+ ))}
+ {/* Lab row (bottom track) — L_i (after phase i) spans cols (2i+2, 2i+3) */}
+ {labSteps.map((ls, lsi) => {
+ const col = 2 * ls.after + 2;
+ if (col < 1 || col + 1 > totalCols + 1) return null;
+ return (
+ <button key={`l-${lsi}`} type="button"
+ ref={(el) => {
+ if (el) schematicTileRefs.current.set(`l-${lsi}`, el);
+ else schematicTileRefs.current.delete(`l-${lsi}`);
+ }}
+ onClick={() => setPathwayPopup({ kind: "lab", index: lsi })}
  onMouseEnter={onTileEnter}
  onMouseLeave={onTileLeave}
  style={{
  ...tileBase,
- background: "var(--paper, #FBF8F2)",
- border: "1px solid var(--rule-soft, var(--rule))",
- borderTop: "4px solid var(--accent)",
+ gridColumn: `${col} / span 2`,
+ gridRow: 2,
+ background: "var(--accent)",
+ border: "1px solid var(--accent)",
+ borderTop: "4px solid var(--ink)",
+ color: "var(--paper, #FBF8F2)",
  }}
  >
  <div style={{
  fontSize: "0.62rem", textTransform: "uppercase",
- letterSpacing: "0.16em", color: "var(--accent)",
+ letterSpacing: "0.16em",
+ color: "var(--paper, #FBF8F2)",
+ opacity: 0.75,
  fontWeight: 700, marginBottom: "10px",
  }}>Lab</div>
  <div style={{
- fontSize: "0.95rem", fontWeight: 500,
- color: "var(--ink)", lineHeight: 1.35,
- }}>{lab.title}</div>
+ fontSize: "0.92rem", fontWeight: 500,
+ color: "var(--paper, #FBF8F2)", lineHeight: 1.35,
+ }}>{ls.title}</div>
  </button>
- ) : (
- <div
- aria-hidden="true"
- style={{
- ...tileBase,
- visibility: "hidden",
- border: "1px solid transparent",
- borderTop: "4px solid transparent",
- }}
- />
- )}
- </div>
  );
  })}
+ </div>
  </div>
  );
  })()}
