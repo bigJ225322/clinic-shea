@@ -22931,8 +22931,60 @@ function renderInline(text) {
  return out;
 }
 
+// Collapsible block — used for "Issues" troubleshooting sections (and any
+// other content that's useful when you need it but clutters the chapter
+// when always-open). Renders as a clickable header with a chevron that
+// rotates when expanded. Closed by default.
+function DropdownBlock({ title, body }) {
+ const [open, setOpen] = useState(false);
+ return (
+ <div style={{
+ border: "1px solid var(--rule)",
+ borderRadius: "3px",
+ margin: "14px 0",
+ overflow: "hidden",
+ }}>
+ <button
+ type="button"
+ onClick={() => setOpen((o) => !o)}
+ aria-expanded={open}
+ style={{
+ all: "unset",
+ display: "flex", alignItems: "center", gap: "10px",
+ width: "100%", boxSizing: "border-box",
+ padding: "10px 14px", cursor: "pointer",
+ background: open ? "var(--paper, #FBF8F2)" : "transparent",
+ transition: "background 140ms ease",
+ }}
+ onMouseEnter={(e) => { if (!open) e.currentTarget.style.background = "var(--paper, #FBF8F2)"; }}
+ onMouseLeave={(e) => { if (!open) e.currentTarget.style.background = "transparent"; }}
+ >
+ <span style={{
+ fontSize: "0.78rem", textTransform: "uppercase",
+ letterSpacing: "0.08em", color: "var(--accent)",
+ fontWeight: 600, flex: 1,
+ }}>{title}</span>
+ <span aria-hidden="true" style={{
+ fontSize: "1rem", color: "var(--ink-faint)",
+ transition: "transform 160ms ease",
+ transform: open ? "rotate(180deg)" : "rotate(0deg)",
+ }}>▾</span>
+ </button>
+ {open && (
+ <div style={{
+ padding: "10px 14px 12px",
+ fontSize: "0.95rem", lineHeight: 1.55, color: "var(--ink)",
+ borderTop: "1px solid var(--rule-soft, var(--rule))",
+ }}>{renderInline(body)}</div>
+ )}
+ </div>
+ );
+}
+
 function GuideBlock({ block }) {
  switch (block.kind) {
+ case "dropdown":
+ return <DropdownBlock title={block.title} body={block.body} />;
  case "h2":
  return (
  <h3 className="serif" style={{
@@ -23147,7 +23199,7 @@ function GuideChapter({ chapter, hideHeader }) {
  e.currentTarget.style.borderColor = "var(--rule)";
  e.currentTarget.style.color = "var(--ink-faint)";
  }}
- >{allSecsCollapsed ? "Expand steps" : "Collapse steps"}</button>
+ >{allSecsCollapsed ? "Expand" : "Collapse"}</button>
  </div>
 )}
  {/* Each section: clickable header + collapsible body */}
@@ -23376,7 +23428,7 @@ const PATHWAYS = [
  label: "Conventional CD (fully edentulous)",
  description: "The two clinical inflection points are border molding at Visit 2 and the two-stage wax try-in at Visits 4–5; once processing happens, every error becomes permanent. This is the conventional sequence for a fully-edentulous patient with healed ridges — eight clinical visits and five lab blocks between. Visits 1–3 build the records, Visits 4–5 commit the esthetics and occlusion, Visits 6–8 deliver and refine.",
  phases: [
- { label: "Diagnosis + TP + diagnostic impressions", count: 1 },
+ { label: "Comp. exam + diagnostic impressions", count: 1 },
  { label: "Border molding + final impression", count: 2 },
  { label: "Wax-rim try-in + JRR + facebow + tooth selection", count: 4 },
  { label: "Anterior teeth try-in", count: 1 },
@@ -23398,7 +23450,7 @@ const PATHWAYS = [
  after: 0,
  title: "Pour diagnostic casts + fabricate custom trays",
  body: "Pour the diagnostic alginates, then build the custom trays using UIC's selective-pressure technique: one sheet of baseplate wax as the spacer with relief over the incisive papilla, mid-palatal raphe, and mandibular crest, under one sheet of Triad light-cure material.",
- detail: "Pour the alginate impressions in Type III stone, then on each cast outline the tray border in red pencil at the depth of the vestibule (to the hamular notches and vibrating line on the maxillary; to the retromolar pads on the mandibular). Draw a blue line 2 mm inside the red — the tray border itself will sit on the blue line. Mark relief areas in red: mid-palatal raphe, incisive papilla, mandibular crest.\n\nApply Vaseline to the cast, drip-block any undercuts with wax, then adapt one sheet of baseplate wax as the selective-pressure spacer. This single layer is what creates the relief space for the PVS final impression material. Critical: do NOT apply Vaseline again once the spacer is on — if you do, the spacer falls out of the tray when you remove it for border molding.\n\nAdapt one sheet of Triad light-cure material over the spacer, cure about a minute on the cast, cool, then re-cure off the cast. Finish with acrylic burs and verify frenum + muscle clearance. The maxillary tray gets a ½ × ½ × ¼ inch handle in the labial vestibule; the mandibular gets finger rests built from Triad offcuts, sitting over the residual crest and not exceeding two-thirds of the retromolar pad height.",
+ detail: "1. Pour the alginate impressions in Type III stone (microstone) to form the diagnostic casts.\n\n2. On each cast, outline the tray border in red pencil at the depth of the vestibule — to the hamular notches and vibrating line on the maxillary, to the retromolar pads on the mandibular.\n\n3. Draw a blue line 2 mm inside the red. The tray border itself sits on the blue line, leaving 2 mm of vestibular space for border-molding material. Posterior extension gets red only — no 2 mm offset there.\n\n4. Mark relief areas in red: mid-palatal raphe, incisive papilla, mandibular lingual tori, mylohyoid ridge, residual crest.\n\n5. Apply Vaseline thinly over the entire cast.\n\n6. Drip wax with a #7 spatula to block out undercuts and the marked relief areas.\n\n7. Apply a second layer of Vaseline over the block-out wax. Seals the wax to the cast and lets the spacer release later.\n\n8. Warm one sheet of baseplate wax slightly and adapt it to the cast — press the warm sheet on, do not drip molten wax. Cut along the blue line with a #11 scalpel.\n\n9. Critical: do NOT apply Vaseline again after the spacer is on. The spacer must stay inside the tray through border molding — Vaseline at this point makes it fall out at the chair.\n\n10. Press one sheet of Triad light-cure material over the spacer. Adapt to all surfaces; no air bubbles. Trim excess with a #11 scalpel along the red line.\n\n11. From Triad offcuts, build the handle (maxillary: vertical handle ½ × ½ × ¼ inch over the central incisor area, no lip impingement) and the finger rests (mandibular: bilateral in the bicuspid area, ≤ 2/3 of the retromolar pad height).\n\n12. Light-cure about 1 minute in the light chamber (400–500 nm, rotating table). Cool, then carefully remove the tray from the cast — lift off, do not pry.\n\n13. Re-cure off the cast with the intaglio side up. Polymerizes the inner surface fully.\n\n14. Finish with carbide acrylic burs on slow speed. Smooth all borders — no sharp edges. Try the tray on the cast; it should seat fully with the spacer retained inside. Confirm frenal and muscle clearance.",
  source: "Custom tray_Boxing_Technique.pdf (Tan); Custom Tray Grading Sheet 2022 — UIC selective-pressure technique",
  turnaround: "Before Visit 2",
  },

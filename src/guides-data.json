@@ -95,11 +95,11 @@
        },
        {
         "kind": "callout",
-        "title": "The horseshoe trap",
-        "body": "If your mandibular cast comes out looking like a horseshoe (no central tongue area), there is no anatomical data for the floor of the mouth and no way to plan a custom tray. **the cast will be rejected.** Always block out the tongue space before pouring, or retake the impression with alginate in the tongue area."
+        "title": "Mandibular pour tip",
+        "body": "*Put putty in the empty space on the mandibular impression before pouring with Microstone. Will make it mountable."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Patient gags:** raise chair, redirect breathing through nose, position patient slightly forward, work fast. Pre-prep with topical anesthetic spray on soft palate if persistent. **Alginate sets before tray seated:** too warm water or over-spatulation. Remake with cold water. **Impression pulls out of tray on removal:** insufficient adhesive. Re-spray next time, hold tray steady when removing. **Borders thin or absent:** tray too small / not extended. Try a bigger tray or extend with utility wax. **Voids in the palate:** didn't place finger-applied alginate before seating. Retake. **Tears on removal:** set incomplete. Wait longer (4 min minimum); verify snap test on bowl residue."
        }
@@ -224,7 +224,7 @@
         "body": "Even thickness (single Triad sheet). Handle / finger rest functional, no interference with lip / cheek movement. Spacer retained inside the tray. Frenal + muscle clearance confirmed on cast. Borders smooth, no sharp edges, no air voids. Tray inserts unobstructed on the cast."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Spacer falls out:** you Vaseline'd after step 3. Remake spacer; don't apply more Vaseline. **Triad doesn't adapt cleanly:** not warmed enough; or air pocket. Re-warm, re-adapt. **Tray won't release from cast:** insufficient block-out wax in undercuts. Remake. **Handle too tall — tray won't seat in mouth:** reduce with acrylic bur until lip closes naturally. **Borders sharp on tongue side:** over-trimmed. Smooth more, or add a thin layer of Triad and re-cure."
        }
@@ -335,7 +335,7 @@
         "body": "*\"Sharp borders are underextended borders.\"* If the green-stick comes to a thin sharp edge, you didn't reach the depth of the vestibule. Add more compound and remold."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Compound won't stick to tray:** tray wet. Dry completely; reapply. **Compound is too soft when patient moves:** didn't temper enough. Hot compound deforms instead of recording. Dip longer in 135°F water bath. **Compound is brittle / cracks during movement:** over-cooled. Re-warm briefly in flame. **Patient gags on maxillary posterior:** trim back the posterior of the tray ~2 mm before re-trying. Avoid impinging the soft palate during border molding. **Asymmetric borders L vs R:** patient's movements were uneven (e.g., one cheek pulled harder than the other). Redo the deficient side. **Tray showed through compound in a region:** needs more compound there. Add + re-mold that region."
        }
@@ -428,7 +428,7 @@
         "body": "Tray malposition (off-midline, canted) · large void in any supporting area · incorrect border length (over or under) · wrong material consistency (too thin, too thick, double-dispensed) · patient movement during set · uneven mix (base/catalyst streaks)."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**PVS sets before you can repeat movements:** work faster on seating; or use a slower PVS variant. Aim to start movements within 30 sec of seating. **Voids in palate (maxillary):** rugae vent missing or too small. Drill a larger vent (still #8 bur). **Voids over ridge:** spacer didn't get removed before adhesive. Re-make. **Patient swallows during set:** tray shifts. Re-make. Next time, redirect breathing through nose + don't talk to patient during set. **Sharp anterior border:** tray was too short in vestibule; border molding compound didn't capture depth. Re-mold green-stick anterior + retake."
        }
@@ -513,7 +513,7 @@
         ]
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Boxing wax leaks during pour:** water-test seal before pouring. Heated #7 spatula to re-seal any gaps. **Stone has bubbles / voids in cast:** not using vacuum mixer, or W:P off. Re-pour from impression. **Impression won't separate from cast:** green-stick still hard. Soften in warm water bath; gently lift. **Cast chips at edges:** separated too early (before full set). Wait 45 min minimum. **PPS too deep / too shallow:** remeasure on patient; rescribe. **Record base rocks on cast:** undercut block-out wax was insufficient. Remove, block out more, re-adapt Triad."
        }
@@ -885,7 +885,7 @@
         "body": "If you push the condyles back instead of guiding upward into the fossae, you get a posterior position that isn't the true terminal hinge. At delivery, the patient bites past your record, the bases lift, and the prosthesis fails. **The lift is soft and upward, NOT hard and back.**"
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Patient bites past the record:** VDO setting was off or patient closed too fast. Retake with slower guided closure. **Record is smeared / double:** patient moved during set or you released the bimanual grip. Retake; keep hands on chin throughout. **V-points didn't capture:** not enough Regisil in the notches, or wax rim still mobile. Re-cut deeper V-notches and retake. **Patient can't relax the jaw:** common at first. Have patient stick out tongue, swallow, then close — resets neuromuscular pattern. **Patient consistently bites in eccentric / off-midline:** repeat practice closures with stronger upward lift on the inferior border. Faculty assist if persistent."
        }
@@ -1182,7 +1182,7 @@
         ]
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Maxillary anteriors look crooked from the front:** midline is off. Pull the central, re-mark midline on the rim from the philtrum reference, reset. **Mandibular anteriors hit in centric:** they're too tall. Warm the wax around the cervical and reseat them lower — do not grind the incisal edges (changes appearance, doesn't fix the cantilever). **Denture rocks during posterior setup:** you set a tooth buccal to the crest. Pull it, re-mark the crest, reset on-crest. **Second molar sits on retromolar incline:** shorten the distal extension — do not climb the incline. The 2nd molar is the most dispensable tooth in the setup. **Wax rim cracking during torch use:** wax is too cold or the rim is too thin. Add baseplate wax to thicken before reheating. **Tooth keeps drifting B or L after pressing:** the wax window is too wide. Trim wax to a tighter window before reseating — the wax should grip the tooth on all sides."
        },
@@ -1489,7 +1489,7 @@
         "body": "Patient's name in each prosthesis. Acrylic shade. Lab remount procedure. Remount jig (the plaster key). Clinical remount casts. Finish and polish. Instruction to **remount the maxillary cast to the articulator using the clinical remount jig**."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Trial denture rocks on insertion:** base doesn't fit. Check for sharp wax in the periphery, frenum impingement, or PPS too thick. PIP-equivalent (mark with marker, look for blanching, relieve) chairside or send back to the lab. **Patient says \"teeth look too big\":** tooth mould was wrong, or vertical proportion (gingival height) is short. Show photos pre-extraction if available. Offer to remake with smaller mould (rare; usually patient adjusts after delivery). **VDO is off by >2 mm:** remake the mandibular wax rim at corrected VDO and re-record CR. Don't try to fudge it — processed dentures with wrong VDO are unwearable. **CR doesn't match the new record:** remount mandibular cast on new CR before processing. Common cause: patient bit into a comfortable habitual posture at JR visit rather than true CR. **Patient hates the look:** *do not send to processing.* Schedule a second try-in. Identify the specific complaint (too white, too straight, midline off, too short, etc.). One re-try-in is far cheaper than a remake. **Wax denture fractures during try-in:** repair with sticky wax if minor, otherwise return to lab for relining the base. Don't proceed with a fractured base."
        }
@@ -1655,7 +1655,7 @@
         "body": "**Tooth positions match the approved wax try-in** — if a tooth shifted during processing, the lab needs to repair before delivery. **VDO matches the lab remount equilibration.** Confirm the incisal pin still touches the table. **Centric contacts even bilaterally** (articulating paper test on the articulator before unmounting). **No porosity** in the acrylic — especially in the palate. White cloudy patches = porosity = remake. **No tooth fractures.** **Borders smooth, rounded, no sharp edges.** Run thumb pad around every flange. **Cameo polished, intaglio matte.** **PPS preserved on maxillary intaglio.**"
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Porosity in the cured acrylic:** insufficient pressure during cure, or thermal shock during cool-down. Most porosity is in the palate (thickest section). Small porosity → smooth and polish. Large porosity → remake. **Tooth fell out of the upper-half stone after wax elimination:** reseat carefully using a tiny dot of sticky wax on the cast position before closing the flask — the new acrylic will bond the tooth in place. **Denture won't release from the stone after deflasking:** tin-foil substitute was inadequate. Soak in warm water, gentle pry with the plaster knife. Avoid hitting the acrylic directly. **VDO opens by >3 mm at the lab remount:** the closure ring wasn't tight enough during injection — acrylic flashed at the seam. Equilibrate to recover what you can; if >3 mm, remake. **Patient's denture name label is missing or wrong:** attach a new label before final polish — Patient name required in every removable prosthesis (forensic identification + chain of custody). **Cameo polish looks streaky:** contamination on the rag wheel. Re-pumice, then re-polish with clean compound on a fresh wheel."
        }
@@ -2344,7 +2344,7 @@
         "body": "*\"Do not remove until 24-hour follow-up. Controls swelling — bandage effect.\"* The denture acts as a splint over the extraction sockets, applying gentle pressure and reducing post-operative edema. Removing it early risks tissue collapse and loss of fit."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Master impression locks on standing teeth at removal:** tooth undercuts weren't blocked enough in tray fabrication, or removal force was too slow/rocking. Light body trapped in undercut tears at removal. Re-pack cord, re-impress with stronger snap pull along the path of withdrawal. **Master cast fractures during cast surgery:** stone was Type III not Type IV, or wasn't given full set time. Re-pour from impression. **Cast surgery sockets don't match the post-extraction reality:** ridge resorbed more aggressively than the cast simulation predicted. Tissue conditioner reline at the first post-op visit to take up the actual ridge contour. **Immediate denture won't seat at day-of-surgery delivery:** usually swelling. Trim intaglio sharp spots with acrylic bur; use denture adhesive if needed; the denture will fit better as swelling reduces over 24–48 hours. If it absolutely cannot seat: reline chairside with tissue conditioner. **Patient pulls denture out at home in the first 24 hours:** ridge starts resorbing in patterns that no longer match the cast. Reline ASAP with tissue conditioner at the 24-hour visit (or earlier). Re-educate on the 24-hour rule. **Anterior tooth setup doesn't match what the patient looks like in pre-op photos:** setup ignored shade/mold reference or set anteriors to wrong midline. Minor differences can be ground chairside; major mismatches require remaking. For IID this is acceptable since the definitive CD will be made at 6–12 mo with a full try-in. **VDO is wrong at delivery:** retained posterior teeth weren't preserved during the first surgery (Stage 1c). Without posterior occlusal stops, VDO drifted during healing. May need remake."
        },
@@ -3644,7 +3644,7 @@
         "body": "Hold the articulator at the centric stop — the natural teeth on both casts should touch each other simultaneously, matching the patient's MI. If they don't, the bite reg was wrong, the maxillary was mounted off, or both. **Don't proceed to surveying / design until the mounting is correct.**"
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Cast rocks on bite-fork registration during Step 1:** the bite-fork bite registration was deformed or the cast doesn't fit. Re-do the face-bow record on the patient if possible; if not, mount mandibular first with a hand-articulated approach and accept the loss of face-bow data. **Mounting stone too runny:** you used too much water. Pour out, remix at correct ratio. Runny stone slumps and the casts shift before set. **Mounting stone too thick:** too little water; stone doesn't bond well to cast or plate. Same fix — pour out, remix. **Natural teeth don't simultaneously contact at centric stop after Step 3:** bite registration was off or the mandibular cast mounted at a slightly different position than the patient's MI. Re-take the bite reg on the patient and re-mount the mandibular cast (the maxillary mount via face-bow stays). **One side of the cast lifted off the mounting plate during set:** insufficient stone bonding. Hot-glue the cast to a fresh stone mix and re-mount that side only. **Articulator opens with a click or grinding sound:** excess mounting stone has gotten into the condylar elements. Clean carefully with a small brush + alcohol. If stone has set in the condyle, the articulator needs servicing."
        }
@@ -3811,7 +3811,7 @@
         "body": "**Survey line** = height of contour at the chosen path of insertion. Above the line = suprabulge area (clasp origins live here). Below the line = infrabulge area (clasp tips engage undercuts here). **Usable undercut** = 0.01\" for cast or 0.02\" for wrought-wire, in the gingival 1/3, on the surface AWAY from the rest (so the clasp tip approaches from the opposite direction the rest sits). **No usable undercut** = you need to add composite to create one, OR change the path of insertion, OR plan a survey crown."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Cast won't stay flat on the platform:** bottom of the cast wasn't trimmed flat. Trim flat on the model trimmer; re-mount. **Graphite tip leaves no mark:** the lead is dull or the cast surface is wet. Sharpen the lead; dry the cast. **Multiple potential paths of insertion all look equivalent:** consult faculty. There's almost always one path that's better — usually the one that engages the most desirable undercuts and provides better esthetics for clasps. **No usable undercut on a key abutment after exhausting tilts:** document on Lab 4 form, then either (1) plan composite addition (etch + bond + composite to create 0.01\" undercut on the buccal cervical 1/3), (2) plan a survey crown, or (3) use a different abutment with a different clasp type. Discuss with faculty. **Tripod dots get smudged before transfer:** re-scribe deeper / darker. Tripod marks are critical — the master cast survey depends on them. **Block-out wax doesn't shave cleanly with the trimmer:** wax was too soft or too hard. Reheat to a soft (not liquid) consistency; reapply; try again."
        }
@@ -3972,7 +3972,7 @@
         "body": "Without them, the tray floats on the impression material — every time you seat it, it lands at a slightly different depth, and your impression captures slightly different anatomy. With three stops, the tray seats consistently on the same three points each time. Tissue stops should be small (3 mm × 3 mm) — just enough resin to contact the cast through the wax. Too large and they interfere with impression material flow."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Tray rocks on the cast after curing:** tissue stops weren't seated evenly. Re-fabricate with attention to pressing all three (or more) stop openings firmly during Step 5. **Tray doesn't release from cast after cure:** didn't apply separator to the cast, or undercuts weren't blocked. Soak in warm water 5 min, pry gently with the Le Cron. Block out remaining undercuts before retrying. **Borders extended past the sulcus (too long):** trim back with the scalpel or acrylic bur. Easier to over-trim and add green stick later (border molding) than to leave the patient sore. **Borders fall short (too short):** add Triad to the existing tray and re-cure. Don't deliver a tray that misses the functional sulcus — the master impression will miss the same anatomy. **Handle breaks off when stress-tested:** the Triad bond wasn't fully cured at the handle joint. Re-attach with fresh Triad and re-cure under the light for 2 min. **Spacer wax sticks to the tray after cure:** normal — remove with the Le Cron and warm water. The tray intaglio should be smooth Triad with the tissue stop bumps visible."
        }
@@ -4280,7 +4280,7 @@
         "body": "Ask the laboratory to send back the full-contour wax-up of the survey crown for you to make changes if necessary. **Verify contours of the survey crown(s) using the surveyor when they're returned from the lab BEFORE cementation.** Evaluate for: POSITIVE rest seats, ideal height of contour (HOC) + axial undercuts, ideal guide plane(s)."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Reduction was too shallow at the rest seat:** the lab will report inadequate metal thickness. Re-prep at the next visit (deepen rest seat area by 0.5 mm). **Reduction was too deep:** over-prepped, no fix needed but margins may need to extend further apically for adequate retention. **Provisional fractures at the rest seat:** patient was biting hard. Re-make the provisional with more occlusal clearance + reinforce with wire mesh if needed. **Wax-up arrives without the rest seat:** lab missed it on the Rx. Send back; do not approve. **HOC is in the wrong location on the wax-up:** survey the wax-up on your surveyor, mark the desired HOC location in pencil on the cast, send back. **Final crown returns with no usable undercut:** the lab made the contour too straight. You can add composite to the cemented crown at the gingival 1/3 to create the undercut chairside (etch the porcelain or roughen the metal, bond, composite). Discuss with faculty before adjusting."
        }
@@ -4491,7 +4491,7 @@
         "body": "**PIP** reads soft-tissue contact under acrylic. **Disclosing wax** reads metal-on-tooth contact — thin layer of green wax painted on the framework's tissue surface, seated; metal contact wipes the wax through to the metal. Use disclosing wax to verify framework seating on natural teeth (rest seats, guide planes); use PIP to verify acrylic-base seating on tissue."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**PIP smears around the patient's mouth and onto lips/cheeks:** you skipped the Mizzy spray or sprayed too lightly. Wipe clean, restart with proper Mizzy application. **PIP shows no clear pattern (uniform pink):** too thick. Re-apply thinner. **PIP shows no pattern (mostly bare acrylic):** too thin. Re-apply thicker. **Every iteration shows the same pressure spot in the same location:** deeper issue. Could be a sharp internal feature in the acrylic, or a tissue prominence not captured at impression. Investigate intraorally; if a torus or ridge undercut is the cause, consider relief area in the acrylic. **Patient reports pain but PIP shows nothing:** the issue may be a sharp acrylic edge on the periphery (not the intaglio). Run a thumb pad around all borders + look for sharp acrylic at the labial / buccal flange edge. Smooth with the acrylic bur. **Removed too much acrylic, RPD now loose:** reline the affected area chairside with chairside reline material (e.g., Coe-Soft or hard chairside reline acrylic), or send to the lab for hard reline. Easier to over-relieve and reline than to deliver an uncomfortable partial. **Excessive adjustments needed (>5 iterations):** the impression or framework fit is off. Document, consult faculty — may need to re-impress or refabricate."
        }
@@ -4682,7 +4682,7 @@
         "body": "**B**uccal of **U**ppers + **L**ingual of **L**owers are the non-centric-holding cusps. These are the safe cusps to adjust for excursive interferences. The centric-holding cusps (maxillary lingual + mandibular buccal) are off-limits for adjustment — reducing them collapses VDO."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Patient bites into the RPD before the natural teeth contact:** denture teeth are too tall. Adjust until natural + denture contact simultaneously. **Natural teeth contact but RPD denture teeth don't reach:** denture teeth are too short, or the RPD isn't fully seated. Verify seating; if seated, the lab built the denture teeth short — may need to add material at the lab. **One RPD interferes with the other:** common for bilateral cases. Adjust the second RPD's denture teeth (since the first was adjusted to match natural occlusion first). **Excursive interferences from the canines on the RPD:** if canine guidance is provided by an RPD denture tooth, adjust the disclusive surface (lingual incline of maxillary canine, buccal incline of mandibular canine) — BULL rule. **Patient says it feels off but you can't find anything:** get the patient to localize. Sometimes the issue is on the opposite side (cross-arch interference). Mark teeth on both sides; let the patient close in MI and trace where their tongue feels resistance. **Adjustment marks confirm framework metal contact:** stop. Disclosing wax check; if confirmed, send the RPD back to the lab for rest-seat depth correction. Never grind a Co-Cr framework chairside."
        }
@@ -6591,7 +6591,7 @@
         ]
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Fit Checker shows uniform thin but framework still rocks:** the seating is fine but the prep itself has a problem — faculty assist. **Patient says \"feels weird\" on bite:** the framework may be impinging the lateral wall of an adjacent tooth. Test by removing the adjacent contact with a thin disc on the framework proximal — does it fit then? If yes, the contact was the issue. **Connector area is too thin:** remake. Below 2 mm height for PFM FPD = fracture risk. Don't accept the framework. **You over-adjust:** small adjustments only. If you've reduced >0.5 mm and still don't have closure, faculty assist or remake."
        },
@@ -6876,7 +6876,7 @@
         ]
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Restoration doesn't seat fully:** high interproximal contact or high spot in intaglio. Don't force. Adjust interproximal first (least likely to compromise fit), then re-check. **Cement set faster than expected:** faculty assist. Plastic scaler for ceramic; metal explorer for non-bonded. Pick excess off slowly. **You see residual cement on the post-cement radiograph:** mandatory removal. Explorer + scaler. Re-radiograph after. **Crown rocks after cement set:** incomplete seating during cementation, or marginal mismatch. May need to remove + redo. Faculty. **Patient gags during impression-tray try-in cementation:** raise the chair, redirect breathing, work fast. **Color looks wrong after cementation:** cement shade mismatched to block + stump. For e.max, color = block + cement + remaining tooth + stains. Live with it or remake (rare)."
        },
@@ -7634,7 +7634,7 @@
         "text": "Conventional — follow. After cementation, the new crown becomes the abutment for the RPD design that was planned around it. **Try in the existing or interim RPD against the cemented crown** to verify framework seating before the patient is discharged."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Reduction was too shallow at the rest seat:** the lab will report inadequate metal thickness. Re-prep at the next visit (deepen the rest seat area by 0.5 mm). **Provisional fractures at the rest seat:** patient was biting hard. Re-make with more occlusal clearance + wire mesh reinforcement. **Wax-up arrives without the rest seat:** lab missed it on the Rx. Send back; do not approve. **HOC is in the wrong location on the wax-up:** survey on your surveyor, mark the desired HOC location in pencil on the cast, send back. **Final crown returns with no usable undercut:** you can add composite to the cemented crown at the gingival 1/3 chairside (etch the porcelain or roughen the metal, bond, composite). Discuss with faculty before adjusting. **Patient's existing RPD doesn't fit on the new crown:** the framework was designed for the natural tooth contour, not the crown contour. If you didn't plan an RPD-design-first workflow, you may need to refabricate the RPD. This is why pre-prep planning is mandatory."
        }
@@ -8338,7 +8338,7 @@
         "body": "**Semi-adjustable advantage:** closer replication of patient movement than fully fixed. **Fixed determinants (Denar / Whip Mix):** intercondylar distance, immediate side shift. **Adjustable:** condylar inclination, progressive side shift, incisal guidance, Bennett. **Condylar inclination set by:** protrusive bite record. **Greater condylar inclination →** taller posterior cusps."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Casts rock on mounting plate after stone sets:** insufficient stone or retention grooves were inadequate. Hot-glue the cast to a fresh stone mix and re-mount that arch only. **Pin access holes filled with stone:** die can't be removed. Drill out the stone carefully with a small bur, or repour the die from the impression. **Articulator opens with grinding sound:** stone splatter got into condylar element. Clean with small brush + alcohol; if stone has set in condyle, the articulator needs servicing. **Shimstock holds in places that shouldn't contact clinically:** casts were mounted with the wrong bite registration or the casts have stone bubbles on the occlusal. Inspect and re-trim or re-mount. **Stone too runny:** too much water; pour out, remix at proper ratio. Runny stone slumps and the cast shifts. **Stone too thick:** too little water; doesn't bond well. Same fix — remix. **Centric latch not engaged during mount:** common cause of mounting in the wrong relationship. Always verify the centric latch is locked before applying stone."
        }
@@ -8454,7 +8454,7 @@
         "text": "Trimming **away from** the finish line to expose it for the lab — leaves a small ditch at the margin that the wax-up will fill cleanly. **This is correct technique.** Over-trimming destroys the finish line itself — that's the error."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Bur touched the finish line:** the margin is damaged. Lab can attempt to repair with stone or recommend remaking the die (re-pour from impression). **Die won't release cleanly:** re-trim proximal walls; check the pin angulation. **Finish line was already poorly captured in the impression:** not a trimming issue. Retake the impression at the next clinical visit. **Stone chips at the margin during trimming:** die may have been undercured (poured too soon or wrong W:P). Re-pour from impression."
        },
@@ -8633,7 +8633,7 @@
         "body": "**Inlay alloy?** High-noble (good ductility for burnishing margins, biocompatible, corrosion-resistant). **Long-span FPD alloy?** Base metal alloy (highest yield strength + elastic modulus for rigidity). **Grain refining elements (Ir, Ru, Rh, Re)?** Improve tensile strength + elongation ~30%; less effect on hardness and yield. **Base alloy disadvantages?** Corrosion, allergy, casting difficulty, finishing difficulty."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Wax-up is too bulky:** over-contoured = bulky crown = plaque trap. Use calipers to check thickness; should match adjacent teeth. **Wax-up has open contacts:** add inlay wax to the contact areas; verify floss-tug at the same firmness as the contralateral side. **Cut-back leaves coping <0.2 mm:** coping will distort during porcelain firing. Re-wax to add bulk or remake. **Sprue attached to a margin or visible surface:** grind off after casting will leave a visible defect. Position sprue away from margins, contacts, esthetic surfaces. **Investment has air voids near the wax pattern:** visible as bumps on the casting. Re-invest with better vacuum mixing + vibration. **Casting has incomplete margins:** alloy didn't reach all areas of the mold cavity. Causes: ring cooled before casting, sprue too thin (alloy froze before filling), insufficient centrifuge force. Re-cast. **Casting has porosity:** mold was contaminated (residual wax), alloy was overheated (gas absorption), or centrifuge had air pockets. Re-cast. **Casting fits the die but margins are open clinically:** impression was inaccurate. Re-impress at next clinical visit. **Casting won't seat on the die:** investment expansion didn't match the alloy shrinkage. Acid-etch the intaglio briefly + try again; if persistent, remake with adjusted W:P ratio."
        }
@@ -8850,7 +8850,7 @@
         "body": "**Bisque bake indicated:** 4+ unit cases — adjustments without breaking glaze, minimize refire. **Firing processes:** densification (volume reduction from particles fusing) + sintering (porcelain particles fuse at high temp). **Over-firing:** devitrification → increased CTE and opacity, compromised bond. **FPD evaluation sequence:** interproximal (floss not shred) → margins (explorer undetectable) → pontic (modified ridge lap, floss under) → occlusion (MIP even, protrusive shared, lateral excursive with disclusion) → contours."
        },
        {
-        "kind": "callout",
+        "kind": "dropdown",
         "title": "Issues",
         "body": "**Opaque shows metal through:** too thin. Apply a second opaque layer + refire. Greater than 2 opaque firings risks devitrification — remake if persistent. **Porcelain has cracks after firing:** rapid cooling. Re-bisque-bake with slower cooling schedule. If cracks persist after refire, remake. **Color too dark after final firing:** over-stained or wrong dentin shade. Polish off the stain layer + apply correction porcelain in lighter shade. **Color too light after final firing:** under-stained. Add chroma modifier stain in a single application + glaze fire. **Margins lifted from metal during firing:** incompatible CTE between alloy and porcelain — should have been caught at material selection. Remake with matched system. **Porcelain fractures during final contouring with diamond burs:** too aggressive grinding or thin porcelain. Reduce in thinner increments at slower speed. **Bisque bake try-in shows occlusion is off:** adjust chairside with red-stripe diamond (porcelain is still soft at bisque stage). Send back to lab with notes for glaze firing. **Metal collar has porosity after polishing:** casting porosity exposed by polishing. Fill with cervical porcelain + refire if possible, or remake if extensive."
        },
