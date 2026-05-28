@@ -28721,7 +28721,7 @@ function Pathways() {
  borderRadius: "4px",
  padding: "18px 14px",
  boxSizing: "border-box",
- minHeight: "150px",
+ minHeight: "128px",
  position: "relative",
  zIndex: 1,
  transition: "box-shadow 140ms ease, transform 140ms ease",
@@ -28789,20 +28789,16 @@ function Pathways() {
  // the main flow, tethered to the LAST chronological visit by a long
  // dashed arrow that signals "downstream-only, not part of fabrication."
  const branches = selectedPathway.branches || [];
- // Branches sit on the LAST main row (the lane's lab row), tucked off
- // the chronological end as small dashed squares. Putting them on the
- // same row as the final lab keeps them physically close to V_last
- // (the last clinical visit), which is the conceptual "exit point"
- // for these downstream maintenance procedures. The dashed border +
- // dashed arrow signal that they branch off the main flow.
+ // Branches render in a centered FLEX cluster below V_last (the final
+ // clinical visit). The cluster occupies the same grid column V_last
+ // does, on the lane's lab row, so the three small squares sit
+ // directly under V_last with even horizontal spacing. They're
+ // independent issues — no arrows between them, but the dashed arrow
+ // from V_last fans out to all three.
+ const lastMain = allPlacements[allPlacements.length - 1];
  const branchRow = numLanes * 2;
- const branchPlacements = branches.map((b, idx) => ({
+ const branchPlacements = branches.map((b) => ({
  ...b,
- // Cluster at the chronological-end side of the last lane. The last
- // lane is RTL, so its chronological end is at the LEFT of the grid
- // (cols 1, 2, 3 sit just under V_last at col 2-3).
- gridCol: idx + 1,
- gridRow: branchRow,
  key: `branch-${b.id}`,
  }));
 
@@ -28856,38 +28852,23 @@ function Pathways() {
  }
  arrows.push({ srcX, srcY, dstX, dstY, id: `arrow-${i}` });
  }
- // Branch arrows — all dashed. The first one drops from the last main
- // flow tile (the final clinical visit) into the first branch tile,
- // signaling "this is where the main flow exits into downstream
- // maintenance." Subsequent dashed lines chain the branch squares
- // together so they read as one connected maintenance cluster rather
- // than three orphan tiles.
- if (branchPlacements.length > 0) {
- const lastMain = allPlacements[allPlacements.length - 1];
- const firstBranch = branchPlacements[0];
- const a = lastMain && schematicPositions[lastMain.key];
- const b = firstBranch && schematicPositions[firstBranch.key];
- if (a && b) {
+ // Branch arrows — all dashed, fanning out from the last main-flow
+ // tile (V_last) to EACH branch independently. No arrows between
+ // branches; they're independent downstream concerns, not a sequence.
+ if (branchPlacements.length > 0 && lastMain) {
+ const a = schematicPositions[lastMain.key];
+ if (a) {
+ branchPlacements.forEach((branch, idx) => {
+ const b = schematicPositions[branch.key];
+ if (!b) return;
  arrows.push({
  srcX: a.x + a.width / 2,
  srcY: a.y + a.height,
  dstX: b.x + b.width / 2,
  dstY: b.y - ARROW_OFFSET,
- id: "branch-arrow",
+ id: `branch-arrow-${idx}`,
  dashed: true,
  });
- }
- for (let i = 0; i < branchPlacements.length - 1; i++) {
- const src = schematicPositions[branchPlacements[i].key];
- const dst = schematicPositions[branchPlacements[i + 1].key];
- if (!src || !dst) continue;
- arrows.push({
- srcX: src.x + src.width,
- srcY: src.y + src.height / 2,
- dstX: dst.x - ARROW_OFFSET,
- dstY: dst.y + dst.height / 2,
- id: `branch-chain-${i}`,
- dashed: true,
  });
  }
  }
@@ -28909,7 +28890,7 @@ function Pathways() {
  ref={schematicGridRef}
  style={{
  display: "grid",
- gridTemplateColumns: `repeat(${maxLaneCols}, minmax(140px, 1fr))`,
+ gridTemplateColumns: `repeat(${maxLaneCols}, minmax(118px, 1fr))`,
  gridTemplateRows: `repeat(${numLanes * 2}, auto)`,
  gap: "44px 10px",
  position: "relative",
@@ -28930,17 +28911,21 @@ function Pathways() {
  <defs>
  <marker id="pathway-arrow-head" viewBox="0 0 10 10"
  refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
- <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink-soft)" />
+ <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink)" />
+ </marker>
+ <marker id="pathway-arrow-head-dashed" viewBox="0 0 10 10"
+ refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+ <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink-faint)" />
  </marker>
  </defs>
  {arrows.map((a) => (
  <line key={a.id}
  x1={a.srcX} y1={a.srcY}
  x2={a.dstX} y2={a.dstY}
- stroke={a.dashed ? "var(--ink-faint)" : "var(--ink-soft)"}
- strokeWidth="1.5"
+ stroke={a.dashed ? "var(--ink-faint)" : "var(--ink)"}
+ strokeWidth={a.dashed ? "1.5" : "2"}
  strokeDasharray={a.dashed ? "6 5" : undefined}
- markerEnd="url(#pathway-arrow-head)"
+ markerEnd={a.dashed ? "url(#pathway-arrow-head-dashed)" : "url(#pathway-arrow-head)"}
  />
  ))}
  </svg>
@@ -28994,6 +28979,18 @@ function Pathways() {
  </button>
  );
  })}
+ {branchPlacements.length > 0 && lastMain && (
+ <div style={{
+ // Cluster lives in the same grid column as V_last so the three
+ // squares sit directly under it, evenly spaced.
+ gridColumn: `${lastMain.gridCol} / span 2`,
+ gridRow: branchRow,
+ display: "flex",
+ justifyContent: "space-evenly",
+ alignItems: "flex-start",
+ gap: "10px",
+ paddingTop: "8px",
+ }}>
  {branchPlacements.map((branch, bi) => {
  const isSourceTile = pathwayPopup &&
  pathwayPopup.kind === "branch" && pathwayPopup.index === bi;
@@ -29007,27 +29004,33 @@ function Pathways() {
  onMouseEnter={onTileEnter}
  onMouseLeave={onTileLeave}
  style={{
- ...tileBase,
- gridColumn: `${branch.gridCol} / span 1`,
- gridRow: branch.gridRow,
+ all: "unset",
+ boxSizing: "border-box",
+ cursor: "pointer",
+ width: "62px",
+ height: "62px",
  background: "var(--card, white)",
  border: "1px dashed var(--ink-faint)",
- borderTop: "1px dashed var(--ink-faint)",
+ borderRadius: "4px",
+ padding: "6px",
+ display: "flex",
+ alignItems: "center",
+ justifyContent: "center",
+ textAlign: "center",
+ fontSize: "0.58rem",
+ fontWeight: 500,
  color: "var(--ink-soft)",
- minHeight: "0",
- aspectRatio: "1 / 1",
- padding: "8px 8px",
- alignSelf: "start",
+ lineHeight: 1.2,
+ transition: "box-shadow 140ms ease, transform 140ms ease",
  visibility: isSourceTile ? "hidden" : "visible",
  }}
- >
- <div style={{
- fontSize: "0.7rem", fontWeight: 500,
- color: "var(--ink-soft)", lineHeight: 1.25,
- }}>{branch.label}</div>
- </button>
+ onFocus={(e) => { e.currentTarget.style.outline = "1px solid var(--accent)"; }}
+ onBlur={(e) => { e.currentTarget.style.outline = "none"; }}
+ >{branch.label}</button>
  );
  })}
+ </div>
+ )}
  </div>
  </div>
  );
