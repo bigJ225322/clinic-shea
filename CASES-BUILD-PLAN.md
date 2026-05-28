@@ -229,22 +229,59 @@ this pattern continues with real pathways — the test/throwaway phase
 ends.
 
 ### Step 3 — Build `cd-conventional` (commit 3)
-**This is the first real pathway.** Read sequentially:
+**This is the first real pathway.** Read sequentially.
 
-Required UIC PDFs (located in `/Users/jakeshea/Desktop/HY Folders/Dentistry Files/01 Clinical Reference/Complete Dentures/ALL CD FILES/`):
+**Canonical visit structure (locked in 2026-05-27):** 8 clinical visits + 5
+lab blocks, per Swade page 80. Try-in is **two separate appointments**
+(anterior try-in then posterior try-in) — not one. Do not collapse them.
 
-| Lab step it covers | PDF |
+```
+Visit 1 — Dx + TP + diagnostic impressions
+   ↓ Lab #1 — pour diagnostic casts, fabricate custom trays
+Visit 2 — Border molding + final impression
+   ↓ Lab #2 — box & pour master casts, fabricate record bases + wax rims
+Visit 3 — Wax-rim try-in + JRR + facebow + tooth selection
+   ↓ Lab #3 — mount master casts (max via facebow, mand via JRR), set anterior teeth
+Visit 4 — Anterior teeth try-in
+   ↓ Lab #4 — set posterior teeth
+Visit 5 — Posterior teeth try-in
+   ↓ Lab #5 — final wax contouring + festoon + invest + process + deflask + finish
+Visit 6 — Delivery
+Visit 7 — 24-hour follow-up
+Visit 8 — 1-week follow-up
+```
+
+**Sources allowed (primary UIC documents only):** located in
+`/Users/jakeshea/Documents/Dentistry Files/ALL CD FILES/`.
+
+| Lab block it covers | UIC source PDFs (slide decks / worksheets / grading sheets) |
 |---|---|
-| Diagnostic impressions + custom tray fabrication | `Custom tray_Boxing_ Technique.pdf`, `Boxing and Pouring(1).pdf`, `Dental Stones.pdf` (Phase 1 FPD folder) |
-| Border molding + final impression | `DAOB Removable Prosth - Final Impression - SALARI-Final.pdf`, `Anatomy of the edentoulus oral cavity, Posterior palatal seal _Dr. Obrez_.pdf`, `Vibrating line and posterior palatal seal area(1).pdf` |
-| Master cast + record bases + wax rims | `Record Base & Wax Rim - Reminders.pdf`, `Record Bases Grading Sheet_2022.pdf` |
-| Articulator setup + facebow + mounting | `Articulator+Facebow.pdf`, `Mark300-Inst_07141.pdf`, `Jaw Relation Records copy.pdf` |
-| Tooth selection + setup | `Chapter 12_Tooth Arrangement.pdf`, `Anterior teeth set up-Technique.pdf`, `Monoplane Set up Grading_2024.pdf`, `Monoplane-Balancing ramp set up_2021.pdf`, `Denture occlusion and articulation, Hanau's quint - Dr. Obrez.pdf` |
-| Wax try-in | `Clinical Evaluation of the Trial Denture_2025.pdf`, `24_Final_wax_contouring_UIC(1).pdf` |
-| Processing | `Processing+Festooning.pdf`, `26_Denture_processing(1).pdf` |
-| Delivery | `Complete Denture Delivery and follow-up.pdf`, `Delivery of Final Denture(2).pdf` |
-| Comprehensive guide | `Comprehensive CD Guide.docx` (read this first for the overarching framework) |
-| Weekly lab structure | `Week 2_Lab session.pdf`, `Week 3_Lab Exercise.pdf`, `Week 4_Lab session(3).pdf`, `Week 6_Lab Exercise.pdf`, `Week 7_Lab session(1)_2021.pdf`, `Week 14_Lab Exercise_2022.pdf` |
+| Visit 1 (clinical) + Lab #1 (diagnostic casts + custom trays) | `Custom tray_Boxing_ Technique.pdf`, `Boxing and Pouring(1).pdf`, `Custom Tray Grading Sheet_2022.pdf` |
+| Visit 2 (clinical) + Lab #2 (master casts + record bases + wax rims) | `DAOB Removable Prosth - Final Impression - SALARI-Final.pdf`, `Vibrating line and posterior palatal seal area(1).pdf`, `Anatomy of the edentoulus oral cavity, Posterior palatal seal _Dr. Obrez_.pdf`, `Record Base & Wax Rim - Reminders (1).pdf`, `Record Bases Grading Sheet_2022.pdf` |
+| Visit 3 (clinical) + Lab #3 (mounting + anterior tooth setup) | `Articulator+Facebow.pdf`, `Jaw Relation Records copy (1).pdf`, `Anterior teeth set up-Technique.pdf` |
+| Visit 4 (anterior try-in) | `Clinical Evaluation of the Trial Denture_2025.pdf` |
+| Lab #4 (posterior tooth setup) | `Monoplane Set up Grading_2024.pdf`, `Monoplane-Balancing ramp set up_2021.pdf`, `Denture occlusion and articulation, Hanau's quint - Dr. Obrez.pdf`, `33 Degree Teeth Set-up (Bilateral Balanced Articulation) Grading Sheeet_2024.pdf` |
+| Visit 5 (posterior try-in) | `Clinical Evaluation of the Trial Denture_2025.pdf` |
+| Lab #5 (final wax + processing) | `24_Final_wax_contouring_UIC(1).pdf`, `Processing+Festooning.pdf`, `26_Denture_processing(1).pdf` |
+| Visit 6 (delivery) | `Complete Denture Delivery and follow-up.pdf`, `Delivery of Final Denture(2).pdf` |
+| Visits 7–8 (follow-ups) | `Complete Denture Delivery and follow-up.pdf` (follow-up section) |
+
+**Explicitly disqualified for cd-conventional:**
+- `"Comprehensive CD Guide".docx` — disqualified compiled guide
+- `CD Comprehensive Guide.html` — disqualified compiled guide
+- `CD Comprehensive Appointment Guide (UIC).pdf` — derived from the
+  disqualified compiled guide despite the "UIC" filename suffix
+- `CD Comprehensive Guide — Deep Dives (UIC).pdf` — same
+- Any `.docx` content from the folder
+
+**Borderline (ASK USER before using):**
+- `Mark300-Inst_07141.pdf` — Whip Mix manufacturer instruction manual
+- `TruExpression Mould Chart_Literature_EN.pdf` — Dentsply commercial mould chart
+- `facebow_tech_spec_gen_lr1 2.pdf` — manufacturer tech spec
+- `Chapter 12_Tooth Arrangement.pdf` — likely a textbook chapter, not a UIC lecture
+- `denture base materials_ 2024.pdf` — author/origin unclear
+- `Edentulous Anatomy & Support Areas_1_.pdf` — likely UIC presentation but verify
+- `Treatment planning.pdf` — generic name, verify it's a UIC lecture not a compilation
 
 **Per-pathway build recipe** (apply this template):
 
@@ -574,6 +611,20 @@ Every keyDecision and labStep body must trace to one of:
 
 The audit pass on the legacy PATHWAYS array surfaced patterns I introduced
 across many iterations that we explicitly do not repeat:
+
+- ❌ **Recovering content from the legacy `PATHWAYS_LEGACY_2026_05` array.**
+  The legacy entries carry accumulated drift from many iterations of
+  fabricated content and old-logic mistakes. **Complete rebuild from primary
+  UIC sources only.** Don't even check what's "reusable" — that's exactly
+  how the drift survives the rebuild. (User directive 2026-05-27.)
+- ❌ **Using the "Comprehensive CD Guide"** (or any similar AI-compiled
+  "comprehensive guide" / HTML compilation / Word-doc study guide) as a
+  source. These were built with old logic that contains real errors — e.g.
+  the CD Comprehensive Guide collapsed UIC's two-appointment wax try-in
+  (anterior + posterior, per Swade page 80) into a single visit. Use
+  primary UIC sources only (slide decks, PowerPoints, grading sheets,
+  worksheets). See `CASES-FOUNDATION.md` "What counts as a UIC-official
+  source" for the heuristic. (User directive 2026-05-27.)
 
 - ❌ Citing external authorities to lend credibility (AAPD 2024, AHA 2021,
   AAE 2019, IADT 2020, McGill Consensus 2002, Aquilino & Caplan 2002, Reeh

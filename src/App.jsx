@@ -23319,75 +23319,137 @@ function Guides() {
 // ║ rpd-kennedy3 → ind-conventional-crown → fan-out by family.               ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
 
-// ─── TEMPORARY: test pathway for visual-review of the new schema ──────────
-// This block exists so Jake can see the new card layout (phase badge,
-// category badge, dual keyDecision form, lab-step bands) rendered live on
-// Vercel before any real content lands. Remove this entire block + re-hide
-// the Cases tab before building cd-conventional in Step 3.
-// See CASES-BUILD-PLAN.md "The temporary-unhide-for-visual-review pattern".
+// ─── PATHWAYS — rebuild in progress (started 2026-05-27) ──────────────────
+// First real pathway: cd-conventional (the model). Built from primary UIC
+// sources only per CASES-FOUNDATION.md "What counts as a UIC-official
+// source" (slide decks / grading sheets / worksheets — not Word docs, not
+// any "Comprehensive CD Guide" compilation). See CASES-BUILD-PLAN.md Step 3
+// for the binding source map.
+//
+// Source map for cd-conventional (all in /Users/jakeshea/Documents/Dentistry Files/ALL CD FILES/):
+//   Visit 1 + Lab #1 — diagnostic casts + custom trays:
+//     • Custom tray_Boxing_ Technique.pdf (Dr. Swee C. Tan)
+//     • Custom Tray Grading Sheet_2022.pdf
+//     • Boxing and Pouring(1).pdf
+//   Visit 2 + Lab #2 — border molding, master casts, PPS, record bases, wax rims:
+//     • DAOB Removable Prosth - Final Impression - SALARI-Final.pdf
+//     • Vibrating line and posterior palatal seal area(1).pdf
+//     • Anatomy of the edentoulus oral cavity, Posterior palatal seal _Dr. Obrez_.pdf
+//     • Record Base & Wax Rim - Reminders (1).pdf
+//     • Record Bases Grading Sheet_2022.pdf
+//   Visit 3 + Lab #3 — mounting, JRR, facebow, anterior tooth setup:
+//     • Articulator+Facebow.pdf (Tan)
+//     • Jaw Relation Records copy (1).pdf (Dr. Sharif Mohammad)
+//     • Anterior teeth set up-Technique.pdf (Tan)
+//   Visit 4 + Visit 5 — wax try-ins:
+//     • Clinical Evaluation of the Trial Denture_2025.pdf (Drs. Marinis, Jameson, Obrez)
+//   Lab #4 — posterior tooth setup:
+//     • Monoplane Set up Grading_2024.pdf
+//     • Denture occlusion and articulation, Hanau's quint - Dr. Obrez.pdf
+//   Lab #5 — final wax contouring + processing + lab remount:
+//     • 24_Final_wax_contouring_UIC(1).pdf
+//     • Processing+Festooning.pdf
+//   Visit 6-8 — delivery + follow-ups:
+//     • Complete Denture Delivery and follow-up.pdf (Dr. Maryam Gheisarifar)
+//
+// Explicitly disqualified for this build: any "Comprehensive CD Guide" file
+// in any format (.docx/.html/.pdf), any Word doc, any compiled study guide.
+// See CASES-FOUNDATION.md "What counts as a UIC-official source".
+// ─────────────────────────────────────────────────────────────────────────
 
 const PATHWAY_DOMAINS = [
- { id: "test", label: "Test" },
+ { id: "cd", label: "CD" },
 ];
 
 const PATHWAY_GROUPS = {
- test: [
- { label: "Renderer demo", ids: ["test-rendering-demo"] },
+ cd: [
+ { label: "Conventional (fully edentulous)", ids: ["cd-conventional"] },
  ],
 };
 
 const PATHWAYS = [
  {
- id: "test-rendering-demo",
- domain: "test",
+ id: "cd-conventional",
+ domain: "cd",
  category: "dentures",
  phase: "phase3",
- label: "Test rendering demo — REMOVE before going live",
- description: "Throwaway pathway used to verify the new renderer visual treatment: category badge in the header, Lab Rx callout card spotlighting central-lab interactions, the Sequence card with lab-step bands BETWEEN visits (never inside a visit's step list — lab work doesn't belong as a visit substep). None of the content below is clinically meaningful; visit labels are placeholders that the real cd-conventional pathway will replace with accurate UIC visit names.",
- labRx: ["lab-ff"],
+ label: "Conventional CD (fully edentulous)",
+ description: "The two clinical inflection points are border molding at Visit 2 and the two-stage wax try-in at Visits 4–5; once processing happens, every error becomes permanent. This is the conventional sequence for a fully-edentulous patient with healed ridges — eight clinical visits and five lab blocks. The records phase (Visits 1–3) builds the foundation: diagnostic impressions, then border molding + PVS final impression, then wax-rim try-in with jaw relations + facebow + tooth selection. UIC uses the selective-pressure technique — pressure on the primary stress-bearers (hard palate maxilla; buccal shelf and retromolar pad mandibular), relief over the incisive papilla, mid-palatal raphe, and residual crest. The two try-ins separate the irreversible commitments: Visit 4 commits anterior esthetics, midline, lip support, and phonetics; Visit 5 commits posterior occlusion, VDO, and bilateral balance. Posterior teeth are 0° monoplane with acrylic balancing ramps; the Mark 320 articulator runs 30° condylar inclination, 15° Bennett, incisal pin at 0. Visits 6–8 deliver and refine — clinical remount + selective grinding at delivery, then sore-spot adjustments with Thompson stick, PIP, and disclosing wax.",
  phases: [
- { label: "Visit A (placeholder)", count: 1 },
- { label: "Visit B (placeholder) — demo inline + detail in same visit", count: 2 },
- { label: "Visit C (placeholder)", count: 1 },
+ { label: "Diagnosis + TP + diagnostic impressions", count: 1 },
+ { label: "Border molding + final impression", count: 3 },
+ { label: "Wax-rim try-in + JRR + facebow + tooth selection", count: 4 },
+ { label: "Anterior teeth try-in", count: 1 },
+ { label: "Posterior teeth try-in", count: 1 },
+ { label: "Delivery + clinical remount", count: 2 },
+ { label: "24-hour follow-up", count: 1 },
+ { label: "1-week follow-up", count: 1 },
  ],
  labSteps: [
  {
- after: -1,
- title: "Pre-procedure prep",
- body: "Example of a lab step with after: -1, meaning it appears BEFORE the first visit. Tests the pre-phase-loop branch of the renderer.",
- source: "Test source: PDF A p. 3",
- turnaround: "Before patient arrives",
- },
- {
  after: 0,
- title: "Pour preliminary cast + fabricate custom tray",
- body: "Example of a lab block between visit A and visit B. This is where chapters like Custom tray fabrication, Boxing+Pouring belong — as their own band, not as a step inside a visit.",
- source: "Test source: CD Lab Boxing.pdf p. 3-7",
- turnaround: "1 week before next visit",
+ title: "Pour diagnostic casts + fabricate custom trays",
+ body: "Pour the alginate impressions in Type III stone. On each cast, outline the tray border in red pencil at the depth of the vestibule (to the hamular notches and vibrating line on the maxillary, to the retromolar pads on the mandibular), with a blue line 2 mm inside the red; mark relief areas (mid-palatal raphe, incisive papilla, mandibular crest) in red. Vaseline the cast, drip-block any undercuts in wax, then adapt one sheet of baseplate wax as the selective-pressure spacer — and stop using Vaseline once the spacer is on, since it must stay inside the tray through border molding. Adapt one sheet of Triad light-cure material over the spacer, cure about a minute on the cast, cool, then re-cure off the cast. Finish with acrylic burs; the maxillary tray gets a ½ × ½ × ¼ inch handle, the mandibular gets finger rests that do not exceed two-thirds of the retromolar pad height.",
+ source: "Custom tray_Boxing_Technique.pdf (Tan); Custom Tray Grading Sheet 2022 — UIC selective-pressure technique",
+ turnaround: "Before Visit 2",
  },
  {
  after: 1,
- title: "Mount on articulator + tooth setup + processing",
- body: "Example of a lab block between visit B and visit C. Mounting on Mark 320 is lab work, not a clinical visit.",
- source: "Test source: Articulator+Facebow.pdf p. 11",
+ title: "Box + pour master casts; scribe PPS; fabricate record bases + wax rims",
+ body: "Box the PVS final impression with a pumice-plaster putty (1:1 mix, extending 3 mm lateral to the impression border and leaving 2 mm of the border exposed above the putty), then a boxing-wax wall 16-18 mm above the highest point of the impression; seal the wax to the land area with a heated #7 spatula and water-test the seal before pouring. Pour Type III microstone under vacuum to form the master cast — base 12-20 mm thick, parallel to the ridge, 2-4 mm land width. On the maxillary master cast, mark the posterior palatal seal in red pencil and scribe the posterior border with a #8 round bur to 1-1.5 mm depth, then feather the carving forward with a #7 spatula to the anterior border at the junction of the hard and soft palate. Block out major undercuts on both casts and apply separator, then light-cure one sheet of Triad over each cast (400-500 nm, about 10 min) as the record base. Build the wax rims to UIC dimensions — maxillary 22 mm anterior height, 8-10 mm labial to the incisive papilla, terminating 2-3 mm anterior to the maxillary tuberosity; mandibular 18 mm anterior height, not exceeding two-thirds of the retromolar pad — and keep the occlusal surface flat for try-in.",
+ source: "Custom tray_Boxing_Technique.pdf (Tan, boxing portion); Vibrating line and PPS; Anatomy of edentulous oral cavity + PPS (Obrez); Record Base & Wax Rim Reminders; Record Bases Grading Sheet 2022",
+ turnaround: "Before Visit 3",
+ },
+ {
+ after: 2,
+ title: "Mount master casts on Mark 320; set anterior teeth",
+ body: "Mount the maxillary master cast on the Denar Mark 320 articulator using the face-bow record taken at Visit 3; mount the mandibular master cast against it using the centric-relation record. Set the condylar inclination to 30°, the Bennett angle to 15°, and replace the black incisal table with the white one. Select the Trubyte Classic anteriors per the mould and shade chosen with the patient. Set the anterior teeth by melting a wax window at each tooth position one at a time — never strip the whole rim or you lose every reference — and trim the base or the lingual of the tooth if the bucco-lingual space is tight. Place three teeth on one side, then move to the contralateral; verify the midline, the 1-2 mm vertical and horizontal anterior overlap, and the smile-line position before sealing each tooth in with a small amount of baseplate wax.",
+ source: "Articulator+Facebow.pdf (Tan); Jaw Relation Records (Mohammad); Anterior teeth set up-Technique.pdf (Tan)",
+ turnaround: "Before Visit 4",
+ },
+ {
+ after: 3,
+ title: "Set posterior teeth (monoplane with acrylic balancing ramps)",
+ body: "Set the posterior teeth on the monoplane scheme — 0° non-anatomic teeth aligned on a flat plane through two-thirds of the retromolar pad height, with the central grooves of all the posteriors aligned in a single straight line. Position each mandibular posterior over the center of the residual ridge with a posterior horizontal overlap of about one-third of the tooth. Build acrylic balancing ramps so that the dentures contact in lateral excursion (on the working-side ramp + anterior teeth) and in protrusion (both central incisors on the lower anteriors plus bilateral posterior ramp contact) — this is UIC's bilateral balanced articulation, the differentiator from natural-dentition occlusal schemes. Verify the incisal pin remains at zero; the VDO recorded at Visit 3 must not drift during setup.",
+ source: "Monoplane Set up Grading 2024; Denture occlusion + Hanau's quint (Obrez)",
+ turnaround: "Before Visit 5",
+ },
+ {
+ after: 4,
+ title: "Final wax contouring + processing + lab remount",
+ body: "After patient sign-off at Visit 5, festoon the polished surfaces: expose the teeth to the CEJ on the facial, build maxillary and mandibular cuspid eminences for lip support, carve gingival zeniths slightly distal to each tooth's midline (the lateral is the exception, centrally located), keep interdental papillae flat or slightly concave, leave a lingual concavity where the tongue rests, and stipple the facial for natural light reflection. Invest, flask, and process the dentures in acrylic; deflask and recover them on the original master casts. Before removing the dentures from their mountings, perform the laboratory remount — the dentures will have shifted during processing — and selectively grind to close the incisal pin back to zero, restoring centric and bilateral-balanced occlusion. Fabricate the face-bow remount jig so the maxillary spatial relationship can be re-established at delivery, then remove the dentures from the master casts, finish, and polish the external surfaces only; the intaglio stays untouched.",
+ source: "24_Final_wax_contouring_UIC.pdf; Processing+Festooning.pdf; Complete Denture Delivery and follow-up (Gheisarifar) — lab remount section",
+ turnaround: "Before Visit 6",
  },
  ],
- // Section entries marked `inline: true` render as a highlighted clickable
- // title within the visit's numbered list. Clicking expands the Swade
- // chapter content right there; clicking elsewhere on the page closes it.
- // No separate collapsible card appears below the Sequence for these.
- // Reserved for "elementary" chapters that don't merit a full card
- // (facebow steps, boxing+pouring, posterior palatal seal carving).
  sections: [
- { guideId: "cd", chapterId: "cd-ch1" },
- { guideId: "cd", chapterId: "cd-ch6", inline: true }, // Face-bow — elementary; demos inline-expand
- { guideId: "cd", chapterId: "cd-ch8" },
- { guideId: "cd", chapterId: "cd-ch15" },
+ // Visit 1 — Diagnosis + TP + diagnostic impressions
+ { guideId: "cd", chapterId: "cd-ch1" }, // Diagnostic impression
+ // Visit 2 — Border molding + final impression (3 chapters)
+ { guideId: "cd", chapterId: "cd-ch3" }, // Border molding
+ { guideId: "cd", chapterId: "cd-ch4" }, // Final PVS impression
+ { guideId: "cd", chapterId: "cd-ch17" }, // Posterior palatal seal (clinical vibrating-line marking)
+ // Visit 3 — Wax-rim try-in + JRR + facebow + tooth selection (4 chapters)
+ { guideId: "cd", chapterId: "cd-ch6" }, // Face-bow (edentulous)
+ { guideId: "cd", chapterId: "cd-ch8" }, // VDO determination
+ { guideId: "cd", chapterId: "cd-ch9" }, // CR registration
+ { guideId: "cd", chapterId: "cd-ch10" }, // Tooth selection
+ // Visit 4 — Anterior teeth try-in (1 chapter; cd-ch13 covers both try-ins)
+ { guideId: "cd", chapterId: "cd-ch13" }, // Wax try-in (focus: anterior — esthetics, midline, lip support)
+ // Visit 5 — Posterior teeth try-in (1 chapter; same wax-try-in chapter)
+ { guideId: "cd", chapterId: "cd-ch13" }, // Wax try-in (focus: posterior — CR verify, balance, protrusive)
+ // Visit 6 — Delivery + clinical remount (2 chapters)
+ { guideId: "cd", chapterId: "cd-ch15" }, // Delivery
+ { guideId: "cd", chapterId: "cd-ch26" }, // Clinical remount + selective grinding
+ // Visit 7 — 24-hour follow-up (1 chapter)
+ { guideId: "cd", chapterId: "cd-ch23" }, // Post-delivery complaints (Thompson stick, PIP, disclosing wax)
+ // Visit 8 — 1-week follow-up (1 chapter; same chapter — adjustment workflow continues)
+ { guideId: "cd", chapterId: "cd-ch23" }, // Post-delivery complaints (refined adjustments)
  ],
  },
 ];
 
-// ─── End of temporary test pathway block ──────────────────────────────────
+// ─── End of PATHWAYS (1 entry: cd-conventional) ───────────────────────────
 
 // Phase + category labels for the pathway card header badges.
 // The IDs map to the UIC TP framework (from Tx Dx- Overview.pdf) and the
@@ -28934,13 +28996,12 @@ const TABS = [
  // component + GUIDES const are retained because the Cases patcher
  // reads them; they're just not directly navigable as a top-level tab.
  //
- // ── RE-HIDDEN 2026-05-27 ─────────────────────────────────────────────
- // Cases is mid-rebuild on a Swade + UIC-anchored foundation (see
- // CASES-FOUNDATION.md / CASES-PROCEDURES.md / CASES-BUILD-PLAN.md). The
- // visual treatment was reviewed; cd-conventional content build is the
- // next step. Re-hide the tab in the meantime so the test pathway isn't
- // visible. To re-enable: uncomment the line below.
- // { id: "pathways", label: "Cases", hint: "Customized guide for your patient case" },
+ // ── UNHIDDEN 2026-05-27 for cd-conventional model-pathway review ─────
+ // First real rebuilt pathway (cd-conventional) is live for user review
+ // per CASES-BUILD-PLAN.md Step 3. After review feedback lands, the
+ // workflow is iterate → fan out to siblings (cd-iid, cd-adjustment,
+ // cd-reline-lab) → continue with rpd-kennedy3 and ind-conventional-crown.
+ { id: "pathways", label: "Cases", hint: "Customized guide for your patient case" },
 ];
 
 // Engine names are exported from src/rpd-engine.js directly. Tests import

@@ -183,6 +183,27 @@ For any content claim in Cases, the source priority is:
 Content that doesn't trace to a UIC source above should not land in Cases. If
 the right move is "I don't know — ask faculty," say that.
 
+### What counts as a UIC-official source (added 2026-05-27)
+
+A practical heuristic when deciding whether a document is usable as a primary
+source for pathway content:
+
+- ✅ **UIC official**: presentation slide decks (PDFs or PowerPoints with
+  numbered slides), grading sheets, lab-session worksheets, huddle sheets,
+  faculty-authored handouts (often named after the lecturer, e.g.
+  `... SALARI-Final.pdf`, `Dr. Obrez.pdf`).
+- ❌ **NOT UIC official**: `.docx` Word docs (typically student notes or
+  compiled study guides), AI-compiled "comprehensive guides", HTML
+  compilations, any document built "with old logic" that bundles multiple
+  sources into a single narrative.
+- **When in doubt, ASK the user before using a document as a pathway source.**
+
+The "Comprehensive CD Guide" (in any format — `.docx`, `.html`, `.pdf`) and
+any similarly-named compiled guide are **explicitly not valid sources**. They
+were built with old logic that contained errors (e.g. collapsing the
+two-appointment wax try-in into a single visit). Per-visit sequencing must
+come from primary UIC documents only.
+
 ---
 
 ## How Cases relates to the other tabs
