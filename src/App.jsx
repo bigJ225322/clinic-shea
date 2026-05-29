@@ -21724,8 +21724,15 @@ function RPDHelper() {
  // bounded gaps are usually better restored with fixed units (a bridge or
  // implant per gap), but the RPD is a legitimate removable route, so we still
  // design it and merely surface the fixed alternative.
- const shortBoundedSpans = (result.kennedy?.spans || []).length > 0
- && (result.kennedy.spans || []).every(sp => (sp.teeth?.length || 0) <= 3);
+ // Only nudge toward fixed for a few genuinely short gaps: each ≤2 teeth (a
+ // 3–4-unit bridge or 1–2 implants) AND ≤4 missing total. A 3-tooth span
+ // (5-unit bridge → implants) or a higher total is real RPD territory, where
+ // "fixed is often preferable" no longer holds.
+ const spansForFixedNote = result.kennedy?.spans || [];
+ const fixedNoteTotalMissing = spansForFixedNote.reduce((s, sp) => s + (sp.teeth?.length || 0), 0);
+ const shortBoundedSpans = spansForFixedNote.length > 0
+ && spansForFixedNote.every(sp => (sp.teeth?.length || 0) <= 2)
+ && fixedNoteTotalMissing <= 4;
  const isFixedPreferredButRPDValid = hasContent
  && result.kennedy?.class === "III"
  && result.designIntent === "definitive"
@@ -21906,7 +21913,7 @@ function RPDHelper() {
  borderRadius: "2px",
  }}>
  <strong style={{ color: "var(--accent)" }}>Fixed is often preferable here.</strong>{" "}
- Every edentulous area is a short tooth-bounded gap, so two fixed units — a bridge or an implant per gap — are usually the better definitive option. The RPD above is a valid removable alternative, shown because that's what this tool designs.
+ Every edentulous area is a short tooth-bounded gap, so restoring each gap with a fixed unit — a bridge or an implant — is usually the better definitive option. The RPD above is a valid removable alternative, shown because that's what this tool designs.
  </div>
 )}
 
@@ -28738,20 +28745,21 @@ function Pathways() {
  }
 
  // Compute LTR col positions per lane. Every tile spans 2 cols. The
- // col-advance between consecutive items is 1 when kinds alternate
- // (V↔L zigzag, 1-col overlap puts the lab between two visits) and
- // 3 when kinds match (V→V or L→L) — that leaves one empty column
- // between same-kind tiles so the connecting arrow has room to show
- // its shaft, not just an arrowhead (e.g. the Delivery → 24h → 1-wk
- // follow-up run on the return lane), and pushes the lane's last tile
- // into the otherwise-empty column on the far side.
+ // col-advance keeps visit-to-visit spacing UNIFORM so the lane reads evenly:
+ //  • same kind (V→V or L→L): +3 — one empty column between for the arrow shaft.
+ //  • V→L: +1, then L→V: +2 — so a lab-separated pair of visits also ends up
+ //    3 apart (the lab sits between, slightly toward the first visit). Without
+ //    the 1+2 split, lab-separated visits cluster at 2 while same-kind runs sit
+ //    at 3, making the return lane look lopsided (Delivery/try-in tight, then
+ //    big gaps out to the follow-ups).
  const laneData = lanes.map((laneItems) => {
  const positions = [];
  let col = 1;
  for (let i = 0; i < laneItems.length; i++) {
  positions.push({ ...laneItems[i], ltrCol: col });
  if (i + 1 < laneItems.length) {
- col += laneItems[i].kind === laneItems[i + 1].kind ? 3 : 1;
+ const a = laneItems[i], b = laneItems[i + 1];
+ col += a.kind === b.kind ? 3 : (a.kind === "lab" ? 2 : 1);
  }
  }
  const width = positions.length > 0
