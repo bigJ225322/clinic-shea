@@ -13358,7 +13358,7 @@ function RVUs() {
  <div>
  {/* Search input */}
  <div style={{ marginBottom: "12px" }}>
- <label style={labelStyle}>Search Code Or Description</label>
+ <label style={labelStyle}>Search Code or Description</label>
  <input type="text" value={search}
  onChange={e => setSearch(e.target.value)}
  placeholder="e.g. crown, D2740, prophy"
@@ -19834,7 +19834,7 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  <span style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)" }}>
  3 · Upper six anterior curve width
  </span>
- <InfoPopover text="Measure the chord (straight-line) distance from the distal of the right canine (#6) to the distal of the left canine (#11) across the facial surfaces of the upper six anteriors. A Boley gauge or millimeter ruler held flat against the labial of the anteriors works; on a diagnostic cast the same measurement is taken on the cast itself. The chord — not the arc — is the value the Trubyte mould table expects." />
+ <InfoPopover text="On an edentulous patient there are no canines to measure between — you take this off the maxillary wax rim. Mark a canine line on each side by dropping a vertical from the ala of the nose (the canine sits roughly under the ala), then measure straight across between the two lines with a ruler. UIC's note template calls this the intercanine distance. If a pre-extraction diagnostic cast, an old denture, or a photo of the natural teeth is available, measure canine-to-canine on that instead." />
  </div>
  <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
  <input type="text" inputMode="decimal" placeholder="e.g. 49"
@@ -22960,8 +22960,7 @@ function DropdownBlock({ title, body }) {
  onMouseLeave={(e) => { if (!open) e.currentTarget.style.background = "transparent"; }}
  >
  <span style={{
- fontSize: "0.78rem", textTransform: "uppercase",
- letterSpacing: "0.08em", color: "var(--accent)",
+ fontSize: "0.82rem", letterSpacing: "0.01em", color: "var(--accent)",
  fontWeight: 600, flex: 1,
  }}>{title}</span>
  <span aria-hidden="true" style={{
@@ -23063,7 +23062,7 @@ function GuideBlock({ block }) {
  borderRadius: "2px", lineHeight: 1.5,
  }}>
  <div style={{
- fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.07em",
+ fontSize: "0.84rem", letterSpacing: "0.01em",
  color: "var(--gold, #b46e1e)", fontWeight: 600, marginBottom: "6px",
  }}>{block.title}</div>
  <div>{renderInline(block.body)}</div>
@@ -23206,7 +23205,7 @@ function GuideChapter({ chapter, hideHeader }) {
  {groups.sections.map((g, gi) => {
  const isCollapsed = collapsedSecs.has(g.label);
  return (
- <div key={`sec-${gi}`}>
+ <div key={`sec-${gi}`} style={{ marginTop: gi === 0 ? "6px" : "2px" }}>
  <button
  type="button"
  onClick={() => toggleSec(g.label)}
@@ -23214,27 +23213,33 @@ function GuideChapter({ chapter, hideHeader }) {
  style={{
  display: "flex", alignItems: "baseline", width: "100%",
  textAlign: "left", background: "transparent", border: "none",
- padding: 0, margin: "16px 0 6px",
- borderBottom: "1px solid var(--rule-soft)",
- paddingBottom: "4px",
+ padding: "10px 0 8px", margin: 0,
  cursor: "pointer", color: "inherit",
  }}
  >
- <span style={{
- fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.08em",
- color: "var(--accent)", fontWeight: 600, flex: 1,
+ <span className="serif" style={{
+ fontSize: "1.02rem", fontWeight: 500, lineHeight: 1.3,
+ color: isCollapsed ? "var(--ink-soft)" : "var(--ink)", flex: 1,
+ transition: "color 160ms ease",
  }}>{renderInline(g.label)}</span>
  <span aria-hidden="true" style={{
  marginLeft: "10px", color: "var(--ink-faint)",
- fontSize: "1.05rem", lineHeight: 1,
+ fontSize: "0.8rem", lineHeight: 1,
  transition: "transform 160ms ease",
  transform: isCollapsed ? "rotate(-90deg)" : "rotate(0deg)",
- opacity: 0.65,
+ opacity: 0.6,
  }}>▾</span>
  </button>
- {!isCollapsed && g.blocks.map((b, bi) => (
+ {!isCollapsed && (
+ <div style={{
+ borderLeft: "2px solid var(--accent)",
+ paddingLeft: "18px", margin: "2px 0 16px",
+ }}>
+ {g.blocks.map((b, bi) => (
  <GuideBlock key={`sec-${gi}-b-${bi}`} block={b} />
-))}
+ ))}
+ </div>
+ )}
  </div>
  );
 })}
@@ -27944,7 +27949,7 @@ function Pathways() {
  // closes it, then unmounts. POPUP_EXIT_MS must be ≥ the modal's close
  // animation duration.
  const [pathwayPopupClosing, setPathwayPopupClosing] = useState(false);
- const POPUP_EXIT_MS = 340;
+ const POPUP_EXIT_MS = 470;
  const openPathwayPopup = (target, event) => {
  if (event && event.currentTarget) {
  const r = event.currentTarget.getBoundingClientRect();
@@ -28104,6 +28109,11 @@ function Pathways() {
  // Nothing-selected: render a friendly prompt instead of a "Specific
  // situation" eyebrow with zero pills under it.
  const nothingSelected = !domainId && !showAllDomains && !searchQuery.trim();
+ // When a domain has exactly one scenario it auto-opens on domain-pill
+ // click (see handleDomainChange), so the scenario-pill row would just be
+ // a redundant active pill above the map. Suppress it: the flow is then
+ // simply tab → domain pill → map.
+ const singleAutoScenario = !!domainId && !showAllDomains && !searchQuery.trim() && pathwaysInDomain.length === 1;
 
  const selectedPathway = pathwayId
 ? PATHWAYS.find(p => p.id === pathwayId)
@@ -28255,7 +28265,10 @@ function Pathways() {
  setPathwayId(null);
  } else {
  setDomainId(id);
- setPathwayId(null);
+ // If the domain has exactly one scenario, open it directly so the
+ // flow is just: Maps → domain pill → map (CD → cd-conventional).
+ const inDomain = PATHWAYS.filter(p => p.domain === id);
+ setPathwayId(inDomain.length === 1 ? inDomain[0].id : null);
  }
  };
 
@@ -28267,44 +28280,8 @@ function Pathways() {
 
  return (
  <div className="fade-in" style={{ maxWidth: "880px", margin: "0 auto", padding: "8px 0 40px", textAlign: "left" }}>
- {/* Search input */}
- <div style={{ marginBottom: "14px", position: "relative" }}>
- <input
- type="text"
- value={searchQuery}
- onChange={(e) => setSearchQuery(e.target.value)}
- placeholder="Search scenarios (e.g. 'bruxer', 'xerostomia', 'fractured', 'survey crown'…)"
- style={{
-...inputStyle,
- width: "100%",
- padding: "10px 14px",
- paddingRight: searchQuery? "44px": "14px",
- borderRadius: "100px",
- fontSize: "0.9rem",
- background: "var(--card, white)",
- border: "1px solid var(--rule)",
- outline: "none",
- }}
- onFocus={(e) => e.target.style.borderColor = "var(--accent)"}
- onBlur={(e) => e.target.style.borderColor = "var(--rule)"}
- />
- {searchQuery && (
- <button
- type="button"
- onClick={() => setSearchQuery("")}
- style={{
- position: "absolute", right: "8px", top: "50%",
- transform: "translateY(-50%)",
- width: "28px", height: "28px",
- border: "none", borderRadius: "50%",
- background: "transparent",
- color: "var(--ink-soft)",
- fontSize: "16px", lineHeight: 1, cursor: "pointer",
- }}
- title="Clear search"
- >×</button>
-)}
- </div>
+ {/* Search input removed per Jake — Maps opens to a single unselected
+ domain pill; selecting it opens the map directly. */}
 
  {/* Domain pills + show-all toggle */}
  <div style={{ display: "flex", gap: "8px", marginBottom: "14px", flexWrap: "wrap", alignItems: "center" }}>
@@ -28325,20 +28302,6 @@ function Pathways() {
  </button>
 );
  })}
- {/* "All" pill — matches the Codes tab convention. Clicking it
- unsets domainId so no specific domain is active and surfaces
- every pathway in PATHWAYS (filtered by searchQuery if set). */}
- <button onClick={() => { setShowAllDomains(true); setDomainId(null); setPathwayId(null); }} style={{
- padding: "7px 14px", borderRadius: "100px",
- border: `1px solid ${showAllDomains? "var(--accent)": "var(--rule)"}`,
- background: showAllDomains? "var(--accent)": "transparent",
- color: showAllDomains? "var(--paper, white)": "var(--ink-soft)",
- fontSize: "0.85rem", fontWeight: 500, cursor: "pointer",
- fontFamily: "'Geist', sans-serif",
- transition: "all 120ms ease",
- }}>
- All
- </button>
  </div>
 
  {/* Scenario pills — same pill family as the domain pills above, but
@@ -28348,7 +28311,7 @@ function Pathways() {
  In the nothing-selected state we render nothing — no eyebrow, no
  prompt, no pills. The domain pills + search + All toggle above are
  enough signal that the user needs to pick something. */}
- {nothingSelected ? null : (
+ {(nothingSelected || singleAutoScenario) ? null : (
  <div style={{ marginBottom: "20px" }}>
  {/* "Specific situation" eyebrow removed — the "N scenarios" count
  on the right already describes what's below, and the dotted top-
@@ -28579,11 +28542,6 @@ function Pathways() {
  <div>
  {groupedBuckets.map((bucket, gi) => (
  <div key={bucket.label} style={{ marginTop: gi === 0? 0: "12px" }}>
- <div style={{
- fontSize: "0.66rem", textTransform: "uppercase",
- letterSpacing: "0.12em", color: "var(--ink-faint)",
- fontWeight: 500, marginBottom: "5px", opacity: 0.85,
- }}>{bucket.label}</div>
  <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
  {bucket.items.map(renderPill)}
  </div>
@@ -28752,14 +28710,18 @@ function Pathways() {
  // Compute LTR col positions per lane. Every tile spans 2 cols. The
  // col-advance between consecutive items is 1 when kinds alternate
  // (V↔L zigzag, 1-col overlap puts the lab between two visits) and
- // 2 when kinds match (V→V or L→L sit edge-to-edge, no overlap).
+ // 3 when kinds match (V→V or L→L) — that leaves one empty column
+ // between same-kind tiles so the connecting arrow has room to show
+ // its shaft, not just an arrowhead (e.g. the Delivery → 24h → 1-wk
+ // follow-up run on the return lane), and pushes the lane's last tile
+ // into the otherwise-empty column on the far side.
  const laneData = lanes.map((laneItems) => {
  const positions = [];
  let col = 1;
  for (let i = 0; i < laneItems.length; i++) {
  positions.push({ ...laneItems[i], ltrCol: col });
  if (i + 1 < laneItems.length) {
- col += laneItems[i].kind === laneItems[i + 1].kind ? 2 : 1;
+ col += laneItems[i].kind === laneItems[i + 1].kind ? 3 : 1;
  }
  }
  const width = positions.length > 0
@@ -29057,7 +29019,7 @@ function Pathways() {
  for (let i = 0; i < pi; i++) startIdx += phases[i].count;
  const phaseSections = resolvedSections.slice(startIdx, startIdx + phase.count);
  return (
- <PathwayPopupModal title={phase.label} eyebrow={`Visit ${pi + 1}`} closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
+ <PathwayPopupModal title={phase.label} eyebrow={`Visit ${pi + 1}`} tone="visit" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
  {/* Phase-specific widget (e.g. tooth mould selector on the wax-rim
  visit). Rendered above chapter content because it's a chair-side
  reference tool the student actually uses during the visit. */}
@@ -29123,7 +29085,7 @@ function Pathways() {
  const found = CHAPTER_INDEX.get(branch.chapterId);
  if (!found) return null;
  return (
- <PathwayPopupModal title={branch.label} eyebrow="Maintenance" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
+ <PathwayPopupModal title={branch.label} eyebrow="Maintenance" tone="branch" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
  <GuideChapter chapter={found.chapter} hideHeader />
  </PathwayPopupModal>
  );
@@ -29132,7 +29094,7 @@ function Pathways() {
  const ls = labSteps[pathwayPopup.index];
  if (!ls) return null;
  return (
- <PathwayPopupModal title={ls.title} eyebrow="Lab" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
+ <PathwayPopupModal title={ls.title} eyebrow={`Lab ${pathwayPopup.index + 1}`} tone="lab" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
  {/* Lab worksheet visual: red-outlined white paper. Lab content
  reads as "the script the lab tech follows" — distinct from
  clinical-visit content. The oxblood border + plain white
@@ -29183,8 +29145,17 @@ function Pathways() {
 // lab band on the pathway schematic. Click outside or Escape to close.
 // Body is whatever children are passed in (chapter content for sections,
 // labStep body+detail for lab steps).
-function PathwayPopupModal({ title, eyebrow, children, onClose, closing, sourceRect }) {
+const BADGE_TONES = {
+ // Each tone echoes the color of the schematic tile the card opened from,
+ // so the popup reads as born from that tile: Lab tiles are oxblood-filled,
+ // Visit tiles are cream with a dark rule, maintenance tiles are dashed-faint.
+ lab: { color: "var(--accent)", bg: "rgba(122, 30, 30, 0.07)", border: "1px solid rgba(122, 30, 30, 0.16)" },
+ visit: { color: "var(--ink)", bg: "rgba(26, 22, 18, 0.05)", border: "1px solid rgba(26, 22, 18, 0.12)" },
+ branch: { color: "var(--ink-soft)", bg: "transparent", border: "1px dashed var(--ink-faint)" },
+};
+function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, sourceRect }) {
  const cardRef = useRef(null);
+ const badge = BADGE_TONES[tone] || BADGE_TONES.lab;
  // Lock body scroll while open so the page behind doesn't move when the
  // user scrolls inside the modal.
  useEffect(() => {
@@ -29204,11 +29175,11 @@ function PathwayPopupModal({ title, eyebrow, children, onClose, closing, sourceR
  // simple flip-in from edge-on.
  if (!sourceRect) {
  card.style.transformOrigin = "center center";
- card.style.transform = "rotateY(-74deg) scale(0.7)";
+ card.style.transform = "rotateX(10deg) rotateY(-76deg) scale(0.7)";
  card.style.opacity = "0";
  void card.getBoundingClientRect();
- card.style.transition = "transform 360ms cubic-bezier(0.2, 0.7, 0.3, 1), opacity 240ms ease-out";
- card.style.transform = "rotateY(0deg) scale(1)";
+ card.style.transition = "transform 480ms cubic-bezier(0.16, 0.84, 0.3, 1.02), opacity 300ms ease-out";
+ card.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
  card.style.opacity = "1";
  return;
  }
@@ -29226,12 +29197,14 @@ function PathwayPopupModal({ title, eyebrow, children, onClose, closing, sourceR
  card.style.transformOrigin = "center center";
  // INVERT: start at the source tile's screen position + size, rotated
  // edge-on so it looks like the tile pivoting up out of the schematic.
- card.style.transform = `translate(${dx}px, ${dy}px) scale(${scale}) rotateY(-78deg)`;
- card.style.opacity = "0.45";
+ card.style.transform = `translate(${dx}px, ${dy}px) scale(${scale}) rotateX(10deg) rotateY(-80deg)`;
+ card.style.opacity = "0.3";
  void card.getBoundingClientRect();
- // PLAY: animate to identity (final centered modal at full size).
- card.style.transition = "transform 460ms cubic-bezier(0.2, 0.7, 0.28, 1.02), opacity 280ms ease-out 60ms";
- card.style.transform = "translate(0px, 0px) scale(1) rotateY(0deg)";
+ // PLAY: animate to identity (final centered modal at full size). The
+ // slight rotateX makes the tile feel like it lifts off the page before
+ // standing up to face the viewer; the eased overshoot gives it weight.
+ card.style.transition = "transform 520ms cubic-bezier(0.16, 0.84, 0.3, 1.02), opacity 300ms ease-out 40ms";
+ card.style.transform = "translate(0px, 0px) scale(1) rotateX(0deg) rotateY(0deg)";
  card.style.opacity = "1";
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
@@ -29244,8 +29217,8 @@ function PathwayPopupModal({ title, eyebrow, children, onClose, closing, sourceR
  const card = cardRef.current;
  if (!card) return;
  if (!sourceRect) {
- card.style.transition = "transform 280ms cubic-bezier(0.4, 0, 0.7, 0.3), opacity 240ms ease-in";
- card.style.transform = "rotateY(74deg) scale(0.7)";
+ card.style.transition = "transform 360ms cubic-bezier(0.4, 0, 0.6, 0.38), opacity 240ms ease-in 120ms";
+ card.style.transform = "rotateX(10deg) rotateY(-76deg) scale(0.7)";
  card.style.opacity = "0";
  return;
  }
@@ -29260,9 +29233,12 @@ function PathwayPopupModal({ title, eyebrow, children, onClose, closing, sourceR
  sourceRect.width / finalRect.width,
  sourceRect.height / finalRect.height
  ));
- card.style.transition = "transform 320ms cubic-bezier(0.5, 0, 0.75, 0.2), opacity 240ms ease-in 60ms";
- card.style.transform = `translate(${dx}px, ${dy}px) scale(${scale}) rotateY(78deg)`;
- card.style.opacity = "0";
+ // Rewind to the open pose (tile's rect, edge-on) so the card visibly
+ // flips and flies back down into its schematic tile. Opacity is left to
+ // the overlay scrim fade (below) so the card stays crisp through the
+ // flight instead of dissolving in place.
+ card.style.transition = "transform 420ms cubic-bezier(0.4, 0, 0.6, 0.38)";
+ card.style.transform = `translate(${dx}px, ${dy}px) scale(${scale}) rotateX(10deg) rotateY(-80deg)`;
  }, [closing, sourceRect]);
  return (
  <div
@@ -29274,8 +29250,8 @@ function PathwayPopupModal({ title, eyebrow, children, onClose, closing, sourceR
  display: "flex", alignItems: "flex-start", justifyContent: "center",
  padding: "60px 20px 40px",
  overflowY: "auto",
- perspective: "1600px",
- animation: closing ? "fade-out 280ms ease forwards" : "fade-in 220ms ease",
+ perspective: "1400px",
+ animation: closing ? "fade-out 260ms ease 170ms forwards" : "fade-in 220ms ease",
  }}
  >
  <style>{`
@@ -29326,20 +29302,35 @@ function PathwayPopupModal({ title, eyebrow, children, onClose, closing, sourceR
  e.currentTarget.style.background = "transparent";
  }}
  >×</button>
- {eyebrow && (
+ {/* Masthead: a color-coded kicker badge (echoing the Visit/Lab tile the
+ card opened from) sits above the title, which reads as the descriptive
+ deck. A hairline rule separates the header from the body below. */}
  <div style={{
- fontSize: "0.62rem", textTransform: "uppercase",
- letterSpacing: "0.16em", fontWeight: 600,
- color: "var(--accent)",
- marginBottom: "6px",
- }}>{eyebrow}</div>
+ margin: "0 0 20px",
+ paddingBottom: "15px",
+ borderBottom: "1px solid var(--rule-soft, var(--rule))",
+ }}>
+ {eyebrow && (
+ <span style={{
+ display: "inline-block",
+ fontSize: "0.6rem", textTransform: "uppercase",
+ letterSpacing: "0.13em", fontWeight: 600,
+ fontFamily: "'Geist', sans-serif",
+ color: badge.color,
+ background: badge.bg,
+ border: badge.border,
+ borderRadius: "100px",
+ padding: "3px 11px",
+ marginBottom: "11px",
+ }}>{eyebrow}</span>
  )}
  <h2 className="serif" style={{
- fontSize: "1.35rem", fontWeight: 400, color: "var(--ink)",
- margin: "0 0 18px",
+ fontSize: "1.28rem", fontWeight: 400, color: "var(--ink)",
+ margin: 0,
  paddingRight: "30px",
- lineHeight: 1.25,
+ lineHeight: 1.3,
  }}>{title}</h2>
+ </div>
  <div>{children}</div>
  </div>
  </div>
