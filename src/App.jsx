@@ -19074,12 +19074,11 @@ const TOOTH_MOULD_FORMS = [
 // Proportion of tooth (long / medium / short) × facial contour (straight / curved).
 //
 // PROPORTION is the cervical-incisal length of the tooth: long, medium, or short.
-// FACIAL CONTOUR (per Portrait IPN p. 5) is the labial-surface profile in SIDE
-// view — assessed by holding a flat device (Dentsply Sirona Tooth Indicator
-// #98981) against the patient's labial surface:
-//   - Straight: the labial surface is flat, the indicator sits flush head-to-toe.
-//   - Curved: the labial surface is convex, the indicator contacts only at the
-//             middle bulge with daylight at the cervical and incisal.
+// FACIAL CONTOUR (per IPN chart p.5 step 2) is matched to the patient's FACIAL
+// PROFILE in SIDE view — NOT a tooth surface, so it works on an edentulous
+// patient. A flat/straight facial profile → STRAIGHT (flat labial); a convex/
+// curved profile → CURVED (bulging labial). The Dentsply Sirona Tooth Indicator
+// (#98981) is a flat gauge held along the profile to judge straight vs curved.
 //
 // To make the distinction VISIBLE in the picker, these SVGs draw a side-profile
 // (mesio-distal cross-section) of the tooth — cervical at top, incisal at
@@ -19819,7 +19818,7 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  <span style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)" }}>
  2 · Proportion & facial contour
  </span>
- <InfoPopover text={`The IPN catalog organizes denture tooth sets by the shape of their MAXILLARY CENTRAL INCISOR. Pick the central-incisor proportion + labial contour you want for the prosthesis.\n\nPROPORTION (cervical-incisal length): long, medium, or short. For an edentulous patient choose based on face shape, prior denture, or family photos; for a partial with remaining anteriors match the existing centrals.\n\nFACIAL CONTOUR (labial-surface profile in SIDE view): straight = flat labial surface; curved = convex (bulging) labial surface. The Portrait IPN p.5 method uses the Dentsply Sirona Tooth Indicator (#98981) — a small flat device held against the patient's labial surface. If the indicator sits flush head-to-toe → STRAIGHT. If the indicator contacts only the middle bulge with daylight at the cervical and incisal → CURVED.\n\nThe glyph for each option shows a side-profile cross-section of the tooth (lingual on the left, labial on the right). Straight options have a vertical right edge; curved options have a bulging right edge.`} />
+ <InfoPopover text={`The IPN chart (ATS system, p.4–5) builds the mould code from the patient's FACE, not from existing teeth — so this works directly on an edentulous patient.\n\nThis step (2nd code character) sets the maxillary central incisor's PROPORTION (length: long / medium / short) and its LABIAL CONTOUR (straight vs curved):\n\n• CONTOUR (straight / curved) = the patient's FACIAL PROFILE in side view. A flat / straight profile → STRAIGHT (flat labial); a convex / curved profile → CURVED (bulging labial). The Dentsply Tooth Indicator (#98981) is a flat gauge held along the profile to judge it. (IPN chart p.5 step 2 — the side-profile-face diagram.)\n\n• PROPORTION (long / medium / short) = tooth length. Take it from a pre-extraction photo / diagnostic cast or the patient's old denture if you have one; otherwise bound it by the high smile-line / incisal display you set on the wax rim — the teeth shouldn't show more length than the lip reveals — shaded by age (younger → longer; older → shorter from wear).\n\nEach glyph is a side-profile cross-section of the tooth (lingual left, labial right): straight options have a vertical right edge; curved options bulge.`} />
  <span style={{ fontSize: "10px", color: "var(--ink-faint)", fontStyle: "italic" }}>
  long / medium / short × straight / curved
  </span>
@@ -28045,19 +28044,23 @@ function Pathways() {
  const schematicScrollRef = useRef(null);
  const schematicTileRefs = useRef(new Map());
  const [schematicPositions, setSchematicPositions] = useState(null);
- useEffect(() => {
- if (!pathwayId) return;
- requestAnimationFrame(() => {
- requestAnimationFrame(() => {
- const el = schematicGridRef.current;
- if (!el) return;
- el.scrollIntoView({ behavior: "smooth", block: "start" });
- });
- });
- }, [pathwayId]);
+ // Collapse offsets for the entry animation, frozen per pathway at first
+ // measurement (final layout) so a mid-animation re-measure can't zero them.
+ const entryOffsetsRef = useRef({ id: null, offsets: {} });
+ const arrowsRef = useRef([]);
+ // (Auto-scroll-to-schematic on pathway open was removed by request — it
+ // jerked the viewport downward every time a pill was tapped. The pathway
+ // now opens in place; the user scrolls down themselves if they want to.)
  // Compute tile positions for the SVG arrow overlay. Re-runs on pathway
- // change + window resize.
+ // change + window resize. Also clears the per-pathway entry-animation
+ // state up front so reselecting the SAME pathway replays the open
+ // animation from scratch — without this, stale positions/offsets and the
+ // "already ran" guard leak across opens and the arrows render frozen at
+ // the previous open's geometry (out of place).
  useEffect(() => {
+ setSchematicPositions(null);
+ arrowsRef.ranFor = null;
+ entryOffsetsRef.current = { id: null, offsets: {} };
  const compute = () => {
  if (!schematicGridRef.current) return;
  const gridRect = schematicGridRef.current.getBoundingClientRect();
@@ -28081,6 +28084,48 @@ function Pathways() {
  window.removeEventListener("resize", compute);
  };
  }, [pathwayId]);
+ // Map-entry arrow choreography. The boxes slide via their CSS `top` keyframe
+ // (which owns the timing/easing and is fail-safe); this rAF reads each box's
+ // live `top` every frame and redraws the connected arrow endpoints, so the
+ // arrows stay attached and swing from straight to bent in exact lockstep
+ // with the boxes. Runs once per pathway open; a fallback forces the final
+ // geometry if the rAF is throttled or cancelled. (Line endpoints can't be
+ // animated in CSS, hence the rAF.)
+ useLayoutEffect(() => {
+ if (!schematicPositions) return;
+ if (arrowsRef.ranFor === pathwayId) return;
+ arrowsRef.ranFor = pathwayId;
+ const grid = schematicGridRef.current;
+ if (!grid) return;
+ const DUR = 1350;
+ const startT = performance.now();
+ let raf;
+ const draw = (now) => {
+ const done = now - startT >= DUR;
+ const lines = grid.querySelectorAll("svg line");
+ const arr = arrowsRef.current || [];
+ for (let i = 0; i < arr.length && i < lines.length; i++) {
+ const a = arr[i];
+ const sEl = schematicTileRefs.current.get(a.srcKey);
+ const dEl = schematicTileRefs.current.get(a.dstKey);
+ const sTop = done || !sEl ? 0 : (parseFloat(getComputedStyle(sEl).top) || 0);
+ const dTop = done || !dEl ? 0 : (parseFloat(getComputedStyle(dEl).top) || 0);
+ lines[i].setAttribute("y1", a.srcY + sTop);
+ lines[i].setAttribute("y2", a.dstY + dTop);
+ }
+ if (!done) raf = requestAnimationFrame(draw);
+ };
+ raf = requestAnimationFrame(draw);
+ const fin = setTimeout(() => {
+ const lines = grid.querySelectorAll("svg line");
+ const arr = arrowsRef.current || [];
+ for (let i = 0; i < arr.length && i < lines.length; i++) {
+ lines[i].setAttribute("y1", arr[i].srcY);
+ lines[i].setAttribute("y2", arr[i].dstY);
+ }
+ }, DUR + 300);
+ return () => { if (raf) cancelAnimationFrame(raf); clearTimeout(fin); };
+ }, [schematicPositions, pathwayId]);
  // Vertical mouse-wheel / trackpad gesture over the schematic scrolls it
  // horizontally (the train's natural axis). Falls through to page scroll
  // at the schematic's left/right edge so the user can scroll past it.
@@ -28807,6 +28852,66 @@ function Pathways() {
  });
  });
 
+ // Per-tile vertical collapse offset for the map-entry animation: each tile's
+ // distance from its lane's horizontal midline. On open, a CSS keyframe runs
+ // each tile's `top` from this offset to 0 (and each arrow's endpoints from
+ // final+offset to final), so every lane starts as one horizontal line of
+ // boxes (arrows straight) and fans out to the staggered layout. CSS-driven
+ // with fill:both, so the settled state is ALWAYS the final layout — it can
+ // never wedge collapsed. `top` is used (not transform) so it composes with
+ // the hover-lift transform instead of overriding it.
+ // Freeze the collapse offsets the FIRST time positions are known for this
+ // pathway (= the final layout, before the entry animation moves anything).
+ // The tiles' `top` animation shifts their measured Y, so recomputing from a
+ // mid-animation measurement would zero the offsets and kill the motion.
+ if (schematicPositions && entryOffsetsRef.current.id !== pathwayId) {
+ // Final top/bottom of each grid row.
+ const rowsY = {};
+ allPlacements.forEach((p) => {
+ const pos = schematicPositions[p.key];
+ if (!pos) return;
+ const top = pos.y, bot = pos.y + pos.height;
+ if (!rowsY[p.gridRow]) rowsY[p.gridRow] = { top, bot };
+ else {
+ rowsY[p.gridRow].top = Math.min(rowsY[p.gridRow].top, top);
+ rowsY[p.gridRow].bot = Math.max(rowsY[p.gridRow].bot, bot);
+ }
+ });
+ // Stack the rows FLUSH — each row's top edge touching the bottom edge of
+ // the row above — then CENTER that collapsed block on the final layout's
+ // vertical midline. On open every row borders the one above (no gaps), so
+ // the connecting arrows are horizontal; as the block fans open the top
+ // lane rises and the bottom lane descends (expansion outward from the
+ // center, not just downward) and the arrows bend.
+ const rowNums = Object.keys(rowsY).map(Number).sort((a, b) => a - b);
+ const stackedTop = {};
+ let cursor = 0;
+ rowNums.forEach((r) => {
+ stackedTop[r] = cursor;
+ cursor += rowsY[r].bot - rowsY[r].top;
+ });
+ const stackedHeight = cursor;
+ const finalTop = Math.min(...rowNums.map((r) => rowsY[r].top));
+ const finalBot = Math.max(...rowNums.map((r) => rowsY[r].bot));
+ const stackBase = (finalTop + finalBot) / 2 - stackedHeight / 2;
+ // Start the entry animation already 40% open: each tile begins 60% of the
+ // way along its collapse offset (not fully flush) and fans the rest out.
+ const ENTRY_OPEN_START = 0.4;
+ const offsets = {};
+ allPlacements.forEach((p) => {
+ if (!rowsY[p.gridRow]) return;
+ offsets[p.key] = ((stackBase + stackedTop[p.gridRow]) - rowsY[p.gridRow].top) * (1 - ENTRY_OPEN_START);
+ });
+ entryOffsetsRef.current = { id: pathwayId, offsets };
+ }
+ const entryOffsets = entryOffsetsRef.current.id === pathwayId ? entryOffsetsRef.current.offsets : {};
+ const mapEntering = !!schematicPositions; // animation applies once positions are known
+ // Entry offset for the maintenance-branch cluster: match the lowest
+ // animating row (most-negative offset = the bottom lab level, e.g. "Send
+ // to central lab"), so the branches fan DOWN off V_last in lockstep with
+ // that bottom level instead of sitting static. 0 until offsets freeze.
+ const branchDy = Math.min(0, ...Object.values(entryOffsets));
+
  // Per-lab fine-tune knob (transform only, % of tile width; negative = left).
  // Empty by design: the half-column grid centers every lab natively, so no
  // nudges are needed. Kept as a hook for one-off per-pathway visual tweaks.
@@ -28877,7 +28982,7 @@ function Pathways() {
  dstX = b.x + b.width / 2;
  dstY = b.y + b.height + ARROW_OFFSET;
  }
- arrows.push({ srcX, srcY, dstX, dstY, id: `arrow-${i}` });
+ arrows.push({ srcX, srcY, dstX, dstY, id: `arrow-${i}`, srcKey: src.key, dstKey: dst.key });
  }
  // Branch arrows — all dashed, fanning out from the last main-flow
  // tile (V_last) to EACH branch independently. No arrows between
@@ -28895,11 +29000,16 @@ function Pathways() {
  dstY: b.y - ARROW_OFFSET,
  id: `branch-arrow-${idx}`,
  dashed: true,
+ srcKey: lastMain.key,
+ dstKey: branch.key,
  });
  });
  }
  }
  }
+
+ // Expose the freshly-computed arrows to the entry-animation rAF below.
+ arrowsRef.current = arrows;
 
  return (
  <div ref={schematicScrollRef} style={{
@@ -28922,6 +29032,8 @@ function Pathways() {
  gap: "44px 5px",
  position: "relative",
  minWidth: "fit-content",
+ opacity: mapEntering ? 1 : 0,
+ transition: "opacity 0.2s ease",
  }}
  >
  {arrows.length > 0 && (
@@ -28990,6 +29102,8 @@ function Pathways() {
  "--tile-nudge": (!isVisit && LAB_RIGHT_NUDGE[item.index] != null)
  ? `${LAB_RIGHT_NUDGE[item.index]}%`
  : "0px",
+ "--map-entry-dy": ((entryOffsets[item.key] || 0)) + "px",
+ animation: mapEntering ? "mapTileEnter 1.05s cubic-bezier(.4,0,.2,1) 0s both" : undefined,
  visibility: isSourceTile ? "hidden" : "visible",
  }}
  >
@@ -29035,6 +29149,7 @@ function Pathways() {
  onMouseLeave={onTileLeave}
  style={{
  all: "unset",
+ position: "relative",
  boxSizing: "border-box",
  cursor: "pointer",
  width: "84px",
@@ -29053,6 +29168,8 @@ function Pathways() {
  lineHeight: 1.2,
  transform: "translateY(var(--tile-lift, 0px))",
  transition: "box-shadow 140ms ease, transform 140ms ease",
+ "--map-entry-dy": branchDy + "px",
+ animation: mapEntering ? "mapTileEnter 1.05s cubic-bezier(.4,0,.2,1) 0s both" : undefined,
  visibility: isSourceTile ? "hidden" : "visible",
  }}
  onFocus={(e) => { e.currentTarget.style.outline = "1px solid var(--accent)"; }}
@@ -29697,6 +29814,20 @@ export default function App() {
  @keyframes fadeIn {
  from { opacity: 0; }
  to { opacity: 1; }
+ }
+
+ /* Map-entry choreography (CSS only, fill:both -> settled state is always the
+ final layout; cannot wedge collapsed). Tiles slide their top offset from
+ the lane-midline collapse offset to 0; arrows swing their endpoints from
+ the collapsed (offset) Y to the final Y, in lockstep. */
+ /* Tiles slide their top from the lane-midline collapse offset to 0 (set
+ inline so it beats tileBase's all:unset). Arrows are NOT animated in CSS
+ (line endpoints aren't CSS-animatable) — a rAF reads each box's live top
+ and redraws the connected arrow endpoints so they stay attached and swing
+ from straight to bent in perfect lockstep. */
+ @keyframes mapTileEnter {
+ from { top: var(--map-entry-dy, 0px); }
+ to { top: 0px; }
  }
  /* Note: same reasoning as.app-root — any transform on a parent of a
  position:fixed element creates a new containing block and breaks the
