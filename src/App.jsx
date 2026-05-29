@@ -23495,13 +23495,17 @@ function Guides() {
 //        (UIC predoc standard). Justification: this IS the UIC predoc
 //        scheme (Monoplane Set up Grading 2024 sheet); accurate to UIC
 //        practice. Keep.
-//   L5 "Final wax contouring + processing + lab remount"
-//      → Swade: "instructor approves denture setup → send to lab".
-//        Differs because Swade ends the bullet at the handoff; the
-//        lab fabrication after the handoff is the content the Cases
-//        tab exists to surface. Justification: this is the Cases-tab
-//        differentiator per CASES-FOUNDATION ("Cases tells you what
-//        happens between appointments"). Keep.
+//   L5 "Send to & receive from central lab"
+//      → Swade p.91-92: the student "submits wax trial dentures to lab"
+//        and arrives at delivery with "dentures from the lab" — there are
+//        NO student festoon/flask/cure steps. CORRECTED 2026-05-29: the
+//        prior version ("Final wax contouring + processing + lab remount")
+//        dressed up the LAB's festoon/process/remount as a student
+//        procedure — leaked framing from the disqualified AI "Comprehensive
+//        Guide". Reality (Jake confirmed firsthand): the case goes to UIC's
+//        central lab (5th floor); the student only does the handoff. This
+//        tile now shows handoff logistics only. Verified vs Delivery of
+//        Final Denture(2).pdf p.1 + Swade p.91-92.
 //
 // Description prose, popup detail (body + detail fields), and V7/V8
 // phase.detail are my synthesis from UIC slide decks + clinical
@@ -23533,7 +23537,11 @@ const PATHWAYS = [
  { label: "Border molding + final impression", count: 2 },
  { label: "Wax-rim try-in + jaw relation record + facebow + tooth selection", count: 4, widget: "mouldSelector" },
  { label: "Anterior teeth try-in", count: 1 },
- { label: "Posterior teeth try-in", count: 1 },
+ {
+ label: "Posterior teeth try-in",
+ count: 1,
+ detail: "Posterior/final try-in is the last esthetic + occlusal checkpoint before processing — verify CR, bilateral balance, and that the patient approves every aspect (tooth color, shape, position, midline). Confirm there is nothing left they want changed; this is the final chance to alter anything.\n\nClose-out (Swade): the instructor verifies the posterior setup, then obtain the patient's signed denture consent — plug in the signature pad, click the consent icon → \"Add Patient Consent…\", select \"DENTUR\", print it (optional, easier to show the patient), review everything out loud, and have the patient sign.\n\nComplete codes + note — D5110B and D5120B (Wax Try-in) — and have an instructor swipe the EPR / codes / note. With consent signed and the lab script approved, the case goes to the 5th-floor lab (next step).",
+ },
  { label: "Delivery", count: 2 },
  {
  label: "24-hour follow-up",
@@ -23567,7 +23575,7 @@ const PATHWAYS = [
  after: 2,
  title: "Mount master casts on Mark 320; set anterior teeth",
  body: "Mount the casts on the Mark 320 (maxillary by face-bow, mandibular via the CR record; 30° condylar, 15° Bennett, pin at zero), then set the anterior teeth one wax window at a time — never strip the whole rim, you lose every reference.",
- detail: "1. Mount the maxillary master cast on the Denar Mark 320 articulator using the face-bow record from Visit 3. Transfers the spatial relationship of the maxillary arch to the articulator's hinge axis.\n\n2. Mount the mandibular master cast against the maxillary using the centric-relation record from Visit 3.\n\n3. Set condylar inclination to 30°. Bennett angle to 15° (fixed). Replace the black incisal table with the white one. UIC's standard articulator settings for CD setup.\n\n4. Select the Trubyte Classic anterior teeth per the mould (e.g., 2N) and shade (e.g., 66C) the patient agreed to at Visit 3. Each card carries 6 teeth — one card per arch.\n\n5. Melt a wax window at one tooth's position at a time. Do NOT strip the whole rim — you lose every reference for the next tooth's position.\n\n6. If a tooth's bucco-lingual space is tight, trim the base of the tooth first; if it still doesn't fit, trim the lingual of the tooth itself.\n\n7. Place three teeth on one side (e.g., #6, #7, #8), then move to the contralateral side.\n\n8. Before sealing each tooth in with a small amount of baseplate wax via a #7 spatula, verify: midline, 1-2 mm vertical and horizontal anterior overlap (incisors should NOT contact in MI), smile-line position.",
+ detail: "1. Mount the maxillary master cast on the Denar Mark 320 articulator using the face-bow record from Visit 3. Transfers the spatial relationship of the maxillary arch to the articulator's hinge axis.\n\n2. Mount the mandibular master cast against the maxillary using the centric-relation record from Visit 3.\n\n3. Set condylar inclination to 30°. Bennett angle to 15° (fixed). Replace the black incisal table with the white one. UIC's standard articulator settings for CD setup.\n\n4. Select the Portrait (Dentsply) anterior teeth per the mould (e.g., 2N) and the Vita shade the patient agreed to at Visit 3. Each card carries 6 teeth — one card per arch.\n\n5. Melt a wax window at one tooth's position at a time. Do NOT strip the whole rim — you lose every reference for the next tooth's position.\n\n6. If a tooth's bucco-lingual space is tight, trim the base of the tooth first; if it still doesn't fit, trim the lingual of the tooth itself.\n\n7. Place three teeth on one side (e.g., #6, #7, #8), then move to the contralateral side.\n\n8. Before sealing each tooth in with a small amount of baseplate wax via a #7 spatula, verify: midline, 1-2 mm vertical and horizontal anterior overlap (incisors should NOT contact in MI), smile-line position.",
  source: "Articulator+Facebow.pdf (Tan); Jaw Relation Records (Mohammad); Anterior teeth set up-Technique.pdf (Tan)",
  turnaround: "Before Visit 4",
  },
@@ -23581,11 +23589,11 @@ const PATHWAYS = [
  },
  {
  after: 4,
- title: "Final wax contouring + processing + lab remount",
- body: "Festoon the polished surfaces, then invest, flask, process, and recover on the master casts. Before removing them, do the lab remount to correct any occlusal drift from processing back to incisal pin = 0.",
- detail: "1. After patient sign-off at Visit 5, festoon the polished surfaces of the dentures.\n\n2. Expose the teeth to the CEJ on the facial.\n\n3. Build maxillary and mandibular cuspid eminences for lip and corner-of-mouth support.\n\n4. Carve gingival zeniths slightly distal to each tooth's midline. The lateral incisor is the exception — its zenith stays central.\n\n5. Keep interdental papillae flat or slightly concave. Anything bulky impacts food and irritates tissue.\n\n6. Leave a lingual concavity in the mandibular where the tongue will rest.\n\n7. Stipple the facial surfaces with a toothbrush for natural light reflection.\n\n8. Invest the dentures in a flask. Process the acrylic (UIC uses SR Ivocap or pack-and-press).\n\n9. Deflask and recover the dentures on the original master casts.\n\n10. Before removing the dentures from the master-cast mountings, perform the laboratory remount on the articulator. Processing always introduces some occlusal drift — selectively grind back to incisal pin = 0, restoring centric and bilateral-balanced occlusion.\n\n11. While the dentures are still mounted, fabricate the face-bow remount jig (a small plaster block on the maxillary mounting) so the maxillary spatial relationship can be re-established at delivery for the clinical remount.\n\n12. Remove the dentures from the master casts, then finish and polish the external surfaces only. The intaglio (tissue-bearing surface) stays untouched — every detail of the records phase lives in that surface; touching it now means losing fit.",
- source: "24_Final_wax_contouring_UIC.pdf; Processing+Festooning.pdf; Complete Denture Delivery and follow-up (Gheisarifar) — lab remount section",
- turnaround: "Before Visit 6",
+ title: "Send to & receive from central lab",
+ body: "You don't festoon or process these — the 5th-floor lab does. Drop off the signed lab script + your trial dentures; Axium pings you when they're back (~9 business days), then book delivery.",
+ detail: "1. After the posterior try-in is approved (patient has signed the DENTUR consent, instructor has signed the lab script), bring the signed lab script and your wax trial dentures up to the 5th-floor lab.\n\nThe complete-denture lab script reads: \"Please festoon, pack, and process maxillary & mandibular complete dentures. Gingival shade: ___. Please return for delivery.\" — the lab festoons and processes; you don't.\n\n2. Turnaround is ~9 business days (Swade's lab turn-around table: \"acrylic processing for denture or partial\" = 9 business days) — book delivery roughly two weeks out. Axium messages you when the case is sent, and again when it's back and ready for pickup; then collect the dentures and schedule the patient for delivery.",
+ source: "clinic (swade) p.197 (lab script + supplements to 5th-floor lab; Axium pickup msg), p.198 (F/F lab script), p.200 (lab turn-around: acrylic processing for denture = 9 business days)",
+ turnaround: "~9 business days (central lab)",
  },
  ],
  // Maintenance / repair tracks that branch off the CD lifecycle. Not part
