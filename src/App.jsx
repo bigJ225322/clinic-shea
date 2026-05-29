@@ -5023,13 +5023,18 @@ function renderTemplate(raw, f) {
  // when the student typed a pulpal diagnosis — the most common
  // observable form of a "no-op control" bug in the COE form.
  if (label === "pulpal diagnosis" || label === "periapical diagnosis") {
- const tooth = ((f.examFindings || {})["diagnosis tooth"] || "").trim() || "#";
+ const rawTooth = ((f.examFindings || {})["diagnosis tooth"] || "").trim();
+ // Normalize to "#8, #14" (one # per tooth) whether the field stored a
+ // teeth-selector value ("#8, #14") or plain typed text ("8, 14").
+ const tooth = rawTooth
+ ? rawTooth.split(",").map(s => s.trim().replace(/^#/, "")).filter(Boolean).map(n => "#" + n).join(", ")
+ : "#";
  const type = label === "pulpal diagnosis" ? "Pulpal" : "Periapical";
  const hashFormRegex = new RegExp(
  `^([ \\t]*-[ \\t]*${type} diagnosis)\\s*#:[ \\t]*$`, "im"
 );
  if (hashFormRegex.test(t)) {
- t = t.replace(hashFormRegex, `$1 #${tooth}: ${v}`);
+ t = t.replace(hashFormRegex, `$1 ${tooth}: ${v}`);
  continue;
  }
  // No #-form in this template — fall through to generic
@@ -7710,9 +7715,9 @@ const EXAM_FINDINGS_CONFIG = {
  {
  title: "Diagnoses",
  rows: [
- [{ label: "diagnosis tooth", type: "input", displayLabel: "Tooth #",
- placeholder: "e.g. 8, 14 — diagnosis requires a specific tooth" }],
  [
+ { label: "diagnosis tooth", type: "teeth-selector", displayLabel: "Tooth #",
+ placeholder: "select tooth" },
  { label: "pulpal diagnosis", type: "select",
  options: ["", "Normal pulp", "Reversible pulpitis",
  "Symptomatic irreversible pulpitis", "Asymptomatic irreversible pulpitis",
