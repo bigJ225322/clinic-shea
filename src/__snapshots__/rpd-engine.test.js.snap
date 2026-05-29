@@ -859,7 +859,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "isPrimaryAbutment": false,
       "reciprocation": {
         "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
-        "text": "Cast lingual reciprocal arm",
+        "text": "Cast palatal reciprocal arm",
         "type": "arm",
       },
       "restRationale": null,
@@ -898,7 +898,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "isPrimaryAbutment": false,
       "reciprocation": {
         "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
-        "text": "Cast lingual reciprocal arm",
+        "text": "Cast palatal reciprocal arm",
         "type": "arm",
       },
       "restRationale": null,
@@ -1025,7 +1025,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "isPrimaryAbutment": true,
       "reciprocation": {
         "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
-        "text": "Cast lingual reciprocal arm",
+        "text": "Cast palatal reciprocal arm",
         "type": "arm",
       },
       "restRationale": null,

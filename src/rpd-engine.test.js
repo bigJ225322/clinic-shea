@@ -1425,9 +1425,9 @@ describe("UIC Case 1 — Maxillary Class II Mod 3 (full granular detail)", () =>
       expect(d?.guidePlane?.surface).toBe("mesial");
       expect(d?.guidePlane?.length).toMatch(/2\/3 length cervically from marginal ridge/);
     });
-    it("reciprocation is cast lingual arm", () => {
+    it("reciprocation is cast palatal arm (maxillary — the lingual surface is the palate)", () => {
       expect(d?.reciprocation?.type).toBe("arm");
-      expect(d?.reciprocation?.text).toMatch(/lingual/i);
+      expect(d?.reciprocation?.text).toMatch(/palatal/i);
     });
   });
 
@@ -5963,7 +5963,9 @@ describe("UNIT — pickRestSeat({tooth, isDE, sideToward, arch})", () => {
   });
 
   it("Mandibular canine bounding anterior span → ML ball rest (UIC Design Case II)", () => {
-    const r = pickRestSeat({ tooth: 22, isDE: false, sideToward: "distal", arch: "mandibular" });
+    // #22 (mand canine) bounding an ANTERIOR span — the gap is mesial, so the
+    // rest seats on the side toward the span (mesial) → mesio-lingual ball rest.
+    const r = pickRestSeat({ tooth: 22, isDE: false, sideToward: "mesial", arch: "mandibular" });
     expect(r.type).toBe("ball");
     expect(r.surface).toBe("mesio-lingual");
   });

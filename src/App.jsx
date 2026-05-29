@@ -21906,7 +21906,7 @@ function RPDHelper() {
  borderRadius: "2px",
  }}>
  <strong style={{ color: "var(--accent)" }}>Fixed is often preferable here.</strong>{" "}
- Every edentulous area is a short tooth-bounded gap, so two fixed units — a bridge or an implant per gap — are usually the better definitive option. The RPD below is a valid removable alternative, shown because that's what this tool designs.
+ Every edentulous area is a short tooth-bounded gap, so two fixed units — a bridge or an implant per gap — are usually the better definitive option. The RPD above is a valid removable alternative, shown because that's what this tool designs.
  </div>
 )}
 
