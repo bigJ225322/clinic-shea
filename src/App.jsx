@@ -2245,7 +2245,7 @@ const CATEGORIES = [
  { id: "exam-procs", label: "Procedures", procedures: [
  // Order per Jake: most common at top (POE, COEs, treatment-plan
  // presentation), then screening, then urgent care and consults.
- { id: "1091", label: "POE (Periodic Oral Exam)" },
+ { id: "1091", label: "POE" },
  { id: "573", label: "Perio COE" },
  { id: "703", label: "Restorative COE" },
  { id: "273", label: "Screening" },
@@ -5163,6 +5163,29 @@ function renderTemplate(raw, f) {
 );
  }
 
+ // -------- 7a-dx. Urgent care endo-diagnoses assembly. --------
+ // Reads dx1.. rows (tooth + pulpal + periapical) and rebuilds the
+ // "Endo diagnoses:" block — one Pulpal/Periapical line per tooth.
+ {
+ const ef = f.examFindings || {};
+ const dxFormCount = Math.max(1, parseInt(ef["dx count"] || 1, 10));
+ const dxLines = [];
+ for (let n = 1; n <= dxFormCount; n++) {
+ const p = `dx${n}`;
+ const toothLabel = (ef[`${p} tooth`] || "").split(",").map(s => s.trim().replace(/^#/, "")).filter(Boolean).map(x => "#" + x).join(", ") || "#";
+ const pulpal = (ef[`${p} pulpal`] || "").trim();
+ const periapical = (ef[`${p} periapical`] || "").trim();
+ if (pulpal) dxLines.push(`- Pulpal diagnosis ${toothLabel}: ${pulpal}`);
+ if (periapical) dxLines.push(`- Periapical diagnosis ${toothLabel}: ${periapical}`);
+ }
+ if (dxLines.length) {
+ t = t.replace(
+ /(Endo diagnoses:)\n(?: *-[^\n]*\n?)*/,
+ `$1\n${dxLines.join("\n")}\n`
+);
+ }
+ }
+
  // -------- 7b-consult. Urgent care consultations assembly. --------
  // Reads examFindings.consultations array and replaces the hardcoded
  // "Consultations:" block in the template.
@@ -7712,23 +7735,7 @@ const EXAM_FINDINGS_CONFIG = {
  },
  { type: "endo-test-rows" },
  { type: "consultations" },
- {
- title: "Diagnoses",
- rows: [
- [
- { label: "diagnosis tooth", type: "teeth-selector", displayLabel: "Tooth #",
- placeholder: "select tooth" },
- { label: "pulpal diagnosis", type: "select",
- options: ["", "Normal pulp", "Reversible pulpitis",
- "Symptomatic irreversible pulpitis", "Asymptomatic irreversible pulpitis",
- "Pulp necrosis", "Previously treated", "Previously initiated therapy"] },
- { label: "periapical diagnosis", type: "select",
- options: ["", "Normal apical tissues", "Symptomatic apical periodontitis",
- "Asymptomatic apical periodontitis", "Acute apical abscess",
- "Chronic apical abscess", "Condensing osteitis"] },
- ],
- ],
- },
+ { type: "endo-diagnosis-rows" },
  {
  title: "Plan",
  rows: [
@@ -9758,6 +9765,89 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
 )}
  </div>
 );
+ }
+
+ // Endo diagnoses — repeatable per-tooth pulpal + periapical (urgent care)
+ if (section.type === "endo-diagnosis-rows") {
+ const PULPAL = ["", "Normal pulp", "Reversible pulpitis", "Symptomatic irreversible pulpitis", "Asymptomatic irreversible pulpitis", "Pulp necrosis", "Previously treated", "Previously initiated therapy"];
+ const PERIAPICAL = ["", "Normal apical tissues", "Symptomatic apical periodontitis", "Asymptomatic apical periodontitis", "Acute apical abscess", "Chronic apical abscess", "Condensing osteitis"];
+ const dxLbl = {
+ fontSize: "10px", letterSpacing: "0.04em", color: "var(--ink-soft)", fontWeight: 500,
+ fontFamily: "'Geist', sans-serif", display: "block", marginBottom: "3px", textAlign: "center",
+ };
+ const dxCount = Math.max(1, parseInt(findings["dx count"] || 1, 10));
+ return (
+ <div key={i} style={{ marginTop: "16px" }}>
+ <div style={{ fontSize: "10px", letterSpacing: "0.16em", textTransform: "uppercase",
+ color: "var(--accent)", fontWeight: 500, marginBottom: "10px",
+ fontFamily: "'Geist', sans-serif", textAlign: "center" }}>
+ Diagnoses
+ </div>
+ {Array.from({ length: dxCount }, (_, idx) => {
+ const n = idx + 1;
+ const prefix = `dx${n}`;
+ const canRemove = dxCount > 1;
+ return (
+ <div key={n}>
+ {n > 1 && <div style={{ height: "1px", background: "var(--rule)", margin: "6px 0 8px" }} />}
+ {canRemove && (
+ <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "3px" }}>
+ <button type="button" onClick={() => {
+ const count = dxCount;
+ const newF = {...findings };
+ for (let k = n; k < count; k++) {
+ ["tooth", "pulpal", "periapical"].forEach(fld => {
+ newF[`dx${k} ${fld}`] = newF[`dx${k + 1} ${fld}`]?? "";
+ });
+ }
+ ["tooth", "pulpal", "periapical"].forEach(fld => { delete newF[`dx${count} ${fld}`]; });
+ newF["dx count"] = count - 1;
+ setFindings(newF);
+ }}
+ style={{ fontSize: "11px", color: "var(--ink-faint)", background: "none",
+ border: "none", cursor: "pointer", padding: "0 2px", lineHeight: 1 }}>
+ ✕
+ </button>
+ </div>
+ )}
+ <div style={{ display: "flex", gap: "6px", alignItems: "flex-start" }}>
+ <div style={{ flex: "0 0 70px" }}>
+ <label style={dxLbl}>Tooth</label>
+ <TeethSelectorPanel
+ value={findings[`${prefix} tooth`] || ""}
+ onChange={(v) => update(`${prefix} tooth`, v)}
+ placeholder="#" />
+ </div>
+ <div style={{ flex: 1, minWidth: 0 }}>
+ <label style={dxLbl}>Pulpal</label>
+ <select value={findings[`${prefix} pulpal`] || ""}
+ onChange={e => update(`${prefix} pulpal`, e.target.value)}
+ style={{...inputStyle, fontSize: "13px" }}>
+ {PULPAL.map(o => <option key={o} value={o}>{o || "—"}</option>)}
+ </select>
+ </div>
+ <div style={{ flex: 1, minWidth: 0 }}>
+ <label style={dxLbl}>Periapical</label>
+ <select value={findings[`${prefix} periapical`] || ""}
+ onChange={e => update(`${prefix} periapical`, e.target.value)}
+ style={{...inputStyle, fontSize: "13px" }}>
+ {PERIAPICAL.map(o => <option key={o} value={o}>{o || "—"}</option>)}
+ </select>
+ </div>
+ </div>
+ </div>
+ );
+ })}
+ {dxCount < 8 && (
+ <button type="button"
+ onClick={() => update("dx count", dxCount + 1)}
+ style={{ marginTop: "10px", fontSize: "12px", color: "var(--accent)", background: "none",
+ border: "none", cursor: "pointer", fontFamily: "'Geist', sans-serif", padding: 0 }}>
+ + Add diagnosis
+ </button>
+ )}
+ </div>
+ );
  }
 
  // Consultations list — urgent care
