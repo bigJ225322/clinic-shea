@@ -321,6 +321,10 @@ Visit 8 — 1-week follow-up
    - No React rendering errors when the Cases tab is temporarily unhidden
    - labSteps render between the correct phases
    - Source citations show on hover (or wherever the renderer puts them)
+   - **Phantom-visual scrub**: no `table`/`figure`/`diagram`/`see below`/`see
+     above` references to elements the card doesn't render (see "What NOT to
+     do (lessons learned)" — this bit cd-conventional and must be checked on
+     every Map)
 
 6. **Commit** with a message that:
    - Names every source PDF used
@@ -648,6 +652,26 @@ across many iterations that we explicitly do not repeat:
 - ❌ Pathways for procedures the UG predoc doesn't do or doesn't refer
   through TP (`ind-large-span-fpd`, `cross-full-mouth-rehab`,
   `ind-3-4-crown`, `rpd-valplast-repair`). Cut, don't keep.
+- ❌ **Referencing a visual element the Maps card doesn't render.** Steps
+  pulled closely from Swade/UIC handouts carry layout phrases that assume a
+  table/figure that existed in the source PDF but does NOT exist in the Maps
+  popup — the card only renders prose, bullets, numbered lists, callouts, and
+  dropdowns. Patterns seen in cd-conventional (fixed 2026-05-29): a section
+  titled "Complaint-by-complaint **table**" (content was categorized bullets),
+  "match the finding to the **table above**" (no table; the list was *below*),
+  "per the Week 14 huddle **table** (see below)" (nothing below; external
+  handout). **For every successive Map, scrub the referenced chapter content for
+  `table` / `figure` / `diagram` / `image` / `chart` / `see below` / `see above`
+  and fix by:** (a) dropping the visual word from a section title
+  ("Complaint-by-complaint table" → "Complaint by complaint"); (b) repointing to
+  a real in-card location ("the table above" → "the cause list below"); or
+  (c) citing the external handout without implying it's reproduced here ("per the
+  Week 14 huddle table (see below)" → "per the Week 14 huddle"). **Keep**
+  genuine physical-object uses — the articulator's incisal *table*, the
+  light-cure *rotating table*, the *bracket table*/instrument tray, the patient
+  *chart*/record — and genuine internal cross-refs where the target really is in
+  the same card ("(see below)" pointing at the next section). Quick audit: a
+  Node walk of the guide's blocks with a keyword regex catches ~all of them.
 
 ---
 

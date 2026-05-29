@@ -28719,15 +28719,19 @@ function Pathways() {
  minHeight: "128px",
  position: "relative",
  zIndex: 1,
+ // transform composes two independent CSS vars so a per-tile horizontal
+ // nudge (--tile-nudge) and the hover lift (--tile-lift) don't clobber
+ // each other. Hover handlers below set ONLY --tile-lift.
+ transform: "translateX(var(--tile-nudge, 0px)) translateY(var(--tile-lift, 0px))",
  transition: "box-shadow 140ms ease, transform 140ms ease",
  };
  const onTileEnter = (e) => {
  e.currentTarget.style.boxShadow = "0 4px 14px rgba(26, 22, 18, 0.15)";
- e.currentTarget.style.transform = "translateY(-2px)";
+ e.currentTarget.style.setProperty("--tile-lift", "-2px");
  };
  const onTileLeave = (e) => {
  e.currentTarget.style.boxShadow = "none";
- e.currentTarget.style.transform = "translateY(0)";
+ e.currentTarget.style.setProperty("--tile-lift", "0px");
  };
 
  // Build the chronological sequence: V0, (L0?), V1, (L1?), ... Vn.
@@ -28744,14 +28748,15 @@ function Pathways() {
  lanes.push(sequence.slice(i, i + LANE_CAPACITY));
  }
 
- // Compute LTR col positions per lane. Every tile spans 2 cols. The
- // col-advance keeps visit-to-visit spacing UNIFORM so the lane reads evenly:
- //  • same kind (V→V or L→L): +3 — one empty column between for the arrow shaft.
- //  • V→L: +1, then L→V: +2 — so a lab-separated pair of visits also ends up
- //    3 apart (the lab sits between, slightly toward the first visit). Without
- //    the 1+2 split, lab-separated visits cluster at 2 while same-kind runs sit
- //    at 3, making the return lane look lopsided (Delivery/try-in tight, then
- //    big gaps out to the follow-ups).
+ // Position tiles on a HALF-COLUMN grid — every tile spans 4 sub-columns.
+ // One uniform rule produces the whole intentional stagger:
+ //  • visits sit 6 sub-cols apart (so top & bottom rows stay column-aligned);
+ //  • a lab BETWEEN two visits advances +3 then +3 → it lands on the exact
+ //    MIDPOINT, centered with identical overlap onto both neighbors;
+ //  • a TERMINAL lab (a lab with no following visit, e.g. "Set posterior
+ //    teeth") also advances +3 — so it sits half a visit-gap past its visit,
+ //    the SAME distance from its two stacked visits that every interior lab
+ //    sits from its pair. No reseat, no special cases: one rule, everywhere.
  const laneData = lanes.map((laneItems) => {
  const positions = [];
  let col = 1;
@@ -28759,31 +28764,45 @@ function Pathways() {
  positions.push({ ...laneItems[i], ltrCol: col });
  if (i + 1 < laneItems.length) {
  const a = laneItems[i], b = laneItems[i + 1];
- col += a.kind === b.kind ? 3 : (a.kind === "lab" ? 2 : 1);
+ col += a.kind === b.kind ? 6 : 3;
  }
  }
+ // Width = furthest tile's start col + (span − 1); tiles span 4 sub-cols.
  const width = positions.length > 0
- ? positions[positions.length - 1].ltrCol + 1
+ ? Math.max(...positions.map((p) => p.ltrCol)) + 3
  : 0;
  return { positions, width };
  });
 
  const numLanes = laneData.length;
  const maxLaneCols = Math.max(1, ...laneData.map((l) => l.width));
+ // RTL lanes mirror about the VISIT grid (max visit col + 1), NOT the full
+ // lane width. A trailing terminal lab pads `width` (which keeps the forward
+ // row fixed) but must not push the return lane's visits a column off from the
+ // forward lane's visits — mirroring about the visit span keeps them aligned.
+ const maxVisitLtrCol = Math.max(1, ...laneData.flatMap(
+ (l) => l.positions.filter((p) => p.kind === "visit").map((p) => p.ltrCol)
+ ));
+ const rtlAxis = maxVisitLtrCol + 1;
 
- // Flatten lanes to final grid placements. Odd lanes are mirrored so
- // the leftmost LTR col (1) maps to the rightmost grid col, which by
- // construction puts the first tile of lane N directly below the
- // last tile of lane N-1 — making the cross-lane drop arrow vertical.
+ // Flatten lanes to final grid placements. Odd lanes are mirrored about the
+ // visit grid so each return-lane visit lands in the SAME column as the
+ // forward-lane visit above it, and a re-seated terminal lab sits directly
+ // above the next lane's first visit (straight-down cross-lane wrap arrow).
  const allPlacements = [];
  laneData.forEach((lane, laneIdx) => {
  const isRTL = laneIdx % 2 === 1;
  lane.positions.forEach((item) => {
- const gridCol = isRTL ? maxLaneCols - item.ltrCol : item.ltrCol;
+ const gridCol = isRTL ? rtlAxis - item.ltrCol : item.ltrCol;
  const gridRow = laneIdx * 2 + (item.kind === "visit" ? 1 : 2);
  allPlacements.push({ ...item, gridCol, gridRow, laneIdx, isRTL });
  });
  });
+
+ // Per-lab fine-tune knob (transform only, % of tile width; negative = left).
+ // Empty by design: the half-column grid centers every lab natively, so no
+ // nudges are needed. Kept as a hook for one-off per-pathway visual tweaks.
+ const LAB_RIGHT_NUDGE = {};
 
  // Maintenance / repair branches. Rendered on a dedicated row below
  // the main flow, tethered to the LAST chronological visit by a long
@@ -28890,9 +28909,9 @@ function Pathways() {
  ref={schematicGridRef}
  style={{
  display: "grid",
- gridTemplateColumns: `repeat(${maxLaneCols}, minmax(118px, 1fr))`,
+ gridTemplateColumns: `repeat(${maxLaneCols}, minmax(56px, 1fr))`,
  gridTemplateRows: `repeat(${numLanes * 2}, auto)`,
- gap: "44px 10px",
+ gap: "44px 5px",
  position: "relative",
  minWidth: "fit-content",
  }}
@@ -28952,7 +28971,7 @@ function Pathways() {
  onMouseLeave={onTileLeave}
  style={{
  ...tileBase,
- gridColumn: `${item.gridCol} / span 2`,
+ gridColumn: `${item.gridCol} / span 4`,
  gridRow: item.gridRow,
  background: isVisit ? "var(--card, white)" : "var(--accent)",
  border: isVisit
@@ -28960,6 +28979,9 @@ function Pathways() {
  : "1px solid var(--accent)",
  borderTop: "4px solid var(--ink)",
  color: isVisit ? "var(--ink)" : "var(--paper, #FBF8F2)",
+ "--tile-nudge": (!isVisit && LAB_RIGHT_NUDGE[item.index] != null)
+ ? `${LAB_RIGHT_NUDGE[item.index]}%`
+ : "0px",
  visibility: isSourceTile ? "hidden" : "visible",
  }}
  >
@@ -28983,7 +29005,7 @@ function Pathways() {
  <div style={{
  // Cluster lives in the same grid column as V_last so the three
  // squares sit directly under it, evenly spaced.
- gridColumn: `${lastMain.gridCol} / span 2`,
+ gridColumn: `${lastMain.gridCol} / span 4`,
  gridRow: branchRow,
  display: "flex",
  justifyContent: "space-evenly",
@@ -29007,20 +29029,21 @@ function Pathways() {
  all: "unset",
  boxSizing: "border-box",
  cursor: "pointer",
- width: "62px",
- height: "62px",
+ width: "84px",
+ height: "84px",
  background: "var(--card, white)",
  border: "1px dashed var(--ink-faint)",
  borderRadius: "4px",
- padding: "6px",
+ padding: "8px",
  display: "flex",
  alignItems: "center",
  justifyContent: "center",
  textAlign: "center",
- fontSize: "0.58rem",
+ fontSize: "0.64rem",
  fontWeight: 500,
  color: "var(--ink-soft)",
  lineHeight: 1.2,
+ transform: "translateY(var(--tile-lift, 0px))",
  transition: "box-shadow 140ms ease, transform 140ms ease",
  visibility: isSourceTile ? "hidden" : "visible",
  }}
