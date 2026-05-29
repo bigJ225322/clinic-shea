@@ -511,7 +511,7 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
  return {
  type: "FPD",
  recommendsFixed: true,
- rationale: `Short unilateral tooth-bounded space (${totalMissing} missing teeth in one span on one side). The clinical treatment of choice is a ${totalMissing + 2}-unit fixed partial denture (bridge) — definitive RPD is not indicated for this configuration. The unilateral abutment geometry would force a Full Palatal Plate, which is overtreatment for a gap a bridge handles cleanly.`,
+ rationale: `Short unilateral tooth-bounded space (${totalMissing} missing ${totalMissing === 1 ? "tooth" : "teeth"} in one span on one side). UIC indicates a definitive RPD only when a fixed prosthesis is not possible or the span is long (Intro to RPD, Shahin) — neither holds here, so this is a fixed/implant case. ${totalMissing >= 3 ? "With " + totalMissing + " pontics a " + (totalMissing + 2) + "-unit bridge is a long span; implant crowns are usually the better choice (a 3-pontic fixed bridge over-loads the abutments — reserve it for strong, well-distributed abutments)." : "Restore it with a " + (totalMissing + 2) + "-unit fixed bridge or implant crown" + (totalMissing > 1 ? "s" : "") + "."} A unilateral (Nesbit) RPD is not permitted at UIC (aspiration risk), and a cross-arch cast RPD for a single bounded gap is overtreatment.`,
  tier: "strong",
  alternative: "Implant-supported crowns or Interim Partial Denture (non-metal clasp)",
  alternativeRationale: "Primary alternative if the patient declines bridging: individual implant crowns at each missing-tooth site. If the patient declines BOTH FPD and implants (cost, surgical contraindication), indicates an Interim Partial Denture (IPD) with non-metal (e.g., Valplast/Duraflex thermoplastic) clasps — explicitly indicated for Class III / short-span IV cases per the IPD lecture. Unilateral cantilever (Nesbit) RPDs are banned due to aspiration risk; definitive cast-metal RPD is not appropriate for this configuration.",
@@ -3186,13 +3186,13 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
  // a fallback if the patient declines FPD.
  const material = framework.material === "Co-Cr" ? "Co-Cr": framework.material;
  if (majorConnector?.recommendsFixed) {
- lines.push("⚠ FPD RECOMMENDED — definitive RPD is not indicated for this configuration.");
+ lines.push("⚠ Fixed treatment recommended — definitive RPD is not indicated for this configuration.");
  if (majorConnector.rationale) {
  lines.push(majorConnector.rationale);
  }
  if (majorConnector.alternativeRationale) {
  lines.push("");
- lines.push("If patient declines FPD: " + majorConnector.alternativeRationale);
+ lines.push("If patient declines fixed treatment: " + majorConnector.alternativeRationale);
  }
  lines.push("");
  lines.push("─── Fallback RPD design (if FPD declined and IPD/RPD chosen anyway) ───");

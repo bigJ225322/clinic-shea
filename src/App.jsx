@@ -18128,8 +18128,11 @@ function RPDPaperFormArchDrawing({
  // implies implant instead in that case. For multi-tooth FPD cases the
  // engine signals FPD via recommendsFixed; for single-tooth cases we
  // derive from Kennedy class.
+ // For an engine-flagged fixed case, render the bridge only for short spans
+ // (≤2 pontics). A 3-pontic span is where implants become the better choice
+ // (matches the engine rationale), so render implants there, not an FPD.
  const isFPD = (isSingleToothCase && result.kennedy.class === "III")
- || engineRecommendsFixed;
+ || (engineRecommendsFixed && missingArchTeeth.length <= 2);
 
  // FPD bridge or implant crown — rendered IN PLACE OF the RPD framework
  // when isFixedTreatmentCase. Pontics (FPD) or crowns (implant) sit at each
@@ -18195,7 +18198,7 @@ function RPDPaperFormArchDrawing({
  // For multi-pontic FPDs we also label the bridge units, e.g. "4-unit FPD".
  const labelText = isFPD
 ? (teeth.length > 1? `${teeth.length + 2}-unit FPD`: "FPD")
-: "Implant";
+: (teeth.length > 1? "Implants": "Implant");
 
  // pointerEvents="none" on every overlay element so clicks pass THROUGH
  // the FPD/implant rendering to the tooth <g>'s click handler underneath.
@@ -21715,6 +21718,19 @@ function RPDHelper() {
  const isFixedTreatmentRecommendedCase = isSingleToothFixedCase
  || (hasContent &&!!result.majorConnector?.recommendsFixed
  && result.designIntent === "definitive");
+ // Soft, non-blocking note: a tooth-bounded Class III where every span is
+ // short/bridgeable but it is NOT the unilateral fixed-only case — i.e.
+ // bilateral / multi-gap, where a cross-arch RPD is a valid design. Two short
+ // bounded gaps are usually better restored with fixed units (a bridge or
+ // implant per gap), but the RPD is a legitimate removable route, so we still
+ // design it and merely surface the fixed alternative.
+ const shortBoundedSpans = (result.kennedy?.spans || []).length > 0
+ && (result.kennedy.spans || []).every(sp => (sp.teeth?.length || 0) <= 3);
+ const isFixedPreferredButRPDValid = hasContent
+ && result.kennedy?.class === "III"
+ && result.designIntent === "definitive"
+ &&!isFixedTreatmentRecommendedCase
+ && shortBoundedSpans;
 
  const sectionTitle = {
  fontFamily: "'Fraunces', serif", fontSize: "13px",
@@ -21875,8 +21891,22 @@ function RPDHelper() {
  border: "1px solid var(--accent)",
  borderRadius: "2px",
  }}>
- <strong style={{ color: "var(--accent)" }}>⚠ FPD recommended.</strong>{" "}
+ <strong style={{ color: "var(--accent)" }}>⚠ Fixed treatment recommended.</strong>{" "}
  {result.majorConnector.rationale}
+ </div>
+)}
+
+ {isFixedPreferredButRPDValid && (
+ <div style={{
+ fontSize: "13px", color: "var(--ink-soft)",
+ lineHeight: 1.5, marginTop: "12px", marginBottom: "12px",
+ padding: "10px 12px",
+ background: "rgba(122,30,30,0.04)",
+ border: "1px solid var(--accent)",
+ borderRadius: "2px",
+ }}>
+ <strong style={{ color: "var(--accent)" }}>Fixed is often preferable here.</strong>{" "}
+ Every edentulous area is a short tooth-bounded gap, so two fixed units — a bridge or an implant per gap — are usually the better definitive option. The RPD below is a valid removable alternative, shown because that's what this tool designs.
  </div>
 )}
 
