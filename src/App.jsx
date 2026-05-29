@@ -10617,16 +10617,24 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  const isLabScript = categoryId === "lab";
  const showChicago = categoryId === "digital";
 
- // When a tooth is entered and the procedure needs anesthetic, auto-set the
- // injection technique if the user hasn't touched the injection yet.
+ // When a tooth is entered and the procedure needs anesthetic, derive the
+ // injection from the tooth and RE-derive it every time the tooth changes, so
+ // the anesthetic always matches the selected tooth (maxillary buccal
+ // infiltration ↔ mandibular IAN + long buccal block, with the correct side
+ // and needle gauge). A manual edit to injection[0] is preserved — we only
+ // re-derive while injection[0] still equals what we last auto-applied.
+ const autoInjRef = useRef(null);
  useEffect(() => {
  if (!needsAnesthetic ||!fields.tooth) return;
  const inj = fields.injections[0] || {};
  const pristine =!inj.techIAN &&!inj.techBuccalInfil &&
 !inj.techGreaterPalatine &&!inj.techNasopalatine &&!inj.techMaxInfil;
- if (!pristine) return;
+ const stillAuto = autoInjRef.current &&
+ JSON.stringify(inj) === JSON.stringify(autoInjRef.current);
+ if (!pristine &&!stillAuto) return;
  const preset = injectionForTooth(fields.tooth, isClinicPeds);
  if (!preset) return;
+ autoInjRef.current = preset;
  setFields(p => ({...p, injections: [preset,...p.injections.slice(1)] }));
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [fields.tooth]);
