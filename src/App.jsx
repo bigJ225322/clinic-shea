@@ -23766,6 +23766,7 @@ const PATHWAYS = [
  domain: "rpd",
  category: "dentures",
  phase: "phase3",
+ laneCapacity: 6,
  label: "Definitive cast-metal RPD",
  description: "Two appointments decide the case: the surveyed design has to be right before you ever touch an abutment (Visit 3), and the framework try-in (Visit 5) is the point of no return for fit — a casting that will not seat passively is remade, not adjusted. This is the definitive cast-metal framework removable partial denture for a partially-edentulous arch — nine clinical visits with six lab blocks between. Visits 1–2 gather the records and finalize the surveyed design, Visit 3 prepares the abutments, Visits 4–6 build and verify the framework and tooth set-up, and Visits 7–9 deliver and refine.",
  keyDecisions: [
@@ -29026,7 +29027,10 @@ function Pathways() {
  // contrast spotlights the lab track as "the differentiator content"
  // the Maps tab exists to surface.
  const labSteps = selectedPathway.labSteps || [];
- const LANE_CAPACITY = 8;
+ // Per-pathway override (default 8): a pathway with long consecutive runs of
+ // same-kind tiles (e.g. RPD's Delivery/24-hr/1-week tail) can wrap tighter so
+ // the widest lane fits the viewport without horizontal scroll.
+ const LANE_CAPACITY = selectedPathway.laneCapacity || 8;
  const tileBase = {
  all: "unset",
  cursor: "pointer",
