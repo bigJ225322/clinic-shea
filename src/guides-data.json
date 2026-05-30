@@ -5741,6 +5741,886 @@
         "text": "*Where this fits in the workflow:* Framework try-in preceded this visit. Next is processing at the lab — the wax setup is replaced with heat-cured PMMA and the prosthesis is finished. Delivery follows (PIP, pressure points, occlusal adjustment, POI). If the wax try-in was carefully evaluated, delivery is short. If rushed, delivery becomes a series of corrective adjustments.*"
        }
       ]
+     },
+     {
+      "id": "rpdc-diag",
+      "num": 1,
+      "title": "Diagnostic impressions (alginate) for RPD",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "The diagnostic casts are where the entire RPD is planned — surveyed, designed on the preliminary form, and duplicated so you can rehearse the tooth modifications before you ever touch the patient. They are taken at the comprehensive oral exam, in alginate, and poured in micro-stone."
+       },
+       {
+        "kind": "section",
+        "text": "When + why"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Taken at the COE** — alginate impressions of both arches are made during the comprehensive oral examination for any Phase 3 (prosthetic) treatment.",
+         "**Both arches, every time** — you need the opposing arch to evaluate the occlusion and plan the occlusal scheme, not just the arch receiving the RPD.",
+         "**The cast is the design substrate** — it gets surveyed, the design is drawn on it, and it is duplicated so you can practice guide planes, rest seats, and undercut modifications. Capture every remaining tooth and the edentulous ridges + sulci accurately."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Materials"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Stock dentate trays** (metal or plastic), several sizes — try in dry first; the tray must cover all teeth and the edentulous ridges with ~2-3 mm of clearance.",
+         "**Alginate** + rubber bowl + flat spatula + room-temperature water.",
+         "**Alginate tray adhesive** — applied inside the tray so the set impression does not pull away from the tray on removal.",
+         "**Cheek retractor, mouth mirror, gauze.**"
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Taking the impression"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Select + try in the tray dry.** It should seat fully over the teeth and ridges, borders in the vestibule, clearance for material on all surfaces. Extend short borders with utility wax.",
+         "**Apply adhesive** to the tray and let it dry.",
+         "**Mix the alginate** to a smooth, lump-free consistency and load the tray from posterior to anterior.",
+         "**Seat posterior-first, then rotate the anterior in.** On the maxillary, wipe a little material into the occlusal surfaces and palatal vault with a finger first to prevent voids.",
+         "**Hold still until set** (confirm by the residue left in the bowl), then remove with a single firm pull along the path of the teeth — do not rock.",
+         "**Inspect immediately:** every tooth captured, no voids or drags, ridges and sulci recorded, borders intact. Remake rather than accept a flawed impression."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Pour + the mounting decision"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Pour in micro-stone** and trim to clean diagnostic casts.",
+         "**Hand-articulate + mount if there are stable tripod contacts** — enough opposing tooth pairs to seat the casts into one repeatable position.",
+         "**If you cannot hand-articulate** (too few occluding pairs), fabricate upper + lower record bases and wax rims so a bite registration can be taken at the next visit.",
+         "**The maxillary cast is mounted with a facebow record; the mandibular cast is mounted to it with the bite registration.**"
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "Why accuracy matters here",
+        "body": "The diagnostic cast is surveyed and the RPD is designed on it. A void over a cusp tip or a distorted tooth means an undercut or guide plane that is not really there — and a design that will not fit. The cast is only as good as this impression."
+       }
+      ]
+     },
+     {
+      "id": "rpdc-facebow",
+      "num": 2,
+      "title": "Facebow record — partially edentulous",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "The facebow registers the maxillary arch in three planes of space and transfers it to the articulator, so the upper cast is mounted at the same distance and angle from the hinge axis as the maxilla sits from the condyles. The bite registration then mounts the lower cast to it. UIC uses the Denar facebow and a Denar semi-adjustable articulator."
+       },
+       {
+        "kind": "section",
+        "text": "Components"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Measuring bow** — the U-shaped frame that seats in the ears and carries the orbital pointer.",
+         "**Bite fork** — carries the registration of the maxillary occlusal surfaces.",
+         "**Shaft assembly** — connects the bite fork to the bow and locks the relationship."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Clinical steps"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Seat the patient upright and relaxed** with the upper and lower wax rims in.",
+         "**Load the bite fork** with bite-registration material and place it against the maxillary teeth/rim, centered, with the rod perpendicular on the patient's right side. Practice the placement a few times before recording.",
+         "**Have the patient hold the bite fork up** against the upper arch with both thumbs.",
+         "**Mark a point 42 mm from the patient's right lateral incisor** — the orbital pointer references this point.",
+         "**Assemble the measuring bow** over the bite fork, snug in both external auditory meatuses (ears).",
+         "**Level the bow:** the anterior cross-bar parallel to the bi-pupillary line and the floor; the side rods parallel to the Ala-Tragus line; the shaft parallel to the long axis of the face.",
+         "**Tighten the three screws** and remove the assembly without distorting it; transfer to the articulator to mount the maxillary cast."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Denar articulator settings"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Condylar inclination:** 25-30°.",
+         "**Bennett angle:** 15°.",
+         "**Incisal pin:** 0 mm — the pin holds the vertical dimension and must read zero when the casts are mounted."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "Why the facebow",
+        "body": "The articulator can only reproduce the patient's protrusive and excursive movements if the upper cast sits the same distance and angle from the hinge axis as the maxilla does from the condyles. Skip it and the eccentric contacts you build on the articulator will not match the mouth."
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Common errors",
+        "body": "A bow that is not level (cross-bar tilted, side rods off the Ala-Tragus line) transfers a canted occlusal plane to the articulator. A bite fork that is not fully seated or not centered shifts the cast. Re-seat and re-level rather than mounting off a bad record."
+       }
+      ]
+     },
+     {
+      "id": "rpdc-records",
+      "num": 3,
+      "title": "Wax rims + bite registration for mounting",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "When the casts cannot be hand-articulated, you make record bases and wax rims so a bite registration can capture the patient's maximum intercuspation (MI) and mount the lower cast. UIC builds the record bases from light-cured Triad and the rims from hard baseplate wax."
+       },
+       {
+        "kind": "section",
+        "text": "Record bases (Triad)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Vaseline the cast** so the cured base releases cleanly.",
+         "**Adapt a sheet of Triad to the cast with your fingers**, then trim the excess with a buffalo knife to form a base that fully covers the sulcus where it will carry the rim.",
+         "**Cure formula:** cure the cast + Triad in the curing unit for 1 min; remove, lift the base off, reposition it on the cast and cure another 1 min; if still not fully set, cure the intaglio for 20 sec. Do **not** over-cure the intaglio — it shrinks and the base will no longer adapt to the cast or the mouth.",
+         "**Smooth the borders** of the cured record base."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Wax rims"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Roughen the base** with a straight lab bur where the rim will sit, and apply yellow sticky wax to that area to lock the rim onto the base.",
+         "**Melt and shape hard baseplate wax** into a rim and attach it to the base over the edentulous area.",
+         "**Smooth the rim** — it carries the occlusal record."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Clinical: bite registration"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Adjust the rims in the mouth** so the patient closes into the *same MI with the rims in as without them* — the rims cannot prop the bite open or shift it.",
+         "**Create 1-2 mm of clearance** between the rims and the opposing dentition for the registration material, and cut index grooves in the rim's occlusal surface so the material keys in.",
+         "**Place bite-registration material (Aluwax or PVS)** on the occlusal surface of the rim and have the patient close into MI.",
+         "**Trim the set record with a scalpel** for a clean, accurate seat before mounting."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "The MI test is the whole game",
+        "body": "A record that holds the jaw even slightly off MI mounts the lower cast wrong, and every downstream occlusal step inherits the error. Confirm same-MI-with-and-without before you place any material."
+       }
+      ]
+     },
+     {
+      "id": "rpdc-design",
+      "num": 4,
+      "title": "Surveying + RPD design + preliminary design form",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "This is the intellectual core of the case. You survey the cast, propose the framework, and record the whole design on the preliminary design form before a single tooth is touched. The cast is surveyed twice — the diagnostic cast to plan, and the master cast before the framework is fabricated. (The component-by-component design logic — which clasp, which connector, by Kennedy class — lives in the RPD design tab; this chapter is the surveying + design workflow that wraps around it.)"
+       },
+       {
+        "kind": "section",
+        "text": "The surveyor"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "A **paralleling instrument** used to determine the path of insertion, the heights of contour, and the retentive points on the abutments.",
+         "**Analyzing rod** — finds the path of insertion and tests proximal-surface parallelism.",
+         "**Undercut gauges — 0.01, 0.02, 0.03 inch** — measure the depth of a retentive undercut for the clasp tip.",
+         "**Carbon marker + sheath** — draws the height of contour.",
+         "**Wax trimmer** — trims block-out wax parallel to the path of insertion."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "What surveying is for"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Determine the **path of insertion** for placement and removal of the framework.",
+         "Identify the **guide planes** — the parallel proximal surfaces that create a single path.",
+         "Find the **height of contour** (the greatest circumference of the tooth at a chosen orientation).",
+         "Locate and measure the **retentive undercuts** (0.01 / 0.02 / 0.03 inch).",
+         "Identify **tissue undercuts** that must be blocked out.",
+         "**Tripod the cast** so the path of insertion can be reproduced at any time."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Surveying — step by step"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Start with a proposed framework design** and identify the direct retainers — the teeth adjacent to each edentulous area.",
+         "**Propose a path of insertion** (cast orientation) with minimal tilt and minimal guide-plane reduction; keep it roughly perpendicular to the occlusal plane (within ~10°), occlusal plane parallel to the floor if possible. The analyzing rod should contact the occlusal ½–2/3 of the proximal surfaces — meaning those surfaces are parallel to one another.",
+         "**Identify the height of contour and the undercuts, then reconfirm the path of insertion.** If you tilt the table to improve parallelism, the HOC and undercuts move and must be re-checked.",
+         "**Mark the height of contour in black** (carbon marker + sheath) on the abutments, and **mark the retentive undercuts in red** — choosing a 0.01, 0.02, or 0.03 inch undercut with the gauge (shaft on the HOC, disk to the tooth).",
+         "**Tripod the cast** (tissue-surface indexing with the 0.03 gauge circled in red, or art-portion indexing on the outer cast) so the exact path of insertion can be reproduced later."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "Longer guide planes = more retention and stability",
+        "body": "The guide planes are the parallel proximal surfaces that force the framework in along one path and resist its dislodgement. Longer, well-prepared guide planes give more retention and stability — worth the minimal enamel reduction."
+       },
+       {
+        "kind": "section",
+        "text": "The preliminary design form"
+       },
+       {
+        "kind": "paragraph",
+        "text": "Filled out before the tooth-prep appointment, the form is your checklist of every component so nothing is forgotten. During the prep visit you check items off as you complete them."
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Guide planes** and their references.",
+         "**Rest seats** and reduction amounts, including any indirect retainers.",
+         "**Undercuts to be created** — their location and depth.",
+         "**Height-of-contour adjustments** — especially for suprabulge clasps and reciprocal arms.",
+         "**Clasp types**, **minor connectors**, and the **major connector**."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Duplicate + practice"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Duplicate the diagnostic cast** and practice the proposed modifications on the duplicate — guide planes, HOC reduction, undercut creation, and rest seats.",
+         "**Note exactly what you will prepare** at the chair, in sequence.",
+         "**Faculty approves the design** before the abutment-prep appointment — the prep removes only what the approved design dictates."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Undercuts hard to find?",
+        "body": "Tilt the cast to redistribute the undercuts — but the path of insertion changes and you must re-mark the HOC for the new orientation. If a usable undercut still is not there, plan enameloplasty (re-contour the enamel) or, if recontouring enamel will not get you an adequate guide plane / undercut / rest seat, a survey crown."
+       }
+      ]
+     },
+     {
+      "id": "rpdc-prep",
+      "num": 5,
+      "title": "Abutment preparation — guide planes, undercuts, rest seats",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "At this visit you prepare the abutments to receive the framework — guide planes, axial-contour adjustments, retentive undercuts, and rest seats — exactly as the faculty-approved design dictates. Everything is in enamel, so no anesthesia is needed; use water spray to avoid overheating."
+       },
+       {
+        "kind": "section",
+        "text": "Order of preparation"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Guide planes** — cut on the proximal surfaces, parallel to the path of insertion.",
+         "**Axial contours** — reduce if the height of contour is not favorable for the selected clasp.",
+         "**Undercuts** — create where the design calls for them.",
+         "**Verify before the rest seats:** take an alginate, pour a fast-set (Snap) cast, and check the axial modifications on the surveyor. Repeat steps 1–4 if needed.",
+         "**Rest seats** — once the modifications are correct, cut the rest seats.",
+         "**Occlusal clearance** — confirm there is room for the framework where it crosses the occlusal surfaces."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Burs + setup"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Ask the dispensing window for the **RPD high-speed bur block**.",
+         "**Guide planes:** cylindrical diamond bur.",
+         "**Cingulum rest seat:** inverted cone.",
+         "**Occlusal rest seat — premolars:** #4 + #6 round burs.",
+         "**Occlusal rest seat — molars:** #4, #6, #8 round burs.",
+         "**No anesthesia** in clinical sessions — the prep stays in enamel. **Use water** to avoid overheating."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Guide planes — excellent prep criteria"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Parallel to the path of insertion**, flat occluso-gingivally, curved to follow the original bucco-lingual contour, no sharp line angles, entirely in enamel, smooth.",
+         "**Posterior teeth:** 1/3 the bucco-lingual width (2/3 of the way cusp-tip to cusp-tip), and 2/3 of the tooth length from the marginal ridge toward the cervical.",
+         "**Anterior teeth:** usually placed on the linguo-proximal aspect to preserve esthetics; may involve the proximal surface if you need space for a replacement tooth.",
+         "Hold the handpiece **perpendicular to the occlusal plane** as you cut."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Occlusal rest seats — molars + premolars"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**1.5 mm marginal-ridge reduction.**",
+         "**1/3 the bucco-lingual width** (2/3 cusp-tip to cusp-tip).",
+         "As long as it is wide: **premolar ≈ 1/3 the mesio-distal dimension; molar ≥ 1/4 the mesio-distal dimension.**",
+         "**Rounded triangular outline**, base at the marginal ridge; **spoon-shaped, no undercuts**, smooth floor without steps.",
+         "Outline with a **#6 round bur (premolar)** or **#8 round bur (molar)**; establish the axial inclination / positive seat with a **#4 round bur (premolar)** or **#6 (molar)**.",
+         "Entire preparation in enamel, smooth surface."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Cingulum rest seats — canines"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**V or U shape** facio-lingually (viewed from proximal); V or U **peaked toward the incisal** mesio-distally.",
+         "Located occluso-gingivally at the **junction of the middle and gingival thirds** of the clinical crown (clear of the occlusion).",
+         "**Extends mesio-distally from one marginal ridge to the other.**",
+         "**Floor inclined toward the center of the tooth** to establish a positive seat; no significant undercut above the rest prep.",
+         "Entirely in enamel, smooth; the prep-to-long-axis angle is **less than 90°**."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "A positive seat means no slide",
+        "body": "Every rest-seat floor inclines toward the center / long axis of the tooth so the rest transmits load down the tooth rather than off it. A flat or outward-sloping floor lets the framework slide and torque the abutment — the opposite of what the rest is for."
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Common errors",
+        "body": "No occlusal clearance after the prep means the framework will prop the bite open — deepen the rest (still a smooth enamel floor) or re-check the design. Cutting through enamel into dentin means you over-prepared: the goal is a positive enamel seat, not a deep box."
+       }
+      ]
+     },
+     {
+      "id": "rpdc-finalimp",
+      "num": 6,
+      "title": "Border molding + final impression (single-step / altered cast)",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "The definitive impression captures the functional form of the residual ridge so the denture base carries load without torquing the abutments. Tooth-bounded cases take a single-step impression in a full-arch custom tray; distal-extension (Kennedy I / II) cases use the altered-cast technique — an anatomic impression now for framework fabrication, then a functional impression at the framework try-in."
+       },
+       {
+        "kind": "section",
+        "text": "Custom tray — selective spacer"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Vaseline** the diagnostic cast.",
+         "**Spacer:** two sheets of soft baseplate wax over the teeth and tooth-supported edentulous areas; **one** sheet over the distal-extension area(s) — the lighter relief there is deliberate so the tray records the extension under slight pressure. Cut small openings through the wax for **three tissue stops**.",
+         "**Cover the spacer with Triad**, trim the vestibular borders 2 mm short of full depth, and add finger rests (1st-molar region) plus an anterior handle that does not interfere.",
+         "**Cure** (~2 min, then the intaglio ~1 min) — the wax must not melt.",
+         "**Remove 2 mm of wax from the intaglio borders** to leave space for the border-molding compound."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Single-step impression (tooth-bounded cases)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Check the tray extension** in the mouth.",
+         "**Border mold** the distal-extension areas and the entire lingual vestibule (mandibular cases) with green-stick compound, then **reduce its thickness by 0.5 mm**.",
+         "**Remove the baseplate-wax spacer.**",
+         "**Place a relief hole in the maxillary tray — NOT the mandibular tray.**",
+         "**Apply PVS adhesive** and let it dry 10 min.",
+         "**Take the PVS wash:** light body on the teeth, medium or heavy body loaded in the rest of the tray.",
+         "**Box and pour** in Type III stone (Coe-Cal / Microstone); after 24–48 h soak in warm water to soften the compound, separate gently, and trim the cast preserving the vestibule."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "Why border-mold an RPD?",
+        "body": "The denture borders extend into the vestibule just like a complete denture — the more ridge they cover, the more the load is spread and the less the abutments are torqued. Distal-extension cases especially need a functional, border-molded extension."
+       },
+       {
+        "kind": "section",
+        "text": "Altered-cast technique (distal-extension cases)"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Two impressions instead of one.** First, an anatomic / non-pressure impression now, which the lab uses to fabricate the framework.",
+         "**Then a functional impression at the framework try-in:** a partial-arch tray attached to the seated framework, with little or no relief and a viscous material, so the distal-extension base contacts tissue under load.",
+         "More clinical and lab steps than single-step, so it is reserved for distal extensions where recording the ridge under function actually matters."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Sending to the lab"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Send the **master cast + design cast** with the lab prescription, surveyed but marked differently.",
+         "**Master cast:** tripoded, exact undercut points in red, height of contour of the abutments.",
+         "**Design cast:** the full design drawn out.",
+         "**Marking convention:** metal framework components in **blue** — except the **tissue stop in red**; wrought-wire clasps and acrylic base extensions in **red**."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Common errors",
+        "body": "Abutment torque on a distal extension traces to a base that does not record the ridge under function — use the selective spacer (single-step) or the altered-cast technique, and border-mold the extension. A relief hole in the mandibular tray (it should have none) bleeds pressure and under-extends the lingual."
+       }
+      ]
+     },
+     {
+      "id": "rpdc-fwtryin",
+      "num": 7,
+      "title": "Framework try-in (+ altered cast impression)",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "The cast-metal framework is back from the lab, and this is the highest-stakes fit checkpoint of the case. It must seat fully and passively — first on the master cast, then in the mouth — before anything else proceeds. For distal-extension cases, the functional altered-cast impression is taken now."
+       },
+       {
+        "kind": "section",
+        "text": "Check the fit on the master cast first"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Is the design correct** — does the casting match what you prescribed?",
+         "**Is the framework rocking?**",
+         "**Are the rest seats flush and fully seated?**",
+         "**Are the clasps engaging the correct undercut?**",
+         "**Are the major connectors well-adapted to the tissue surface?**",
+         "**Note the distance between the lattice (mesh) and the tissue surface** — it carries the acrylic base."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Intraoral try-in"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Melt a thin layer of disclosing wax** on every framework area that will contact the teeth.",
+         "**Insert gently — never force the framework in.**",
+         "**Adjust binding points** (pressure show-through) with a high-speed coarse diamond bur; leave broad, even contacts and remove only the small metal show-throughs; repeat until it is fully seated.",
+         "**Confirm it fits intraorally as it does on the cast.** If it does not seat the same way, decide: a new impression, or the altered-cast impression."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Occlusion"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Check occlusion and articulation; the occlusion must be the **same with and without the framework**.",
+         "If RPDs are made for both arches, check **one arch at a time, then both together**."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Altered-cast impression (distal-extension cases)"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "With the framework verified, attach the **partial-arch tray to the framework** over the distal extension.",
+         "Take a **functional impression** (little/no relief, viscous material) so the extension base records the ridge under load.",
+         "The lab **alters the master cast** to this functional record before setting the teeth."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "Passivity is non-negotiable",
+        "body": "A framework that rocks, will not seat, or only seats under force is remade — you cannot bend a casting into fit. Adjust the binding points, but if it will not seat passively, it is a remake, not an adjustment."
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Common errors",
+        "body": "Framework seats on the cast but not in the mouth → the master cast was inaccurate; take a new impression or proceed with the altered-cast technique. Occlusion changes with the framework in → a rest or connector is high; mark with disclosing wax and relieve until the bite is identical with and without it."
+       }
+      ]
+     },
+     {
+      "id": "rpdc-teeth",
+      "num": 8,
+      "title": "Tooth selection + bite registration on the framework",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "With the framework verified in the mouth, you take the records the lab needs to set the teeth — a facebow and an occlusal (bite) registration with wax rims attached to the framework — and you select the mould and shade of the denture teeth."
+       },
+       {
+        "kind": "section",
+        "text": "Records on the framework"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Attach wax rims to the verified framework.**",
+         "**Take a facebow record** to mount the maxillary, and an **occlusal / bite registration in MI** with the rims on the framework to mount the mandibular (see the Facebow chapter for technique).",
+         "These records mount the *framework + rims* so the lab sets the teeth to the same metal you just verified — not to a separate base that might seat differently."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Selecting the teeth"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Mould** (size + shape) to fill the edentulous space and harmonize with the remaining teeth — the number of teeth set is **not necessarily the number missing**, and mandibular posteriors stop anterior to the ascending ramus.",
+         "**Shade** to match the adjacent natural teeth (use the mould + shade selector above).",
+         "**Decide the occlusal scheme before the teeth are set** — against an opposing complete denture, strive for **bilateral balanced articulation**."
+        ]
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**What the lab does next:** sets the denture teeth on the framework with the mandibular central grooves over the crest of the residual ridge, to the occlusal scheme you chose, then festoons the wax."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "The framework is the reference now",
+        "body": "The facebow and bite registration are taken with the rims on the metal, so the case is mounted on the exact framework you verified at try-in. Take the record on a separate base and the teeth may be set to a seat that does not match the framework."
+       }
+      ]
+     },
+     {
+      "id": "rpdc-waxtryin",
+      "num": 9,
+      "title": "Wax try-in",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "The teeth are set in wax on the framework. This is the last checkpoint before processing locks everything in — evaluate the esthetics and the occlusion and get the patient's explicit approval, because nothing can change after the acrylic is processed."
+       },
+       {
+        "kind": "section",
+        "text": "What to check"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Esthetics** — mould, shade, midline, tooth position, lip support, and the gingival contours / festooning. Does it look right to you *and* the patient?",
+         "**Occlusion** — the set teeth contact in MI simultaneously with the remaining natural teeth at the correct VDO; verify the eccentric scheme (bilateral balance against an opposing complete denture).",
+         "**Fit** — the framework still seats fully and passively with the teeth on it.",
+         "**Phonetics** — speech is comfortable; have the patient read aloud."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "Last stop before processing",
+        "body": "Every esthetic and occlusal change is cheap now and permanent after the acrylic is processed. Get the patient to approve the look explicitly — color, shape, position, midline — before the case goes to the lab."
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "Common errors",
+        "body": "Patient unsure about the look → adjust the wax set-up now and re-try; do not process to 'see how it looks in acrylic.' Occlusion off → correct it on the articulated case before processing, not at delivery."
+       }
+      ]
+     },
+     {
+      "id": "rpdc-delivery",
+      "num": 10,
+      "title": "Delivery — insertion, PIP, occlusal adjustment, POI",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "The processed RPD is back. Seat it, relieve the pressure spots, adjust the occlusion so the natural and denture teeth meet together, confirm the clasps retain without traumatizing the abutments, then deliver the post-op and home-care instructions. Most of what could go wrong here should already have been caught at the framework try-in."
+       },
+       {
+        "kind": "section",
+        "text": "Be prepared + inspect"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Have the **diagnostic cast with the drawn design** and the **lab prescription** in front of you — did the lab build the RPD per the design you requested?",
+         "Ask whether the patient has worn a removable prosthesis before, and explain the **adaptation period** up front.",
+         "**Feel the RPD all around** and remove sharp acrylic, undercuts, and bony-spicule show-throughs. Remember it has one path of insertion — any binding of the teeth against the metal should have been found at try-in."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Insert + find pressure spots (PIP + Mizzy)"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Insert along the path of insertion**; confirm every rest is seated in its prepared seat and the clasp arms engage the proposed undercuts; check the acrylic for over-extensions that dislodge the RPD.",
+         "**PIP paste + Mizzy spray:** deposit PIP in one direction all around the intaglio, then spray Mizzy over it — the Mizzy keeps the PIP on the RPD instead of spreading around the lips and cheeks. Relieve the show-through spots.",
+         "**Maxillary pressure areas** (most common): buccal posterior border parallel to the tuberosities, hamular notches bilaterally, over-extension over the zygomatic arch / rugae / mid-palatal suture or torus.",
+         "**Mandibular pressure areas:** lingual ridge (especially the premolar region), mylohyoid ridge, buccal shelf, retromylohyoid space, retromolar pad, the disto-buccal border at the ascending ramus / external oblique ridge, and any tori or bony irregularities."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Framework fit"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "If there is no acrylic interference, re-check the metal seating: the **rests must seat in their seats and the proximal plates contact the guide planes**.",
+         "Use **disclosing wax** on the proximal plates and rest seats; the **show-through areas are the interferences** — relieve them (again, should have been caught at try-in)."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Occlusal adjustment"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Without the RPD in**, see how the remaining natural teeth occlude — identify the teeth contacting in MI.",
+         "**Adjust one RPD at a time.** Seat it and verify the patient's own teeth still contact.",
+         "If the inter-occlusal contacts are high but the framework seats without interference, the **prematurities are on the denture teeth** — reduce them gradually until the natural teeth occlude and the VDO is re-established.",
+         "**Goal: simultaneous MI contact on the natural and denture teeth.** (A clinical remount with a pick-up impression + new records is an option if chairside adjustment is not enough.)"
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Clasp retention"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Adjust retention **only after** the RPD is fully seated and the occlusion verified. Use ortho pliers (Bird-Beak or three-prong).",
+         "**Wrought-wire** clasps adjust easily in three dimensions; **cast** clasps are harder. An **I-bar** adjusts only toward or away from the tooth; a **cast Akers** adjusts only in the horizontal plane (toward or away)."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Esthetics, phonetics + instructions"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Verify esthetics** match what the patient approved at the wax try-in, and **phonetics** (advise reading aloud daily).",
+         "**Show insertion and removal** and have the patient practice in the clinic before trying at home.",
+         "**Wear for the first 24 hours**, then remove at night and keep in water. Clean daily with soap or denture cleaner — **not toothpaste**.",
+         "Counsel on adaptation (eating, salivary flow), and book the 24-hour and 1-week follow-ups."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Polishing"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Polish the **metal** with a metal polishing kit and the **acrylic** with pumice on a rag wheel.",
+         "**Do not polish the intaglio surface** (it would lose its fit), and **do not polish the denture teeth** — you would change the occlusion you just adjusted."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "Occlusion: natural first, then denture teeth",
+        "body": "Always establish how the natural teeth meet with the RPD out, then add the RPD and reduce only the denture-tooth prematurities. If you grind the framework or the natural teeth to 'fix' the bite, you have moved the problem, not solved it."
+       }
+      ]
+     },
+     {
+      "id": "rpdc-followup",
+      "num": 11,
+      "title": "Post-delivery follow-up + adjustments",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "See the patient at 24 hours and 1 week. Interview, examine, relieve the new sore spots, re-check the occlusion, and reinforce care. Most early complaints are routine intaglio or occlusal adjustments — and for distal-extension cases, this is where you decide whether a reline is coming."
+       },
+       {
+        "kind": "section",
+        "text": "The 24-hour + 1-week visits"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Interview:** ask specifically about soreness, retention, stability, speech, and problems eating — patients say 'fine' to generic questions.",
+         "**Examine** the soft and hard tissues, the support, the rest seats, and the retention.",
+         "**Relieve sore spots** on the intaglio with PIP paste + Mizzy spray, the same way as at delivery.",
+         "**Re-check the occlusion** and adjust the denture-tooth contacts if needed.",
+         "**Reinforce care:** remove at night and keep in a moist environment; clean daily with soap or denture cleaner, never toothpaste."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Two things specific to RPDs"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Caries risk around the retainers.** Many of these patients are on xerostomia-inducing medications; dry mouth drives root caries around the clasped abutments. Advise more frequent recall (POE), better oral hygiene, and high-fluoride toothpaste (Prevident 5000) or varnish.",
+         "**Reline evaluation for Kennedy Class I / II.** If a distal-extension RPD rotates around the fulcrum line as the ridge resorbs, plan a reline — see the Reline / rebase / repair track."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "Adaptation takes weeks",
+        "body": "Set the expectation that soreness and an odd feeling for the first days are normal, and that eating and speech improve with practice. Build the rapport — and avoid delivering the day before a holiday when you cannot see the patient back."
+       }
+      ]
+     },
+     {
+      "id": "rpdc-surveycrown",
+      "num": 12,
+      "title": "Survey crowns for RPD abutments",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "When an abutment cannot give an adequate guide plane, retentive undercut, and rest seat from enamel recontouring alone, it gets a PFM survey crown — a crown built with the exact contours the partial needs. The defining rule: the RPD is designed first, so the lab knows what contours to build into the crown."
+       },
+       {
+        "kind": "section",
+        "text": "When + why"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "A **survey crown** is fabricated to be fitted with the RPD when acceptable contours cannot be achieved by modifying the surfaces of the residual tooth.",
+         "**Finalize the RPD design before crown prep** — the **path of RPD insertion determines the crown's guide planes**.",
+         "The crown is **delivered first**, then you proceed with the RPD impression."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Prep + impression"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**2.5–3.0 mm of occlusal reduction** in the area of the RPD rest seat, plus **0.5–1 mm** for the metal thickness of the crown.",
+         "**Final impression** in light + medium, or heavy body PVS.",
+         "Two clinic options: prep, temp, and cement the crowns **one at a time, re-surveying each**; or temp them all and take **one final impression of all preps at once**, then send for pouring + Pindexing."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Surveyed contours the lab builds in"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "A **positive rest seat**.",
+         "A defined **survey line / ideal height of contour**.",
+         "A **retentive undercut** for the clasp tip.",
+         "A flat **guide plane** on the proximal toward the edentulous span.",
+         "Ask the lab to return the **full-contour wax-up** so you can verify the guide planes and undercuts with the surveyor, and verify the finished crowns on the master cast **before cementation**."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Sequence"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Design the RPD → prep the survey crowns → Pindexed master cast → wax rims + bite registration → mount → lab fabricates the crowns → **survey the returned crowns on the master cast** → cement → take the RPD alginate, then **rejoin the main pathway at abutment prep / final impression**."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "Design before you prep",
+        "body": "This is one of the few crown cases where the partial design must be final before the crown is prepared — the crown's guide plane, undercut, and rest seat are all dictated by the RPD's path of insertion. Prep first and the crown will not serve the partial."
+       }
+      ]
+     },
+     {
+      "id": "rpdc-relinerepair",
+      "num": 13,
+      "title": "Reline / rebase / repair",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Over time the ridge resorbs and the RPD loses tissue support — most importantly on distal-extension (Kennedy I / II) cases, where the base rotates around its fulcrum line and starts to torque the abutments. Relining re-adapts the intaglio; rebasing replaces the whole base; repairs handle broken teeth, bases, clasps, connectors, and rests."
+       },
+       {
+        "kind": "section",
+        "text": "Is a reline necessary?"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Complaints:** loose prosthesis, reduced chewing, food packing under the base, soft-tissue irritation/ulceration, lost anterior esthetics.",
+         "**Rotation test:** apply a seating force at the distal end of the base and watch whether an anterior indirect retainer lifts off its rest seat as the RPD rotates around its fulcrum line.",
+         "**Alginate test:** a thin alginate mix on the intaglio, seat the RPD and apply force *only* on the rests and major connector, hold until set, then measure the alginate thickness to judge the gap."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Materials + impression technique"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Materials:** tissue conditioner (temporary, sometimes medicated — antifungals for candidiasis), soft reline (temporary, changed periodically), or hard reline (permanent).",
+         "**Closed-mouth** (tooth-supported RPDs): the positive rest seats at each end support the base — just have the patient bite after you seat it.",
+         "**Open-mouth** (distal-extension RPDs): the dentist holds the prosthesis down at the rests and major connector while fully seated, to prevent overseating and rotation. A closed-mouth technique here would just reproduce the rotation in the relined base."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Chairside vs lab reline"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Chairside:** less costly, no need to take the prosthesis from the patient — but you cannot border-mold, and auto-polymerizing resin has more free monomer, more porosity, less color stability, and more patient sensitivity.",
+         "**Lab:** border molding is possible and heat-cured resin is more stable (less monomer + porosity) — but the patient gives up the prosthesis and it costs more. For a distal extension, use the altered-cast technique, keep impression material from under the framework, and expect a clinical remount."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Reline vs rebase"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Reline** when the base is adequate to support the reline impression (extension is acceptable, can be border-molded; slight occlusal wear is re-established by the reline).",
+         "**Rebase** (lab removes *all* base acrylic and replaces it) when the base is inadequate — too short for border molding, or the acrylic base is fractured. The occlusal relationship is maintained throughout.",
+         "**Reconstruction:** if the base is poorly adapted *and* the teeth no longer occlude, remove both and rebuild on the existing framework — which must still fit well to accept new teeth and base."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Repairs"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Lost / broken tooth:** select mould + shade, pick-up alginate impression, block out undercuts and pour in plaster, lute the replacement tooth with auto-polymerizing acrylic (cure in the pressure pot), trim + polish.",
+         "**Fractured acrylic base:** index the parts intraorally, pick-up impression, pour quick-set plaster, remove 1–2 mm of acrylic from each fragment and cut retention grooves, reseat and process with auto-polymerizing acrylic.",
+         "**Fractured clasp / connector / rest:** index intraorally, pick-up impression, then solder / electro-solder (re-cast a cast clasp arm; re-shape and re-embed a wrought-wire arm).",
+         "**Fractured framework:** repair is extensive and unpredictable — **remake the RPD** if at all possible."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "Hold a distal extension open-mouth",
+        "body": "On a Kennedy I / II reline, seat the RPD and load only the rests and major connector while the impression sets — not the patient's bite. Let the patient bite down and you record the very rotation you are trying to eliminate."
+       }
+      ]
      }
     ]
    }

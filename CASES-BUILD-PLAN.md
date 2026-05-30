@@ -17,24 +17,98 @@ compresses, this doc is the resume point. Treat it as binding.
 
 ---
 
-## ⭐ READ FIRST (2026-05-29): CD is DONE — it is the reference template
+## ⭐ READ FIRST: CD + RPD are DONE — they are the reference templates
 
-`cd-conventional` is **built, live in the Maps tab, and polished to "basically
-perfect."** It is the canonical model. To build any other Phase-3
-multi-appointment treatment, **copy its shape exactly** — the renderer is
-generic, so you never touch renderer code to add a pathway; you only author a
-well-formed pathway object and it draws the schematic + lab tiles + branches +
+`cd-conventional` (2026-05-29) and `rpd-conventional` (2026-05-30) are both
+**built, live in the Maps tab, and polished to Jake's bar.** They are the canonical
+models. To build any other Phase-3 multi-appointment treatment, **copy their shape
+exactly** — the renderer is generic, so you never touch renderer code to add a
+pathway; you only author a well-formed pathway object (`App.jsx`) + its chapter
+content (`guides-data.json`) and it draws the schematic + lab tiles + branches +
 per-box popups automatically.
+
+> RPD is the case that exposed the **content-architecture gap** documented in
+> "Where the model lives" below — content lives in TWO files, and `stub`/"Coming
+> soon" is a normal empty state, not missing content. Read that section before you
+> touch anything, and do NOT re-derive it the hard way via git archaeology.
 
 > Framing note: the "Cases tab" plan below evolved into the **Maps tab** (the
 > snake-wrap schematic of visits + lab blocks + downstream branches, with a
 > click-to-open popup on every box). The schema + discipline below are what
 > actually shipped.
 
-### Where the model lives
-`src/App.jsx` → `const PATHWAYS = [ … ]` → the `cd-conventional` object (search
-`id: "cd-conventional"`). Read it top to bottom before building a new one; it
-**is** the spec.
+### Where the model lives — TWO files, not one (this is what tripped up the RPD build)
+A built Maps pathway is split across **two files**. Missing the second one is the
+exact trap the RPD build fell into (it cost hours):
+
+1. **`src/App.jsx` → `const PATHWAYS = [ … ]`** — the **pathway object**
+   (`cd-conventional`; search `id: "cd-conventional"`). This holds the schematic
+   shape and most of the popup prose: `description`, `keyDecisions`,
+   `phases[].detail` (the visit-popup summary), `labSteps[].detail` (the oxblood
+   lab-tile step-by-step), `branches`, and `sections` (which chapters each visit
+   links to). Read it top to bottom before building a new one — it **is** the spec.
+   The file uses **flat 1-space indentation at EVERY nesting level** (not 2/4-space);
+   match it exactly or Edit anchors won't apply.
+
+2. **`src/guides-data.json`** — the **deep chapter content** that fills the
+   expandable sections inside each visit / branch popup. `App.jsx` imports it
+   (`import GUIDES_DATA from "./guides-data.json"`) and a patcher (search
+   `Patch GUIDES with real content`) merges each JSON chapter's `blocks` into the
+   matching chapter **shell** by `id`, deleting the stub flag.
+
+**The thing that wasted hours on RPD:** chapter *shells* in `App.jsx` are written
+as `{ id: "cd-ch1", num: 1, title: "…", stub: true }`. A `stub: true` shell with no
+JSON blocks renders **"Coming soon. Live source: the deep-dive PDF."** — that string
+is the *default empty state*, NOT a sign the content is missing, NOT a sign you're
+looking at an old/wrong file, and NOT "AI slop." For a BUILT section the real
+content is in `guides-data.json`. If you grep only `*.js`/`*.jsx` for a chapter's
+text you'll hit a stub and wrongly conclude the content is gone. **Always grep
+`guides-data.json` too** (it's `.json`, so `--include=*.json` or no include filter).
+
+### ⚠️ Ground truth = the preview. NEVER git/worktree archaeology.
+The repo has ~10 stale worktrees and the dev server's cwd may point at one of them.
+**None of that matters.** The Vite preview serves the **current working tree**, and
+the Read/Edit tools operate on that same tree.
+
+- **Ground truth = `preview_eval` → `fetch('/src/App.jsx')` and
+  `fetch('/src/guides-data.json')`.** Verify against those, not against
+  `git show <branch>:…`, `git log -S`, commit/worktree diffs, or `git status`.
+- **If you catch yourself diffing commits or comparing worktrees to find where
+  content lives — STOP. You have already gone down the wrong road.** The content is
+  in `guides-data.json` + the `PATHWAYS` object on the current working tree. Read
+  those files directly and confirm with `preview_eval`. (To sanity-check the
+  preview is current, grep the served file for a recent known change.)
+- Editing files reaches the preview. Editing **`guides-data.json` (and often
+  `App.jsx`) triggers a full page reload**, which deselects the pathway — just
+  re-click the domain pill before screenshotting.
+
+### How to add / edit chapter content (`guides-data.json`)
+Top level is a list of guides: `{ id, label, parts:[{ chapters:[ … ] }] }`. Add
+chapter objects to the matching guide's `parts[0].chapters` (their `id` must match a
+shell in `App.jsx`'s GUIDES — add the shell if new). Edit with a Python
+load → upsert → dump; it **round-trips byte-identical**, so the diff is only your additions:
+
+```python
+import json
+d = json.load(open('src/guides-data.json'))
+g = next(x for x in d if x['id'] == 'rpd')          # the guide for this domain
+ch = g['parts'][0]['chapters']                       # upsert your chapter dicts by id here
+open('src/guides-data.json','w').write(json.dumps(d, indent=1, ensure_ascii=False) + '\n')
+json.load(open('src/guides-data.json'))              # re-parse to confirm valid
+```
+
+Chapter shape `{ id, num, title, blocks:[…] }`. Block kinds (from the `GuideBlock`
+renderer): `{kind:"paragraph",text}` (opening verdict-ish summary), `{kind:"section",text}`
+(collapsible header), `{kind:"bullets",items:[…]}` / `{kind:"numbered",items:[…]}`
+(use `**bold**` lead-ins, `*italic*`), `{kind:"callout",title,body}` (accent box, key
+principle), `{kind:"troubleshoot",title,body}` (gold box, pitfalls). Match `cd-ch1`'s
+depth: a paragraph, then Materials + step-by-step sections, a callout, a troubleshoot.
+
+### "1:1 with CD" means structure, not counts
+1:1 = the same schema, popup behavior, animations, and **depth of information** — NOT
+the same number of visits/labs. Quantities and placement follow the specific
+workflow (CD shipped 8 visits / 5 labs; RPD shipped 9 / 6). Author the deep chapters
+AND the `labSteps[].detail` to literal step-by-step depth, like CD's lab tiles.
 
 ### The shipped schema (one PATHWAYS entry)
 ```js
@@ -85,10 +159,16 @@ it's a new domain).
 3. **The Maps content is never a source for itself.** Do NOT trust the app's own
    existing prose, and NEVER trust an AI "Comprehensive Guide" file — that is how
    fabrications propagate.
-4. Author the object → `npx esbuild src/App.jsx --loader:.jsx=jsx --outfile=/dev/null`
-   to syntax-check → confirm it renders in the live Maps preview (read the
-   served file with `preview_eval` if branch/worktree state is confusing) →
-   deploy (`git push origin main`) → Jake reviews the real boxes/popups → iterate.
+4. **Author in BOTH files:** the pathway object + the step-by-step `labSteps[].detail`
+   in `src/App.jsx`, and the deep chapter `blocks` in `src/guides-data.json` (see
+   "How to add chapter content" above). Source-reading tip: try
+   `pdftotext -layout "<deck>.pdf"` FIRST — Kim's decks extract clean text (cheap on
+   tokens); Shahin's are image slides and need the Read tool with `pages:` (token-heavy).
+5. **Verify, then deploy:** `npx esbuild src/App.jsx --loader:.jsx=jsx --outfile=/dev/null`
+   (JS) **and** `python3 -c "import json; json.load(open('src/guides-data.json'))"` (JSON)
+   → confirm it renders in the live Maps preview via `preview_eval` (re-click the pill
+   after the JSON-edit page reload) → deploy (`git push origin main`) → Jake reviews the
+   real boxes/popups → iterate. Use `preview_eval` as ground truth, never git archaeology.
 
 ### Hard lessons from CD (do NOT repeat)
 - **Don't invent clinical procedure.** CD had a fabricated "clinical remount +
@@ -102,6 +182,16 @@ it's a new domain).
   the *lab* festoons/packs/processes. Don't dress lab work up as student work.
 - **Phantom-visual scrub:** no "see table/figure/diagram/above/below" refs to
   things the popup doesn't render.
+- **Lab-simulation steps are NOT clinical steps.** UIC lab decks teach on practice
+  casts / typodonts — e.g. "remove teeth #4,5,14,15,30,31 from the cast" or "remove
+  #5,#30 from your Kilgore typodont" are how the *course* fakes a partial-edentulous
+  arch for the bench exercise. They are never done to a patient. Keep them out of the
+  pathway content (same spirit as the phantom-visual scrub).
+- **Don't duplicate a dedicated tool.** RPD already has a full design-engine tab
+  (clasp/connector/Kennedy-class logic). The Maps `rpdc-design` chapter covers the
+  surveying + design *workflow* and points at that tool — it does not re-teach the
+  whole component-design curriculum. Check for an existing tab/engine before writing
+  a deep design chapter.
 
 ---
 

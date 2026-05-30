@@ -1,5 +1,11 @@
 # Cases tab differentiator — lab steps + UIC workflow audit
 
+> **Build mechanics live in `CASES-BUILD-PLAN.md` "⭐ READ FIRST".** Lab-step prose
+> for a pathway goes in `labSteps[].detail` in the `App.jsx` pathway object (the
+> oxblood lab tiles), authored to literal step-by-step depth like CD's. The deep
+> *chapter* content is in `src/guides-data.json`. `stub`/"Coming soon" is a normal
+> empty state, not missing content. Verify with `preview_eval`, never git archaeology.
+
 ## What we're trying to build
 
 Per the directive: the differentiator between the Cases tab and the Steps tab is

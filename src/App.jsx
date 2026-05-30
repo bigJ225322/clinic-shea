@@ -22833,6 +22833,26 @@ const GUIDES = [
  { id: "rpd-ch21", num: 21, title: "Wax try-in (appointment 6)", stub: true },
  ],
  },
+ {
+ id: "rpd-conv",
+ label: "Definitive cast-metal RPD — appointment deep-dives",
+ tagline: "Appointment-by-appointment clinical + lab content for the definitive cast-metal framework RPD pathway in the Maps tab. Structure from Dr. Kim's RPD sequencing lecture and Dr. Shahin's treatment sequence; clinical/lab detail from the UIC RPD lab manuals. Rebuilt from primary sources.",
+ chapters: [
+ { id: "rpdc-diag", num: 1, title: "Diagnostic impressions (alginate) for RPD", stub: true },
+ { id: "rpdc-facebow", num: 2, title: "Facebow record — partially edentulous", stub: true },
+ { id: "rpdc-records", num: 3, title: "Wax rims + bite registration for mounting", stub: true },
+ { id: "rpdc-design", num: 4, title: "Surveying + RPD design + preliminary design form", stub: true },
+ { id: "rpdc-prep", num: 5, title: "Abutment preparation — guide planes, undercuts, rest seats", stub: true },
+ { id: "rpdc-finalimp", num: 6, title: "Border molding + final impression (single-step / altered cast)", stub: true },
+ { id: "rpdc-fwtryin", num: 7, title: "Framework try-in (+ altered cast impression)", stub: true },
+ { id: "rpdc-teeth", num: 8, title: "Tooth selection + bite registration on the framework", stub: true },
+ { id: "rpdc-waxtryin", num: 9, title: "Wax try-in", stub: true },
+ { id: "rpdc-delivery", num: 10, title: "Delivery — insertion, PIP, occlusal adjustment, POI", stub: true },
+ { id: "rpdc-followup", num: 11, title: "Post-delivery follow-up + adjustments", stub: true },
+ { id: "rpdc-surveycrown", num: 12, title: "Survey crowns for RPD abutments", stub: true },
+ { id: "rpdc-relinerepair", num: 13, title: "Reline / rebase / repair", stub: true },
+ ],
+ },
  ],
  },
  {
@@ -23618,10 +23638,14 @@ function Guides() {
 // ─────────────────────────────────────────────────────────────────────────
 
 const PATHWAY_DOMAINS = [
+ { id: "rpd", label: "RPD" },
  { id: "cd", label: "CD" },
 ];
 
 const PATHWAY_GROUPS = {
+ rpd: [
+ { label: "Definitive cast-metal framework", ids: ["rpd-conventional"] },
+ ],
  cd: [
  { label: "Conventional (fully edentulous)", ids: ["cd-conventional"] },
  ],
@@ -23737,9 +23761,151 @@ const PATHWAYS = [
  { guideId: "cd", chapterId: "cd-ch23" }, // Post-delivery complaints (refined adjustments)
  ],
  },
+ {
+ id: "rpd-conventional",
+ domain: "rpd",
+ category: "dentures",
+ phase: "phase3",
+ label: "Definitive cast-metal RPD",
+ description: "Two appointments decide the case: the surveyed design has to be right before you ever touch an abutment (Visit 3), and the framework try-in (Visit 5) is the point of no return for fit — a casting that will not seat passively is remade, not adjusted. This is the definitive cast-metal framework removable partial denture for a partially-edentulous arch — nine clinical visits with six lab blocks between. Visits 1–2 gather the records and finalize the surveyed design, Visit 3 prepares the abutments, Visits 4–6 build and verify the framework and tooth set-up, and Visits 7–9 deliver and refine.",
+ keyDecisions: [
+ "Single-step vs altered-cast final impression: tooth-bounded (Kennedy III) abutment-supported cases take a single-step selective impression; distal-extension cases (Kennedy I and II) need the altered-cast technique so the displaceable ridge is recorded under load.",
+ "Survey crown vs enameloplasty: when an abutment cannot give an adequate guide plane, retentive undercut, and rest seat from enamel recontouring alone, plan a PFM survey crown first — its contours are built to the partial design (see the Survey-crown branch).",
+ "Design before prep: the preliminary design form is completed and faculty-approved before the abutment-prep visit; the prep removes only what the design dictates, in sequence — guide planes, axial contours, undercuts, then rest seats.",
+ "Mounting method: mount the maxillary cast by facebow; mount the mandibular by hand-articulation when the remaining teeth interdigitate into a stable, repeatable position, otherwise on a wax-rim bite registration.",
+ "Framework passivity is non-negotiable: at try-in every rest must seat and every clasp engage with no rock; a non-passive framework is remade, not bent to fit.",
+ "CDT codes: D5213 (maxillary) / D5214 (mandibular) cast-metal framework RPD with resin denture bases. Any survey crowns are billed separately (e.g., D2750 PFM, per crown).",
+ ],
+ phases: [
+ {
+ label: "Comp. exam + diagnostic impressions",
+ count: 2,
+ detail: "Comprehensive oral exam with the partial in mind: medical + dental history, full-mouth and panoramic radiographs, extraoral and intraoral exam, periodontal status of the potential abutment teeth, and examination of any existing prosthesis. Take maxillary and mandibular alginate diagnostic impressions and a facebow record at this visit.",
+ },
+ {
+ label: "Bite registration + treatment plan",
+ count: 2,
+ detail: "Take the bite registration needed to mount the casts (on wax rims if the remaining teeth cannot be hand-articulated) and present the finalized treatment plan. The surveying and RPD design are done in the lab between visits and must be faculty-approved before any tooth is prepared. Complete all Phase 1 (disease control) and Phase 2 (surgical) treatment before the prosthetic appointments below.",
+ },
+ {
+ label: "Abutment preparation",
+ count: 1,
+ detail: "Prepare the abutments in the taught order: (1) guide planes on the proximal surfaces parallel to the path of insertion, (2) reduce unfavorable axial contours, (3) create retentive undercuts where the design calls for them, (4) take an alginate and pour a fast-set (Snap-stone) cast to verify the axial modifications on the surveyor, then (5) cut the rest seats. Re-verify before moving on.",
+ },
+ {
+ label: "Border molding + final impression",
+ count: 1,
+ detail: "Take the definitive impression in the custom tray. Tooth-bounded (Kennedy III) cases take a single-step selective impression; distal-extension cases (Kennedy I and II) use the altered-cast technique so the displaceable ridge is recorded under function.",
+ },
+ {
+ label: "Framework try-in",
+ count: 2,
+ widget: "mouldSelector",
+ detail: "Try in the cast-metal framework: every rest must seat fully and every clasp engage, with the framework fully seated and passive — a non-seating or rocking framework is remade, not adjusted. Take the altered-cast impression now if the case needs it, select the denture-tooth mold and shade, then add wax rims to the framework and record the bite.",
+ },
+ {
+ label: "Wax try-in",
+ count: 1,
+ detail: "Evaluate the waxed set-up before processing — tooth position, midline, shade, lip support, and the occlusion against the opposing arch — and get the patient's approval. This is the last point at which anything can be changed.",
+ },
+ {
+ label: "Delivery",
+ count: 1,
+ detail: "Seat the finished RPD: check the intaglio and framework fit with pressure-indicating paste, relieve any sore spots, adjust the occlusion to even bilateral contact, confirm the clasps seat and retain without traumatizing the abutments, and give post-op and home-care instructions.",
+ },
+ {
+ label: "24-hour follow-up",
+ count: 1,
+ detail: "Interview, palpate the ridges and denture borders, mark and relieve any sore spots, and re-check the occlusion. Most first-week complaints are routine pressure-spot or occlusal adjustments.",
+ },
+ {
+ label: "1-week follow-up",
+ count: 1,
+ detail: "Re-evaluate comfort, retention, and occlusion once the tissues have settled; adjust as needed and reinforce insertion / removal and daily cleaning technique.",
+ },
+ ],
+ labSteps: [
+ {
+ after: 0,
+ title: "Pour diagnostic casts + mount",
+ body: "Pour the alginates in microstone, then mount the maxillary cast with the facebow record and the mandibular cast by hand-articulation — or on a wax-rim bite registration if the remaining teeth do not interdigitate.",
+ detail: "1. Pour both alginate impressions in Type III microstone and trim to clean diagnostic casts.\n\n2. Mount the maxillary cast on the Denar articulator with the facebow record from the COE — condylar inclination 25–30°, Bennett angle 15°, incisal pin at 0.\n\n3. If the remaining teeth give stable tripod contacts, hand-articulate and mount the mandibular cast to the maxillary, and skip to the next visit.\n\n4. If they do not (too few occluding pairs), make record bases: Vaseline the cast, adapt a sheet of light-cured Triad, and trim the excess with a buffalo knife so the base fully covers the sulcus.\n\n5. Cure the Triad with the formula — 1 min, then lift the base off and reposition it and cure 1 min, then cure the intaglio 20 sec. Do not over-cure the intaglio (it shrinks). Smooth the borders.\n\n6. Build wax rims: roughen the base where the rim will sit, apply yellow sticky wax for retention, melt and shape hard baseplate wax into a rim, attach it, and smooth it.\n\n7. The rims go back in at Visit 2 for the bite registration that mounts the mandibular cast.",
+ source: "clinic (swade) — RPD STEPS, laboratory step #1; Lecture 4-Part A (Kim) — mounting diagnostic casts",
+ turnaround: "Before Visit 2",
+ },
+ {
+ after: 1,
+ title: "Mount, survey + design the RPD, identify survey crowns",
+ body: "Mount the casts, survey the abutments, and draw the definitive design on the preliminary partial-denture design form. Decide whether any abutment needs a survey crown, then duplicate the cast and practice the tooth modifications.",
+ detail: "1. Mount the casts (maxillary by facebow; mandibular by hand-articulation or the wax-rim bite registration) and finalize the comprehensive treatment plan.\n\n2. Survey the diagnostic cast: with the analyzing rod, propose a path of insertion with minimal tilt — roughly perpendicular to the occlusal plane (within ~10°), the rod contacting the occlusal ½–2/3 of the proximal surfaces.\n\n3. Identify the heights of contour and the retentive undercuts with the 0.01 / 0.02 / 0.03 inch gauge, then reconfirm the path of insertion.\n\n4. Mark the heights of contour on the abutments in black and the undercut points in red, and tripod the cast so the path of insertion can be reproduced.\n\n5. Fill out the preliminary design form completely: guide planes + references, rest seats + reduction, undercut locations + depth, HOC adjustments, clasp types, minor + major connectors.\n\n6. Identify any abutment that lacks an adequate undercut, guide plane, or rest seat and will need a PFM survey crown (see the Survey-crown branch).\n\n7. Duplicate the diagnostic cast and practice the modifications (guide planes, HOC reduction, undercut creation, rest seats); note exactly what you will prepare.\n\n8. Have faculty approve the design before the abutment-prep appointment.",
+ source: "clinic (swade) — RPD STEPS, laboratory step #2; Lecture 4-Part A (Kim) — survey diagnostic casts + preliminary design form",
+ turnaround: "Design faculty-approved before Visit 3",
+ },
+ {
+ after: 2,
+ title: "Verify preps + fabricate custom tray",
+ body: "Pour the fast-set verification cast from the prep appointment, confirm the abutment modifications on the surveyor, and fabricate the custom impression tray.",
+ detail: "1. Pour the alginate from the prep visit in fast-set (Snap) stone and verify the prepared guide planes, rest seats, and undercuts against the surveyor.\n\n2. Vaseline the cast.\n\n3. Place the wax spacer: two sheets of soft baseplate wax over the teeth and tooth-supported edentulous areas, and one sheet over the distal-extension area(s); cut small openings through the wax for three tissue stops.\n\n4. Cover the spacer with Triad custom-tray material.\n\n5. Cut the borders 2 mm short of the vestibular depth and add finger rests (1st-molar region) plus a non-interfering anterior handle.\n\n6. Cure the tray ~2 min, then turn it over and cure the intaglio ~1 min — the wax must not melt.\n\n7. Cut out the excess wax to expose space for the border-molding compound and smooth the borders; the tray is ready for Visit 4.",
+ source: "clinic (swade) — RPD STEPS, laboratory step #4; RPD Fall 2022 — custom tray fabrication",
+ turnaround: "Before Visit 4",
+ },
+ {
+ after: 3,
+ title: "Box + pour master cast; send for framework fabrication",
+ body: "Box and pour the final impression to make the master cast, then send the master cast + diagnostic cast + lab prescription to the lab for cast-metal framework fabrication.",
+ detail: "1. Box the final PVS impression and pour the master cast in Type III stone (Coe-Cal or Microstone).\n\n2. After 24–48 hours, soak the cast in warm water to soften the border-molding compound, gently separate the impression, and trim the cast preserving the vestibule.\n\n3. Survey the master cast: tripod it, and mark the exact undercut points in red and the heights of contour of the abutments.\n\n4. Mark the design cast with the full design — metal framework components in blue, except the tissue stop in red; wrought-wire clasps and acrylic base extensions in red.\n\n5. Write the framework prescription: alloy (e.g., Vitallium / chrome-cobalt), major + minor connectors, rest seats, guide planes, and each clasp's type + gauge + undercut engaged.\n\n6. Send the master + design casts with the prescription; the lab fabricates and returns the metal framework for try-in.",
+ source: "clinic (swade) — RPD STEPS, laboratory step #5; RPD Fall 2022 — lab prescription example",
+ turnaround: "Before Visit 5",
+ },
+ {
+ after: 4,
+ title: "Set the denture teeth on the framework",
+ body: "Attach record bases + wax rims to the verified framework and set the denture teeth to the selected mold and shade against the bite registration.",
+ detail: "1. Attach record bases + wax rims to the verified framework and mount against the opposing cast using the facebow + bite registration taken at the framework try-in.\n\n2. Decide how many teeth to set — the number missing is not necessarily the number replaced; mandibular posteriors stop anterior to the ascending ramus.\n\n3. Set the posteriors with the mandibular central grooves over the crest of the residual ridge (a line drawn to the retromolar-pad landing area), to the chosen occlusal scheme — bilateral balanced articulation against an opposing complete denture.\n\n4. With a #7 wax spatula, melt the wax and place each tooth, judging bucco-lingual and mesio-distal tilt, gingival-margin location, and occlusal contact; modify the proximal surfaces of the acrylic teeth to clear the framework without hurting esthetics.\n\n5. Festoon to the patient's natural gingival contours, slightly exaggerated (it smooths on polishing); do not let the flame move the teeth, and shade-match the gingival wax.",
+ source: "clinic (swade) — RPD STEPS, laboratory step #6; RPD Fall 2022 — setting denture teeth",
+ turnaround: "Before Visit 6",
+ },
+ {
+ after: 5,
+ title: "Process the RPD",
+ body: "Once the wax try-in is approved, send the case to the lab for processing — the wax is replaced with heat-cured acrylic and the RPD is finished and polished around the framework.",
+ detail: "1. With the wax try-in approved by the patient and faculty, send the trial RPD for processing by the compression-molding technique.\n\n2. Invest the case in a flask, then boil out the wax.\n\n3. Pack the acrylic resin and heat-process it.\n\n4. Deflask, then do a laboratory remount to refine the occlusion.\n\n5. Finish and polish the RPD around the framework.\n\n6. Collect the finished RPD and schedule the delivery appointment.",
+ source: "clinic (swade) — RPD STEPS, laboratory step #7",
+ turnaround: "Before Visit 7 (delivery)",
+ },
+ ],
+ branches: [
+ { id: "survey-crowns", label: "Survey crowns for abutments", chapterId: "rpdc-surveycrown" },
+ { id: "reline-repair", label: "Reline / rebase / repair", chapterId: "rpdc-relinerepair" },
+ { id: "post-delivery", label: "Post-delivery adjustments", chapterId: "rpdc-followup" },
+ ],
+ sections: [
+ // Visit 1 — Comp. exam + diagnostic impressions + facebow
+ { guideId: "rpd", chapterId: "rpdc-diag" },
+ { guideId: "rpd", chapterId: "rpdc-facebow" },
+ // Visit 2 — Bite registration + survey/design + treatment plan
+ { guideId: "rpd", chapterId: "rpdc-records" },
+ { guideId: "rpd", chapterId: "rpdc-design" },
+ // Visit 3 — Abutment preparation
+ { guideId: "rpd", chapterId: "rpdc-prep" },
+ // Visit 4 — Border molding + final impression
+ { guideId: "rpd", chapterId: "rpdc-finalimp" },
+ // Visit 5 — Framework try-in + tooth selection + bite registration
+ { guideId: "rpd", chapterId: "rpdc-fwtryin" },
+ { guideId: "rpd", chapterId: "rpdc-teeth" },
+ // Visit 6 — Wax try-in
+ { guideId: "rpd", chapterId: "rpdc-waxtryin" },
+ // Visit 7 — Delivery
+ { guideId: "rpd", chapterId: "rpdc-delivery" },
+ // Visit 8 — 24-hour follow-up
+ { guideId: "rpd", chapterId: "rpdc-followup" },
+ // Visit 9 — 1-week follow-up (same chapter — adjustment workflow continues)
+ { guideId: "rpd", chapterId: "rpdc-followup" },
+ ],
+ },
 ];
 
-// ─── End of PATHWAYS (1 entry: cd-conventional) ───────────────────────────
+// ─── End of PATHWAYS (cd-conventional, rpd-conventional) ───────────────────
 
 // Phase + category labels for the pathway card header badges.
 // The IDs map to the UIC TP framework (from Tx Dx- Overview.pdf) and the
