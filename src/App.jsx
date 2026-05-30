@@ -7680,7 +7680,7 @@ const EXAM_FINDINGS_CONFIG = {
  title: "HPI",
  rows: [
  [
- { label: "location", type: "uc-tooth-or-quadrant", displayLabel: "Area / Tooth",
+ { label: "location", type: "uc-tooth-or-quadrant", displayLabel: "Tooth / Area",
  placeholder: "e.g. #8, #14 — or pick a quadrant the pt points to" },
  { label: "inception", type: "input", placeholder: "e.g. 3 days ago" },
  ],
