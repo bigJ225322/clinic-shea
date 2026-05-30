@@ -116,12 +116,6 @@ AND the `labSteps[].detail` to literal step-by-step depth, like CD's lab tiles.
   id: "rct-anterior",                 // kebab-case, unique
   domain: "endo", category: "endo",   // category from the roster taxonomy
   phase: "phase3",
-  laneCapacity: 6,                    // OPTIONAL (default 8). The snake wraps every
-                                      //   N tiles. If a pathway has long consecutive
-                                      //   same-kind runs (e.g. RPD's Delivery/24h/1wk
-                                      //   tail) its widest lane can overflow at 100%
-                                      //   zoom → drop this to 6/7 so it fits. Verify
-                                      //   grid scrollWidth ~<1300px via preview_eval.
   label: "…", description: "…",       // 2–4 plain sentences, no superlatives
   keyDecisions: [ "…", … ],           // the judgment calls, each defensible
 
