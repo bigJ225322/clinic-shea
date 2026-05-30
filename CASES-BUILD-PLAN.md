@@ -17,6 +17,94 @@ compresses, this doc is the resume point. Treat it as binding.
 
 ---
 
+## ⭐ READ FIRST (2026-05-29): CD is DONE — it is the reference template
+
+`cd-conventional` is **built, live in the Maps tab, and polished to "basically
+perfect."** It is the canonical model. To build any other Phase-3
+multi-appointment treatment, **copy its shape exactly** — the renderer is
+generic, so you never touch renderer code to add a pathway; you only author a
+well-formed pathway object and it draws the schematic + lab tiles + branches +
+per-box popups automatically.
+
+> Framing note: the "Cases tab" plan below evolved into the **Maps tab** (the
+> snake-wrap schematic of visits + lab blocks + downstream branches, with a
+> click-to-open popup on every box). The schema + discipline below are what
+> actually shipped.
+
+### Where the model lives
+`src/App.jsx` → `const PATHWAYS = [ … ]` → the `cd-conventional` object (search
+`id: "cd-conventional"`). Read it top to bottom before building a new one; it
+**is** the spec.
+
+### The shipped schema (one PATHWAYS entry)
+```js
+{
+  id: "rct-anterior",                 // kebab-case, unique
+  domain: "endo", category: "endo",   // category from the roster taxonomy
+  phase: "phase3",
+  label: "…", description: "…",       // 2–4 plain sentences, no superlatives
+  keyDecisions: [ "…", … ],           // the judgment calls, each defensible
+
+  // VISITS — one entry per clinical appointment, in order.
+  phases: [
+    { label: "Visit name", count: 1,          // count = # of `sections`
+      detail: "optional Swade-sourced prose    //   chapters that belong to
+               for this visit's popup",        //   this visit
+      widget: "mouldSelector" },               // optional chair-side widget
+    …
+  ],
+
+  // LAB BLOCKS — one per lab turnaround between visits.
+  labSteps: [
+    { after: 0,                       // sits after phases[0]
+      title: "what the lab / you does",
+      body: "1–2 sentence tile summary",
+      detail: "numbered step-by-step for the popup",
+      source: "clinic (swade) p.X; <UIC deck>",
+      turnaround: "Before Visit 2"    // a DEADLINE, not a day-count estimate
+    }, …
+  ],
+
+  // DOWNSTREAM off the LAST visit — maintenance / complications (dashed arrows).
+  branches: [ { id, label, chapterId }, … ],
+
+  // Chapter refs, sliced into visits by phases[].count (Σcount === length).
+  sections: [ { guideId: "endo", chapterId: "endo-chN", label? }, … ],
+}
+```
+Then register it in `PATHWAY_GROUPS` under its phase (and `PATHWAY_DOMAINS` if
+it's a new domain).
+
+### Build recipe when Jake says "build &lt;treatment&gt;"
+1. **Get the appointment list from Jake first.** He's done these cases — his
+   firsthand visit/lab sequence and sign-off/consent gates beat any document.
+2. **Verify every clinical claim against a TRUSTED source**, in priority order:
+   Jake's firsthand experience → **Swade** (`/tmp/swade.txt`, greppable; re-extract
+   from `clinic (swade).pdf` if missing) → named/dated UIC faculty decks. Grep
+   Swade for the exact term before writing a step.
+3. **The Maps content is never a source for itself.** Do NOT trust the app's own
+   existing prose, and NEVER trust an AI "Comprehensive Guide" file — that is how
+   fabrications propagate.
+4. Author the object → `npx esbuild src/App.jsx --loader:.jsx=jsx --outfile=/dev/null`
+   to syntax-check → confirm it renders in the live Maps preview (read the
+   served file with `preview_eval` if branch/worktree state is confusing) →
+   deploy (`git push origin main`) → Jake reviews the real boxes/popups → iterate.
+
+### Hard lessons from CD (do NOT repeat)
+- **Don't invent clinical procedure.** CD had a fabricated "clinical remount +
+  selective grinding at delivery" step — not in Swade, and Jake's buddy confirmed
+  UIC does **not** remount CDs (the lab returns them unmounted, cast destroyed).
+  When a step sounds textbook-plausible but you can't find it in Swade,
+  **stop and have Jake confirm with a peer who did the case** before writing it.
+- **No over-precise estimates.** A "~9 business-day turnaround" was technically
+  sourced but wrong in practice and got cut. Prefer deadlines ("Before Visit X").
+- **Get the handoff actor right.** At the central lab the *student hands off*;
+  the *lab* festoons/packs/processes. Don't dress lab work up as student work.
+- **Phantom-visual scrub:** no "see table/figure/diagram/above/below" refs to
+  things the popup doesn't render.
+
+---
+
 ## End state
 
 When Cases is rebuilt and re-launched:
@@ -228,8 +316,9 @@ badges + lab bands works as intended. After cd-conventional is built,
 this pattern continues with real pathways — the test/throwaway phase
 ends.
 
-### Step 3 — Build `cd-conventional` (commit 3)
-**This is the first real pathway.** Read sequentially.
+### Step 3 — Build `cd-conventional` (✅ DONE 2026-05-29 — now the live reference)
+**Finished and polished. Kept below as the worked example** for every future
+pathway (see "⭐ READ FIRST" at the top for the distilled, current recipe).
 
 **Canonical visit structure (locked in 2026-05-27):** 8 clinical visits + 5
 lab blocks, per Swade page 80. Try-in is **two separate appointments**
