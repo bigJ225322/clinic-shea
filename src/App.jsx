@@ -23638,8 +23638,9 @@ function Guides() {
 // ─────────────────────────────────────────────────────────────────────────
 
 const PATHWAY_DOMAINS = [
- { id: "rpd", label: "RPD" },
  { id: "cd", label: "CD" },
+ { id: "rpd", label: "RPD" },
+ { id: "crown", label: "Crown" },
 ];
 
 const PATHWAY_GROUPS = {
@@ -23648,6 +23649,9 @@ const PATHWAY_GROUPS = {
  ],
  cd: [
  { label: "Conventional (fully edentulous)", ids: ["cd-conventional"] },
+ ],
+ crown: [
+ { label: "Single-unit PFM", ids: ["crown-pfm"] },
  ],
 };
 
@@ -23903,9 +23907,68 @@ const PATHWAYS = [
  { guideId: "rpd", chapterId: "rpdc-followup" },
  ],
  },
+ {
+ id: "crown-pfm",
+ domain: "crown",
+ category: "fixed",
+ phase: "phase3",
+ label: "PFM crown (single unit)",
+ branchEyebrow: "Related",
+ description: "When the tooth is broken down or endo-treated it gets a core build-up first — its own visit, or the same appointment as the prep. Then the prep + provisional + final-impression visit, a lab block, and delivery. The case turns on the prep and the impression: the lab can only build what you captured. A PFM needs room for metal AND porcelain, so it is the most reduction-heavy crown — deep chamfer/shoulder all around, 1.25–1.5 mm axial, 1.5–2 mm occlusal. The lab pours, sometimes returns the cast for you to die-trim, then fabricates the crown.",
+ keyDecisions: [
+ "You need a diagnostic cast before the prep — pour it from a diagnostic alginate impression and make a putty matrix off it pre-op; that putty is the matrix you fabricate the provisional in.",
+ "Conventional PFM only here — UIC takes all-ceramic / e.max through the digital (CAD/CAM) workflow, not this PVS-impression lab route.",
+ "PFM reduction is the heaviest of any crown (metal + porcelain): axial 1.25–1.5 mm, occlusal 1.5–2.0 mm, deep chamfer/shoulder finish line 1.2–1.5 mm facial — confirm there is enough bulk before committing.",
+ "The provisional is fabricated (Integrity) BEFORE the impression and cemented AFTER — Gluma to the prep first, except RCT teeth.",
+ "Die-trim is a conditional round-trip: when the margin is not clearly readable, the lab Pindexes and returns the cast for you to die-trim + mount, then sends it back for fabrication.",
+ "Foundation first when the tooth is broken down or endo-treated: a separate core build-up (± post) appointment before the prep.",
+ "CDT codes (PFM high noble): D2750A (prep) / D2750B (final impression) / D2750C (cementation), + D0275 (BW) and I9002 (lab QC) at delivery; D2950 core build-up / D2954 post if a foundation is needed.",
+ ],
+ phases: [
+ {
+ label: "Core build-up (when needed)",
+ count: 1,
+ detail: "Only when the tooth is broken down or endo-treated. It does NOT have to be its own visit — do it on a separate day, or at the start of the prep appointment — but always before the prep, since the prep needs sound walls to cut. A post comes in only when an endo-treated tooth has too little coronal structure left to hold the core.",
+ },
+ {
+ label: "Crown prep + provisional + final impression",
+ count: 3,
+ detail: "Beforehand you need a diagnostic cast (poured from a diagnostic alginate impression). If the tooth is broken down or mis-shaped, wax it back to its ideal shape on the cast first; then make a putty matrix off it before the patient is seated — that putty is what you fabricate the provisional in, so the provisional comes out the shape you want.\n\nThe appointment, in order: select the shade → crown prep (PFM reductions, deep chamfer/shoulder all around) → fabricate the Integrity provisional in the putty (do not cement yet) → pack two cords (#00 under the margin, #0 above) → take the final PVS impression (light + heavy body) → cement the provisional (Gluma first, except RCT teeth) → send the impression + lab script. Anesthetize as needed.",
+ },
+ {
+ label: "Delivery",
+ count: 1,
+ detail: "Check the crown on the cast and disinfect → remove the provisional + temp cement → try in (contacts, margins, seating) → adjust contacts first, then the intaglio if it will not seat → bitewing to confirm full seating → adjust the occlusion extraorally → cement (RelyX / FujiCem) → verify + polish → post-op (no sticky foods 24 h).",
+ },
+ ],
+ labSteps: [
+ {
+ after: 1,
+ title: "Pour, working cast, + fabricate the PFM crown",
+ body: "The lab pours the impression in die stone, builds the working cast, waxes + casts the metal framework, bakes the porcelain, and glazes the PFM crown. For anterior crowns — and any posterior whose margin isn't clearly readable — the cast first comes back to you for a die-trim round-trip.",
+ detail: "1. First decide whether you'll die-trim the dies yourself: yes for every anterior crown, and for any posterior whose margin isn't clearly readable from the impression; otherwise the lab does the whole job. This decides which script you send next.\n\n2. Send the final impression with the matching lab script. With no die-trim, send the full fabrication script: \"Please pour impression & fabricate PFM crown for #X using high-noble alloy. Occlusal and interproximal contacts in porcelain. 1–2 mm metal collar on the lingual margin, no metal collar on the buccal. Shade ___.\" — the lab does everything and returns the finished crown (skip the trim + mount steps below). For a die-trim case, send instead: \"Please pour impression, Pindex, & return for die trimming.\" — the cast comes back to you partway through, and you trim, mount, and send it back to the lab to finish.\n\n3. The lab pours the impression in Type IV die stone — vacuum-mixed for strength and low expansion, no voids on the margins — trims it to a horseshoe, and Pindexes it (pins set so each die has one path of insertion), then sections the cast into individually removable dies with saw cuts that don't damage the margins. On a die-trim case it returns the cast to you here; otherwise it trims and mounts the die itself and skips to the last step.\n\n4. Die-trim (your part of the round-trip): trim the excess stone below the finish line so the margin is fully visible and the lab can wax to it. Goals — an ideal root-form emergence profile (~3 mm below the margin), independently removable dies, smooth surfaces, and clear access to the margin. Remove the bulk with a lab bur on slow speed, then detail with a sharp scalpel under magnification (loupes/microscope), and never touch the finish line (marking it with a wax pencil first is optional). Over-trimming ruins the emergence profile and yields a bulky, overcontoured crown that traps plaque and inflames the gingiva.\n\n5. Mount the Pindex you trimmed: if the casts hand-articulate with stable tripod contacts, mount without a bite record; if they can't (too few contacts), use an interocclusal PVS record placed only over the prepared teeth and trimmed until the casts seat with no spring or bounce. Attach the mounting plate, set the incisal pin to 0 with the centric latch locked, confirm hand articulation and mounting-plate clearance, secure the casts in MI (sticky wax, casts fully dry), mix mounting stone, and close the articulator slowly (keep stone off the pins). Verify the mounting reproduces the mouth — the contacts should match, checked with shimstock — then send the mounted, die-trimmed cast back to the lab with the fabrication script (high-noble alloy, contacts in porcelain, 1–2 mm lingual metal collar, no buccal collar, shade).\n\n6. The lab waxes and casts the high-noble metal framework, applies and bakes the porcelain to the contacts you specified, and glazes the PFM crown, then returns it for delivery.",
+ source: "clinic (swade) — Crown Final Impression (PFM + die-trim lab scripts) + Crown Delivery; Mounting & Die Trimming (Vlagos); PFM Crowns",
+ turnaround: "Before Visit 3 (delivery)",
+ },
+ ],
+ branches: [
+ { id: "recement", label: "Recement / debond", chapterId: "crownc-recement" },
+ { id: "removal", label: "Crown removal / endo-access", chapterId: "crownc-removal" },
+ ],
+ sections: [
+ // Visit 1 — Core build-up (when needed)
+ { guideId: "indirect", chapterId: "crownc-foundation" },
+ // Visit 2 — prep + provisional + final impression
+ { guideId: "indirect", chapterId: "crownc-prep" },
+ { guideId: "indirect", chapterId: "crownc-impression" },
+ { guideId: "indirect", chapterId: "crownc-provisional" },
+ // Visit 3 — delivery
+ { guideId: "indirect", chapterId: "crownc-delivery" },
+ ],
+ },
 ];
 
-// ─── End of PATHWAYS (cd-conventional, rpd-conventional) ───────────────────
+// ─── End of PATHWAYS (cd-conventional, rpd-conventional, crown-pfm) ─────────
 
 // Phase + category labels for the pathway card header badges.
 // The IDs map to the UIC TP framework (from Tx Dx- Overview.pdf) and the
@@ -29197,7 +29260,18 @@ function Pathways() {
  // independent issues — no arrows between them, but the dashed arrow
  // from V_last fans out to all three.
  const lastMain = allPlacements[allPlacements.length - 1];
- const branchRow = numLanes * 2;
+ // Branch row sits below the last lane. If a lab tile occupies that row
+ // within the branch cluster's column span — which happens on short
+ // single-lane pathways where V_last is on the top row with a lab beneath
+ // it (e.g. the PFM crown) — drop the branches one row lower so they don't
+ // overlap the lab. Multi-lane pathways whose last visit's lab row is clear
+ // at that column are unaffected.
+ const branchBaseRow = numLanes * 2;
+ const branchAnchorCol = lastMain ? lastMain.gridCol : 1;
+ const branchRow = branchBaseRow + (allPlacements.some(p =>
+ p.kind === "lab" && p.gridRow === branchBaseRow &&
+ p.gridCol <= branchAnchorCol + 3 && p.gridCol + 3 >= branchAnchorCol
+ ) ? 1 : 0);
  const branchPlacements = branches.map((b) => ({
  ...b,
  key: `branch-${b.id}`,
@@ -29296,8 +29370,13 @@ function Pathways() {
  ref={schematicGridRef}
  style={{
  display: "grid",
- gridTemplateColumns: `repeat(${maxLaneCols}, minmax(56px, 1fr))`,
- gridTemplateRows: `repeat(${numLanes * 2}, auto)`,
+ // Column floor at 44px (was 56): the `1fr` lets columns grow to fill the
+ // viewport, but the floor sets the min width before horizontal scroll kicks
+ // in. 44px lets wide pathways (e.g. RPD's 28-sub-col lanes) shrink-to-fit and
+ // fill the frame instead of overflowing at 100% zoom; on normal widths the
+ // 1fr fill keeps tiles full-size, so there's no visible shrink.
+ gridTemplateColumns: `repeat(${maxLaneCols}, minmax(44px, 1fr))`,
+ gridTemplateRows: `repeat(${branchPlacements.length > 0 ? branchRow : numLanes * 2}, auto)`,
  gap: "44px 5px",
  position: "relative",
  minWidth: "fit-content",
@@ -29540,7 +29619,7 @@ function Pathways() {
  const found = CHAPTER_INDEX.get(branch.chapterId);
  if (!found) return null;
  return (
- <PathwayPopupModal title={branch.label} eyebrow="Maintenance" tone="branch" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
+ <PathwayPopupModal title={branch.label} eyebrow={selectedPathway.branchEyebrow || "Maintenance"} tone="branch" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
  <GuideChapter chapter={found.chapter} hideHeader />
  </PathwayPopupModal>
  );

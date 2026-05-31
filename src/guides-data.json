@@ -10757,6 +10757,393 @@
         "body": "**Composite debonds from the access cavity floor within months:** Vitrebond layer wasn't well-adapted or wasn't there. Re-do — replace with full Vitrebond + composite. **Patient returns with sensitivity:** the access wasn't fully sealed, or the GP exposed during access work has bacterial contamination. Re-treat. **Composite stains around the access opening:** under-polished. Re-polish; if recurrent, may indicate microleakage at the margin. **Existing crown porcelain chips during access prep:** diamond bur pressure was too high or the access opening too wide. Document, evaluate the chip — if small and supragingival, polish; if large or in occlusion, the crown may need remake."
        }
       ]
+     },
+     {
+      "id": "crownc-prep",
+      "num": 101,
+      "title": "PFM crown preparation",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "A PFM crown needs room for **both** the metal substructure and the porcelain veneer, so it is the most reduction-heavy crown prep. At UIC you prepare a deep chamfer / shoulder all around."
+       },
+       {
+        "kind": "section",
+        "text": "Reduction targets"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Axial:** 1.25–1.5 mm.",
+         "**Occlusal / incisal:** 1.5–2.0 mm.",
+         "**Finish line:** facial **deep chamfer / shoulder 1.2–1.5 mm**; lingual chamfer 0.5–0.8 mm (or deep chamfer/shoulder). *For UIC, prepare a deep chamfer / shoulder all around.*",
+         "**Taper:** 2–5° per wall. Place the finish line **0.5 mm coronal to the free gingival margin** — do not prep more than 0.5 mm into the sulcus (biologic width)."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Before you start"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Make a **PVS reduction matrix** — a silicone index of the *un-prepped* tooth that you can section and seat during the prep to gauge how much you have reduced. (This is a separate index from the provisional putty, which is made off the waxed-up diagnostic cast.)",
+         "Know the **margin design** — how much metal shows dictates how much you reduce: metal collar (hidden subgingivally, unesthetic) vs disappearing margin (common) vs porcelain butt margin (best esthetics, lab-demanding, can chip).",
+         "**Select the final-crown shade** in overhead, ambient, and natural light before you cut — it reads more accurately against the unprepped tooth, and it is the baseline you reconfirm at the impression and delivery visits.",
+         "**Record the pre-op occlusion** before anesthetic — mark the contacts on the tooth and the two adjacent teeth so you can confirm they are unchanged after the prep; a quick sketch helps you compare."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Preparation sequence"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Initial interproximal reduction** — flame diamond (850-012) held parallel to the long axis to break the contacts; do not nick the adjacent teeth.",
+         "**Axial reduction** — round/flat-end tapered diamond (856-016 or 847KR-016); place depth cuts ~1–1.25 mm buccal + lingual first, then reduce; verify 1.25–1.5 mm with a perio probe; place the deep chamfer/shoulder finish line ~0.5 mm coronal to the free gingival margin — **keep it supragingival to start; you can always lower it later** if esthetics demand.",
+         "**Occlusal reduction** — depth cuts ~1.25–1.5 mm following the cuspal inclines; maintain the occlusal topography. (Occlusal and axial reduction are interchangeable — some operators reduce the occlusal first.)",
+         "**Functional cusp bevel** — for contour, durability, and conservation on the functional cusp.",
+         "**Final refinements** — round the axial-occlusal line angles with a fine diamond (8856-014); evaluate taper + path of insertion."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Why the numbers — retention & resistance"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Tooth prep balances four goals: **preserve tooth structure, retention & resistance form, structural durability, marginal integrity.**",
+         "**Retention** resists the crown lifting along its path of insertion; **resistance** resists it tipping under chewing/oblique forces. Both come mostly from near-parallel axial walls — the feature most under your control.",
+         "**Taper:** aim for a total occlusal convergence of **6–10°** (≈2–5° per wall); up to ~20° is clinically acceptable. Every extra 5° of convergence can cut retention/resistance **up to 50%**.",
+         "**Height:** every extra 1 mm of wall height adds up to **10%** retention/resistance — so on a short molar, keep the taper tight and add boxes/grooves rather than chasing height you do not have."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "crownc-impression",
+      "num": 102,
+      "title": "Soft-tissue management + final PVS impression",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "The final restoration is only as good as the prep and the impression. You expose the margin with retraction cord, control bleeding and moisture, and capture every prepared surface plus enough unprepared tooth beyond the margin for the lab to read the finish line and trim the die."
+       },
+       {
+        "kind": "section",
+        "text": "Healthy tissue + hemostasis first"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Healthy tissue first — bleeding and crevicular fluid displace the material → voids and indistinct margins. A clean, well-contoured provisional and OHI beforehand pay off here.",
+         "**Biologic width** ≈ 1 mm connective-tissue attachment + 1 mm junctional epithelium: **do not prep > 0.5 mm into the sulcus** and avoid aggressive retraction (→ recession, inflammation, pain).",
+         "**Agents:** aluminum chloride (Hemodent, ViscoStat Clear — least irritating, OK 10–15 min) or ferric sulfate (ViscoStat — syringe/brush for hemostasis, acidic, don't use under ceramics). Epinephrine cords raise HR/BP — avoid in cardiovascular disease.",
+         "Keep a dry field; local anesthesia reduces salivary flow (± an anticholinergic such as atropine for heavy flow on lower arches — caution in heart disease and glaucoma)."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Pack two cords"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "The standard at UIC is the **two-cord technique** for a subgingival margin. A single cord is enough only for a supragingival/equigingival margin or a sulcus too shallow for two."
+        ]
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "Soak the cords in Hemodent. Pack a **smaller bottom cord under the prepared margin** to control seepage and bleeding — **no tail**, fully below the margin. (#00 is a common size, but pick the cord to the sulcus — they run #000 up to #3.)",
+         "Pack a **larger top cord above the first** (commonly #0); about half of it sits in the sulcus, the cord visible all the way around the tooth — **leave a tail**. (A cord submerged below the gingiva collapses the tissue when removed and hides the margin.)",
+         "Start at the interproximal papilla (thickest, most resilient tissue) and pack in small segments, each fully tucked before moving on.",
+         "**Remove only the top cord** just before the impression (creates access); leave the bottom cord in during the impression."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Take the final PVS impression"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "Size the tray and apply a thin layer of PVS adhesive with a clean brush (never double-dip). Apply it **early — before you pack cord** — so it is dry and just tacky (not wet or pooling) by the time you impress. (Triple / dual-arch trays are popular for single units, taken at MI.)",
+         "Thoroughly dry the prep + adjacent teeth, then quickly remove the top cord.",
+         "Inject **light body** into the sulcus and all around the prep — micro-tip pointed down and material flowing forcefully into the sulcus to avoid bubbles — while your assistant loads the tray with **heavy body**; seat the tray, and its hydraulic pressure drives the light body into the sulcus. (You want a second pair of hands for this — warn the patient it is unpleasant and ready suction + paper towels.)",
+         "Hold the full set (~6 min, set a timer), remove the impression, then remove the bottom cord.",
+         "Recement the provisional and send the impression + lab script."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Evaluate before you send — retake or accept?"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Finish line:** the entire margin reproduced crisp and continuous. This is the one zone that must be perfect.",
+         "**Cuff beyond the margin:** an intact, uninterrupted collar of material extends past every margin — that unprepped tooth is what lets the lab read the finish line and trim the die.",
+         "**Complete + clean:** the whole prep, the adjacent teeth, and the soft tissue captured, one homogeneous color, free of blood and saliva.",
+         "**Stable:** rigid tray, no pulls or distortion, material not separated from the tray.",
+         "**Not a retake:** a small bubble on an axial wall, or a void/tear on the sulcus cuff *away from* the finish line. A void, tear, or bubble **at or across the finish line** → retake."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "crownc-provisional",
+      "num": 103,
+      "title": "Provisional crown (Integrity)",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "The provisional protects the prep, holds the tooth's position and occlusion, and keeps the tissue healthy for the impression. At UIC you fabricate it from Integrity (bis-acryl) in a **putty matrix made off the diagnostic cast** — formed *before* the impression, cemented *after*."
+       },
+       {
+        "kind": "section",
+        "text": "Fabricate (Integrity bis-acryl)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "Load the **pre-op putty matrix** (made earlier from the diagnostic cast) with Integrity — discard a pea-size of base + catalyst before seating the mix tip, then bleed a little onto the tray; keep the tip immersed to avoid bubbles, filling the deepest part first.",
+         "Seat the filled putty within ~45 s with gentle pressure; let it reach the firm-elastic stage, then tease it off with gauze or an explorer (not pliers — they distort it); reseat and have the patient close into MI.",
+         "Repair any voids with flowable composite (roughen the surface, re-vaseline the prep, feather the margins, light-cure).",
+         "**Trim + shape (out of the mouth, with extra-oral provisional burs):** open the gingival embrasures with a bur held parallel to the emergence profile, refine the proximal contacts to convex contours *without* touching the contact area, and blend the facial/lingual margins.",
+         "**Polish:** remove the tacky air-inhibited layer (alcohol gauze), then pumice + rag wheel + composite polishing points (e.g., Shofu); an optional light-cure glaze adds gloss."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Cement (after the impression)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Apply Gluma to the prep first** — a thin scrubbing layer 15 s, wait 30 s, air dry. Patients are very sensitive after crown preps. **Exception: RCT teeth don't need Gluma.**",
+         "Clean + dry the prep (remove all old temp cement if recementing); vaseline the *outside* of the provisional for easy clean-up.",
+         "Load **TempBond or UltraTemp** into the provisional (80–90 %, cover the margins) and seat it; when the cement is set halfway (goopy/crumbly) floss off the excess (hold the crown, floss down then up); let it fully set — hold an anterior, or have the patient bite a cotton roll ~2 min for a posterior.",
+         "Verify + adjust the interproximal contacts (floss) and occlusion (articulating paper) to ideal."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "Why it's made before the impression",
+        "body": "You fabricate the provisional while the prep is fresh, set it aside uncemented, take the final impression on a clean dry prep, then cement the provisional — so you never run out of time and the impression isn't compromised."
+       }
+      ]
+     },
+     {
+      "id": "crownc-delivery",
+      "num": 104,
+      "title": "Crown delivery (cementation)",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "The PFM crown is back from the lab. Verify the fit on the cast, try it in, adjust contacts → intaglio → occlusion, confirm full seating on a bitewing, then cement and polish."
+       },
+       {
+        "kind": "section",
+        "text": "Before you seat the patient"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Check the crown on the cast** — margins and interproximal contacts — before the patient is in the chair.",
+         "**Disinfect:** Cavicide 5 min → rinse, then chlorhexidine 5 min → rinse."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Try-in"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Record the pre-op occlusion with the provisional still in place** (you remove it next), before anesthetic — mark the contacts on the provisional and the two adjacent teeth. The neighbors are your reference: afterward you confirm the final crown reproduces the same contacts and does not throw the bite off. A quick sketch helps you compare.",
+         "**Pack a cord if needed** — for a subgingival margin or any bleeding, to keep the field dry for cementation.",
+         "**Remove the provisional** — fingers first, then a hemostat (gentle, so you do not distort it in case the crown does not fit), then a sickle eased into the margins if needed — **do not damage the margins or the crown will not seat**. Clean off all temp cement.",
+         "**Try the crown in** behind a **gauze throat-pack**. Evaluate interproximal contacts (floss, holding the crown so it does not dislodge), margins (explorer), and seating — the crown's marginal ridges should sit level with the neighbors'."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "If it doesn't seat"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Adjust the interproximal contacts first** — too-tight contacts are the #1 reason a crown won't seat. Mark with articulating paper, relieve, re-try.",
+         "**Then the intaglio** — spray **Occlude** or mix **Fit-Checker** (equal paste-paste) into the intaglio, seat, and read the show-through / binding marks; relieve those spots with burs and re-try until it seats fully."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Confirm seating + adjust the bite"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Bitewing** to confirm full seating and closed margins (no radiograph needed for anteriors).",
+         "**Adjust the occlusion extraorally, before cementing** — articulating paper for centric, a second color for excursions; relieve with ceramic burs.",
+         "**Confirm esthetics** with the patient — shade, shape, size — with a hand mirror."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Cement (RelyX or FujiCem)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Clean the prep** — remove all temp cement with a **scaler, not a bur** (a bur changes the fit), then pumice with a prophy cup. (Check the RelyX instructions for any recommended prep/crown conditioning.)",
+         "**Rinse and lightly dry**, leaving the dentin moist; isolate with dry-angles, cotton rolls, and suction.",
+         "**Load the intaglio** ½–⅔ full, covering the margins, and **seat the crown**.",
+         "**Wait 1–2 min** until the excess is tacky / semi-set, then flick it off with a scaler or explorer; **floss** down and up several times (holding the crown) and floss-pull-through.",
+         "Have the patient **bite on a cotton roll ~3 min** for the final set."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Verify, finish + codes"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Verify** margins (explorer), interproximal contacts (floss), and occlusion — centric + excursive with articulating paper, adjusted to ideal with burs.",
+         "**Polish** any ceramic you adjusted with intraoral ceramic polishing burs in sequence.",
+         "**Post-op:** no sticky foods for 24 h; call if the bite feels high or there is pain.",
+         "**Codes:** D2750C (cementation, PFM high noble) — with D2750A (prep) + D2750B (final impression) from the prep visit; plus **D0275** (bitewing) and **I9002** (lab quality review)."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "crownc-foundation",
+      "num": 105,
+      "title": "Core build-up ± post",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "A core build-up replaces missing coronal tooth structure with composite or core material (Bisco Blue / White) — ± a post on an endo-treated tooth — so the crown prep has sound walls to cut and the finished crown has something to grip. Build it in a shade that contrasts sharply with dentin — deliberately too light or too dark — so weeks later, at the prep, you can tell core from tooth. The single biggest predictor of the crowned tooth's survival is a sound **ferrule**: a continuous collar of intact tooth, ideally ~2 mm all the way around, that the crown margin encircles *below* the core."
+       },
+       {
+        "kind": "paragraph",
+        "text": "**How broken down is ‘enough’?** You need a build-up when removing all the caries and the failing restoration would leave too little **sound coronal tooth** to retain and support the crown — and to keep an adequate **ferrule**. Remaining sound tooth structure is the key variable in the restorability literature. If essentially **no sound supragingival tooth** is left and you can’t get a ferrule even with crown lengthening, that is no longer a build-up question — the tooth may be non-restorable (→ extraction)."
+       },
+       {
+        "kind": "section",
+        "text": "Build-up, step by step"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Confirm you have a diagnostic cast** — you make the provisional putty off it at the prep visit. If the tooth's shape is far off ideal, plan to re-impress after the build-up or wax it up on the cast.",
+         "**Pre-op occlusion + shades (before anesthetic)** — mark the occlusion on this tooth and the two neighbors with articulating paper (a quick sketch helps you compare afterward), so you can confirm it is unchanged at the end. Pick the *final-crown* shade now as a baseline to reconfirm later, and pick a build-up composite a **drastically lighter or darker** shade.",
+         "**Anesthetize, isolate, pre-wedge** — Isodry or rubber dam (tie floss to the clamp). Pre-wedge mesial and distal (both for an MOD) to expand the PDL so the contact is easier to restore.",
+         "**Remove the decay / failing restoration** — a slow-speed round bur is more conservative than a spoon excavator. Infected dentin drills out wet, cheesy, and clumpy; healthy dentin dry, chalky, and dusty. Old composite scratches under an explorer and tooth does not, which helps you find the junction. Have the instructor confirm all decay is out.",
+         "**Matrix + disinfect** — sectional band (smiling toward the occlusal) + plastic wedge + Garrison ring, burnished, floss tied to the ring (two rings for an MOD); or a Tofflemire (closed end toward the occlusal, band narrower gingivally). Scrub **Consepsis** 10 s, rinse 5 s, leave the dentin moist.",
+         "**Liner / base if indicated** — Vitrebond (RMGI, ~0.5 mm, cure 20 s) where the remaining dentin is too thin to protect the pulp; place Dycal *under* it only over a point of pulpal proximity or a small mechanical exposure.",
+         "**Etch → Gluma → bond** — etch enamel then dentin 15 s, rinse 5 s, leave moist; Gluma in a thin scrubbing layer 45 s, wait 15 s, air-dry, rinse, leave moist; ScotchBond scrubbed 20 s, air-thin 5 s, cure 10 s. (If contaminated, re-etch just 5 s and continue.)",
+         "**Build up** — composite (or Bisco Blue / White) in increments, each cured 20–40 s, in the contrasting shade; cure the **final increment 60 s**.",
+         "**Finish + check** — remove isolation, finish with composite finishing burs + Shofu, then verify the interproximal contact with floss and the occlusion with articulating paper against your pre-op sketch."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "When it also needs a post"
+       },
+       {
+        "kind": "paragraph",
+        "text": "A post seats in the **root-canal space**, so it goes only in an **endo-treated tooth** — a vital tooth still has pulp in the canal, with nowhere to put one. Even then, add a post only when **too little coronal tooth remains to retain the core on its own**. Its job is purely to **retain the core** — it does *not* strengthen the root (Pathways of the Pulp). Preserve as much radicular dentin as possible and leave the canal retreatable."
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Re-check the ferrule first.** With an inadequate ferrule, longevity is compromised no matter which post you use — confirm there is a sound collar of tooth before committing.",
+         "**Choose the post.** Default to a **prefabricated fiber post** (UIC's is **ParaPost**): custom-fit to the canal, cost-effective, and close to dentin in stiffness, so it distributes stress and lowers root-fracture risk versus a rigid metal post. Pick one that **fits passively** — reserve active (threaded) posts for short teeth, since they raise fracture risk and are harder to retrieve.",
+         "**Size the post space.** Post length ≈ **at least the crown height**, extending apically past the crest of bone, while you **retain ≥4 mm of gutta-percha apically** (leave ~5 mm radiographically to allow for angulation). Remove as little dentin as possible — root curvature and cervical dentin are the limits; over-widening invites root fracture or perforation.",
+         "**Bond it under a rubber dam.** Contamination is *enemy number one* for an endo-treated tooth — isolate, then bond the post with adhesive resin at **both the radicular and coronal levels**, choosing post + core materials that behave like dentin.",
+         "**Build the core over the seated post** using the build-up steps above, preserve the ferrule, and proceed to the crown prep."
+        ]
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**One post is enough.** In a multirooted tooth use the straightest, largest canal — distal in mandibular molars, palatal in maxillary molars.",
+         "**Cast post + core** is the older alternative (high success, retrievable) but needs more chair time and a temporary, and is largely replaced by prefab fiber posts.",
+         "**Codes:** **D2950** core build-up (incl. pins); add **D2954** when you place a prefabricated post + core. NV: crown prep."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "crownc-recement",
+      "num": 106,
+      "title": "Recement / debond",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "A patient presents with a crown that came off, in hand. Decide re-cement vs remake by checking three things before any cement opens: is the crown intact, is the prep intact (no recurrent caries, adequate ferrule), and can the intaglio be cleaned."
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Three-way check:** crown intact? prep intact (no recurrent decay, enough tooth / ferrule)? cement + intaglio cleanable? If any answer is no → remake, not re-cement.",
+         "**Clean the intaglio thoroughly** — the most-skipped step and the #1 cause of a second debond. Remove all old cement; cementing onto a contaminated intaglio fails.",
+         "Re-cement with RelyX (if there's any retention doubt) or FujiCem; remove excess, verify margins, contacts, and occlusion.",
+         "**Code D2920** (re-cement or re-bond crown). Document that a re-cement may not last."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "A repeat debond is a retention problem",
+        "body": "A crown that keeps coming off usually has short or over-tapered prep walls or a lost cement seal — re-cementing buys time, but the real fix is often a remake with better retention form."
+       }
+      ]
+     },
+     {
+      "id": "crownc-removal",
+      "num": 107,
+      "title": "Crown removal / endo-access through a crown",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Sometimes you have to get through or take off an existing crown — to access for a root canal, or to remove a failed crown."
+       },
+       {
+        "kind": "section",
+        "text": "Endo access through a crown"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "When an RCT is needed on a crowned tooth and the crown is otherwise sound (good margins + fit), **access through the crown** and keep it.",
+         "Use burs appropriate to the crown material (ceramic / metal), find the access conservatively, and restore the access over the orifices (composite / build-up) after obturation."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Crown removal"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Ask **sterilization** for the **crown-removing burs (anterior or posterior)** and the **crown remover (crown spreader)** — both come from sterilization, along with the radiograph kit and Isodry.",
+         "Record the existing crown's shade, anesthetize, and **protect the airway with Isodry** — porcelain fragments are an aspiration risk.",
+         "**Section** the crown buccally and occlusally down to tooth structure with a crown-removing bur, then seat the **crown spreader** in the cut and rotate to force the halves apart (section the lingual too if needed). Take care the porcelain doesn't fracture into the mouth.",
+         "Take a **radiograph** to see the tooth structure under the crown, then continue (excavate decay, core build-up, provisionalize, RCT, or extract as indicated)."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "Access-through vs remove",
+        "body": "It's a restorability + crown-quality call: access through a sound crown to preserve it; section off a crown that has failed at the margin or has decay under it."
+       }
+      ]
      }
     ]
    }
