@@ -2728,16 +2728,17 @@
        },
        {
         "kind": "callout",
+        "title": "The 24-hour, 1-week, 1-month, 3-month cadence",
+        "body": "Schedule four follow-ups by default: 24-hour (pain check + obvious adjustments), 1-week (PIP + occlusal recheck), 1-month (complaint review + most chronic issues surface here), 3-month (final adjustment + reline-need assessment). Patients who skip follow-ups end up with worse long-term outcomes — they self-adjust by chewing on one side, the denture wears unevenly, and you see them at year 2 needing a remake instead of a tune-up."
+       },
+       {
+        "kind": "callout",
         "title": "Triage rule for the 24-hour follow-up",
         "body": "Patient comes in complaining of everything (loose, sore, hurts to bite, looks bad). Triage in order: **(1) PIP for pressure spots** (relieve any) → **(2) occlusal check + equilibration** (BULL rule) → **(3) border evaluation** (functional movements) → **(4) VDO verification** → **(5) phonetic check**. Address the worst issue first; don't try to fix everything in one visit if it requires decisions like remake. Reassure the patient that adaptation takes 4–6 weeks."
        },
        {
-        "kind": "section",
-        "text": "Complaint by complaint"
-       },
-       {
         "kind": "paragraph",
-        "text": "Every CD patient returns with at least one complaint in the first month. The pattern is so reliable that you can prepare them in advance — and your job is to triage quickly: which complaints need adjustment, which need patient education, which signal a remake."
+        "text": "**Complaint by complaint.** Every CD patient returns with at least one complaint in the first month. The pattern is so reliable that you can prepare them in advance — and your job is to triage quickly: which complaints need adjustment, which need patient education, which signal a remake."
        },
        {
         "kind": "section",
@@ -2801,11 +2802,6 @@
          "**'My mouth burns':** allergic reaction (rare) OR residual monomer (cure issue — return to lab) OR ill-fitting denture causing tissue inflammation. Diagnose tissue response.",
          "**'I have a metallic taste':** rare; consider material reaction or oral infection; refer for evaluation."
         ]
-       },
-       {
-        "kind": "callout",
-        "title": "The 24-hour, 1-week, 1-month, 3-month cadence",
-        "body": "Schedule four follow-ups by default: 24-hour (pain check + obvious adjustments), 1-week (PIP + occlusal recheck), 1-month (complaint review + most chronic issues surface here), 3-month (final adjustment + reline-need assessment). Patients who skip follow-ups end up with worse long-term outcomes — they self-adjust by chewing on one side, the denture wears unevenly, and you see them at year 2 needing a remake instead of a tune-up."
        }
       ]
      },
