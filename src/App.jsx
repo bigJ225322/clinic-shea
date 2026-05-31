@@ -29574,7 +29574,7 @@ function Pathways() {
  fontSize: "0.95rem", lineHeight: 1.65, color: "var(--ink)",
  }}>
  {phase.detail.split(/\n\n+/).map((para, i) => (
- <p key={i} style={{ margin: i === 0 ? "0 0 12px" : "12px 0" }}>{para}</p>
+ <p key={i} style={{ margin: i === 0 ? "0 0 12px" : "12px 0" }}>{renderInline(para)}</p>
  ))}
  </div>
  )}
@@ -29655,7 +29655,7 @@ function Pathways() {
  {ls.detail && (
  <div style={{ fontSize: "0.95rem", lineHeight: 1.65, color: "var(--ink)" }}>
  {ls.detail.split(/\n\n+/).map((para, i) => (
- <p key={i} style={{ margin: i === 0 ? "0 0 12px" : "12px 0" }}>{para}</p>
+ <p key={i} style={{ margin: i === 0 ? "0 0 12px" : "12px 0" }}>{renderInline(para)}</p>
  ))}
  </div>
  )}
