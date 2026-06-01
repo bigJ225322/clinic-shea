@@ -28714,7 +28714,10 @@ function Pathways() {
  {PATHWAY_DOMAINS.map(d => {
  const active =!showAllDomains && d.id === domainId;
  return (
- <button key={d.id} onClick={() => { handleDomainChange(d.id); setShowAllDomains(false); }} style={{
+ <button key={d.id} onClick={() => { handleDomainChange(d.id); setShowAllDomains(false); }}
+ onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = "rgba(122,30,30,0.05)"; }}
+ onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = "transparent"; }}
+ style={{
  padding: "7px 14px", borderRadius: "100px",
  border: `1px solid ${active? "var(--accent)": "var(--rule)"}`,
  background: active? "var(--accent)": "transparent",
