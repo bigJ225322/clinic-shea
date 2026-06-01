@@ -13582,6 +13582,8 @@ function RVUs() {
  <button
  onClick={() => setActiveCategory(prev => prev === "all" ? null : "all")}
  title={isActive ? "Click again to clear filter" : "Show all codes"}
+ onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.background = "rgba(122,30,30,0.05)"; }}
+ onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.background = "var(--paper)"; }}
  style={{
  fontSize: "11px",
  padding: "5px 11px",
@@ -13611,6 +13613,8 @@ function RVUs() {
  <button key={cat.id}
  onClick={() => setActiveCategory(prev => prev === cat.id? null: cat.id)}
  title={isActive? "Click again to clear filter": `Filter to ${cat.label}`}
+ onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.background = "rgba(122,30,30,0.05)"; }}
+ onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.background = "var(--paper)"; }}
  style={{
  fontSize: "11px",
  padding: "5px 11px",
@@ -29568,9 +29572,9 @@ function Pathways() {
  chapter content below as supplementary reference. */}
  {phase.detail && (
  <div style={{
- marginBottom: phaseSections.length > 0 ? "28px" : "0",
+ marginBottom: phaseSections.length > 0 ? "36px" : "0",
  paddingBottom: phaseSections.length > 0 ? "20px" : "0",
- borderBottom: phaseSections.length > 0 ? "1px solid var(--rule-soft, var(--rule))" : "none",
+ borderBottom: phaseSections.length > 0 ? "1px solid var(--rule)" : "none",
  fontSize: "0.95rem", lineHeight: 1.65, color: "var(--ink)",
  }}>
  {phase.detail.split(/\n\n+/).map((para, i) => (
@@ -29587,12 +29591,12 @@ function Pathways() {
  const stepLabel = s.ref?.label || s.chapter.title;
  return (
  <div key={i} style={{
- marginBottom: i === phaseSections.length - 1 ? "0" : "28px",
+ marginBottom: i === phaseSections.length - 1 ? "0" : "36px",
  paddingBottom: i === phaseSections.length - 1 ? "0" : "20px",
- borderBottom: i === phaseSections.length - 1 ? "none" : "1px solid var(--rule-soft, var(--rule))",
+ borderBottom: i === phaseSections.length - 1 ? "none" : "1px solid var(--rule)",
  }}>
  <h3 className="serif" style={{
- fontSize: "1.05rem", fontWeight: 500, color: "var(--ink)",
+ fontSize: "1.18rem", fontWeight: 600, color: "var(--ink)",
  margin: "0 0 10px",
  }}>{stepLabel}</h3>
  <GuideChapter chapter={s.chapter} hideHeader />
