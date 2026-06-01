@@ -23645,6 +23645,7 @@ const PATHWAY_DOMAINS = [
  { id: "cd", label: "CD" },
  { id: "rpd", label: "RPD" },
  { id: "crown", label: "Crown" },
+ { id: "bridge", label: "Bridge" },
 ];
 
 const PATHWAY_GROUPS = {
@@ -23656,6 +23657,9 @@ const PATHWAY_GROUPS = {
  ],
  crown: [
  { label: "Single-unit PFM", ids: ["crown-pfm"] },
+ ],
+ bridge: [
+ { label: "3-unit PFM (FPD)", ids: ["bridge-pfm"] },
  ],
 };
 
@@ -23970,9 +23974,101 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "crownc-delivery" },
  ],
  },
+ {
+ id: "bridge-pfm",
+ domain: "bridge",
+ category: "fixed",
+ phase: "phase3",
+ label: "PFM bridge (3-unit FPD)",
+ branchEyebrow: "Related",
+ description: "A 3-unit posterior PFM bridge (FPD) replaces a missing tooth by crowning the two adjacent abutments and suspending a pontic between them. It runs like the PFM crown but longer: both abutments are prepped to a COMMON path of insertion, then after the impression the lab casts a metal framework you try in (V3), adds porcelain you can try in at bisque (V4), and glazes for delivery (V5). The case turns on abutment selection and the shared path of draw. PFM only here — all-ceramic / zirconia bridges go through the digital (CAD/CAM) workflow.",
+ keyDecisions: [
+ "Abutment selection IS the case: each abutment must be periodontally sound with an acceptable crown-to-root ratio (2:3 ideal, 1:1 minimum) and pass Ante's Law — the abutments' root surface area should equal or exceed the root surface of the teeth being replaced.",
+ "Span length is risk: deflection rises with the cube of the span (a 2-pontic span flexes 8× a single pontic). Replacing three posterior teeth has a poor prognosis — recommend an implant or RPD instead.",
+ "Both abutments are prepped to a COMMON path of insertion — near-parallel axes; taper the long axes toward each other as needed. A mesially tilted molar or an interfering third molar can make a common path impossible (upright/extract first).",
+ "PFM only here — all-ceramic / zirconia bridges go through the digital (CAD/CAM) workflow, not this PVS-impression lab route. No crown lengthening at UIC: if an abutment lacks a ferrule, it's a restorability problem, not a build-up one.",
+ "Pontic design defaults to **modified ridge lap** (all-convex, cleansable, touches only attached keratinized gingiva); ovate is most esthetic (needs tissue volume / surgical site development), sanitary for non-esthetic posterior.",
+ "Provisional can be bis-acryl or acrylic (Jet Set-4); bis-acryl is preferred for the span because it is stronger.",
+ "The bisque-bake try-in is optional and a lab-script choice: order the porcelain step to \"return for bisque try-in\" to verify contours first (worth it for 4+ units), or \"return glazed / ready for cementation\" to deliver straight from the framework visit.",
+ "CDT codes are per-unit and phased like the crown: a PFM retainer crown on each abutment (D6750A/B/C ×2) + a PFM pontic (D6240A/B/C), for high-noble alloy.",
+ ],
+ phases: [
+ {
+ label: "Core build-up (when needed)",
+ count: 1,
+ detail: "Only when an abutment is broken down or endo-treated. Same as the crown: it does not have to be its own visit — do it on a separate day or at the start of the prep appointment, but always before the prep. (No crown lengthening at UIC — if there's no ferrule, the tooth is a restorability problem, not a build-up one.)",
+ },
+ {
+ label: "Prep both abutments + provisional + final impression",
+ count: 5,
+ detail: "Evaluate and select the abutments first (perio-sound, crown-root ratio, Ante's Law, span risk). Then, in order: select the shade → prep **both abutments to a common path of insertion** (parallel axes, PFM reductions) → fabricate the provisional bridge (bis-acryl preferred; modified ridge-lap pontic, wax up the pontic site first) → pack two cords and take the final PVS impression → cement the provisional → send the impression with the **framework lab script** (alloy, margin design, pontic tissue side, contacts in porcelain vs metal).",
+ },
+ {
+ label: "Metal framework try-in",
+ count: 1,
+ detail: "The lab returns the cast metal framework before any porcelain. Verify the fit: margins closed on **both** preps simultaneously, passive seat with **no rocking** (Fit Checker for binding spots), a radiograph to confirm seating, and 0.5–0.8 mm interocclusal clearance for the porcelain. If it rocks, **section and solder** (cut, re-join intraorally with resin index, return to the lab). Then send it back with the porcelain lab script.",
+ },
+ {
+ label: "Bisque-bake try-in (when ordered)",
+ count: 1,
+ detail: "Optional — only if you asked the lab to \"return for bisque try-in\" (unglazed, unstained porcelain). Try it in and adjust in sequence: interproximal contacts → margins → pontic → occlusion → contours/esthetics + shade. Approve, then send back for glaze. If you instead ordered it glazed/ready, you skip this and deliver at this visit.",
+ },
+ {
+ label: "Delivery",
+ count: 1,
+ detail: "The glazed bridge is back. Try in, verify **all retainers seat fully with no rocking**, confirm contacts/margins/occlusion and esthetics, then cement (RelyX / FujiCem). Polish the metal collar, check occlusion, post-op (no sticky foods 24 h).",
+ },
+ ],
+ labSteps: [
+ {
+ after: 1,
+ title: "Pour, die-trim, mount, then cast the metal framework",
+ body: "The lab pours and Pindexes the impression, you die-trim and mount, then the lab waxes a full-contour pattern, cuts it back, and casts the metal framework — returned to you uncovered (no porcelain yet) for the framework try-in.",
+ detail: "1. Send the final impression with the **framework lab script** (the template): state the step (\"complete full-contour wax-up + cut-back and fabricate metal framework for PFM FPD #X-x-X\"), then the design — **alloy** (high-noble at UIC), **margin design** per surface (e.g. buccal disappearing margin, 1 mm lingual metal collar), **pontic** (modified ridge lap, tissue side in porcelain), **occlusal + interproximal contacts** in porcelain or metal — what you're sending (Pindexed master cast, opposing, articulator / Denar 320), and \"return for framework try-in.\"\n\n2. The lab pours in Type IV die stone, Pindexes, sections the dies, and you **die-trim + mount** (same as the crown lab step).\n\n3. The lab paints die spacer (cement space), waxes a **full-contour pattern**, then **cuts it back** for even porcelain — metal **0.2–0.3 mm minimum**, porcelain **0.8 mm min / 2.0 mm max**, and **connectors ≥ 2 mm** occlusogingival height (height matters more than width; bending varies inversely with the cube of pontic thickness). Keep the porcelain-metal junction out of occlusal stress-bearing areas.\n\n4. The pattern is sprued, invested, burned out, and **cast** in the alloy, then divested, finished, and the porcelain-metal junctions refined — returned to you for try-in.",
+ source: "clinic lectures — Metal Framework Fabrication & Try-in + FPD framework lab-prescription template (UIC Fixed Pros); Mounting & Die Trimming (Vlagos)",
+ turnaround: "Before Visit 3 (framework try-in)",
+ },
+ {
+ after: 2,
+ title: "Apply opaque + porcelain (bisque)",
+ body: "With the framework approved, the lab sandblasts and oxidizes it, then stacks porcelain — opaque, body, then enamel — fires it under vacuum, and adjusts the contours on the mounted cast.",
+ detail: "1. Send the framework back with the **porcelain lab script**: what's returned + \"stack porcelain to match the contralateral teeth,\" the **shade** (guide + shade + where: cervical / middle / incisal third, translucency, photos), the **occlusal scheme** (light vs heavy on MIP/CR, guidance), and crucially **\"return for bisque try-in\" OR \"return glazed / ready for cementation.\"**\n\n2. The lab **sandblasts** (micromechanical roughness) and **oxidizes** the framework (surface oxides for the chemical bond), then **stacks porcelain**: **opaque** (blocks the dark metal) → **dentin / body** (bulk + most of the color) → **enamel** (contour + translucency).\n\n3. Restorations are **over-contoured** to compensate for **27–45% firing shrinkage** (densification + sintering); fired **under vacuum** (fewer voids, better optics) and **slow-cooled** (prevents crazing). The ceramic ends in compression because its thermal expansion is just below the alloy's.\n\n4. The technician final-contours with diamonds on the mounted cast in the same sequence you'll use — **contacts → margins → pontic → occlusion → contours** — then either returns it unglazed for your bisque try-in, or glazes/stains and returns it ready to cement.",
+ source: "clinic lectures — PFM Porcelain Application & Final Contouring + Shade Taking; FPD porcelain lab-prescription template (UIC Fixed Pros)",
+ turnaround: "Before Visit 4 (bisque try-in) — or straight to delivery if ordered glazed",
+ },
+ {
+ after: 3,
+ title: "Glaze + stain (or already done)",
+ body: "After you approve the bisque try-in, the lab stains and glazes for the final surface, polishes the metal collar, and returns it ready to cement.",
+ detail: "1. If you took a bisque try-in, send the approved bridge back to **stain and glaze** (glazing seals the surface and sets the final luster; staining tunes the characterization). Minimize refirings — over-firing causes **devitrification** (the porcelain turns crystalline, raising opacity and thermal expansion).\n\n2. The **metal collar** is polished with brown then green points/discs after glazing — removes the oxide layer, improves esthetics and corrosion resistance.\n\n3. Returned ready for delivery. (If you ordered it glazed/ready at the porcelain step, this is already done and you skipped the separate bisque try-in.)",
+ source: "clinic lectures — PFM Porcelain Application & Final Contouring (UIC Fixed Pros)",
+ turnaround: "Before Visit 5 (delivery)",
+ },
+ ],
+ branches: [
+ { id: "recement", label: "Recement / debond", chapterId: "brc-recement" },
+ { id: "removal", label: "Bridge removal / sectioning", chapterId: "brc-removal" },
+ ],
+ sections: [
+ // Visit 1 — Core build-up (when needed)
+ { guideId: "indirect", chapterId: "brc-foundation" },
+ // Visit 2 — abutment selection + prep + provisional + impression
+ { guideId: "indirect", chapterId: "brc-abutment" },
+ { guideId: "indirect", chapterId: "brc-prep" },
+ { guideId: "indirect", chapterId: "brc-pontic" },
+ { guideId: "indirect", chapterId: "brc-provisional" },
+ { guideId: "indirect", chapterId: "brc-impression" },
+ // Visit 3 — metal framework try-in
+ { guideId: "indirect", chapterId: "brc-framework" },
+ // Visit 4 — bisque-bake try-in
+ { guideId: "indirect", chapterId: "brc-bisque" },
+ // Visit 5 — delivery
+ { guideId: "indirect", chapterId: "brc-delivery" },
+ ],
+ },
 ];
 
-// ─── End of PATHWAYS (cd-conventional, rpd-conventional, crown-pfm) ─────────
+// ─── End of PATHWAYS (cd-conventional, rpd-conventional, crown-pfm, bridge-pfm) ─────────
 
 // Phase + category labels for the pathway card header badges.
 // The IDs map to the UIC TP framework (from Tx Dx- Overview.pdf) and the

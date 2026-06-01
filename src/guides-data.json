@@ -11028,7 +11028,7 @@
        },
        {
         "kind": "paragraph",
-        "text": "**How broken down is ‘enough’?** You need a build-up when removing all the caries and the failing restoration would leave too little **sound coronal tooth** to retain and support the crown — and to keep an adequate **ferrule**. Remaining sound tooth structure is the key variable in the restorability literature. If essentially **no sound supragingival tooth** is left and you can’t get a ferrule even with crown lengthening, that is no longer a build-up question — the tooth may be non-restorable (→ extraction)."
+        "text": "**How broken down is ‘enough’?** You need a build-up when removing all the caries and the failing restoration would leave too little **sound coronal tooth** to retain and support the crown — and to keep an adequate **ferrule**. Remaining sound tooth structure is the key variable in the restorability literature. If essentially **no sound supragingival tooth** is left and there is no ferrule to grab, that is no longer a build-up question — the tooth may be non-restorable (→ extraction)."
        },
        {
         "kind": "section",
@@ -11138,6 +11138,384 @@
         "kind": "callout",
         "title": "Access-through vs remove",
         "body": "It's a restorability + crown-quality call: access through a sound crown to preserve it; section off a crown that has failed at the margin or has decay under it."
+       }
+      ]
+     },
+     {
+      "id": "brc-foundation",
+      "title": "Core build-up on an abutment (when needed)",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "When a bridge abutment is broken down or endo-treated, it needs a core build-up before the prep — the same procedure as a single-crown build-up, just done on the abutment tooth (and on both abutments if both need it). Build it in a shade that contrasts with dentin so you can tell core from tooth at the prep, and preserve a **ferrule**."
+       },
+       {
+        "kind": "section",
+        "text": "Build-up on an abutment"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Indicated when caries or a failing restoration leaves too little sound coronal tooth on an abutment to retain its retainer crown.",
+         "Same steps as the crown build-up: isolate, remove the decay, matrix + Consepsis, liner/base if indicated, etch → Gluma → bond, build up in increments (composite or Bisco Blue/White) in a contrasting shade, finish, then check contact + occlusion. It can be its own visit or the start of the prep appointment.",
+         "A post goes only in an **endo-treated** abutment with too little coronal tooth to hold the core — it retains the core, it does not strengthen the root; preserve at least 4 mm of apical gutta-percha."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "No crown lengthening at UIC",
+        "body": "If an abutment can't give a ferrule, that isn't a build-up case — it's an abutment-selection / restorability problem. Reconsider the abutment or replace the tooth another way (implant, RPD). Codes: D2950 build-up (± D2954 post) on the abutment, in addition to the bridge codes."
+       }
+      ]
+     },
+     {
+      "id": "brc-abutment",
+      "title": "Abutment selection + evaluation",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "An FPD replaces a missing tooth by crowning the two adjacent **abutments** and suspending a **pontic** between them. The case lives or dies on abutment selection — the abutments carry the load of the missing tooth too, so they must be periodontally sound, favorably shaped, and collectively strong enough, judged before you pick up a bur."
+       },
+       {
+        "kind": "section",
+        "text": "Evaluate each abutment"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Full work-up per abutment** before prepping: intraoral, periodontal, radiographic, and pulpal exam. A compromised pulp gets endo *before* fixed pros; an RCT abutment must still have sound structure for a ferrule. Sometimes extraction beats trying to save a severely damaged abutment.",
+         "**Crown-to-root ratio:** 2:3 is ideal; **1:1 is the minimum** acceptable for an FPD abutment.",
+         "**Root form:** roots broad facio-lingually beat round ones; widely separated multi-rooted teeth beat fused, converging, or conical roots. Perio bone loss shrinks support faster than bone height suggests — the center of rotation moves apically and the lever arm grows."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Ante's Law + span length"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Ante's Law:** don't make an FPD when the abutments' combined root surface area is **less than** the root surface area of the teeth being replaced.",
+         "**Span deflection (cube law):** deflection rises with the cube of span length — 1 pontic = D, 2 pontics = 8D, 3 pontics = 27D — and inversely with the cube of the pontic's occlusogingival thickness. **Replacing three posterior teeth has a poor prognosis** → recommend an implant or RPD. Long spans need bulky, rigid connectors and pontics."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Special abutment problems"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Pier abutment** (a lone tooth between two edentulous spaces): acts as a fulcrum that can unseat a retainer → use a **nonrigid connector** (T-key + dovetail keyway, broken-stress) or a cantilever; needs very retentive retainers.",
+         "**Cantilever FPD** (pontic attached on one side only): induces tipping/rotation/drifting forces → needs multiple/double abutments (a premolar cantilever needs double abutments; a lateral-incisor cantilever can use the canine alone). **Every cantilever case needs an implant consult first.**",
+         "**Tilted molar abutment:** a mesially tilted second molar makes a common path of insertion impossible, and a third molar intrudes on the path → upright orthodontically and/or remove the third molar before the FPD."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "When NOT to bridge",
+        "body": "If the abutments would need endo + posts + perio surgery to carry a long, complex span — or you'd be replacing three posterior teeth — an **implant** or **RPD** is the better call. An FPD wins when the abutments are perio-sound, the span is short and straight, and the retainers are well designed."
+       }
+      ]
+     },
+     {
+      "id": "brc-prep",
+      "title": "FPD prep — the common path of insertion",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "An FPD prep is two PFM crown preps that must share **one path of insertion**. Each abutment gets the same reduction-heavy PFM prep as a single crown, but their axial walls have to be near-parallel to *each other* so the finished bridge seats as one rigid unit."
+       },
+       {
+        "kind": "section",
+        "text": "The common path of insertion"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Prep **both abutments toward a shared path** — taper their long axes toward each other as needed; check the draw by sighting both preps with one eye, and against the diagnostic cast / putty matrix.",
+         "A mesially **tilted molar** or an interfering **third molar** can make a common path impossible — solve that orthodontically / by extraction first (see Abutment selection).",
+         "A little more taper than a single crown is acceptable to achieve the common path, but stay as parallel as you can — retention and resistance still fall up to ~50% per extra 5° of convergence."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Reductions (PFM, per abutment)"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Axial** 1.25–1.5 mm; **occlusal** 1.5–2.0 mm; **finish line** deep chamfer / shoulder 1.2–1.5 mm facial (UIC: deep chamfer/shoulder all around); keep it supragingival to start.",
+         "Make a **diagnostic cast + putty matrix** first (waxed up, *including the pontic site*), plus a **PVS reduction matrix** to gauge depth — same indices as the crown."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Sequence"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Initial interproximal reduction** (flame diamond) — open the proximals toward the edentulous space and the far neighbors without nicking them.",
+         "**Axial reduction toward the common path** — depth cuts, then reduce; place the deep chamfer/shoulder finish line ~0.5 mm coronal to the free gingival margin.",
+         "**Occlusal reduction** following the cuspal inclines, then the **functional cusp bevel**.",
+         "**Final refinements** — round the line angles and **verify the shared path of draw** across both preps."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "brc-pontic",
+      "title": "Pontic design",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "The pontic is the artificial tooth slung between the retainers. Its design is a tug-of-war between **esthetics** and **cleansability** — the tissue surface has to be convex enough to clean under, yet contact the ridge so the tooth looks like it emerges from the gingiva."
+       },
+       {
+        "kind": "section",
+        "text": "The designs (most → least esthetic)"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Ovate** — most esthetic; a convex tissue surface sits in a small concavity in the ridge so the pontic looks like it erupts from the gingiva. Needs ridge volume / surgical site development.",
+         "**Modified ridge lap** — the UIC default. An all-convex, cleansable tissue surface that touches **only the buccal attached keratinized gingiva** (hides the buccal, stays cleansable on the lingual). Best balance of esthetics + hygiene.",
+         "**Sanitary (hygienic)** — the tissue surface stays clear of the ridge entirely (easiest to clean); non-esthetic posterior spans only.",
+         "**Conical** — a rounded, near-point tissue contact for thin / knife-edge ridges; less esthetic."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Rules for any pontic"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Tissue surface **convex and cleansable**, contacting the ridge with **minimal blanching**, with floss able to pass underneath.",
+         "**Tissue side in porcelain or metal** — both are biocompatible if well polished or glazed; porcelain is easier to adjust and add to, metal is for limited interocclusal space + maximum strength.",
+         "Keep it convex — a concave or ridge-lapping tissue surface traps plaque and inflames the ridge."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "brc-provisional",
+      "title": "Provisional bridge",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "The provisional bridge protects both preps, holds the abutments and the space, and shapes the pontic-site tissue while the lab works. At UIC you make it from **bis-acryl (Integrity)** — preferred over acrylic for a span because it's stronger — in a putty matrix taken off a **waxed-up cast** that already has the pontic carved in."
+       },
+       {
+        "kind": "section",
+        "text": "Fabricate"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Before the patient:** wax up the diagnostic cast — restore the abutments and **carve the pontic** to a modified ridge-lap shape — then take the **putty matrix** off that wax-up, so the provisional comes out with a proper pontic.",
+         "Load the putty with **Integrity** (bis-acryl; acrylic / Jet-Set-4 is the alternative), seat within ~45 s, let it reach the firm-elastic stage, tease it off, reseat to MI.",
+         "Repair voids with flowable composite; **trim + shape out of the mouth** — open the embrasures, convex proximal contacts, and a **convex, cleansable pontic** tissue surface that lightly contacts the ridge; then polish."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Cement"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Gluma** the preps first (except RCT abutments), clean + dry, vaseline the outside of the provisional.",
+         "Load TempBond / UltraTemp, seat, clear the excess when half-set, floss through every embrasure (holding it); confirm it seats fully on **both** abutments with **no rocking**; adjust contacts + occlusion.",
+         "It has to come off in one piece at the impression visit — seat it well but don't lock it onto the preps."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "brc-impression",
+      "title": "Soft-tissue management + final PVS impression",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Same soft-tissue management and PVS technique as the single crown, but you have to capture **both prepared abutments, every margin, and the edentulous pontic site** in one impression — so retraction and a dry field matter even more."
+       },
+       {
+        "kind": "section",
+        "text": "Retraction"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Pack **two cords around each abutment** — a smaller bottom cord under the margin (no tail), a larger top cord above (leave a tail); size them to the sulcus (#00 / #0 are common). Healthy tissue + hemostasis first.",
+         "Biologic width still rules — don't prep or retract more than 0.5 mm into the sulcus."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Impression"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "Apply tray adhesive early so it's dry; thoroughly dry both preps and the ridge.",
+         "Remove the top cords, inject **light body** into both sulci and over the pontic site, then seat the **heavy-body** tray (you'll want an assistant) and hold the full ~6-min set.",
+         "**Read it before sending:** both finish lines crisp, an intact cuff of material beyond every margin, the pontic ridge captured, no voids/tears at any margin — otherwise retake.",
+         "Recement the provisional; send the impression with the **framework lab script**."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "brc-framework",
+      "title": "Metal framework try-in",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "The lab returns the cast metal framework **before any porcelain** so you can confirm it fits — there's no point baking porcelain onto a framework that doesn't seat. The bar is high: both retainers must seat fully and simultaneously, with a passive, rock-free fit, and verified mounting."
+       },
+       {
+        "kind": "section",
+        "text": "Try-in"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "Seat the framework. **Both margins must close simultaneously** (check with an explorer) with a **passive fit and no rocking**.",
+         "If the margins aren't closed or it rocks, find the binding spots with **Fit Checker** — lubricate, fill the intaglio, seat, remove at ~1 min, relieve wherever the silicone is thin or perforated, and repeat until you get a thin uniform layer with no perforations.",
+         "**Radiograph** to confirm complete seating and closed margins.",
+         "Check **interocclusal clearance** — you need **0.5–0.8 mm** of space for the porcelain. Adjust the metal with an aluminum-oxide stone (preferred) or a fine diamond; use calipers to keep at least 0.2–0.3 mm of metal, work in one direction, and use **no diamond-coated burs** on the alloy (particles embed and bubble the ceramic during firing).",
+         "Verify the mounting with a check-bite (PVS or resin) if needed."
+        ]
+       },
+       {
+        "kind": "troubleshoot",
+        "title": "If it still rocks — section and solder",
+        "body": "A framework that rocks or won't seat passively after adjustment gets **sectioned** (about the thickness of a business card), the segments tried in individually, and — if each abutment fits — re-joined intraorally with a **resin index**, then returned to the lab to **solder** (joining the segments below 450 °C with added metal). Decision tree: if the margins are closed on the cast but not in the mouth → start over with a new impression; if they're open on the cast too → remake the framework."
+       },
+       {
+        "kind": "section",
+        "text": "Then"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Once it fits, send it back with the **porcelain lab script** — shade (guide, shade, where, translucency, photos), the occlusal scheme, and your choice of **\"return for bisque try-in\" vs \"return glazed / ready for cementation.\"**"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "brc-bisque",
+      "title": "Bisque-bake try-in",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Optional — you only have this visit if you asked the lab to **\"return for bisque try-in\"** (unglazed, unstained porcelain). It's the chance to fix contour, contacts, occlusion, and shade *before* the glaze is fired on; worth it for big cases (4+ units), and often skipped on a clean 3-unit (delivered glazed instead)."
+       },
+       {
+        "kind": "section",
+        "text": "Adjust in sequence (the order the lab used too)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Interproximal contacts** — visually closed and the same firmness as the contralateral side; floss passes without shredding. Too tight → mark and adjust with a fine diamond; too light or open → porcelain has to be added (back to the lab).",
+         "**Margins** — explorer; ideal margins are virtually undetectable. Trim bulky/bulbous porcelain off the collar; a tooth-ledge underextension < 0.25 mm is acceptable; an **open** margin (the explorer tip drops between margin and finish line) → remake.",
+         "**Pontic** — modified ridge lap, convex and cleansable, minimal blanching, floss passes under. Too tight → Fit-Checker + fine diamond; not convex / too light → add porcelain.",
+         "**Occlusion** — even, widely distributed MI contacts matching the contralateral side; check excursions.",
+         "**Contours + esthetics + shade** — symmetry to the contralateral tooth (buccal contour, line angles, developmental grooves); confirm the shade in good light."
+        ]
+       },
+       {
+        "kind": "callout",
+        "title": "Then glaze",
+        "body": "Approve it and send it back to **stain + glaze**. Minimize refirings — over-firing causes **devitrification** (the porcelain turns crystalline, raising opacity and thermal expansion). If you had instead ordered it glazed, you skip this visit and go straight to delivery."
+       }
+      ]
+     },
+     {
+      "id": "brc-delivery",
+      "title": "Bridge delivery (cementation)",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "The glazed bridge is back. Delivery is the crown's delivery with one extra demand: **all retainers must seat fully and simultaneously with no rocking** — a bridge that rocks on one abutment is not seated."
+       },
+       {
+        "kind": "section",
+        "text": "Try-in"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Check the bridge on the cast, then disinfect (Cavicide 5 min → rinse, chlorhexidine 5 min → rinse). Remove the provisional + all temp cement.",
+         "Seat behind a **gauze throat-pack**. Verify **both retainers seat fully with no rocking**, margins (explorer), interproximal contacts to the neighbors (floss), and that the pontic contacts the ridge with minimal blanching.",
+         "If it won't seat → adjust the interproximal contacts to the neighbors first, then the intaglios (Fit-Checker). If it **rocks**, that's a framework problem (section + solder), not a cement problem."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Cement + finish"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Adjust the occlusion extraorally** — even across all units in MI plus excursions (two paper colors), ceramic burs.",
+         "Clean the preps (scaler, not a bur; pumice), rinse + lightly dry, isolate. **Cement** with RelyX or FujiCem — fill all retainer intaglios ½–⅔, seat the **whole bridge at once**, clear excess when tacky, and floss through every embrasure (and under the pontic).",
+         "**Polish the metal collar** (brown then green points) to remove the oxide layer. Verify margins, contacts, and occlusion.",
+         "Post-op: no sticky foods for 24 h; clean **under the pontic** daily with a floss threader or proxabrush."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Codes"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Per unit, phased prep / impression / cementation: **D6750A/B/C** PFM retainer crown (high noble) on **each abutment** (×2) + **D6240A/B/C** PFM pontic (high noble). The framework-try-in visit carries that phase on the unit codes."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "brc-recement",
+      "title": "Recement / debond a bridge",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "A patient presents with a bridge that has come loose or off. Same logic as a crown, with a catch: if **one** retainer debonds the whole bridge loosens — and a partially-debonded bridge can hide recurrent caries under the retainer that stayed on."
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Three-way check before re-cementing:** is the bridge intact, are **both** preps intact (no recurrent caries — check carefully under the still-attached retainer; adequate ferrule), and can the intaglios be cleaned. Any \"no\" → remake.",
+         "A bridge that debonded on one side has often been leaking and decaying under that retainer — **radiograph and probe** before deciding.",
+         "Clean **all** intaglios thoroughly (the most-skipped step), then re-cement with RelyX (if any retention doubt) or FujiCem; clear excess, verify it seats with no rocking, contacts, and occlusion.",
+         "**Code D6930** (re-cement / re-bond fixed partial denture). Document that a re-cement may not last."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "brc-removal",
+      "title": "Bridge removal / sectioning",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Sometimes a failed bridge has to come off — recurrent caries under a retainer, a failed abutment, or endo access. Unlike a single crown you usually **section the connectors** first, then remove each retainer."
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Ask **sterilization** for the **crown-removing burs (anterior or posterior)** and the **crown remover / spreader** — same kit as a crown. Protect the airway with **Isodry** (porcelain and metal fragments are an aspiration risk).",
+         "Record the existing shade and anesthetize.",
+         "**Cut the connectors first** to separate the units, then section and remove each retainer like a single crown — cut buccal and occlusal to tooth structure, seat the spreader in the cut, and rotate.",
+         "If you only need **endo access** on an otherwise sound abutment, access **through the retainer** and restore the access afterward — don't take the whole bridge off.",
+         "Take a radiograph, then continue (excavate, build-up, re-prep, or treatment-plan a replacement)."
+        ]
        }
       ]
      }
