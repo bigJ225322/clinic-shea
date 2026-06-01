@@ -1,4 +1,107 @@
-# Vetting source-map — Cases tab vs Swade UIC manual + Dentistry Files
+# Vetting source-map
+
+## Maps tab pathways — current per-claim source log
+
+**Rebuilt 2026-06-01.** The legacy "Cases tab" tables further down predate the Maps tab and cover NONE of the Maps pathways. This section is the live source log for the Maps tab (CD / RPD / Crown / Bridge / Digital). Per-pathway audit status:
+
+- **Crown (crown-pfm)** — audited 2026-06-01 ✓ (3 minor flags)
+- **Bridge (bridge-pfm)** — audited 2026-06-01 ✓ (1 fix: prep finish line 1.2-1.5→1-1.25; recement/removal inferred)
+- **Digital (digital-emax)** — audited 2026-06-01 ✓ (design + Ivoclean fixed; recement/removal inferred; best-sourced of the three)
+- **CD (cd-conventional)** — structure verified 2026-06-01 ✓ vs Swade Denture #1-7 (deep lecture-PDF re-verify deferred)
+- **RPD (rpd-conventional)** — structure verified 2026-06-01 ✓ vs Swade #4-10 + survey-crown branch (deep lecture-PDF re-verify deferred)
+
+### Crown (crown-pfm) — audited 2026-06-01
+
+Sources: Swade clinical manual (FIXED section, ~pp. 58-72); UIC fixed-pros decks in `~/Desktop/Crowns HY/`.
+
+| Chapter / block | Primary source | Status |
+|---|---|---|
+| crownc-foundation — build-up | Swade CORE BUILDUP | ✓ |
+| crownc-foundation — post | Prefabricated Post Systems (Alapati); ferrule/restorability from Assessing Tooth Restorability Pt 1 | ✓ |
+| crownc-prep — reductions/sequence/burs | PFM Crowns deck; Swade CROWN PREP | ✓ — ⚠ finish-line width conflict |
+| crownc-prep — retention & resistance | Principles of Tooth Preparation deck | ✓ |
+| crownc-impression | Soft Tissue Mgmt & Final Impression (Marcano); Swade CROWN FINAL IMPRESSION | ✓ |
+| crownc-provisional | Swade PROVISIONAL CROWN | ✓ |
+| crownc-delivery | Swade CROWN DELIVERY | ✓ |
+| crownc-recement | inferred (general principles + CDT D2920); no dedicated Swade section | ⚠ inferred |
+| crownc-removal | Swade CROWN REMOVAL + ENDO ACCESS FILL | ✓ — ⚠ bur material unverified |
+| lab tile (pour / die-trim / fabricate) | Mounting & Die Trimming (Vlagos); Swade die-trim + PFM lab-Rx examples | ✓ |
+
+**Flags:**
+1. **Finish-line width** — the PFM Crowns deck says facial deep chamfer/shoulder **1.2–1.5 mm**; Swade's PFM table says **1.0–1.25 mm**. Content currently uses the deck (1.2–1.5). → Rami: which does UIC want?
+2. **crownc-recement** — three-way check + recement steps are sound but **inferred**; Swade has no dedicated "recement crown" procedure. D2920 is the correct code.
+3. **crownc-removal** — "crown-removing burs (anterior/posterior)" material (diamond vs carbide) **unverified**. → Rami.
+
+Otherwise the crown is claim-for-claim sourced — the audit confirms the most heavily-vetted pathway is solid.
+
+### Bridge (bridge-pfm) — audited 2026-06-01
+
+Sources: UIC fixed-pros decks (`~/Desktop/Crowns HY/` FPD decks + shared crown decks); the FPD lab-Rx templates; CDT codes from the app catalog. **Swade has NO bridge section** (only lab-Rx examples) — the bridge is sourced entirely from lectures + reasonable inference.
+
+| Chapter / block | Primary source | Status |
+|---|---|---|
+| brc-foundation | Swade CORE BUILDUP (applied to the abutment) + Prefab Post + Restorability | ✓ |
+| brc-abutment | Intro to FPD / Abutment Evaluation (Organ-Boshes) | ✓ verbatim |
+| brc-prep | Modified Posterior FPD Prep & Pontic Design deck | ✓ **after fix** (finish line corrected to 1–1.25 mm; 4–10° taper added) |
+| brc-pontic | FPD Prep & Pontic + Framework decks | ✓ |
+| brc-provisional | Bis-acryl Provisional Restorations for Posterior FPD (Marcano) | ✓ (rebuilt) — ⚠ direct-vs-indirect (Rami) |
+| brc-impression | Soft Tissue Mgmt & Final Impression (Marcano, incl. #9-11 FPD example) | ✓ — "2 cords/abutment" extended from the single-crown technique |
+| brc-framework | Metal Framework Fabrication & Try-in deck | ✓ — ⚠ does UG section-and-solder? (Rami) |
+| brc-bisque | PFM Porcelain Application & Final Contouring deck | ✓ |
+| brc-delivery | Framework deck (seat/rock) + crown delivery + porcelain (metal-collar polish) | ✓ — ⚠ framework-visit coding (Rami) |
+| brc-recement | inferred (general principles + CDT D6930) | ⚠ inferred |
+| brc-removal | inferred (crown removal + sectioning logic) | ⚠ inferred |
+| lab tiles (framework cast / porcelain / glaze) | Framework + Porcelain decks + FPD lab-Rx templates; Vlagos die-trim | ✓ — ⚠ student die-trim/mount ownership? (Rami) |
+
+**Flags / fixes:**
+1. **FIXED — brc-prep finish line:** was 1.2–1.5 mm (borrowed from the single-crown PFM deck); the FPD prep deck specifies **1–1.25 mm all around** (lingual chamfer 0.8–1 mm). Corrected, and added the deck's **4–10° between opposing walls** taper.
+2. **brc-recement / brc-removal — inferred** (no FPD-specific source; the D6930 / removal logic is reasonable, codes correct).
+3. **Rami:** bridge provisional direct-vs-indirect; UG section-and-solder vs remake; student die-trim/mount on a bridge; framework-try-in coding.
+
+### Digital (digital-emax) — audited 2026-06-01
+
+Sources: Swade **DIGITAL** section (PREP & SCAN / PREP GUIDELINES / DELIVERY, pp. ~106-116); Digital HY decks (`~/Desktop/HY Folders/Digital HY/`).
+
+| Chapter / block | Primary source | Status |
+|---|---|---|
+| digc-foundation | Swade CORE BUILDUP (as any crown) | ✓ |
+| digc-selection | Swade (translucency + shade) + Case Selection deck (indications) | ✓ — ⚠ contraindications from inlay/onlay deck |
+| digc-prep | Swade DIGITAL PREP GUIDELINES + Posterior crown prep deck | ✓ **exact** to Swade |
+| digc-scan | Swade DIGITAL PREP & SCAN | ✓ **exact** (TRIOS setup, cord-trim, codes) |
+| digc-provisional | Swade (Integrity before scan) | ✓ |
+| digc-delivery | Swade DIGITAL DELIVERY | ✓ **exact** (sprue, adjust-prep, crystallize, Panavia) — Ivoclean corrected |
+| digc-recement | inferred (mirrors the sourced Panavia protocol + CDT D2920) | ⚠ inferred |
+| digc-removal | inferred (crown removal + bonded-interface logic) | ⚠ inferred |
+| lab tile (design + mill) | Design Studio deck (you design) + Swade (lab mills, pre-crystallized) | ✓ **corrected** (was "lab designs") |
+
+**Flags / fixes:**
+1. **FIXED — design ownership:** the **student** designs in Design Studio; the lab mills. (Was "lab designs.")
+2. **FIXED — Ivoclean:** now a standard cement-prep step (the crown is always tried in), per Swade — was conditional.
+3. **digc-selection contraindications** — dropped lower-anteriors + >2-adjacent; the remaining (surveyed crowns, rest seats, moisture) still trace to the inlay/onlay decision-tree deck. → Rami: confirm the real full-crown contraindications.
+4. **digc-recement / digc-removal — inferred** (no Swade digital recement/removal; D2920 correct).
+
+Prep, scan, and the entire Panavia delivery are verbatim-faithful to Swade — Digital is the best-sourced of the three new pathways.
+
+### CD (cd-conventional) — structure verified 2026-06-01
+
+Sources: Swade CD (Denture #1-7, pp. ~76-97); CD lecture decks in `ALL CD FILES` (Tan, Obrez, grading sheets) — cited per labStep `source` field.
+
+Visit structure cross-checks cleanly to Swade Denture #1-7: V1=#1 (COE + diagnostic) · V2=#2 (border-mold + final) · V3=#3 (wax rims: facebow/VDO/CR/tooth selection) · V4=#4 (anterior try-in) · V5=#5 (posterior try-in) · V6=#6 (delivery + clinical remount) · V7+V8 = #7 (adjustment, split into 24h + 1-week).
+
+**Status:** structure ✓; labSteps cite primary sources; heavily vetted in prior sessions. **Not re-verified claim-by-claim against the CD lecture PDFs this pass** (not converted — prior-session audits + the per-step source fields stand).
+**Flag:** Swade lists ONE CD adjustment visit (#7); the pathway shows **24h + 1-week** — consistent with standard practice + the CD lecture material, but worth a one-line confirm.
+
+### RPD (rpd-conventional) — structure verified 2026-06-01
+
+Sources: Swade RPD STEPS (clinical appts #1-10, pp. ~74-75 + lab steps); Kim Lecture 4-Part A; RPD Fall 2022 Lab PDFs — cited per labStep. Plus the RPD design-engine (separately verified vs the Design Case answer keys in prior sessions).
+
+Visit structure cross-checks to Swade's RPD sequence: main path V1-V9 = Swade #4-10 (abutment prep → border-mold/final → framework try-in → wax try-in → delivery → 24h → 1-week), with the **survey-crown branch** = Swade #1-3 (conditional, "skip to #4 if no survey crowns"). The 24h + 1-week split **matches** Swade #9 + #10.
+
+**Status:** structure ✓; labSteps cite Swade + Kim + RPD Fall 2022; engine verified vs answer keys (prior sessions). **Not re-verified claim-by-claim against the RPD Lab PDFs this pass** (not converted — prior audits + source fields stand). No new flags.
+
+---
+
+## LEGACY — Cases-tab era source map (superseded by the Maps section above)
 
 Built iteration 1, autonomous loop. Three tables below, plus a gap analysis section identifying topics Swade covers that the Cases tab does NOT.
 

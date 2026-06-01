@@ -7647,7 +7647,7 @@ const EXAM_FINDINGS_CONFIG = {
  title: "Findings",
  rows: [
  [
- { label: "caries risk", type: "select", options: ["", "Low", "Moderate", "High"] },
+ { label: "caries risk", type: "select", options: ["", "Low", "Moderate", "High", "Extreme"] },
  { label: "endo testing", type: "input", placeholder: "blank to omit" },
  ],
  [{ label: "occlusal assessment", type: "input",
@@ -7870,7 +7870,7 @@ const EXAM_FINDINGS_CONFIG = {
  headerCheckbox: { field: "tookBitewings", label: "Took bitewings?" },
  rows: [
  [
- { label: "caries risk", type: "select", options: ["", "Low", "Moderate", "High"] },
+ { label: "caries risk", type: "select", options: ["", "Low", "Moderate", "High", "Extreme"] },
  { label: "endo testing", type: "input", placeholder: "blank to omit" },
  ],
  [{ label: "odontogram", type: "odontogram",
@@ -10555,6 +10555,12 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  const [procedureId, setProcedureId] = useState(selectedProcedureId || "");
  const [copied, setCopied] = useState(false);
  const textareaRef = useRef(null);
+ // Procedure search — autofocused on mount so the user can type a procedure
+ // immediately instead of drilling the Category → Procedure dropdowns.
+ const [search, setSearch] = useState("");
+ const [hoveredResult, setHoveredResult] = useState(null);
+ const searchRef = useRef(null);
+ useEffect(() => { searchRef.current?.focus(); }, []);
 
  // Sync local state with the App-level selection (e.g. when user navigates
  // here from Browse with a procedure already chosen). When the procedure
@@ -10784,6 +10790,41 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  setNote("");
  setUserEdited(false);
  };
+ // Search-result click: set BOTH the category and the procedure, populate the
+ // note, and clear the search box.
+ const handleSearchSelect = (p) => {
+ setCategoryId(p.categoryId);
+ setProcedureId(p.id);
+ onSelectProcedure(p.id);
+ setNote("");
+ setUserEdited(false);
+ setSearch("");
+ setHoveredResult(null);
+ };
+ const searchResults = (() => {
+ const q = search.trim().toLowerCase();
+ if (!q) return [];
+ // Relevance ranking: label prefix > label word-start > label contains >
+ // category prefix > category contains. Group labels are intentionally NOT
+ // matched — the generic "Procedures" group label contains "res" (procedu-RES),
+ // "pro", etc., which otherwise floods the list and outranks real matches.
+ const score = (p) => {
+ const label = p.label.toLowerCase();
+ const cat = p.categoryLabel.toLowerCase();
+ if (label.startsWith(q)) return 5;
+ if (label.split(/[^a-z0-9]+/).some(w => w.startsWith(q))) return 4;
+ if (label.includes(q)) return 3;
+ if (cat.startsWith(q)) return 2;
+ if (cat.includes(q)) return 1;
+ return 0;
+ };
+ return ALL_PROCEDURES
+ .map(p => ({ p, s: score(p) }))
+ .filter(x => x.s > 0)
+ .sort((a, b) => b.s - a.s)
+ .slice(0, 10)
+ .map(x => x.p);
+ })();
  const handleCopy = async () => {
  try { await navigator.clipboard.writeText(note); setCopied(true);
  setTimeout(() => setCopied(false), 1800); }
@@ -10806,6 +10847,60 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  }}>
  <section>
  <div style={cardStyle}>
+ <div style={{ position: "relative" }}>
+ <input
+ ref={searchRef}
+ type="text"
+ value={search}
+ autoFocus
+ placeholder="Search a procedure…"
+ onChange={e => { setSearch(e.target.value); setHoveredResult(null); }}
+ onKeyDown={e => {
+ if (e.key === "Escape") setSearch("");
+ if (e.key === "Enter" && searchResults[0]) handleSearchSelect(searchResults[0]);
+ }}
+ style={{
+ width: "100%", padding: "7px 10px", fontSize: "15px",
+ fontFamily: "'Geist', sans-serif", color: "var(--ink)",
+ background: "var(--paper)", border: "1px solid var(--rule)",
+ borderRadius: "2px", outline: "none", fontWeight: 500, boxSizing: "border-box",
+ }}
+ />
+ {searchResults.length > 0 && (
+ <div style={{
+ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 30,
+ marginTop: "3px", background: "var(--card)", border: "1px solid var(--rule)",
+ borderRadius: "3px", boxShadow: "rgba(26,22,18,0.16) 0px 8px 24px",
+ maxHeight: "320px", overflowY: "auto",
+ }}>
+ {searchResults.map(p => {
+ const hot = hoveredResult === p.id;
+ return (
+ <button key={p.id} type="button"
+ onClick={() => handleSearchSelect(p)}
+ onMouseEnter={() => setHoveredResult(p.id)}
+ onMouseLeave={() => setHoveredResult(h => h === p.id? null: h)}
+ style={{
+ display: "flex", justifyContent: "space-between", alignItems: "baseline",
+ width: "100%", textAlign: "left", gap: "10px", padding: "8px 12px",
+ border: "none", borderBottom: "1px solid var(--rule-soft)",
+ background: hot? "rgba(122, 26, 26, 0.06)": "transparent",
+ cursor: "pointer", transition: "background 100ms",
+ }}>
+ <span style={{ fontSize: "13px", color: "var(--ink)", fontFamily: "'Geist', sans-serif" }}>{p.label}</span>
+ <span style={{
+ fontSize: "11px", whiteSpace: "nowrap", flexShrink: 0,
+ fontFamily: "'Geist', sans-serif",
+ color: hot? "var(--accent)": "var(--ink-faint)",
+ }}>{p.categoryLabel}{p.groupLabel && p.groupLabel !== p.label? ` · ${p.groupLabel}`: ""}</span>
+ </button>
+);
+ })}
+ </div>
+)}
+ </div>
+ </div>
+ <div style={{ ...cardStyle, marginTop: "16px" }}>
  <Field label="Category">
  <Select value={categoryId || ""} onChange={handleCategoryChange} prominent>
  <option value="">— Select a category —</option>
@@ -11780,6 +11875,9 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  "Low": { code: "D0601", desc: "Caries Risk Assessment and Documentation, finding of low" },
  "Moderate": { code: "D0602", desc: "Caries Risk Assessment and Documentation, finding of moderate" },
  "High": { code: "D0603", desc: "Caries Risk Assessment and Documentation, finding of high" },
+ // "Extreme" is not a separate CDT finding — it fires the same D0603 ("finding
+ // of high") code as High, but the note still prints "Extreme" as the value.
+ "Extreme": { code: "D0603", desc: "Caries Risk Assessment and Documentation, finding of high" },
  };
  const extracted = extractCodes(stepsChunk.body);
  const withRvuDesc = (code, fallbackDesc) => {
@@ -23646,6 +23744,7 @@ const PATHWAY_DOMAINS = [
  { id: "rpd", label: "RPD" },
  { id: "crown", label: "Crown" },
  { id: "bridge", label: "Bridge" },
+ { id: "digital", label: "Digital" },
 ];
 
 const PATHWAY_GROUPS = {
@@ -23660,6 +23759,9 @@ const PATHWAY_GROUPS = {
  ],
  bridge: [
  { label: "3-unit PFM (FPD)", ids: ["bridge-pfm"] },
+ ],
+ digital: [
+ { label: "Single-unit e.max crown", ids: ["digital-emax"] },
  ],
 };
 
@@ -23986,7 +24088,7 @@ const PATHWAYS = [
  "Abutment selection IS the case: each abutment must be periodontally sound with an acceptable crown-to-root ratio (2:3 ideal, 1:1 minimum) and pass Ante's Law — the abutments' root surface area should equal or exceed the root surface of the teeth being replaced.",
  "Span length is risk: deflection rises with the cube of the span (a 2-pontic span flexes 8× a single pontic). Replacing three posterior teeth has a poor prognosis — recommend an implant or RPD instead.",
  "Both abutments are prepped to a COMMON path of insertion — near-parallel axes; taper the long axes toward each other as needed. A mesially tilted molar or an interfering third molar can make a common path impossible (upright/extract first).",
- "PFM only here — all-ceramic / zirconia bridges go through the digital (CAD/CAM) workflow, not this PVS-impression lab route. No crown lengthening at UIC: if an abutment lacks a ferrule, it's a restorability problem, not a build-up one.",
+ "PFM only here — all-ceramic / zirconia bridges go through the digital (CAD/CAM) workflow, not this PVS-impression lab route. If an abutment lacks a ferrule, that's a restorability problem — reconsider the abutment — not a build-up one.",
  "Pontic design defaults to **modified ridge lap** (all-convex, cleansable, touches only attached keratinized gingiva); ovate is most esthetic (needs tissue volume / surgical site development), sanitary for non-esthetic posterior.",
  "Provisional can be bis-acryl or acrylic (Jet Set-4); bis-acryl is preferred for the span because it is stronger.",
  "The bisque-bake try-in is optional and a lab-script choice: order the porcelain step to \"return for bisque try-in\" to verify contours first (worth it for 4+ units), or \"return glazed / ready for cementation\" to deliver straight from the framework visit.",
@@ -23996,7 +24098,7 @@ const PATHWAYS = [
  {
  label: "Core build-up (when needed)",
  count: 1,
- detail: "Only when an abutment is broken down or endo-treated. Same as the crown: it does not have to be its own visit — do it on a separate day or at the start of the prep appointment, but always before the prep. (No crown lengthening at UIC — if there's no ferrule, the tooth is a restorability problem, not a build-up one.)",
+ detail: "Only when an abutment is broken down or endo-treated. Same as the crown: it does not have to be its own visit — do it on a separate day or at the start of the prep appointment, but always before the prep. (If there's no ferrule to grab, the tooth is a restorability problem, not a build-up one.)",
  },
  {
  label: "Prep both abutments + provisional + final impression",
@@ -24066,9 +24168,69 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "brc-delivery" },
  ],
  },
+ {
+ id: "digital-emax",
+ domain: "digital",
+ category: "digital",
+ phase: "phase3",
+ label: "Digital e.max crown (single unit)",
+ branchEyebrow: "Related",
+ description: "A single all-ceramic crown made in the digital clinic: you prep for lithium disilicate (e.max), capture an intraoral scan instead of a PVS impression, then design the crown yourself in Design Studio (the lab mills it). At delivery you adjust the pre-crystallized crown, have it crystallized in-house, and bond it with Panavia (adhesive resin cement). This is the route for all-ceramic / esthetic crowns — PFM and cast crowns go through the conventional workflow.",
+ keyDecisions: [
+ "Digital / e.max is the esthetic route (most anterior crowns); PFM goes the conventional way when strength is the priority. Material is lithium disilicate (e.max CAD) — crowns use low-translucency blocks, high-translucency is for inlays/onlays.",
+ "The prep must be scan- and mill-friendly: NO undercuts (the scanner can't see them and the mill can't cut them), no feather edges, no sharp angles, 6–10° taper, very rounded and smooth.",
+ "Reduce for ceramic: 1.25–1.5 mm axial, 1.5–2.0 mm occlusal, 1.0–1.25 mm chamfer, finish line 0.5 mm supragingival (supragingival scans best; retract for a subgingival margin).",
+ "It's an intraoral scan (TRIOS), not an impression — the Integrity provisional is fabricated BEFORE scanning. After the scan, YOU design the crown in Design Studio; the lab then mills it.",
+ "The crown returns pre-crystallized (soft 'blue' block): you adjust fit + occlusion and polish, then it's crystallized in-house (Dan, ~25 min) before cementation.",
+ "It's adhesively bonded, not luted: HF-etch the intaglio + Clearfil Ceramic Primer (MDP/silane), prime the tooth, and cement with Panavia resin cement.",
+ "CDT codes (digital, phased): DD2740A (prep) / DD2740B (scan & design) / DD2740C (delivery). Build-up D2950 when needed.",
+ ],
+ phases: [
+ {
+ label: "Core build-up (when needed)",
+ count: 1,
+ detail: "Same as any crown — only when the tooth is broken down or endo-treated. It can be its own visit or the start of the prep/scan appointment.",
+ },
+ {
+ label: "Prep + intraoral scan + provisional",
+ count: 4,
+ detail: "Select the e.max shade (low translucency for crowns) → prep for all-ceramic (no undercuts, very rounded, 0.5 mm supragingival) → fabricate the Integrity provisional BEFORE scanning → pack two cords → scan with the TRIOS (opposing arch, prep arch, cord-removal re-scan, occlusion) and send to the UIC Dental Lab → cement the provisional (Gluma first). Rubber dam preferred.",
+ },
+ {
+ label: "Delivery",
+ count: 1,
+ detail: "The milled, pre-crystallized crown is back. Remove the sprue → try in and adjust (contacts first, then round the PREP's sharp spots — not the crown margins) → adjust occlusion + contour → polish → crystallize in-house (Dan, ~25 min) → re-try → bond with Panavia (HF etch + Clearfil primer) → verify + post-op.",
+ },
+ ],
+ labSteps: [
+ {
+ after: 1,
+ title: "You design (Design Studio) + the lab mills the e.max crown",
+ body: "After the scan you design the crown yourself in Design Studio; the lab then mills it from an e.max CAD block — returned pre-crystallized on its block for you to adjust at delivery.",
+ detail: "1. After the scan, **you design the crown yourself in Design Studio** — it's your step, done between the scan and delivery, not the lab's: autodetect and refine the **margin** (verify against the HD photos), set the **path of insertion** (undercuts are flagged), build the **anatomy** (copy the existing tooth or the Smile Library), then check the **minimum-thickness** map and adjust the **proximal + occlusal contacts**; read the software notifications, comply, and save the case.\n\n2. The **lab mills** the crown from a lithium-disilicate (e.max CAD) block in the **pre-crystallized 'blue' state** — soft enough to adjust — and returns it **on its milling block with the sprue still attached** (you remove the sprue and crystallize it at delivery).\n\n3. It is *not* crystallized or glazed yet — crystallization happens in-house at delivery (~25 min). A stained/characterized restoration is a lab add-on, not routine for a posterior monochromatic crown.",
+ source: "clinic (swade) — Digital Prep & Scan + Digital Delivery; Design Studio steps + Chairside Materials (UIC Digital)",
+ turnaround: "Before Visit 3 (delivery)",
+ },
+ ],
+ branches: [
+ { id: "recement", label: "Re-bond / debond", chapterId: "digc-recement" },
+ { id: "removal", label: "Crown removal / endo-access", chapterId: "digc-removal" },
+ ],
+ sections: [
+ // Visit 1 — Core build-up (when needed)
+ { guideId: "indirect", chapterId: "digc-foundation" },
+ // Visit 2 — prep + intraoral scan + provisional
+ { guideId: "indirect", chapterId: "digc-selection" },
+ { guideId: "indirect", chapterId: "digc-prep" },
+ { guideId: "indirect", chapterId: "digc-scan" },
+ { guideId: "indirect", chapterId: "digc-provisional" },
+ // Visit 3 — delivery
+ { guideId: "indirect", chapterId: "digc-delivery" },
+ ],
+ },
 ];
 
-// ─── End of PATHWAYS (cd-conventional, rpd-conventional, crown-pfm, bridge-pfm) ─────────
+// ─── End of PATHWAYS (cd-conventional, rpd-conventional, crown-pfm, bridge-pfm, digital-emax) ─────────
 
 // Phase + category labels for the pathway card header badges.
 // The IDs map to the UIC TP framework (from Tx Dx- Overview.pdf) and the

@@ -11163,7 +11163,7 @@
        },
        {
         "kind": "callout",
-        "title": "No crown lengthening at UIC",
+        "title": "When an abutment lacks a ferrule",
         "body": "If an abutment can't give a ferrule, that isn't a build-up case — it's an abutment-selection / restorability problem. Reconsider the abutment or replace the tooth another way (implant, RPD). Codes: D2950 build-up (± D2954 post) on the abutment, in addition to the bridge codes."
        }
       ]
@@ -11235,7 +11235,7 @@
         "items": [
          "Prep **both abutments toward a shared path** — taper their long axes toward each other as needed; check the draw by sighting both preps with one eye, and against the diagnostic cast / putty matrix.",
          "A mesially **tilted molar** or an interfering **third molar** can make a common path impossible — solve that orthodontically / by extraction first (see Abutment selection).",
-         "A little more taper than a single crown is acceptable to achieve the common path, but stay as parallel as you can — retention and resistance still fall up to ~50% per extra 5° of convergence."
+         "A little more taper than a single crown is acceptable to achieve the common path, but stay as parallel as you can — aim for **4–10° between the opposing axial walls**; retention and resistance still fall up to ~50% per extra 5° of convergence."
         ]
        },
        {
@@ -11245,7 +11245,7 @@
        {
         "kind": "bullets",
         "items": [
-         "**Axial** 1.25–1.5 mm; **occlusal** 1.5–2.0 mm; **finish line** deep chamfer / shoulder 1.2–1.5 mm facial (UIC: deep chamfer/shoulder all around); keep it supragingival to start.",
+         "**Axial** 1.25–1.5 mm; **occlusal** 1.5–2.0 mm; **finish line** deep chamfer / shoulder **1–1.25 mm all around** (lingual chamfer 0.8–1 mm); keep it supragingival to start.",
          "Make a **diagnostic cast + putty matrix** first (waxed up, *including the pontic site*), plus a **PVS reduction matrix** to gauge depth — same indices as the crown."
         ]
        },
@@ -11305,31 +11305,39 @@
       "blocks": [
        {
         "kind": "paragraph",
-        "text": "The provisional bridge protects both preps, holds the abutments and the space, and shapes the pontic-site tissue while the lab works. At UIC you make it from **bis-acryl (Integrity)** — preferred over acrylic for a span because it's stronger — in a putty matrix taken off a **waxed-up cast** that already has the pontic carved in."
+        "text": "The provisional bridge protects both preps, holds the abutments and the space, and develops the pontic-site tissue. Make it as **one connected unit** — provisionalizing a 3-unit FPD as two separate crowns lets the teeth shift, leaves the pontic site under-developed, and gives no trial of the final form. At UIC the material is **bis-acryl (Integrity)**, preferred over acrylic for a span because it's stronger (also low-shrinkage, low-exotherm, easy to mix and polish; the trade-off is it's brittle and less forgiving of under-reduction or undercuts)."
        },
        {
         "kind": "section",
-        "text": "Fabricate"
+        "text": "Fabricate (direct technique, bis-acryl)"
        },
        {
         "kind": "numbered",
         "items": [
-         "**Before the patient:** wax up the diagnostic cast — restore the abutments and **carve the pontic** to a modified ridge-lap shape — then take the **putty matrix** off that wax-up, so the provisional comes out with a proper pontic.",
-         "Load the putty with **Integrity** (bis-acryl; acrylic / Jet-Set-4 is the alternative), seat within ~45 s, let it reach the firm-elastic stage, tease it off, reseat to MI.",
-         "Repair voids with flowable composite; **trim + shape out of the mouth** — open the embrasures, convex proximal contacts, and a **convex, cleansable pontic** tissue surface that lightly contacts the ridge; then polish."
+         "**Shade first.** Then take the **putty matrix on the *un*-prepared teeth** — if the pontic tooth is already missing, wax it up first so the matrix carries a pontic.",
+         "Lightly **Vaseline** the preps + tissue and place a **retraction cord** to see the subgingival margins. Load the bis-acryl cartridge, **bleed a pea-size** of base + catalyst, then seat the mixing tip.",
+         "**Inject into the matrix** — deepest part first, then the gingival areas, tip kept immersed to avoid bubbles — and **seat on the preps within 45 s**, holding firmly.",
+         "**Leave it ~2–3 min** from the start of the mix, then remove at the **firm-elastic** stage: tease it off with gauze or an explorer (not pliers — they distort/scratch it). Bulk-trim the gross excess, then **fine-trim and contour at ~6–7 min**.",
+         "**Shape:** open the gingival embrasures to a correct emergence profile, keep the proximal contacts convex *without* touching the contact area, and form a **modified ridge-lap pontic** (touches only the buccal, slopes up toward the lingual, convex mesiodistally — no concavities). Remove the tacky air-inhibited layer with alcohol gauze.",
+         "**Repair/reline** any margin gap with flowable composite (roughen, re-Vaseline the prep, reseat, apply flowable, feather past the margin, light-cure ~20 s in + 20–40 s out), then polish (FlexiDiscs + OneGloss/Shofu points, or rag wheel + pumice)."
         ]
        },
        {
         "kind": "section",
-        "text": "Cement"
+        "text": "Occlusion + cement"
        },
        {
         "kind": "numbered",
         "items": [
-         "**Gluma** the preps first (except RCT abutments), clean + dry, vaseline the outside of the provisional.",
-         "Load TempBond / UltraTemp, seat, clear the excess when half-set, floss through every embrasure (holding it); confirm it seats fully on **both** abutments with **no rocking**; adjust contacts + occlusion.",
-         "It has to come off in one piece at the impression visit — seat it well but don't lock it onto the preps."
+         "**Check occlusion against the unprepped teeth:** first mark where the *unprepared* teeth touch in MI (Shimstock 8 µm / Accufilm) as your reference, then re-check with the provisional seated — those reference teeth must still contact in MI, or the provisional is high and needs adjusting.",
+         "**Gluma** the preps first (except RCT abutments), clean + dry, Vaseline the outside. Load TempBond / UltraTemp, seat, clear the excess when half-set, floss every embrasure (holding it), and confirm it seats on **both** abutments with **no rocking**.",
+         "It has to come off in one piece at the impression visit — seat it well, but don't lock it on."
         ]
+       },
+       {
+        "kind": "callout",
+        "title": "Bis-acryl vs acrylic",
+        "body": "Bis-acryl (Integrity) is the preference for a span — stronger, low-shrinkage, easy to handle, dispensed from a cartridge gun. The alternative is **acrylic (Jet Set-4)**, mixed powder-and-liquid through **soupy → doughy → rubbery → set** stages; it's cheaper and easier to repair but weaker, which is why bis-acryl wins for a bridge."
        }
       ]
      },
@@ -11515,6 +11523,232 @@
          "**Cut the connectors first** to separate the units, then section and remove each retainer like a single crown — cut buccal and occlusal to tooth structure, seat the spreader in the cut, and rotate.",
          "If you only need **endo access** on an otherwise sound abutment, access **through the retainer** and restore the access afterward — don't take the whole bridge off.",
          "Take a radiograph, then continue (excavate, build-up, re-prep, or treatment-plan a replacement)."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "digc-foundation",
+      "title": "Core build-up (when needed)",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "When the tooth is broken down or endo-treated it needs a core build-up before the digital prep — the same build-up as any crown. It can be its own visit or the start of the prep/scan appointment."
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Build up with composite or Bisco Blue/White in a contrasting shade so you can tell core from tooth at the prep; ± a post on an endo-treated tooth with too little coronal structure (preserve at least 4 mm of apical gutta-percha).",
+         "Preserve a **ferrule** — a ferrule-less tooth is a restorability problem (reconsider the tooth), not a build-up one.",
+         "Code D2950 (± D2954 post), in addition to the crown codes."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "digc-selection",
+      "title": "Case selection + e.max material",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Digital e.max is the **esthetic** route — most anterior crowns and any case where you want a tooth-colored, metal-free restoration. PFM stays the conventional choice when strength is the priority. The material is **lithium disilicate (e.max CAD)**, milled from a block and bonded to the tooth."
+       },
+       {
+        "kind": "section",
+        "text": "When to go digital / e.max"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Indicated when esthetics drive the case, when contours are hard to control with a direct restoration, or for any prep that allows **1.2–1.5 mm** of material; maxillary anterior crowns (the blocks are monochromatic).",
+         "Subgingival margins are workable — the scanner reaches ~17 mm depth as long as you can retract the tissue.",
+         "**Contraindications:** surveyed crowns, rest seats, or anywhere you can't control moisture."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Material + shade"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**e.max CAD** (lithium disilicate) is milled in a **pre-crystallized 'blue' block** and crystallized later to full strength and final shade. **Crowns use low-translucency** blocks; high-translucency is for inlays/onlays.",
+         "Select the shade from the digital e.max shade guide (with the assistant in the Chicago office) in overhead, ambient, and natural light."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "digc-prep",
+      "title": "All-ceramic (e.max) crown prep",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "An e.max crown prep is reduction-similar to a PFM, but one rule overrides everything: it must be **scannable and millable**. No undercuts, no feather edges, no sharp angles — anything the scanner's light can't reach or the mill can't cut will wreck the crown."
+       },
+       {
+        "kind": "section",
+        "text": "Reductions"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Axial** 1.25–1.5 mm · **occlusal** 1.5–2.0 mm · **chamfer** 1.0–1.25 mm · **finish line 0.5 mm supragingival** (supragingival captures best on the scan — retract for a subgingival margin).",
+         "**Taper 6–10°** per wall; **very rounded and smooth** — round every line angle.",
+         "~1 mm of ceramic + cement space + a little for over-milling of uneven surfaces = the 1.2–1.5 mm reduction. (Material minimums: zirconia 0.5 mm, lithium disilicate 1 mm, PFM 1.5 mm.)"
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Why digital is particular about shape"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**No undercuts** — the scanner can't see them and the mill can't cut them; a gross undercut means the crown can't be fabricated (and undercuts can't be blocked out the way they are for an impression).",
+         "**No feather-edge margins** — milling burs can't form them and they're hard to capture; use a rounded shoulder / chamfer.",
+         "**No sharp angles** — they get over-milled, leaving the ceramic too thin."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Before you start"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Make **two putties** off the diagnostic cast — one for the provisional, one as a reduction guide.",
+         "Record the pre-op occlusion (tooth + two neighbors) before anesthetic; a quick sketch helps you compare after. Rubber dam isolation is preferred (Isodry in some situations)."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "digc-scan",
+      "title": "Intraoral scan (TRIOS)",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Instead of a PVS impression you capture an **intraoral scan** with the TRIOS. The provisional is made *first* (before scanning); then you scan the prep, the opposing arch, and the bite, and send the case straight to the UIC Dental Lab."
+       },
+       {
+        "kind": "section",
+        "text": "Set up + capture"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Fabricate the Integrity provisional before scanning** (set it aside — you cement it after the scan), then **pack two cords**: a smaller bottom cord under the margin (no tail) and a larger top cord above (at least size 1, ideally size 2; half in the sulcus, leave a tail).",
+         "Open **TRIOS**, pick the patient (or New Patient), select **UIC Dental Lab**, select the tooth, set restoration = crown, material = **e.max CAD**, and the shade; pick any delivery date; Next.",
+         "**Scan the opposing arch first** (maxillary: occlusal → buccal → lingual; mandibular: occlusal → lingual → buccal), staying under ~1000 images (2000 absolute max — erase + re-scan if over).",
+         "**Scan the prep arch.** Then the cord trick: **Lock** everything except the prep, **Trim** to erase the prep, remove the **top** cord intraorally, and **immediately re-scan the prep** — the scanner fills in the finish line the cord was hiding.",
+         "Turn off colors to check the margin; confirm you captured the **interproximal contacts and enough occlusal clearance**; **mark the tooth**; then **scan the occlusion** (the software auto-occludes).",
+         "Instructor checks the scans → **Next → Send** to the UIC Dental Lab."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Then"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Cement the provisional** — Gluma the prep first (except RCT), seat, clear excess, and **remove the cords**. Codes: DD2740A (prep) + DD2740B (scan & design)."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "digc-provisional",
+      "title": "Provisional (Integrity)",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Same as the PFM crown's provisional — **Integrity (bis-acryl)** formed in the putty matrix off the diagnostic cast, made **before** the scan and cemented **after**. Gluma the prep first (except RCT teeth), seat with TempBond / UltraTemp, clear the excess, and remove the retraction cords. It just has to protect the prep and hold the space until delivery — and come off cleanly then."
+       }
+      ]
+     },
+     {
+      "id": "digc-delivery",
+      "title": "Digital crown delivery (crystallize + Panavia bond)",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "The crown comes back **milled but pre-crystallized** — soft, on its block, sprue attached. You adjust it in that soft state, crystallize it in-house, then **bond** it with Panavia. The digital tell at try-in: if it won't seat, adjust the **prep**, not the crown margins."
+       },
+       {
+        "kind": "section",
+        "text": "Adjust the pre-crystallized crown"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "Pick up the restoration and cavicide it. **Remove the sprue** — hold the *restoration*, not the block (so it doesn't fly off) — segment-cut with the diamond disk, then smooth with the pink/red disc; don't damage the restoration.",
+         "Place **Isodry** (keeps it dry and catches the crown — aspiration risk). Remove the provisional (fingers → hemostat → sickle at the margins) and clean the tooth with pumice (fluoride-free).",
+         "**Try in:** floss the contacts (hold the crown), explorer the margins. If it won't seat → adjust the **interproximal contacts first**; then mark the intaglio (articulating paper / Fit-Checker) and **round the sharp spots on the PREP** — not the crown margins.",
+         "**Bitewing** (PA for anterior) to confirm seating + closed margins. Adjust occlusion extraorally (centric + excursive, ceramic burs), adjust contours, then **polish with the e.max polishing burs** in sequence — all *before* crystallizing."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Crystallize, then bond"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "**Crystallize:** remove all paper marks, soak in Cavicide 1 min, rinse, into water, and **take it to Dan for crystallization (~25 min)**. Re-try the crystallized crown (re-confirm contacts, margins, occlusion).",
+         "**Prep the crown:** air-dry → **Ivoclean 20 s** (cleans off the try-in saliva) → rinse + dry → **IPS Ceramic Etching Gel (5% HF) 20 s** (etches the glass for micromechanical retention) → rinse + dry → **Clearfil Ceramic Primer (MDP + silane) 60 s, no rinse**, dry.",
+         "**Prep the tooth:** isolate, pumice (fluoride-free) + Consepsis, then **mix Panavia A + B Primer, apply 30 s, no rinse**, dry.",
+         "**Cement:** mix **Panavia Paste A + B**, apply to the intaglio, seat, remove excess, **light-cure 20 s per surface.**"
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Verify + finish"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Verify margins, interproximal contacts (floss), and occlusion — centric + excursive — and re-polish anything you adjust.",
+         "Post-op: no sticky foods for 24 h; call if the bite feels high or there's pain.",
+         "**Code DD2740C** (digital crown — delivery), with DD2740A (prep) + DD2740B (scan & design) from Visit 2."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "digc-recement",
+      "title": "Re-bond / debond",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "An e.max crown that comes off gets a clean re-bond — but because it's adhesively cemented, a debond often means the bonding surface was contaminated or the prep lacks retention, so check before you re-bond."
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Three-way check:** crown intact? prep intact (no recurrent caries, adequate retention/ferrule)? can both bonding surfaces be cleaned? Any \"no\" → remake.",
+         "Re-prepare the bonding surfaces the same way (Ivoclean / re-etch + Clearfil primer on the crown; pumice + primer on the tooth) and **re-bond with Panavia** — adhesive cementation, not a quick lute.",
+         "Code **D2920** (re-cement / re-bond a crown). Document that a re-bond may not last if retention is marginal."
+        ]
+       }
+      ]
+     },
+     {
+      "id": "digc-removal",
+      "title": "Crown removal / endo-access",
+      "blocks": [
+       {
+        "kind": "paragraph",
+        "text": "Getting through or off a bonded e.max crown — for endo access or a failed crown."
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Ask **sterilization** for the **crown-removing burs** and the **crown remover / spreader**; protect the airway with **Isodry** (ceramic fragments aspirate).",
+         "For **endo access** through a sound, well-bonded e.max crown, cut the access with diamond (ceramic) burs, find the orifices, and restore the access over them after obturation — keep the crown if the margins are sound.",
+         "To **remove** a failed crown, section it buccally and occlusally to tooth structure with crown-removing burs and lift it off — the bonded interface makes it more tenacious than a luted crown.",
+         "Radiograph, then continue (excavate, build-up, re-prep / re-scan, or plan a replacement)."
         ]
        }
       ]
