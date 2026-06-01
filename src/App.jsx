@@ -10818,7 +10818,13 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  if (cat.includes(q)) return 1;
  return 0;
  };
+ // Only surface procedures that actually populate a note. Reference /
+ // workflow items (e.g. "How to Submit a Lab Script", lab turn-around,
+ // the ref-* lookups) live in REF_DATA, not TEMPLATES — selecting one
+ // would yield an empty note. The Category/Procedure dropdowns filter on
+ // the same predicate (TEMPLATES[p.id]); the search must match.
  return ALL_PROCEDURES
+ .filter(p => TEMPLATES[p.id])
  .map(p => ({ p, s: score(p) }))
  .filter(x => x.s > 0)
  .sort((a, b) => b.s - a.s)
