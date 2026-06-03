@@ -118,6 +118,34 @@ const TEMPLATES = {
  "lab-rpd": "Please fabricate [mandibular / maxillary] RPD framework using Vitallium alloy.\nMajor connector: [lingual bar / palatal plate].\nRest seats: [Rest seats].\nGuide planes: [Guide planes].\nClasps:\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut #[Abutment 1]\n- 18 gauge wrought wire reciprocal arm on lingual of #[Abutment 1]\n- 18 gauge wrought wire circumferential clasp engaging 0.02 MB undercut #[Abutment 2]\n- 18 gauge wrought wire reciprocal arm on lingual of #[Abutment 2]\nTissue stops marked on cast.\nRetentive loops on areas: [Retentive loop areas].\nReturn framework for try-in.\nThank you.",
  "lab-survey-crown": "Please fabricate PFM survey crown(s) for [Survey crown teeth] to be fitted with [mandibular / maxillary] RPD framework. Metal: high-noble alloy. Shade [A2].\n\nCrown design — integrate the following surveyed features (working cast tripoded; tripod marks and path of insertion marked in red):\n\n- Metal occlusal thickness: 0.5-1.0 mm at the rest seat area (total tooth reduction 2.5-3.0 mm there; 1.5 mm elsewhere)\n- Rest seat: [mesial / distal / cingulum] — 1.5 mm deep × 2.5 mm wide, floor angled toward the long axis of the tooth (positive seat)\n- Guide plane: [mesial / distal] proximal surface flat and parallel to the RPD path of insertion (per tripod marks on the enclosed working cast)\n- Undercut: [0.01\" cast clasp / 0.02\" wrought wire] at [mid-buccal / MB / DB / ML / DL], in the gingival 1/3 (clasp tip engages the infrabulge area from the opposite direction the rest sits)\n- HOC: at the junction of the middle 1/3 and the gingival 1/3 of the [buccal / lingual] surface (clasp origin sits in the suprabulge area; clasp tip engages the infrabulge below this line)\n\nPlease send the full-contour wax-up back BEFORE final firing for surveyor verification. Once approved, complete the porcelain application and return for cementation.\n\nEnclosed: final impression, opposing impression, bite registration in MI, tripoded diagnostic cast (as reference for path of insertion).\n\nThank you.",
  "lab-ii-rpd": "Please fabricate [mandibular / maxillary] interim immediate acrylic removable partial denture. Use existing teeth [Reference teeth] as a reference for occlusal plane. [Teeth to extract] will be extracted. Please set posterior teeth over the residual ridge and do not increase VDO. Please place wrought wire clasps on [Clasp teeth]. Please use Trubyte Classic posterior tooth mold [Posterior tooth mold], tooth shade [Trubyte shade]. Please use acrylic shade: 50% OR (original) + 50% DK (dark). Please set teeth, festoon, process & polish, and return for delivery.\nThank you.",
+
+ // === UG Oral Surgery note templates =====================================
+ // Verbatim UIC wording; the doc's @ / ( ) fill-ins are expressed as
+ // [bracket] placeholders so each renders a typed input in the form.
+ "os-fu": "[interval] f/u s/p [procedure]\nNo complaints\nPain managed well\nNo alterations in sensation or taste\nTaking medications as directed\n\nExam:\nNo facial findings\nWound is well approximated\nNo swellings, no discharge, minimal erythema\n\nA/P: Progressing well\n-cont. home care",
+ "os-ext-soap": "S:\nID/HPI/CC: [ID/HPI/CC]\nPMH: [PMH]\nMeds: [medications]\nAllergies: [allergies]\nPregnancy: [pregnancy status]\nSocial History: [social history]\n\nO:\nVitals: BP [BP] P [pulse]\nIntraoral exam: [intraoral exam]\nRadiographic findings: [radiographic findings]\n\nAssessment: [assessment]\n\nProcedure: Extraction tooth #[tooth]\nRisks, benefits, and alternative treatment discussed w/ patient.\nInformed consent obtained.\nAnesthesia: lidocaine 2% 1:100k epi [carpules] cartridges\nOpNote: Bite block and throat screen placed, elevation and forceps extraction\nSmoothed bone, irrigation with NS, hemostasis, no complications noted\nGauze, oral/written post-op instructions given\nPost-op Vitals: BP [post-op BP] P [post-op pulse]\nPrescriptions: [prescriptions]\n\n[provider names]",
+ "os-ext-brief": "Dx: nonrestorable, dental caries, periodontal disease  Tooth #[tooth]\nProcedure: Simple extraction\nReviewed/updated medical history\nRisks, benefits, and alternative treatment discussed w/ pt.,\nInformed consent obtained, time out performed\n\nAnesthesia: lidocaine 2% 1:100k epi [carpules] carpules\nOpNote: Bite block and throat screen placed, elevation and forcep ext.\nsmooth, hemostasis, no complications noted\nGauze, oral/written post-op instructions given\nSee notes for prescriptions",
+ "os-surg-soap": "S:\nID/HPI/CC: [ID/HPI/CC]\nPMH: [PMH]\nMeds: [medications]\nAllergies: [allergies]\nPregnancy: [pregnancy status]\nSocial History: [social history]\n\nO:\nVitals: BP [BP] P [pulse]\nIntraoral exam: [intraoral exam]\nRadiographic findings: [radiographic findings]\n\nAssessment: [assessment]\n\nProcedure: Surgical extraction tooth #[tooth]\nRisks, benefits, and alternative treatment discussed w/ patient.\nInformed consent obtained.\nAnesthesia: lidocaine 2% 1:100k epi [carpules] cartridges\nOpNote: Bite block and throat screen placed, buccal envelope flap incised\nBuccal trough, split tooth, elevation and forceps ext.\nSmoothed bone, Irrigation with NS, closed w/ interrupted sutures (CG), hemostasis, no complications noted.\nPost-op Vitals: BP [post-op BP] P [post-op pulse]\nPrescriptions: [prescriptions]\n\n[provider names]",
+ "os-root-tip": "Dx: retained root; Site #[site]\nProcedure: surgical retained root\nReviewed/updated medical history\nRisks, benefits, and alternative treatment discussed w/ pt.\nInformed consent obtained, time out performed\n\nAnesthesia: lidocaine 2% 1:100k epi [carpules] carpules\nOpNote: Bite block and throat screen placed, developed flap to visualize root.\nTroughed root, elevation and forcep ext., irrigation, smoothed bone\nHemostasis, closed w/ interrupted sutures (CG)\nNo complications noted\nGauze, oral/written post-op instructions given\nSee notes for prescriptions",
+
+ // === ICC (Interprofessional Community Clinic) note templates ============
+ // UIC stock wording; fully [bracket]-driven so every student-edited blank
+ // is a typed input (dropdowns for "[A OR B]" choices, text otherwise).
+ "icc-coe": "- y/o female presents with [who is present with patient] to UG ICC clinic for COE.\nCC: \nRMH with [who is present with patient].\nMedical conditions/syndromes:\n[medical conditions/syndromes]\nPCP/Medical Provider Contact: [PCP/medical provider contact]\nMobility/Physical considerations: [Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company]\nLotus room needed: [YES OR NO]\nAllergies: [allergies]\nMedications: [medications]\nBlood pressure and pulse: [BP]; [pulse]\nBlood glucose: [blood glucose]\nASA Classification: [ASA I OR ASA II OR ASA III OR ASA IV]\nLast visit at dentist: [last dental visit]\nOral hygiene routine: [Brush # x/day] [Pt brushes on their own OR Pt has teeth brushed by caregiver with a manual/electric toothbrush OR Pt has teeth wiped with gauze/swab] [never OR Floss used 1x/day OR Floss used 2x/day]\nDietary considerations: [dietary considerations]\nCompleted extraoral exam & intraoral exam:\nEO: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\nTMJ: WNL - no deviation, no crepitus, no locking\nIO: WNL - no soft tissue pathology\nOral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\nTook [4 bitewings OR a panoramic radiograph OR a full-mouth series OR no radiographs] & updated odontogram with radiographic & clinical periodontal & hard tissue findings.\nPeriodontal assessment/general condition: [periodontal assessment]\nOral hygiene status: [good OR fair OR poor]\nOcclusal considerations: [occlusal considerations]\nEndodontic findings: [endodontic findings]\nSoft tissue conditions: [soft tissue conditions]\nHard tissue conditions: [hard tissue conditions]\nCaries risk: [caries risk]\n\nTreatment planned with the following priority:\n[treatment priorities]\nFindings & treatment options, advantages & disadvantages, reviewed with [who is present with patient]. Treatment plan formulated & discussed; all questions were answered. [who is present with patient] signed treatment plan.\nPapoose used: [no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization]\nMouth prop: [no mouth prop OR Used soft mouth prop OR Used Molt mouth prop]\nPreventive goals established with [who is present with patient]: [preventive goals]\nSocial worker consult: [social worker consult]\nDietary consult: [dietary consult]\nBehavior: [F1 OR F2 OR F3 OR F4] - [describe behavior during appointment]\nDesensitization plan: [desensitization plan]\nNotable observations from caregiver/parent: [notable observations]\nNV: [next visit]\n[names]",
+ "icc-poe": "- y/o female presents with [who is present with patient] to UG ICC clinic for POE.\nCC: \nRMH with [who is present with patient].\nMedical conditions/syndromes:\n[medical conditions/syndromes]\nMobility/Physical considerations: [Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company]\nLotus room needed: [YES OR NO]\nAllergies: [allergies]\nMedications: [medications]\nBlood pressure and pulse: [BP]; [pulse]\nBlood glucose: [blood glucose]\nASA Classification: [ASA I OR ASA II OR ASA III OR ASA IV]\nLast visit at dentist: [last dental visit]\nOral hygiene routine: [Brush # x/day] [Pt brushes on their own OR Pt has teeth brushed by caregiver with a manual/electric toothbrush OR Pt has teeth wiped with gauze/swab] [never OR Floss used 1x/day OR Floss used 2x/day]\nDietary considerations: [dietary considerations]\nCompleted extraoral exam & intraoral exam:\nEO: WNL - no soft tissue pathology, no swelling, no asymmetry, no lymphadenopathy\nTMJ: WNL - no deviation, no crepitus, no locking\nIO: WNL - no soft tissue pathology\nOral cancer screening: WNL - negative for lips, buccal mucosa, dorsal/lateral/ventral tongue, floor of mouth, palate, oropharynx\nTook [4 bitewings OR a panoramic radiograph OR a full-mouth series OR no radiographs] & updated odontogram with radiographic & clinical periodontal & hard tissue findings.\nPeriodontal assessment/general condition: [periodontal assessment]\nOral hygiene status: [good OR fair OR poor]\nSoft tissue conditions: [soft tissue conditions]\nHard tissue conditions: [hard tissue conditions]\nCaries risk: [caries risk]\nPapoose used: [no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization]\nMouth prop: [no mouth prop OR Used soft mouth prop OR Used Molt mouth prop]\nTreatment planned with the following priority:\n[treatment priorities]\nThoroughly reviewed all treatment options, costs, & timelines with [who is present with patient]. Discussed advantages & disadvantages of treatments. Answered [who is present with patient] questions. [who is present with patient] understood treatment options. Obtained verbal and written consent from [who is present with patient] for tx plan.\nPreventive goals established with [who is present with patient]: [preventive goals]\nSocial worker consult: [social worker consult]\nDietary consult: [dietary consult]\nBehavior: [F1 OR F2 OR F3 OR F4] - [describe behavior during appointment]\nNV: [next visit]\n[names]",
+ "icc-screening": "- y/o female presents with [who is present with patient] to UG ICC clinic for screening appointment.\nCC: \nReviewed medical history with [who is present with patient].\nRelevant health conditions/treatment considerations:\n[relevant health conditions]\nPCP/Medical Provider Contact: [PCP/medical provider contact]\nMobility/Physical considerations: [Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company]\nLotus room needed: [YES OR NO]\nAllergies: [allergies]\nMedications: [medications]\nBlood pressure and pulse: [BP]; [pulse]\nASA Classification: [ASA I OR ASA II OR ASA III OR ASA IV]\nLast visit at dentist: [last dental visit]\nOral hygiene routine: [Brush # x/day] [Pt brushes on their own OR Pt has teeth brushed by caregiver with a manual/electric toothbrush OR Pt has teeth wiped with gauze/swab] [never OR Floss used 1x/day OR Floss used 2x/day]\nPerformed oral inspection. General findings:\n[general findings]\nPapoose used: [no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization]\nMouth prop: [no mouth prop OR Used soft mouth prop OR Used Molt mouth prop]\nExplained college policies, including attendance, transportation, & financial policy to [who is present with patient].\nSocial worker consult: [social worker consult]\nDietary consult: [dietary consult]\nBehavior: [F1 OR F2 OR F3 OR F4] - [describe behavior during appointment]\nDesensitization plan: [desensitization plan]\nNotable observations from caregiver/parent: [notable observations]\nPatient is provisionally accepted to UG ICC clinic. OR Patient is referred to [referral location] for suitable level of care.\nTx planned: [treatment planned]\nNV: [next visit]\n[names]",
+ "icc-virtual": "Spoke with [who is present with patient] throughout virtual call appointment via Health ViewX (Referral +) at UG ICC clinic.\nTime of call: [time of call]\nCC: \nReviewed medical history with [who is present with patient].\nRelevant health conditions/treatment considerations:\n[relevant health conditions]\nPCP/Medical Provider Contact: [PCP/medical provider contact]\nMobility/Physical considerations: [Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company]\nLotus room needed: [YES OR NO]\nAllergies: [allergies]\nMedications: [medications]\nASA Classification: [ASA I OR ASA II OR ASA III OR ASA IV]\nLast visit at dentist: [last dental visit]\nOral hygiene routine: [Brush # x/day] [Pt brushes on their own OR Pt has teeth brushed by caregiver with a manual/electric toothbrush OR Pt has teeth wiped with gauze/swab] [never OR Floss used 1x/day OR Floss used 2x/day]\nExplained college policies, including attendance, transportation, & financial policy to [who is present with patient].\nNotable observations from caregiver/parent: [notable observations]\nPatient is provisionally accepted to UG ICC clinic. OR Patient's treatment is deferred due to [reason for deferral].\nNV: In person [next visit]\n[student name] / [faculty name]\nDuration of call: [duration of call]",
+ "icc-urgent": "- y/o female presents with [who is present with patient] to UG ICC clinic for [urgent care OR limited exam] appointment.\nCC: \nReviewed medical history with [who is present with patient].\nRelevant health conditions/treatment considerations:\n[relevant health conditions]\nPCP/Medical Provider Contact: [PCP/medical provider contact]\nMobility/Physical considerations: [Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company]\nLotus room needed: [YES OR NO]\nAllergies: [allergies]\nMedications: [medications]\nBlood pressure and pulse: [BP]; [pulse]\nASA Classification: [ASA I OR ASA II OR ASA III OR ASA IV]\nLast visit at dentist: [last dental visit]\nPerformed oral inspection. General findings:\n[general findings]\n[describe treatment completed today to address the chief complaint]\nPapoose used: [no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization]\nMouth prop: [no mouth prop OR Used soft mouth prop OR Used Molt mouth prop]\nBehavior: [F1 OR F2 OR F3 OR F4] - [describe behavior during appointment]\nTx planned: [treatment planned]\nNV: [next visit]\n[names]",
+ "icc-prophy": "- y/o female presents with [who is present with patient] to UG ICC clinic for prophylaxis.\nCC: \nRMH with [who is present with patient].\nMedical conditions/syndromes:\n[medical conditions/syndromes]\nMobility/Physical considerations: [Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company]\nLotus room needed: [YES OR NO]\nAllergies: [allergies]\nMedications: [medications]\nBlood pressure and pulse: [BP]; [pulse]\nBlood glucose: [blood glucose]\nASA Classification: [ASA I OR ASA II OR ASA III OR ASA IV]\nLast visit at dentist: [last dental visit]\nOral hygiene routine: [Brush # x/day] [Pt brushes on their own OR Pt has teeth brushed by caregiver with a manual/electric toothbrush OR Pt has teeth wiped with gauze/swab] [never OR Floss used 1x/day OR Floss used 2x/day]\nDietary considerations: [dietary considerations]\nPeriodontal assessment/general condition: [periodontal assessment]\nOral hygiene status: [good OR fair OR poor]\n\nProphylaxis:\nRemoved plaque & calculus using Cavitron (with an assistant providing HVE suction) & hand instruments. Flossed.\nPolished with prophy paste. Fluoride varnish applied and reviewed post-op instructions.\nPapoose used: [no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization]\nMouth prop: [no mouth prop OR Used soft mouth prop OR Used Molt mouth prop]\nOHI: [OHI recommendations]\nNutritional counseling completed. Advised to [nutritional counseling recommendations].\n\nPreventive goals established with [who is present with patient]: [preventive goals]\nSocial worker consult: [social worker consult]\nDietary consult: [dietary consult]\nBehavior: [F1 OR F2 OR F3 OR F4] - [describe behavior during appointment]\nNV: [next visit]\n[names]",
+ "icc-debridement": "- y/o female presents with [who is present with patient] to UG ICC clinic for Full Mouth Debridement.\nCC: \nRMH with [who is present with patient].\nMedical conditions/syndromes:\n[medical conditions/syndromes]\nMobility/Physical considerations: [Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company]\nLotus room needed: [YES OR NO]\nAllergies: [allergies]\nMedications: [medications]\nBlood pressure and pulse: [BP]; [pulse]\nBlood glucose: [blood glucose]\nASA Classification: [ASA I OR ASA II OR ASA III OR ASA IV]\nLast visit at dentist: [last dental visit]\nOral hygiene routine: [Brush # x/day] [Pt brushes on their own OR Pt has teeth brushed by caregiver with a manual/electric toothbrush OR Pt has teeth wiped with gauze/swab] [never OR Floss used 1x/day OR Floss used 2x/day]\nDietary considerations: [dietary considerations]\nFull Mouth Debridement:\nCompleted full mouth debridement using Cavitron (with an assistant providing HVE suction) & hand instruments to remove supragingival plaque & calculus. Flossed.\nGave [who is present with patient] post-op instructions re: sore gums, tooth sensitivity, bleeding, ibuprofen/acetaminophen regimen.\nPapoose used: [no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization]\nMouth prop: [no mouth prop OR Used soft mouth prop OR Used Molt mouth prop]\nOHI: [OHI recommendations]\nPreventive goals established with [who is present with patient]: [preventive goals]\nSocial worker consult: [social worker consult]\nDietary consult: [dietary consult]\nBehavior: [F1 OR F2 OR F3 OR F4] - [describe behavior during appointment]\nNV: [next visit]\n[names]",
+ "icc-perio-maint": "- y/o female presents with [who is present with patient] to UG ICC clinic for [3M OR 4M] periodontal maintenance.\nCC: \nRMH with [who is present with patient].\nMedical conditions/syndromes:\n[medical conditions/syndromes]\nMobility/Physical considerations: [Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company]\nLotus room needed: [YES OR NO]\nAllergies: [allergies]\nMedications: [medications]\nBlood pressure and pulse: [BP]; [pulse]\nBlood glucose: [blood glucose]\nASA Classification: [ASA I OR ASA II OR ASA III OR ASA IV]\nLast visit at dentist: [last dental visit]\nOral hygiene routine: [Brush # x/day] [Pt brushes on their own OR Pt has teeth brushed by caregiver with a manual/electric toothbrush OR Pt has teeth wiped with gauze/swab] [never OR Floss used 1x/day OR Floss used 2x/day]\nDietary considerations: [dietary considerations]\nPeriodontal assessment/general condition: [periodontal assessment]\nPeriodontal pockets to monitor: [pockets to monitor]\nOral hygiene status: [good OR fair OR poor]\n\nPeriodontal maintenance:\nRemoved plaque & calculus using Cavitron (with an assistant providing HVE suction) & hand instruments. [Note pockets subgingivally scaled and areas needing follow-up]. Flossed.\nPolished with prophy paste. Fluoride varnish applied and reviewed post-op instructions.\nPapoose used: [no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization]\nMouth prop: [no mouth prop OR Used soft mouth prop OR Used Molt mouth prop]\nOHI: [OHI recommendations]\nNutritional counseling completed. Advised to [nutritional counseling recommendations].\n\nPreventive goals established with [who is present with patient]: [preventive goals]\nSocial worker consult: [social worker consult]\nDietary consult: [dietary consult]\nBehavior: [F1 OR F2 OR F3 OR F4] - [describe behavior during appointment]\nNV: [next visit]\n[names]",
+ "icc-perio-reeval": "- y/o female presents with [who is present with patient] to UG ICC clinic for periodontal re-evaluation after [quadrants] completed on [SRP completion date].\nCC: \nRMH with [who is present with patient].\nMedical conditions/syndromes:\n[medical conditions/syndromes]\nMobility/Physical considerations: [Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company]\nLotus room needed: [YES OR NO]\nAllergies: [allergies]\nMedications: [medications]\nBlood pressure and pulse: [BP]; [pulse]\nBlood glucose: [blood glucose]\nASA Classification: [ASA I OR ASA II OR ASA III OR ASA IV]\nLast visit at dentist: [last dental visit]\nOral hygiene routine: [Brush # x/day] [Pt brushes on their own OR Pt has teeth brushed by caregiver with a manual/electric toothbrush OR Pt has teeth wiped with gauze/swab] [never OR Floss used 1x/day OR Floss used 2x/day]\nDietary considerations: [dietary considerations]\nUpdated perio EPR & perio chart:\n- probing depths: [probing depths]\n- bleeding on probing: [bleeding on probing]\n- recession: [recession]\n- furcation: [furcation]\n- mobility: [tooth mobility]\n- O'Leary plaque index: [O'Leary plaque index]\n- mucogingival defects: [mucogingival defects]\n- [gingival color], [gingival contour], [gingival consistency] gingiva\n[Describe periodontal health post-SRP and next steps in treatment recommendations].\nPapoose used: [no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization]\nMouth prop: [no mouth prop OR Used soft mouth prop OR Used Molt mouth prop]\nOHI: [OHI recommendations]\nPreventive goals established with [who is present with patient]: [preventive goals]\nSocial worker consult: [social worker consult]\nDietary consult: [dietary consult]\nBehavior: [F1 OR F2 OR F3 OR F4] - [describe behavior during appointment]\nNV: [next visit]\n[names]",
+ "icc-srp": "- y/o female presents with [who is present with patient] to UG ICC clinic for SRP on [quadrants].\nCC: \nRMH with [who is present with patient].\nMedical conditions/syndromes:\n[medical conditions/syndromes]\nMobility/Physical considerations: [Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company]\nLotus room needed: [YES OR NO]\nAllergies: [allergies]\nMedications: [medications]\nBlood pressure and pulse: [BP]; [pulse]\nBlood glucose: [blood glucose]\nASA Classification: [ASA I OR ASA II OR ASA III OR ASA IV]\nLast visit at dentist: [last dental visit]\nOral hygiene routine: [Brush # x/day] [Pt brushes on their own OR Pt has teeth brushed by caregiver with a manual/electric toothbrush OR Pt has teeth wiped with gauze/swab] [never OR Floss used 1x/day OR Floss used 2x/day]\nDietary considerations: [dietary considerations]\nSRP [quadrants]:\nApplied 20% topical benzocaine & administered 1 carpule of 2% lidocaine 1:100k epi with [30G 25mm OR 27G 35mm] needle as IAN & long buccal block on right / buccal infiltrations of [quadrant] & greater palatine block on [palatine block site].\nCompleted SRP using Cavitron (with an assistant providing HVE suction) & hand instruments to remove supragingival and subgingival plaque & calculus. Flossed.\nGave [who is present with patient] post-op instructions re: numbness, sore gums, tooth sensitivity, bleeding, ibuprofen/acetaminophen regimen.\nPapoose used: [no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization]\nMouth prop: [no mouth prop OR Used soft mouth prop OR Used Molt mouth prop]\nOHI: [OHI recommendations]\nPreventive goals established with [who is present with patient]: [preventive goals]\nSocial worker consult: [social worker consult]\nDietary consult: [dietary consult]\nBehavior: [F1 OR F2 OR F3 OR F4] - [describe behavior during appointment]\nNV: [next visit]\n[names]",
+ "icc-resto-mid": "- y/o female presents with [who is present with patient] to UG ICC clinic for [tooth and surface] restoration.\nCC: \nRMH with [who is present with patient].\nMedical conditions/syndromes:\n[medical conditions/syndromes]\nMobility/Physical considerations: [Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company]\nLotus room needed: [YES OR NO]\nAllergies: [allergies]\nMedications: [medications]\nBlood pressure and pulse: [BP]; [pulse]\nBlood glucose: [blood glucose]\nASA Classification: [ASA I OR ASA II OR ASA III OR ASA IV]\nLast visit at dentist: [last dental visit]\nOral hygiene routine: [Brush # x/day] [Pt brushes on their own OR Pt has teeth brushed by caregiver with a manual/electric toothbrush OR Pt has teeth wiped with gauze/swab] [never OR Floss used 1x/day OR Floss used 2x/day]\nDietary considerations: [dietary considerations]\n[tooth and surface]\nNitrous: Titrated up to [nitrous %] nitrous on [nitrous L volume] for [nitrous duration in minutes]. Patient was visually monitored throughout appointment. Patient breathed 100% O2 for 5 minutes following procedure and left in good condition.\nAnesthetic: Applied 20% topical benzocaine & administered [# of carpules] of [type of anesthetic] with [size needle] as [type of block/infiltration] on [tooth].\nPlaced Isodry (size [small OR medium OR large]). Excavated decay using [excavation method]. Prepared cavity preparation to ideal form. Scrubbed with Consepsis 10s to disinfect, rinsed 5s, gently dried. Applied 0.5 mm Vitrebond in deepest area of prep, light cured 20s. Etched with 35% phosphoric acid for 15s, rinsed 5s, gently dried leaving dentin moist. Applied Gluma 45s to desensitize, air dried, rinsed 5s, gently dried leaving dentin moist. Applied Scotchbond Universal 20s, air dried 5s, cured 10s. Applied [A2] Renamel nanofill composite in increments, each cured 20s, with 40s final cure. Finished restoration with finishing diamond burs, polished with Shofu & Jiffy brush. Evaluated occlusion with articulating paper, adjusted to ideal. Verified margins and interproximal contacts. Patient is satisfied. Gave post-op instructions to [who is present with patient] re: numbness, sensitivity, sore injection site, uneven bite.\nPapoose used: [no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization]\nMouth prop: [no mouth prop OR Used soft mouth prop OR Used Molt mouth prop]\nOHI: [OHI recommendations]\nPreventive goals established with [who is present with patient]: [preventive goals]\nSocial worker consult: [social worker consult]\nDietary consult: [dietary consult]\nBehavior: [F1 OR F2 OR F3 OR F4] - [describe behavior during appointment]\nNV: [next visit]\n[names]",
+ "icc-sealants": "- y/o female presents with [who is present with patient] to UG ICC clinic for sealants.\nCC: \nRMH with [who is present with patient].\nMedical conditions/syndromes:\n[medical conditions/syndromes]\nMobility/Physical considerations: [Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company]\nLotus room needed: [YES OR NO]\nAllergies: [allergies]\nMedications: [medications]\nBlood pressure and pulse: [BP]; [pulse]\nBlood glucose: [blood glucose]\nASA Classification: [ASA I OR ASA II OR ASA III OR ASA IV]\nLast visit at dentist: [last dental visit]\nOral hygiene routine: [Brush # x/day] [Pt brushes on their own OR Pt has teeth brushed by caregiver with a manual/electric toothbrush OR Pt has teeth wiped with gauze/swab] [never OR Floss used 1x/day OR Floss used 2x/day]\nDietary considerations: [dietary considerations]\nSealants [teeth sealed]\nNitrous: Titrated up to [nitrous %] nitrous on [nitrous L volume] for [nitrous duration in minutes]. Patient was visually monitored throughout appointment. Patient breathed 100% O2 for 5 minutes following procedure and left in good condition.\nCleaned tooth with pumice & prophy angle. Isodry placed (size [small OR medium OR large]). Etched with 35% phosphoric acid for 30s, rinsed 15s, gently dried. Applied Scotchbond Universal 20s, air dried 5s, cured 10s. Applied Ultradent UltraSeal XT Plus to [teeth and surfaces sealed]. Light cured 20s. Occlusion evaluated with articulating paper -- occlusion is satisfactory, pt is not occluding on sealant.\nPapoose used: [no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization]\nMouth prop: [no mouth prop OR Used soft mouth prop OR Used Molt mouth prop]\nOHI: [OHI recommendations]\nPreventive goals established with [who is present with patient]: [preventive goals]\nSocial worker consult: [social worker consult]\nDietary consult: [dietary consult]\nBehavior: [F1 OR F2 OR F3 OR F4] - [describe behavior during appointment]\nNV: [next visit]\n[names]",
+ "icc-extraction": "- y/o female presents with [who is present with patient] to UG ICC clinic for extraction of [tooth].\nCC: \nRMH with [who is present with patient].\nMedical conditions/syndromes:\n[medical conditions/syndromes]\nMobility/Physical considerations: [Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company]\nLotus room needed: [YES OR NO]\nAllergies: [allergies]\nMedications: [medications]\nBlood pressure and pulse: [BP]; [pulse]\nBlood glucose: [blood glucose]\nASA Classification: [ASA I OR ASA II OR ASA III OR ASA IV]\nLast visit at dentist: [last dental visit]\nOral hygiene routine: [Brush # x/day] [Pt brushes on their own OR Pt has teeth brushed by caregiver with a manual/electric toothbrush OR Pt has teeth wiped with gauze/swab] [never OR Floss used 1x/day OR Floss used 2x/day]\nDietary considerations: [dietary considerations]\nReviewed [tooth] to extract; [who is present with patient] confirmed to be removed.\nNitrous: Titrated up to [nitrous %] nitrous on [nitrous L volume] for [nitrous duration in minutes]. Patient was visually monitored throughout appointment. Patient breathed 100% O2 for 5 minutes following procedure and left in good condition.\nAnesthetic: Applied 20% topical benzocaine & administered [# of carpules] of [type of anesthetic] with [size needle] as [type of block/infiltration] on [tooth].\nThroat pack/bite block placed.\nSimple elevator and forceps extraction. Curetted and irrigated; smoothed bone. [no sutures placed OR sutures placed]. Gauze hemostasis.\nPapoose used: [no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization]\nMouth prop: [no mouth prop OR Used soft mouth prop OR Used Molt mouth prop]\nReviewed post op instructions with [who is present with patient]. Patient dismissed in good condition.\nSocial worker consult: [social worker consult]\nDietary consult: [dietary consult]\nBehavior: [F1 OR F2 OR F3 OR F4] - [describe behavior during appointment]\nNV: [next visit]\n[names]",
+ "icc-ot": "The OT student provided sensory support during today's visit to promote patient comfort and participation.\nA brief sensory screening was completed through observation and patient/care person report to identify sensory input that may be over- or under-stimulating, including touch to the face/mouth, sounds (drill, suction), lighting, chair movement, and smells.\nFindings were shared with the dental team, and sensory-informed strategies were recommended, including environmental modifications, clear step-by-step explanations, warnings before touch or movement, use of the show-tell-do approach, and offering breaks as needed.\nInformation was provided to dental providers regarding sensory preferences and strategies to support regulation and tolerance during care.",
+ "icc-refusal": "[Patient OR Legal guardian] declined the dental treatment plan recommendations listed below:\n- [declined recommendation 1]\n- [declined recommendation 2]\n- [declined recommendation 3]\nExplained to [Patient OR Legal guardian] that by declining the recommended dental treatment, they may be jeopardizing the oral and/or general health of the patient.\n[Patient OR Legal guardian] understood the potential risks associated with rejecting the proposed treatment, which may include, but are not limited to:\n- Progression of dental disease or decay\n- Complications arising from untreated dental conditions such as pain and/or dental abscesses\n- [other risks discussed]\n[Patient OR Legal guardian] understands the right to seek a second opinion and/or alternative treatment options and may reconsider this decision at any time in the future.\nLanguage interpretation: [language] | Interpreter name: [interpreter name]\nReferring [physician OR dentist]: [referring provider name] [department if UIC]\n[student name] / [faculty name]",
 };
 
 const CHUNKS = [
@@ -2394,6 +2422,40 @@ const CATEGORIES = [
  { id: "5472", label: "RCT" },
  ]},
  ]},
+ { id: "os", label: "Oral Surgery", groups: [
+ { id: "os-procs", label: "Extractions & Follow-Up", procedures: [
+ { id: "os-ext-soap", label: "Extraction — S / O / A / P" },
+ { id: "os-ext-brief", label: "Extraction — brief op-note" },
+ { id: "os-surg-soap", label: "Surgical Extraction — S / O / A / P" },
+ { id: "os-root-tip", label: "Residual Root Tip" },
+ { id: "os-fu", label: "Post-Op Follow-Up" },
+ ]},
+ ]},
+ { id: "icc", label: "ICC", groups: [
+ { id: "icc-exams", label: "Exams & Screening", procedures: [
+ { id: "icc-coe", label: "COE" },
+ { id: "icc-poe", label: "POE" },
+ { id: "icc-screening", label: "Screening" },
+ { id: "icc-virtual", label: "Virtual Screening" },
+ { id: "icc-urgent", label: "Urgent Care / Limited Exam" },
+ ]},
+ { id: "icc-hygiene", label: "Hygiene & Perio", procedures: [
+ { id: "icc-prophy", label: "Prophylaxis" },
+ { id: "icc-debridement", label: "Full Mouth Debridement" },
+ { id: "icc-perio-maint", label: "Periodontal Maintenance" },
+ { id: "icc-perio-reeval", label: "Perio Re-Evaluation" },
+ { id: "icc-srp", label: "Scaling & Root Planing" },
+ ]},
+ { id: "icc-resto", label: "Restorative & Surgery", procedures: [
+ { id: "icc-resto-mid", label: "Restorative / Minimally Invasive" },
+ { id: "icc-sealants", label: "Sealants" },
+ { id: "icc-extraction", label: "Extraction / OS" },
+ ]},
+ { id: "icc-other", label: "Other", procedures: [
+ { id: "icc-ot", label: "OT Sensory Support" },
+ { id: "icc-refusal", label: "Patient Refusal" },
+ ]},
+ ]},
  { id: "misc", label: "Misc.", groups: [
  { id: "misc-orders", label: "Patient Orders & Forms", procedures: [
  { id: "misc-prescriptions", label: "Prescriptions" },
@@ -2475,14 +2537,10 @@ function flattenCategory(cat) {
  const procs = [];
  for (const grp of cat.groups) {
  for (const p of grp.procedures) {
- // If a category has only one group OR the group label is generic
- // ("Procedures"), don't prefix it (would be noise).
- const showPrefix =
- cat.groups.length > 1 &&
- grp.procedures.length > 1 &&
- grp.label!== "Procedures";
- const label = showPrefix? `${grp.label} — ${p.label}`: p.label;
- procs.push({ id: p.id, label, groupId: grp.id, groupLabel: grp.label });
+ // Procedure labels render bare — no "Group — " prefix — per Jake.
+ // The group is still tracked in groupLabel (used by search ranking),
+ // it just isn't shown in the Procedure dropdown.
+ procs.push({ id: p.id, label: p.label, groupId: grp.id, groupLabel: grp.label });
  }
  }
  return {...cat, procedures: procs };
@@ -2528,7 +2586,10 @@ const FLAT_CATEGORIES = (() => {
 // per-procedure pages had no CHUNKS content; each lab Rx now has a REF_DATA
 // entry with the Rx body + supplements + Swade turnaround, so they belong
 // here too.
-const BROWSE_CATEGORIES = CATEGORIES;
+// Steps tab nav. Excludes the note-only categories (ICC + Oral Surgery) —
+// those are templates in the Note tab with no step-by-step CHUNKS content,
+// so they'd show as empty Steps pages.
+const BROWSE_CATEGORIES = CATEGORIES.filter(c => c.id !== "icc" && c.id !== "os");
 
 /* ============================================================================
  * REF_DATA — structured rendering for Misc. > Lookup procedures.
@@ -3975,6 +4036,11 @@ function computePerioCOEDx(inputs) {
 }
 
 // --- Note rendering: substitute user fields into a raw template ----------
+// ICC list-type fields, keyed by in-bracket text → list style: "n" = numbered
+// (treatment priorities), "d" = dashed. Rendered as lists in the note and as
+// add-a-row inputs in the ICC form.
+const ICC_LIST_FIELDS = { "treatment priorities": "n", "medical conditions/syndromes": "d", "relevant health conditions": "d", "general findings": "d" };
+
 function renderTemplate(raw, f) {
  if (!raw) return "";
  let t = raw;
@@ -5598,10 +5664,48 @@ function renderTemplate(raw, f) {
  // scripts (lab-*) and any other template that adopts the convention.
  if (f.labPlaceholders) {
  for (const [key, value] of Object.entries(f.labPlaceholders)) {
+ // List fields are handled in 11c (rendered as numbered/dashed lists),
+ // so skip the generic raw substitution here.
+ if (ICC_LIST_FIELDS[key]) continue;
  const trimmed = value == null? "": String(value).trim();
  if (!trimmed) continue;
  t = t.split(`[${key}]`).join(trimmed);
  }
+ }
+
+ // -------- 11c. ICC-note post-processing. --------
+ // ICC notes default "who is present" to Mother, render the treatment-
+ // priority field as a numbered list, drop the Blood-glucose line when it's
+ // left blank, and blank any unselected choice dropdown so its full option
+ // list never lands in the note. Gated on the "UG ICC clinic" marker so it
+ // never touches the UG-OS or main-clinic templates.
+ if (raw.includes("UG ICC clinic")) {
+ // List fields → numbered ("n") or dashed ("d") lists, one row per entry.
+ for (const lkey in ICC_LIST_FIELDS) {
+ // Strip any existing "N." / "- " marker, then re-apply the right one.
+ const items = ((f.labPlaceholders && f.labPlaceholders[lkey]) || "").split("\n").map(s => s.replace(/^(?:\d+\.|-)\s*/, "").trim()).filter(Boolean);
+ if (ICC_LIST_FIELDS[lkey] === "n") {
+ if (items.length) t = t.split(`[${lkey}]`).join(items.map((s, i) => `${i + 1}. ${s}`).join("\n"));
+ } else {
+ t = t.split(`[${lkey}]`).join(items.length? items.map(s => `- ${s}`).join("\n"): "-");
+ }
+ }
+ t = t.split("[who is present with patient]").join("Mother");
+ // Lotus room is a checkbox — an untouched (unchecked) box reads as NO.
+ t = t.split("[YES OR NO]").join("NO");
+ t = t.replace(/^Blood glucose:\s*\[blood glucose\][ \t]*\n?/m, "");
+ // Eliminate placeholder-as-default: any field still holding its raw "[prompt]"
+ // renders blank — the form input is the reminder now, not the note body. (The
+ // Refusal note is excluded by the "UG ICC clinic" gate above; its
+ // "[Patient OR Legal guardian]" is a required sentence subject, not a field.)
+ t = t.replace(/\[[^\]]*\]/g, "");
+ // Tidy the BP/pulse line so a blank side doesn't strand a semicolon.
+ t = t.replace(/^(Blood pressure and pulse:)([^\n]*)$/m, (_m, lbl, rest) => {
+ const parts = rest.split(";").map(s => s.trim()).filter(Boolean);
+ return parts.length? `${lbl} ${parts.join("; ")}`: `${lbl} `;
+ });
+ // Collapse the double space a blanked mid-line placeholder leaves behind.
+ t = t.replace(/ {2,}/g, " ");
  }
 
  // -------- 12. Tidy: collapse 3+ consecutive newlines down to 2. --------
@@ -5853,7 +5957,17 @@ function parseLabPlaceholders(body) {
  // (which emits both anterior and posterior mould codes).
  continue;
  }
- if (/\s\/\s/.test(text)) {
+ if (/\sOR\s/.test(text)) {
+ // Uppercase " OR "-separated choice list — the UIC ICC-note
+ // convention, e.g. "[YES OR NO]", "[Used soft mouth prop OR molt]",
+ // or a mobility line whose options themselves contain a slash
+ // ("electric/manual wheelchair"). Checked BEFORE the slash rule so
+ // those embedded slashes survive; split only on uppercase " OR " so
+ // existing lowercase-"or" prose and "/"-delimited lab lists are
+ // untouched.
+ type = "dropdown";
+ options = text.split(/\s+OR\s+/).map(s => s.trim()).filter(Boolean);
+ } else if (/\s\/\s/.test(text)) {
  // Slash-separated: "Straumann / Nobel / Dentsply EV". Split only on
  // WHITESPACE-padded slashes so embedded brand syntax like
  // "cement-retained CAD/CAM emax" stays intact as a single option.
@@ -6049,6 +6163,30 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  "A2": "Shade",
  "gingival shade": "Gingival shade",
  "Implant Diameter": "Implant diameter",
+ // ICC-note friendly labels (keys are the exact in-bracket text).
+ "who is present with patient": "Who is present",
+ "Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company": "Mobility / physical",
+ "YES OR NO": "Lotus room needed",
+ "ASA I OR ASA II OR ASA III OR ASA IV": "ASA classification",
+ "Pt brushes on their own OR Pt has teeth brushed by caregiver with a manual/electric toothbrush OR Pt has teeth wiped with gauze/swab": "Brushing",
+ "Floss not used OR Floss used 1x/day OR Floss used 2x/day": "Flossing",
+ "4 bitewings OR a panoramic radiograph OR a full-mouth series OR no radiographs": "Radiographs taken",
+ "good OR fair OR poor": "Oral hygiene status",
+ "no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization": "Papoose",
+ "no mouth prop OR Used soft mouth prop OR Used Molt mouth prop": "Mouth prop",
+ "F1 OR F2 OR F3 OR F4": "Behavior (Frankl)",
+ "urgent care OR limited exam": "Visit type",
+ "3M OR 4M": "Maintenance interval",
+ "30G 25mm OR 27G 35mm": "Needle",
+ "small OR medium OR large": "Isodry size",
+ "no sutures placed OR sutures placed": "Sutures",
+ "Patient OR Legal guardian": "Patient / guardian",
+ "physician OR dentist": "Referring provider",
+ "medical conditions/syndromes": "Medical conditions",
+ "PCP/medical provider contact": "PCP / provider",
+ "BP and pulse": "BP & pulse",
+ "Brush # x/day": "Brushing frequency",
+ "student/DA name": "Student / Dental Assistant",
  };
  // Fall back to the bracket key when no friendly label is defined.
  // Trim incidental whitespace (some templates have " X / Y " brackets
@@ -6224,6 +6362,179 @@ function LabPlaceholderInputs({ rawTemplate, values, onChange }) {
  </div>
  );
  })}
+ </div>
+ </>
+ );
+}
+
+// ── ICC note inputs ─────────────────────────────────────────────────────────
+// ICC clinic notes are bracket-driven like lab scripts but get a richer, more
+// compact form: sentence-case labels, choice dropdowns with friendly option
+// labels, a Lotus-room checkbox, a "who is present" Mother/Father/Other
+// dropdown, an auto-slashing BP field, paired vitals + hygiene rows, and a
+// multi-line treatment-priority list. Used ONLY for icc-* procedures so the
+// shared LabPlaceholderInputs (lab scripts, peds, crowns) is left untouched.
+const ICC_SELECT_STYLE = { background: "var(--paper)", border: "1px solid var(--rule)", borderRadius: "3px", padding: "6px 8px", fontFamily: "'Geist', sans-serif", fontSize: "12px", color: "var(--ink)", cursor: "pointer", width: "100%", boxSizing: "border-box" };
+const ICC_INPUT_STYLE = { width: "100%", padding: "7px 10px", fontSize: "13px", fontFamily: "'Geist', sans-serif", color: "var(--ink)", background: "var(--paper)", border: "1px solid var(--rule)", borderRadius: "2px", outline: "none", boxSizing: "border-box" };
+const ICC_MOBILITY_KEY = "Pt is ambulatory OR Pt uses an electric/manual wheelchair; chair does/does not recline; pt can/cannot be transferred to dental chair OR Pt presented in a stretcher with ambulance transportation company";
+const ICC_BRUSHING_KEY = "Pt brushes on their own OR Pt has teeth brushed by caregiver with a manual/electric toothbrush OR Pt has teeth wiped with gauze/swab";
+const ICC_FLOSSING_KEY = "never OR Floss used 1x/day OR Floss used 2x/day";
+const ICC_PAPOOSE_KEY = "no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization";
+const ICC_MOUTHPROP_KEY = "no mouth prop OR Used soft mouth prop OR Used Molt mouth prop";
+const ICC_FIELD_CFG = {
+ "who is present with patient": { label: "Who is present", type: "selectOther", options: ["Mother", "Father"], defaultOption: "Mother" },
+ "medical conditions/syndromes": { label: "Medical conditions", type: "odontogram", placeholder: "List each condition on its own line. Press Enter to add another." },
+ "relevant health conditions": { label: "Relevant health conditions", type: "odontogram", placeholder: "List each condition on its own line. Press Enter to add another." },
+ "general findings": { label: "General findings", type: "odontogram", placeholder: "List each finding on its own line. Press Enter to add another." },
+ "PCP/medical provider contact": { label: "PCP / provider" },
+ [ICC_MOBILITY_KEY]: { label: "Mobility / physical" },
+ "YES OR NO": { label: "Lotus room needed", type: "checkbox", on: "YES", off: "NO" },
+ "BP": { label: "Blood pressure", type: "bp", group: "vitals" },
+ "pulse": { label: "Pulse", group: "vitals" },
+ "blood glucose": { label: "Blood glucose (blank to omit)" },
+ "ASA I OR ASA II OR ASA III OR ASA IV": { label: "ASA classification" },
+ "last dental visit": { label: "Last dental visit", group: "ldv" },
+ "Brush # x/day": { label: "Brushing frequency", type: "selectOther", options: ["2x a day", "1x a day", "3x a day", "a few times per week", "never"], group: "ldv" },
+ [ICC_BRUSHING_KEY]: { label: "Brushing", group: "ohr" },
+ [ICC_FLOSSING_KEY]: { label: "Flossing", group: "ohr" },
+ "4 bitewings OR a panoramic radiograph OR a full-mouth series OR no radiographs": { label: "Radiographs taken", type: "multiCheck" },
+ "good OR fair OR poor": { label: "Oral hygiene status" },
+ [ICC_PAPOOSE_KEY]: { label: "Papoose", optionLabels: { "no papoose": "No papoose", "Consent received from caregiver to use a small papoose for protective stabilization": "Small papoose", "Consent received from caregiver to use a large papoose for protective stabilization": "Large papoose" }, group: "pmp" },
+ [ICC_MOUTHPROP_KEY]: { label: "Mouth prop", optionLabels: { "no mouth prop": "No mouth prop", "Used soft mouth prop": "Soft prop", "Used Molt mouth prop": "Molt prop" }, group: "pmp" },
+ "preventive goals": { label: "Preventive goals", group: "pgsw" },
+ "social worker consult": { label: "Social worker consult", group: "pgsw" },
+ "names": { label: "Names", placeholder: "S.Swade/Dr. Nice/W.Assistant" },
+ "occlusal considerations": { label: "Occlusal considerations", wnl: true },
+ "endodontic findings": { label: "Endodontic findings", wnl: true },
+ "soft tissue conditions": { label: "Soft tissue conditions", wnl: true },
+ "hard tissue conditions": { label: "Hard tissue conditions", wnl: true },
+ "F1 OR F2 OR F3 OR F4": { label: "Behavior (Frankl)" },
+ "treatment priorities": { label: "Treatment priorities", type: "odontogram", placeholder: "List each treatment on its own line. Press Enter to add another." },
+ "30G 25mm OR 27G 35mm": { label: "Needle" },
+ "small OR medium OR large": { label: "Isodry size" },
+ "no sutures placed OR sutures placed": { label: "Sutures" },
+ "Patient OR Legal guardian": { label: "Patient / guardian" },
+ "physician OR dentist": { label: "Referring provider" },
+ "urgent care OR limited exam": { label: "Visit type" },
+ "3M OR 4M": { label: "Maintenance interval" },
+};
+
+function SelectOrOtherInput({ value, onChange, options, defaultOption }) {
+ // Dropdown of `options` plus an "Other…" entry that reveals a free-text box.
+ // A value matching an option shows in the dropdown; anything else is "Other".
+ // defaultOption (e.g. "Mother") shows when blank and drops the "— select —".
+ const OTHER = "__other__";
+ const preset = value === "" || options.includes(value);
+ const [other, setOther] = useState(!preset);
+ const sel = other ? OTHER : (value || defaultOption || "");
+ return (
+ <div style={{ display: "flex", gap: "6px", width: "100%" }}>
+ <select value={sel}
+ onChange={e => { const x = e.target.value; if (x === OTHER) { setOther(true); onChange(""); } else { setOther(false); onChange(x); } }}
+ style={{ ...ICC_SELECT_STYLE, flex: other ? "0 0 120px" : 1 }}>
+ {!defaultOption && <option value="">— select —</option>}
+ {options.map(o => <option key={o} value={o}>{o}</option>)}
+ <option value={OTHER}>Other…</option>
+ </select>
+ {other && <input type="text" value={value} placeholder="other"
+ onChange={e => onChange(e.target.value)} style={{ ...ICC_INPUT_STYLE, flex: 1 }} />}
+ </div>
+ );
+}
+
+function BPInput({ value, onChange }) {
+ // Auto-insert "/" the moment a 3rd digit lands (systolic done), so the user
+ // can keep typing the diastolic without reaching for the slash. Guarded on
+ // the previous value being 2 digits so backspacing past the slash doesn't
+ // immediately re-add it.
+ return <input type="text" inputMode="numeric" value={value} placeholder="e.g. 120/80"
+ onChange={e => { let v = e.target.value; if (/^\d{3}$/.test(v) && /^\d{2}$/.test(value || "")) v = v + "/"; onChange(v); }}
+ style={ICC_INPUT_STYLE} />;
+}
+
+
+function ICCNoteInputs({ rawTemplate, values, onChange }) {
+ const placeholders = useMemo(() => parseLabPlaceholders(rawTemplate), [rawTemplate]);
+ if (!placeholders.length) return null;
+ const cap = s => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+ const labelFor = (key) => (ICC_FIELD_CFG[key] && ICC_FIELD_CFG[key].label) || cap(key.trim());
+ // Group consecutive fields that share a `group` id onto one horizontal row.
+ const specs = placeholders.map(p => ({ p, cfg: ICC_FIELD_CFG[p.key] || {} }));
+ const rows = [];
+ for (let i = 0; i < specs.length; i++) {
+ const g = specs[i].cfg.group;
+ if (g) { const grp = [specs[i]]; while (i + 1 < specs.length && specs[i + 1].cfg.group === g) grp.push(specs[++i]); rows.push(grp); }
+ else rows.push([specs[i]]);
+ }
+ const labelStyle = { fontSize: "10px", color: "var(--ink-faint)", letterSpacing: "0.04em", fontFamily: "'Geist', sans-serif" };
+ const renderInput = (p, cfg) => {
+ const v = values[p.key] || "";
+ const set = (val) => onChange(p.key, val);
+ const type = cfg.type || p.type;
+ if (type === "selectOther") return <SelectOrOtherInput value={v} onChange={set} options={cfg.options || []} defaultOption={cfg.defaultOption} />;
+ if (type === "multiCheck") {
+ const sel = v ? v.split(", ") : [];
+ return (
+ <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 14px", paddingTop: "2px" }}>
+ {(p.options || []).map(o => (
+ <label key={o} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "var(--ink)", cursor: "pointer" }}>
+ <input type="checkbox" checked={sel.includes(o)}
+ onChange={() => set((sel.includes(o)? sel.filter(x => x!== o): [...sel, o]).join(", "))}
+ style={{ width: "15px", height: "15px", accentColor: "var(--accent)", cursor: "pointer" }} />
+ <span>{o}</span>
+ </label>
+ ))}
+ </div>
+ );
+ }
+ if (type === "bp") return <BPInput value={v} onChange={set} />;
+ if (type === "checkbox") return (
+ <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "var(--ink)", cursor: "pointer", padding: "4px 0" }}>
+ <input type="checkbox" checked={v === (cfg.on || "YES")}
+ onChange={e => set(e.target.checked ? (cfg.on || "YES") : (cfg.off || "NO"))}
+ style={{ width: "16px", height: "16px", accentColor: "var(--accent)", cursor: "pointer" }} />
+ <span>{labelFor(p.key)}</span>
+ </label>
+ );
+ if (type === "odontogram") return <OdontogramField value={v} onChange={set} bullet="-" seedOnFocus placeholder={cfg.placeholder || "List each on its own line. Press Enter to add another."} />;
+ if (type === "textarea") return <textarea value={v} onChange={e => set(e.target.value)} placeholder={labelFor(p.key)} rows={3} style={{ ...ICC_INPUT_STYLE, resize: "vertical" }} />;
+ if (type === "shade") return <ShadeInput value={v} onChange={set} compact />;
+ if (type === "tooth") return <ToothSurfaceInput value={v} onChange={x => set((x || "").split(",")[0].trim().replace(/^#/, ""))} withSurfaces={false} />;
+ if (type === "dropdown") { const ol = cfg.optionLabels || {}; return (
+ <select value={v} onChange={e => set(e.target.value)} style={ICC_SELECT_STYLE}>
+ <option value="">— select —</option>
+ {(p.options || []).map(o => <option key={o} value={o}>{ol[o] || o}</option>)}
+ </select>
+ ); }
+ if (cfg.wnl) {
+ const isWNL = (v || "").trim().toLowerCase() === "wnl";
+ return (
+ <div style={{ display: "flex", gap: "6px", alignItems: "stretch" }}>
+ <input type="text" value={v} placeholder={cfg.placeholder || labelFor(p.key)} onChange={e => set(e.target.value)} style={{ ...ICC_INPUT_STYLE, flex: 1 }} />
+ <button type="button" onClick={() => set(isWNL? "": "WNL")} title={isWNL? "Clear WNL": "Set WNL"}
+ style={{ aspectRatio: "1", alignSelf: "stretch", flexShrink: 0, background: isWNL? "var(--accent)": "transparent", color: isWNL? "var(--paper)": "var(--ink-soft)", border: `1px solid ${isWNL? "var(--accent)": "var(--rule)"}`, borderRadius: "2px", fontSize: "11px", cursor: "pointer", fontFamily: "'JetBrains Mono', monospace", lineHeight: 1.2 }}>W</button>
+ </div>
+ );
+ }
+ return <input type="text" value={v} placeholder={cfg.placeholder || labelFor(p.key)} onChange={e => set(e.target.value)} style={ICC_INPUT_STYLE} />;
+ };
+ return (
+ <>
+ <Hairline />
+ <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "10px" }}>
+ {rows.map((row, ri) => (
+ <div key={ri} style={{ display: "flex", gap: "10px" }}>
+ {row.map(({ p, cfg }) => {
+ const type = cfg.type || p.type;
+ return (
+ <div key={p.key} style={{ display: "flex", flexDirection: "column", gap: "2px", flex: 1, minWidth: 0 }}>
+ {type !== "checkbox" && <label style={labelStyle}>{labelFor(p.key)}</label>}
+ {renderInput(p, cfg)}
+ </div>
+ );
+ })}
+ </div>
+ ))}
  </div>
  </>
  );
@@ -10586,6 +10897,14 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  const currentCategory = useMemo(() => FLAT_CATEGORIES.find(c => c.id === categoryId), [categoryId]);
  const rawTemplate = useMemo(() => (procedureId? TEMPLATES[procedureId]?? "": ""), [procedureId]);
 
+ // ICC + Oral-Surgery notes are fully bracket-driven: every student-edited
+ // blank is a [placeholder] rendered by LabPlaceholderInputs (dropdown for
+ // "[A / B]" / "[A OR B]" choices, text otherwise). Suppress the Swade-format
+ // named header detectors below for them — those expect the "- field:"
+ // dash-list wording these notes don't use, so they'd surface inputs that
+ // either duplicate a bracket or silently fail to substitute.
+ const bracketDriven = /^(icc|os)-/.test(procedureId || "");
+
  // Derive "what sections does this procedure need?" from the raw template.
  // - Anesthetic: only if the template contains the standard administered
  // sentence.
@@ -10599,12 +10918,12 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  // students fill in a field that does nothing.
  // This is more robust than hand-curating a list — when the templates
  // change, the form updates automatically.
- const needsAnesthetic = useMemo(() => /Applied 20% topical benzocaine/.test(rawTemplate), [rawTemplate]);
- const needsLiners = useMemo(() => /Vitrebond|Consepsis|Gluma/.test(rawTemplate), [rawTemplate]);
- const needsTooth = useMemo(() => /#[A-Z0-9]+(-[A-Z]+)?/.test(rawTemplate), [rawTemplate]);
+ const needsAnesthetic = useMemo(() => /Applied 20% topical benzocaine/.test(rawTemplate) && !bracketDriven, [rawTemplate, bracketDriven]);
+ const needsLiners = useMemo(() => /Vitrebond|Consepsis|Gluma/.test(rawTemplate) && !bracketDriven, [rawTemplate, bracketDriven]);
+ const needsTooth = useMemo(() => /#[A-Z0-9]+(-[A-Z]+)?/.test(rawTemplate) && !bracketDriven, [rawTemplate, bracketDriven]);
  // True when the template's tooth reference includes surfaces (e.g. #19-MOD, not just #19)
- const needsSurfaces = useMemo(() => /#[A-Z0-9]+-[A-Z]+/.test(rawTemplate), [rawTemplate]);
- const needsShade = useMemo(() => /\bshade\b/i.test(rawTemplate), [rawTemplate]);
+ const needsSurfaces = useMemo(() => /#[A-Z0-9]+-[A-Z]+/.test(rawTemplate) && !bracketDriven, [rawTemplate, bracketDriven]);
+ const needsShade = useMemo(() => /\bshade\b/i.test(rawTemplate) && !bracketDriven, [rawTemplate, bracketDriven]);
  // True when the template mentions denture-tooth mould selection (wax-rim
  // try-in, IPD lab Rx, RPD lab Rx). Surfaces the Portrait/Bioform IPN
  // Tooth Mould Picker as a chair-side reference panel inside the note form.
@@ -10612,12 +10931,12 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  /\btooth mol[dn]\b|\bdenture tooth\b|\bTrubyte\b|\bwax[- ]rim\b/i.test(rawTemplate),
  [rawTemplate]);
  const needsMedHistory = useMemo(() => /medical history:/i.test(rawTemplate), [rawTemplate]);
- const needsMedications = useMemo(() => /medications:/i.test(rawTemplate), [rawTemplate]);
- const needsAllergies = useMemo(() => /allergies:/i.test(rawTemplate), [rawTemplate]);
+ const needsMedications = useMemo(() => /medications:/i.test(rawTemplate) && !bracketDriven, [rawTemplate, bracketDriven]);
+ const needsAllergies = useMemo(() => /allergies:/i.test(rawTemplate) && !bracketDriven, [rawTemplate, bracketDriven]);
  const needsPedsAllergies = useMemo(() => /allergies\?\?\?/.test(rawTemplate), [rawTemplate]);
  const needsBP = useMemo(() => /blood pressure:/i.test(rawTemplate), [rawTemplate]);
- const needsBG = useMemo(() => /blood glucose:/i.test(rawTemplate), [rawTemplate]);
- const needsNV = useMemo(() => /NV:/.test(rawTemplate), [rawTemplate]);
+ const needsBG = useMemo(() => /blood glucose:/i.test(rawTemplate) && !bracketDriven, [rawTemplate, bracketDriven]);
+ const needsNV = useMemo(() => /NV:/.test(rawTemplate) && !bracketDriven, [rawTemplate, bracketDriven]);
  // The text following "NV:" in the template, if any. Mirrored into the form's
  // placeholder so students can see what the default would be without typing.
  // If they leave the field empty, renderTemplate keeps the template's default
@@ -11002,7 +11321,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </Field>
  </div>
 )}
- {!isLabScript &&!isClinicPeds &&!isClinicChicago && procedureId!== "273" && (
+ {!isLabScript &&!isClinicPeds &&!isClinicChicago && procedureId!== "273" &&!bracketDriven && (
  <Field label="Clinic">
  <Select value={fields.clinic || ""} onChange={v=>setField("clinic",v)}>
  <option value="">— Select a clinic —</option>
@@ -11311,8 +11630,13 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  // least one parseable bracket.
  const placeholders = parseLabPlaceholders(rawTemplate);
  if (placeholders.length === 0) return null;
+ // ICC notes use the richer ICC-specific renderer (paired rows, checkbox,
+ // who-is-present dropdown, BP auto-slash, priority list); everything else
+ // keeps the generic lab-script placeholder picker.
+ const PlaceholderInputs = (typeof procedureId === "string" && procedureId.startsWith("icc-"))
+ ? ICCNoteInputs : LabPlaceholderInputs;
  return (
- <LabPlaceholderInputs
+ <PlaceholderInputs
  rawTemplate={rawTemplate}
  values={fields.labPlaceholders || {}}
  onChange={(key, value) => {
@@ -11812,7 +12136,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </Field>
  </>
 )}
- {!(typeof procedureId === "string" && procedureId.startsWith("lab-")) && (
+ {!(typeof procedureId === "string" && procedureId.startsWith("lab-")) && !bracketDriven && (
  <>
  <Hairline />
  <Field label="Name(s)">
@@ -12118,6 +12442,9 @@ function Browse({
  const [categoryId, setCategoryId] = useState(initial.categoryId);
  const [groupId, setGroupId] = useState(initial.groupId);
  const [search, setSearch] = useState("");
+ // Autofocus the search the moment the Steps tab opens (matches Note tab).
+ const searchRef = useRef(null);
+ useEffect(() => { searchRef.current?.focus(); }, []);
 
  const currentCategory = useMemo(() => BROWSE_CATEGORIES.find(c => c.id === categoryId), [categoryId]);
  const currentGroup = useMemo(() => currentCategory?.groups.find(g => g.id === groupId), [currentCategory, groupId]);
@@ -12275,45 +12602,9 @@ function Browse({
  {/* ── Left: navigation + add-procedure + search + items ── */}
  <section>
 
- {/* Procedure selection card */}
+ {/* Search card — autofocused, top of the column (matches the Note tab) */}
  <div style={cardStyle}>
- <Field label="Section">
- <Select value={categoryId} onChange={handleCategoryChange} prominent>
- {BROWSE_CATEGORIES.map(c => (
- <option key={c.id} value={c.id}>{c.label}</option>
-))}
- </Select>
- </Field>
- {currentCategory && currentCategory.groups.length > 1 && (
- <Field label="Group">
- <Select value={groupId} onChange={handleGroupChange} prominent>
- {currentCategory.groups.map(g => (
- <option key={g.id} value={g.id}>{g.label}</option>
-))}
- </Select>
- </Field>
-)}
- <Field label="Procedure">
- <Select value={activeProcId || ""}
- onChange={handleProcedureSelect} prominent>
- <option value="">— Select a procedure —</option>
- {(currentGroup?.procedures || []).map(p => (
- <option key={p.id} value={p.id}>{p.label}</option>
-))}
- </Select>
- </Field>
- </div>
-
- {/* Add procedure to session */}
- <button className="ghost" onClick={addProcedureSlot}
- style={{ width: "100%", marginTop: "10px", fontSize: "11px" }}>
- + add procedure to session
- </button>
-
- {/* Search card */}
- <div style={{...cardStyle, marginTop: "10px" }}>
- <label style={labelStyle}>Search</label>
- <input type="text" placeholder="e.g. cold test, Vitrebond, RCT"
+ <input ref={searchRef} type="text" placeholder="e.g. cold test, Vitrebond, RCT"
  value={search} onChange={e => setSearch(e.target.value)}
  style={{...inputStyle, fontSize: "13px", background: "var(--paper-soft)" }} />
  {search.trim() && (
@@ -12359,6 +12650,41 @@ function Browse({
  </div>
 )}
  </div>
+
+ {/* Procedure selection card */}
+ <div style={{...cardStyle, marginTop: "10px" }}>
+ <Field label="Section">
+ <Select value={categoryId} onChange={handleCategoryChange} prominent>
+ {BROWSE_CATEGORIES.map(c => (
+ <option key={c.id} value={c.id}>{c.label}</option>
+))}
+ </Select>
+ </Field>
+ {currentCategory && currentCategory.groups.length > 1 && (
+ <Field label="Group">
+ <Select value={groupId} onChange={handleGroupChange} prominent>
+ {currentCategory.groups.map(g => (
+ <option key={g.id} value={g.id}>{g.label}</option>
+))}
+ </Select>
+ </Field>
+)}
+ <Field label="Procedure">
+ <Select value={activeProcId || ""}
+ onChange={handleProcedureSelect} prominent>
+ <option value="">— Select a procedure —</option>
+ {(currentGroup?.procedures || []).map(p => (
+ <option key={p.id} value={p.id}>{p.label}</option>
+))}
+ </Select>
+ </Field>
+ </div>
+
+ {/* Add procedure to session */}
+ <button className="ghost" onClick={addProcedureSlot}
+ style={{ width: "100%", marginTop: "10px", fontSize: "11px" }}>
+ + add procedure to session
+ </button>
 
  {/* Items panel — shown once any slot has a procedure */}
  {totalItems > 0 && (
@@ -13366,6 +13692,9 @@ function ClickToCopyCode({ code, showSwadeFlag }) {
 
 function RVUs() {
  const [search, setSearch] = useState("");
+ // Autofocus the search the moment the Codes tab opens (matches Note + Steps).
+ const searchRef = useRef(null);
+ useEffect(() => { searchRef.current?.focus(); }, []);
  // Default to no category selected (null) — student sees the full
  // catalog and can narrow with a pill or the search box. Clicking the
  // active pill a second time deselects it and returns to this state.
@@ -13567,7 +13896,7 @@ function RVUs() {
  {/* Search input */}
  <div style={{ marginBottom: "12px" }}>
  <label style={labelStyle}>Search Code or Description</label>
- <input type="text" value={search}
+ <input ref={searchRef} type="text" value={search}
  onChange={e => setSearch(e.target.value)}
  placeholder="e.g. crown, D2740, prophy"
  style={headerInput} />
@@ -23753,6 +24082,10 @@ const PATHWAY_DOMAINS = [
  { id: "digital", label: "Digital" },
 ];
 
+// Maps landing: true = pathway cards (title + what-it-is + visit/lab counts),
+// false = the bare domain pills. One-line revert.
+const MAPS_LANDING_CARDS = true;
+
 const PATHWAY_GROUPS = {
  rpd: [
  { label: "Definitive cast-metal framework", ids: ["rpd-conventional"] },
@@ -24061,8 +24394,8 @@ const PATHWAYS = [
  {
  after: 1,
  title: "Pour, working cast, + fabricate the PFM crown",
- body: "The lab pours the impression in die stone, builds the working cast, waxes + casts the metal framework, bakes the porcelain, and glazes the PFM crown. For anterior crowns — and any posterior whose margin isn't clearly readable — the cast first comes back to you for a die-trim round-trip.",
- detail: "1. First decide whether you'll die-trim the dies yourself: yes for every anterior crown, and for any posterior whose margin isn't clearly readable from the impression; otherwise the lab does the whole job. This decides which script you send next.\n\n2. Send the final impression with the matching lab script. With no die-trim, send the full fabrication script: \"Please pour impression & fabricate PFM crown for #X using high-noble alloy. Occlusal and interproximal contacts in porcelain. 1–2 mm metal collar on the lingual margin, no metal collar on the buccal. Shade ___.\" — the lab does everything and returns the finished crown (skip the trim + mount steps below). For a die-trim case, send instead: \"Please pour impression, Pindex, & return for die trimming.\" — the cast comes back to you partway through, and you trim, mount, and send it back to the lab to finish.\n\n3. The lab pours the impression in Type IV die stone — vacuum-mixed for strength and low expansion, no voids on the margins — trims it to a horseshoe, and Pindexes it (pins set so each die has one path of insertion), then sections the cast into individually removable dies with saw cuts that don't damage the margins. On a die-trim case it returns the cast to you here; otherwise it trims and mounts the die itself and skips to the last step.\n\n4. Die-trim (your part of the round-trip): trim the excess stone below the finish line so the margin is fully visible and the lab can wax to it. Goals — an ideal root-form emergence profile (~3 mm below the margin), independently removable dies, smooth surfaces, and clear access to the margin. Remove the bulk with a lab bur on slow speed, then detail with a sharp scalpel under magnification (loupes/microscope), and never touch the finish line (marking it with a wax pencil first is optional). Over-trimming ruins the emergence profile and yields a bulky, overcontoured crown that traps plaque and inflames the gingiva.\n\n5. Mount the Pindex you trimmed: if the casts hand-articulate with stable tripod contacts, mount without a bite record; if they can't (too few contacts), use an interocclusal PVS record placed only over the prepared teeth and trimmed until the casts seat with no spring or bounce. Attach the mounting plate, set the incisal pin to 0 with the centric latch locked, confirm hand articulation and mounting-plate clearance, secure the casts in MI (sticky wax, casts fully dry), mix mounting stone, and close the articulator slowly (keep stone off the pins). Verify the mounting reproduces the mouth — the contacts should match, checked with shimstock — then send the mounted, die-trimmed cast back to the lab with the fabrication script (high-noble alloy, contacts in porcelain, 1–2 mm lingual metal collar, no buccal collar, shade).\n\n6. The lab waxes and casts the high-noble metal framework, applies and bakes the porcelain to the contacts you specified, and glazes the PFM crown, then returns it for delivery.",
+ body: "The lab pours the impression in die stone, builds the working cast, waxes + casts the metal framework, bakes the porcelain, and glazes the PFM crown. For most anterior crowns — and any posterior whose margin isn't clearly readable — the cast first comes back to you for a die-trim round-trip.",
+ detail: "1. First decide whether you'll die-trim the dies yourself: usually yes for anterior crowns, and for any posterior whose margin isn't clearly readable from the impression; otherwise the lab does the whole job. This decides which script you send next.\n\n2. Send the final impression with the matching lab script. With no die-trim, send the full fabrication script: \"Please pour impression & fabricate PFM crown for #X using high-noble alloy. Occlusal and interproximal contacts in porcelain. 1–2 mm metal collar on the lingual margin, no metal collar on the buccal. Shade ___.\" — the lab does everything and returns the finished crown (skip the trim + mount steps below). For a die-trim case, send instead: \"Please pour impression, Pindex, & return for die trimming.\" — the cast comes back to you partway through, and you trim, mount, and send it back to the lab to finish.\n\n3. The lab pours the impression in Type IV die stone — vacuum-mixed for strength and low expansion, no voids on the margins — trims it to a horseshoe, and Pindexes it (pins set so each die has one path of insertion), then sections the cast into individually removable dies with saw cuts that don't damage the margins. On a die-trim case it returns the cast to you here; otherwise it trims and mounts the die itself and skips to the last step.\n\n4. Die-trim (your part of the round-trip): trim the excess stone below the finish line so the margin is fully visible and the lab can wax to it. Goals — an ideal root-form emergence profile (~3 mm below the margin), independently removable dies, smooth surfaces, and clear access to the margin. Remove the bulk with a lab bur on slow speed, then detail with a sharp scalpel under magnification (loupes/microscope), and never touch the finish line (marking it with a wax pencil first is optional). Over-trimming ruins the emergence profile and yields a bulky, overcontoured crown that traps plaque and inflames the gingiva.\n\n5. Mount the Pindex you trimmed: if the casts hand-articulate with stable tripod contacts, mount without a bite record; if they can't (too few contacts), use an interocclusal PVS record placed only over the prepared teeth and trimmed until the casts seat with no spring or bounce. Attach the mounting plate, set the incisal pin to 0 with the centric latch locked, confirm hand articulation and mounting-plate clearance, secure the casts in MI (sticky wax, casts fully dry), mix mounting stone, and close the articulator slowly (keep stone off the pins). Verify the mounting reproduces the mouth — the contacts should match, checked with shimstock — then send the mounted, die-trimmed cast back to the lab with the fabrication script (high-noble alloy, contacts in porcelain, 1–2 mm lingual metal collar, no buccal collar, shade).\n\n6. The lab waxes and casts the high-noble metal framework, applies and bakes the porcelain to the contacts you specified, and glazes the PFM crown, then returns it for delivery.",
  source: "clinic (swade) — Crown Final Impression (PFM + die-trim lab scripts) + Crown Delivery; Mounting & Die Trimming (Vlagos); PFM Crowns",
  turnaround: "Before Visit 3 (delivery)",
  },
@@ -28973,7 +29306,47 @@ function Pathways() {
  {/* Search input removed per Jake — Maps opens to a single unselected
  domain pill; selecting it opens the map directly. */}
 
- {/* Domain pills + show-all toggle */}
+ {/* Landing: pathway cards before any domain is picked; the bare pill row otherwise */}
+ {nothingSelected && MAPS_LANDING_CARDS ? (
+ <div style={{ marginBottom: "10px" }}>
+ <div style={{ marginBottom: "20px" }}>
+ <h2 className="serif" style={{ fontSize: "clamp(21px, 3vw, 28px)", fontWeight: 500, color: "var(--ink)", margin: "0 0 6px", letterSpacing: "-0.01em", lineHeight: 1.1 }}>
+ Phase-III procedure library
+ </h2>
+ <p style={{ fontSize: "13.5px", fontStyle: "italic", color: "var(--ink-soft)", margin: 0, maxWidth: "580px", lineHeight: 1.5, fontFamily: "'Geist', sans-serif" }}>
+ Every Phase-III procedure, visit by visit — prep through delivery, with the lab round-trips and decision points called out.
+ </p>
+ </div>
+ <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(212px, 1fr))", gap: "12px" }}>
+ {PATHWAY_DOMAINS.map(d => {
+ const p = PATHWAYS.find(x => x.domain === d.id);
+ if (!p) return null;
+ const visits = (p.phases || []).length;
+ const labN = (p.labSteps || []).length;
+ const sub = (PATHWAY_GROUPS[d.id] && PATHWAY_GROUPS[d.id][0] && PATHWAY_GROUPS[d.id][0].label) || "";
+ return (
+ <button key={d.id} onClick={() => handleDomainChange(d.id)}
+ onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 5px 18px rgba(26,22,18,0.10)"; }}
+ onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--rule)"; e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "0 1px 3px rgba(26,22,18,0.05)"; }}
+ style={{
+ textAlign: "left", display: "flex", flexDirection: "column",
+ minHeight: "120px", padding: "15px 17px", borderRadius: "4px",
+ border: "1px solid var(--rule)", background: "var(--card, white)",
+ cursor: "pointer", fontFamily: "'Geist', sans-serif",
+ boxShadow: "0 1px 3px rgba(26,22,18,0.05)",
+ transition: "border-color 140ms ease, transform 140ms ease, box-shadow 140ms ease",
+ }}>
+ <div className="serif" style={{ fontSize: "22px", fontWeight: 500, color: "var(--ink)", lineHeight: 1.05, marginBottom: "5px" }}>{d.label}</div>
+ <div style={{ fontSize: "12px", color: "var(--ink-soft)", lineHeight: 1.35 }}>{sub}</div>
+ <div style={{ marginTop: "auto", paddingTop: "12px", fontSize: "10.5px", color: "var(--ink-faint)", fontFamily: "'JetBrains Mono', monospace", fontVariantNumeric: "tabular-nums", letterSpacing: "0.02em" }}>
+ {visits} visit{visits === 1? "": "s"} · {labN} lab step{labN === 1? "": "s"}
+ </div>
+ </button>
+);
+ })}
+ </div>
+ </div>
+ ) : (
  <div style={{ display: "flex", gap: "8px", marginBottom: "14px", flexWrap: "wrap", alignItems: "center" }}>
  {PATHWAY_DOMAINS.map(d => {
  const active =!showAllDomains && d.id === domainId;
@@ -28996,6 +29369,7 @@ function Pathways() {
 );
  })}
  </div>
+ )}
 
  {/* Scenario pills — same pill family as the domain pills above, but
  visually subordinate: thinner, slightly lighter, hairline-separated
@@ -30365,7 +30739,148 @@ const TABS = [
  // workflow is iterate → fan out to siblings (cd-iid, cd-adjustment,
  // cd-reline-lab) → continue with rpd-kennedy3 and ind-conventional-crown.
  { id: "pathways", label: "Maps", hint: "Visual map of the multi-visit workflow with lab interactions" },
+ { id: "napoleon", label: "Painting", hint: "Hover to magnify" },
 ];
+
+// ───────── Napoleon ─────────
+// Full-bleed display of Jacques-Louis David's "Le Sacre de Napoléon" (the
+// 1804 coronation, painted 1804–1807). The whole canvas stays at normal
+// size; hovering floats a circular magnifying glass — roughly a quarter of
+// the screen — that shows the spot under the cursor enlarged 4×, leaving
+// the rest of the picture untouched. The loupe is a div whose background is
+// the same image, scaled up and positioned so the hovered point sits dead
+// center. The base <img> uses object-fit: cover anchored to the bottom
+// (object-position: center bottom): it fills the frame edge to edge, and any
+// vertical overflow is cropped off the TOP so the bottom is never cut. We
+// recompute that exact geometry (scale + offset) and mirror it into the loupe's
+// background-size/position — otherwise the magnified content would drift out
+// of register with what's underneath. Rendered outside <main> to escape the
+// 1280px frame and fill the viewport below the tab nav.
+//
+// The cursor is hidden with plain `cursor: none`. Its only failure mode was
+// flickering back to the arrow during the loupe's per-frame repaints — so the
+// loupe below pans a GPU-composited image with transform (zero repaint) and the
+// flicker has nothing left to trigger. (Image-based invisible cursors were
+// unreliable: Chrome-on-macOS ignores data-URI cursors and rejected the PNG
+// file too, falling back to the default arrow.)
+const HIDE_CURSOR = "none";
+function NapoleonTab() {
+ const wrapRef = useRef(null);
+ // Container metrics (measured): width, viewport height, and a scroll-
+ // independent document-top. We DERIVE height as vh − top rather than
+ // measuring it, because the rendered height is itself calc(100vh − top):
+ // measuring it at mount captures a stale value (the height under the
+ // initial top guess), which would desync the loupe's cover geometry.
+ const [box, setBox] = useState({ w: 0, top: 132, vh: 800 });
+ // Natural image size, read off the loaded <img> (falls back to the file's).
+ const [nat, setNat] = useState({ w: 2000, h: 1258 });
+ // Cursor position in container px while hovering; null hides the loupe.
+ const [lens, setLens] = useState(null);
+ useLayoutEffect(() => {
+ const measure = () => {
+ const el = wrapRef.current;
+ if (!el) return;
+ const r = el.getBoundingClientRect();
+ setBox({ w: r.width, top: r.top + window.scrollY, vh: window.innerHeight });
+ };
+ measure();
+ window.addEventListener("resize", measure);
+ return () => window.removeEventListener("resize", measure);
+ }, []);
+ const onMove = (e) => {
+ const el = wrapRef.current;
+ if (!el) return;
+ const r = el.getBoundingClientRect();
+ setLens({ x: e.clientX - r.left, y: e.clientY - r.top });
+ };
+ const ZOOM = 4;              // magnification inside the glass
+ const LENS_FRACTION = 0.26;  // loupe diameter ≈ a quarter of the screen width
+ const W = box.w, H = box.vh - box.top;
+ // Size off width (so "a quarter of the screen" holds across aspect ratios),
+ // but cap at 70% of height so a short window can't make the loupe overflow.
+ const lensSize = Math.round(Math.min(W * LENS_FRACTION, H * 0.7)) || 320;
+ // Mirror object-fit: cover + object-position: center bottom — scale to FILL,
+ // center horizontally, and anchor the BOTTOM (offY = H − dispH) so any
+ // overflow is trimmed off the top, matching the base image exactly.
+ const scale = W && H ? Math.max(W / nat.w, H / nat.h) : 1;
+ const dispW = nat.w * scale, dispH = nat.h * scale;
+ const offX = (W - dispW) / 2, offY = H - dispH;
+ // Loupe geometry. The glass pans a GPU-composited <img> with transform —
+ // NOT a background-position — so moving it never repaints; that's what frees
+ // `cursor: none` from flickering. mag (cover-scale × ZOOM) maps natural → lens;
+ // tx/ty pan the inner image so the hovered point sits dead-center.
+ let lensView = null;
+ if (lens && W > 0) {
+ const px = lens.x - offX, py = lens.y - offY;
+ lensView = {
+ cx: lens.x - lensSize / 2,
+ cy: lens.y - lensSize / 2,
+ tx: lensSize / 2 - px * ZOOM,
+ ty: lensSize / 2 - py * ZOOM,
+ mag: scale * ZOOM,
+ };
+ }
+ return (
+ <div ref={wrapRef}
+ onMouseMove={onMove}
+ onMouseLeave={() => setLens(null)}
+ style={{
+ position: "relative",
+ width: "100%",
+ height: "calc(100vh - " + box.top + "px)",
+ overflow: "hidden",
+ background: "#15110d",
+ // Cursor hidden across the whole picture (the glass is the pointer). The
+ // transform-panned loupe never repaints here, so `none` has nothing to flicker.
+ cursor: HIDE_CURSOR,
+ borderTop: "1px solid var(--rule)",
+ }}>
+ <img
+ src="/napoleon.jpg"
+ alt="The Coronation of Napoleon — Jacques-Louis David, 1807"
+ draggable={false}
+ onLoad={(e) => setNat({ w: e.target.naturalWidth, h: e.target.naturalHeight })}
+ style={{
+ display: "block",
+ width: "100%",
+ height: "100%",
+ objectFit: "cover",
+ objectPosition: "center bottom",
+ userSelect: "none",
+ WebkitUserSelect: "none",
+ // The img is the hit-test target under the loupe (pointer-events: none), so
+ // it carries cursor: none too.
+ cursor: HIDE_CURSOR,
+ }} />
+ {lensView && (
+ <div style={{
+ position: "absolute", left: "0", top: "0",
+ width: lensSize + "px", height: lensSize + "px",
+ transform: "translate(" + lensView.cx + "px, " + lensView.cy + "px)",
+ borderRadius: "50%", overflow: "hidden",
+ background: "#15110d",
+ boxShadow: "0 12px 32px rgba(0, 0, 0, 0.5)",
+ pointerEvents: "none", cursor: "none",
+ }}>
+ <img src="/napoleon.jpg" alt="" draggable={false}
+ style={{
+ position: "absolute", left: "0", top: "0",
+ width: nat.w + "px", height: nat.h + "px",
+ transformOrigin: "0 0",
+ transform: "translate(" + lensView.tx + "px, " + lensView.ty + "px) scale(" + lensView.mag + ")",
+ pointerEvents: "none", userSelect: "none", WebkitUserSelect: "none",
+ }} />
+ <div style={{
+ position: "absolute", left: "0", top: "0", right: "0", bottom: "0",
+ borderRadius: "50%",
+ boxShadow: "inset 0 0 0 2px rgba(22, 17, 13, 0.55), inset 0 0 0 4px rgba(255, 255, 255, 0.5), inset 0 0 26px 6px rgba(0, 0, 0, 0.26), inset 0 7px 16px rgba(255, 255, 255, 0.15)",
+ pointerEvents: "none",
+ }} />
+ </div>
+ )}
+ </div>
+ );
+}
 
 // Engine names are exported from src/rpd-engine.js directly. Tests import
 // from there; UI imports the names it needs at the top of this file.
@@ -30724,6 +31239,9 @@ export default function App() {
  {TABS.map((t) => (
  <button key={t.id}
  className={`tab-button ${tab === t.id? "active": ""}`}
+ // Painting is pushed to the far-right edge of the nav (margin-left: auto
+ // consumes the free space before it in the flex row).
+ style={t.id === "napoleon" ? { marginLeft: "auto" } : undefined}
  onClick={() => setTab(t.id)}>
  {t.label}
  </button>
@@ -30731,7 +31249,12 @@ export default function App() {
  </nav>
  </header>
 
+ {/* Napoleon — full-bleed image viewer; rendered outside <main> so it
+ escapes the 1280px frame and fills the screen below the tab nav. */}
+ {tab === "napoleon" && <NapoleonTab />}
+
  {/* ───────── Tab body ───────── */}
+ {tab !== "napoleon" && (
  <main style={{
  maxWidth: "1280px", margin: "0 auto",
  padding: "32px 40px 60px",
@@ -30758,6 +31281,7 @@ export default function App() {
  {tab === "pes" && <PEs onShowSteps={handleShowSteps} />}
  {tab === "helpers" && <RPDHelper />}
  </main>
+ )}
  </div>
 );
 }
