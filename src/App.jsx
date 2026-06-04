@@ -30823,10 +30823,11 @@ function NapoleonTab() {
  const LENS_FRACTION = 0.26;    // loupe diameter ≈ a quarter of the screen width
  const W = box.w, H = box.vh - box.top;
  const lensSize = Math.round(Math.min(W * LENS_FRACTION, H * 0.7)) || 320;
- // Mirror object-fit: cover + object-position: center bottom (anchor bottom).
- const scale = W && H ? Math.max(W / nat.w, H / nat.h) : 1;
+ // Mirror object-fit: contain — scale to FIT inside, centred on both axes, so
+ // the whole painting is visible with a matte where the aspect ratios differ.
+ const scale = W && H ? Math.min(W / nat.w, H / nat.h) : 1;
  const dispW = nat.w * scale, dispH = nat.h * scale;
- const offX = (W - dispW) / 2, offY = H - dispH;
+ const offX = (W - dispW) / 2, offY = (H - dispH) / 2;
  // Position the glass IMPERATIVELY — write the container + inner-image
  // transforms straight to the DOM, with NO React render per mouse move. That's
  // what makes it track the cursor at native pointer speed, zero lag. mag
@@ -30843,6 +30844,10 @@ function NapoleonTab() {
  if (!el) return;
  const r = el.getBoundingClientRect();
  const lx = e.clientX - r.left, ly = e.clientY - r.top;
+ // Only magnify over the painting itself — contain leaves a matte margin where
+ // the cursor has nothing to magnify, so hide the glass out there.
+ const inside = lx >= offX && lx <= offX + dispW && ly >= offY && ly <= offY + dispH;
+ if (!inside) { if (hovering) setHovering(false); return; }
  posRef.current = { x: lx, y: ly };
  positionLoupe(lx, ly);          // imperative — does NOT re-render
  if (!hovering) setHovering(true);
@@ -30876,8 +30881,8 @@ function NapoleonTab() {
  display: "block",
  width: "100%",
  height: "100%",
- objectFit: "cover",
- objectPosition: "center bottom",
+ objectFit: "contain",
+ objectPosition: "center",
  userSelect: "none",
  WebkitUserSelect: "none",
  // The img is the hit-test target under the loupe (pointer-events: none), so
