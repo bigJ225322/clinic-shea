@@ -30787,6 +30787,13 @@ const TABS = [
 // unreliable: Chrome-on-macOS ignores data-URI cursors and rejected the PNG
 // file too, falling back to the default arrow.)
 const HIDE_CURSOR = "none";
+// The Loupes viewer cycles through a small, curated set — masterpieces that
+// reward magnification. La Grande Jatte especially: pointillism is literally
+// made of dots, so it rewrites itself under the glass.
+const LOUPE_IMAGES = [
+ { src: "/napoleon.jpg", alt: "The Coronation of Napoleon — Jacques-Louis David, 1807" },
+ { src: "/Sunday.jpg", alt: "A Sunday on La Grande Jatte — Georges Seurat, 1886" },
+];
 function NapoleonTab() {
  const wrapRef = useRef(null);
  const lcRef = useRef(null);   // loupe container — positioned imperatively
@@ -30799,6 +30806,8 @@ function NapoleonTab() {
  // Natural image size, read off the loaded <img> (falls back to the file's).
  const [nat, setNat] = useState({ w: 2000, h: 1258 });
  const [hovering, setHovering] = useState(false);
+ const [imgIdx, setImgIdx] = useState(0); // which painting is showing
+ const cur = LOUPE_IMAGES[imgIdx];
  useLayoutEffect(() => {
  const measure = () => {
  const el = wrapRef.current;
@@ -30859,8 +30868,8 @@ function NapoleonTab() {
  borderTop: "1px solid var(--rule)",
  }}>
  <img
- src="/napoleon.jpg"
- alt="The Coronation of Napoleon — Jacques-Louis David, 1807"
+ src={cur.src}
+ alt={cur.alt}
  draggable={false}
  onLoad={(e) => setNat({ w: e.target.naturalWidth, h: e.target.naturalHeight })}
  style={{
@@ -30888,7 +30897,7 @@ function NapoleonTab() {
  boxShadow: "0 12px 32px rgba(0, 0, 0, 0.5)",
  pointerEvents: "none", cursor: "none",
  }}>
- <img ref={liRef} src="/napoleon.jpg" alt="" draggable={false}
+ <img ref={liRef} src={cur.src} alt="" draggable={false}
  style={{
  position: "absolute", left: "0", top: "0",
  width: nat.w + "px", height: nat.h + "px",
@@ -30903,6 +30912,29 @@ function NapoleonTab() {
  pointerEvents: "none",
  }} />
  </div>
+ {/* Cycle to the next painting. Sits above the loupe (z-index), with its own
+ pointer cursor so it stays discoverable even though the picture hides the
+ cursor. Only shown when there's more than one image. */}
+ {LOUPE_IMAGES.length > 1 && (
+ <button
+ onClick={() => setImgIdx((i) => (i + 1) % LOUPE_IMAGES.length)}
+ aria-label="Next painting"
+ className="loupe-next"
+ style={{
+ position: "absolute", right: "22px", top: "50%", transform: "translateY(-50%)",
+ width: "46px", height: "46px", borderRadius: "50%",
+ display: "flex", alignItems: "center", justifyContent: "center",
+ background: "rgba(20, 17, 13, 0.42)",
+ border: "1px solid rgba(255, 255, 255, 0.32)",
+ color: "rgba(255, 255, 255, 0.92)",
+ backdropFilter: "blur(2px)", WebkitBackdropFilter: "blur(2px)",
+ cursor: "pointer", zIndex: 10,
+ fontSize: "22px", lineHeight: 1, paddingBottom: "2px",
+ opacity: 0.62, transition: "opacity 200ms ease, background 200ms ease",
+ }}>
+ ›
+ </button>
+ )}
  </div>
  );
 }
@@ -30915,7 +30947,7 @@ export default function App() {
  // Eagerly preload the (large) Painting-tab image at app start rather than
  // lazy-fetching ~17 MB on the first P-tab click — so P opens instantly. Runs
  // after mount, so it downloads in the background without blocking first paint.
- useEffect(() => { const im = new Image(); im.src = "/napoleon.jpg"; }, []);
+ useEffect(() => { LOUPE_IMAGES.forEach((p) => { const im = new Image(); im.src = p.src; }); }, []);
  // Globally-selected procedure — read by Browse, Note Builder, and Prep List
  // so the user's selection persists across tabs.
  const [selectedProcedureId, setSelectedProcedureId] = useState("");
@@ -31107,15 +31139,22 @@ export default function App() {
  max-width: 0; opacity: 0;
  transition: max-width 380ms cubic-bezier(.2,.6,.2, 1), opacity 260ms ease;
  }
-.loupes-tab .lp-o {
- display: inline-block;
- transform: scale(2.6); transform-origin: center center;
- transition: transform 380ms cubic-bezier(.2,.6,.2, 1), text-shadow 280ms ease;
- text-shadow: 0 0.5px 2px rgba(0, 0, 0, 0.18);
+.loupes-tab .lp-o { position: relative; display: inline-block; }
+ /* The lens at rest: a small, perfectly round ring centred on the o's slot. On
+    hover/active it fades out as the real lowercase o fades in — the circle
+    resolves into the letter while the word blooms around it. */
+.loupes-tab .lp-o::after {
+ content: ""; position: absolute; left: 50%; top: 50%;
+ width: 9px; height: 9px; transform: translate(-50%, -50%);
+ border-radius: 50%; border: 1.3px solid currentColor;
+ opacity: 0.85; transition: opacity 240ms ease; pointer-events: none;
  }
+.loupes-tab .lp-o-letter { opacity: 0; transition: opacity 240ms ease; }
 .loupes-tab:hover .lp-l,.loupes-tab.active .lp-l { max-width: 1.4ch; opacity: 1; }
 .loupes-tab:hover .lp-rest,.loupes-tab.active .lp-rest { max-width: 4.5ch; opacity: 1; }
-.loupes-tab:hover .lp-o,.loupes-tab.active .lp-o { transform: scale(1); text-shadow: none; }
+.loupes-tab:hover .lp-o-letter,.loupes-tab.active .lp-o-letter { opacity: 1; }
+.loupes-tab:hover .lp-o::after,.loupes-tab.active .lp-o::after { opacity: 0; }
+.loupe-next:hover { opacity: 1!important; background: rgba(20, 17, 13, 0.52)!important; }
 
  /* Pulses the Axium-expired countdown so it catches the eye across
  the operatory. Subtle but noticeable — opacity 1 → 0.55 → 1. */
@@ -31296,7 +31335,7 @@ export default function App() {
  {t.id === "napoleon" ? (
  <>
  <span className="lp-seg lp-l">L</span>
- <span className="lp-o">o</span>
+ <span className="lp-o"><span className="lp-o-letter">o</span></span>
  <span className="lp-seg lp-rest">upes</span>
  </>
  ) : t.label}
