@@ -30796,6 +30796,7 @@ const LOUPE_IMAGES = [
  // crops only its cuttable top-sky / bottom-lawn before it ever letterboxes.
  { src: "/napoleon.jpg", alt: "The Coronation of Napoleon — Jacques-Louis David, 1807", fit: "cover", anchor: "bottom", w: 6000, h: 3773 },
  { src: "/Sunday.jpg", alt: "A Sunday on La Grande Jatte — Georges Seurat, 1886", fit: "smart", topCut: 0.10, botCut: 0.12, w: 3840, h: 2556 },
+ { src: "/Entrance.jpg", alt: "The Entrance to the Grand Canal, Venice — Canaletto, c. 1730", fit: "smart", topCut: 0.08, botCut: 0.10, w: 3840, h: 2619 },
 ];
 function NapoleonTab({ imgIdx }) {
  const wrapRef = useRef(null);
@@ -30930,7 +30931,12 @@ function NapoleonTab({ imgIdx }) {
  willChange: "transform",
  borderRadius: "50%", overflow: "hidden",
  background: "#15110d",
- boxShadow: "0 12px 32px rgba(0, 0, 0, 0.5)",
+ // A warm halo around the rim — the loupe's own light. Blooms larger when the
+ // surround is dimmed, so focusing makes the glass glow against the dark.
+ boxShadow: dimmed
+ ? "0 12px 34px rgba(0, 0, 0, 0.55), 0 0 40px 7px rgba(255, 235, 200, 0.5)"
+ : "0 12px 32px rgba(0, 0, 0, 0.5), 0 0 18px 2px rgba(255, 240, 214, 0.35)",
+ transition: "box-shadow 240ms ease",
  pointerEvents: "none", cursor: "none", zIndex: 2,
  }}>
  <img ref={liRef} src={cur.src} alt="" draggable={false}
@@ -30947,7 +30953,7 @@ function NapoleonTab({ imgIdx }) {
  <div style={{
  position: "absolute", left: "0", top: "0", right: "0", bottom: "0",
  borderRadius: "50%",
- boxShadow: "inset 0 0 0 2px rgba(22, 17, 13, 0.55), inset 0 0 0 4px rgba(255, 255, 255, 0.5), inset 0 0 26px 6px rgba(0, 0, 0, 0.26), inset 0 7px 16px rgba(255, 255, 255, 0.15)",
+ boxShadow: "inset 0 0 0 1.5px rgba(18, 13, 8, 0.5), inset 0 0 0 3.5px rgba(255, 244, 222, 0.78), inset 0 0 22px 5px rgba(255, 236, 205, 0.32), inset 0 7px 16px rgba(255, 255, 255, 0.16)",
  pointerEvents: "none",
  }} />
  </div>
