@@ -30809,6 +30809,7 @@ function NapoleonTab({ imgIdx }) {
  // Natural image size, read off the loaded <img> (falls back to the file's).
  const [nat, setNat] = useState({ w: 2000, h: 1258 });
  const [hovering, setHovering] = useState(false);
+ const [pressing, setPressing] = useState(false); // click-and-hold dims around the glass
  const cur = LOUPE_IMAGES[imgIdx];
  useLayoutEffect(() => {
  const measure = () => {
@@ -30881,7 +30882,9 @@ function NapoleonTab({ imgIdx }) {
  return (
  <div ref={wrapRef}
  onMouseMove={onMove}
- onMouseLeave={() => setHovering(false)}
+ onMouseLeave={() => { setHovering(false); setPressing(false); }}
+ onMouseDown={() => setPressing(true)}
+ onMouseUp={() => setPressing(false)}
  style={{
  position: "relative",
  width: "100%",
@@ -30908,6 +30911,16 @@ function NapoleonTab({ imgIdx }) {
  // it carries cursor: none too.
  cursor: HIDE_CURSOR,
  }} />
+ {/* Click-and-hold dims everything outside the glass — the tunnel of focus you
+ get peering through dental loupes. Above the picture, below the loupe disc
+ (z-index), so the magnified circle stays bright. */}
+ <div style={{
+ position: "absolute", left: 0, top: 0, right: 0, bottom: 0,
+ background: "rgba(10, 7, 4, 0.58)",
+ opacity: pressing && hovering ? 1 : 0,
+ transition: "opacity 180ms ease",
+ pointerEvents: "none", zIndex: 1,
+ }} />
  {/* Loupe — always mounted so its refs stay stable for imperative updates;
  shown only while hovering (opacity). Position + zoom are written straight
  to the DOM in positionLoupe, so React never re-renders on mouse move. */}
@@ -30919,7 +30932,7 @@ function NapoleonTab({ imgIdx }) {
  borderRadius: "50%", overflow: "hidden",
  background: "#15110d",
  boxShadow: "0 12px 32px rgba(0, 0, 0, 0.5)",
- pointerEvents: "none", cursor: "none",
+ pointerEvents: "none", cursor: "none", zIndex: 2,
  }}>
  <img ref={liRef} src={cur.src} alt="" draggable={false}
  style={{
