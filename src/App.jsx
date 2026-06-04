@@ -30915,7 +30915,7 @@ function NapoleonTab({ imgIdx }) {
  disc (z-index), so the magnified circle stays bright. */}
  <div style={{
  position: "absolute", left: 0, top: 0, right: 0, bottom: 0,
- background: "rgba(10, 7, 4, 0.58)",
+ background: "rgba(8, 6, 3, 0.72)",
  opacity: dimmed && hovering ? 1 : 0,
  transition: "opacity 180ms ease",
  pointerEvents: "none", zIndex: 1,
@@ -30939,6 +30939,9 @@ function NapoleonTab({ imgIdx }) {
  width: nat.w + "px", height: nat.h + "px",
  transformOrigin: "0 0",
  willChange: "transform",
+ // Faint coaxial-light feel of a real dental loupe: the magnified disc reads
+ // a touch brighter and more saturated than the surrounding picture.
+ filter: "brightness(1.08) saturate(1.06)",
  pointerEvents: "none", userSelect: "none", WebkitUserSelect: "none",
  }} />
  <div style={{
