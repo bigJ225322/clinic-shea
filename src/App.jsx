@@ -4963,6 +4963,18 @@ function renderTemplate(raw, f) {
  // under the "Updated odontogram with radiographic & clinical hard tissue
  // findings:" heading with the user's bulleted list.
  if (f.examFindings && typeof f.examFindings === "object") {
+ // IOE dentition dropdowns → assemble the chosen pieces into the choices line.
+ // Groups left blank are omitted; if nothing is picked, the "(heavily restored
+ // / carious dentition)..." prompt is left in place for manual fill.
+ {
+ const ex = f.examFindings;
+ const g1 = [ex["ioe restoration"], ex["ioe caries"]].filter(Boolean);
+ const dent = g1.length ? g1.join(", ") + " dentition" : "";
+ const ioeLine = [dent, ex["ioe completeness"], ex["ioe perio"]].filter(Boolean).join(", ");
+ if (ioeLine) {
+ t = t.replace(/- \(heavily restored \/ carious dentition\)[^\n]*/, `- ${ioeLine}`);
+ }
+ }
  for (const [label, value] of Object.entries(f.examFindings)) {
  if (typeof value === "boolean") continue; // ohi-checkbox booleans handled in 7b-perio
  if (Array.isArray(value)) continue; // structured data (e.g. consultations) handled separately
@@ -5047,14 +5059,8 @@ function renderTemplate(raw, f) {
  continue;
  }
 
- // IOE dentition: replace the choices line "(heavily restored / carious dentition)..."
- if (label === "ioe description") {
- t = t.replace(
- /- \(heavily restored \/ carious dentition\)[^\n]*/,
- `- ${v}`
-);
- continue;
- }
+ // IOE dentition dropdowns are assembled above the loop; skip their keys here.
+ if (label.startsWith("ioe ")) continue;
 
  // Radiograph findings: append to the "- Radiographs reveal" line.
  if (label === "radiograph findings") {
@@ -8039,8 +8045,7 @@ const EXAM_FINDINGS_CONFIG = {
  fields: [
  { label: "EOE", type: "textarea",
  placeholder: "Pt appears generally healthy in the dental chair. No visible asymmetries. EOE WNL with normal skin texture and color, normal facial movements, no visible/palpable masses, no lymphadenopathy, normal facial muscle movement & palpation, and normal TMJ movement and palpation bilaterally." },
- { label: "ioe description", type: "input", displayLabel: "IOE — Dentition",
- placeholder: "e.g. heavily restored, complete dentition" },
+ { type: "ioe-dropdowns" },
  ],
  },
  {
@@ -9018,6 +9023,35 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  </div>
  </div>
 );
+ }
+
+ if (field.type === "ioe-dropdowns") {
+ // IOE dentition pickers (urgent care). Each writes its own findings key;
+ // the note renderer assembles the chosen pieces into the dentition line and
+ // leaves the "(heavily restored / ...)" prompt untouched if nothing is picked.
+ const restOpts = ["", "heavily restored", "moderately restored", "lightly restored", "unrestored"];
+ const carOpts = ["", "carious", "healthy"];
+ const compOpts = ["", "complete dentition", "partially edentulous", "edentulous"];
+ const perOpts = ["", "heavy calculus & active periodontal disease", "moderate calculus & generalized gingivitis", "light calculus, healthy periodontium", "minimal plaque & calculus, healthy periodontium"];
+ const subLbl = { fontSize: "9.5px", letterSpacing: "0.04em", color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif", display: "block", marginBottom: "2px" };
+ const sel = {...inputStyle, fontSize: "12px", width: "100%" };
+ const Row = (key, opts, ph, label) => (
+ <div key={key} style={{ marginBottom: "6px" }}>
+ <label style={subLbl}>{label}</label>
+ <select value={findings[key] || ""} onChange={e => update(key, e.target.value)} style={sel}>
+ {opts.map(o => <option key={o} value={o}>{o || ph}</option>)}
+ </select>
+ </div>
+ );
+ return (
+ <div key="ioe-dropdowns" style={{ marginBottom: "9px" }}>
+ <label style={{...labelStyle, fontSize: "10px", color: "var(--ink-soft)" }}>IOE — Dentition</label>
+ {Row("ioe restoration", restOpts, "— restored? —", "Restoration")}
+ {Row("ioe caries", carOpts, "— carious / healthy? —", "Caries")}
+ {Row("ioe completeness", compOpts, "— complete / edentulous? —", "Dentition")}
+ {Row("ioe perio", perOpts, "— calculus & perio? —", "Calculus / Perio")}
+ </div>
+ );
  }
 
  if (field.type === "radiographic-findings") {
