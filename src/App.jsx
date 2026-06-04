@@ -30791,10 +30791,13 @@ const HIDE_CURSOR = "none";
 // reward magnification. La Grande Jatte especially: pointillism is literally
 // made of dots, so it rewrites itself under the glass.
 const LOUPE_IMAGES = [
- { src: "/napoleon.jpg", alt: "The Coronation of Napoleon — Jacques-Louis David, 1807" },
- { src: "/Sunday.jpg", alt: "A Sunday on La Grande Jatte — Georges Seurat, 1886" },
+ // Opens on the Seurat. "smart" fit fills the WIDTH and crops only the cuttable
+ // top-sky / bottom-lawn before it ever letterboxes; the Coronation just fills
+ // (cover, anchored to keep the floor and crop the upper architecture).
+ { src: "/Sunday.jpg", alt: "A Sunday on La Grande Jatte — Georges Seurat, 1886", fit: "smart", topCut: 0.10, botCut: 0.12 },
+ { src: "/napoleon.jpg", alt: "The Coronation of Napoleon — Jacques-Louis David, 1807", fit: "cover", anchor: "bottom" },
 ];
-function NapoleonTab() {
+function NapoleonTab({ imgIdx }) {
  const wrapRef = useRef(null);
  const lcRef = useRef(null);   // loupe container — positioned imperatively
  const liRef = useRef(null);   // loupe inner image — panned imperatively
@@ -30806,7 +30809,6 @@ function NapoleonTab() {
  // Natural image size, read off the loaded <img> (falls back to the file's).
  const [nat, setNat] = useState({ w: 2000, h: 1258 });
  const [hovering, setHovering] = useState(false);
- const [imgIdx, setImgIdx] = useState(0); // which painting is showing
  const cur = LOUPE_IMAGES[imgIdx];
  useLayoutEffect(() => {
  const measure = () => {
@@ -30823,11 +30825,30 @@ function NapoleonTab() {
  const LENS_FRACTION = 0.26;    // loupe diameter ≈ a quarter of the screen width
  const W = box.w, H = box.vh - box.top;
  const lensSize = Math.round(Math.min(W * LENS_FRACTION, H * 0.7)) || 320;
- // Mirror object-fit: contain — scale to FIT inside, centred on both axes, so
- // the whole painting is visible with a matte where the aspect ratios differ.
- const scale = W && H ? Math.min(W / nat.w, H / nat.h) : 1;
+ // Per-image fit, all expressed as scale/offX/offY (the base image AND the loupe
+ // both consume these, so the glass tracks whichever fit is in play).
+ //  • "cover"  fills the screen, cropping to the edges (anchored as configured).
+ //  • "smart"  fills the WIDTH and crops only the image's cuttable top/bottom
+ //             margins for extra screen; once those are spent it letterboxes
+ //             rather than eat into the essential band.
+ let scale, offX, offY;
+ if (!(W > 0) || !(H > 0)) {
+ scale = 1; offX = 0; offY = 0;
+ } else if (cur.fit === "cover") {
+ scale = Math.max(W / nat.w, H / nat.h);
+ offX = (W - nat.w * scale) / 2;
+ offY = cur.anchor === "bottom" ? (H - nat.h * scale) : (H - nat.h * scale) / 2;
+ } else { // "smart" — fill width, spend the cuttable margins before letterboxing
+ const tCut = (cur.topCut || 0) * nat.h, bCut = (cur.botCut || 0) * nat.h;
+ const essH = nat.h - tCut - bCut;
+ const fillW = W / nat.w;
+ if (nat.h * fillW <= H) scale = fillW;                              // image shorter than screen → fill width, bars top/bottom
+ else if (nat.h * fillW - H <= (tCut + bCut) * fillW) scale = fillW; // crop fits inside the cuttable margins → fill width
+ else scale = H / essH;                                             // would cut essentials → fit the essential band, side bars
+ offX = (W - nat.w * scale) / 2;
+ offY = H / 2 - (tCut + essH / 2) * scale;                          // keep the essential band vertically centred
+ }
  const dispW = nat.w * scale, dispH = nat.h * scale;
- const offX = (W - dispW) / 2, offY = (H - dispH) / 2;
  // Position the glass IMPERATIVELY — write the container + inner-image
  // transforms straight to the DOM, with NO React render per mouse move. That's
  // what makes it track the cursor at native pointer speed, zero lag. mag
@@ -30878,11 +30899,9 @@ function NapoleonTab() {
  draggable={false}
  onLoad={(e) => setNat({ w: e.target.naturalWidth, h: e.target.naturalHeight })}
  style={{
- display: "block",
- width: "100%",
- height: "100%",
- objectFit: "contain",
- objectPosition: "center",
+ position: "absolute",
+ left: offX + "px", top: offY + "px",
+ width: dispW + "px", height: dispH + "px",
  userSelect: "none",
  WebkitUserSelect: "none",
  // The img is the hit-test target under the loupe (pointer-events: none), so
@@ -30917,29 +30936,6 @@ function NapoleonTab() {
  pointerEvents: "none",
  }} />
  </div>
- {/* Cycle to the next painting. Sits above the loupe (z-index), with its own
- pointer cursor so it stays discoverable even though the picture hides the
- cursor. Only shown when there's more than one image. */}
- {LOUPE_IMAGES.length > 1 && (
- <button
- onClick={() => setImgIdx((i) => (i + 1) % LOUPE_IMAGES.length)}
- aria-label="Next painting"
- className="loupe-next"
- style={{
- position: "absolute", right: "22px", top: "50%", transform: "translateY(-50%)",
- width: "46px", height: "46px", borderRadius: "50%",
- display: "flex", alignItems: "center", justifyContent: "center",
- background: "rgba(20, 17, 13, 0.42)",
- border: "1px solid rgba(255, 255, 255, 0.32)",
- color: "rgba(255, 255, 255, 0.92)",
- backdropFilter: "blur(2px)", WebkitBackdropFilter: "blur(2px)",
- cursor: "pointer", zIndex: 10,
- fontSize: "22px", lineHeight: 1, paddingBottom: "2px",
- opacity: 0.62, transition: "opacity 200ms ease, background 200ms ease",
- }}>
- ›
- </button>
- )}
  </div>
  );
 }
@@ -30949,6 +30945,7 @@ function NapoleonTab() {
 
 export default function App() {
  const [tab, setTab] = useState("note");
+ const [loupeImg, setLoupeImg] = useState(0); // which Loupes painting is showing (0 = Sunday)
  // Eagerly preload the (large) Painting-tab image at app start rather than
  // lazy-fetching ~17 MB on the first P-tab click — so P opens instantly. Runs
  // after mount, so it downloads in the background without blocking first paint.
@@ -31159,7 +31156,14 @@ export default function App() {
 .loupes-tab:hover .lp-rest,.loupes-tab.active .lp-rest { max-width: 4.5ch; opacity: 1; }
 .loupes-tab:hover .lp-o-letter,.loupes-tab.active .lp-o-letter { opacity: 1; }
 .loupes-tab:hover .lp-o::after,.loupes-tab.active .lp-o::after { opacity: 0; }
-.loupe-next:hover { opacity: 1!important; background: rgba(20, 17, 13, 0.52)!important; }
+.loupe-next-nav {
+ background: transparent; border: none; cursor: pointer;
+ padding: 14px 4px; margin-left: -16px;
+ font-family: 'Geist', sans-serif; font-size: 16px; line-height: 1;
+ color: var(--ink-soft);
+ transition: color 200ms ease, transform 200ms ease;
+ }
+.loupe-next-nav:hover { color: var(--accent); transform: translateX(3px); }
 
  /* Pulses the Axium-expired countdown so it catches the eye across
  the operatory. Subtle but noticeable — opacity 1 → 0.55 → 1. */
@@ -31346,12 +31350,18 @@ export default function App() {
  ) : t.label}
  </button>
 ))}
+ {/* Image-cycle arrow — sits just right of the Loupes tab and only appears
+ while the Loupes view is open. Drives the lifted loupeImg state. */}
+ {tab === "napoleon" && (
+ <button className="loupe-next-nav" aria-label="Next painting" title="Next painting"
+ onClick={() => setLoupeImg((i) => (i + 1) % LOUPE_IMAGES.length)}>›</button>
+)}
  </nav>
  </header>
 
  {/* Napoleon — full-bleed image viewer; rendered outside <main> so it
  escapes the 1280px frame and fills the screen below the tab nav. */}
- {tab === "napoleon" && <NapoleonTab />}
+ {tab === "napoleon" && <NapoleonTab imgIdx={loupeImg} />}
 
  {/* ───────── Tab body ───────── */}
  {tab !== "napoleon" && (
