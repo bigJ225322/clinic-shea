@@ -30791,11 +30791,11 @@ const HIDE_CURSOR = "none";
 // reward magnification. La Grande Jatte especially: pointillism is literally
 // made of dots, so it rewrites itself under the glass.
 const LOUPE_IMAGES = [
- // Opens on the Seurat. "smart" fit fills the WIDTH and crops only the cuttable
- // top-sky / bottom-lawn before it ever letterboxes; the Coronation just fills
- // (cover, anchored to keep the floor and crop the upper architecture).
- { src: "/Sunday.jpg", alt: "A Sunday on La Grande Jatte — Georges Seurat, 1886", fit: "smart", topCut: 0.10, botCut: 0.12 },
+ // Leads with the Coronation (cover — fills, anchored to keep the floor and crop
+ // the upper architecture). The Seurat uses a "smart" fit: fills the WIDTH and
+ // crops only its cuttable top-sky / bottom-lawn before it ever letterboxes.
  { src: "/napoleon.jpg", alt: "The Coronation of Napoleon — Jacques-Louis David, 1807", fit: "cover", anchor: "bottom" },
+ { src: "/Sunday.jpg", alt: "A Sunday on La Grande Jatte — Georges Seurat, 1886", fit: "smart", topCut: 0.10, botCut: 0.12 },
 ];
 function NapoleonTab({ imgIdx }) {
  const wrapRef = useRef(null);
@@ -30945,7 +30945,7 @@ function NapoleonTab({ imgIdx }) {
 
 export default function App() {
  const [tab, setTab] = useState("note");
- const [loupeImg, setLoupeImg] = useState(0); // which Loupes painting is showing (0 = Sunday)
+ const [loupeImg, setLoupeImg] = useState(0); // which Loupes painting is showing (0 = Coronation)
  // Eagerly preload the (large) Painting-tab image at app start rather than
  // lazy-fetching ~17 MB on the first P-tab click — so P opens instantly. Runs
  // after mount, so it downloads in the background without blocking first paint.
