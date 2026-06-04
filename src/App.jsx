@@ -30796,7 +30796,7 @@ const LOUPE_IMAGES = [
  // crops only its cuttable top-sky / bottom-lawn before it ever letterboxes.
  { src: "/napoleon.jpg", alt: "The Coronation of Napoleon — Jacques-Louis David, 1807", fit: "cover", anchor: "bottom", w: 6000, h: 3773 },
  { src: "/Sunday.jpg", alt: "A Sunday on La Grande Jatte — Georges Seurat, 1886", fit: "smart", topCut: 0.10, botCut: 0.12, w: 3840, h: 2556 },
- { src: "/Entrance.jpg", alt: "The Entrance to the Grand Canal, Venice — Canaletto, c. 1730", fit: "smart", topCut: 0.08, botCut: 0.10, w: 3840, h: 2619 },
+ { src: "/Entrance.jpg", alt: "The Entrance to the Grand Canal, Venice — Canaletto, c. 1730", fit: "smart", anchor: "bottom", topCut: 0.11, botCut: 0, w: 3840, h: 2619 },
 ];
 function NapoleonTab({ imgIdx }) {
  const wrapRef = useRef(null);
@@ -30849,7 +30849,9 @@ function NapoleonTab({ imgIdx }) {
  else if (nat.h * fillW - H <= (tCut + bCut) * fillW) scale = fillW; // crop fits inside the cuttable margins → fill width
  else scale = H / essH;                                             // would cut essentials → fit the essential band, side bars
  offX = (W - nat.w * scale) / 2;
- offY = H / 2 - (tCut + essH / 2) * scale;                          // keep the essential band vertically centred
+ // anchor "bottom" pins the bottom edge to the screen bottom (so it's never
+ // cropped, only the cuttable top is); otherwise keep the essential band centred.
+ offY = cur.anchor === "bottom" ? (H - nat.h * scale) : (H / 2 - (tCut + essH / 2) * scale);
  }
  const dispW = nat.w * scale, dispH = nat.h * scale;
  // Position the glass IMPERATIVELY — write the container + inner-image
