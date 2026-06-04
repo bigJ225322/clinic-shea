@@ -30762,7 +30762,7 @@ const TABS = [
  // workflow is iterate → fan out to siblings (cd-iid, cd-adjustment,
  // cd-reline-lab) → continue with rpd-kennedy3 and ind-conventional-crown.
  { id: "pathways", label: "Maps", hint: "Visual map of the multi-visit workflow with lab interactions" },
- { id: "napoleon", label: "P", hint: "Hover to magnify" },
+ { id: "napoleon", label: "Loupes", hint: "Look closely" },
 ];
 
 // ───────── Napoleon ─────────
@@ -31096,6 +31096,26 @@ export default function App() {
  from { transform: scaleX(0); transform-origin: left; }
  to { transform: scaleX(1); transform-origin: left; }
  }
+ /* Loupes tab — at rest the glyph is just a lens: a magnified "o". On hover (or
+    when active) it blooms into the word "Loupes", the lens settling down into
+    its own lowercase o. The o is enlarged with transform: scale (NOT font-size),
+    so it overflows its box without changing the nav row height — the row stays
+    aligned. The L grows in on the left, "upes" on the right, around the o. */
+.loupes-tab { display: inline-flex; align-items: center; overflow: visible; }
+.loupes-tab .lp-seg {
+ display: inline-block; overflow: hidden; white-space: pre;
+ max-width: 0; opacity: 0;
+ transition: max-width 380ms cubic-bezier(.2,.6,.2, 1), opacity 260ms ease;
+ }
+.loupes-tab .lp-o {
+ display: inline-block;
+ transform: scale(2.6); transform-origin: center center;
+ transition: transform 380ms cubic-bezier(.2,.6,.2, 1), text-shadow 280ms ease;
+ text-shadow: 0 0.5px 2px rgba(0, 0, 0, 0.18);
+ }
+.loupes-tab:hover .lp-l,.loupes-tab.active .lp-l { max-width: 1.4ch; opacity: 1; }
+.loupes-tab:hover .lp-rest,.loupes-tab.active .lp-rest { max-width: 4.5ch; opacity: 1; }
+.loupes-tab:hover .lp-o,.loupes-tab.active .lp-o { transform: scale(1); text-shadow: none; }
 
  /* Pulses the Axium-expired countdown so it catches the eye across
  the operatory. Subtle but noticeable — opacity 1 → 0.55 → 1. */
@@ -31267,12 +31287,19 @@ export default function App() {
  }}>
  {TABS.map((t) => (
  <button key={t.id}
- className={`tab-button ${tab === t.id? "active": ""}`}
- // Painting is pushed to the far-right edge of the nav (margin-left: auto
+ className={`tab-button ${tab === t.id? "active": ""}${t.id === "napoleon" ? " loupes-tab" : ""}`}
+ aria-label={t.id === "napoleon" ? "Loupes" : undefined}
+ // Loupes tab is pushed to the far-right edge of the nav (margin-left: auto
  // consumes the free space before it in the flex row).
  style={t.id === "napoleon" ? { marginLeft: "auto" } : undefined}
  onClick={() => setTab(t.id)}>
- {t.label}
+ {t.id === "napoleon" ? (
+ <>
+ <span className="lp-seg lp-l">L</span>
+ <span className="lp-o">o</span>
+ <span className="lp-seg lp-rest">upes</span>
+ </>
+ ) : t.label}
  </button>
 ))}
  </nav>
