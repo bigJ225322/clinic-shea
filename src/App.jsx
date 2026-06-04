@@ -12686,18 +12686,10 @@ function Browse({
  </Field>
  </div>
 
- {/* Add procedure to session */}
- <button className="ghost" onClick={addProcedureSlot}
- style={{ width: "100%", marginTop: "10px", fontSize: "11px" }}>
- + add procedure to session
- </button>
-
- {/* Items panel — shown once any slot has a procedure */}
+ {/* Equipment for the selected procedure (the multi-procedure "session"
+ was cut — nobody chained procedures; people look up one at a time). */}
  {totalItems > 0 && (
  <div style={{ marginTop: "24px" }}>
- <div style={{ marginBottom: "12px" }}>
- <div style={labelStyle}>Items</div>
- </div>
  {Object.entries(groupMeta).map(([key, meta]) => {
  const items = merged[key];
  if (!items || items.length === 0) return null;
@@ -12868,8 +12860,9 @@ function Browse({
 
  {currentProcedure? (
  <>
+ <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap", margin: "0 0 24px" }}>
  <h2 className="serif" style={{
- fontSize: "30px", margin: "0 0 24px", fontWeight: 400,
+ fontSize: "30px", margin: 0, fontWeight: 400,
  letterSpacing: "-0.01em", lineHeight: 1.15,
  color: "var(--accent)",
  }}>
@@ -12883,6 +12876,18 @@ function Browse({
  : <Fragment key={i}>{p}</Fragment>
 )}
  </h2>
+ {PROCEDURES_WITH_PE[currentProcedure.id] && (
+ <span title={"Performance Exam · " + PROCEDURES_WITH_PE[currentProcedure.id].join(", ")}
+ style={{
+ fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em",
+ textTransform: "uppercase", fontFamily: "'Geist', sans-serif",
+ color: "var(--accent)", background: "rgba(122, 30, 30, 0.08)",
+ border: "1px solid rgba(122, 30, 30, 0.28)",
+ padding: "3px 9px", borderRadius: "100px", lineHeight: 1.4,
+ whiteSpace: "nowrap", marginLeft: "auto",
+ }}>PE</span>
+)}
+ </div>
  <div className="hairline" style={{ margin: "0 0 22px" }} />
 
  {REF_DATA[currentProcedure?.id]? (
@@ -13148,11 +13153,15 @@ function mergeEquipment(perProc) {
  }
  }
  }
- // Convert to plain arrays, sorted alphabetically.
+ // Keep Swade's source order (the Map preserves insertion order, which is
+ // clinically sensible — procedure-specific kits first, generic grabs later)
+ // instead of alphabetizing. Always sink "blood glucose kit" to the very
+ // bottom: it's a standard always-grab, not a procedure tool. Stable sort, so
+ // everything else stays in source order. (Reorder only — no items dropped.)
+ const sink = t => /blood\s*glucose/i.test(t)? 1: 0;
  const out = {};
  for (const k of Object.keys(merged)) {
- out[k] = [...merged[k].values()].sort((a, b) =>
- a.text.localeCompare(b.text, undefined, { sensitivity: "base" }));
+ out[k] = [...merged[k].values()].sort((a, b) => sink(a.text) - sink(b.text));
  }
  return out;
 }
@@ -15372,6 +15381,19 @@ const PE_PROCEDURE_MAP = {
  ],
  "URGENT": "374", // Urgent Care Exam → Urgent Care
 };
+
+// Reverse index: procedure id → the PE code(s) it satisfies, so the Steps tab
+// can badge procedures that double as Performance Exams.
+const PROCEDURES_WITH_PE = (() => {
+ const m = {};
+ for (const [peId, mapped] of Object.entries(PE_PROCEDURE_MAP)) {
+ const ids = mapped == null? []
+ : typeof mapped === "string"? [mapped]
+ : mapped.map(x => x.id);
+ for (const id of ids) (m[id] || (m[id] = [])).push(peId);
+ }
+ return m;
+})();
 
 
 
@@ -30777,6 +30799,8 @@ function NapoleonTab() {
  const [nat, setNat] = useState({ w: 2000, h: 1258 });
  // Cursor position in container px while hovering; null hides the loupe.
  const [lens, setLens] = useState(null);
+ // Click the painting to punch the loupe in (4× → 8×); click again to reset.
+ const [zoomedIn, setZoomedIn] = useState(false);
  useLayoutEffect(() => {
  const measure = () => {
  const el = wrapRef.current;
@@ -30794,7 +30818,7 @@ function NapoleonTab() {
  const r = el.getBoundingClientRect();
  setLens({ x: e.clientX - r.left, y: e.clientY - r.top });
  };
- const ZOOM = 4;              // magnification inside the glass
+ const ZOOM = zoomedIn ? 8 : 4; // magnification inside the glass; click toggles 4×↔8×
  const LENS_FRACTION = 0.26;  // loupe diameter ≈ a quarter of the screen width
  const W = box.w, H = box.vh - box.top;
  // Size off width (so "a quarter of the screen" holds across aspect ratios),
@@ -30825,6 +30849,7 @@ function NapoleonTab() {
  <div ref={wrapRef}
  onMouseMove={onMove}
  onMouseLeave={() => setLens(null)}
+ onClick={() => setZoomedIn(z =>!z)}
  style={{
  position: "relative",
  width: "100%",
