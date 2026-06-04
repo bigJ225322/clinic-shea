@@ -30739,7 +30739,7 @@ const TABS = [
  // workflow is iterate → fan out to siblings (cd-iid, cd-adjustment,
  // cd-reline-lab) → continue with rpd-kennedy3 and ind-conventional-crown.
  { id: "pathways", label: "Maps", hint: "Visual map of the multi-visit workflow with lab interactions" },
- { id: "napoleon", label: "Painting", hint: "Hover to magnify" },
+ { id: "napoleon", label: "P", hint: "Hover to magnify" },
 ];
 
 // ───────── Napoleon ─────────
