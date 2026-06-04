@@ -7425,7 +7425,7 @@ function ProseBlock({ text, highlight }) {
  if (stepM && indent < 8) {
  return (
  <div key={i} style={{ display: "flex", gap: "10px",
- marginTop: "8px", paddingLeft: 0 }}>
+ marginTop: "16px", paddingLeft: 0 }}>
  <span style={{
  fontFamily: "'Fraunces', serif", fontWeight: 500,
  color: "var(--accent)", minWidth: "22px",
@@ -7434,22 +7434,28 @@ function ProseBlock({ text, highlight }) {
  </div>
 );
  }
- // Bullet styles (○ ■ ●) — preserve hierarchy via padding
+ // Bullet styles (○ ■ ●). Depth reads by indentation + one quiet marker,
+ // not by a second contrasting glyph. ■ is a detail nested under a ○
+ // sub-step, so it sits one step further in; ○/● are top-level bullets.
+ // No oxblood markers — the mixed ·/▪ at one indent was the busy bit.
  if (/^[○■●]/.test(stripped)) {
  const marker = stripped.charAt(0);
  const rest = stripped.slice(1).trim();
+ // Indent by marker role so bullets sit under the content they belong to:
+ // ○ = a sub-step under a numbered step (indented to ~the step's text column),
+ // ■ = a detail nested under a ○ (one level deeper), ● = a flat list such as
+ // the equipment preamble (stays shallow). One quiet marker throughout.
+ const base = marker === "■"? 48: marker === "○"? 30: 14;
  return (
  <div key={i} style={{
  display: "flex", gap: "10px",
- paddingLeft: `${Math.max(0, indent - 4) * 3 + 14}px`,
+ paddingLeft: `${Math.max(0, indent - 4) * 3 + base}px`,
  color: "var(--ink-soft)",
  }}>
  <span style={{
- color: marker === "○"? "var(--ink-faint)":
- marker === "■"? "var(--accent-soft)":
- "var(--accent)",
+ color: "var(--ink-faint)",
  minWidth: "10px", fontSize: "10px", marginTop: "5px",
- }}>{marker === "●"? "●": marker === "■"? "▪": "·"}</span>
+ }}>·</span>
  <span>{highlightLine(rest)}</span>
  </div>
 );
@@ -12822,8 +12828,11 @@ function Browse({
 );
  })()}
  <article ref={articleRef} style={{
- background: "var(--paper)", border: "1px solid var(--rule)",
- borderRadius: "3px", padding: "32px 36px",
+ background: "var(--paper)",
+ // De-boxed: no hard border — a soft layered shadow makes it read as a
+ // sheet of paper resting on the page rather than a bordered widget.
+ boxShadow: "0 1px 4px rgba(26, 22, 18, 0.05), 0 16px 44px rgba(26, 22, 18, 0.11)",
+ borderRadius: "4px", padding: "40px 46px",
  maxHeight: "78vh", overflowY: "auto",
  textAlign: "left",
  }}>
