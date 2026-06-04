@@ -29309,14 +29309,6 @@ function Pathways() {
  {/* Landing: pathway cards before any domain is picked; the bare pill row otherwise */}
  {nothingSelected && MAPS_LANDING_CARDS ? (
  <div style={{ marginBottom: "10px" }}>
- <div style={{ marginBottom: "20px" }}>
- <h2 className="serif" style={{ fontSize: "clamp(21px, 3vw, 28px)", fontWeight: 500, color: "var(--ink)", margin: "0 0 6px", letterSpacing: "-0.01em", lineHeight: 1.1 }}>
- Phase-III procedure library
- </h2>
- <p style={{ fontSize: "13.5px", fontStyle: "italic", color: "var(--ink-soft)", margin: 0, maxWidth: "580px", lineHeight: 1.5, fontFamily: "'Geist', sans-serif" }}>
- Every Phase-III procedure, visit by visit — prep through delivery, with the lab round-trips and decision points called out.
- </p>
- </div>
  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(212px, 1fr))", gap: "12px" }}>
  {PATHWAY_DOMAINS.map(d => {
  const p = PATHWAYS.find(x => x.domain === d.id);
