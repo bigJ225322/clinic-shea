@@ -30794,8 +30794,8 @@ const LOUPE_IMAGES = [
  // Leads with the Coronation (cover — fills, anchored to keep the floor and crop
  // the upper architecture). The Seurat uses a "smart" fit: fills the WIDTH and
  // crops only its cuttable top-sky / bottom-lawn before it ever letterboxes.
- { src: "/napoleon.jpg", alt: "The Coronation of Napoleon — Jacques-Louis David, 1807", fit: "cover", anchor: "bottom" },
- { src: "/Sunday.jpg", alt: "A Sunday on La Grande Jatte — Georges Seurat, 1886", fit: "smart", topCut: 0.10, botCut: 0.12 },
+ { src: "/napoleon.jpg", alt: "The Coronation of Napoleon — Jacques-Louis David, 1807", fit: "cover", anchor: "bottom", w: 6000, h: 3773 },
+ { src: "/Sunday.jpg", alt: "A Sunday on La Grande Jatte — Georges Seurat, 1886", fit: "smart", topCut: 0.10, botCut: 0.12, w: 3840, h: 2556 },
 ];
 function NapoleonTab({ imgIdx }) {
  const wrapRef = useRef(null);
@@ -30806,11 +30806,12 @@ function NapoleonTab({ imgIdx }) {
  // Height is DERIVED as vh − top (the rendered height is itself
  // calc(100vh − top), so measuring it at mount captures a stale value).
  const [box, setBox] = useState({ w: 0, top: 132, vh: 800 });
- // Natural image size, read off the loaded <img> (falls back to the file's).
- const [nat, setNat] = useState({ w: 2000, h: 1258 });
  const [hovering, setHovering] = useState(false);
- const [pressing, setPressing] = useState(false); // click-and-hold dims around the glass
+ const [dimmed, setDimmed] = useState(false); // a single click toggles the focus dim on/off
  const cur = LOUPE_IMAGES[imgIdx];
+ // Natural size is known up front (from the image list), so switching paintings
+ // never flashes a stale size before the new file's onLoad would have fired.
+ const nat = { w: cur.w, h: cur.h };
  useLayoutEffect(() => {
  const measure = () => {
  const el = wrapRef.current;
@@ -30882,9 +30883,8 @@ function NapoleonTab({ imgIdx }) {
  return (
  <div ref={wrapRef}
  onMouseMove={onMove}
- onMouseLeave={() => { setHovering(false); setPressing(false); }}
- onMouseDown={() => setPressing(true)}
- onMouseUp={() => setPressing(false)}
+ onMouseLeave={() => setHovering(false)}
+ onClick={() => setDimmed((d) => !d)}
  style={{
  position: "relative",
  width: "100%",
@@ -30900,7 +30900,6 @@ function NapoleonTab({ imgIdx }) {
  src={cur.src}
  alt={cur.alt}
  draggable={false}
- onLoad={(e) => setNat({ w: e.target.naturalWidth, h: e.target.naturalHeight })}
  style={{
  position: "absolute",
  left: offX + "px", top: offY + "px",
@@ -30911,13 +30910,13 @@ function NapoleonTab({ imgIdx }) {
  // it carries cursor: none too.
  cursor: HIDE_CURSOR,
  }} />
- {/* Click-and-hold dims everything outside the glass — the tunnel of focus you
- get peering through dental loupes. Above the picture, below the loupe disc
- (z-index), so the magnified circle stays bright. */}
+ {/* A single click toggles a dim over everything outside the glass — the tunnel
+ of focus of peering through dental loupes. Above the picture, below the loupe
+ disc (z-index), so the magnified circle stays bright. */}
  <div style={{
  position: "absolute", left: 0, top: 0, right: 0, bottom: 0,
  background: "rgba(10, 7, 4, 0.58)",
- opacity: pressing && hovering ? 1 : 0,
+ opacity: dimmed && hovering ? 1 : 0,
  transition: "opacity 180ms ease",
  pointerEvents: "none", zIndex: 1,
  }} />
@@ -31169,14 +31168,15 @@ export default function App() {
 .loupes-tab:hover .lp-rest,.loupes-tab.active .lp-rest { max-width: 4.5ch; opacity: 1; }
 .loupes-tab:hover .lp-o-letter,.loupes-tab.active .lp-o-letter { opacity: 1; }
 .loupes-tab:hover .lp-o::after,.loupes-tab.active .lp-o::after { opacity: 0; }
-.loupe-next-nav {
+.loupe-nav-arrows { display: inline-flex; align-items: center; margin-left: -14px; }
+.loupe-nav-arrow {
  background: transparent; border: none; cursor: pointer;
- padding: 14px 4px; margin-left: -16px;
- font-family: 'Geist', sans-serif; font-size: 16px; line-height: 1;
+ padding: 14px 5px;
+ font-family: 'Geist', sans-serif; font-size: 17px; line-height: 1;
  color: var(--ink-soft);
- transition: color 200ms ease, transform 200ms ease;
+ transition: color 180ms ease;
  }
-.loupe-next-nav:hover { color: var(--accent); transform: translateX(3px); }
+.loupe-nav-arrow:hover { color: var(--accent); }
 
  /* Pulses the Axium-expired countdown so it catches the eye across
  the operatory. Subtle but noticeable — opacity 1 → 0.55 → 1. */
@@ -31363,11 +31363,15 @@ export default function App() {
  ) : t.label}
  </button>
 ))}
- {/* Image-cycle arrow — sits just right of the Loupes tab and only appears
- while the Loupes view is open. Drives the lifted loupeImg state. */}
+ {/* Prev / next painting arrows — sit just right of the Loupes tab and only
+ appear while the Loupes view is open. Drive the lifted loupeImg state. */}
  {tab === "napoleon" && (
- <button className="loupe-next-nav" aria-label="Next painting" title="Next painting"
+ <span className="loupe-nav-arrows">
+ <button className="loupe-nav-arrow" aria-label="Previous painting" title="Previous painting"
+ onClick={() => setLoupeImg((i) => (i - 1 + LOUPE_IMAGES.length) % LOUPE_IMAGES.length)}>‹</button>
+ <button className="loupe-nav-arrow" aria-label="Next painting" title="Next painting"
  onClick={() => setLoupeImg((i) => (i + 1) % LOUPE_IMAGES.length)}>›</button>
+ </span>
 )}
  </nav>
  </header>
