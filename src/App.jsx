@@ -30913,6 +30913,10 @@ function NapoleonTab() {
 
 export default function App() {
  const [tab, setTab] = useState("note");
+ // Eagerly preload the (large) Painting-tab image at app start rather than
+ // lazy-fetching ~17 MB on the first P-tab click — so P opens instantly. Runs
+ // after mount, so it downloads in the background without blocking first paint.
+ useEffect(() => { const im = new Image(); im.src = "/napoleon.jpg"; }, []);
  // Globally-selected procedure — read by Browse, Note Builder, and Prep List
  // so the user's selection persists across tabs.
  const [selectedProcedureId, setSelectedProcedureId] = useState("");
