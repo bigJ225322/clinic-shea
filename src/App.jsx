@@ -30799,8 +30799,6 @@ function NapoleonTab() {
  // Natural image size, read off the loaded <img> (falls back to the file's).
  const [nat, setNat] = useState({ w: 2000, h: 1258 });
  const [hovering, setHovering] = useState(false);
- // Click the painting to punch the loupe in (4× → 8×); click again to reset.
- const [zoomedIn, setZoomedIn] = useState(false);
  useLayoutEffect(() => {
  const measure = () => {
  const el = wrapRef.current;
@@ -30812,7 +30810,7 @@ function NapoleonTab() {
  window.addEventListener("resize", measure);
  return () => window.removeEventListener("resize", measure);
  }, []);
- const ZOOM = zoomedIn ? 8 : 4; // magnification; click toggles 4×↔8×
+ const ZOOM = 4; // fixed magnification inside the glass
  const LENS_FRACTION = 0.26;    // loupe diameter ≈ a quarter of the screen width
  const W = box.w, H = box.vh - box.top;
  const lensSize = Math.round(Math.min(W * LENS_FRACTION, H * 0.7)) || 320;
@@ -30840,8 +30838,8 @@ function NapoleonTab() {
  positionLoupe(lx, ly);          // imperative — does NOT re-render
  if (!hovering) setHovering(true);
  };
- // After any render (zoom toggle, resize, image load) re-apply the transform at
- // the last cursor spot, so the glass updates in place without a mouse move.
+ // After any render (resize, image load) re-apply the transform at the last
+ // cursor spot, so the glass updates in place without a mouse move.
  useLayoutEffect(() => {
  if (posRef.current) positionLoupe(posRef.current.x, posRef.current.y);
  });
@@ -30849,7 +30847,6 @@ function NapoleonTab() {
  <div ref={wrapRef}
  onMouseMove={onMove}
  onMouseLeave={() => setHovering(false)}
- onClick={() => setZoomedIn(z =>!z)}
  style={{
  position: "relative",
  width: "100%",
