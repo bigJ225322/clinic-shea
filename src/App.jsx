@@ -30789,16 +30789,16 @@ const TABS = [
 const HIDE_CURSOR = "none";
 function NapoleonTab() {
  const wrapRef = useRef(null);
- // Container metrics (measured): width, viewport height, and a scroll-
- // independent document-top. We DERIVE height as vh − top rather than
- // measuring it, because the rendered height is itself calc(100vh − top):
- // measuring it at mount captures a stale value (the height under the
- // initial top guess), which would desync the loupe's cover geometry.
+ const lcRef = useRef(null);   // loupe container — positioned imperatively
+ const liRef = useRef(null);   // loupe inner image — panned imperatively
+ const posRef = useRef(null);  // last cursor pos (container px), for re-syncing
+ // Container metrics: width, viewport height, scroll-independent document-top.
+ // Height is DERIVED as vh − top (the rendered height is itself
+ // calc(100vh − top), so measuring it at mount captures a stale value).
  const [box, setBox] = useState({ w: 0, top: 132, vh: 800 });
  // Natural image size, read off the loaded <img> (falls back to the file's).
  const [nat, setNat] = useState({ w: 2000, h: 1258 });
- // Cursor position in container px while hovering; null hides the loupe.
- const [lens, setLens] = useState(null);
+ const [hovering, setHovering] = useState(false);
  // Click the painting to punch the loupe in (4× → 8×); click again to reset.
  const [zoomedIn, setZoomedIn] = useState(false);
  useLayoutEffect(() => {
@@ -30812,43 +30812,43 @@ function NapoleonTab() {
  window.addEventListener("resize", measure);
  return () => window.removeEventListener("resize", measure);
  }, []);
+ const ZOOM = zoomedIn ? 8 : 4; // magnification; click toggles 4×↔8×
+ const LENS_FRACTION = 0.26;    // loupe diameter ≈ a quarter of the screen width
+ const W = box.w, H = box.vh - box.top;
+ const lensSize = Math.round(Math.min(W * LENS_FRACTION, H * 0.7)) || 320;
+ // Mirror object-fit: cover + object-position: center bottom (anchor bottom).
+ const scale = W && H ? Math.max(W / nat.w, H / nat.h) : 1;
+ const dispW = nat.w * scale, dispH = nat.h * scale;
+ const offX = (W - dispW) / 2, offY = H - dispH;
+ // Position the glass IMPERATIVELY — write the container + inner-image
+ // transforms straight to the DOM, with NO React render per mouse move. That's
+ // what makes it track the cursor at native pointer speed, zero lag. mag
+ // (cover × ZOOM) maps natural → lens; tx/ty pan so the hovered point centers.
+ const positionLoupe = (lx, ly) => {
+ const lc = lcRef.current, li = liRef.current;
+ if (!lc || !li || !(W > 0)) return;
+ const px = lx - offX, py = ly - offY;
+ lc.style.transform = "translate(" + (lx - lensSize / 2) + "px, " + (ly - lensSize / 2) + "px)";
+ li.style.transform = "translate(" + (lensSize / 2 - px * ZOOM) + "px, " + (lensSize / 2 - py * ZOOM) + "px) scale(" + (scale * ZOOM) + ")";
+ };
  const onMove = (e) => {
  const el = wrapRef.current;
  if (!el) return;
  const r = el.getBoundingClientRect();
- setLens({ x: e.clientX - r.left, y: e.clientY - r.top });
+ const lx = e.clientX - r.left, ly = e.clientY - r.top;
+ posRef.current = { x: lx, y: ly };
+ positionLoupe(lx, ly);          // imperative — does NOT re-render
+ if (!hovering) setHovering(true);
  };
- const ZOOM = zoomedIn ? 8 : 4; // magnification inside the glass; click toggles 4×↔8×
- const LENS_FRACTION = 0.26;  // loupe diameter ≈ a quarter of the screen width
- const W = box.w, H = box.vh - box.top;
- // Size off width (so "a quarter of the screen" holds across aspect ratios),
- // but cap at 70% of height so a short window can't make the loupe overflow.
- const lensSize = Math.round(Math.min(W * LENS_FRACTION, H * 0.7)) || 320;
- // Mirror object-fit: cover + object-position: center bottom — scale to FILL,
- // center horizontally, and anchor the BOTTOM (offY = H − dispH) so any
- // overflow is trimmed off the top, matching the base image exactly.
- const scale = W && H ? Math.max(W / nat.w, H / nat.h) : 1;
- const dispW = nat.w * scale, dispH = nat.h * scale;
- const offX = (W - dispW) / 2, offY = H - dispH;
- // Loupe geometry. The glass pans a GPU-composited <img> with transform —
- // NOT a background-position — so moving it never repaints; that's what frees
- // `cursor: none` from flickering. mag (cover-scale × ZOOM) maps natural → lens;
- // tx/ty pan the inner image so the hovered point sits dead-center.
- let lensView = null;
- if (lens && W > 0) {
- const px = lens.x - offX, py = lens.y - offY;
- lensView = {
- cx: lens.x - lensSize / 2,
- cy: lens.y - lensSize / 2,
- tx: lensSize / 2 - px * ZOOM,
- ty: lensSize / 2 - py * ZOOM,
- mag: scale * ZOOM,
- };
- }
+ // After any render (zoom toggle, resize, image load) re-apply the transform at
+ // the last cursor spot, so the glass updates in place without a mouse move.
+ useLayoutEffect(() => {
+ if (posRef.current) positionLoupe(posRef.current.x, posRef.current.y);
+ });
  return (
  <div ref={wrapRef}
  onMouseMove={onMove}
- onMouseLeave={() => setLens(null)}
+ onMouseLeave={() => setHovering(false)}
  onClick={() => setZoomedIn(z =>!z)}
  style={{
  position: "relative",
@@ -30878,22 +30878,25 @@ function NapoleonTab() {
  // it carries cursor: none too.
  cursor: HIDE_CURSOR,
  }} />
- {lensView && (
- <div style={{
+ {/* Loupe — always mounted so its refs stay stable for imperative updates;
+ shown only while hovering (opacity). Position + zoom are written straight
+ to the DOM in positionLoupe, so React never re-renders on mouse move. */}
+ <div ref={lcRef} style={{
  position: "absolute", left: "0", top: "0",
  width: lensSize + "px", height: lensSize + "px",
- transform: "translate(" + lensView.cx + "px, " + lensView.cy + "px)",
+ opacity: hovering ? 1 : 0,
+ willChange: "transform",
  borderRadius: "50%", overflow: "hidden",
  background: "#15110d",
  boxShadow: "0 12px 32px rgba(0, 0, 0, 0.5)",
  pointerEvents: "none", cursor: "none",
  }}>
- <img src="/napoleon.jpg" alt="" draggable={false}
+ <img ref={liRef} src="/napoleon.jpg" alt="" draggable={false}
  style={{
  position: "absolute", left: "0", top: "0",
  width: nat.w + "px", height: nat.h + "px",
  transformOrigin: "0 0",
- transform: "translate(" + lensView.tx + "px, " + lensView.ty + "px) scale(" + lensView.mag + ")",
+ willChange: "transform",
  pointerEvents: "none", userSelect: "none", WebkitUserSelect: "none",
  }} />
  <div style={{
@@ -30903,7 +30906,6 @@ function NapoleonTab() {
  pointerEvents: "none",
  }} />
  </div>
- )}
  </div>
  );
 }
