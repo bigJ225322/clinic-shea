@@ -4527,7 +4527,13 @@ function renderTemplate(raw, f) {
  // renders adjacent to perioImproved + perioImprovementDetail. Regex
  // matches the new "[3 / 4 / 6] months" placeholder form and the
  // legacy "Nmonths" form (older templates).
- if (f.maintenanceInterval && f.maintenanceInterval.trim()) {
+ if (f.maintenanceInterval === "prophy") {
+ // "Prophy" swaps the whole perio-maintenance phrasing for a prophy recall.
+ t = t.replace(
+ /will be placed on perio maintenance interval of (?:\[\s*3\s*\/\s*4\s*\/\s*6\s*\]\s*months?|\d+\s*months?)/,
+ "will be placed on prophy recall of 6 months"
+);
+ } else if (f.maintenanceInterval && f.maintenanceInterval.trim()) {
  t = t.replace(
  /(perio maintenance interval of )(?:\[\s*3\s*\/\s*4\s*\/\s*6\s*\]\s*months?|\d+\s*months?)/,
  `$1${f.maintenanceInterval}`
@@ -5696,7 +5702,7 @@ function renderTemplate(raw, f) {
  t = t.split(`[${lkey}]`).join(items.length? items.map(s => `- ${s}`).join("\n"): "-");
  }
  }
- t = t.split("[who is present with patient]").join("Mother");
+ t = t.split("[who is present with patient]").join("Caregiver");
  // Lotus room is a checkbox — an untouched (unchecked) box reads as NO.
  t = t.split("[YES OR NO]").join("NO");
  t = t.replace(/^Blood glucose:\s*\[blood glucose\][ \t]*\n?/m, "");
@@ -6388,7 +6394,7 @@ const ICC_FLOSSING_KEY = "never OR Floss used 1x/day OR Floss used 2x/day";
 const ICC_PAPOOSE_KEY = "no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization";
 const ICC_MOUTHPROP_KEY = "no mouth prop OR Used soft mouth prop OR Used Molt mouth prop";
 const ICC_FIELD_CFG = {
- "who is present with patient": { label: "Who is present", type: "selectOther", options: ["Mother", "Father"], defaultOption: "Mother" },
+ "who is present with patient": { label: "Who is present", type: "selectOther", options: ["Caregiver", "male", "female"], defaultOption: "Caregiver" },
  "medical conditions/syndromes": { label: "Medical conditions", type: "odontogram", placeholder: "List each condition on its own line. Press Enter to add another." },
  "relevant health conditions": { label: "Relevant health conditions", type: "odontogram", placeholder: "List each condition on its own line. Press Enter to add another." },
  "general findings": { label: "General findings", type: "odontogram", placeholder: "List each finding on its own line. Press Enter to add another." },
@@ -11798,7 +11804,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <Hairline />
  {needsMedHistory && (
  <Field label="Medical History">
- <TextInput value={fields.medHistory} onChange={v=>setField("medHistory",v)} placeholder="RMH; no changes" />
+ <TextInput value={fields.medHistory} onChange={v=>setField("medHistory",v)} placeholder={procedureId === "374" ? "e.g. HTN, asthma — or blank to omit" : "RMH; no changes"} />
  </Field>
 )}
  {needsMedications && (
@@ -11935,6 +11941,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  <option value="3 months">3 months</option>
  <option value="4 months">4 months</option>
  <option value="6 months">6 months</option>
+ <option value="prophy">Prophy</option>
  </Select>
  </Field>
  </div>
