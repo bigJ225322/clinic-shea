@@ -30838,6 +30838,11 @@ const LOUPE_IMAGES = [
  { src: "/napoleon.jpg", alt: "The Coronation of Napoleon — Jacques-Louis David, 1807", fit: "cover", anchor: "bottom", w: 6000, h: 3773 },
  { src: "/Sunday.jpg", alt: "A Sunday on La Grande Jatte — Georges Seurat, 1886", fit: "smart", topCut: 0.10, botCut: 0.12, w: 3840, h: 2556 },
  { src: "/Entrance.jpg", alt: "The Entrance to the Grand Canal, Venice — Canaletto, c. 1730", fit: "cover", anchor: "bottom", w: 3840, h: 2619 },
+ // School of Athens — cover with no anchor (centred both ways), framing Plato &
+ // Aristotle, who stand dead-centre of the fresco; the crop sheds the gold arch
+ // up top and the marble plinth below (decorative frame, not scene) before it
+ // ever eats into the crowd's outer edges.
+ { src: "/Athens.jpg", alt: "The School of Athens — Raphael, 1509–1511", fit: "cover", w: 7641, h: 5295 },
 ];
 function NapoleonTab({ imgIdx }) {
  const wrapRef = useRef(null);
