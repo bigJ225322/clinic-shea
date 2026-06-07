@@ -2561,11 +2561,16 @@ function flattenCategory(cat) {
 const FLAT_CATEGORIES = (() => {
  const ordered = [];
  for (const cat of CATEGORIES) {
- if (cat.id === "misc" || cat.id === "lab") continue;
+ if (cat.id === "misc" || cat.id === "lab" || cat.id === "icc") continue;
  ordered.push(cat);
  if (cat.id === "restorative") {
  const lab = CATEGORIES.find(c => c.id === "lab");
  if (lab) ordered.push(lab);
+ // ICC sits right after Lab Scripts in the dropdown (per Jake), not at its
+ // canonical CATEGORIES position (after Oral Surgery). It's a note-only
+ // clinic so it never appears in the Steps browse.
+ const icc = CATEGORIES.find(c => c.id === "icc");
+ if (icc) ordered.push(icc);
  }
  }
  return ordered
