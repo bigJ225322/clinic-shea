@@ -6421,7 +6421,7 @@ const ICC_FLOSSING_KEY = "never OR Floss used 1x/day OR Floss used 2x/day";
 const ICC_PAPOOSE_KEY = "no papoose OR Consent received from caregiver to use a small papoose for protective stabilization OR Consent received from caregiver to use a large papoose for protective stabilization";
 const ICC_MOUTHPROP_KEY = "no mouth prop OR Used soft mouth prop OR Used Molt mouth prop";
 const ICC_FIELD_CFG = {
- "who is present with patient": { label: "Who is present", type: "selectOther", options: ["Caregiver", "male", "female"], defaultOption: "Caregiver" },
+ "who is present with patient": { label: "Who is present", type: "selectOther", options: ["Caregiver", "Mother", "Father"], defaultOption: "Caregiver" },
  "medical conditions/syndromes": { label: "Medical conditions", type: "odontogram", placeholder: "List each condition on its own line. Press Enter to add another." },
  "relevant health conditions": { label: "Relevant health conditions", type: "odontogram", placeholder: "List each condition on its own line. Press Enter to add another." },
  "general findings": { label: "General findings", type: "odontogram", placeholder: "List each finding on its own line. Press Enter to add another." },
