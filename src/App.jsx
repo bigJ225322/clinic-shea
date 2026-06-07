@@ -2433,26 +2433,26 @@ const CATEGORIES = [
  ]},
  { id: "icc", label: "ICC", groups: [
  { id: "icc-exams", label: "Exams & Screening", procedures: [
- { id: "icc-coe", label: "COE" },
- { id: "icc-poe", label: "POE" },
- { id: "icc-screening", label: "Screening" },
- { id: "icc-virtual", label: "Virtual Screening" },
- { id: "icc-urgent", label: "Urgent Care / Limited Exam" },
+ { id: "icc-coe", label: "COE", pinnedCodes: ["D0150","D0330","D0274"] },
+ { id: "icc-poe", label: "POE", pinnedCodes: ["D0120","D0274"] },
+ { id: "icc-screening", label: "Screening", pinnedCodes: ["D0190"] },
+ { id: "icc-virtual", label: "Virtual Screening", pinnedCodes: ["D9995","D0140"] },
+ { id: "icc-urgent", label: "Urgent Care / Limited Exam", pinnedCodes: ["D0140","D9110"] },
  ]},
  { id: "icc-hygiene", label: "Hygiene & Perio", procedures: [
- { id: "icc-prophy", label: "Prophylaxis" },
- { id: "icc-debridement", label: "Full Mouth Debridement" },
- { id: "icc-perio-maint", label: "Periodontal Maintenance" },
- { id: "icc-perio-reeval", label: "Perio Re-Evaluation" },
- { id: "icc-srp", label: "Scaling & Root Planing" },
+ { id: "icc-prophy", label: "Prophylaxis", pinnedCodes: ["D1110","D1120","D1330","D1206","D1310","D1320.1","D1320.2"] },
+ { id: "icc-debridement", label: "Full Mouth Debridement", pinnedCodes: ["D4355","D1330"] },
+ { id: "icc-perio-maint", label: "Periodontal Maintenance", pinnedCodes: ["D4910","D1330","D1206"] },
+ { id: "icc-perio-reeval", label: "Perio Re-Evaluation", pinnedCodes: ["D0180"] },
+ { id: "icc-srp", label: "Scaling & Root Planing", pinnedCodes: ["D4341","D4342","D1330","D1310"] },
  ]},
  { id: "icc-resto", label: "Restorative & Surgery", procedures: [
- { id: "icc-resto-mid", label: "Restorative / Minimally Invasive" },
- { id: "icc-sealants", label: "Sealants" },
- { id: "icc-extraction", label: "Extraction / OS" },
+ { id: "icc-resto-mid", label: "Restorative / Minimally Invasive", pinnedCodes: ["D2391","D2392","D2393","D2330","D2331","D1354","D2940"] },
+ { id: "icc-sealants", label: "Sealants", pinnedCodes: ["D1351"] },
+ { id: "icc-extraction", label: "Extraction / OS", pinnedCodes: ["D7140","D7210"] },
  ]},
  { id: "icc-other", label: "Other", procedures: [
- { id: "icc-ot", label: "OT Sensory Support" },
+ { id: "icc-ot", label: "OT Sensory Support", pinnedCodes: ["D9920"] },
  { id: "icc-refusal", label: "Patient Refusal" },
  ]},
  ]},
@@ -12240,12 +12240,15 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  const proc = findProcedure(procedureId);
  if (!proc) return null;
  const stepsChunk = findChunkForProcedure(proc, CHUNKS, "steps");
- if (!stepsChunk) return null;
+ if (!stepsChunk && !proc.pinnedCodes) return null; // ICC procs have pinnedCodes but no steps chunk
  const ef = fields.examFindings || {};
- const prophyChecked =!fields.poeOnly;
- const nutriChecked = ef["nutritional counseling"] === true;
- const tobaccoChecked = ef["tobacco cessation"] === true;
- const impressionsChecked = ef["impressions"] === true;
+ // ICC procedures carry pinnedCodes but have no exam-findings checkboxes, so
+ // surface their accompanying codes (OHI, NC, tobacco, fluoride, …) ungated.
+ const iccPinned = /^icc-/.test(procedureId) && !!proc.pinnedCodes;
+ const prophyChecked = iccPinned || !fields.poeOnly;
+ const nutriChecked = iccPinned || ef["nutritional counseling"] === true;
+ const tobaccoChecked = iccPinned || ef["tobacco cessation"] === true;
+ const impressionsChecked = iccPinned || ef["impressions"] === true;
  const selectedRisk = (ef["caries risk"] || "").trim();
  // Only inject D060x when this procedure actually has a caries risk form field —
  // prevents a prior procedure's selection from bleeding into unrelated notes.
@@ -12260,7 +12263,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  // of high") code as High, but the note still prints "Extreme" as the value.
  "Extreme": { code: "D0603", desc: "Caries Risk Assessment and Documentation, finding of high" },
  };
- const extracted = extractCodes(stepsChunk.body);
+ const extracted = stepsChunk ? extractCodes(stepsChunk.body) : [];
  const withRvuDesc = (code, fallbackDesc) => {
  const r = RVU_DATA.find(x => x.code === code);
  return { code, desc: r?.desc || fallbackDesc || "" };
