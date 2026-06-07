@@ -5716,6 +5716,10 @@ function renderTemplate(raw, f) {
  const parts = rest.split(";").map(s => s.trim()).filter(Boolean);
  return parts.length? `${lbl} ${parts.join("; ")}`: `${lbl} `;
  });
+ // Blank line between the major blocks (intake / exam / procedure / wrap /
+ // closing); ICC templates ship single-spaced. The 3+ newline tidy below
+ // collapses any doubled-up inserts.
+ t = t.replace(/\n(Completed extraoral exam|Treatment planned with the following priority|Prophylaxis:|Periodontal maintenance:|Full [Mm]outh [Dd]ebridement|Sealant|SRP|Nitrous:|Papoose used:|NV:)/g, "\n\n$1");
  // Collapse the double space a blanked mid-line placeholder leaves behind.
  t = t.replace(/ {2,}/g, " ");
  }
