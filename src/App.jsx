@@ -18895,7 +18895,7 @@ function RPDPaperFormArchDrawing({
 
  return (
  <div style={{ position: "relative" }}>
- <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", display: "block", background: "#FDFCF7" }}>
+ <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", display: "block", background: "#FDFCF7", userSelect: "none", WebkitUserSelect: "none" }}>
  {/* Midline guide */}
  <line x1={midlineX} y1={12} x2={midlineX} y2={H - 12}
  stroke={C_MISSING} strokeDasharray="4,5" strokeWidth={0.6} />
