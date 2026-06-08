@@ -4157,10 +4157,13 @@ function renderTemplate(raw, f) {
  // If the field is filled but > 89, treat it as blank so "y/o" renders
  // without a number — the student still sees the value in the form.
  const ageForNote = f.age.trim() && parseInt(f.age.trim(), 10) <= 89? f.age.trim(): "";
- // Some templates (273, 807, 871) start with 2–3 artifact spaces before
- // "y/o". Collapse those to exactly one space when the field is unfilled,
- // or to nothing (age precedes y/o directly) when filled.
- t = t.replace(/^[ \t]+(y\/o\b)/, ageForNote? `${ageForNote} $1`: ` $1`);
+ // 273, 807, 871 begin with a single space before "y/o" (no leading dash).
+ // Step 0's leading-space strip (~line 4075) already removed that space, so
+ // by here they start "y/o…" with NO whitespace. Match zero-or-more leading
+ // space (not one-or-more) so age still anchors: filled → "33 y/o", unfilled
+ // → "y/o". (Dash templates like "- y/o" keep their post-dash space and are
+ // handled by the global pass below instead.)
+ t = t.replace(/^[ \t]*(y\/o\b)/, ageForNote? `${ageForNote} $1`: `$1`);
  // For "y/o" elsewhere in the note (e.g. "- y/o"), insert age if set.
  if (ageForNote) {
  t = t.replace(/(^|[^\d])(\s)y\/o\b/g, `$1$2${ageForNote} y/o`);
