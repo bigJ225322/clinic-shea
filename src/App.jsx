@@ -11045,7 +11045,6 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  const needsRetentiveGroove = useMemo(() =>
  /\[\s*Placed gingival retentive groove & M,D incisal retentive points \(gingival margin in cementum/i.test(rawTemplate),
  [rawTemplate]);
- const needsDentalHistory = useMemo(() => /dental history:/i.test(rawTemplate), [rawTemplate]);
  const needsLastDentist = useMemo(() => /last time at dentist:/i.test(rawTemplate), [rawTemplate]);
  const needsBrushing = useMemo(() => /\bbrushing 2x a day\b/.test(rawTemplate), [rawTemplate]);
  const needsFlossing = useMemo(() => /\bflossing 1x a day\b/.test(rawTemplate), [rawTemplate]);
@@ -11873,7 +11872,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </>
 )}
 
- {needsDentalHistory && (
+ {(needsLastDentist || needsBrushing || needsFlossing) && (
  <>
  <Hairline />
  <div style={{
