@@ -30888,8 +30888,7 @@ function NapoleonTab({ imgIdx }) {
  const [box, setBox] = useState({ w: 0, top: 132, vh: 800 });
  const [hovering, setHovering] = useState(false);
  const [dimmed, setDimmed] = useState(false); // a single click toggles the focus dim on/off
- const [pressN, setPressN] = useState(0);     // ++ on press → clockwise "ignite" sweep round the rim
- const [releaseN, setReleaseN] = useState(0); // ++ on release → softer counter-sweep
+ const [pressed, setPressed] = useState(false); // quick scale-down while the mouse is held, like a button
  const cur = LOUPE_IMAGES[imgIdx];
  // Natural size is known up front (from the image list), so switching paintings
  // never flashes a stale size before the new file's onLoad would have fired.
@@ -30967,9 +30966,9 @@ function NapoleonTab({ imgIdx }) {
  return (
  <div ref={wrapRef}
  onMouseMove={onMove}
- onMouseLeave={() => setHovering(false)}
- onMouseDown={() => { if (hovering) setPressN((n) => n + 1); }}
- onMouseUp={() => { if (hovering) setReleaseN((n) => n + 1); }}
+ onMouseLeave={() => { setHovering(false); setPressed(false); }}
+ onMouseDown={() => setPressed(true)}
+ onMouseUp={() => setPressed(false)}
  onClick={() => setDimmed((d) => !d)}
  style={{
  position: "relative",
@@ -31014,15 +31013,23 @@ function NapoleonTab({ imgIdx }) {
  width: lensSize + "px", height: lensSize + "px",
  opacity: hovering ? 1 : 0,
  willChange: "transform",
+ pointerEvents: "none", cursor: "none", zIndex: 2,
+ }}>
+ {/* Inner glass holds the disc, rim and halo and does the button "punch" — a
+ quick scale-down while the mouse is held, back on release. Kept separate
+ from lcRef so the imperative translate (cursor tracking, no transition) and
+ the eased scale don't fight over the one transform. */}
+ <div style={{
+ position: "absolute", inset: "0",
  borderRadius: "50%", overflow: "hidden",
  background: "#15110d",
+ transform: pressed ? "scale(0.94)" : "scale(1)",
  // A warm halo around the rim — the loupe's own light. Blooms larger when the
  // surround is dimmed, so focusing makes the glass glow against the dark.
  boxShadow: dimmed
  ? "0 12px 34px rgba(0, 0, 0, 0.55), 0 0 40px 7px rgba(255, 235, 200, 0.5)"
  : "0 12px 32px rgba(0, 0, 0, 0.5), 0 0 18px 2px rgba(255, 240, 214, 0.35)",
- transition: "box-shadow 240ms ease",
- pointerEvents: "none", cursor: "none", zIndex: 2,
+ transition: "transform 120ms ease-out, box-shadow 240ms ease",
  }}>
  <img ref={liRef} src={cur.src} alt="" draggable={false}
  style={{
@@ -31041,26 +31048,7 @@ function NapoleonTab({ imgIdx }) {
  boxShadow: "inset 0 0 0 1.5px rgba(18, 13, 8, 0.5), inset 0 0 0 3.5px rgba(255, 244, 222, 0.78), inset 0 0 22px 5px rgba(255, 236, 205, 0.32), inset 0 7px 16px rgba(255, 255, 255, 0.16)",
  pointerEvents: "none",
  }} />
- {/* Click "flashlight": a warm arc sweeps around the rim on press (CW ignite)
- and again, softer, on release (CCW). key remount replays the keyframe each
- click; the radial mask confines it to the rim band; screen blend = adds
- light only. */}
- <div key={"cw" + pressN} style={{
- position: "absolute", inset: "0", borderRadius: "50%",
- pointerEvents: "none", zIndex: 3, mixBlendMode: "screen",
- background: "conic-gradient(from -16deg, rgba(255, 251, 242, 0) 0deg, rgba(255, 250, 238, 0.95) 20deg, rgba(255, 245, 226, 0) 52deg, rgba(255, 251, 242, 0) 360deg)",
- WebkitMaskImage: "radial-gradient(circle farthest-side, transparent calc(100% - 15px), #000 calc(100% - 6px))",
- maskImage: "radial-gradient(circle farthest-side, transparent calc(100% - 15px), #000 calc(100% - 6px))",
- animation: pressN ? "loupeSweepCW 560ms cubic-bezier(0.22, 1, 0.36, 1)" : "none",
- }} />
- <div key={"ccw" + releaseN} style={{
- position: "absolute", inset: "0", borderRadius: "50%",
- pointerEvents: "none", zIndex: 3, mixBlendMode: "screen",
- background: "conic-gradient(from 16deg, rgba(255, 250, 238, 0) 0deg, rgba(255, 247, 230, 0.68) 22deg, rgba(255, 242, 220, 0) 56deg, rgba(255, 250, 238, 0) 360deg)",
- WebkitMaskImage: "radial-gradient(circle farthest-side, transparent calc(100% - 15px), #000 calc(100% - 6px))",
- maskImage: "radial-gradient(circle farthest-side, transparent calc(100% - 15px), #000 calc(100% - 6px))",
- animation: releaseN ? "loupeSweepCCW 470ms cubic-bezier(0.22, 1, 0.36, 1)" : "none",
- }} />
+ </div>
  </div>
  </div>
  );
@@ -31137,20 +31125,6 @@ export default function App() {
  @keyframes fadeIn {
  from { opacity: 0; }
  to { opacity: 1; }
- }
-
- /* Loupe "flashlight" — a warm arc races once around the glass rim when the
- user presses (clockwise ignite) and again, softer, on release (a counter
- sweep). Masked to the rim band and screen-blended so it only adds light. */
- @keyframes loupeSweepCW {
- 0% { opacity: 0; transform: rotate(-30deg); }
- 18% { opacity: 1; }
- 100% { opacity: 0; transform: rotate(330deg); }
- }
- @keyframes loupeSweepCCW {
- 0% { opacity: 0; transform: rotate(30deg); }
- 22% { opacity: 0.7; }
- 100% { opacity: 0; transform: rotate(-330deg); }
  }
 
  /* Map-entry choreography (CSS only, fill:both -> settled state is always the
