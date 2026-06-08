@@ -30888,6 +30888,8 @@ function NapoleonTab({ imgIdx }) {
  const [box, setBox] = useState({ w: 0, top: 132, vh: 800 });
  const [hovering, setHovering] = useState(false);
  const [dimmed, setDimmed] = useState(false); // a single click toggles the focus dim on/off
+ const [pressN, setPressN] = useState(0);     // ++ on press → clockwise "ignite" sweep round the rim
+ const [releaseN, setReleaseN] = useState(0); // ++ on release → softer counter-sweep
  const cur = LOUPE_IMAGES[imgIdx];
  // Natural size is known up front (from the image list), so switching paintings
  // never flashes a stale size before the new file's onLoad would have fired.
@@ -30966,6 +30968,8 @@ function NapoleonTab({ imgIdx }) {
  <div ref={wrapRef}
  onMouseMove={onMove}
  onMouseLeave={() => setHovering(false)}
+ onMouseDown={() => { if (hovering) setPressN((n) => n + 1); }}
+ onMouseUp={() => { if (hovering) setReleaseN((n) => n + 1); }}
  onClick={() => setDimmed((d) => !d)}
  style={{
  position: "relative",
@@ -31036,6 +31040,26 @@ function NapoleonTab({ imgIdx }) {
  borderRadius: "50%",
  boxShadow: "inset 0 0 0 1.5px rgba(18, 13, 8, 0.5), inset 0 0 0 3.5px rgba(255, 244, 222, 0.78), inset 0 0 22px 5px rgba(255, 236, 205, 0.32), inset 0 7px 16px rgba(255, 255, 255, 0.16)",
  pointerEvents: "none",
+ }} />
+ {/* Click "flashlight": a warm arc sweeps around the rim on press (CW ignite)
+ and again, softer, on release (CCW). key remount replays the keyframe each
+ click; the radial mask confines it to the rim band; screen blend = adds
+ light only. */}
+ <div key={"cw" + pressN} style={{
+ position: "absolute", inset: "0", borderRadius: "50%",
+ pointerEvents: "none", zIndex: 3, mixBlendMode: "screen",
+ background: "conic-gradient(from -16deg, rgba(255, 251, 242, 0) 0deg, rgba(255, 250, 238, 0.95) 20deg, rgba(255, 245, 226, 0) 52deg, rgba(255, 251, 242, 0) 360deg)",
+ WebkitMaskImage: "radial-gradient(circle farthest-side, transparent calc(100% - 15px), #000 calc(100% - 6px))",
+ maskImage: "radial-gradient(circle farthest-side, transparent calc(100% - 15px), #000 calc(100% - 6px))",
+ animation: pressN ? "loupeSweepCW 560ms cubic-bezier(0.22, 1, 0.36, 1)" : "none",
+ }} />
+ <div key={"ccw" + releaseN} style={{
+ position: "absolute", inset: "0", borderRadius: "50%",
+ pointerEvents: "none", zIndex: 3, mixBlendMode: "screen",
+ background: "conic-gradient(from 16deg, rgba(255, 250, 238, 0) 0deg, rgba(255, 247, 230, 0.68) 22deg, rgba(255, 242, 220, 0) 56deg, rgba(255, 250, 238, 0) 360deg)",
+ WebkitMaskImage: "radial-gradient(circle farthest-side, transparent calc(100% - 15px), #000 calc(100% - 6px))",
+ maskImage: "radial-gradient(circle farthest-side, transparent calc(100% - 15px), #000 calc(100% - 6px))",
+ animation: releaseN ? "loupeSweepCCW 470ms cubic-bezier(0.22, 1, 0.36, 1)" : "none",
  }} />
  </div>
  </div>
@@ -31113,6 +31137,20 @@ export default function App() {
  @keyframes fadeIn {
  from { opacity: 0; }
  to { opacity: 1; }
+ }
+
+ /* Loupe "flashlight" — a warm arc races once around the glass rim when the
+ user presses (clockwise ignite) and again, softer, on release (a counter
+ sweep). Masked to the rim band and screen-blended so it only adds light. */
+ @keyframes loupeSweepCW {
+ 0% { opacity: 0; transform: rotate(-30deg); }
+ 18% { opacity: 1; }
+ 100% { opacity: 0; transform: rotate(330deg); }
+ }
+ @keyframes loupeSweepCCW {
+ 0% { opacity: 0; transform: rotate(30deg); }
+ 22% { opacity: 0.7; }
+ 100% { opacity: 0; transform: rotate(-330deg); }
  }
 
  /* Map-entry choreography (CSS only, fill:both -> settled state is always the
