@@ -5009,7 +5009,7 @@ function renderTemplate(raw, f) {
  // The Peds template also has a "- mixed dentition" bullet before the empty
  // stub; preserve those non-empty bullets and only replace the empty stub.
  t = t.replace(
- /([^\n]*updated odontogram with radiographic & (?:clinical|intraoral) hard tissue findings:\n(?:[ \t]*-[ \t]+[^\n]*\n)*)[ \t]*-[ \t]*(?=\n|$)/i,
+ /([^\n]*updated odontogram with (?:radiographic & )?(?:clinical|intraoral) hard tissue findings:\n(?:[ \t]*-[ \t]+[^\n]*\n)*)[ \t]*-[ \t]*(?=\n|$)/i,
  (_m, preamble) => `${preamble}${odon}`
 );
  continue;
