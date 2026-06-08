@@ -5073,6 +5073,14 @@ function renderTemplate(raw, f) {
  continue;
  }
 
+ // Peds dentition stage: the dropdown overrides the template's hardcoded
+ // "- mixed dentition" bullet under the hard-tissue-findings heading. Left
+ // at its default (blank in findings) the bullet stays "mixed dentition".
+ if (label === "dentition") {
+ t = t.replace(/^([ \t]*-[ \t]*)mixed dentition[ \t]*$/m, `$1${v}`);
+ continue;
+ }
+
  // IOE dentition dropdowns are assembled above the loop; skip their keys here.
  if (label.startsWith("ioe ")) continue;
 
@@ -8409,6 +8417,9 @@ const EXAM_FINDINGS_CONFIG = {
  // "Took bitewings?" right-aligned in header; default checked.
  headerCheckbox: { field: "tookBitewings", label: "Took bitewings?" },
  rows: [
+ [{ label: "dentition", type: "select", displayLabel: "Dentition",
+ defaultValue: "mixed dentition",
+ options: ["mixed dentition", "primary dentition", "permanent dentition"] }],
  [{ label: "odontogram", type: "odontogram",
  displayLabel: "Radiographic & Intraoral Hard Tissue Findings",
  placeholder: "List each finding on its own line. Press Enter to add another.",
