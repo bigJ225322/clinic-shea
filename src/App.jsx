@@ -8442,7 +8442,6 @@ const EXAM_FINDINGS_CONFIG = {
  title: "Post-Tx",
  fields: [
  { type: "peds-prophy-checkbox" },
- { type: "peds-nutrition-checkbox" },
  // Behavior dropdown lives in the global NoteBuilder section
  // (rendered for every peds procedure that has "- behavior: F4 --"
  // in its template, which is all of them).
@@ -9391,43 +9390,26 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  }
 
  if (field.type === "peds-prophy-checkbox") {
- return (
- <div key="peds-prophy" style={{ marginBottom: "6px" }}>
- <label style={{
- display: "flex", alignItems: "flex-start", gap: "9px",
+ // Prophy + Nutritional Counseling share one row. The labels are short, but
+ // the note still expands the full "Prophy completed (...)" / "Nutritional
+ // counseling completed" blocks — those are keyed on the checkbox state.
+ const box = (key, checked, on, label) => (
+ <label key={key} style={{
+ display: "flex", alignItems: "center", gap: "8px",
  fontSize: "13px", color: "var(--ink)", cursor: "pointer",
  fontFamily: "'Geist', sans-serif",
  }}>
- <input type="checkbox"
- checked={!!fields.pedsProphyCompleted}
- onChange={e => setField("pedsProphyCompleted", e.target.checked)}
- style={{ width: "15px", height: "15px", marginTop: "2px",
- accentColor: "var(--accent)", cursor: "pointer", flexShrink: 0 }} />
- <span style={{ color: "var(--ink-soft)", fontSize: "12px" }}>
- Prophy completed (plaque/calculus removal, fluoride varnish, OHI)
- </span>
+ <input type="checkbox" checked={checked} onChange={on}
+ style={{ width: "15px", height: "15px", accentColor: "var(--accent)",
+ cursor: "pointer", flexShrink: 0 }} />
+ <span style={{ color: "var(--ink-soft)", fontSize: "12px" }}>{label}</span>
  </label>
- </div>
-);
- }
-
- if (field.type === "peds-nutrition-checkbox") {
+ );
  return (
- <div key="peds-nutrition" style={{ marginBottom: "6px" }}>
- <label style={{
- display: "flex", alignItems: "flex-start", gap: "9px",
- fontSize: "13px", color: "var(--ink)", cursor: "pointer",
- fontFamily: "'Geist', sans-serif",
- }}>
- <input type="checkbox"
- checked={!!fields.pedsNutritionalCounseling}
- onChange={e => setField("pedsNutritionalCounseling", e.target.checked)}
- style={{ width: "15px", height: "15px", marginTop: "2px",
- accentColor: "var(--accent)", cursor: "pointer", flexShrink: 0 }} />
- <span style={{ color: "var(--ink-soft)", fontSize: "12px" }}>
- Nutritional counseling completed
- </span>
- </label>
+ <div key="peds-posttx" style={{ display: "flex", gap: "28px",
+ justifyContent: "center", marginBottom: "6px" }}>
+ {box("prophy", !!fields.pedsProphyCompleted, e => setField("pedsProphyCompleted", e.target.checked), "Prophy")}
+ {box("nutri", !!fields.pedsNutritionalCounseling, e => setField("pedsNutritionalCounseling", e.target.checked), "Nutritional Counseling")}
  </div>
 );
  }
