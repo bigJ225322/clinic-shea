@@ -4657,7 +4657,7 @@ function renderTemplate(raw, f) {
  // → "Excavated decay…"
  if (f.removedExistingRestoration === false) {
  // Pattern A: separate sentence ("Removed existing failing … restoration.")
- t = t.replace(/Removed existing failing [^.]+? restoration\.\s*/gi, "");
+ t = sub(t, /Removed existing failing [^.]+? restoration\.\s*/gi, "", "removedRestoration-strip");
  // Pattern B: joined with "and excavated decay" or "& excavated [X] decay"
  // Note: first optional group needs the trailing space INSIDE the group
  // — "(?:existing )?" not "(?:existing)?" — otherwise it would only match
@@ -4804,11 +4804,11 @@ function renderTemplate(raw, f) {
  }
  // Peds IUTD: strip ", IUTD" if false
  if (f.pedsIUTD === false) {
- t = t.replace(/,\s*IUTD\b/, "");
+ t = sub(t, /,\s*IUTD\b/, "", "pedsIUTD-strip");
  }
  // Peds mother helps: strip ", mother helps with brushing & flossing" if false
  if (f.pedsMotherHelps === false) {
- t = t.replace(/,\s*mother helps with brushing & flossing\b/, "");
+ t = sub(t, /,\s*mother helps with brushing & flossing\b/, "", "pedsMotherHelps-strip");
  }
  // Brushing/flossing — three distinct template patterns across the codebase:
  // • Peds (5985): "brushes 2x a day, flosses 1x a day"
@@ -4887,7 +4887,7 @@ function renderTemplate(raw, f) {
  }
  // Peds nutritional counseling: strip the line when false.
  if (f.pedsNutritionalCounseling === false) {
- t = t.replace(/^[ \t]*-[ \t]*Nutritional counseling completed[^\n]*\n/im, "");
+ t = sub(t, /^[ \t]*-[ \t]*Nutritional counseling completed[^\n]*\n/im, "", "pedsNutrition-strip");
  }
  // Peds behavior: replace either the legacy literal "F4" or the
  // new placeholder "F[ 1 / 2 / 3 / 4 ]" with the picker's choice.
@@ -5353,7 +5353,7 @@ function renderTemplate(raw, f) {
  // BL line — template has: "- generalized horizontal bone loss"
  if (blDist === "none") {
  // Remove the entire line (including its leading newline+indent)
- t = t.replace(/\n[ \t]*-[ \t]*generalized horizontal bone loss/i, "");
+ t = sub(t, /\n[ \t]*-[ \t]*generalized horizontal bone loss/i, "", "BL-none-strip");
  } else if (blDist === "localized") {
  const suffix = blWhere? `: ${blWhere}`: "";
  t = t.replace(/generalized horizontal bone loss/i,
@@ -5363,7 +5363,7 @@ function renderTemplate(raw, f) {
 
  // Calculus line — template has: "- generalized moderate interproximal calculus"
  if (calcDist === "none") {
- t = t.replace(/\n[ \t]*-[ \t]*generalized moderate interproximal calculus/i, "");
+ t = sub(t, /\n[ \t]*-[ \t]*generalized moderate interproximal calculus/i, "", "calc-none-strip");
  } else {
  let calcText = `${calcDist} ${calcAmt} interproximal calculus`;
  if (calcDist === "localized" && calcWhere) calcText += `: ${calcWhere}`;
@@ -5561,12 +5561,12 @@ function renderTemplate(raw, f) {
  // Both sentences sit on the same line in Swade's templates so we match
  // them as a unit, including any trailing whitespace.
  if (f.nitrous === false) {
- t = t.replace(
+ t = sub(t,
  /Titrated to [^.]*nitrous[^.]*\.\s*Administered for [^.]*\.\s*/i,
- ""
+ "", "nitrous-strip"
 );
  // Strip the O2 purge sentence that follows nitrous (diffusion hypoxia protocol).
- t = t.replace(/Patient given 100% oxygen at 4L\/min for 5 minutes\.\s*/g, "");
+ t = sub(t, /Patient given 100% oxygen at 4L\/min for 5 minutes\.\s*/g, "", "nitrous-o2-strip");
  }
 
  // -------- 8. Anesthetic substitution. --------

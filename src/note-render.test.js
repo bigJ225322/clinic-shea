@@ -177,6 +177,15 @@ describe("tripwire: no instrumented fill is dead across all templates", () => {
       // blood pressure, intraoral photos, endo testing, other symptoms, anything
       // else, mounting records). A drifted strip leaves a dangling placeholder.
       for (const id of ALL_IDS) render(id, {});
+      // Permutation 3 — value-specific choices: exercises the strips that fire on
+      // a deliberate non-default value (nitrous off, restoration not removed, peds
+      // IUTD / mother-helps / nutrition off, perio bone-loss / calculus "none").
+      const valueSpecific = {
+        nitrous: false, removedExistingRestoration: false,
+        pedsIUTD: false, pedsMotherHelps: false, pedsNutritionalCounseling: false,
+        examFindings: { "bl distribution": "none", "calc distribution": "none" },
+      };
+      for (const id of ALL_IDS) render(id, valueSpecific);
     } finally {
       noteTripwire.armed = false;
     }
@@ -198,6 +207,8 @@ describe("tripwire: no instrumented fill is dead across all templates", () => {
         "bloodPressure", "temperature-strip", "bloodGlucose-strip", "bloodPressure-strip",
         "intraoralPhotos-strip", "endoTesting-strip", "otherSymptoms-strip", "anythingElse-strip",
         "mounting-strip",
+        "removedRestoration-strip", "pedsIUTD-strip", "pedsMotherHelps-strip", "pedsNutrition-strip",
+        "BL-none-strip", "calc-none-strip", "nitrous-strip", "nitrous-o2-strip",
       ])
     );
   });

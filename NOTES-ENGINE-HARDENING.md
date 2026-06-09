@@ -1,9 +1,10 @@
 # Notes Engine Hardening Plan
 
 > Status: Tier 0 (test harness) **DONE**. Tier 1 (substitution tripwire) **DONE** —
-> the `sub()` helper + dead-fill harness test are live; **36 fills instrumented**
-> (every field-driven value-fill plus the blank-firing strip branches), exercised
-> under two render permutations (fields-populated + all-blank). The tripwire caught
+> the `sub()` helper + dead-fill harness test are live; **44 fills instrumented**
+> (every field-driven value-fill plus the blank-firing AND value-specific strip
+> branches), exercised under three render permutations (fields-populated, all-blank,
+> value-specific). The tripwire caught
 > a real silent-data-loss bug on the way in (extraction-teeth, template 448 — see
 > the bug table). Tier 2 (explicit `{{tokens}}`) is the next step. This doc is
 > self-contained on purpose — a future session with no memory of the original
@@ -82,14 +83,17 @@ instrumented**, in three groups:
   (diagnosis-hashform, pt-opts-for, extraction-teeth), and the perio block
   (gingiva, brush-freq, floss-freq, technique, plaque-level, plaque-area,
   emphasis, mounting-records);
-- **strip branches** (9, each `*-strip`): the blank-firing strips that drop a line
-  when a field is empty — temperature / bloodGlucose / bloodPressure /
-  intraoralPhotos / endoTesting / otherSymptoms / anythingElse / mounting.
+- **blank-firing strips** (9, each `*-strip`): drop a line when a field is empty —
+  temperature / bloodGlucose / bloodPressure / intraoralPhotos / endoTesting /
+  otherSymptoms / anythingElse / mounting;
+- **value-specific strips** (8): fire on a deliberate non-default choice —
+  removedRestoration / pedsIUTD / pedsMotherHelps / pedsNutrition / BL-none /
+  calc-none / nitrous / nitrous-o2.
 
-The harness arms the tripwire and renders every template under **two permutations**
-— fields-populated (exercises the fills) and all-blank (exercises the strips) —
-then asserts **no instrumented label matches zero across all templates ×
-permutations**. A regex that has drifted off every template it should hit is dead
+The harness arms the tripwire and renders every template under **three permutations**
+— fields-populated (fills), all-blank (blank strips), and value-specific (the
+non-default strips) — then asserts **no instrumented label matches zero across all
+templates × permutations**. A regex that has drifted off every template it should hit is dead
 → the suite goes red. False-positive-free (needs no per-template field knowledge).
 The pass **caught a real bug** the day it landed: the 448 extraction-teeth silent
 drop (see the bug table). `npm test` = 1332 green.
@@ -99,17 +103,15 @@ drop (see the bug table). `npm test` = 1332 green.
 add `"label"` to the `arrayContaining` sanity list in
 `src/note-render.test.js`. Then `npm test`.
 
-**What's deferred** (a clean follow-up, *not* blocking Tier 2): the *value-specific*
-strip branches that fire only on a non-default value rather than on blank — BL/calc
-"none" (perio radiographic findings), `pedsIUTD === false`, `pedsMotherHelps ===
-false`, `nitrous` off, the peds "no occlusal note" strip, peds nutritional-counseling
-off. These need a **third render permutation** seeding those specific values. They're
-lower priority: each is an explicit user choice (less prone to silent drift), several
-already produce clinically-visible output, and the `[bracket]` catch-all strips are
-already locked by harness invariants #2/#3. **Skip** pure tidies / whitespace-collapse
-and stable global phrases. To find any un-instrumented fill:
-`grep -nE 't = t\.replace\(' src/App.jsx` over ~4049–5790 and skip those already
-wrapped in `sub(`.
+**What's left** (tiny, *not* blocking Tier 2): the perio "localized" radiographic
+fills (BL/calc localized + calc amount — they fire on a "localized"/amount value and
+would need a 4th permutation seed) and the peds "no occlusal note" strip (peds-gated,
+intricate, and already covered by the 703 occlusal regression lock). Everything else
+is either instrumented or intentionally skipped — pure tidies / whitespace-collapse,
+stable global phrases, and the `[bracket]` catch-all strips already locked by harness
+invariants #2/#3. To find any un-instrumented fill:
+`grep -nE 't = t\.replace\(' src/App.jsx` over renderTemplate's range and skip those
+already wrapped in `sub(`.
 
 The sketch below is superseded by the live design above but kept for rationale.
 
