@@ -7154,6 +7154,7 @@ function Select({ value, onChange, children, prominent = false }) {
  borderColor: focused? "var(--accent)": "var(--rule)",
  boxShadow: focused? "0 0 0 3px rgba(122, 26, 26, 0.08)": "none",
  cursor: "pointer",
+ transition: "border-color 140ms ease, box-shadow 140ms ease",
  }}>{children}</select>
  <span aria-hidden style={{
  position: "absolute", right: "12px", top: "50%",
@@ -9145,7 +9146,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  const amtBtn = (opt, letter) => {
  const active = calcAmt === opt && calcDist!== "none";
  return (
- <button key={opt} onClick={() => update("calc amount", opt)}
+ <button key={opt} className="tactile" onClick={() => update("calc amount", opt)}
  style={{
  padding: "4px 8px", fontSize: "11px", lineHeight: 1,
  fontFamily: "'Geist', sans-serif", fontWeight: 500,
@@ -9905,7 +9906,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  : "0 0 2px 0";
  return (
  <button key={q}
- type="button"
+ type="button" className="tactile"
  onClick={() => update(field.label, active? "": q)}
  style={{
  padding: "9px 0",
@@ -9923,7 +9924,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  borderRadius: corners,
  marginLeft: idx % 2 === 1? "-1px": 0,
  cursor: "pointer",
- transition: "background 140ms, color 140ms, border-color 140ms",
+ transition: "background 140ms, color 140ms, border-color 140ms, transform 120ms cubic-bezier(.2,.6,.2,1)",
  }}>
  {q}
  </button>
@@ -9948,7 +9949,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  const active = value === chip;
  return (
  <button key={chip}
- type="button"
+ type="button" className="tactile"
  onClick={() => update(field.label, active ? "" : chip)}
  style={{
  padding: "3px 9px",
@@ -9961,7 +9962,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  borderRadius: "2px",
  cursor: "pointer",
  letterSpacing: "0.04em",
- transition: "background 140ms, color 140ms, border-color 140ms",
+ transition: "background 140ms, color 140ms, border-color 140ms, transform 120ms cubic-bezier(.2,.6,.2,1)",
  }}>
  {chip}
  </button>
@@ -10030,7 +10031,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  {OPTS.map((opt, idx) => {
  const active = val === opt;
  return (
- <button key={opt} type="button"
+ <button key={opt} type="button" className="tactile"
  onClick={() => update(`${prefix} ${field}`, active? "": opt)}
  style={{
  flex: 1, padding: "5px 1px",
@@ -10044,7 +10045,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  marginLeft: idx > 0? "-1px": 0,
  position: "relative", zIndex: active? 1: 0,
  cursor: "pointer",
- transition: "background 140ms, color 140ms, border-color 140ms",
+ transition: "background 140ms, color 140ms, border-color 140ms, transform 120ms cubic-bezier(.2,.6,.2,1)",
  }}>
  {opt}
  </button>
@@ -29447,6 +29448,8 @@ function Pathways() {
  <button key={d.id} onClick={() => handleDomainChange(d.id)}
  onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 5px 18px rgba(26,22,18,0.10)"; }}
  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--rule)"; e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "0 1px 3px rgba(26,22,18,0.05)"; }}
+ onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(-1px) scale(0.985)"; }}
+ onMouseUp={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; }}
  style={{
  textAlign: "left", display: "flex", flexDirection: "column",
  minHeight: "120px", padding: "15px 17px", borderRadius: "4px",
