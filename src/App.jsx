@@ -4046,6 +4046,24 @@ function computePerioCOEDx(inputs) {
 // add-a-row inputs in the ICC form.
 const ICC_LIST_FIELDS = { "treatment priorities": "n", "medical conditions/syndromes": "d", "relevant health conditions": "d", "general findings": "d" };
 
+// --- Tier 1 substitution tripwire (see NOTES-ENGINE-HARDENING.md) ----------
+// The note engine fills templates with dozens of t.replace() calls that hunt
+// for exact template prose. When the prose drifts, a replace silently matches
+// nothing and the note renders wrong — with no error. `sub()` wraps a fill so
+// that, when the tripwire is armed (test/dev only — off in production, where it
+// behaves exactly like a bare t.replace), it records how many times the pattern
+// matched. The harness arms it, renders every template, and asserts each
+// instrumented fill fires for at least one template — so a regex that has
+// drifted off ALL its templates (the silent-no-op family) turns the suite red.
+const noteTripwire = { armed: false, hits: [] };
+function sub(t, re, val, label) {
+ if (noteTripwire.armed) {
+ const g = re.global ? re : new RegExp(re.source, re.flags + "g");
+ noteTripwire.hits.push({ label, matched: (t.match(g) || []).length });
+ }
+ return t.replace(re, val);
+}
+
 function renderTemplate(raw, f) {
  if (!raw) return "";
  let t = raw;
@@ -4163,10 +4181,10 @@ function renderTemplate(raw, f) {
  // space (not one-or-more) so age still anchors: filled → "33 y/o", unfilled
  // → "y/o". (Dash templates like "- y/o" keep their post-dash space and are
  // handled by the global pass below instead.)
- t = t.replace(/^[ \t]*(y\/o\b)/, ageForNote? `${ageForNote} $1`: `$1`);
+ t = sub(t, /^[ \t]*(y\/o\b)/, ageForNote? `${ageForNote} $1`: `$1`, "age-leading");
  // For "y/o" elsewhere in the note (e.g. "- y/o"), insert age if set.
  if (ageForNote) {
- t = t.replace(/(^|[^\d])(\s)y\/o\b/g, `$1$2${ageForNote} y/o`);
+ t = sub(t, /(^|[^\d])(\s)y\/o\b/g, `$1$2${ageForNote} y/o`, "age-global");
  }
  if (f.gender.trim() && f.gender.trim().toLowerCase()!== "female") {
  t = t.replace(/\bfemale\b/g, f.gender.trim());
@@ -4657,8 +4675,8 @@ function renderTemplate(raw, f) {
  // "Re-evaluated BW & PA taken __". Single field for both.
  if (f.endoConsultDate && f.endoConsultDate.trim()) {
  const d = f.endoConsultDate.trim();
- t = t.replace(/(consult visit)\s+(?:\[date\]|\d+\/\d+\/\d+)/g, `$1 ${d}`);
- t = t.replace(/(Re-evaluated BW & PA taken)\s+(?:\[date\]|\d+\/\d+\/\d+)/g, `$1 ${d}`);
+ t = sub(t, /(consult visit)\s+(?:\[date\]|\d+\/\d+\/\d+)/g, `$1 ${d}`, "endoConsultDate-visit");
+ t = sub(t, /(Re-evaluated BW & PA taken)\s+(?:\[date\]|\d+\/\d+\/\d+)/g, `$1 ${d}`, "endoConsultDate-reeval");
  }
  // 2. Consult timing ("1 month ago")
  if (f.endoConsultMonthsAgo && f.endoConsultMonthsAgo.trim()) {
@@ -4761,7 +4779,7 @@ function renderTemplate(raw, f) {
  // failed. Tolerate either spacing.
  if (f.endoMaf && String(f.endoMaf).trim()) {
  const m = String(f.endoMaf).trim();
- t = t.replace(/MAF:\s*(?:\d+|X)\b/, `MAF: ${m}`);
+ t = sub(t, /MAF:\s*(?:\d+|X)\b/, `MAF: ${m}`, "endoMaf");
  }
 
  // -------- 6c. Peds-specific demographics, exam, and post-Tx substitutions.
@@ -31517,4 +31535,4 @@ export default function App() {
 // renderTemplate is pure — (template string, fields) -> note string — so it can
 // be unit-tested with no React/DOM. TEMPLATES maps procedure id -> template;
 // DEFAULT_FIELDS is the baseline field object the UI starts from.
-export { renderTemplate, TEMPLATES, DEFAULT_FIELDS };
+export { renderTemplate, TEMPLATES, DEFAULT_FIELDS, noteTripwire };

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { renderTemplate, TEMPLATES, DEFAULT_FIELDS } from "./App.jsx";
+import { renderTemplate, TEMPLATES, DEFAULT_FIELDS, noteTripwire } from "./App.jsx";
 
 // ---------------------------------------------------------------------------
 // Note-rendering harness.
@@ -130,5 +130,38 @@ describe("regression locks", () => {
       .toMatch(/buccal infiltrations of UR quadrant & greater palatine block on R/);
     expect(render("icc-srp", { labPlaceholders: { "no anesthetic": "NOANES" } }))
       .toMatch(/No local anesthetic administered\./);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Tier 1 tripwire (NOTES-ENGINE-HARDENING.md): renderTemplate's field-driven
+// fills are wrapped in sub(t, re, val, label). With the tripwire armed, each
+// call records how many times its pattern matched. Render every template with
+// the fields those fills read; a fill whose regex has drifted off ALL its
+// templates matches zero everywhere -> its label's max is 0 -> fail. This
+// catches the silent-no-op family with no per-template false positives, and
+// without a per-fill output assertion. As more fills are instrumented, they
+// auto-join this check.
+// ---------------------------------------------------------------------------
+describe("tripwire: no instrumented fill is dead across all templates", () => {
+  it("every sub() fill fires for at least one template", () => {
+    const kitchenSink = { age: "44", endoMaf: "30", endoConsultDate: "5/1/2026" };
+    noteTripwire.hits = [];
+    noteTripwire.armed = true;
+    try {
+      for (const id of ALL_IDS) render(id, kitchenSink);
+    } finally {
+      noteTripwire.armed = false;
+    }
+    const maxByLabel = {};
+    for (const { label, matched } of noteTripwire.hits) {
+      maxByLabel[label] = Math.max(maxByLabel[label] || 0, matched);
+    }
+    const dead = Object.entries(maxByLabel).filter(([, m]) => m === 0).map(([l]) => l);
+    expect(dead, `instrumented fills that matched NO template (drifted/dead): ${dead.join(", ")}`).toEqual([]);
+    // sanity — the fills we instrumented are actually exercised
+    expect(Object.keys(maxByLabel)).toEqual(
+      expect.arrayContaining(["age-leading", "age-global", "endoMaf", "endoConsultDate-visit", "endoConsultDate-reeval"])
+    );
   });
 });
