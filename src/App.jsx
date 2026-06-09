@@ -4657,8 +4657,8 @@ function renderTemplate(raw, f) {
  // "Re-evaluated BW & PA taken __". Single field for both.
  if (f.endoConsultDate && f.endoConsultDate.trim()) {
  const d = f.endoConsultDate.trim();
- t = t.replace(/(consult visit)\s+1\/1\/2021/g, `$1 ${d}`);
- t = t.replace(/(Re-evaluated BW & PA taken)\s+1\/1\/2021/g, `$1 ${d}`);
+ t = t.replace(/(consult visit)\s+(?:\[date\]|\d+\/\d+\/\d+)/g, `$1 ${d}`);
+ t = t.replace(/(Re-evaluated BW & PA taken)\s+(?:\[date\]|\d+\/\d+\/\d+)/g, `$1 ${d}`);
  }
  // 2. Consult timing ("1 month ago")
  if (f.endoConsultMonthsAgo && f.endoConsultMonthsAgo.trim()) {
@@ -4761,7 +4761,7 @@ function renderTemplate(raw, f) {
  // failed. Tolerate either spacing.
  if (f.endoMaf && String(f.endoMaf).trim()) {
  const m = String(f.endoMaf).trim();
- t = t.replace(/MAF:\s*\d+/, `MAF: ${m}`);
+ t = t.replace(/MAF:\s*(?:\d+|X)\b/, `MAF: ${m}`);
  }
 
  // -------- 6c. Peds-specific demographics, exam, and post-Tx substitutions.
