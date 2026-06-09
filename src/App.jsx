@@ -4159,15 +4159,15 @@ function renderTemplate(raw, f) {
  if (!f.temp.trim()) {
  t = t.replace(/^[ \t]*-[ \t]*temperature:[ \t]*ºF[ \t]*\n/im, "");
  } else {
- t = t.replace(/^([ \t]*-[ \t]*temperature:)[ \t]*ºF[ \t]*$/im,
- `$1 ${f.temp.trim()}ºF`);
+ t = sub(t, /^([ \t]*-[ \t]*temperature:)[ \t]*ºF[ \t]*$/im,
+ `$1 ${f.temp.trim()}ºF`, "temperature");
  }
  // Blood glucose: drop " - blood glucose:" line entirely if no value.
  if (!f.bg.trim()) {
  t = t.replace(/^[ \t]*-[ \t]*blood glucose:[ \t]*\n/im, "");
  } else {
- t = t.replace(/^([ \t]*-[ \t]*blood glucose:)[ \t]*$/im,
- `$1 ${f.bg.trim()}`);
+ t = sub(t, /^([ \t]*-[ \t]*blood glucose:)[ \t]*$/im,
+ `$1 ${f.bg.trim()}`, "bloodGlucose");
  }
 
  // -------- 3. Age + gender. --------
