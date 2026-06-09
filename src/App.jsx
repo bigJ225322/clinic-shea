@@ -4329,7 +4329,7 @@ function renderTemplate(raw, f) {
  // becomes "[ FujiCEM / Panavia ]" for all-ceramic. Template 5305
  // already uses Panavia explicitly in narrative so no swap needed.
  if (f.crownType && f.crownType !== "PFM") {
- t = t.replace(/\bPFM\b/g, f.crownType);
+ t = sub(t, /\bPFM\b/g, f.crownType, "crownType");
  if (f.crownType === "all-ceramic") {
  t = t.replace(/\bRelyX\b/g, "Panavia");
  }
@@ -4524,7 +4524,7 @@ function renderTemplate(raw, f) {
  if (d) {
  t = t.replace(/\b1\/1\/2000\b/, d);
  // After: replaces "[date]" (the current placeholder in template 1346).
- t = t.replace(/\bSRP 4 quads completed \[date\]/, `SRP 4 quads completed ${d}`);
+ t = sub(t, /\bSRP 4 quads completed \[date\]/, `SRP 4 quads completed ${d}`, "srpDate");
  }
  }
 
@@ -5079,7 +5079,7 @@ function renderTemplate(raw, f) {
  // and silently left the smart-quote placeholder in the rendered note,
  // appending the user's CC ASCII-quoted before it.
  if (label === "cc") {
- t = t.replace(/CC: “[^”]*”/, `CC: “${v}”`);
+ t = sub(t, /CC: “[^”]*”/, `CC: “${v}”`, "cc");
  continue;
  }
 

@@ -145,7 +145,10 @@ describe("regression locks", () => {
 // ---------------------------------------------------------------------------
 describe("tripwire: no instrumented fill is dead across all templates", () => {
   it("every sub() fill fires for at least one template", () => {
-    const kitchenSink = { age: "44", endoMaf: "30", endoConsultDate: "5/1/2026", temp: "98.6", bg: "95" };
+    const kitchenSink = {
+      age: "44", endoMaf: "30", endoConsultDate: "5/1/2026", temp: "98.6", bg: "95",
+      crownType: "all-ceramic", srpDate: "1/1/2026", examFindings: { cc: "tooth pain" },
+    };
     noteTripwire.hits = [];
     noteTripwire.armed = true;
     try {
@@ -161,7 +164,7 @@ describe("tripwire: no instrumented fill is dead across all templates", () => {
     expect(dead, `instrumented fills that matched NO template (drifted/dead): ${dead.join(", ")}`).toEqual([]);
     // sanity — the fills we instrumented are actually exercised
     expect(Object.keys(maxByLabel)).toEqual(
-      expect.arrayContaining(["age-leading", "age-global", "endoMaf", "endoConsultDate-visit", "endoConsultDate-reeval", "temperature", "bloodGlucose"])
+      expect.arrayContaining(["age-leading", "age-global", "endoMaf", "endoConsultDate-visit", "endoConsultDate-reeval", "temperature", "bloodGlucose", "cc", "crownType", "srpDate"])
     );
   });
 });
