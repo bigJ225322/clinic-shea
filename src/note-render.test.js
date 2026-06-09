@@ -155,7 +155,7 @@ describe("regression locks", () => {
 describe("tripwire: no instrumented fill is dead across all templates", () => {
   it("every sub() fill fires for at least one template", () => {
     const kitchenSink = {
-      age: "44", endoMaf: "30", endoConsultDate: "5/1/2026", temp: "98.6", bg: "95",
+      age: "44", endoMaf: "30", endoConsultDate: "5/1/2026", temp: "98.6", bg: "95", bp: "120/80",
       crownType: "all-ceramic", srpDate: "1/1/2026",
       endoNumCanals: "3", medications: "lisinopril", brushing: "3x a day", flossing: "2x a day",
       examFindings: {
@@ -170,7 +170,13 @@ describe("tripwire: no instrumented fill is dead across all templates", () => {
     noteTripwire.hits = [];
     noteTripwire.armed = true;
     try {
+      // Permutation 1 — fields populated: exercises the value-FILL branches.
       for (const id of ALL_IDS) render(id, kitchenSink);
+      // Permutation 2 — all blank (DEFAULT_FIELDS): exercises the STRIP branches
+      // that fire when a vital/section is empty (temperature, blood glucose,
+      // blood pressure, intraoral photos, endo testing, other symptoms, anything
+      // else, mounting records). A drifted strip leaves a dangling placeholder.
+      for (const id of ALL_IDS) render(id, {});
     } finally {
       noteTripwire.armed = false;
     }
@@ -189,6 +195,9 @@ describe("tripwire: no instrumented fill is dead across all templates", () => {
         "diagnosis-hashform", "pt-opts-for", "extraction-teeth",
         "perio-gingiva", "perio-brush-freq", "perio-floss-freq", "perio-technique",
         "perio-plaque-level", "perio-plaque-area", "perio-emphasis", "mounting-records",
+        "bloodPressure", "temperature-strip", "bloodGlucose-strip", "bloodPressure-strip",
+        "intraoralPhotos-strip", "endoTesting-strip", "otherSymptoms-strip", "anythingElse-strip",
+        "mounting-strip",
       ])
     );
   });

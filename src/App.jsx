@@ -4157,14 +4157,14 @@ function renderTemplate(raw, f) {
  // -------- 2. Strip optional vitals lines unless filled in. --------
  // Temperature: drop " - temperature: ºF" line entirely if no value.
  if (!f.temp.trim()) {
- t = t.replace(/^[ \t]*-[ \t]*temperature:[ \t]*ºF[ \t]*\n/im, "");
+ t = sub(t, /^[ \t]*-[ \t]*temperature:[ \t]*ºF[ \t]*\n/im, "", "temperature-strip");
  } else {
  t = sub(t, /^([ \t]*-[ \t]*temperature:)[ \t]*ºF[ \t]*$/im,
  `$1 ${f.temp.trim()}ºF`, "temperature");
  }
  // Blood glucose: drop " - blood glucose:" line entirely if no value.
  if (!f.bg.trim()) {
- t = t.replace(/^[ \t]*-[ \t]*blood glucose:[ \t]*\n/im, "");
+ t = sub(t, /^[ \t]*-[ \t]*blood glucose:[ \t]*\n/im, "", "bloodGlucose-strip");
  } else {
  t = sub(t, /^([ \t]*-[ \t]*blood glucose:)[ \t]*$/im,
  `$1 ${f.bg.trim()}`, "bloodGlucose");
@@ -4955,10 +4955,10 @@ function renderTemplate(raw, f) {
  // only the populate branch existed, so an unfilled BP would leave a
  // dangling "- blood pressure:" stub in the rendered note.
  if (!f.bp.trim()) {
- t = t.replace(/^[ \t]*-[ \t]*blood pressure:[ \t]*\n/im, "");
+ t = sub(t, /^[ \t]*-[ \t]*blood pressure:[ \t]*\n/im, "", "bloodPressure-strip");
  } else {
- t = t.replace(/^([ \t]*-[ \t]*blood pressure:)[ \t]*$/im,
- `$1 ${f.bp.trim()}`);
+ t = sub(t, /^([ \t]*-[ \t]*blood pressure:)[ \t]*$/im,
+ `$1 ${f.bp.trim()}`, "bloodPressure");
  }
 
  // -------- 7c. Dental history. --------
@@ -4979,7 +4979,7 @@ function renderTemplate(raw, f) {
  // -------- 7d. Intraoral photos. --------
  // Strip "- Took intraoral photos." when the checkbox is unchecked (default off).
  if (!f.intraoralPhotos) {
- t = t.replace(/^[ \t]*-[ \t]*Took intraoral photos\.[ \t]*\n?/im, "");
+ t = sub(t, /^[ \t]*-[ \t]*Took intraoral photos\.[ \t]*\n?/im, "", "intraoralPhotos-strip");
  }
 
  // -------- 7b. Exam findings (COE / POE structured fields). --------
@@ -5439,19 +5439,19 @@ function renderTemplate(raw, f) {
 
  // Endo testing: omit the line entirely when left blank.
  if (!(ef["endo testing"] || "").trim()) {
- t = t.replace(/\n[ \t]*-[ \t]*endo testing:[^\n]*/g, "");
+ t = sub(t, /\n[ \t]*-[ \t]*endo testing:[^\n]*/g, "", "endoTesting-strip");
  }
 
  // Other symptoms (urgent care HPI): omit "- other symptoms:" line when blank.
  // The form field's placeholder says "blank to omit" so users expect this.
  if (!(ef["other symptoms"] || "").trim()) {
- t = t.replace(/\n[ \t]*-[ \t]*other symptoms:[^\n]*/g, "");
+ t = sub(t, /\n[ \t]*-[ \t]*other symptoms:[^\n]*/g, "", "otherSymptoms-strip");
  }
 
  // Anything else? (urgent care HPI): omit "- anything else?:" line when blank.
  // Same placeholder semantic.
  if (!(ef["anything else?"] || "").trim()) {
- t = t.replace(/\n[ \t]*-[ \t]*anything else\?:[^\n]*/g, "");
+ t = sub(t, /\n[ \t]*-[ \t]*anything else\?:[^\n]*/g, "", "anythingElse-strip");
  }
 
  // Mucogingival defects: substitute WNL if the stub is still empty
@@ -5508,7 +5508,7 @@ function renderTemplate(raw, f) {
  ].filter(Boolean);
  const mountingRe = /^[ \t]*-[ \t]*Took diagnostic impressions, facebow, & bite registration\.[ \t]*$/im;
  if (items.length === 0) {
- t = t.replace(mountingRe, "").replace(/\n{3,}/g, "\n\n");
+ t = sub(t, mountingRe, "", "mounting-strip").replace(/\n{3,}/g, "\n\n");
  } else {
  const list = items.length === 1
 ? items[0]

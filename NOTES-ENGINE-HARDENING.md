@@ -1,11 +1,13 @@
 # Notes Engine Hardening Plan
 
-> Status: Tier 0 (test harness) **DONE**. Tier 1 (tripwire) **IN PROGRESS** — the
-> `sub()` helper + dead-fill harness test are live; 7 field-driven fills
-> instrumented so far (commits d2bd4a9, 0188935). Resume by instrumenting the
-> remaining fills (see the Tier 1 section). Tier 2 (explicit tokens) not started.
-> This doc is self-contained on purpose — a future session with no memory of the
-> original conversation should be able to pick the plan up from here alone.
+> Status: Tier 0 (test harness) **DONE**. Tier 1 (substitution tripwire) **DONE** —
+> the `sub()` helper + dead-fill harness test are live; **36 fills instrumented**
+> (every field-driven value-fill plus the blank-firing strip branches), exercised
+> under two render permutations (fields-populated + all-blank). The tripwire caught
+> a real silent-data-loss bug on the way in (extraction-teeth, template 448 — see
+> the bug table). Tier 2 (explicit `{{tokens}}`) is the next step. This doc is
+> self-contained on purpose — a future session with no memory of the original
+> conversation should be able to pick the plan up from here alone.
 
 ## TL;DR
 
@@ -44,6 +46,7 @@ bug below is a symptom.
 | 5985 Peds Initial/Recall | doubled hairline — divider rendered above an empty grid | `081f6c7` |
 | 703 Restorative COE | Occlusal Assessment input was dead — peds occlusal strip deleted the stub before the generic fill | `8b5a735` |
 | 5472 RCT | `MAF:` value never inserted (`/MAF:\d+/` vs template `MAF: X`); endo consult date dropped + literal `[date]` leaked (×2 lines) | `76785b3` |
+| 448 Urgent Care — Wisdom Tooth | "Teeth Referred For Extraction" silently dropped: fill regex `/extraction #1, #16, #17, #32/` expected an OLD template that baked the four molars in; body was later simplified to `extraction #.`, so the student's entry vanished | `09f5ba7` — **caught by the Tier 1 tripwire** |
 
 A full live runtime sweep of **all 95 procedures'** default renders is otherwise
 clean (no sentinel leaks, empty notes, doubled hairlines, stranded punctuation).
@@ -68,43 +71,45 @@ clean (no sentinel leaks, empty notes, doubled hairlines, stranded punctuation).
 
 ## The plan (cheapest first)
 
-### Tier 1 — substitution tripwire  ← IN PROGRESS
+### Tier 1 — substitution tripwire  ✅ DONE
 
-**Live now** (commits `d2bd4a9`, `0188935`, `bcb2c98`): the `sub(t, re, val, label)`
-helper + `noteTripwire` state sit just above `renderTemplate` in `src/App.jsx`
-(both exported for the harness). 10 field-driven fills are instrumented:
-`age-leading`, `age-global`, `endoMaf`, `endoConsultDate-visit`,
-`endoConsultDate-reeval`, `temperature`, `bloodGlucose`, `cc`, `crownType`,
-`srpDate`. The harness arms the
-tripwire, renders every template with a kitchen-sink of those fields, and
-asserts **no instrumented fill matches zero across all templates** — a regex that
-has drifted off every template it should hit is dead → the suite goes red. This
-is false-positive-free (needs no per-template field knowledge).
+**Done.** The `sub(t, re, val, label)` helper + `noteTripwire` state sit just above
+`renderTemplate` in `src/App.jsx` (both exported for the harness). **36 fills are
+instrumented**, in three groups:
+- **value-fills** (27): age ×2, endoMaf, endoConsultDate ×2, temperature,
+  bloodGlucose, bloodPressure, cc, crownType, srpDate, endoCanals, medications,
+  brushing/flossing (peds + COE/POE), the urgent-care loop fills
+  (diagnosis-hashform, pt-opts-for, extraction-teeth), and the perio block
+  (gingiva, brush-freq, floss-freq, technique, plaque-level, plaque-area,
+  emphasis, mounting-records);
+- **strip branches** (9, each `*-strip`): the blank-firing strips that drop a line
+  when a field is empty — temperature / bloodGlucose / bloodPressure /
+  intraoralPhotos / endoTesting / otherSymptoms / anythingElse / mounting.
+
+The harness arms the tripwire and renders every template under **two permutations**
+— fields-populated (exercises the fills) and all-blank (exercises the strips) —
+then asserts **no instrumented label matches zero across all templates ×
+permutations**. A regex that has drifted off every template it should hit is dead
+→ the suite goes red. False-positive-free (needs no per-template field knowledge).
+The pass **caught a real bug** the day it landed: the 448 extraction-teeth silent
+drop (see the bug table). `npm test` = 1332 green.
 
 **To instrument another fill:** change `t = t.replace(/…/, …)` →
 `t = sub(t, /…/, …, "label")`; add its driving field to the test's `kitchenSink`;
 add `"label"` to the `arrayContaining` sanity list in
 `src/note-render.test.js`. Then `npm test`.
 
-**Remaining value-fills to instrument** — find them with:
-`grep -nE 't = t\.replace\([^)]*\$\{' src/App.jsx` (over renderTemplate's range,
-~4049–5790) and skip any already wrapped in `sub(`. As of `bcb2c98` the list is:
-- `medications` (`, no medications` → value) — driven by `f.medications`
-- brushing / flossing frequency, peds + COE/POE phrasings (`brushes 2x a day`,
-  `brushing 2x a day`, `flosses 1x a day`, `flossing 1x a day`)
-- endo per-tooth findings (hash-form regex) + `Located N canals.`
-- urgent-care `Pt opts for .` and extraction-teeth list
-- perio gingiva `[color], [contour], [consistency]`; perio technique / plaque-level
-  / plaque-area / "Emphasized that patient needs to ."
-- mounting-records list (`- Took … .`)
-
-Each needs its driving field added to the test's `kitchenSink` and its label to
-the `arrayContaining` sanity list. **Skip** pure tidies / whitespace-collapse and
-stable global phrases (`the clinic`, `PFM` is already done). Covering the *blank*
-strip branches (temperature / BG / COVID / no-treatments strips that fire when a
-field is empty) needs a **second all-blank render permutation** in the test that
-asserts those strips fire — a good follow-up that closes the other half of the
-family.
+**What's deferred** (a clean follow-up, *not* blocking Tier 2): the *value-specific*
+strip branches that fire only on a non-default value rather than on blank — BL/calc
+"none" (perio radiographic findings), `pedsIUTD === false`, `pedsMotherHelps ===
+false`, `nitrous` off, the peds "no occlusal note" strip, peds nutritional-counseling
+off. These need a **third render permutation** seeding those specific values. They're
+lower priority: each is an explicit user choice (less prone to silent drift), several
+already produce clinically-visible output, and the `[bracket]` catch-all strips are
+already locked by harness invariants #2/#3. **Skip** pure tidies / whitespace-collapse
+and stable global phrases. To find any un-instrumented fill:
+`grep -nE 't = t\.replace\(' src/App.jsx` over ~4049–5790 and skip those already
+wrapped in `sub(`.
 
 The sketch below is superseded by the live design above but kept for rationale.
 
@@ -164,9 +169,9 @@ Authoring every note as data (sections→lines→slots objects) is the most
 "correct" but is more machinery than this personal tool needs.
 
 ## Recommendation / order
-1. **Tier 1 tripwire** (next).
-2. **Tier 2** incrementally over time (the architectural cure; pattern already
-   proven on the ICC side).
+1. ~~**Tier 1 tripwire**~~ ✅ DONE (36 fills, two permutations; caught the 448 bug).
+2. **Tier 2** (next) — incrementally over time (the architectural cure; pattern
+   already proven on the ICC side). Start with the most-edited standard template.
 3. Tier 0.5 for substitutions left behind.
 This combination moves the engine's robustness from ~C+ toward A.
 
