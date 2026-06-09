@@ -3736,6 +3736,11 @@ const DEFAULT_FIELDS = {
  // "Updated odontogram with …" sentence. Applies to POE (1091) and
  // Peds (5985); other templates don't mention bitewings.
  tookBitewings: true,
+ // perioProbed: default true — perio maintenance (1425) ships with the perio
+ // chart block. We only chart every other maintenance visit, so unchecking
+ // "Probed" hides the Perio Chart form section + strips the chart block from
+ // the note.
+ perioProbed: true,
  // Peds Initial/Recall (5985) form fields. Default values match the
  // template's hardcoded examples so the rendered note is reasonable even
  // before the student fills anything out.
@@ -4116,6 +4121,15 @@ function renderTemplate(raw, f) {
  ""
 );
  t = t.replace(/(-\s*NV:)\s*treatment plan\b/, "$1");
+ }
+
+ // -------- 0c-perio. perioProbed = false strips the perio chart block from
+ // perio maintenance (1425). We chart every other maintenance visit, so when
+ // "Probed" is unchecked the whole "Updated perio EPR & perio chart:" block
+ // (probing depths → gingiva) comes out. Gated to the maintenance note so a
+ // lingering unchecked state can't strip another procedure's perio chart.
+ if (f.perioProbed === false && raw.includes("Perio maintenance:")) {
+ t = sub(t, /[ \t]*Updated perio EPR & perio chart:[\s\S]*?gingiva[ \t]*\n\n/, "", "perioChart-strip");
  }
 
  // -------- 0c. tookBitewings = false strips the bitewings phrase. --------
@@ -8480,6 +8494,9 @@ const EXAM_FINDINGS_CONFIG = {
  "1425": [
  {
  title: "Perio chart",
+ // Probed defaults on; unchecking hides this section (we only chart every
+ // other maintenance visit) and strips the chart block from the note.
+ headerCheckbox: { field: "perioProbed", label: "Probed", hideWhenUnchecked: true },
  rows: [
  [
  { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
@@ -10389,7 +10406,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
 ): (
  <SubsectionLabel>{section.title}</SubsectionLabel>
 )}
- {fieldEls}
+ {(!section.headerCheckbox?.hideWhenUnchecked || fields[section.headerCheckbox.field]) && fieldEls}
  </div>
 );
  })}

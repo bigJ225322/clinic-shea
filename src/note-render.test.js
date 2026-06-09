@@ -140,6 +140,15 @@ describe("regression locks", () => {
     expect(out).toMatch(/PGOS for extraction #1, #16\./);
     expect(out).not.toMatch(/extraction #\./);
   });
+
+  it("Perio maintenance (1425): 'Probed' off removes the perio chart block; on keeps it", () => {
+    expect(render("1425")).toMatch(/Updated perio EPR & perio chart:/); // default = probed
+    const off = render("1425", { perioProbed: false });
+    expect(off).not.toMatch(/Updated perio EPR & perio chart:/);
+    expect(off).not.toMatch(/probing depths:/);
+    expect(off).toMatch(/Perio maintenance:/);          // rest of the note intact
+    expect(off).toMatch(/Removed plaque & calculus/);   // content after the block intact
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -181,7 +190,7 @@ describe("tripwire: no instrumented fill is dead across all templates", () => {
       // a deliberate non-default value (nitrous off, restoration not removed, peds
       // IUTD / mother-helps / nutrition off, perio bone-loss / calculus "none").
       const valueSpecific = {
-        nitrous: false, removedExistingRestoration: false,
+        nitrous: false, removedExistingRestoration: false, perioProbed: false,
         pedsIUTD: false, pedsMotherHelps: false, pedsNutritionalCounseling: false,
         examFindings: { "bl distribution": "none", "calc distribution": "none" },
       };
@@ -208,7 +217,7 @@ describe("tripwire: no instrumented fill is dead across all templates", () => {
         "intraoralPhotos-strip", "endoTesting-strip", "otherSymptoms-strip", "anythingElse-strip",
         "mounting-strip",
         "removedRestoration-strip", "pedsIUTD-strip", "pedsMotherHelps-strip", "pedsNutrition-strip",
-        "BL-none-strip", "calc-none-strip", "nitrous-strip", "nitrous-o2-strip",
+        "BL-none-strip", "calc-none-strip", "nitrous-strip", "nitrous-o2-strip", "perioChart-strip",
       ])
     );
   });
