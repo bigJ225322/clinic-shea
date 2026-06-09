@@ -70,11 +70,12 @@ clean (no sentinel leaks, empty notes, doubled hairlines, stranded punctuation).
 
 ### Tier 1 — substitution tripwire  ← IN PROGRESS
 
-**Live now** (commits `d2bd4a9`, `0188935`): the `sub(t, re, val, label)` helper +
-`noteTripwire` state sit just above `renderTemplate` in `src/App.jsx` (both
-exported for the harness). 7 field-driven fills are instrumented:
+**Live now** (commits `d2bd4a9`, `0188935`, `bcb2c98`): the `sub(t, re, val, label)`
+helper + `noteTripwire` state sit just above `renderTemplate` in `src/App.jsx`
+(both exported for the harness). 10 field-driven fills are instrumented:
 `age-leading`, `age-global`, `endoMaf`, `endoConsultDate-visit`,
-`endoConsultDate-reeval`, `temperature`, `bloodGlucose`. The harness arms the
+`endoConsultDate-reeval`, `temperature`, `bloodGlucose`, `cc`, `crownType`,
+`srpDate`. The harness arms the
 tripwire, renders every template with a kitchen-sink of those fields, and
 asserts **no instrumented fill matches zero across all templates** — a regex that
 has drifted off every template it should hit is dead → the suite goes red. This
@@ -85,12 +86,25 @@ is false-positive-free (needs no per-template field knowledge).
 add `"label"` to the `arrayContaining` sanity list in
 `src/note-render.test.js`. Then `npm test`.
 
-**Remaining fills to instrument:** the rest of the field-driven single-fire
-fills in `renderTemplate` (CC, srpDate, crownType, cordPlaced, the conditional
-restorative/peds fills, etc.). Skip pure tidies / whitespace-collapse and stable
-global phrases ("the clinic"). For if/else fills, instrument the *value-set*
-branch (the kitchen-sink exercises it); covering the *blank* strip branches would
-want a second all-blank permutation in the test (good follow-up).
+**Remaining value-fills to instrument** — find them with:
+`grep -nE 't = t\.replace\([^)]*\$\{' src/App.jsx` (over renderTemplate's range,
+~4049–5790) and skip any already wrapped in `sub(`. As of `bcb2c98` the list is:
+- `medications` (`, no medications` → value) — driven by `f.medications`
+- brushing / flossing frequency, peds + COE/POE phrasings (`brushes 2x a day`,
+  `brushing 2x a day`, `flosses 1x a day`, `flossing 1x a day`)
+- endo per-tooth findings (hash-form regex) + `Located N canals.`
+- urgent-care `Pt opts for .` and extraction-teeth list
+- perio gingiva `[color], [contour], [consistency]`; perio technique / plaque-level
+  / plaque-area / "Emphasized that patient needs to ."
+- mounting-records list (`- Took … .`)
+
+Each needs its driving field added to the test's `kitchenSink` and its label to
+the `arrayContaining` sanity list. **Skip** pure tidies / whitespace-collapse and
+stable global phrases (`the clinic`, `PFM` is already done). Covering the *blank*
+strip branches (temperature / BG / COVID / no-treatments strips that fire when a
+field is empty) needs a **second all-blank render permutation** in the test that
+asserts those strips fire — a good follow-up that closes the other half of the
+family.
 
 The sketch below is superseded by the live design above but kept for rationale.
 
