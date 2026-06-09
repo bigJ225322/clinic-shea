@@ -31512,3 +31512,9 @@ export default function App() {
  </div>
 );
 }
+
+// Exported for the note-rendering test harness (src/note-render.test.js).
+// renderTemplate is pure — (template string, fields) -> note string — so it can
+// be unit-tested with no React/DOM. TEMPLATES maps procedure id -> template;
+// DEFAULT_FIELDS is the baseline field object the UI starts from.
+export { renderTemplate, TEMPLATES, DEFAULT_FIELDS };
