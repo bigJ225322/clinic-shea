@@ -12428,11 +12428,11 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  display: "flex", alignItems: "baseline", gap: "10px",
  fontSize: "12px", lineHeight: 1.45,
  }}>
- <span className="mono" style={{
+ <span className="mono code-chip code-chip-arrive" style={{
  color: "var(--accent)", fontWeight: 500,
  fontVariantNumeric: "tabular-nums",
  flexShrink: 0, minWidth: "60px",
- cursor: "pointer", transition: "opacity 140ms ease",
+ cursor: "pointer", transition: "opacity 140ms ease, color 180ms ease, transform 120ms ease",
  }}
  onMouseEnter={(e) => e.target.style.opacity = "0.7"}
  onMouseLeave={(e) => e.target.style.opacity = "1"}
@@ -31148,6 +31148,21 @@ export default function App() {
  to { opacity: 1; }
  }
 
+ /* === Micro-interaction experiments (delight) — generalizing the checkbox
+    press/settle feel. Each piece is independently revertible: drop this block
+    and the code-chip classNames / the button.primary:active scale to undo. === */
+ /* (A) A newly-added CDT code settles in: arrives a shade lighter
+    (--accent-soft) and deepens into --accent. Chips are React-keyed by code,
+    so this plays once, exactly when a code appears (not on every keystroke). */
+ @keyframes codeArrive {
+ from { color: var(--accent-soft); }
+ to { color: var(--accent); }
+ }
+ .code-chip-arrive { animation: codeArrive 460ms cubic-bezier(.2,.6,.2,1); }
+ /* (B) Code-chip press: lighten + dip on mousedown, settle on release — the
+    checkbox "light up" echoed, which doubles as copy feedback. */
+ .code-chip:active { color: var(--accent-soft); transform: scale(0.9); }
+
  /* Map-entry choreography (CSS only, fill:both -> settled state is always the
  final layout; cannot wedge collapsed). Tiles slide their top offset from
  the lane-midline collapse offset to 0; arrows swing their endpoints from
@@ -31186,7 +31201,7 @@ export default function App() {
  transition: background 140ms ease, transform 140ms ease;
  }
  button.primary:hover { background: #5E1414; }
- button.primary:active { transform: translateY(1px); }
+ button.primary:active { transform: translateY(1px) scale(0.97); }
  button.primary:disabled { background: var(--accent); }
 
  button.ghost {
