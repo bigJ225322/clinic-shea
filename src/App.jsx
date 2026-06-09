@@ -6971,7 +6971,7 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
  // (the one whose surfaces are showing in the panel below) gets an extra
  // outer ring so users can still tell which is currently being edited.
  return (
- <button key={id} ref={el => btnRefs.current[id] = el}
+ <button key={id} ref={el => btnRefs.current[id] = el} className="tactile"
  onClick={() => toggleTooth(id)}
  style={{
  position: "relative",
@@ -6982,6 +6982,7 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
  borderRadius: "2px", fontSize: "11px", padding: "5px 0",
  cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
  lineHeight: 1.2, textAlign: "center",
+ transition: "background 150ms ease, color 150ms ease, border-color 150ms ease, transform 120ms cubic-bezier(.2,.6,.2,1)",
  }}>
  {id}
  </button>
@@ -8808,13 +8809,14 @@ function TeethSelectorPanel({ value, onChange, placeholder, teeth, showG, showW 
  const toothButton = (n) => allowedTeeth &&!allowedTeeth.has(n)? (
  <div key={n} style={{ visibility: "hidden" }} />
 ): (
- <button key={n} onClick={() => toggleTooth(n)} style={{
+ <button key={n} className="tactile" onClick={() => toggleTooth(n)} style={{
  background: selectedTeeth.has(n)? "var(--accent)": "transparent",
  color: selectedTeeth.has(n)? "var(--paper)": "var(--ink-soft)",
  border: `1px solid ${selectedTeeth.has(n)? "var(--accent)": "var(--rule)"}`,
  borderRadius: "2px", fontSize: "11px", padding: "5px 0",
  cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
  lineHeight: 1.2, textAlign: "center",
+ transition: "background 150ms ease, color 150ms ease, border-color 150ms ease, transform 120ms cubic-bezier(.2,.6,.2,1)",
  }}>{n}</button>
 );
 
@@ -9784,7 +9786,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  const active = val === full;
  return (
  <button key={full}
- type="button"
+ type="button" className="tactile"
  onClick={() => update(field.label, active? "": full)}
  style={{
  flex: 1, padding: "6px 0",
@@ -9797,7 +9799,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  marginLeft: idx === 1? "-1px": 0,
  position: "relative", zIndex: active? 1: 0,
  cursor: "pointer",
- transition: "background 140ms, color 140ms, border-color 140ms",
+ transition: "background 140ms, color 140ms, border-color 140ms, transform 120ms cubic-bezier(.2,.6,.2,1)",
  }}>
  {short}
  </button>
@@ -11297,7 +11299,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  {searchResults.map(p => {
  const hot = hoveredResult === p.id;
  return (
- <button key={p.id} type="button"
+ <button key={p.id} type="button" className="tactile"
  onClick={() => handleSearchSelect(p)}
  onMouseEnter={() => setHoveredResult(p.id)}
  onMouseLeave={() => setHoveredResult(h => h === p.id? null: h)}
@@ -11306,7 +11308,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  width: "100%", textAlign: "left", gap: "10px", padding: "8px 12px",
  border: "none", borderBottom: "1px solid var(--rule-soft)",
  background: hot? "rgba(122, 26, 26, 0.06)": "transparent",
- cursor: "pointer", transition: "background 100ms",
+ cursor: "pointer", transition: "background 100ms, transform 130ms cubic-bezier(.2,.6,.2,1)",
  }}>
  <span style={{ fontSize: "13px", color: "var(--ink)", fontFamily: "'Geist', sans-serif" }}>{p.label}</span>
  <span style={{
@@ -31162,6 +31164,11 @@ export default function App() {
  /* (B) Code-chip press: lighten + dip on mousedown, settle on release — the
     checkbox "light up" echoed, which doubles as copy feedback. */
  .code-chip:active { color: var(--accent-soft); transform: scale(0.9); }
+ /* (D) Press feel spread to other clickable controls: segmented toggles,
+    procedure rows, tab buttons, RPD teeth. Each element carries transform in
+    its own transition (inline or class) so the dip eases; this just supplies
+    the dip on press. */
+ .tactile:active { transform: scale(0.95); }
 
  /* Map-entry choreography (CSS only, fill:both -> settled state is always the
  final layout; cannot wedge collapsed). Tiles slide their top offset from
@@ -31266,9 +31273,10 @@ export default function App() {
  font-size: 13px; color: var(--ink-soft);
  font-weight: 400; letter-spacing: 0.02em;
  position: relative;
- transition: color 200ms cubic-bezier(.2,.6,.2, 1);
+ transition: color 200ms cubic-bezier(.2,.6,.2, 1), transform 130ms cubic-bezier(.2,.6,.2, 1);
  margin-right: 32px;
  }
+.tab-button:active { transform: scale(0.95); }
 .tab-button:hover { color: var(--ink); }
 .tab-button.active { color: var(--accent); font-weight: 500; }
 .tab-button.active::after {
@@ -31355,8 +31363,9 @@ export default function App() {
  /* Subtle oxblood drop-shadow on hover — mirrors the row-hover tint in
  the Codes tab and PE timeline. Cues "this tooth is hover-toggleable"
  without adding chrome. */
-.rpd-tooth-active { transition: filter 120ms ease; }
+.rpd-tooth-active { transition: filter 120ms ease, transform 130ms cubic-bezier(.2,.6,.2,1); transform-box: fill-box; transform-origin: center; }
 .rpd-tooth-active:hover { filter: drop-shadow(0 0 4px rgba(122, 26, 26, 0.28)); }
+.rpd-tooth-active:active { transform: scale(0.92); }
 
  /* Design-element annotation labels — hidden by default, revealed on
  hover, when the element is selected, or when its tooth is selected. */
