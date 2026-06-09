@@ -4771,7 +4771,7 @@ function renderTemplate(raw, f) {
  // and never matched the template; substitution silently failed.
  if (f.endoNumCanals && String(f.endoNumCanals).trim()) {
  const n = String(f.endoNumCanals).trim();
- t = t.replace(/Located \d+ canals\./, `Located ${n} canals.`);
+ t = sub(t, /Located \d+ canals\./, `Located ${n} canals.`, "endoCanals");
  }
  // 13. MAF size.
  // Template has "MAF: 35" with space after the colon. Earlier regex
@@ -4800,7 +4800,7 @@ function renderTemplate(raw, f) {
  }
  // Peds medications: replace ", no medications," with ", {value},"
  if (f.medications && f.medications.trim() && f.medications.trim()!== "no medications") {
- t = t.replace(/,\s*no medications\b/, `, ${f.medications.trim()}`);
+ t = sub(t, /,\s*no medications\b/, `, ${f.medications.trim()}`, "medications");
  }
  // Peds IUTD: strip ", IUTD" if false
  if (f.pedsIUTD === false) {
@@ -4828,14 +4828,14 @@ function renderTemplate(raw, f) {
  // widget input.
  if (f.brushing && f.brushing.trim()) {
  const v = f.brushing.trim();
- t = t.replace(/\bbrushes 2x a day\b/, `brushes ${v}`); // peds
- t = t.replace(/\bbrushing 2x a day\b/, `brushing ${v}`); // COE/POE
+ t = sub(t, /\bbrushes 2x a day\b/, `brushes ${v}`, "brushing-peds"); // peds
+ t = sub(t, /\bbrushing 2x a day\b/, `brushing ${v}`, "brushing-coe"); // COE/POE
  // hygiene "brushing 2x per day" handled by ef substitution below
  }
  if (f.flossing && f.flossing.trim()) {
  const v = f.flossing.trim();
- t = t.replace(/\bflosses 1x a day\b/, `flosses ${v}`); // peds
- t = t.replace(/\bflossing 1x a day\b/, `flossing ${v}`); // COE/POE
+ t = sub(t, /\bflosses 1x a day\b/, `flosses ${v}`, "flossing-peds"); // peds
+ t = sub(t, /\bflossing 1x a day\b/, `flossing ${v}`, "flossing-coe"); // COE/POE
  // hygiene "flossing 1x per week" handled by ef substitution below
  }
  // Peds caries risk: "- caries risk: HIGH" → user value
@@ -5149,7 +5149,7 @@ function renderTemplate(raw, f) {
  `^([ \\t]*-[ \\t]*${type} diagnosis)\\s*#:[ \\t]*$`, "im"
 );
  if (hashFormRegex.test(t)) {
- t = t.replace(hashFormRegex, `$1 ${tooth}: ${v}`);
+ t = sub(t, hashFormRegex, `$1 ${tooth}: ${v}`, "diagnosis-hashform");
  continue;
  }
  // No #-form in this template — fall through to generic
@@ -5162,7 +5162,7 @@ function renderTemplate(raw, f) {
  // "Pt opts for." — fill in the patient's choice.
  // Source has "Pt opts for." (no space); tolerate either spacing.
  if (label === "pt opts for") {
- t = t.replace(/Pt opts for\s*\./, `Pt opts for ${v}.`);
+ t = sub(t, /Pt opts for\s*\./, `Pt opts for ${v}.`, "pt-opts-for");
  continue;
  }
 
@@ -5201,7 +5201,12 @@ function renderTemplate(raw, f) {
  return num ? `#${num}` : "";
  }).filter(Boolean).join(", ");
  if (teeth) {
- t = t.replace(/extraction #1, #16, #17, #32/, `extraction ${teeth}`);
+ // Template 448 ships "...PGOS for extraction #." — fill the # placeholder
+ // with the student's tooth list. (Was /extraction #1, #16, #17, #32/,
+ // matching an OLD template that baked the four molars in; the body was
+ // later simplified to "extraction #." and this silently no-op'd, dropping
+ // the student's entry. Caught by the substitution tripwire.)
+ t = sub(t, /extraction #\./, `extraction ${teeth}.`, "extraction-teeth");
  }
  }
  continue;
@@ -5334,7 +5339,7 @@ function renderTemplate(raw, f) {
  const c = (ef["gingival color"] || "").trim() || "pink";
  const co = (ef["gingival contour"] || "").trim() || "scalloped";
  const cn = (ef["gingival consistency"] || "").trim() || "firm";
- t = t.replace(/\[color\], \[contour\], \[consistency\]/g, `${c}, ${co}, ${cn}`);
+ t = sub(t, /\[color\], \[contour\], \[consistency\]/g, `${c}, ${co}, ${cn}`, "perio-gingiva");
  }
 
  // Radiographic findings substitutions (Perio COE only)
@@ -5387,8 +5392,8 @@ function renderTemplate(raw, f) {
  const flossFreq = ef["flossing frequency"];
  // Brushing regex now also matches "a few times per week" (no digit
  // pattern) — the new "few times" option needed a broader match.
- if (brushFreq) t = t.replace(/brushing (?:\d+x per day|a few times per week)/, `brushing ${formatBrush(brushFreq)}`);
- if (flossFreq) t = t.replace(/flossing [\dx-]+ per \w+/, `flossing ${formatFloss(flossFreq)}`);
+ if (brushFreq) t = sub(t, /brushing (?:\d+x per day|a few times per week)/, `brushing ${formatBrush(brushFreq)}`, "perio-brush-freq");
+ if (flossFreq) t = sub(t, /flossing [\dx-]+ per \w+/, `flossing ${formatFloss(flossFreq)}`, "perio-floss-freq");
 
  // Plaque level + area + technique + emphasis substitutions
  {
@@ -5399,12 +5404,12 @@ function renderTemplate(raw, f) {
 
  // Technique: swap "average" for the selected value
  if (technique && technique!== "average") {
- t = t.replace(/technique is average/, `technique is ${technique}`);
+ t = sub(t, /technique is average/, `technique is ${technique}`, "perio-technique");
  }
 
  // General plaque level: swap "moderate" for the selected level
  if (plaqueLevel && plaqueLevel!== "moderate") {
- t = t.replace(/moderate generalized plaque/, `${plaqueLevel} generalized plaque`);
+ t = sub(t, /moderate generalized plaque/, `${plaqueLevel} generalized plaque`, "perio-plaque-level");
  }
 
  // Area-specific plaque phrase.
@@ -5414,13 +5419,13 @@ function renderTemplate(raw, f) {
  if (plaqueLevel === "heavy") {
  // Heavy overall → "especially on [area]" or strip the clause
  if (plaqueArea) {
- t = t.replace(/with heavy plaque on\s*\./, `especially on ${plaqueArea}.`);
+ t = sub(t, /with heavy plaque on\s*\./, `especially on ${plaqueArea}.`, "perio-plaque-area");
  } else {
  t = t.replace(/ with heavy plaque on\s*\./, ".");
  }
  } else if (plaqueArea) {
  // Non-heavy, area provided → fill in the area
- t = t.replace(/heavy plaque on\s*\./, `heavy plaque on ${plaqueArea}.`);
+ t = sub(t, /heavy plaque on\s*\./, `heavy plaque on ${plaqueArea}.`, "perio-plaque-area");
  }
  // Non-heavy, no area → leave "with heavy plaque on." as placeholder
 
@@ -5428,7 +5433,7 @@ function renderTemplate(raw, f) {
  // Same issue as the plaque-area regex above — source has "needs to."
  // with no space, earlier regex required a space and silently failed.
  if (emphasis) {
- t = t.replace(/Emphasized that patient needs to\s*\./, `Emphasized that patient needs to ${emphasis}.`);
+ t = sub(t, /Emphasized that patient needs to\s*\./, `Emphasized that patient needs to ${emphasis}.`, "perio-emphasis");
  }
  }
 
@@ -5510,7 +5515,7 @@ function renderTemplate(raw, f) {
 : items.length === 2
 ? `${items[0]} & ${items[1]}`
 : `${items[0]}, ${items[1]}, & ${items[2]}`;
- t = t.replace(mountingRe, `- Took ${list}.`);
+ t = sub(t, mountingRe, `- Took ${list}.`, "mounting-records");
  }
  }
  }
@@ -8164,7 +8169,7 @@ const EXAM_FINDINGS_CONFIG = {
  [{ label: "extraction teeth", type: "input",
  displayLabel: "Teeth Referred For Extraction",
  placeholder: "e.g. #1, #16, #17, #32 (or just #32)",
- hint: "Comma-separated tooth numbers. Defaults to all four 3rd molars if blank." }],
+ hint: "Comma-separated tooth numbers (e.g. #32, or #1, #16, #17, #32). Left blank, the note keeps the # placeholder to complete chairside." }],
  [{ label: "wt-consult-date", type: "input",
  displayLabel: "Consult Appointment Scheduled For",
  placeholder: "e.g. 6/1/2026, 3:00 PM" }],

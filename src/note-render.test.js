@@ -131,6 +131,15 @@ describe("regression locks", () => {
     expect(render("icc-srp", { labPlaceholders: { "no anesthetic": "NOANES" } }))
       .toMatch(/No local anesthetic administered\./);
   });
+
+  it("Urgent Care Wisdom Tooth (448): the extraction tooth list reaches the note (not the bare 'extraction #.')", () => {
+    // The fill's regex expected an OLD template baking in 'extraction #1, #16,
+    // #17, #32'; the body was simplified to 'extraction #.' and the fill
+    // silently dropped the student's entry. The tripwire caught it.
+    const out = render("448", { examFindings: { "extraction teeth": "1, 16" } });
+    expect(out).toMatch(/PGOS for extraction #1, #16\./);
+    expect(out).not.toMatch(/extraction #\./);
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -147,7 +156,16 @@ describe("tripwire: no instrumented fill is dead across all templates", () => {
   it("every sub() fill fires for at least one template", () => {
     const kitchenSink = {
       age: "44", endoMaf: "30", endoConsultDate: "5/1/2026", temp: "98.6", bg: "95",
-      crownType: "all-ceramic", srpDate: "1/1/2026", examFindings: { cc: "tooth pain" },
+      crownType: "all-ceramic", srpDate: "1/1/2026",
+      endoNumCanals: "3", medications: "lisinopril", brushing: "3x a day", flossing: "2x a day",
+      examFindings: {
+        cc: "tooth pain",
+        "pulpal diagnosis": "irreversible pulpitis", "diagnosis tooth": "8",
+        "pt opts for": "extraction", "extraction teeth": "1, 16",
+        "brushing frequency": "3x/day", "flossing frequency": "2x/week",
+        technique: "fair", "plaque level": "heavy", "plaque area": "the posterior teeth",
+        emphasis: "improve flossing", impressions: true,
+      },
     };
     noteTripwire.hits = [];
     noteTripwire.armed = true;
@@ -164,7 +182,14 @@ describe("tripwire: no instrumented fill is dead across all templates", () => {
     expect(dead, `instrumented fills that matched NO template (drifted/dead): ${dead.join(", ")}`).toEqual([]);
     // sanity — the fills we instrumented are actually exercised
     expect(Object.keys(maxByLabel)).toEqual(
-      expect.arrayContaining(["age-leading", "age-global", "endoMaf", "endoConsultDate-visit", "endoConsultDate-reeval", "temperature", "bloodGlucose", "cc", "crownType", "srpDate"])
+      expect.arrayContaining([
+        "age-leading", "age-global", "endoMaf", "endoConsultDate-visit", "endoConsultDate-reeval",
+        "temperature", "bloodGlucose", "cc", "crownType", "srpDate",
+        "endoCanals", "medications", "brushing-peds", "brushing-coe", "flossing-peds", "flossing-coe",
+        "diagnosis-hashform", "pt-opts-for", "extraction-teeth",
+        "perio-gingiva", "perio-brush-freq", "perio-floss-freq", "perio-technique",
+        "perio-plaque-level", "perio-plaque-area", "perio-emphasis", "mounting-records",
+      ])
     );
   });
 });
