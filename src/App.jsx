@@ -4849,8 +4849,11 @@ function renderTemplate(raw, f) {
  parts.push(fcl === fcr? `Class ${fcl} canine bilaterally`
  : `Class ${fcr} canine right, Class ${fcl} canine left`);
  t = t.replace(/(-[ \t]*occlusal assessment:)[ \t]*$/im, `$1 ${parts.join("; ")}`);
- } else {
- // Strip the empty "- occlusal assessment:" line entirely.
+ } else if (raw.includes("UG Peds")) {
+ // Strip the empty "- occlusal assessment:" line — peds only. An unpicked
+ // Angle picker means "no occlusal note"; other templates that carry this
+ // stub (e.g. 703 Restorative COE) keep it so the generic exam-findings
+ // loop can fill it from the Occlusal Assessment text input.
  t = t.replace(/^[ \t]*-[ \t]*occlusal assessment:[ \t]*\n?/im, "");
  }
  }
