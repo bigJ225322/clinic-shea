@@ -1,6 +1,9 @@
 # Notes Engine Hardening Plan
 
-> Status: Tier 0 (test harness) **DONE**. Tier 1 (tripwire) is the recommended next step.
+> Status: Tier 0 (test harness) **DONE**. Tier 1 (tripwire) **IN PROGRESS** — the
+> `sub()` helper + dead-fill harness test are live; 7 field-driven fills
+> instrumented so far (commits d2bd4a9, 0188935). Resume by instrumenting the
+> remaining fills (see the Tier 1 section). Tier 2 (explicit tokens) not started.
 > This doc is self-contained on purpose — a future session with no memory of the
 > original conversation should be able to pick the plan up from here alone.
 
@@ -65,7 +68,32 @@ clean (no sentinel leaks, empty notes, doubled hairlines, stranded punctuation).
 
 ## The plan (cheapest first)
 
-### Tier 1 — substitution tripwire  ← DO THIS NEXT
+### Tier 1 — substitution tripwire  ← IN PROGRESS
+
+**Live now** (commits `d2bd4a9`, `0188935`): the `sub(t, re, val, label)` helper +
+`noteTripwire` state sit just above `renderTemplate` in `src/App.jsx` (both
+exported for the harness). 7 field-driven fills are instrumented:
+`age-leading`, `age-global`, `endoMaf`, `endoConsultDate-visit`,
+`endoConsultDate-reeval`, `temperature`, `bloodGlucose`. The harness arms the
+tripwire, renders every template with a kitchen-sink of those fields, and
+asserts **no instrumented fill matches zero across all templates** — a regex that
+has drifted off every template it should hit is dead → the suite goes red. This
+is false-positive-free (needs no per-template field knowledge).
+
+**To instrument another fill:** change `t = t.replace(/…/, …)` →
+`t = sub(t, /…/, …, "label")`; add its driving field to the test's `kitchenSink`;
+add `"label"` to the `arrayContaining` sanity list in
+`src/note-render.test.js`. Then `npm test`.
+
+**Remaining fills to instrument:** the rest of the field-driven single-fire
+fills in `renderTemplate` (CC, srpDate, crownType, cordPlaced, the conditional
+restorative/peds fills, etc.). Skip pure tidies / whitespace-collapse and stable
+global phrases ("the clinic"). For if/else fills, instrument the *value-set*
+branch (the kitchen-sink exercises it); covering the *blank* strip branches would
+want a second all-blank permutation in the test (good follow-up).
+
+The sketch below is superseded by the live design above but kept for rationale.
+
 Wrap the bare `t = t.replace(re, val)` calls in a helper, e.g.
 
 ```js
