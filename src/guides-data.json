@@ -916,7 +916,7 @@
          "**Baseplate wax + setup wax** (softer, easier to flow around tooth necks).",
          "**Hanau / Bunsen wax torch** or hot waxing instrument. Wax knife. PKT instruments (1, 2, 3). Le Cron carver. #7 wax spatula.",
          "**Toothbrush** (for facial stippling), warm-water cup, gauze.",
-         "**Caliper / Boley gauge** for verifying inter-tooth distances and tooth-to-rim height.",
+         "**Caliper** for verifying inter-tooth distances and tooth-to-rim height.",
          "**Articulating paper** (thin, blue or red) and AccuFilm II for centric contact verification at the end."
         ]
        },
@@ -1256,7 +1256,7 @@
         "items": [
          "**From the lab:** wax trial dentures on mounted casts, articulator (Mark 320), face-bow record preserved.",
          "**For phonetics + esthetics:** handheld mirror for the patient, retraction cheek retractors (optional), good ambient + task lighting.",
-         "**For VDO:** Boley gauge or digital caliper, dots / marks on the patient's nose tip + chin point if not already marked from the JR visit.",
+         "**For VDO:** digital caliper, dots / marks on the patient's nose tip + chin point if not already marked from the JR visit.",
          "**For CR + protrusive:** Regisil PB cartridge + dispenser gun + fresh mixing tip, bite registration paste alternative (e.g., ZOE), articulating paper.",
          "**For PPS:** indelible (T-band) marker, Hanau torch + green stick / softening flame, sharp #7 wax spatula, mouth mirror, gauze.",
          "**For documentation:** intraoral camera or phone for shade + esthetic photos, consent form on iPad / printout.",
@@ -1265,7 +1265,7 @@
        },
        {
         "kind": "section",
-        "text": "Pre-appointment setup (10 min before patient arrives)"
+        "text": "Pre-appointment setup (before the patient arrives)"
        },
        {
         "kind": "bullets",
@@ -1274,13 +1274,13 @@
          "Confirm both bases articulate together cleanly on the Mark 320 in centric (incisal pin contacts the table, centric latch engages without prying).",
          "Inspect intaglio and borders with a thumb pad: no sharp wax edges, no air voids, no debris.",
          "Soak the trial dentures in lukewarm water 5 min before seating — cold wax is brittle and easier to fracture in the mouth.",
-         "Set up the bracket table: mirror, Boley, Regisil gun loaded, T-band marker uncapped, articulating paper ready, camera ready.",
+         "Set up the bracket table: mirror, caliper, Regisil gun loaded, T-band marker uncapped, articulating paper ready, camera ready.",
          "Confirm interpreter availability if needed."
         ]
        },
        {
         "kind": "section",
-        "text": "Step 1 — Visual + tactile inspection of the wax bases (5 min)"
+        "text": "Step 1 — Visual + tactile inspection of the wax bases"
        },
        {
         "kind": "bullets",
@@ -1294,7 +1294,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 2 — Anatomical fit + esthetics (15 min)"
+        "text": "Step 2 — Anatomical fit + esthetics"
        },
        {
         "kind": "bullets",
@@ -1312,7 +1312,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 3 — Phonetics (10 min)"
+        "text": "Step 3 — Phonetics"
        },
        {
         "kind": "bullets",
@@ -1326,13 +1326,13 @@
        },
        {
         "kind": "section",
-        "text": "Step 4 — VDO verification (5 min)"
+        "text": "Step 4 — VDO verification"
        },
        {
         "kind": "bullets",
         "items": [
          "**4a.** Have the patient sit erect, head unsupported, looking straight ahead.",
-         "**4b.** Measure **VDR** (vertical dimension at rest) with the Boley gauge from the nose-tip mark to the chin-point mark. Patient relaxes lips closed.",
+         "**4b.** Measure **VDR** (vertical dimension at rest) from the nose-tip mark to the chin-point mark. Patient relaxes lips closed.",
          "**4c.** Have the patient close to centric with the trial dentures in. Measure **VDO** from the same two reference marks.",
          "**4d.** **VDR − VDO ≈ 3 mm** is the target freeway space.",
          "**4e.** Cross-verify with phonetic 60–70 count: at correct VDO, the closest speaking distance is ~1 mm and there's no clicking.",
@@ -1342,7 +1342,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 5 — CR verification (10 min)"
+        "text": "Step 5 — CR verification"
        },
        {
         "kind": "bullets",
@@ -1358,7 +1358,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 6 — Protrusive record (5 min)"
+        "text": "Step 6 — Protrusive record"
        },
        {
         "kind": "bullets",
@@ -1373,7 +1373,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 7 — PPS extent determination on the patient (10 min)"
+        "text": "Step 7 — PPS extent determination on the patient"
        },
        {
         "kind": "bullets",
@@ -1391,7 +1391,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 8 — Documented patient approval (5 min)"
+        "text": "Step 8 — Documented patient approval"
        },
        {
         "kind": "bullets",
@@ -1405,7 +1405,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 9 — Recall + maintenance plan + lab dispatch (10 min)"
+        "text": "Step 9 — Recall + maintenance plan + lab dispatch"
        },
        {
         "kind": "bullets",

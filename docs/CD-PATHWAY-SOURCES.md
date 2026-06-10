@@ -292,4 +292,21 @@ Primary source: **Obrez "Denture occlusion … Hanau's quint" lec** + 33° BBA /
 
 ---
 
-*Remaining chapters (cd-ch13, cd-ch14, cd-ch16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch13 — "The 9-step wax try-in, expanded"  *(audited)*
+
+Primary source: **Clinical Evaluation of the Trial Denture lec** (try-in steps) + PPS lec (Valsalva) + JR lec (Pound phonetics) + Delivery lec (remount jig) + Swade.
+
+- ✅ Try-in step sequence (inspect → fit/esthetics → phonetics → VDO → CR → **protrusive record** → **PPS extent** → approval → dispatch) — Clinical Eval lec lines 52–58, 79–84 ("6. Make protrusive record; 7. Determine the extent of posterior palatal seal"). *So protrusive-at-try-in is a real UIC step — distinct from the cut delivery remount.*
+- ✅ **VDR − VDO ≈ 3 mm** — Clinical Eval lec line 268 ("VDR - VDO = 3 mm").
+- ✅ Phonetics step sourced (Clinical Eval "Evaluate phonetics" + JR lec Pound ref). 60–70 S-count sourced. "fifty-five Fridays" F/V + "wet-dry line" = ⓘ (standard Pound, not verbatim in lecture).
+- ✅ PPS: vibrating line + **Valsalva** (PPS lec) + indelible mark.
+- ✅ Protrusive record (5–6 mm, Regisil, ~30 s) — Clinical Eval step 6 + Swade.
+- **✂ CUT:** **"Boley gauge"** (×2 here + the bracket-table one = 3 in cd-ch13; ALSO retro-cut one I'd missed in cd-ch11) → "caliper"; the **10 per-step "(N min)" timing annotations**.
+
+> ⚠ **FLAG for Jake — remount-jig callouts [23]/[24]:** the chapter has a "face-bow remount jig" + a lab-Rx callout ("remount the maxillary cast … clinical remount casts"). These ARE source-backed (Delivery lec "Fabrication of Face-bow remount jig" + Swade lab-remount), so they survive the source audit — BUT they're the **lab-side remount**, which connects to the chairside clinical remount you cut from cd-ch15. Per Sully the lab does the remount and you don't. **Your call whether to also strip the remount-jig prep from the try-in chapter** (sourced ≠ "you do it"). Left in for now, flagged.
+
+---
+
+*Remaining chapters (cd-ch14, cd-ch16–28) + App.jsx CD pathway prose: PENDING audit.*
