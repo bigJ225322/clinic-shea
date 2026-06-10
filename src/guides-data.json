@@ -53,13 +53,12 @@
        {
         "kind": "numbered",
         "items": [
-         "**Mix water + powder** per manufacturer ratio (typically 1:1 by volume). Spatulate vigorously for ~30 sec until smooth + drip-free (no lumps, no air bubbles).",
-         "**Load the tray** from posterior to anterior. Build a slight peak in the palatal area.",
-         "**Place a small amount of alginate over the palate with your finger** before seating the tray — prevents palatal voids.",
+         "**Mix water + powder** per manufacturer ratio. Spatulate vigorously until smooth + drip-free (no lumps, no air bubbles).",
+         "**Load the tray** from posterior to anterior.",
          "Retract the lip with the cheek retractor (or your finger).",
          "**Seat tray posterior-first, then rotate anterior into place**. Head slightly forward.",
          "Have patient say \"ah\" gently while material is still loose — engages the soft palate to capture the vibrating-line area.",
-         "**Hold steady for 3–4 minutes**. Verify set by touching residue in bowl — should snap cleanly without sticking or stringing.",
+         "**Hold steady until set.** Verify by touching residue in bowl — should snap cleanly without sticking or stringing.",
          "**Remove with a quick, even pull** straight down. Don't rock.",
          "Inspect immediately: voids, rugae captured, borders rounded, hamular notches present bilaterally."
         ]
@@ -77,7 +76,7 @@
          "Patient lifts the tongue.",
          "**Seat tray**: posterior first, then rotate anterior.",
          "Patient slowly protrudes and retrudes the tongue once or twice during set — engages genioglossus for floor-of-mouth capture.",
-         "**Hold 3–4 minutes**; remove evenly.",
+         "**Hold until set**; remove evenly.",
          "Inspect: retromolar pad bilaterally, lingual sulcus extension, no tears."
         ]
        },
@@ -89,15 +88,13 @@
         "kind": "bullets",
         "items": [
          "**Pour within 15 minutes** of taking the impression — alginate dehydrates and shrinks.",
-         "Type III stone (microstone) for diagnostic casts.",
-         "**Mandibular:** put putty in the empty space on the impression before pouring with Microstone — makes the cast mountable.",
-         "If pouring delayed, store impression in a sealed bag with damp paper towel; avoid direct water (dilutes alginate)."
+         "Type III stone (microstone) for diagnostic casts."
         ]
        },
        {
         "kind": "dropdown",
         "title": "Tips",
-        "body": "**Patient gags:** raise chair, redirect breathing through nose, position patient slightly forward, work fast. Apply topical anesthetic spray to the soft palate if gagging persists. **Alginate sets before tray seated:** over-spatulation — spatulate less and seat faster. **Borders thin or absent:** tray too small / not extended. Try a bigger tray or extend with utility wax. **Voids in the palate:** place finger-applied alginate before seating. Retake."
+        "body": "**Patient gags:** raise chair, redirect breathing through nose, position patient slightly forward, work fast. Apply topical anesthetic spray to the soft palate if gagging persists. **Alginate sets before tray seated:** over-spatulation — spatulate less and seat faster. **Borders thin or absent:** tray too small / not extended. Try a bigger tray or extend with utility wax."
        }
       ]
      },

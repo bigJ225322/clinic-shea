@@ -100,4 +100,20 @@ Legend: ✅ sourced · ⚠ **not found in any source** (cut or re-source) · ⓘ
 - **Run:** sequential, chapter by chapter (cd-ch1 → cd-ch28).
 - **Unsourced lines:** **cut on sight** and recorded here. A line survives only if it maps to Swade or a named lecture (✅), or is a direct application of a sourced technique (ⓘ).
 
-*Remaining chapters (cd-ch1–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch1 — "Diagnostic impression technique (edentulous)"  *(audited)*
+
+Primary source: **Swade p.81–83** "DENTURE #1: COE & DIAGNOSTIC IMPRESSIONS" (esp. the take-impressions step, line 3524–3530). Landmarks across the anatomy/impression lectures.
+
+- ✅ intro (diagnostic cast → tray → final-impression border) — concept per Swade COE (custom trays fabricated from diagnostic casts) + Edentulous Anatomy lec.
+- ✅ Materials: stock trays, alginate, spray adhesive, cheek retractor, wax — **Swade p.81** equipment ("alginate, water cylinder, impression trays, alginate spray adhesive"; cheek retractors; "add wax to extend"). Jeltrate/Identic ✅ Swade.
+- ✅ Setup: try trays dry, extend short trays with wax, cheek retractors out-up/out-down — **Swade p.83** (3526–3528).
+- ✅ Max/Mand technique: mix + load, **seat posterior then roll anterior** (Swade 3530), cover ridge→retromolar pads, "say ah" (ⓘ vibrating-line per PPS lec), inspect rugae/hamular notch/retromolar pad — **Swade 3530** + Edentulous Anatomy / PPS lectures. Genioglossus tongue movement = ⓘ (Final Impression lec, SALARI).
+- ✅ Pour: **pour within 15 min** (Swade p.82, line 521/637); **Type III microstone** (Swade + Custom-tray/Boxing lec).
+- ✅ Gag tips — gag management attested across Immediate-Denture + Delivery lectures.
+- **✂ CUT (no source anywhere):** "1:1 by volume" alginate ratio · "build a peak in the palatal area" · finger-applied palatal alginate (+ the Tips dup) · "3–4 minutes" set time (→ "until set") · putty-in-empty-space for a mountable mand cast · sealed-bag/damp-towel storage.
+
+---
+
+*Remaining chapters (cd-ch2–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
