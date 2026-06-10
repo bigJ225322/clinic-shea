@@ -325,4 +325,18 @@ Primary source: **26_Denture_processing(1) lec** + **Processing+Festooning lec**
 
 ---
 
-*Remaining chapters (cd-ch16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch16 — "Edentulous anatomy reference"  *(audited — fully sourced)*
+
+Primary source: **Edentulous Anatomy & Support Areas lec** + Obrez Anatomy/PPS lec + Swade.
+
+- ✅ Support classification (primary/secondary/relief) — Edentulous Anatomy lec lines 222–246 ("Complete Denture Support Areas: Primary / Secondary / Relief").
+- ✅ **Maxilla primary = hard palate + ridge/tuberosity** (lec 60–61 "primary stress-bearing area of the maxillary CD"); **Mandible primary = buccal shelf** (lec 96 "primary stress-bearing area for the lower CD base").
+- ✅ **Book-vs-ACP source-conflict notes are verbatim from the lecture** — tuberosity: "Book defines it as secondary, ACP defines it as primary" (lec 232–234); rugae secondary (lec 238). Retromolar-pad conflict similarly noted.
+- ✅ Maxillary (16) + mandibular (12) landmark lists (frena, vestibules, buccal shelf, retromolar pad, etc.) — Edentulous Anatomy lec landmark list + Obrez.
+- **✂ FIXED:** intro "The named anatomical landmarks **expects** you to identify" (UIC-scrub artifact) → "These are the named anatomical landmarks to identify…". No fabrication cuts.
+
+---
+
+*Remaining chapters (cd-ch17–28) + App.jsx CD pathway prose: PENDING audit.*
