@@ -371,4 +371,23 @@ Primary source: **Clinical Eval of Trial Denture lec** (phonetics section) + JR 
 
 ---
 
-*Remaining chapters (cd-ch19–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch19 — "Types of complete dentures & immediate scenarios"  *(audited — 53 blocks; no cuts; one flag)*
+
+Sources: **IMMEDIATE DENTURES - Dr. Agrawal lec** + Immediate Dentures_1_ + Treatment planning + Huddle 15 + Delivery lec + Swade.
+
+**Immediate-denture half (blocks 0–41) — strongly sourced (Agrawal):**
+- ✅ Advantages / disadvantages / contraindications — Agrawal lec 11, 359–361.
+- ✅ **Cast surgery**: recess labial edge **to the incisal third**, cut to gingival margin — Agrawal 257–272 ("recess to incisal" / "Recess"; "cast surgery" 298).
+- ✅ **24-hr rule callout** "Do not remove until 24-hour follow-up — controls swelling, BANDAGE EFFECT" — Agrawal 310–311 (VERBATIM).
+- ✅ **"Temporary Denture" label** convention — Agrawal 357 ("label stamped 'Temporary Denture'").
+- ✅ Stages (diagnostic → custom tray w/ tooth-undercut block-out → master impression → cast surgery → face-bow/JR → surgical guide → SR Ivocap processing → surgical-day delivery → post-op relines). Type IV master cast (Swade). "45–60 min" Type IV set = ⓘ.
+
+**Implant-overdenture half (blocks 42–52):**
+- ✅ **Concept** sourced: implant overdenture / **IOD** (Huddle 15 line 21; Treatment planning 432), **McGill** (Delivery lec).
+- ⚠ **FLAG for Jake — detailed Locator-attachment workflow** (colored inserts clear→red, patrix/matrix housing pickup, 6–18 mo insert life, ball/bar options): valid implant prosthodontics but **NOT in the UIC CD materials** (matrix/patrix hits are unrelated tooth-mould/resin). Same as cd-ch18: real, not fabricated → left in, flagged. **Your call: keep as reference vs cut (out of CD-lecture scope).**
+
+---
+
+*Remaining chapters (cd-ch20–28) + App.jsx CD pathway prose: PENDING audit.*
