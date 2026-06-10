@@ -339,4 +339,20 @@ Primary source: **Edentulous Anatomy & Support Areas lec** + Obrez Anatomy/PPS l
 
 ---
 
-*Remaining chapters (cd-ch17–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch17 — "PPS, vibrating line, House classification"  *(audited — fully sourced, no cuts)*
+
+Primary source: **Vibrating line + PPS lec** + **Obrez Anatomy/PPS lec** + Clinical Eval + Swade.
+
+- ✅ Vibrating line (hamular-to-hamular, **anterior of fovea palatinae**, border may extend **1–2 mm posterior**) — PPS lec lines 1–10 (VERBATIM); Obrez 109–111.
+- ✅ PPS area (between vibrating line + hard/soft-palate junction, **Valsalva** anterior border) — PPS lec 11 + Obrez 109.
+- ✅ **"Butterfly" shape** (posterior nasal spine inferiorly at midline) — PPS lec line 18 ("more of a 'butterfly' shape", verbatim); Obrez 326.
+- ✅ 5 PPS purposes (shrinkage compensation, soft-palate movement, prevent food/air, retention, reduce gag) — Obrez/PPS lec.
+- ✅ Scribing: **#8 round bur, depth 1–1.5 mm, #7 spatula, deeper posterior** — Swade + PPS lec. PPS dimensions (hamular 1–2×1, junction 4–6×1.5, mid 2–3×1 mm) — Clinical Eval + Obrez.
+- ✅ **House palatal-throat-form classification** (Class I/II/III by soft-palate movement on "ah"; more movement = worse retention) — Obrez lec line 349 ("HOUSE CLASSIFICATION OF THE PALATE FORM") + Clinical Eval. Specific movement-mm thresholds (1–2 / 3–5 / 6+ mm) = ⓘ.
+- **✂ CUT: none.**
+
+---
+
+*Remaining chapters (cd-ch18–28) + App.jsx CD pathway prose: PENDING audit.*
