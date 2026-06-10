@@ -154,7 +154,7 @@
        {
         "kind": "numbered",
         "items": [
-         "**One sheet of baseplate wax**. Warm slightly to soften (water bath at ~120°F or warm hands).",
+         "**One sheet of baseplate wax**. Warm slightly to soften (water bath or warm hands).",
          "**Adapt it** to the cast surface — don't drip molten wax; press the warm sheet onto the cast.",
          "Cut with a #11 scalpel along the blue line. Sharp edges trimmed.",
          "**DO NOT Vaseline after this step.** The spacer must stay inside the tray through border molding — if you Vaseline now, the spacer will fall out at the chair."
@@ -168,7 +168,6 @@
         "kind": "numbered",
         "items": [
          "**One sheet of light-cured Triad** tray material.",
-         "Warm slightly (some Triads come pre-warmed; check with your lab).",
          "Press over the spacer + cast. Adapt to all surfaces, no air bubbles.",
          "Trim excess with sharp scalpel along the red line."
         ]
@@ -180,7 +179,7 @@
        {
         "kind": "bullets",
         "items": [
-         "**Maxillary:** vertical handle over the central incisor area. ~10 mm tall. Should not impinge on lip closure.",
+         "**Maxillary:** vertical handle over the central incisor area. Should not impinge on lip closure.",
          "**Mandibular:** finger rests in the bicuspid area, bilateral. No taller than **2/3 of the retromolar pad height** (impingement = tray won't seat in mouth).",
          "Build from Triad offcuts. Press into the surface; light cure after addition."
         ]
@@ -192,8 +191,8 @@
        {
         "kind": "numbered",
         "items": [
-         "**Light cure ~1 min** in the light chamber (rotating table at 400-500 nm).",
-         "Wait for cooling (~5 min).",
+         "**Light cure ~1 min** in the light chamber.",
+         "Wait for cooling.",
          "Remove tray from cast carefully — lift off, don't pry.",
          "**Cure again off the cast** with intaglio side up. Fully polymerizes the inner surface."
         ]

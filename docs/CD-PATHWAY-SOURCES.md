@@ -116,4 +116,22 @@ Primary source: **Swade p.81–83** "DENTURE #1: COE & DIAGNOSTIC IMPRESSIONS" (
 
 ---
 
-*Remaining chapters (cd-ch2–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch2 — "Custom tray fabrication"  *(audited — strongly sourced)*
+
+Primary source: **Custom Tray lecture** (`Custom tray_Boxing_ Technique.pdf`, Tan/Touloumi) + **Custom Tray Grading Sheet_2022**. Relief landmarks: Edentulous Anatomy lec.
+
+- ✅ Materials (diagnostic cast, red/blue pencil, baseplate wax, Triad, Vaseline, #7 spatula, #11 scalpel, acrylic burs) — lecture bench list (lines 6–29).
+- ✅ Step 1 mark cast: red = vestibule depth, **blue = 2 mm inside red** for border-mold space, **posterior = RED only**, red = relief areas — lecture #1–2 (lines 34–39). Specific relief sites (mid-palatal, incisive papilla, tori, mylohyoid, knife-edge) = Edentulous Anatomy lec.
+- ✅ Step 2 prep: vaseline cast → drip-wax block-out → **vaseline over block-out** — lecture #3–5 (41–48).
+- ✅ Step 3 spacer: warm baseplate wax "not dripping," cut to blue line, **do NOT vaseline after (spacer stays in tray for border molding)** — lecture #6–7 (49–59).
+- ✅ Step 4 Triad: one sheet, no trapped air, trim to red line — lecture #8 (61–63).
+- ✅ Step 5 handle/finger rests: handle clears lip; **mand finger rests ≤ 2/3 retromolar pad height**; build from offcuts — lecture #9 + "Make sure" (65–73).
+- ✅ Step 6 cure: **~1 min, not less**; cool before removing; re-cure off the cast — lecture #10–11 (76–80).
+- ✅ Step 7 finish + callout grading: even single-layer thickness, spacer retained, frenal/muscle clearance, smooth borders — lecture (82–88) + grading sheet.
+- **✂ CUT (fabricated precision, not in any source):** "~120 °F" wax-bath temp · "warm the Triad / some come pre-warmed" (Triad is light-cured, not thermoplastic) · "~10 mm" handle height · "rotating table at 400–500 nm" · "~5 min" cooling time.
+
+---
+
+*Remaining chapters (cd-ch3–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
