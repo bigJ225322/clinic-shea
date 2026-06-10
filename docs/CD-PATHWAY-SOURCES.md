@@ -423,4 +423,17 @@ Sources: wax types appear across the lab lectures (Custom-tray/Boxing, Processin
 
 ---
 
-*Remaining chapters (cd-ch22–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch22 — "Loose denture differential"  *(audited — app-synthesized differential)*
+
+Sources: Bin Yang reline lec ("Reline/Rebase for a loose denture?", line 96) + component facts (VDO/freeway from Clinical Eval/JR; reline indications from Bin Yang).
+
+- ✅ Component facts sourced: VDO/freeway space 2–4 mm, ridge resorption, reline-vs-remake decision (Bin Yang), denture stomatitis (poor fit+hygiene).
+- ⓘ **App synthesis** — the "11 causes ranked by frequency" differential ladder + the "reline buys ~3 mo (occlusal) vs 1–2 yr (resorption)" buy-time stats are a useful clinical-reasoning synthesis built from sourced components, but the ranking + specific buy-time numbers aren't a direct UIC source. (Valid reasoning, not fabricated facts — left in.)
+- **✂ FIXED:** last "**Boley gauge** for VDO" → "Caliper for VDO" (Boley now fully cleared from CD chapters; 2 remaining are non-CD guides).
+- **✂ CUT (remount sweep):** [3] "CR/MIP discrepancy **not fixable by remount**" → "CR/MIP discrepancy"; [6] occlusal-drift "**clinical remount + selective grinding** OR remake" → "**remake** (worn teeth can't be re-established by grinding)" — consistent with the cd-ch15/20 clinical-remount cuts.
+
+---
+
+*Remaining chapters (cd-ch23–28) + App.jsx CD pathway prose: PENDING audit.*

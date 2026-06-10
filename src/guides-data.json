@@ -2651,14 +2651,14 @@
          "**Inspect with the denture in (function).** Have the patient speak, swallow, smile widely, open wide, push tongue side-to-side. Watch for displacement and identify which movement breaks the seal.",
          "**PIP the intaglio.** Hollow areas (no PIP wiped away) = ridge resorption. Heavy pressure spots = over-extension or occlusal interference reflected to intaglio.",
          "**Articulating paper on the teeth.** Uneven contact = occlusal interference. Even contact = occlusion isn't the cause.",
-         "**Boley gauge for VDO.** If VDR−VDO is outside 2–4 mm, VDO is wrong.",
+         "**Caliper for VDO.** If VDR−VDO is outside 2–4 mm, VDO is wrong.",
          "**Decide on fix.** Match the diagnostic finding to the cause list below."
         ]
        },
        {
         "kind": "callout",
         "title": "When the differential lands on \"remake\"",
-        "body": "VDO is wrong by >2 mm · CR/MIP discrepancy not fixable by remount · borders wrong everywhere · ridge resorption so severe that reline can't restore retention · tissue surface worn through · patient never adapted in 6+ months despite correctly-fitting denture. In all of these, reline is a band-aid that delays the inevitable. Counsel the patient honestly."
+        "body": "VDO is wrong by >2 mm · CR/MIP discrepancy · borders wrong everywhere · ridge resorption so severe that reline can't restore retention · tissue surface worn through · patient never adapted in 6+ months despite correctly-fitting denture. In all of these, reline is a band-aid that delays the inevitable. Counsel the patient honestly."
        },
        {
         "kind": "section",
@@ -2671,7 +2671,7 @@
        {
         "kind": "numbered",
         "items": [
-         "**Occlusal scheme drift** (most common at 6–12 months post-delivery). Worn denture teeth shift the cusp-fossa relationship; the patient functions on one side; the denture tilts on the ridge. **Diagnose:** articulating paper shows uneven posterior contact OR worn cusps visible on inspection. **Fix:** clinical remount + selective grinding OR remake if wear is extensive.",
+         "**Occlusal scheme drift** (most common at 6–12 months post-delivery). Worn denture teeth shift the cusp-fossa relationship; the patient functions on one side; the denture tilts on the ridge. **Diagnose:** articulating paper shows uneven posterior contact OR worn cusps visible on inspection. **Fix:** remake (worn denture teeth can't be re-established by grinding).",
          "**Ridge resorption** (most common at 2+ years post-delivery, or immediately after IID). The bone has remodeled; the denture intaglio no longer matches the ridge contour. **Diagnose:** PIP shows generalized contact loss; tissue is not blanching anywhere. **Fix:** reline (hard or soft) OR remake.",
          "**Lost border seal** (frenum, flange wear, over-relief). The peripheral seal of the denture broken by overzealous adjustment, accidental flange trimming, or tissue change at a frenum site. **Diagnose:** retention test with patient closing + lateral force shows immediate dislodgement; specific area shows no tissue contact at the border. **Fix:** add wax to identify the problem area, lab repair or reline.",
          "**Lost posterior palatal seal** (gradual). The PPS area has resorbed or wax was over-thinned at processing. **Diagnose:** PIP shows no contact at the PPS area; suction is weak under tongue pressure. **Fix:** wax addition to the PPS area; lab cure or chairside hard reline of just that zone.",
