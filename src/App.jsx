@@ -29487,6 +29487,24 @@ function Pathways() {
  </div>
  ) : (
  <div style={{ display: "flex", gap: "8px", marginBottom: "14px", flexWrap: "wrap", alignItems: "center" }}>
+ {/* Close the open map → back to the landing cards. The pills stay for
+ quick procedure-switching, but a student viewing a map is otherwise
+ locked into that procedure with no explicit way back to the others. */}
+ <button type="button"
+ onClick={() => { setDomainId(null); setPathwayId(null); setShowAllDomains(false); }}
+ title="Back to all maps"
+ onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.color = "var(--accent)"; }}
+ onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--rule)"; e.currentTarget.style.color = "var(--ink-soft)"; }}
+ style={{
+ padding: "7px 13px", borderRadius: "100px",
+ border: "1px solid var(--rule)", background: "transparent",
+ color: "var(--ink-soft)", fontSize: "0.85rem", fontWeight: 500,
+ cursor: "pointer", fontFamily: "'Geist', sans-serif",
+ transition: "all 120ms ease", display: "inline-flex", alignItems: "center", gap: "5px",
+ marginRight: "4px",
+ }}>
+ <span style={{ fontSize: "1.05em", lineHeight: 1 }}>←</span> All maps
+ </button>
  {PATHWAY_DOMAINS.map(d => {
  const active =!showAllDomains && d.id === domainId;
  return (
