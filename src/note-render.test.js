@@ -149,6 +149,46 @@ describe("regression locks", () => {
     expect(off).toMatch(/Perio maintenance:/);          // rest of the note intact
     expect(off).toMatch(/Removed plaque & calculus/);   // content after the block intact
   });
+
+  it("Urgent Care (374): consultations array injects named consults (survives the step-0 dedent)", () => {
+    // The handler regex required a literal leading space before 'Consultations:',
+    // but step 0 strips that single indent — so it silently no-op'd and consults
+    // never reached the note. The handler now matches with/without the indent.
+    const out = render("374", { examFindings: { consultations: [
+      { name: "Smith", type: "restorative" }, { name: "", type: "OS" },
+    ] } });
+    expect(out).toMatch(/- Dr\. Smith -- restorative consult:/);
+    expect(out).toMatch(/- Dr\. \[Name\] -- OS consult:/);
+    // a single filled consult collapses the 3 placeholder lines to the ones entered
+    const one = render("374", { examFindings: { consultations: [{ name: "Lee", type: "endo" }] } });
+    expect(one).toMatch(/- Dr\. Lee -- endo consult:/);
+    expect(one).not.toMatch(/-- perio consult:/);
+  });
+
+  it("Urgent Care (374): an empty consultations array strips the whole block", () => {
+    const out = render("374", { examFindings: { consultations: [] } });
+    expect(out).not.toMatch(/Consultations:/);
+  });
+
+  it("Urgent Care (374): a selected diagnosis tooth shows immediately, before any dx is picked", () => {
+    // Tooth chosen, neither pulpal nor periapical selected yet — the row used to
+    // emit nothing, so the tooth pick looked like a no-op. Now bare #N lines show.
+    const out = render("374", { examFindings: { "dx count": 1, "dx1 tooth": "#8" } });
+    expect(out).toMatch(/- Pulpal diagnosis #8:/);
+    expect(out).toMatch(/- Periapical diagnosis #8:/);
+    // and once a dx is picked, the value fills in on that tooth
+    const dx = render("374", { examFindings: { "dx count": 1, "dx1 tooth": "#8", "dx1 pulpal": "Pulp necrosis" } });
+    expect(dx).toMatch(/- Pulpal diagnosis #8: Pulp necrosis/);
+  });
+
+  it("Urgent Care (374): 'dx count' stored as a NUMBER does not throw (latent crash guard)", () => {
+    // The UI writes update('dx count', n) as a number; the field loop's .trim()
+    // would throw on it. Adding a 2nd diagnosis row must not crash the render.
+    expect(() => render("374", { examFindings: { "dx count": 2, "dx1 tooth": "#3", "dx2 tooth": "#14" } })).not.toThrow();
+    const out = render("374", { examFindings: { "dx count": 2, "dx1 tooth": "#3", "dx2 tooth": "#14" } });
+    expect(out).toMatch(/- Pulpal diagnosis #3:/);
+    expect(out).toMatch(/- Pulpal diagnosis #14:/);
+  });
 });
 
 // ---------------------------------------------------------------------------

@@ -5030,7 +5030,12 @@ function renderTemplate(raw, f) {
  // Compound endo testing keys (endo1 #, endo2 perc, etc.) and the UI
  // count key are assembled into the Endo testing block separately below.
  if (/^endo\d+ /.test(label) || label === "endo count") continue;
- const v = (value || "").trim();
+ // Same for the urgent-care diagnosis rows (dx1 tooth/pulpal/periapical +
+ // the "dx count" UI key) — assembled in the "7a-dx" block below. The count
+ // key is stored as a NUMBER, so it must be skipped before the .trim() on
+ // the next line (which would otherwise throw on a non-string).
+ if (/^dx\d+ /.test(label) || label === "dx count") continue;
+ const v = (value == null ? "" : String(value)).trim();
  if (!v) continue;
 
  // Special-case: odontogram findings — write to the heading, not a stub.
@@ -5309,8 +5314,17 @@ function renderTemplate(raw, f) {
  const toothLabel = (ef[`${p} tooth`] || "").split(",").map(s => s.trim().replace(/^#/, "")).filter(Boolean).map(x => "#" + x).join(", ") || "#";
  const pulpal = (ef[`${p} pulpal`] || "").trim();
  const periapical = (ef[`${p} periapical`] || "").trim();
+ const hasTooth = (ef[`${p} tooth`] || "").trim() !== "";
  if (pulpal) dxLines.push(`- Pulpal diagnosis ${toothLabel}: ${pulpal}`);
  if (periapical) dxLines.push(`- Periapical diagnosis ${toothLabel}: ${periapical}`);
+ // Tooth picked but no diagnosis chosen yet: emit bare "#N:" lines so the
+ // tooth selection shows immediately in the preview (otherwise the row
+ // contributes nothing and the pick looks broken). Mirrors the template's
+ // two-line default, just with the tooth filled in.
+ if (hasTooth && !pulpal && !periapical) {
+ dxLines.push(`- Pulpal diagnosis ${toothLabel}:`);
+ dxLines.push(`- Periapical diagnosis ${toothLabel}:`);
+ }
  }
  if (dxLines.length) {
  t = t.replace(
@@ -5326,15 +5340,21 @@ function renderTemplate(raw, f) {
  {
  const cons = f.examFindings?.consultations;
  if (Array.isArray(cons)) {
+ // The step-0 dedent (line ~4098) strips the template's single leading
+ // space before this handler runs, so the block must match
+ // "Consultations:" with OR without a leading indent. Capture whatever
+ // indent survives and reuse it for the injected bullets so they align
+ // with the heading. (Pre-fix the regex required a literal leading space
+ // and silently no-op'd after the dedent — consults never injected.)
+ const consRe = /^([ \t]*)Consultations:\n(?:[ \t]*- Dr\. \[Name\][^\n]*\n)*/gm;
  if (cons.length === 0) {
- t = t.replace(/ Consultations:\n(?: *- Dr\. \[Name\][^\n]*\n)*/g, "");
+ t = t.replace(consRe, "");
  } else {
- const lines = cons.map(c =>
- ` - ${c.name? `Dr. ${c.name}`: "Dr. [Name]"} -- ${c.type} consult:`
-).join("\n");
- t = t.replace(
- / Consultations:\n(?: *- Dr\. \[Name\][^\n]*\n)*/g,
- ` Consultations:\n${lines}\n`
+ t = t.replace(consRe, (m, indent) =>
+ `${indent}Consultations:\n` +
+ cons.map(c =>
+ `${indent}- ${c.name? `Dr. ${c.name}`: "Dr. [Name]"} -- ${c.type} consult:`
+).join("\n") + "\n"
 );
  }
  }
@@ -29139,9 +29159,20 @@ function Pathways() {
  schematicTileRefs.current.forEach((el, key) => {
  if (!el) return;
  const r = el.getBoundingClientRect();
+ // The entry animation shifts each tile via a `top` keyframe (the tiles are
+ // position:relative). getBoundingClientRect captures that LIVE offset, so
+ // subtract the tile's current `top` to store the SETTLED (top:0) layout
+ // position. Without this, a re-measure that lands mid-animation — font swap
+ // resolving during the 1.05s open, or the 50ms timer / ResizeObserver firing
+ // while tiles are still sliding — bakes the animation offset into the stored
+ // y, and the arrow rAF (which adds `top` back every frame) then double-counts
+ // it, leaving the arrows detached. This was the Chrome-on-macOS "arrows out of
+ // place" bug: there the webfont load resolved mid-animation, so the follow-up
+ // measure captured offset tiles.
+ const topOffset = parseFloat(getComputedStyle(el).top) || 0;
  pos[key] = {
  x: r.left - gridRect.left,
- y: r.top - gridRect.top,
+ y: (r.top - gridRect.top) - topOffset,
  width: r.width,
  height: r.height,
  };
