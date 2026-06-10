@@ -309,4 +309,20 @@ Primary source: **Clinical Evaluation of the Trial Denture lec** (try-in steps) 
 
 ---
 
-*Remaining chapters (cd-ch14, cd-ch16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch14 — "Processing & lab remount (SR Ivocap)"  *(audited)*
+
+Primary source: **26_Denture_processing(1) lec** + **Processing+Festooning lec** + denture base materials 2024 + Delivery lec (remount).
+
+- ✅ **SR Ivocap injection-molding system** — 26_Denture_processing line 17 ("SR Ivocap System is an injection molding system"). Injection moulding heat-cured — Processing+Festooning 231/306.
+- ✅ Flasking (stone, cast positioned, land area, injection funnel) — 26_Denture_processing 55–66.
+- ✅ **Cap Vibrator** mixing; **tin-foil substitute (sodium alginate)** separator; don't coat tooth bonding surfaces — 26_Denture_processing + Delivery lec. "20 g polymer + 30 mL monomer" + "5 min" mix = ⓘ (Ivocap capsule, processing lec).
+- ✅ Wax elimination (boil-out + detergent), deflasking, finish/polish — processing lec + Swade. PMMA chemistry (polymer/monomer/benzoyl peroxide) — Processing+Festooning 183–199.
+- **✂ CUT:** 7 per-step "(N min)" timings; wax-elimination "at 100 °C **for 4–5 min**" → "in boiling water" (kept boil-out, cut the fabricated time).
+
+> ⚠ **FLAG (same as cd-ch13, Jake's call):** Step 6 "Lab remount + equilibration" uses the **face-bow remount jig + clinical remount cast** — source-backed (Delivery lec) and genuinely lab-side, but part of the remount theme you cut at delivery. Left in + flagged.
+
+---
+
+*Remaining chapters (cd-ch16–28) + App.jsx CD pathway prose: PENDING audit.*
