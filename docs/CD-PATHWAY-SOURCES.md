@@ -181,4 +181,20 @@ Sources: **Boxing & Pouring lec** (`Custom tray_Boxing_ Technique.pdf` lines 96�
 
 ---
 
-*Remaining chapters (cd-ch6–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch6 — "Face-bow record on the edentulous patient"  *(audited — FULLY sourced, no cuts)*
+
+Primary source: **Articulator+Facebow lec** (`Articulator+Facebow.pdf`) + Swade + facebow tech spec.
+
+- ✅ **Mark 320 articulator** — lec lines 12, 104 ("Review Mark 320 articulator"). *(Confirms the standing articulator-model question: it's the Denar Mark 320.)*
+- ✅ ear-bow, earpieces in **external auditory meatus**, **Frankfort horizontal**, orbital pointer / orbitale-7mm reference — lec lines 165–193.
+- ✅ bite fork secured to maxillary rim; record-base + fork in mouth; transfer-arm onto stem — lec + Week 4 lab (bite fork).
+- ✅ **Anterior reference = 43 mm above the relaxed lip (edentulous)** — lec lines 244–247 ("43mm above the incisal … relaxed lip (edentulous)") + Swade line 3802 ("43 mm above the lateral incisor").
+- ✅ "Why accuracy matters" callout: **"5 mm deviation from hinge axis → 0.2 mm AP displacement at the second molar"** — VERBATIM lec lines 203–204.
+- ✅ Preclinical shortcut: face-bow **transfer jig** + **interocclusal mounting jig** — lec + Week 4 lab.
+- **✂ CUT: none** — every claim sourced. (Bite-fork attachment options + "asymmetric earpiece = canted mounting" are ⓘ, grounded in the lecture's earpiece-symmetry emphasis.)
+
+---
+
+*Remaining chapters (cd-ch7–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
