@@ -31375,6 +31375,10 @@ export default function App() {
  the user sees in a real browser. */
  @media (max-width: 560px) {
 .rpd-chart-row { grid-template-columns: 1fr!important; }
+ /* Loupes is a hover-driven fine-art magnifier — it does nothing useful on a
+    touch screen, so hide its nav tab on mobile (the "O"/Loupes glyph parked at
+    the right of the tab bar). Default tab is Note, so it's simply unreachable. */
+.loupes-tab { display: none!important; }
  }
 
  /* RPD tooth chart hover + side-by-side layout */
