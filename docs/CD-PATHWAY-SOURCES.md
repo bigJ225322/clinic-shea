@@ -230,4 +230,19 @@ Primary source: **Jaw Relation Records lec** + Clinical Eval of Trial Denture + 
 
 ---
 
-*Remaining chapters (cd-ch9–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch9 — "CR registration: bimanual chin technique"  *(audited — FULLY sourced, no cuts)*
+
+Primary source: **Jaw Relation Records lec** (CR-record section, lines 218–252) — nearly verbatim. Regisil set time: Swade.
+
+- ✅ CR definition (condyles superior against posterior slopes of articular eminences; CR exists edentulous) — JR lec 221–222. *(Lec phrases it "anterior-superior"; chapter says "most superior" — ⓘ defensible classic wording, eminence part matches.)*
+- ✅ **Bimanual technique:** "all four fingers on the lower border, fingertips on bone; thumbs over the symphysis touching at midline; patient opens ~35 mm then relaxes; upward lift on the border + downward on the symphysis" — JR lec 231–242 (VERBATIM, incl. **35 mm**).
+- ✅ **V-notches: 2 per side, 1 horizontal + 1 diagonal, 2 mm deep** — JR lec 245–249 (VERBATIM). *(This is the method I almost over-cut in cd-ch7 — fully confirmed here.)*
+- ✅ **Regisil PB** into the notches (source-accurate per JR lec 252 — NOT renamed here, unlike the cd-ch15 delivery use); set 2–3 min (Swade Regisil set time).
+- ✅ Inspect (sharp negative of V-points, retake if smeared/double); "forced retrusion vs CR — lift is soft + upward, not hard + back" = ⓘ (grounded in the lec's upward-lift principle).
+- **✂ CUT: none** — chapter is essentially a transcription of the JR lecture's CR-record slides.
+
+---
+
+*Remaining chapters (cd-ch10–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
