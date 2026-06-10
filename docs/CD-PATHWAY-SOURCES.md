@@ -390,4 +390,21 @@ Sources: **IMMEDIATE DENTURES - Dr. Agrawal lec** + Immediate Dentures_1_ + Trea
 
 ---
 
-*Remaining chapters (cd-ch20–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch20 — "Reline, rebase, repair"  *(audited — strongly sourced)*
+
+Primary source: **Reline rebase and repair - Bin Yang lec** + Processing+Festooning + Swade.
+
+- ✅ Definitions (reline = intaglio resurface; rebase = replace base, keep teeth; repair) — Bin Yang lec 1–19.
+- ✅ Indications + **contraindications** ("**abused soft tissue** except temporary reline/tissue conditioner," poor esthetics, bad MM relation, worn teeth) — Bin Yang lec 131–155 (verbatim "Abused soft tissue").
+- ✅ Reline fixes tissue-side only (CAN: lost adaptation, minor seal/PPS loss; CANNOT: worn occlusion, lost VDO) — Bin Yang.
+- ✅ Repair: **super-glue reassemble** (Bin Yang), **pressure pot** (Bin Yang), cold-cure/repair-acrylic (Processing), stone matrix, midline/tooth-out/flange chairside procedures. "pressure pot 20 min" + "1–2 mm" seal loss = ⓘ.
+- ⓘ "**90-day rule**" callout (early reline = delivery fit error, not resorption) — sound clinical logic, but the named "rule" isn't sourced.
+- **✂ CUT:** [12] worn-occlusal-scheme fix "**clinical remount + selective grinding** (if minor) OR remake" → "**remake**" — unsourced (zero hits in Bin Yang) + the clinical-remount you cut at delivery; remake is the realistic path.
+
+> **Remount/grinding sweep:** remaining "clinical remount / selective grinding" hits are the already-FLAGGED cd-ch13/14 lab-remount (sourced, lab-side — left for Jake) + cd-ch22 (occlusal drift) + cd-ch23 (adjustment) — will handle those at their chapters.
+
+---
+
+*Remaining chapters (cd-ch21–28) + App.jsx CD pathway prose: PENDING audit.*
