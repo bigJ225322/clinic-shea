@@ -278,4 +278,18 @@ Sources: **Anterior teeth set-up Technique** + **Ch12 Tooth Arrangement** + **33
 
 ---
 
-*Remaining chapters (cd-ch12–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch12 — "Articulation schemes & Hanau's quint"  *(audited — strongly sourced)*
+
+Primary source: **Obrez "Denture occlusion … Hanau's quint" lec** + 33° BBA / Monoplane grading sheets + **Week 14 huddle key**.
+
+- ✅ **Hanau's quint** (condylar inclination, incisal guidance, occlusal plane, compensating curve, cuspal inclination) — Obrez lec ("HANAU'S QUINT", line 4).
+- ✅ **Theilemann formula** — Obrez lec (the ONLY source containing "Theilemann"; cited there).
+- ✅ Three schemes (33° BBA / monoplane neutrocentric / monoplane + balancing ramp) + indications — Obrez + Monoplane/33° grading sheets. **Grading "/20", "0 / ½ / 1 point" per parameter** — 33° grading sheet (line 231 "/ 20"; lines 21/25/29 "1 point / 0 point / 1/2 point"). "pass at 16+" = ⓘ (threshold not explicit on sheet). Posterior 1/3 overlap, 1–2 mm anterior overlap = ⓘ (Monoplane grading + Ch12).
+- ✅ Compensating-curve build-up mm values — **Week 14 huddle key** (has the per-tooth mm-above-plate values); chapter honestly hedges them as "illustrative, verify against huddle key." Central fossa over crest — huddle key line 33.
+- **✂ FIXED:** intro "Three schemes are taught **at**, with one variant" → removed dangling "at" (UIC-scrub artifact). No fabrication cuts.
+
+---
+
+*Remaining chapters (cd-ch13, cd-ch14, cd-ch16–28) + App.jsx CD pathway prose: PENDING audit.*
