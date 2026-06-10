@@ -149,4 +149,20 @@ Primary source: **SALARI "Final Impression" lec** (`DAOB … Final Impression �
 
 ---
 
-*Remaining chapters (cd-ch4–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch4 — "Final PVS impression technique"  *(audited — strongly sourced)*
+
+Primary source: **SALARI "Final Impression" lec** (final-wash section, lines 352–443). PVS set time + double-dip infection control: Swade.
+
+- ✅ intro: **selective-pressure philosophy** — SALARI "Final impression philosophies" (line 209) + Custom Tray grading.
+- ✅ Materials: **PVS light/medium body**, gun + fresh tip, tray adhesive — SALARI 441 ("PVS (Light or Medium body)"). #8 round bur escape vent — SALARI/Swade/Custom-tray. No-double-dip = Swade infection control.
+- ✅ Step 1 prep: trim green-stick inside not outside; **remove wax spacer** ("most-forgotten"); **#8 bur rugae escape vent** (maxillary) to vent air; **apply tray adhesive + let dry** — SALARI 372 ("Remove wax spacer!!!"), 376 ("Apply tray adhesive and let it dry").
+- ✅ Step 2: **PVS hydrophobic → dry tissues**; pump-discard + fresh tip; roll wash up over the molded compound — SALARI 365 ("Disadv.: HYDROPHOBIC").
+- ✅ Step 3 seat + record: same path of insertion; **repeat all border-molding movements during setting**; cover-finger hold (don't grip/deform); **full 6-minute set** — SALARI 441–443 + Swade ("allow the full 6 minutes to set"). "~30 sec to start movements" = ⓘ (reasonable).
+- ✅ Step 4 inspect + remake triggers: **sharp = underextended / thick = overextended** — SALARI (verbatim).
+- **✂ CUT (no source):** "(typically 60–90 sec)" adhesive dry time · "(~2 mm)" wash-layer thickness.
+
+---
+
+*Remaining chapters (cd-ch5–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
