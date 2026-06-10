@@ -355,4 +355,20 @@ Primary source: **Vibrating line + PPS lec** + **Obrez Anatomy/PPS lec** + Clini
 
 ---
 
-*Remaining chapters (cd-ch18–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch18 — "Phonetics troubleshooting"  *(audited — no cuts; one flag)*
+
+Primary source: **Clinical Eval of Trial Denture lec** (phonetics section) + JR lec (Pound ref) + Swade.
+
+- ✅ **/s/ sibilant** (whistle/lisp → anterior tooth position / overlap) — Clinical Eval lec 339–343 ("Sibilant Sounds – 's' or 'z'"). 60–70 count callout — Clinical Eval 351 (verbatim).
+- ✅ **/f/–/v/ fricative / labiodental** (maxillary anterior position, lip-to-incisal-edge) — Clinical Eval lec 330 ("Fricative Sounds - 'f & v'").
+- ✅ **/th/ interdental** (overlap / anterior position) — Swade + Treatment planning + 24_Final_wax.
+- ✅ "practice resolves transient issues over 1–2 wks" — Delivery lec patient-ed (speak/practice).
+- ⓘ Pound phonetic framework — cited in JR lec (Pound E. 1951).
+
+> ⚠ **FLAG for Jake — unsourced-but-valid sections:** the **/p/–/b/–/m/ bilabial** section (VDO-too-high indicator) and the **vowel-quality** section are standard Pound/prosthodontic phonetics but are **NOT in the UIC phonetics materials** (which cover fricative + sibilant + the 60–70 count only). They're clinically correct, not fabricated — so unlike a made-up number I didn't auto-cut them. **Your call: keep as general knowledge, or cut for strict sourcing.** (bilabials = ⚠ zero corpus hits; vowels likewise.)
+
+---
+
+*Remaining chapters (cd-ch19–28) + App.jsx CD pathway prose: PENDING audit.*
