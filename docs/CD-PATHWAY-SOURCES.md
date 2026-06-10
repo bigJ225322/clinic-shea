@@ -134,4 +134,19 @@ Primary source: **Custom Tray lecture** (`Custom tray_Boxing_ Technique.pdf`, Ta
 
 ---
 
-*Remaining chapters (cd-ch3–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch3 — "Border molding region by region"  *(audited — strongly sourced)*
+
+Primary source: **SALARI "Final Impression" lec** (`DAOB … Final Impression … SALARI-Final.pdf`). Border-mold temper concept: Swade (line 3601 "dip custom tray w/ compound into hot water bath to temper"). Muscle anatomy: Edentulous Anatomy + Obrez PPS lectures.
+
+- ✅ intro + setup: shorten tray **2–3 mm from depth of vestibule**, borders can't impinge movable tissue — SALARI lines 220–229 ("2-3mm from depth of vestibule").
+- ✅ green-stick compound **melts 122–124 °F**, cheap/additive/trimmable, messy/technique-sensitive — SALARI line 242–253 ("Melting T: 122-124 F"). Hanau torch = Week 3/Processing labs.
+- ✅ Maxillary regions (labial, buccal, **coronoid challenge**, distobuccal→hamular notch, posterior border) — SALARI region list (87–115) + coronoid (267, 418). Posterior: **"ahhh" → mark vibrating line w/ Thompson stick → tray just before line** (SALARI 231–236); PPS done later in PVS = ⓘ (PPS lec).
+- ✅ Mandibular regions (labial, buccal, **masseter/buccinator** distobuccal, retromolar-pad distal, lingual w/ tongue movements incl. **retromylohyoid**) — SALARI mandibular section (333–335) + masseter/buccinator + retromylohyoid (Edentulous Anatomy / Obrez). Tongue lick/protrude movements = Swade/Processing.
+- ✅ QC + **"Sharp borders are underextended borders"** callout — verbatim SALARI (lines 408–429).
+- **✂ CUT (no source):** "~135 °F" temper-bath temperature (3 spots — SALARI gives no temper temp) · the entire **"Timing per region"** block (fabricated second-by-second timings: 10 sec heat / 5–10 sec add / 2–3 sec temper / 15 sec movement / 30 sec set / 1.5–2 min per region / 10–15 min per arch — no source gives these).
+
+---
+
+*Remaining chapters (cd-ch4–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*

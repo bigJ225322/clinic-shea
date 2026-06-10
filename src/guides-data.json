@@ -241,7 +241,7 @@
          "**Custom tray** (instructor-approved 1–2 days ahead).",
          "**Green-stick compound** (modeling plastic) — melts at 122–124 °F. Trimmable, additive.",
          "**Hanau torch** + lighter / matches for flame.",
-         "**Warm-water bath** at ~135 °F for tempering.",
+         "**Warm-water bath** for tempering.",
          "**Wax knife or Bunsen-heated knife** for trimming between regions.",
          "**Thompson stick** (indelible) for marking the vibrating line.",
          "**Cheek retractors**, mouth mirror."
@@ -258,7 +258,7 @@
          "Dry the tray completely — compound won't stick to a wet tray.",
          "Heat compound stick in Hanau torch flame, rotating constantly. Once it bends, remove from flame.",
          "Add compound to the target border region of the tray in a rolling motion.",
-         "**Temper:** dip the tray with the soft compound into the 135 °F water bath for a few seconds — outside is workable, bulk stays warm."
+         "**Temper:** dip the tray with the soft compound into the warm-water bath for a few seconds — outside is workable, bulk stays warm."
         ]
        },
        {
@@ -293,22 +293,6 @@
        },
        {
         "kind": "section",
-        "text": "Timing per region"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "Heat compound: ~10 sec in flame, rotating.",
-         "Add to tray: 5–10 sec rolling.",
-         "Temper in water bath: 2–3 sec.",
-         "Insert + patient movement: ~15 sec.",
-         "Set in mouth: ~30 sec (compound cools and hardens).",
-         "Inspect + trim before next region: 30 sec.",
-         "Total per region: ~1.5–2 min. Six regions per arch = 10–15 min per arch."
-        ]
-       },
-       {
-        "kind": "section",
         "text": "QC before the final wash"
        },
        {
@@ -329,7 +313,7 @@
        {
         "kind": "dropdown",
         "title": "Tips",
-        "body": "**Compound won't stick to tray:** tray wet. Dry completely; reapply. **Compound is too soft when patient moves:** didn't temper enough. Hot compound deforms instead of recording. Dip longer in 135°F water bath. **Compound is brittle / cracks during movement:** over-cooled. Re-warm briefly in flame. **Patient gags on maxillary posterior:** trim back the posterior of the tray ~2 mm before re-trying. Avoid impinging the soft palate during border molding. **Asymmetric borders L vs R:** patient's movements were uneven (e.g., one cheek pulled harder than the other). Redo the deficient side. **Tray showed through compound in a region:** needs more compound there. Add + re-mold that region."
+        "body": "**Compound won't stick to tray:** tray wet. Dry completely; reapply. **Compound is too soft when patient moves:** didn't temper enough. Hot compound deforms instead of recording. Dip longer in the warm-water bath. **Compound is brittle / cracks during movement:** over-cooled. Re-warm briefly in flame. **Patient gags on maxillary posterior:** trim back the posterior of the tray ~2 mm before re-trying. Avoid impinging the soft palate during border molding. **Asymmetric borders L vs R:** patient's movements were uneven (e.g., one cheek pulled harder than the other). Redo the deficient side. **Tray showed through compound in a region:** needs more compound there. Add + re-mold that region."
        }
       ]
      },
