@@ -165,4 +165,20 @@ Primary source: **SALARI "Final Impression" lec** (final-wash section, lines 352
 
 ---
 
-*Remaining chapters (cd-ch5–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch5 — "Boxing, pouring, record bases, wax rims"  *(audited — strongly sourced)*
+
+Sources: **Boxing & Pouring lec** (`Custom tray_Boxing_ Technique.pdf` lines 96–159) · **Record Base & Wax Rim - Reminders** · **Jaw Relation Records** + **Record Bases Grading Sheet** · **PPS lec** (`Vibrating line…`) · Swade.
+
+- ✅ Boxing: **equal pumice+plaster (~1.5 cup each)**, **3 mm putty lateral / 2 mm border exposed**, **boxing wax ≥16 mm → 15–20 mm base**, seal land area w/ heated #7 spatula + water-test — Boxing lec 98–125 (verbatim).
+- ✅ Pouring: Type III microstone, vacuum mixer, fill to wax top, remove wax + warm-water separation, **trim base parallel to ridge, land area ≤3 mm** — Boxing lec 127–149. Pour-along-edge + vibrate = ⓘ (standard).
+- ✅ PPS scribing: transfer vibrating line, **#8 round bur**, **1–1.5 mm depth** (Swade), deeper posterior→shallower anterior, anterior border at hard/soft-palate junction (**Valsalva line** — PPS lec line 15), positive bead seal (Clinical Eval / denture-base materials).
+- ✅ Record base: lubricate, block out undercuts, adapt Triad, light-cure, finish smooth, stable on cast + in mouth — Record Base lec.
+- ✅ Wax rim dims: **Max 22 mm / 4–6 mm**, **Mand 18 mm / 3–4 mm**, flat occlusal, canine-canine facial flat — Record Base & Wax Rim lec (lines 3–8) + Jaw Relation Records + Record Bases Grading.
+- ✅ Rim landmarks: **8 mm anterior to incisive-papilla center** = max central facial (Record Base lec line 20), crest of mand ridge, 2/3 retromolar pad.
+- **✂ CUT (no source):** "usually 45 min" stone-set time (2 spots) · "rotating table at 400–500 nm" record-base cure (same fabrication cut in cd-ch2).
+
+---
+
+*Remaining chapters (cd-ch6–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*

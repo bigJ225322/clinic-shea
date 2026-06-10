@@ -444,7 +444,7 @@
          "Vacuum mixer to eliminate air bubbles.",
          "Pour slowly along one edge, letting stone flow across the impression by gravity. Vibrate gently to settle.",
          "Fill to the top of the boxing wax.",
-         "Let set fully (per manufacturer, usually 45 min).",
+         "Let set fully (per manufacturer).",
          "Remove the boxing wax, soften green-stick / PVS in warm water, separate impression from cast carefully.",
          "Trim the cast base parallel to the ridge. **Land area no more than 3 mm wide.**"
         ]
@@ -463,7 +463,7 @@
        },
        {
         "kind": "paragraph",
-        "text": "Lubricate the cast, block out major undercuts with wax, adapt Triad on the cast, light-cure on a rotating table at 400–500 nm for ~10 min. Finish smooth. The record base must be stable on the cast and stable in the mouth."
+        "text": "Lubricate the cast, block out major undercuts with wax, adapt Triad on the cast, light-cure for ~10 min. Finish smooth. The record base must be stable on the cast and stable in the mouth."
        },
        {
         "kind": "section",
@@ -491,7 +491,7 @@
        {
         "kind": "dropdown",
         "title": "Tips",
-        "body": "**Boxing wax leaks during pour:** water-test seal before pouring. Heated #7 spatula to re-seal any gaps. **Stone has bubbles / voids in cast:** not using vacuum mixer, or W:P off. Re-pour from impression. **Impression won't separate from cast:** green-stick still hard. Soften in warm water bath; gently lift. **Cast chips at edges:** separated too early (before full set). Wait 45 min minimum. **PPS too deep / too shallow:** remeasure on patient; rescribe. **Record base rocks on cast:** undercut block-out wax was insufficient. Remove, block out more, re-adapt Triad."
+        "body": "**Boxing wax leaks during pour:** water-test seal before pouring. Heated #7 spatula to re-seal any gaps. **Stone has bubbles / voids in cast:** not using vacuum mixer, or W:P off. Re-pour from impression. **Impression won't separate from cast:** green-stick still hard. Soften in warm water bath; gently lift. **Cast chips at edges:** separated too early (before full set). Wait for the full set. **PPS too deep / too shallow:** remeasure on patient; rescribe. **Record base rocks on cast:** undercut block-out wax was insufficient. Remove, block out more, re-adapt Triad."
        }
       ]
      },
