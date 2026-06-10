@@ -407,4 +407,20 @@ Primary source: **Reline rebase and repair - Bin Yang lec** + Processing+Festoon
 
 ---
 
-*Remaining chapters (cd-ch21–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch21 — "Wax types used in CD work"  *(audited — app-synthesized decoder)*
+
+Sources: wax types appear across the lab lectures (Custom-tray/Boxing, Processing+Festooning, Week 2/3 labs, JR, Agrawal, SALARI).
+
+- ✅ **Baseplate wax** (record bases / rims / setups) — many lectures. **Sticky wax** (Week 3 + Delivery). **Boxing wax** (Custom-tray/Boxing + Boxing-and-Pouring). "0.05–0.10 inch sheets" = ⓘ (Clinical Eval).
+- ⓘ "utility / modeling / rope wax" naming — zero corpus hits for that exact term (lectures call the boxing/extension role "boxing wax"); the *material* is real, kept as the decoder's taxonomy.
+- ⓘ "inlay wax for cast restorations only" — true, but not named in CD sources.
+- **✂ FIXED:** 2 UIC-scrub artifacts — "**At,** the bench typically stocks…" → "The bench…"; callout title "What's on your bench **at** " → "What's on your bench".
+- **✂ CUT:** baseplate wax "**Melting point ~50–55 °C**" (zero hits) + "**The workhorse — 80% of your CD wax volume**" (fabricated stat).
+
+*(Note: a "50–55 °C / same material as CD baseplate wax" line exists in a non-CD guide chapter — out of scope for this CD audit.)*
+
+---
+
+*Remaining chapters (cd-ch22–28) + App.jsx CD pathway prose: PENDING audit.*
