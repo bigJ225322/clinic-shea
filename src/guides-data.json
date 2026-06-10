@@ -1650,10 +1650,8 @@
        {
         "kind": "bullets",
         "items": [
-         "Patient leaves old dentures **out for 24 hours** before delivery — lets tissues rebound to natural shape so PIP reads accurately.",
          "Confirm the lab returned the **finished, polished maxillary + mandibular dentures**, ready to seat. (No casts or jigs to expect — the master casts get destroyed during processing.)",
-         "Print post-op instructions in the patient's preferred language.",
-         "Schedule 1.5 hours."
+         "Print post-op instructions."
         ]
        },
        {
@@ -1695,14 +1693,13 @@
        {
         "kind": "numbered",
         "items": [
-         "Start with the **maxillary** (more retentive, easier to evaluate).",
          "Dry the intaglio.",
          "Apply a **thin, uniform layer of PIP** to the intaglio, brushing all in one direction so show-through is easy to read.",
          "Spray **Mizzy** on the residual ridge so the paste doesn't stick to the mucosa (don't let the mouth go dry).",
          "Seat with **light, even hand pressure on the first molars** — do NOT have the patient bite. ~5 seconds.",
          "Remove and inspect. **Show-through — where the PIP is pushed away to nothing — marks a pressure point.**",
          "Reduce those spots conservatively with a lab bur. Re-apply PIP and repeat until the layer is uniform and undisturbed.",
-         "Repeat for the **mandibular**."
+         "Repeat for the other denture."
         ]
        },
        {
@@ -1749,7 +1746,7 @@
        {
         "kind": "callout",
         "title": "Issues at delivery",
-        "body": "**Denture won't seat:** reapply PIP; identify an undercut intaglio area or an overextended border. **Patient says \"bite feels off\":** re-verify both bases are fully seated first — a base-fit problem often reads as an occlusal one; note for the 24-hour follow-up. **Patient gags on insertion:** posterior border too thick or overextended — reduce with a carbide bur, smooth. **Sore spot on insertion:** mark with the Thompson stick BEFORE removing the denture; transfer to the intaglio; PIP-adjust. **Patient very anxious / overwhelmed:** normal — reassure that adjustment over the first 2-4 weeks is standard, and the denture they wear home is not the \"final\" result."
+        "body": "**Denture won't seat:** reapply PIP; identify an undercut intaglio area or an overextended border. **Patient gags on insertion:** posterior border too thick or overextended — reduce with a carbide bur, smooth. **Sore spot on insertion:** mark with the Thompson stick BEFORE removing the denture; transfer to the intaglio; PIP-adjust."
        }
       ]
      },

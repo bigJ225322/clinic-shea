@@ -92,8 +92,12 @@ Legend: ✅ sourced · ⚠ **not found in any source** (cut or re-source) · ⓘ
 - ✅ "Sore spot on insertion: mark with the Thompson stick BEFORE removing; transfer to the intaglio; PIP-adjust." — **Swade p.94** adjustment step 3 (Thompson-stick sore-spot procedure)
 - ⚠ "Patient very anxious / overwhelmed: reassure that adjustment over the first 2–4 weeks is standard…" — counseling; not in any source.
 
-**cd-ch15 unsourced tally (⚠):** leave-dentures-out-24h · "preferred language" · schedule-1.5h · maxillary-first · "bite feels off→re-verify bases" · anxious/overwhelmed reassurance. (gags + won't-seat are ⓘ inferences.)
+**cd-ch15 unsourced — CUT on sight (per policy):** ✂ leave-dentures-out-24h · ✂ "preferred language" clause · ✂ schedule-1.5h · ✂ "maxillary first (more retentive)" arch order · ✂ "bite feels off → re-verify bases" · ✂ anxious/overwhelmed reassurance. **Kept** (ⓘ, direct application of sourced techniques): won't-seat, gags.
 
 ---
+
+## Audit policy (decided)
+- **Run:** sequential, chapter by chapter (cd-ch1 → cd-ch28).
+- **Unsourced lines:** **cut on sight** and recorded here. A line survives only if it maps to Swade or a named lecture (✅), or is a direct application of a sourced technique (ⓘ).
 
 *Remaining chapters (cd-ch1–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
