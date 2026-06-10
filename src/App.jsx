@@ -29768,12 +29768,7 @@ function Pathways() {
 
  {/* Customized guide */}
  {selectedPathway && (
- <div className="map-flip" key={selectedPathway.id} style={{
- background: "var(--paper-soft, #F4EEE1)",
- width: "100vw", marginLeft: "calc(50% - 50vw)",
- padding: "26px 0 30px",
- boxShadow: "inset 0 1px 0 var(--rule), inset 0 -1px 0 var(--rule)",
- }}>
+ <>
  {/* Header card cut 2026-05-28: the schematic below IS the orientation.
  Title + description + category badge were redundant once the
  concept map became the primary view — the title is already
@@ -30454,7 +30449,7 @@ function Pathways() {
  }
  return null;
  })()}
- </div>
+ </>
 )}
  </div>
 );
@@ -31194,16 +31189,6 @@ export default function App() {
     its own transition (inline or class) so the dip eases; this just supplies
     the dip on press. */
  .tactile:active { transform: scale(0.95); }
- /* Maps "flip to the map": the selected pathway's schematic flips in edge-on,
-    reusing the pathway-popup flip values. It sits on --paper-soft (a hair off
-    the page) so it reads as a card's backside, never a white box. The
-    backwards fill mode shows the start pose before play and reverts to
-    no-transform after, so no containing block lingers over the flowchart. */
- @keyframes mapFlipIn {
- from { transform: perspective(1400px) rotateX(10deg) rotateY(-76deg) scale(0.78); opacity: 0; }
- to { transform: perspective(1400px) rotateX(0deg) rotateY(0deg) scale(1); opacity: 1; }
- }
- .map-flip { animation: mapFlipIn 480ms cubic-bezier(0.16, 0.84, 0.3, 1.02) backwards; transform-origin: center center; }
 
  /* Map-entry choreography (CSS only, fill:both -> settled state is always the
  final layout; cannot wedge collapsed). Tiles slide their top offset from
