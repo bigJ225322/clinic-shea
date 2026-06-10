@@ -1629,7 +1629,7 @@
       "blocks": [
        {
         "kind": "paragraph",
-        "text": "Fit each denture individually before worrying about how they occlude. PIP the intaglio, adjust borders, educate the patient. The order matters: occlusal adjustment on ill-fitting bases is wasted work."
+        "text": "At delivery you seat and finish the processed dentures, then send the patient home with care instructions. Work through it in order: check esthetics, refine the posterior palatal seal and the borders, fit the intaglio with PIP, check occlusion, polish, and educate the patient last."
        },
        {
         "kind": "section",
@@ -1638,9 +1638,9 @@
        {
         "kind": "bullets",
         "items": [
-         "**From sterilization:** exam kit, lab handpiece + acrylic burs, polishing kit, patient goggles.",
-         "**From the lab return:** the finished maxillary + mandibular dentures.",
-         "**In clinic:** ZnO PIP paste + brush + PIP remover, Mizzy spray, disclosing wax, Thompson stick, horseshoe articulating paper, AccuFilm II, denture cleanser sample, post-op written instructions, denture brush, denture storage box."
+         "**From sterilization:** exam kit, lab handpiece + lab burs, patient goggles.",
+         "**From the lab return:** the finished, polished maxillary + mandibular dentures.",
+         "**In clinic:** PIP paste + brush + PIP remover, Mizzy spray, disclosing wax, Thompson stick, horseshoe articulating paper, denture cleanser sample, post-op written instructions, denture brush, denture storage box."
         ]
        },
        {
@@ -1651,65 +1651,103 @@
         "kind": "bullets",
         "items": [
          "Patient leaves old dentures **out for 24 hours** before delivery — lets tissues rebound to natural shape so PIP reads accurately.",
-         "Inspect intaglio + periphery of new dentures with thumb pad for sharp areas. Smooth with carbide bur preemptively.",
          "Confirm the lab returned the **finished, polished maxillary + mandibular dentures**, ready to seat. (No casts or jigs to expect — the master casts get destroyed during processing.)",
-         "Print post-op instructions in patient's preferred language.",
+         "Print post-op instructions in the patient's preferred language.",
          "Schedule 1.5 hours."
         ]
        },
        {
         "kind": "section",
-        "text": "Step 1 — Adjust the denture base (PIP technique)"
-       },
-       {
-        "kind": "paragraph",
-        "text": "**Critical principle:** fit each denture individually before any occlusal adjustment. Occlusal adjustment on ill-fitting bases is wasted work."
-       },
-       {
-        "kind": "numbered",
-        "items": [
-         "Start with the **maxillary** first (more retentive, easier to evaluate).",
-         "Dry the intaglio with high-volume suction or gauze.",
-         "Apply a **thin, uniform brush layer of PIP** to the intaglio. Brush all in one direction so \"show-through\" spots are easier to identify on inspection.",
-         "**Mizzy spray** on the residual ridge in the patient's mouth (prevents paste from sticking to mucosa, lets you read pressure spots).",
-         "Seat denture with **moderate even hand pressure on the first molars** (NOT have patient bite). 5–10 seconds of seating.",
-         "Remove and inspect.",
-         "**Bright spots where PIP has been pushed away** = pressure points. The intaglio is hitting tissue hard at those locations.",
-         "**Adjust those spots with a carbide acrylic bur.** Conservative reduction — 0.5 mm at a time, never more. Better to PIP again than over-reduce.",
-         "Clean PIP off, re-apply, repeat. Goal: **uniform, undisturbed thin PIP layer across the intaglio** = denture is seated cleanly with no high pressure points.",
-         "Repeat for the **mandibular** denture once maxillary is dialed in."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Step 2 — Adjust the borders"
-       },
-       {
-        "kind": "paragraph",
-        "text": "Check the borders with **disclosing wax** (not PIP). Roll the wax into thin ropes and mold them along the denture borders — no more than ~2 mm thick. Seat the denture with the patient's help, have them run through border-molding movements while you manipulate the cheeks, then remove and look for **show-through** — wherever the wax has thinned to nothing is an overextended, tissue-impinging border. Reduce those spots with a lab bur, re-apply wax to the adjusted area, and repeat until there's no show-through. Run a finger along the border to confirm it isn't impinging, then smooth and polish before the patient goes home."
-       },
-       {
-        "kind": "section",
-        "text": "Step 3 — Patient education (POI)"
+        "text": "Step 1 — Check fit & esthetics"
        },
        {
         "kind": "bullets",
         "items": [
-         "**Soft diet, small bites, bilateral chewing.** Divide bolus to both sides to keep dentures stable.",
-         "**Practice speech aloud** — 20–30 min/day, reading material. Tongue + lips need to relearn positions.",
-         "**Transient hypersalivation** for ~1 week — normal, resolves.",
-         "**Soreness expected.** Wear at least 8–10 hours before the 24-hour follow-up so we can see sore spots.",
-         "**Remove at night.** Reduces stomatitis risk; lets tissues recover.",
-         "**Daily cleaning:** non-abrasive denture cleanser, soft brush. **No boiling water** (warps acrylic). **NaOCl soaks <10 min** (corrodes any metal).",
-         "**No zinc-containing adhesives** (long-term zinc toxicity risk).",
-         "**If denture loose:** small amount of adhesive (Polident, Fixodent — zinc-free) acceptable.",
-         "**Next visit:** 24-hour follow-up booked."
+         "Before seating, run a finger over the intaglio and borders and smooth any sharp or rough spots.",
+         "Seat both dentures and ask the patient about any immediate areas of concern — pain, sharp, tight.",
+         "Hand the patient a mirror and get their approval of the esthetics. Be positive and encouraging."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 2 — Posterior palatal seal"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "With the dentures out, have the patient say \"Ah\" and mark the vibrating line with a wet Thompson stick.",
+         "Seat the maxillary denture and check how far its posterior border extends past the vibrating line.",
+         "Reduce any overextension with a bur, then bevel it to a gradual feather edge toward the posterior border."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 3 — Adjust the borders"
+       },
+       {
+        "kind": "paragraph",
+        "text": "**Border-extension check:** gently pull the cheeks and have the patient lift the tongue — the denture shouldn't unseat — then run a finger along the border for anything impinging. **To find overextended borders, use disclosing wax:** roll it into thin ropes, mold them along the borders (no more than ~2 mm thick), seat the denture through border-molding movements while you manipulate the cheeks, then remove and look for show-through — wherever the wax has thinned to nothing is overextended. Reduce those spots with a lab bur, re-apply wax, and repeat until there's no show-through. Smooth and polish adjusted borders."
+       },
+       {
+        "kind": "section",
+        "text": "Step 4 — Fit the intaglio (PIP)"
+       },
+       {
+        "kind": "numbered",
+        "items": [
+         "Start with the **maxillary** (more retentive, easier to evaluate).",
+         "Dry the intaglio.",
+         "Apply a **thin, uniform layer of PIP** to the intaglio, brushing all in one direction so show-through is easy to read.",
+         "Spray **Mizzy** on the residual ridge so the paste doesn't stick to the mucosa (don't let the mouth go dry).",
+         "Seat with **light, even hand pressure on the first molars** — do NOT have the patient bite. ~5 seconds.",
+         "Remove and inspect. **Show-through — where the PIP is pushed away to nothing — marks a pressure point.**",
+         "Reduce those spots conservatively with a lab bur. Re-apply PIP and repeat until the layer is uniform and undisturbed.",
+         "Repeat for the **mandibular**."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 5 — Check occlusion"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "Mark occlusion, lateral movements, and protrusion with **horseshoe articulating paper**.",
+         "Reduce denture teeth that hit too high with a lab bur; re-evaluate and repeat. Easiest to pick one arch and adjust only that arch.",
+         "**Goals:** even contact on both sides on multiple/all posterior teeth; in protrusion, a posterior contact on each side plus anterior contact.",
+         "Keep it light at delivery — the patient still has to adapt, and the intaglio will need more adjustment at the 24-hour follow-up."
+        ]
+       },
+       {
+        "kind": "section",
+        "text": "Step 6 — Polish"
+       },
+       {
+        "kind": "paragraph",
+        "text": "Polish the **outside** of the dentures with a rag wheel + pumice in the support lab. **Never polish the intaglio** — it changes the fit."
+       },
+       {
+        "kind": "section",
+        "text": "Step 7 — Patient education (POI)"
+       },
+       {
+        "kind": "bullets",
+        "items": [
+         "**Do not remove the dentures until the 24-hour follow-up tomorrow.** (Swade)",
+         "**Soft diet** to start.",
+         "**Rinse the dentures with water after eating.**",
+         "**Clean at night:** brush with a soft denture brush — no regular toothpaste (too abrasive); use denture paste or soap, and brush off all food and adhesive. Brush the gums too.",
+         "**Soak overnight in water** (or Polident + water). **Never hot water** — it warps the acrylic.",
+         "**If the denture feels loose,** a small amount of denture adhesive (Polident / Polygrip) is fine.",
+         "**Soreness is expected,** and sore spots will still feel tender for a few days even after they're adjusted — that's normal healing.",
+         "**Bring the dentures to each visit** so they can be cleaned in the ultrasonic.",
+         "**Next visit:** 24-hour follow-up."
         ]
        },
        {
         "kind": "callout",
         "title": "Issues at delivery",
-        "body": "**Denture won't seat:** reapply PIP; identify undercut intaglio area or overextended border. **Patient says \"bite feels off\":** re-verify both bases are fully seated first — a base-fit problem often reads as an occlusal one; note for the 24-hour follow-up. **Patient gags on insertion:** posterior border too thick or overextended. Reduce with carbide bur, smooth. **Sore spot on insertion:** mark with Thompson stick BEFORE removing the denture; transfer to intaglio; PIP-adjust. **Phonetics off (S sound whistles or lisps):** see Phonetics chapter (#18). Adjust at this visit or note for 24-hr follow-up. **Patient very anxious / overwhelmed:** normal. Reassure that adjustment over the first 2–4 weeks is standard; the denture they wear home is not the \"final\" result."
+        "body": "**Denture won't seat:** reapply PIP; identify an undercut intaglio area or an overextended border. **Patient says \"bite feels off\":** re-verify both bases are fully seated first — a base-fit problem often reads as an occlusal one; note for the 24-hour follow-up. **Patient gags on insertion:** posterior border too thick or overextended — reduce with a carbide bur, smooth. **Sore spot on insertion:** mark with the Thompson stick BEFORE removing the denture; transfer to the intaglio; PIP-adjust. **Patient very anxious / overwhelmed:** normal — reassure that adjustment over the first 2-4 weeks is standard, and the denture they wear home is not the \"final\" result."
        }
       ]
      },
