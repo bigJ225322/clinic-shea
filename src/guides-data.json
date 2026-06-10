@@ -1638,9 +1638,9 @@
        {
         "kind": "bullets",
         "items": [
-         "**From sterilization:** exam kit, lab handpiece + acrylic burs, polishing kit, patient goggles, articulator (Mark 320).",
+         "**From sterilization:** exam kit, lab handpiece + acrylic burs, polishing kit, patient goggles.",
          "**From the lab return:** the finished maxillary + mandibular dentures.",
-         "**In clinic:** ZnO PIP paste + brush, Mizzy spray, horseshoe articulating paper, AccuFilm II, denture cleanser sample, post-op written instructions, denture brush, denture storage box."
+         "**In clinic:** ZnO PIP paste + brush + PIP remover, Mizzy spray, disclosing wax, Thompson stick, horseshoe articulating paper, AccuFilm II, denture cleanser sample, post-op written instructions, denture brush, denture storage box."
         ]
        },
        {
@@ -1686,7 +1686,7 @@
        },
        {
         "kind": "paragraph",
-        "text": "**PIP applied to the border specifically**, or the **temper-wax-bath technique**: warm a thin layer of wax onto the border, seat in mouth, the wax displaces where the border is overextended. Smooth and polish adjusted borders before sending the patient home."
+        "text": "Check the borders with **disclosing wax** (not PIP). Roll the wax into thin ropes and mold them along the denture borders — no more than ~2 mm thick. Seat the denture with the patient's help, have them run through border-molding movements while you manipulate the cheeks, then remove and look for **show-through** — wherever the wax has thinned to nothing is an overextended, tissue-impinging border. Reduce those spots with a lab bur, re-apply wax to the adjusted area, and repeat until there's no show-through. Run a finger along the border to confirm it isn't impinging, then smooth and polish before the patient goes home."
        },
        {
         "kind": "section",
