@@ -260,4 +260,22 @@ Sources: **Jaw Relation Records lec** + **TruExpression Mould Chart** + **Ch12 T
 
 ---
 
-*Remaining chapters (cd-ch11–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch11 — "Tooth setup order & position rules"  *(audited — strongly sourced)*
+
+Sources: **Anterior teeth set-up Technique** + **Ch12 Tooth Arrangement** + **33° BBA / Monoplane grading sheets** + Week 6/7 labs + Obrez.
+
+- ✅ Setup order (max ant → mand ant → mand post → max post) + rationale — Anterior set-up lec + Ch12.
+- ✅ **Lateral incisal edge 0.5 mm higher** — Anterior lec lines 146–147 ("Lateral incisors: 0.5mm higher", verbatim); canine cusp at occlusal plane (lec 154–159).
+- ✅ **Mand anterior ~1 mm vertical overlap** — Anterior lec 164–165 ("Vertical Overlap: ~1 mm", verbatim).
+- ✅ Mand posterior **central fossa over crest of ridge** — Week 3/7 + Monoplane-Balancing lec.
+- ✅ Centric verify: **"2 or more centric contacts"** — 33° BBA grading sheet lines 109/113 (my "per side" search missed it; sheet says "2 or more centric contacts"). Christensen/compensating curve — Obrez + many.
+- ✅ Faculty checkpoints, Hanau's quint, wax-handling rules — grading sheets + Obrez.
+- **✂ CUT (fabricated, zero hits):** the **10 per-step "(N min)" timing annotations** in the step titles + the **"12×6 / 10×6 mm" wax-window dimensions**.
+
+> ⚠ **Pattern flag:** "(N min)" per-step timing annotations appear **~95× across the whole guide file** (CD + other guides). They're author-added pacing estimates with no source — I'll cut them per-CD-chapter as I reach each (NOT a global regex, to avoid touching non-CD guides).
+
+---
+
+*Remaining chapters (cd-ch12–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*

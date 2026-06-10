@@ -948,12 +948,12 @@
        },
        {
         "kind": "section",
-        "text": "Step 1 — Set the maxillary central (15 min)"
+        "text": "Step 1 — Set the maxillary central"
        },
        {
         "kind": "bullets",
         "items": [
-         "**1a.** Melt wax with the Hanau torch in a 12×6 mm window on the right side of the maxillary rim, just lateral to the marked midline. Don't strip the whole rim — the surrounding wax is your registration of incisal edge position.",
+         "**1a.** Melt wax with the Hanau torch in a window on the right side of the maxillary rim, just lateral to the marked midline. Don't strip the whole rim — the surrounding wax is your registration of incisal edge position.",
          "**1b.** Trim the gingival aspect of the tooth (with a sharp wax knife or a small bur) so the tooth seats fully into the wax window. The marked incisal edge line on the rim is the target for the tooth's incisal edge.",
          "**1c.** Press the tooth into the warm wax. Long axis parallel to the long axis of the face (the central is the \"straight\" tooth — no tilt).",
          "**1d.** Facial surface lands on the 8 mm-anterior-to-incisive-papilla reference line.",
@@ -964,12 +964,12 @@
        },
        {
         "kind": "section",
-        "text": "Step 2 — Set the maxillary lateral (10 min)"
+        "text": "Step 2 — Set the maxillary lateral"
        },
        {
         "kind": "bullets",
         "items": [
-         "**2a.** Melt wax in a 10×6 mm window distal to the central.",
+         "**2a.** Melt wax in a window distal to the central.",
          "**2b.** Press the lateral so its incisal edge sits **0.5 mm *higher*** (more gingival) than the central. Use the caliper or eyeball — the lateral is the only anterior whose incisal edge is not at the occlusal plane.",
          "**2c.** Rotate the distal aspect slightly back (palatally). The lateral has more distal rotation than the central.",
          "**2d.** Long axis: slight distal tilt of the incisal edge (the cervical leans slightly mesial).",
@@ -978,7 +978,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 3 — Set the maxillary canine (10 min)"
+        "text": "Step 3 — Set the maxillary canine"
        },
        {
         "kind": "bullets",
@@ -992,7 +992,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 4 — Mirror to contralateral side (15 min)"
+        "text": "Step 4 — Mirror to contralateral side"
        },
        {
         "kind": "paragraph",
@@ -1004,7 +1004,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 5 — Set the mandibular anteriors (20 min)"
+        "text": "Step 5 — Set the mandibular anteriors"
        },
        {
         "kind": "bullets",
@@ -1022,7 +1022,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 6 — Set the mandibular posteriors (25 min)"
+        "text": "Step 6 — Set the mandibular posteriors"
        },
        {
         "kind": "paragraph",
@@ -1043,7 +1043,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 7 — Set the maxillary posteriors (25 min)"
+        "text": "Step 7 — Set the maxillary posteriors"
        },
        {
         "kind": "bullets",
@@ -1061,7 +1061,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 8 — Verify centric contacts (10 min)"
+        "text": "Step 8 — Verify centric contacts"
        },
        {
         "kind": "bullets",
@@ -1076,7 +1076,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 9 — Verify protrusive + lateral balance (15 min, 33° BBA only)"
+        "text": "Step 9 — Verify protrusive + lateral balance (33° BBA only)"
        },
        {
         "kind": "bullets",
@@ -1093,7 +1093,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 10 — Final wax contouring (30 min)"
+        "text": "Step 10 — Final wax contouring"
        },
        {
         "kind": "bullets",
