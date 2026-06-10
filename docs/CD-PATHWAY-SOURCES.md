@@ -245,4 +245,19 @@ Primary source: **Jaw Relation Records lec** (CR-record section, lines 218–252
 
 ---
 
-*Remaining chapters (cd-ch10–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch10 — "Selecting denture teeth"  *(audited — fully sourced, no cuts)*
+
+Sources: **Jaw Relation Records lec** + **TruExpression Mould Chart** + **Ch12 Tooth Arrangement** + Week 6/7 labs + Obrez occlusion lec + Swade.
+
+- ✅ **Portrait IPN** denture teeth (conventional) — JR lec line 264 ("Portrait IPN denture teeth", verbatim); **Trubyte** (lab/immediate) — Week 6 lab line 6 + Week 7 + Swade. "Trubyte Classic" = ⓘ (Trubyte sourced; "Classic" line name unverified).
+- ✅ Mold = **Williams' facial-form classification** (square/tapering/ovoid) — TruExpression mould chart + JR lec + Treatment planning. "square-tapering" 4th category = ⓘ (common combo addition).
+- ✅ Size = combined width of max anterior 6 ≈ **intercommissural distance**, canine-to-canine, mould-card templates — Record Base & Wax Rim + Anterior set-up + TruExpression chart.
+- ✅ Shade = natural light, complexion, patient-collaborative, age-darkened — JR + Clinical Eval + Anterior set-up + Swade.
+- ✅ Posterior schemes: **33° BBA / monoplane neutrocentric 0° / monoplane + balancing ramp** — the three UIC grading-sheet setups (33 Degree + Monoplane + Monoplane-Balancing ramp) + Obrez. **Lingualized (20° max / 0° mand)** correctly flagged "not on the grading sheets" — Ch12 + Obrez (ⓘ on exact angles).
+- **✂ CUT: none.**
+
+---
+
+*Remaining chapters (cd-ch11–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
