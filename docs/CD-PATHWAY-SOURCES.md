@@ -436,4 +436,25 @@ Sources: Bin Yang reline lec ("Reline/Rebase for a loose denture?", line 96) + c
 
 ---
 
-*Remaining chapters (cd-ch23–28) + App.jsx CD pathway prose: PENDING audit.*
+## cd-ch23 — "Post-delivery complaints — cause and fix"  *(audited — 1 fabrication cut)*
+
+Sources: lecture **Complete Denture Delivery and follow-up.txt** ("V. Follow-up" 24-hour steps; "Desirable follow up appointment – 1 Day if severe / 3 day if minor"; "Common Problems" + "Discomfort may be secondary to" list; frenum irritation; BULL rule) + **Delivery of Final Denture(2).txt** (PIP/Mizzy fit, whistle on "s") + **Swade p.94–96** (denture-adjustment steps: Thompson stick → PIP → disclosing-wax borders → PPS → occlusion; "24-hour + 1-week followup"; "don't adjust occlusion too much at 24h"; sore-spot note template).
+
+- ✅ Sourced: PIP pressure-spot adjustment, BULL-rule equilibration, frenum/border/intaglio relief, sore-spot triage, gagging = posterior border too thick/far back, whistle-on-S, "soreness is an expected tissue response" (lecture patient-ed) — the complaint→cause→fix mappings track the lecture's Common-Problems list + Swade's adjustment protocol.
+- **✂ CUT (fabricated cadence):** callout "The 24-hour, **1-week, 1-month, 3-month** cadence" → "**The 24-hour and 1-week follow-ups**." Sources document only a 24-hour (lecture splits 1-day-if-severe / 3-day-if-minor) + 1-week visit (Swade). The "1-month / 3-month (reline-need)" visits and the "patients who skip → year 2 remake" narrative were invented — removed; body rebuilt from the lecture's 24-hour step list.
+- **✂ CUT (fabricated figure):** "within the first **4–6 weeks**" (intro) and "adaptation takes **4–6 weeks**" (triage callout) — no adaptation timeframe appears anywhere in Swade or the lectures. Softened to "soon after delivery" / "adaptation takes time."
+- Note: "selective grinding" mentions here are **legitimate** (equilibration of occlusal disharmony at adjustment, BULL rule) — distinct from the cd-ch22 "clinical remount **for worn teeth**" claim that was cut. No clinical-remount-for-wear claim present in ch23.
+
+---
+
+## cd-ch24 — "Edge-case patient management"  *(audited — ⚠ ESSENTIALLY UNSOURCED, awaiting Jake's decision)*
+
+Corpus check (grep across Swade + all 51 lectures): **0 hits** for pilocarpine / cevimeline / Salagen / Evoxac, the saliva-substitute brands (Biotène/Oasis/MouthKote/BioXtra), bisphosphonate / MRONJ / osteonecrosis, soft-liner brands (Permasoft/Mollosil), Locator / ball attachments, gag pharmacology (benzocaine/ondansetron), dexterity conditions (arthritis/Parkinson's), and TMD/temporomandibular. ("gag" ×16 and "xerostom" ×2 are incidental mentions, not management content.)
+
+- ⚠ **Whole chapter is AI-synthesized, beyond UIC CD-course scope.** The gag-reflex / xerostomia / denture-anxious / limited-dexterity / bisphosphonate-MRONJ / TMD management content does not trace to Swade or any CD lecture. Clinically plausible, but it carries **fabricated specifics that shouldn't ship unsourced**: drug doses (pilocarpine 5 mg TID, cevimeline 30 mg TID, benzocaine 20%, diazepam, ondansetron), brand lists, and invented stats ("dentures function at 30% of natural dentition", "adaptation takes 4–6 weeks" [same fabrication cut from ch23], "delay delivery 8–12 weeks", "replace soft liner every 1–2 yr", "15 minutes at try-in").
+- **✂ FIXED (clear corruption):** "denture adhesive helps... **the esthetic-veneer literaturet-retained attachments** (Locator)" → "...**implant-retained attachments** (Locator)" — garbled UIC-scrub artifact, made coherent.
+- **⏸ FLAGGED FOR JAKE (not cut):** the rest of the chapter. Too large/structural to delete unilaterally; recommendation is to **cut the chapter or strip it to only what a CD student needs** (it duplicates oral-medicine/OS material and invents pharmacology). Holding pending decision.
+
+---
+
+*Remaining chapters (cd-ch25–28) + App.jsx CD pathway prose: PENDING audit.*

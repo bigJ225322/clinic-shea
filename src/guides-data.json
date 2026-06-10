@@ -2693,17 +2693,17 @@
       "blocks": [
        {
         "kind": "paragraph",
-        "text": "Patient calls or walks in within the first 4–6 weeks of delivery with a specific complaint. Don't guess. Match the complaint to the cause to the fix — most are routine adjustments at the 24-hour or 1-week visit."
+        "text": "Patient calls or walks in soon after delivery with a specific complaint. Don't guess. Match the complaint to the cause to the fix — most are routine adjustments at the 24-hour or 1-week visit."
        },
        {
         "kind": "callout",
-        "title": "The 24-hour, 1-week, 1-month, 3-month cadence",
-        "body": "Schedule four follow-ups by default: 24-hour (pain check + obvious adjustments), 1-week (PIP + occlusal recheck), 1-month (complaint review + most chronic issues surface here), 3-month (final adjustment + reline-need assessment). Patients who skip follow-ups end up with worse long-term outcomes — they self-adjust by chewing on one side, the denture wears unevenly, and you see them at year 2 needing a remake instead of a tune-up."
+        "title": "The 24-hour and 1-week follow-ups",
+        "body": "Schedule two follow-ups: a 24-hour visit (ask what's bothering them, full oral exam, check the intaglio for pressure areas with PIP, evaluate occlusion / refine equilibration) and a 1-week visit (re-check PIP + occlusion). The delivery lecture splits the first visit by severity — see them at 1 day if the delivery needed a severe adjustment, 3 days if it was minor."
        },
        {
         "kind": "callout",
         "title": "Triage rule for the 24-hour follow-up",
-        "body": "Patient comes in complaining of everything (loose, sore, hurts to bite, looks bad). Triage in order: **(1) PIP for pressure spots** (relieve any) → **(2) occlusal check + equilibration** (BULL rule) → **(3) border evaluation** (functional movements) → **(4) VDO verification** → **(5) phonetic check**. Address the worst issue first; don't try to fix everything in one visit if it requires decisions like remake. Reassure the patient that adaptation takes 4–6 weeks."
+        "body": "Patient comes in complaining of everything (loose, sore, hurts to bite, looks bad). Triage in order: **(1) PIP for pressure spots** (relieve any) → **(2) occlusal check + equilibration** (BULL rule) → **(3) border evaluation** (functional movements) → **(4) VDO verification** → **(5) phonetic check**. Address the worst issue first; don't try to fix everything in one visit if it requires decisions like remake. Reassure the patient that adaptation takes time."
        },
        {
         "kind": "paragraph",
@@ -2833,7 +2833,7 @@
        {
         "kind": "bullets",
         "items": [
-         "**Insertion / removal aids:** denture adhesive helps patients who can't generate firm seating pressure. the esthetic-veneer literaturet-retained attachments (Locator) make removal easier than tight suction.",
+         "**Insertion / removal aids:** denture adhesive helps patients who can't generate firm seating pressure; implant-retained attachments (Locator) make removal easier than tight suction.",
          "**Single-arch denture vs. complete:** if the patient can't manage two dentures, prioritize the maxillary (better retention from palate) and consider implant-supported lower if mandibular is essential.",
          "**Hygiene aids:** dishwashing-style denture brush (easier grip than a toothbrush); ultrasonic denture cleaner for at-home (replaces fine manual cleaning); denture-cleaning tablets in a soak cup at the bedside.",
          "**Caregiver involvement:** identify and educate the caregiver if patient lives in assisted living or has cognitive decline. Provide written instructions, large-font, with photos."
