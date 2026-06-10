@@ -1640,7 +1640,7 @@
         "items": [
          "**From sterilization:** exam kit, lab handpiece + acrylic burs, polishing kit, patient goggles, articulator (Mark 320).",
          "**From the lab return:** processed maxillary + mandibular dentures, mounted master casts, remount jig, clinical remount cast.",
-         "**In clinic:** ZnO PIP paste + brush, Mizzy spray, Regisil PB cartridge + dispenser gun + fresh mixing tip (for clinical remount + protrusive), horseshoe articulating paper, AccuFilm II, denture cleanser sample, post-op written instructions, denture brush, denture storage box."
+         "**In clinic:** ZnO PIP paste + brush, Mizzy spray, bite registration material (cartridge + dispenser gun + fresh mixing tip; for clinical remount + protrusive), horseshoe articulating paper, AccuFilm II, denture cleanser sample, post-op written instructions, denture brush, denture storage box."
         ]
        },
        {
@@ -1705,15 +1705,15 @@
        {
         "kind": "numbered",
         "items": [
-         "**New CR record** with the dentures seated in the mouth: bimanual chin technique (see Chapter 9 above for the full hand position + closure protocol). Use Regisil PB into the buccal posterior interocclusal spaces.",
-         "Patient holds bite for 2–3 minutes (Regisil PB set time).",
+         "**New CR record** with the dentures seated in the mouth: bimanual chin technique (see Chapter 9 above for the full hand position + closure protocol). Use bite registration material into the buccal posterior interocclusal spaces.",
+         "Patient holds bite for 2–3 minutes (bite registration set time).",
          "Remove. Both dentures + bite record come out together.",
          "**On the articulator:** the maxillary denture is already mounted via the clinical remount jig (lab pre-mounted from the cast surgery model).",
          "Seat the mandibular denture against the maxillary using the new CR record to position it. Lock the centric latch.",
          "Pour mounting stone for the mandibular against the lower articulator member. Wait for set (~10 min).",
          "Verify shimstock holds and centric contacts match what you see in the mouth.",
-         "**Protrusive record:** patient protrudes **5–6 mm forward** into Regisil PB on the posterior teeth.",
-         "Adjust the articulator's **horizontal condylar guidance** using this protrusive record (loosen the condylar inclination thumbscrew, set, lock).",
+         "**Protrusive record:** patient protrudes **5–6 mm forward** into bite registration material on the posterior teeth.",
+         "**Verify** the **horizontal condylar guidance** with this protrusive record (the setting should match the patient's protrusive path) before equilibrating the excursions — you are confirming it, not re-cutting the condylar inclination.",
          "**Equilibrate per BULL** (see below)."
         ]
        },
