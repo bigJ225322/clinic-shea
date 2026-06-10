@@ -469,4 +469,21 @@ This is a **meta/navigation page** (study order by patient type, 10 pathways), n
 
 ---
 
-*Remaining chapters (cd-ch27, cd-ch28) + App.jsx CD pathway prose: PENDING audit.*
+## cd-ch27 — "Overdentures — tooth-supported & implant"  *(✂ STRIPPED to sourced basics — Jake's call)*
+
+Was "Attachment systems for implant overdentures…" — 5 attachment systems (Locator/ball/bar/magnetic/ERA) with fabricated retention forces (1.5–5 lb etc.), angulation tolerances (40°/10°), and replacement schedules. Corpus check: the "Locator" hits are the facebow **Reference Plane Locator**; "magnetic" hits are **articulator mounting plates** — neither is a denture attachment. Ball/bar/ERA/retention-force specifics = 0 hits.
+
+- **✂ STRIPPED:** rebuilt the chapter (16 blocks → 6) keeping only what's sourced, so its 6 cross-refs still resolve. Jake chose "strip to sourced IOD basics."
+- ✅ Sourced core kept: tooth-supported overdenture = retain sound roots (canines), **finish RCT on the overdenture abutments → prepare them → extract remaining teeth → deliver** (Immediate Dentures lecture: lines 127/129; OS consult if multiple extractions/tori, line 109); implant overdenture = **2-implant mandibular = McGill Consensus 2002 first choice** (Delivery lecture line 771). Title changed + App.jsx stub title synced.
+- **✂ CUT:** all retention-force / angulation / replacement-schedule numbers + the 5-system breakdown + the maintenance-time callout + troubleshoot block (none sourced; attachment hardware is an implant-prosth topic beyond the CD course).
+
+## cd-ch28 — "Chairside denture liners (tissue conditioners)"  *(audited — strongly sourced, 1 cut)*
+
+Already audit-aware (it cited "the clinic Materials reference" + hedged Visco-gel/Lynal as non-clinic). Verified against **Swade materials list p.172–173** (lines 7990–7992: "Coe Comfort — tissue conditioner reline material", "Coe Soft — soft reline material", "GC Reline — hard reline material" — all three exact) + **Bin Yang reline lecture** (tissue conditioner for abused tissue; replacement every 3 weeks–3 months, line 230; IID final reline at 3–6 months, line 133) + tissue-conditioning codes D5850/D5851 (Swade 3506).
+
+- ✅ Coe Comfort / Coe Soft / GC Reline classifications + replacement timing + abused-tissue conditioning + 3–6 mo IID reline = all sourced. Visco-gel/Lynal correctly self-flagged as non-clinic general knowledge.
+- **✂ CUT:** escalation callout's "lab-cured soft liner (**Permasoft, Molloplast-B; 1–2 years of life**)" → "a lab-cured (permanent) soft liner…" — those brand names + the 1–2 yr figure have 0 corpus hits (same fabrication class as the ch24 brands). The escalation concept (soft liner / hard reline / remake) is sourced (Bin Yang).
+
+---
+
+**CD chapter audit COMPLETE** (cd-ch1–28; ch24 cut, ch26 never existed → 26 live chapters). *Remaining: App.jsx CD-pathway prose (the Maps/Cases pathway intros & step bodies) — PENDING.*

@@ -23398,7 +23398,7 @@ const GUIDES = [
  { id: "cd-ch20", num: 20, title: "Reline / rebase — chairside vs lab, attachment pickup for IOD", stub: true },
  { id: "cd-ch22", num: 22, title: "Loose denture differential — VDO loss, ridge resorption, flange shortage, parafunction", stub: true },
  { id: "cd-ch23", num: 23, title: "Post-delivery complaints — sore spots, looseness, gagging, esthetics, phonetics", stub: true },
- { id: "cd-ch27", num: 27, title: "Attachment systems for overdentures", stub: true },
+ { id: "cd-ch27", num: 27, title: "Overdentures — tooth-supported & implant", stub: true },
  { id: "cd-ch28", num: 28, title: "Chairside denture liners (tissue conditioners)", stub: true },
  ],
  },

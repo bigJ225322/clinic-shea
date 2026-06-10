@@ -2933,111 +2933,38 @@
      {
       "id": "cd-ch27",
       "num": 27,
-      "title": "Attachment systems for implant overdentures + tooth-supported overdentures",
+      "title": "Overdentures — tooth-supported & implant",
       "blocks": [
        {
         "kind": "paragraph",
-        "text": "Overdentures retain via attachments rather than tissue suction. The choice of attachment determines retention force, ease of replacement, and the chairside maintenance schedule. Five systems dominate clinical practice; each has its place and none is universally best."
+        "text": "An overdenture seats over retained tooth roots or implants instead of relying on tissue suction alone. The CD curriculum covers the overdenture *decision* and the abutment work; the specific attachment hardware (Locator, ball, bar, magnetic, ERA) is an implant-prosthodontics topic beyond this course and isn't detailed here."
        },
        {
         "kind": "section",
-        "text": "Locator (the current default for 2-implant mandibular overdenture)"
+        "text": "Tooth-supported overdenture (retained roots)"
        },
        {
         "kind": "bullets",
         "items": [
-         "**Construction:** Patrix (male) screws into the implant; matrix (female nylon insert) sits in the denture base. Multiple retention strengths via colored inserts (clear, pink, blue, green, red — weakest to strongest).",
-         "**Retention range:** 1.5–5 lb (mild to extra-strong).",
-         "**Pickup:** at delivery or chairside reline. Block out the patrix path with the supplied black processing inserts during pickup so the nylon doesn't get caught in PMMA.",
-         "**Replacement schedule:** nylon inserts wear and lose retention; replace every 6–12 months on average heavy use, 12–24 months light use. Patient can be taught self-replacement with proper instruction.",
-         "**Strengths:** low vertical profile (works in tight inter-arch space), forgiving of divergent implant angulations (up to 40° between two implants), retention adjustable.",
-         "**Weaknesses:** nylon inserts wear out (recurring maintenance cost), can over-retain causing housing fracture if too strong an insert is used."
+         "**Keep selected roots rather than extracting them.** Sound roots with good periodontal support — usually the canines — are retained to preserve alveolar bone and add stability and proprioception.",
+         "**Finish root canal therapy on the overdenture abutments, then prepare them** — the denture seats over the prepared roots. (Immediate Dentures lecture: RCT on the overdenture abutments → prepare the abutments → extract the remaining teeth → deliver over a surgical template for the immediate case.)",
+         "**Work the case up first:** if overdentures are being considered, complete the evaluation; an oral-surgery consult is warranted when there are multiple extractions or tori. (Immediate Dentures lecture.)"
         ]
        },
        {
         "kind": "section",
-        "text": "Ball attachment (older standard, still in use)"
+        "text": "Implant overdenture"
        },
        {
         "kind": "bullets",
         "items": [
-         "**Construction:** Ball patrix screws into the implant; matrix is a metal housing with a retentive cap that grips the ball.",
-         "**Retention range:** 2–4 lb. Adjusted by squeezing the metal cap closer to the ball (more retention) or spreading it (less).",
-         "**Pickup:** at delivery with cold-cure PMMA around the metal housings.",
-         "**Strengths:** simpler than Locator, cheaper per attachment, durable metal-on-metal connection.",
-         "**Weaknesses:** higher vertical profile (needs more inter-arch space), less forgiving of angulation differences (>10° between implants causes binding), retention adjustment is mechanical (squeeze) and irreversible."
+         "**The 2-implant mandibular overdenture is the McGill Consensus (2002) first choice** for the edentulous mandible — retention and stability far exceed a conventional lower CD on a resorbed ridge. (Complete Denture Delivery & follow-up lecture.)",
+         "**The surgical + attachment workflow lives in the Implants guide** (consult → placement → healing → attachment-level impression → loading). On the CD side, the denture base is made with space for the attachment housings, which are picked up chairside."
         ]
-       },
-       {
-        "kind": "section",
-        "text": "Bar attachment (Hader bar, milled bar)"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**Construction:** A bar connects 2 or more implants. Clips in the denture base engage the bar for retention.",
-         "**Retention range:** Variable; typically 4–8 lb (strong).",
-         "**Indications:** 4+ implants, severely resorbed ridge where stress distribution matters, cases requiring rigid splinting of implants.",
-         "**Pickup:** lab-fabricated, picked up in the denture at delivery.",
-         "**Strengths:** splints implants together (load distribution), high retention, durable.",
-         "**Weaknesses:** lab cost (custom bar fabrication), takes more inter-arch space than studs (Locator/ball), more difficult to clean (requires interproximal brushes around the bar), patient must remove the prosthesis daily to clean the bar."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Magnetic attachment (magnet-retained overdenture)"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**Construction:** A magnetic keeper (patrix) is attached to the implant abutment or root cap. The denture contains a complementary magnet (matrix).",
-         "**Retention range:** 1–2 lb (low).",
-         "**Indications:** Limited use — patients with very low dexterity who cannot manage higher retention forces, or as backup retention for tissue-supported dentures with sound canine roots.",
-         "**Strengths:** Easy seat/release. Low force on abutments.",
-         "**Weaknesses:** Corrodes in oral environment over years (replace at 5–7 years). Low retention compared to other systems; not adequate for primary retention on most cases."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Stud attachment (ERA, O-ring)"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**Construction:** Stud patrix on the implant; rubber O-ring or plastic insert in the denture matrix.",
-         "**Retention range:** Adjustable via insert color (similar to Locator).",
-         "**Indications:** Older or budget alternative to Locator. Some practices prefer the simpler design.",
-         "**Strengths:** Inexpensive, simple chairside replacement of inserts.",
-         "**Weaknesses:** Less forgiving of angulation than Locator. Some studies show shorter insert lifespan."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Choosing for a specific case"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**2-implant mandibular overdenture with parallel implants in canine regions:** Locator (default) or ball.",
-         "**2-implant mandibular with >10° angulation between implants:** Locator (handles up to 40° divergence).",
-         "**4-implant overdenture or severely resorbed mandible:** Bar attachment.",
-         "**Patient with very low dexterity:** Locator with weakest nylon (clear), magnet attachments if needed.",
-         "**Patient with retained natural canine roots (tooth-supported overdenture):** Custom-cast copings + ball or O-ring attachments. Locators can fit on root copings too."
-        ]
-       },
-       {
-        "kind": "callout",
-        "title": "The maintenance reality",
-        "body": "Implant overdentures have a hidden chairside-time cost: insert replacement, housing relines, attachment cleaning. Expect a recall visit every 6–12 months for these patients. Budget 20–30 minutes per visit for routine attachment maintenance. The patient should be counseled at delivery that this is part of owning an implant overdenture; surprise charges at year 1 cause complaints."
-       },
-       {
-        "kind": "troubleshoot",
-        "title": "Tips",
-        "body": "**Insert tears during seating:** the patrix has a sharp edge (worn) or the insert size is wrong. Replace with new insert; if recurs, replace the patrix. **Denture rotates around one attachment:** the other attachment is non-functional (worn insert, housing crack, abutment screw loose). Diagnose and fix the non-functional side. **Retention force decreases over months:** normal nylon wear. Replace inserts with same color first; only escalate to higher retention if patient reports inadequacy. **Patient cannot seat denture independently:** retention is too high for their dexterity. Step down insert color one level."
        },
        {
         "kind": "paragraph",
-        "text": "*Where this fits in the workflow:* Used in cd-implant-supported-lower, cd-iod-canine-roots, cross-cd-iod-implants, and rpd-implant-hybrid pathways. Pickup of attachments references (processing) and (reline/rebase/repair) for the chairside technique; ongoing maintenance lives in (complaints).*"
+        "text": "*Where this fits in the workflow:* referenced by the cd-implant-supported-lower, cd-iod-canine-roots, cross-cd-iod-implants, and rpd-implant-hybrid pathways. Chairside attachment pickup uses the reline/rebase/repair technique; ongoing maintenance is covered under post-delivery complaints.*"
        }
       ]
      },
@@ -3111,7 +3038,7 @@
        {
         "kind": "callout",
         "title": "Tissue conditioner vs lab-cured soft liner — when to escalate",
-        "body": "Tissue conditioner is a TEMPORARY material. Use 2–4 weeks; replace as needed. If a patient continues to need tissue conditioner reapplied month after month, the underlying problem is not being addressed — usually it's chronic ridge inflammation that needs a permanent solution. Options: lab-cured soft liner (Permasoft, Molloplast-B; 1–2 years of life), permanent reline, or denture remake. Don't let a patient become dependent on weekly tissue conditioner — investigate the root cause (parafunctional habits, occlusal scheme problem, xerostomia, ill-fitting denture)."
+        "body": "Tissue conditioner is a TEMPORARY material. Use 2–4 weeks; replace as needed. If a patient continues to need tissue conditioner reapplied month after month, the underlying problem is not being addressed — usually it's chronic ridge inflammation that needs a permanent solution. Options: a lab-cured (permanent) soft liner, a permanent hard reline, or a denture remake. Don't let a patient become dependent on weekly tissue conditioner — investigate the root cause (parafunctional habits, occlusal scheme problem, xerostomia, ill-fitting denture)."
        },
        {
         "kind": "troubleshoot",
