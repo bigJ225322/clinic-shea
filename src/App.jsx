@@ -29157,9 +29157,31 @@ function Pathways() {
  };
  const t = setTimeout(compute, 50);
  window.addEventListener("resize", compute);
+ let alive = true;
+ // Re-measure once webfonts finish loading. Until then the tiles are sized with
+ // fallback-font metrics, so the arrow endpoints (measured from tile rects) land
+ // in the wrong spot. This is the main reason maps looked "off" on mobile, where
+ // the fonts swap in well after the initial 50ms measure and nothing re-fires.
+ if (document.fonts && document.fonts.ready) {
+ document.fonts.ready.then(() => { if (alive) compute(); });
+ }
+ // Re-measure whenever the grid's WIDTH actually changes (font swap, viewport
+ // resize, phone rotation). Width-guarded so the entry animation — which only
+ // moves tiles vertically — can't thrash it into a re-render loop.
+ let lastW = schematicGridRef.current ? schematicGridRef.current.offsetWidth : 0;
+ let ro;
+ if (schematicGridRef.current && typeof ResizeObserver !== "undefined") {
+ ro = new ResizeObserver(() => {
+ const w = schematicGridRef.current ? schematicGridRef.current.offsetWidth : 0;
+ if (w !== lastW) { lastW = w; compute(); }
+ });
+ ro.observe(schematicGridRef.current);
+ }
  return () => {
+ alive = false;
  clearTimeout(t);
  window.removeEventListener("resize", compute);
+ if (ro) ro.disconnect();
  };
  }, [pathwayId]);
  // Map-entry arrow choreography. The boxes slide via their CSS `top` keyframe
