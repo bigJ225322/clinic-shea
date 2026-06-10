@@ -214,4 +214,20 @@ Sources: **Mark300-Inst manual** + **Articulator+Facebow lec** + **Jaw Relation 
 
 ---
 
-*Remaining chapters (cd-ch8–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch8 — "Five methods for determining VDO"  *(audited — strongly sourced)*
+
+Primary source: **Jaw Relation Records lec** + Clinical Eval of Trial Denture + Swade.
+
+- ✅ **VDO = VDR − 2–3 mm** — JR lec line 201 (verbatim). VDR/rest + VDO definitions — JR lec 196–210.
+- ✅ Method 1 rest position; freeway space 2–4 mm = ⓘ (freeway sourced, Agrawal/Boxing).
+- ✅ Method 2 **phonetic 60–70 count, rims shouldn't touch, closest speaking space** — Clinical Eval of Trial Denture + Huddle Wk7. "~1 mm" = ⓘ.
+- ✅ Method 3 esthetics: **nasolabial angle Men 90–95° / Women 100–105°** — JR lec lines 191–192 (VERBATIM); philtrum/vermilion — JR lec + Swade.
+- ✅ Methods 4 (patient perception) + 5 (previous-denture comparison) — ⓘ, standard.
+- ✅ "Too high / too low" signs (crammed, stretched lips / aged, marionette lines, freeway >4 mm) — ⓘ, grounded.
+- **✂ FIXED/CUT:** "**inter-pupillary** distance between nose & chin marks" → that's wrong (inter-pupillary = pupil-to-pupil); corrected to "distance between two marked points" per JR lec 197. Removed the unsourced "**Boley gauge**" instrument name (2×; source just says "measure between two marked points"). *(Another "Boley gauge" remains in a later chapter — will fix there.)*
+
+---
+
+*Remaining chapters (cd-ch9–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
