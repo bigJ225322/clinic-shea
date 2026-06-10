@@ -1625,11 +1625,11 @@
      {
       "id": "cd-ch15",
       "num": 15,
-      "title": "Delivery: PIP, clinical remount, BULL rule",
+      "title": "Delivery: PIP, borders & post-op",
       "blocks": [
        {
         "kind": "paragraph",
-        "text": "Fit each denture individually before worrying about how they occlude. PIP the intaglio, adjust borders, take a clinical remount, equilibrate per BULL, educate the patient. The order matters: occlusal adjustment on ill-fitting bases is wasted work."
+        "text": "Fit each denture individually before worrying about how they occlude. PIP the intaglio, adjust borders, educate the patient. The order matters: occlusal adjustment on ill-fitting bases is wasted work."
        },
        {
         "kind": "section",
@@ -1639,8 +1639,8 @@
         "kind": "bullets",
         "items": [
          "**From sterilization:** exam kit, lab handpiece + acrylic burs, polishing kit, patient goggles, articulator (Mark 320).",
-         "**From the lab return:** processed maxillary + mandibular dentures, mounted master casts, remount jig, clinical remount cast.",
-         "**In clinic:** ZnO PIP paste + brush, Mizzy spray, bite registration material (cartridge + dispenser gun + fresh mixing tip; for clinical remount + protrusive), horseshoe articulating paper, AccuFilm II, denture cleanser sample, post-op written instructions, denture brush, denture storage box."
+         "**From the lab return:** the finished maxillary + mandibular dentures.",
+         "**In clinic:** ZnO PIP paste + brush, Mizzy spray, horseshoe articulating paper, AccuFilm II, denture cleanser sample, post-op written instructions, denture brush, denture storage box."
         ]
        },
        {
@@ -1700,44 +1700,7 @@
        },
        {
         "kind": "section",
-        "text": "Step 3 — Clinical remount"
-       },
-       {
-        "kind": "numbered",
-        "items": [
-         "**New CR record** with the dentures seated in the mouth: bimanual chin technique (see Chapter 9 above for the full hand position + closure protocol). Use bite registration material into the buccal posterior interocclusal spaces.",
-         "Patient holds bite for 2–3 minutes (bite registration set time).",
-         "Remove. Both dentures + bite record come out together.",
-         "**On the articulator:** the maxillary denture is already mounted via the **face-bow remount jig + its clinical remount cast** (set up before this appointment — the jig preserves the original maxillary mounting position; the master casts were discarded once the processed dentures came off them).",
-         "Seat the mandibular denture against the maxillary using the new CR record to position it. Lock the centric latch.",
-         "Pour mounting stone for the mandibular against the lower articulator member. Wait for set (~10 min).",
-         "Verify shimstock holds and centric contacts match what you see in the mouth.",
-         "**Protrusive record:** patient protrudes **5–6 mm forward** into bite registration material on the posterior teeth.",
-         "**Verify** the **horizontal condylar guidance** with this protrusive record (the setting should match the patient's protrusive path) before equilibrating the excursions — you are confirming it, not re-cutting the condylar inclination.",
-         "**Equilibrate per BULL** (see below)."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "BULL rule equilibration sequence"
-       },
-       {
-        "kind": "paragraph",
-        "text": "**B**uccal of **U**ppers, **L**ingual of **L**owers — the **non-centric-holding cusps**. These are the cusps you adjust during excursive equilibration. **Do NOT reduce the maxillary lingual cusps or the mandibular buccal cusps** — those are centric-holding cusps that maintain VDO."
-       },
-       {
-        "kind": "numbered",
-        "items": [
-         "**Working side** (e.g., right lateral excursion to the right): mark with red articulating paper. Look for contacts on the working side that exceed centric contacts. Adjust the BULL cusps (maxillary buccal, mandibular lingual on the working side) until you can shimstock-drag through but not pull.",
-         "**Balancing side** (left in this example): mark with blue. Balancing-side interferences are the most dangerous — tip the denture. Adjust BULL cusps until balance contacts are even, light, and don't lift the denture.",
-         "**Protrusive**: patient slides forward to edge-to-edge. Anterior teeth should share contact bilaterally; posterior teeth should NOT touch (for 33° BBA scheme) or should share light bilateral contact (for monoplane+ramp).",
-         "Repeat working / balancing / protrusive cycles until refined.",
-         "**Final check with shimstock (8 microns)**: holds in MIP, drags through in excursions."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Step 4 — Patient education (POI)"
+        "text": "Step 3 — Patient education (POI)"
        },
        {
         "kind": "bullets",
@@ -1756,7 +1719,7 @@
        {
         "kind": "callout",
         "title": "Issues at delivery",
-        "body": "**Denture won't seat:** reapply PIP; identify undercut intaglio area or overextended border. **Patient says \"bite feels off\":** clinical remount needed. Don't try to chase with articulating paper alone. **Patient gags on insertion:** posterior border too thick or overextended. Reduce with carbide bur, smooth. **Sore spot on insertion:** mark with Thompson stick BEFORE removing the denture; transfer to intaglio; PIP-adjust. **Phonetics off (S sound whistles or lisps):** see Phonetics chapter (#18). Adjust at this visit or note for 24-hr follow-up. **Patient very anxious / overwhelmed:** normal. Reassure that adjustment over the first 2–4 weeks is standard; the denture they wear home is not the \"final\" result."
+        "body": "**Denture won't seat:** reapply PIP; identify undercut intaglio area or overextended border. **Patient says \"bite feels off\":** re-verify both bases are fully seated first — a base-fit problem often reads as an occlusal one; note for the 24-hour follow-up. **Patient gags on insertion:** posterior border too thick or overextended. Reduce with carbide bur, smooth. **Sore spot on insertion:** mark with Thompson stick BEFORE removing the denture; transfer to intaglio; PIP-adjust. **Phonetics off (S sound whistles or lisps):** see Phonetics chapter (#18). Adjust at this visit or note for 24-hr follow-up. **Patient very anxious / overwhelmed:** normal. Reassure that adjustment over the first 2–4 weeks is standard; the denture they wear home is not the \"final\" result."
        }
       ]
      },
@@ -3060,130 +3023,6 @@
        {
         "kind": "paragraph",
         "text": "*Hyperlinks aren't blue.*"
-       }
-      ]
-     },
-     {
-      "id": "cd-ch26",
-      "num": 26,
-      "title": "Clinical remount + selective grinding at delivery",
-      "blocks": [
-       {
-        "kind": "paragraph",
-        "text": "The processed denture comes back from the lab with the polished cameo surfaces but the occlusion is locked in heat-cure PMMA — and processing introduces subtle changes (thermal expansion, polymerization shrinkage, distortion of the wax setup during flasking) that mean the occlusion you signed off on at wax try-in is not exactly the occlusion in the patient's mouth. The clinical remount captures the patient's real-world MIP after delivery and lets you selectively grind the occlusion to that position."
-       },
-       {
-        "kind": "section",
-        "text": "Materials checklist"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**Processed dentures** (maxillary + mandibular) returned from the lab.",
-         "**The working casts** still mounted on the articulator from wax try-in.",
-         "**Fast-set bite registration material** (Regisil PB or fast-set PVS) for the clinical interocclusal record.",
-         "**Adhesive spray** for the dentures (helps the bite material grip the polished surfaces).",
-         "**Articulating paper** (red + blue, thin).",
-         "**Slow-speed handpiece** + green stones for selective grinding.",
-         "**Pumice + rag wheel** for re-polishing after grinding."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Pre-remount setup"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "Verify the articulator is locked at the same setting used during wax try-in (incisal pin, condylar inclinations, immediate side shift).",
-         "Inspect the dentures for processing defects: pits in the acrylic, voids, sharp flange edges. Smooth any rough areas before delivery.",
-         "Confirm the patient is comfortable and not in pain; remount with a sore patient is unreliable."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Step 1 — Initial delivery + PIP check (15 min)"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**1a.** Seat the dentures. Verify retention and stability are acceptable.",
-         "**1b.** Apply PIP to the tissue surface of each denture. Re-seat with firm finger pressure.",
-         "**1c.** Identify pressure spots — through-spots in the PIP are tissue-pressure areas. Adjust with a slow-speed acrylic bur. Repeat until no through-spots remain.",
-         "**1d.** Verify the patient is comfortable. Soreness at this stage is normal but should be mild."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Step 2 — Clinical interocclusal record (15 min)"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**2a.** Have the patient practice closing into MIP with the dentures in place. Confirm consistent closure position.",
-         "**2b.** Apply adhesive spray to the polished surfaces of both dentures, especially the occlusal/incisal regions.",
-         "**2c.** Place a small (pea-sized) amount of fast-set bite material onto the occlusal surface of the mandibular denture in 3 spots: anterior + two posterior. Keep material thin — thick material distorts.",
-         "**2d.** Patient closes into MIP and holds for 90 seconds until the material sets.",
-         "**2e.** Remove both dentures with the bite material attached. Inspect: the record should show clean cusp-fossa impressions of the opposing teeth.",
-         "**2f.** If the record looks adequate, use it for the remount. If distorted, re-take."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Step 3 — Remount on the articulator (10 min)"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**3a.** Seat the maxillary denture onto its working cast on the articulator.",
-         "**3b.** Seat the mandibular denture onto its working cast.",
-         "**3c.** Place the bite registration between them. Close the articulator to verify the dentures seat into the bite record.",
-         "**3d.** If they don't seat (the record is in a different position than the wax try-in), the cast itself needs to be re-mounted with the new bite. This is the actual 'clinical remount' — split the existing mount with a remount jig and re-pour.",
-         "**3e.** Once mounted to the new bite, the casts on the articulator reflect the patient's actual MIP — not the lab's processed approximation."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Step 4 — Selective grinding sequence (15–20 min)"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**4a.** With the articulator locked at MIP, place articulating paper between the teeth. Close the articulator slowly.",
-         "**4b.** Identify the first contact: if it's not bilateral simultaneous contact, you have a deflective contact. Mark it.",
-         "**4c.** Apply the **BULL rule** for adjustments: Buccal cusps of Upper teeth, Lingual cusps of Lower teeth — these are the **non-functional cusps** in centric and may be adjusted to refine contacts. The **lingual cusps of upper teeth and buccal cusps of lower teeth** are the functional cusps and should be preserved.",
-         "**4d.** Grind the marked deflective contact with a fine green stone. Re-check with paper. Repeat until simultaneous bilateral contact in MIP.",
-         "**4e.** Check excursions: working side — preserve the working cusp contacts (cuspid-protected occlusion or bilateral balanced as planned). Balancing side — remove any interferences on the non-working side.",
-         "**4f.** Protrusion — anteriors should contact, posteriors should disocclude. Adjust any posterior contact in protrusion."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Step 5 — Re-polish + re-deliver (10 min)"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**5a.** Smooth all ground surfaces with a rubber polishing point.",
-         "**5b.** Re-polish on the lab lathe — pumice with a rag wheel, then high-shine with a tin oxide wet wheel.",
-         "**5c.** Verify no rough edges remain — run a finger over the occlusal surfaces, check for cusp tip irregularities.",
-         "**5d.** Re-deliver to the patient. Re-check MIP intraorally with articulating paper.",
-         "**5e.** Confirm patient is comfortable, give POI instructions, schedule 24-hour and 1-week follow-up."
-        ]
-       },
-       {
-        "kind": "callout",
-        "title": "Why bother with a clinical remount?",
-        "body": "Processing changes the occlusion. A wax try-in that occluded perfectly will occlude slightly differently after flasking, packing, curing, and deflasking — typical change is 50–200 µm of vertical loss and lateral shift of cusp-fossa relationships. Without a clinical remount, this discrepancy is felt by the patient as 'high spots' that they grind into over the first 2–4 weeks of wear, creating soreness and accelerated wear. A 30-minute clinical remount eliminates the discrepancy at delivery. Skipping it is the single most common preventable post-delivery complaint."
-       },
-       {
-        "kind": "troubleshoot",
-        "title": "Tips",
-        "body": "**Bite record distorts under closure:** material was too thick. Re-take with a pea-sized amount of material. **Casts don't seat into the bite record:** the patient closed in a different position than the wax try-in record — this is the entire point of clinical remount. Split-mount and re-pour to the new record. **Posterior teeth grind to nothing during selective adjustment:** you removed too much. Re-do the setup at the lab — a denture with shallow cusps and minimal posterior contact will accelerate ridge resorption. **Patient reports 'high spot' returning at 1-week recall:** soft-tissue swelling has resolved, allowing the denture to seat further than at delivery, revealing new contacts. Re-do selective grinding at this visit."
-       },
-       {
-        "kind": "paragraph",
-        "text": "*Where this fits in the workflow:* You arrive at clinical remount after processing and immediately before the patient's first day of denture wear. The 24-hour and 1-week follow-up visits use the post-delivery complaints chapter to diagnose any complaints that emerge. Clinical remount is the bridge between fabrication and real-world function — a denture delivered without it will require more adjustment visits over the first month than one delivered with it.*"
        }
       ]
      },

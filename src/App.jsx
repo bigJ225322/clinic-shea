@@ -23379,7 +23379,6 @@ const GUIDES = [
  { id: "cd-ch22", num: 22, title: "Loose denture differential — VDO loss, ridge resorption, flange shortage, parafunction", stub: true },
  { id: "cd-ch23", num: 23, title: "Post-delivery complaints — sore spots, looseness, gagging, esthetics, phonetics", stub: true },
  { id: "cd-ch24", num: 24, title: "Edge-case patient management — gaggers, xerostomia, severe ridge atrophy, dementia", stub: true },
- { id: "cd-ch26", num: 26, title: "Clinical remount + selective grinding at delivery", stub: true },
  { id: "cd-ch27", num: 27, title: "Attachment systems for overdentures", stub: true },
  { id: "cd-ch28", num: 28, title: "Chairside denture liners (tissue conditioners)", stub: true },
  ],
@@ -24350,9 +24349,8 @@ const PATHWAYS = [
  { guideId: "cd", chapterId: "cd-ch13" }, // Wax try-in (focus: anterior — esthetics, midline, lip support)
  // Visit 5 — Posterior teeth try-in (1 chapter; same wax-try-in chapter)
  { guideId: "cd", chapterId: "cd-ch13" }, // Wax try-in (focus: posterior — CR verify, balance, protrusive)
- // Visit 6 — Delivery + clinical remount (2 chapters)
+ // Visit 6 — Delivery (1 chapter)
  { guideId: "cd", chapterId: "cd-ch15" }, // Delivery
- { guideId: "cd", chapterId: "cd-ch26" }, // Clinical remount + selective grinding
  // Visit 7 — 24-hour follow-up (1 chapter)
  { guideId: "cd", chapterId: "cd-ch23" }, // Post-delivery complaints (Thompson stick, PIP, disclosing wax)
  // Visit 8 — 1-week follow-up (1 chapter; same chapter — adjustment workflow continues)
@@ -26121,7 +26119,6 @@ const PATHWAYS_LEGACY_2026_05 = [
  { guideId: "cd", chapterId: "cd-ch11" }, // Tooth setup
  { guideId: "cd", chapterId: "cd-ch13" }, // Wax try-in
  { guideId: "cd", chapterId: "cd-ch14" }, // Processing
- { guideId: "cd", chapterId: "cd-ch26" }, // Clinical remount at delivery
  { guideId: "cd", chapterId: "cd-ch28" }, // Chairside liners — IID transition reline schedule
  { guideId: "cd", chapterId: "cd-ch15" }, // Delivery
  { guideId: "cd", chapterId: "cd-ch23" }, // Post-delivery complaints
@@ -26136,7 +26133,7 @@ const PATHWAYS_LEGACY_2026_05 = [
  "Pre-prosthetic surgical evaluation at COE — before committing to standard impressions, screen for conditions that need surgery first: hyperplastic resorbed ridges, epulis fissuratum, papillomatosis, unfavorable frenum, enlarged maxillary tuberosities, bony prominences / undercuts, jaw-size discrepancies, pressure on mental foramen, limited restorative space, inflammatory papillary hyperplasia, inadequate vestibular depth. Any of these → fill out the Pre-Prosthetic Surgery Form (Axium Links menu) and refer / schedule before the denture workflow proceeds. Skipping this step means the new denture rocks on an unmodified bony undercut or sits on hyperplastic tissue that doesn't support it.",
  "Border molding region-by-region with green/red compound — frenum, buccal vestibule, retromolar pad.",
  "Wax try-in is the moment of patient sign-off — VDO + CR + esthetics + phonetics evaluated.",
- "Clinical remount + selective grinding at delivery — the standard finishing step for a balanced occlusion on a complete denture.",
+ "Delivery: fit each denture individually (PIP) before checking occlusion — at UIC the lab does the remount + selective grinding and returns the finished dentures.",
  "Schedule 24-hr and 1-week follow-ups for adjustments before complaints escalate.",
  "Counsel: 'There is no such thing as a perfect denture — there's a denture you adapt to.' Set the expectation early: dentures function at roughly 30% of natural dentition.",
  "CDT codes: D5110 (Complete denture — maxillary) / D5120 (Complete denture — mandibular). Per-step subcodes commonly used: D5110A (records / facebow / impressions), D5110B (wax try-in), D5110C (delivery). I9002 (Lab quality review) may apply at delivery. Adjustments at 24h/1wk: D5410 (Adjust complete denture, max) / D5411 (Adjust complete denture, mand).",
@@ -26169,7 +26166,6 @@ const PATHWAYS_LEGACY_2026_05 = [
  { guideId: "cd", chapterId: "cd-ch12" }, // Articulation schemes
  { guideId: "cd", chapterId: "cd-ch13" }, // Wax try-in
  { guideId: "cd", chapterId: "cd-ch14" },
- { guideId: "cd", chapterId: "cd-ch26" }, // Clinical remount + selective grinding at delivery // Processing
  { guideId: "cd", chapterId: "cd-ch15" }, // Delivery
  { guideId: "cd", chapterId: "cd-ch23" }, // Post-delivery complaints
  ],
@@ -26821,7 +26817,6 @@ const PATHWAYS_LEGACY_2026_05 = [
  { guideId: "cd", chapterId: "cd-ch11" }, // Tooth setup
  { guideId: "cd", chapterId: "cd-ch13" }, // Wax try-in
  { guideId: "cd", chapterId: "cd-ch14" }, // Processing
- { guideId: "cd", chapterId: "cd-ch26" }, // Clinical remount
  { guideId: "cd", chapterId: "cd-ch27" }, // Attachment systems — root copings + studs
  { guideId: "cd", chapterId: "cd-ch15" }, // Delivery
  { guideId: "cd", chapterId: "cd-ch23" }, // Post-delivery complaints
@@ -26861,7 +26856,6 @@ const PATHWAYS_LEGACY_2026_05 = [
  { guideId: "cd", chapterId: "cd-ch11" }, // Tooth setup
  { guideId: "cd", chapterId: "cd-ch13" }, // Wax try-in
  { guideId: "cd", chapterId: "cd-ch14" }, // Processing
- { guideId: "cd", chapterId: "cd-ch26" }, // Clinical remount
  { guideId: "cd", chapterId: "cd-ch27" }, // Attachment systems — Locator pickup
  { guideId: "cd", chapterId: "cd-ch15" }, // Delivery
  { guideId: "cd", chapterId: "cd-ch20" }, // Reline / rebase (attachment pickup)
@@ -27153,7 +27147,7 @@ const PATHWAYS_LEGACY_2026_05 = [
  { guideId: "cd", chapterId: "cd-ch20" },
  { guideId: "cd", chapterId: "cd-ch28" }, // Chairside liners — interim conditioner for soreness // Reline / rebase / repair (the fix)
  { guideId: "cd", chapterId: "cd-ch17" }, // PPS, vibrating line (posterior seal)
- { guideId: "cd", chapterId: "cd-ch15" }, // Delivery (PIP / BULL re-check)
+ { guideId: "cd", chapterId: "cd-ch15" }, // Delivery (PIP / fit / post-op)
  { guideId: "cd", chapterId: "cd-ch23" }, // Post-delivery complaints
  { guideId: "cd", chapterId: "cd-ch24" }, // Edge-case management
  ],
@@ -27389,7 +27383,6 @@ const PATHWAYS_LEGACY_2026_05 = [
  { guideId: "cd", chapterId: "cd-ch11" }, // Tooth setup
  { guideId: "cd", chapterId: "cd-ch13" }, // Wax try-in
  { guideId: "cd", chapterId: "cd-ch14" }, // Processing
- { guideId: "cd", chapterId: "cd-ch26" }, // Clinical remount (still required even in compressed timelines)
  { guideId: "cd", chapterId: "cd-ch15" }, // Delivery
  ],
  },
