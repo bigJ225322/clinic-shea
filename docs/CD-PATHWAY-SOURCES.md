@@ -447,14 +447,14 @@ Sources: lecture **Complete Denture Delivery and follow-up.txt** ("V. Follow-up"
 
 ---
 
-## cd-ch24 — "Edge-case patient management"  *(audited — ⚠ ESSENTIALLY UNSOURCED, awaiting Jake's decision)*
+## cd-ch24 — "Edge-case patient management"  *(✂ CUT ENTIRELY — Jake's decision)*
 
-Corpus check (grep across Swade + all 51 lectures): **0 hits** for pilocarpine / cevimeline / Salagen / Evoxac, the saliva-substitute brands (Biotène/Oasis/MouthKote/BioXtra), bisphosphonate / MRONJ / osteonecrosis, soft-liner brands (Permasoft/Mollosil), Locator / ball attachments, gag pharmacology (benzocaine/ondansetron), dexterity conditions (arthritis/Parkinson's), and TMD/temporomandibular. ("gag" ×16 and "xerostom" ×2 are incidental mentions, not management content.)
+Corpus check (grep across Swade + all 51 lectures): **0 hits** for pilocarpine / cevimeline / Salagen / Evoxac, the saliva-substitute brands (Biotène/Oasis/MouthKote/BioXtra), bisphosphonate / MRONJ / osteonecrosis, soft-liner brands (Permasoft/Mollosil), Locator / ball attachments, gag pharmacology (benzocaine/ondansetron), dexterity conditions (arthritis/Parkinson's), and TMD/temporomandibular. The whole chapter was AI-synthesized, beyond UIC CD-course scope, with fabricated drug doses (pilocarpine 5 mg TID, benzocaine 20%, etc.) and invented stats ("30% of natural dentition", "4–6 weeks", "delay 8–12 weeks").
 
-- ⚠ **Whole chapter is AI-synthesized, beyond UIC CD-course scope.** The gag-reflex / xerostomia / denture-anxious / limited-dexterity / bisphosphonate-MRONJ / TMD management content does not trace to Swade or any CD lecture. Clinically plausible, but it carries **fabricated specifics that shouldn't ship unsourced**: drug doses (pilocarpine 5 mg TID, cevimeline 30 mg TID, benzocaine 20%, diazepam, ondansetron), brand lists, and invented stats ("dentures function at 30% of natural dentition", "adaptation takes 4–6 weeks" [same fabrication cut from ch23], "delay delivery 8–12 weeks", "replace soft liner every 1–2 yr", "15 minutes at try-in").
-- **✂ FIXED (clear corruption):** "denture adhesive helps... **the esthetic-veneer literaturet-retained attachments** (Locator)" → "...**implant-retained attachments** (Locator)" — garbled UIC-scrub artifact, made coherent.
-- **⏸ FLAGGED FOR JAKE (not cut):** the rest of the chapter. Too large/structural to delete unilaterally; recommendation is to **cut the chapter or strip it to only what a CD student needs** (it duplicates oral-medicine/OS material and invents pharmacology). Holding pending decision.
+- **✂ CUT:** entire `cd-ch24` chapter object removed from `guides-data.json` (~7.8 KB). Jake chose "cut the whole chapter."
+- Reference cleanup so nothing dangles: removed the App.jsx stub-registry entry + **5** cross-link `{ guideId:"cd", chapterId:"cd-ch24" }` sites (Cases/Maps reading lists), and reworded the **3** prose "reading order" references in other chapters (the combined-treatment planner + the RPD TMD pathway) to drop the edge-case pointer. `cd-ch24` now appears nowhere in the repo.
+- Numbering: left a gap at 24 (the data already skips 26), consistent with the existing structure — no renumber.
 
 ---
 
-*Remaining chapters (cd-ch25–28) + App.jsx CD pathway prose: PENDING audit.*
+*Remaining chapters (cd-ch25, cd-ch27, cd-ch28) + App.jsx CD pathway prose: PENDING audit.*

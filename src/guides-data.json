@@ -2775,108 +2775,6 @@
       ]
      },
      {
-      "id": "cd-ch24",
-      "num": 24,
-      "title": "Edge-case patient management",
-      "blocks": [
-       {
-        "kind": "paragraph",
-        "text": "Patient factors that aren't covered by the standard workflow but show up regularly in clinic. Each one changes the technique or the materials — knowing the modifications saves an appointment."
-       },
-       {
-        "kind": "section",
-        "text": "Severe gag reflex"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**Behavioral / positional:** sit patient upright (not supine); have them concentrate on slow nasal breathing; have them lift one leg or count backwards from 100 (distraction); salt on the tip of the tongue (interrupts the reflex pathway).",
-         "**Tray selection:** smaller tray, posterior-extended only if essential; for stock trays, choose one size smaller than ideal and accept some short extensions you'll border-mold.",
-         "**Material technique:** use fast-set alginate or fast-set PVS; load tray light so it doesn't flow back into the throat; seat the tray *posterior first* rather than anterior first (closes off the gag trigger area).",
-         "**Pharmacologic:** 20% benzocaine topical on the soft palate 5 min before impression. Some clinics use intranasal lidocaine spray (off-label) or pre-procedural ondansetron (anti-emetic).",
-         "**Long-term:** for denture wearers with chronic gag, palate-reduction (horseshoe maxillary denture, removes palatal coverage from the gag-trigger zone) — trade-off is reduced retention."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Xerostomia (Sjögren's, post-radiation, anticholinergics)"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**Denture retention strategies:** denture adhesive is appropriate as a baseline (not a workaround for poor fit). Patient should sip water frequently. Saliva substitutes (Biotène Oral Balance gel, Oasis spray, MouthKote, BioXtra) used as needed.",
-         "**Pharmacologic:** pilocarpine (Salagen, 5 mg PO TID) or cevimeline (Evoxac, 30 mg PO TID) for Sjögren's patients who can tolerate cholinergic side effects. Refer to medicine.",
-         "**Soft-lining:** permanent soft liner (Permasoft, Mollosil) can improve retention via compliance with mucosa; replace every 1–2 yr.",
-         "**Implant-supported overdenture:** 2-implant mandibular overdenture is the gold standard for severe xerostomia with bone available. Mechanical retention (locator / ball attachments) bypasses the suction problem entirely.",
-         "**Hygiene + caries risk:** xerostomic patients have high caries risk on remaining teeth. Fluoride trays / chlorhexidine rinses if any natural teeth remain."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Denture-anxious patient (first-time wearer, or trauma from previous denture)"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**Pre-treatment counseling:** set realistic expectations — dentures function at 30% of natural dentition; adaptation takes 4–6 weeks; sore spots are expected and adjustable. Patient signs informed consent acknowledging these limitations.",
-         "**Trial denture in person, not just photos:** at the wax try-in, give patient a full 15 minutes to wear the trial denture, walk around, drink water, speak. Anxiety often surfaces in the trial visit if you create the space.",
-         "**Step the patient through delivery slowly:** show the finished denture out of mouth, let them touch it, walk through the insertion sequence verbally before doing it.",
-         "**Adhesive as a confidence aid (NOT a fit substitute):** let the patient use adhesive for the first 1–2 weeks if they want. Counsel that the goal is to wean off as they adapt.",
-         "**Quick-access follow-up:** schedule 24-hour and 1-week follow-ups before they leave delivery. Give them the clinic phone number for unscheduled concerns.",
-         "**Refer for behavioral support if severe:** patients with prior dental trauma or chronic anxiety benefit from cognitive-behavioral therapy or anxiolytic (short-term diazepam pre-appointment) — coordinate with their physician."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Limited dexterity (arthritis, stroke, Parkinson's, advanced age)"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**Insertion / removal aids:** denture adhesive helps patients who can't generate firm seating pressure; implant-retained attachments (Locator) make removal easier than tight suction.",
-         "**Single-arch denture vs. complete:** if the patient can't manage two dentures, prioritize the maxillary (better retention from palate) and consider implant-supported lower if mandibular is essential.",
-         "**Hygiene aids:** dishwashing-style denture brush (easier grip than a toothbrush); ultrasonic denture cleaner for at-home (replaces fine manual cleaning); denture-cleaning tablets in a soak cup at the bedside.",
-         "**Caregiver involvement:** identify and educate the caregiver if patient lives in assisted living or has cognitive decline. Provide written instructions, large-font, with photos."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "Patients on bisphosphonates (oral OR IV)"
-       },
-       {
-        "kind": "paragraph",
-        "text": "**Risk:** medication-related osteonecrosis of the jaw (MRONJ) following extractions. Higher risk with IV (zoledronic acid for cancer patients); lower but real risk with oral (alendronate for osteoporosis). Risk doesn't end when patient stops the drug — bisphosphonates persist in bone for years."
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**Pre-extraction medical consult mandatory.** Document indication, duration, drug holiday (if any) negotiated with the prescribing physician.",
-         "**Atraumatic surgical technique:** minimize bone trauma during extraction; primary closure if possible; antibiotic prophylaxis per protocol.",
-         "**Defer immediate denture for high-risk patients:** the cast-surgery + immediate-delivery pressure on the surgical site is contraindicated for IV bisphosphonate patients. Plan delayed delivery after 8–12 weeks of healing under physician supervision.",
-         "**Existing denture wearers on bisphosphonates:** monitor for traumatic ulcers (denture-induced ulceration can develop into MRONJ); reline aggressively to ensure no pressure points."
-        ]
-       },
-       {
-        "kind": "section",
-        "text": "TMD patient considering a new denture"
-       },
-       {
-        "kind": "bullets",
-        "items": [
-         "**Resolve TMD first if possible.** A new denture made on TMD-altered CR will be wrong as soon as TMD resolves or worsens.",
-         "**If chronic / non-resolving TMD:** make the denture at the patient's current functional position (typically MIP, not strict CR). Document this decision.",
-         "**Avoid increasing VDO:** TMD patients are sensitive to vertical changes. Match existing VDO closely.",
-         "**Nightguard option:** if patient bruxes (common in TMD), incorporate a hard-acrylic nightguard plan from the start."
-        ]
-       },
-       {
-        "kind": "callout",
-        "title": "When to refer rather than treat",
-        "body": "Severe TMD with internal derangement → PG prosth or oromaxillofacial pain clinic. Active MRONJ → OMFS. Severe gag reflex with psychogenic component → behavioral / anxiolytic pre-treatment with their physician. Allergy workup → oral medicine + allergist for patch testing. Patient who has had >2 prior failed dentures → investigate root cause (anatomy, neuromuscular, psychogenic) before attempting a third."
-       }
-      ]
-     },
-     {
       "id": "cd-ch25",
       "num": 25,
       "title": "Patient pathways — scenarios & reading order",
@@ -2971,7 +2869,7 @@
        },
        {
         "kind": "paragraph",
-        "text": "**Reading order — execution phase:** chapter-by-chapter through the appropriate guide for each procedure (fixed work in Indirect Parts 1–5, removable work in CD/RPD), with the CD edge-case management consulted for any patient factors (gag, xerostomia, anxious, etc.) that affect the whole plan."
+        "text": "**Reading order — execution phase:** chapter-by-chapter through the appropriate guide for each procedure (fixed work in Indirect Parts 1–5, removable work in CD/RPD)."
        },
        {
         "kind": "section",
@@ -2995,7 +2893,7 @@
        },
        {
         "kind": "paragraph",
-        "text": "**Reading order:** edge-case patient management (denture-anxious section) FIRST → then the standard CCD or IID pathway depending on case → post-delivery complaints for early-adaptation support."
+        "text": "**Reading order:** the standard CCD or IID pathway depending on case → post-delivery complaints for early-adaptation support."
        },
        {
         "kind": "section",
@@ -5328,7 +5226,7 @@
        },
        {
         "kind": "paragraph",
-        "text": "**Reading order:** *CD guide * edge-case patient management (TMD section — the same principles apply for RPD as for CD) → standard pathway 1 or 2, with explicit attention to: resolving TMD before final framework fabrication when possible, mounting in patient's functional position (MIP rather than CR if TMD prevents stable CR), avoiding VDO changes, building a nightguard concurrently with the RPD."
+        "text": "**Reading order:** standard pathway 1 or 2, with explicit attention to: resolving TMD before final framework fabrication when possible, mounting in patient's functional position (MIP rather than CR if TMD prevents stable CR), avoiding VDO changes, building a nightguard concurrently with the RPD."
        },
        {
         "kind": "callout",

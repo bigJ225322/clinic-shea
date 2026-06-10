@@ -23398,7 +23398,6 @@ const GUIDES = [
  { id: "cd-ch20", num: 20, title: "Reline / rebase — chairside vs lab, attachment pickup for IOD", stub: true },
  { id: "cd-ch22", num: 22, title: "Loose denture differential — VDO loss, ridge resorption, flange shortage, parafunction", stub: true },
  { id: "cd-ch23", num: 23, title: "Post-delivery complaints — sore spots, looseness, gagging, esthetics, phonetics", stub: true },
- { id: "cd-ch24", num: 24, title: "Edge-case patient management — gaggers, xerostomia, severe ridge atrophy, dementia", stub: true },
  { id: "cd-ch27", num: 27, title: "Attachment systems for overdentures", stub: true },
  { id: "cd-ch28", num: 28, title: "Chairside denture liners (tissue conditioners)", stub: true },
  ],
@@ -26902,7 +26901,6 @@ const PATHWAYS_LEGACY_2026_05 = [
  { label: "Adjustments + complaints", count: 2 },
  ],
  sections: [
- { guideId: "cd", chapterId: "cd-ch24" }, // Edge-case patient management (lead with this)
  { guideId: "cd", chapterId: "cd-ch1" }, // Diagnostic
  { guideId: "cd", chapterId: "cd-ch8" }, // VDO (explainable methods)
  { guideId: "cd", chapterId: "cd-ch10" }, // Tooth selection (patient input)
@@ -26939,7 +26937,6 @@ const PATHWAYS_LEGACY_2026_05 = [
  { guideId: "cd", chapterId: "cd-ch17" }, // PPS, vibrating line (posterior seal)
  { guideId: "cd", chapterId: "cd-ch28" }, // Chairside liners (Coe-Soft / COE-Comfort for comfort)
  { guideId: "cd", chapterId: "cd-ch22" }, // Loose denture differential
- { guideId: "cd", chapterId: "cd-ch24" }, // Edge-case management
  ],
  },
 
@@ -27169,7 +27166,6 @@ const PATHWAYS_LEGACY_2026_05 = [
  { guideId: "cd", chapterId: "cd-ch17" }, // PPS, vibrating line (posterior seal)
  { guideId: "cd", chapterId: "cd-ch15" }, // Delivery (PIP / fit / post-op)
  { guideId: "cd", chapterId: "cd-ch23" }, // Post-delivery complaints
- { guideId: "cd", chapterId: "cd-ch24" }, // Edge-case management
  ],
  },
  // repair-rpd-clasp + repair-rpd-denture-tooth + repair-rpd-framework
@@ -27425,7 +27421,6 @@ const PATHWAYS_LEGACY_2026_05 = [
  { label: "Maintenance + complaints", count: 2 },
  ],
  sections: [
- { guideId: "cd", chapterId: "cd-ch24" }, // Edge-case patient management
  { guideId: "cd", chapterId: "cd-ch1" }, // Diagnostic
  { guideId: "cd", chapterId: "cd-ch15" }, // Delivery (insertion/removal training)
  { guideId: "cd", chapterId: "cd-ch19" }, // Types (attachment options)
@@ -27521,7 +27516,6 @@ const PATHWAYS_LEGACY_2026_05 = [
  // (the other half is the CD planning that follows).
  { guideId: "surgery", chapterId: "surgery-ch1" }, // Pre-op assessment — medical history, ORN/MRONJ risk
  { guideId: "surgery", chapterId: "surgery-ch5" }, // Post-op instructions
- { guideId: "cd", chapterId: "cd-ch24" }, // Edge-case patient management
  { guideId: "cd", chapterId: "cd-ch19" }, // Types (immediate / interim)
  { guideId: "cd", chapterId: "cd-ch1" }, // Diagnostic
  { guideId: "cd", chapterId: "cd-ch2" }, // Custom tray
