@@ -457,4 +457,16 @@ Corpus check (grep across Swade + all 51 lectures): **0 hits** for pilocarpine /
 
 ---
 
-*Remaining chapters (cd-ch25, cd-ch27, cd-ch28) + App.jsx CD pathway prose: PENDING audit.*
+## cd-ch25 — "Patient pathways — scenarios & reading order"  *(audited — app-synthesized navigation)*
+
+This is a **meta/navigation page** (study order by patient type, 10 pathways), not clinical fact prose — like ch21/ch22, it's legitimately app-authored and mostly points at other (sourced) chapters. Audit focus was on the few embedded clinical claims + dangling references.
+
+- ✅ **Sourced claim verified:** Pathway 5's "2-implant mandibular overdenture is the **McGill Consensus** first-line for resorbed lower ridges" — confirmed in lecture *Complete Denture Delivery and follow-up* (line 771: "McGill Consensus Conference 2002… 2-implant supported overdenture should become the first choice of treatment for the edentulous [mandible]"). Kept.
+- **✂ FIXED (ch24-cut fallout):** Pathway 9 (Xerostomic) led with "**xerostomia section** →" — that content lived in the now-cut cd-ch24. Dropped the dead pointer; the pathway now points only to live chapters (standard CCD + loose-denture differential). (Pathway 8 Anxious + Pathway 6 execution-phase refs to edge-case management were already reworded in the ch24-cut commit.)
+- **✂ FIXED (UIC-scrub artifact):** Pathway 2 "The most common scenario **at.**" → "The most common scenario." (clinic name scrubbed out).
+- **✂ FIXED (scrubbed labels):** Pathway 3 CD-side reading order rendered as bare "**→ → → → →** face-bow" (5 chapter labels lost in extraction). Restored from the canonical CD sequence already spelled out in Pathway 1 (diagnostic impression → custom tray → border molding → final impression → boxing+record bases+wax rims → face-bow).
+- **⏸ FLAGGED FOR JAKE:** Pathway 2's reading order still has scrubbed labels I can't safely infer — "**[?] in full (Stages 1–10). Cross-refs to: [?] for boxing/pouring, [?] for tooth setup, [?] for processing, [?] for the post-delivery PIP**." The intended chapter names (the IID "Stages 1–10" chapter + each cross-ref) are yours to confirm — didn't want to invent your navigation.
+
+---
+
+*Remaining chapters (cd-ch27, cd-ch28) + App.jsx CD pathway prose: PENDING audit.*
