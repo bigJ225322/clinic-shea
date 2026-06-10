@@ -197,4 +197,21 @@ Primary source: **Articulator+Facebow lec** (`Articulator+Facebow.pdf`) + Swade 
 
 ---
 
-*Remaining chapters (cd-ch7–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
+---
+
+## cd-ch7 — "Mounting on the Mark 320"  *(audited — strongly sourced)*
+
+Sources: **Mark300-Inst manual** + **Articulator+Facebow lec** + **Jaw Relation Records lec** + Swade.
+
+- ✅ **Mark 320 = semi-adjustable arcon, adjust ONLY condylar inclination, fixed progressive side shift** — Facebow lec 219–228.
+- ✅ **Condylar inclination thumbscrew 0–60°** (Mark300 manual: "Model 320 adjustable 0–60 degrees"); **progressive side shift / "Bennett" fixed at 15°** (Mark300 manual lines 107–110: "Model 320 … fixed at 15 degrees"). "30° default for setup" = ⓘ.
+- ✅ centric latch (manual 120–124), magnetic mounting plates (manual 125), incisal pin.
+- ✅ **CR record indexed by V-notches** — Jaw Relation Records lec line 245 ("2 V-shaped notches on each side"). *[Note: my first pass cut this as "unsourced" — WRONG; grep searched "V-point", lecture says "V-shaped notches." Reverted.]*
+- ✅ mount maxillary via face-bow, mandibular via CR record — Swade ("mount maxillary cast using facebow & mandibular cast using bite registration/wax rims", line 3249). Mounting-stone set "~10–15 min" = ⓘ.
+- **✂ CUT (no source):** the "white table for setup / black customized incisal table built from the protrusive record" (zero hits; and per clinic reality the protrusive/custom-table workflow isn't done).
+
+> ⚠ **Flag for the CR-record chapter (next, ~line 756):** it still says **"Regisil PB"** — but the Jaw Relation Records lecture *literally uses "Regisil PB"* (line 252), so it's source-accurate there (unlike the cd-ch15 delivery use Jake renamed). Will confirm at that chapter.
+
+---
+
+*Remaining chapters (cd-ch8–14, 16–28) + App.jsx CD pathway prose: PENDING audit.*
