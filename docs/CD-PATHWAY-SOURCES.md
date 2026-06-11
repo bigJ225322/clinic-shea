@@ -486,4 +486,77 @@ Already audit-aware (it cited "the clinic Materials reference" + hedged Visco-ge
 
 ---
 
-**CD chapter audit COMPLETE** (cd-ch1–28; ch24 cut, ch26 never existed → 26 live chapters). *Remaining: App.jsx CD-pathway prose (the Maps/Cases pathway intros & step bodies) — PENDING.*
+**CD chapter audit COMPLETE** (cd-ch1–28; ch24 cut, ch26 never existed → 26 live chapters).
+
+---
+
+# App.jsx `cd-conventional` Maps pathway — per-sentence source ledger *(audited 2026-06-11)*
+
+Audit of the pathway prose at App.jsx ~24272 (description, phase details, lab-step bodies/details). The visit/lab **labels** were already Swade-graded in the in-code comment block (App.jsx ~24176); this ledger covers the **prose**. 11 fixes applied this pass; each sentence below carries its source.
+
+**Source shorthand:** Tan-Tray = Custom tray_Boxing_Technique (Tan) · GradeTray = Custom Tray Grading Sheet 2022 · Box = Boxing and Pouring(1) · JRR = Jaw Relation Records (Mohammad) · Wk3/Wk4/Wk7/Wk14 = the numbered Lab Exercise/Session handouts · RB-Grade = Record Bases Grading Sheet 2022 · Rim-Rem = Record Base & Wax Rim Reminders · AntSetup = Anterior teeth set up-Technique (Tan) · MonoGrade = Monoplane Set up Grading 2024 · Deliv-lec = Complete Denture Delivery and follow-up (Gheisarifar) · BY = Reline rebase repair (Bin Yang) · Agrawal = IMMEDIATE DENTURES (Agrawal) · Swade pN = clinic guide page/line region.
+
+### description
+- "two clinical inflection points… border molding at Visit 2 and the two-stage wax try-in at Visits 4–5; once processing happens, every error becomes permanent" — **editorial framing** of the sourced sequence (no fabricated specifics; the permanence point is the rationale behind Swade's "last chance" language at the posterior try-in, Swade ~4086). KEEP.
+- "eight clinical visits and five lab blocks… Visits 1–3 build the records, 4–5 commit esthetics/occlusion, 6–8 deliver and refine" — structural summary of the Swade p.80 outline. ✅
+
+### V5 "Posterior teeth try-in" detail
+- "last esthetic + occlusal checkpoint… verify CR, bilateral balance… patient approves every aspect (color, shape, position, midline)… nothing left they want changed; final chance" — **Swade ~4085-4086 verbatim concepts** ("ask pt about tooth color, tooth shape, tooth position, midline"; "confirm there is absolutely nothing the pt wants you to change — this is the last chance!"). ✅
+- Consent flow: "plug in the signature pad → consent icon → 'Add Patient Consent…' → select 'DENTUR' → print (optional, easier to show) → review out loud → sign" — **Swade ~4087-4093 verbatim**. ✅
+- "Complete codes + note — D5110B and D5120B (Wax Try-in) — instructor swipes EPR/codes/note" — **Swade ~4095-4097 verbatim**. ✅
+- "case goes to the 5th-floor lab" — Swade p.197 (established in Lab #5 audit). ✅
+
+### V7 "24-hour follow-up" detail
+- Workflow line (interview → palpate → mark → adjust → light occlusal check) — **Swade p.94-95 step order**. ✅
+- "ask specifically about pain, food trapping, speech… palpate both ridges" — Swade p.94 ("interview pt… palpate the entire maxillary & mandibular ridges; sometimes pt sore without evidence of sore spot"). ✅ (The "patients say fine" framing is editorial.)
+- Thompson stick: mark intraorally, insert ~5 sec, reduce inked spot — **Swade p.94 verbatim** (~5 seconds). ✅
+- PIP: dry intaglio, thin layer brushed one direction, light pressure no biting, ~5 sec, reduce show-through, repeat — **Swade p.94-95 verbatim**. ✅
+- Disclosing wax for borders — Swade p.95. ✅
+- "Occlusion at 24 hrs is light-touch — intaglio still seating… horseshoe articulating paper… even bilateral posterior contact… polish OUTSIDE only" — Swade p.95 ("usually at the 24 hour followup, you don't adjust occlusion too much…"; "only polish the outside; do not polish the intaglio"). ✅
+- "tenderness for a few days is normal healing" — Swade p.95 note template ("sore spots will still feel tender even with denture adjustment and will take a few days to heal"). ✅
+
+### V8 "1-week follow-up" detail
+- "Occlusion can be adjusted aggressively now… reduce posterior heavy contacts… even bilateral contact" — inverse of Swade's 24-h restraint + Swade's adjustment goals ("even contact on both sides… multiple/all posterior teeth"). ✅
+- "**✂ FIXED:** "hard reline at **3-4 months (the UIC standard)**" → "3–6 months (stated for immediate dentures)" — **BY line 133** ("Immediate dentures 3-6 months after its original fabrication"); no 3-4-month figure exists in any source. Coe Comfort = Swade materials p.172. ✅
+- "**✂ FIXED:** "dentures function at **~30% of natural dentition**" → delivery-lecture patient-ed phrasing ("relatively soft foods, small bites") — **Deliv-lec** ("Eat: Relatively soft foods, small bites"); the 30% stat appears nowhere in the corpus (same fabrication family as the cut ch24 stat).
+- "brush daily with mild soap (not toothpaste), leave OUT overnight in water" — Deliv-lec ("Remove dentures at night and keep them in water"; "denture brush/denture toothpaste") + Swade p.93 (denture brush). *Note: the lecture lists "denture toothpaste" as acceptable; the card's "not toothpaste" means regular abrasive toothpaste — left as-is, consistent with cd-ch28's counseling.* ⓘ
+
+### Lab #1 — diagnostic casts + custom trays
+- Body: "selective-pressure technique: one sheet of baseplate wax as spacer… one sheet of Triad" — Tan-Tray #6-#8 (one sheet wax; one sheet Triad; even one-Triad-layer thickness). ✅ Relief-area enumeration (incisive papilla, mid-palatal raphe, mandibular crest) — Tan marks relief areas (#2) but the extracted text doesn't enumerate them (image slides); list is textbook-standard. **⏸ FLAG (kept):** valid-but-unverifiable enumeration.
+- Steps 2-3 (red at vestibule depth, blue 2 mm inside, posterior extension red-only) — **Tan-Tray #1 verbatim** ("red pencil… depth of the vestibule and blue… 2mm inside"; "In posterior extension area ONLY RED LINE!"). ✅
+- Steps 5-9 (Vaseline → blockout drips with #7 spatula → Vaseline over blockout → warm one sheet, adapt, cut at blue line → NO Vaseline after spacer) — **Tan-Tray #3-#7 verbatim** (incl. "the spacer will stay inside your tray"). ✅ (Step 8's "press, don't drip" matches "Warm one sheet… until easy to manipulate BUT NOT DRIPPING".)
+- Step 10 (one sheet Triad, no trapped air/overpress, trim) — Tan-Tray #8. ✅
+- Step 11 handle ½ × ½ × ¼ inch, no lip interference; finger rests bilateral ≤2/3 retromolar pad — **GradeTray verbatim** ("Handle is ½ inch long, ½ inch wide, and ¼ inch thick"; "Finger rests… do not extend above 2/3 of retromolar pad") + Tan-Tray #9. ✅ ("bicuspid area" placement: GradeTray says "over the residual crest" — close; kept. ⓘ)
+- "**✂ FIXED** Step 12: "about 1 minute **(400–500 nm, rotating table)**" → "about 1 minute — not less — in the light chamber" — **Tan-Tray #10** ("Cure for about 1 min (not less)"); the nm/rotating-table prose belongs to the JRR record-base context, not the tray step.
+- Step 13 (re-cure off cast) — Tan-Tray #11 ("repeat step #10 OFF THE CAST"). ✅ Step 14 (acrylic burs, smooth borders, frenal/muscle clearance, spacer retained) — Tan-Tray finishing notes verbatim. ✅
+- Step 1 "Type III stone (microstone)" — Tan-Tray pour note ("Pour the impression in Type III stone (microstone)") + Swade 2187. ✅
+- "**➕ ADDED (Jake-approved 2026-06-11):** Immediate-denture variant — 1 mm wax on edentulous areas / 2-3 mm on dentate areas / windows in the wax as vertical stops" — **Agrawal lines 226-229 verbatim** ("CUSTOM TRAY FOR IMMEDIATE DENTURE FINAL IMPRESSION: 1 mm thickness baseplate wax on edentulous area; 2-3 mm thickness in dentate area - AND VERTICAL STOP (windows in wax)"). Window SIZE: **not specified in any source** — the card says so explicitly. "Triad and curing unchanged" = continuation of the Tan protocol (Agrawal doesn't restate the material). ⓘ
+
+### Lab #2 — box/pour, PPS, record bases, wax rims
+- "**✂ FIXED** Step 1: "(equal parts, thick)… 3 mm lateral… 2 mm exposed" → "3-4 mm of pumice/plaster width all around and 2-3 mm of the impression border left uncovered" — **Box verbatim** ("3-4 mm of width of pumice/plaster all around"; "2-3mm of impression borders uncovered by pumice"). "Equal parts" appears nowhere → dropped.
+- "**✂ FIXED** Step 2: "16-18 mm above… base 15-20 mm thick" → "15-20 mm over the highest area of the impression" — **Box verbatim** ("Boxing wax should extend 15-20mm over the highest area of the impression"). The base-thickness sentence was a units-shuffle fabrication → cut.
+- Step 3 (seal boxing wax to land, heated #7 spatula, water-test) — Box ("Boxing wax sealed around mixture of pumice and plaster") + Tan-Tray boxing portion. ✅ Step 4 Type III microstone under vacuum — Tan-Tray/Swade. ✅
+- Step 5 (PPS marked at vibrating line via the Visit-2 Thompson-stick mark) — Swade 3590-3591 (clinical mark) + Obrez PPS deck (lab transfer). ✅
+- "**✂ FIXED** Steps 6-7: "**#8 round bur to 1-1.5 mm depth**… feather with **#7 spatula**" → de-instrumented ("scribe along the posterior border… feather forward to the anterior border at the hard/soft-palate junction") — the bur, depth, and spatula appear in **no extracted source** (Obrez deck is image-based; Swade's #8-round-bur reference is the tray relief hole, not the PPS). **⏸ FLAG:** if the Obrez slides do specify depth/instrument, restore from the slide.
+- Steps 8-9 (block out undercuts, separator, one sheet Triad, **400-500 nm, ~10 minutes**, 2 mm uniform thickness, landmarks visible) — **JRR line ~62 verbatim** ("high intensity visible light of 400 to 500 nm for an appropriate time period of about 10 minutes") + **RB-Grade** ("Uniformly 2 mm thick"). ✅ *(This is where the nm figure legitimately lives.)*
+- "**✂ FIXED** Step 10: "8-10 mm labial to the incisive papilla, **terminating 2-3 mm anterior to the maxillary tuberosity**" → tuberosity clause cut — **Wk3 line 132** sources "8-10 mm away [from] the center of the incisive papilla"; no source places the rim end relative to the tuberosity. 22 mm anterior height — **Wk3 line 126 + JRR 109 + RB-Grade ("~22 mm height in anterior")**. ✅
+- Step 11: 18 mm mandibular height (**Wk3 line 136**), ≤2/3 retromolar pad (**Rim-Rem + Swade 3786**). ✅
+- Step 12: "3-4 mm wide anteriorly, 4-6 mm posteriorly; occlusal surface completely flat (Visit 3 reference plane)" — **Wk3 lines 127-128/142-143 verbatim** + **Rim-Rem** ("completely flat and even on the occlusal surface"). ✅
+
+### Lab #3 — mount on Mark 320, set anteriors
+- Steps 1-2 (maxillary by face-bow; mandibular by CR record) — JRR/Wk4 mounting sequence. ✅ Mark 320 — confirmed UIC articulator (Articulator+Facebow). ✅
+- "**✂ FIXED** Step 3: "condylar 30°, **Bennett 15° (fixed)**, **replace the black incisal table with the white one**" → "condylar inclination 30°, incisal pin at zero" — **Wk14 line 13 verbatim** ("Verify articular settings: condylar inclination 30° and incisal pin at 0"). Bennett-15 and the black/white-table color detail appear in no source (Wk4's table swap is the *index table* used during mounting, a different step) → cut.
+- Step 4: Portrait (Dentsply) + mould "2N" example + Vita shade from Visit 3 — Portrait IPN = confirmed tooth line; **2N appears in AntSetup line 36**; shade-at-wax-rim-visit = Swade 3822 region. ✅
+- Steps 5-7 (one wax window at a time — never strip the whole rim; trim tooth base first, then lingual; three teeth per side then contralateral) — AntSetup technique sequence (Wk6: "Cut enough wax out of the wax rim to accommodate the central incisors", one-window-at-a-time). ✅
+- "**✂ FIXED** Step 8: "**1-2 mm** vertical and horizontal overlap (should NOT contact in MI)" → "~1 mm vertical and ~1 mm horizontal overlap with no contact in centric occlusion" — **AntSetup lines 164-169 verbatim** ("Vertical Overlap: ~1 mm; Horizontal Overlap: ~1mm; No contact in centric occlusion").
+### Lab #4 — set posteriors (monoplane + ramps)
+- Step 1 (0° monoplane on a flat plane through 2/3 of the retromolar pad) — **Rim-Rem verbatim** ("2/3 of the retromolar pad: determines posterior reference for the occlusal plane"). ✅
+- Steps 2-3 (central grooves in a line over the ridge crest; each tooth over the crest, resists tipping) — **Rim-Rem** ("Line across the crest of the ridge: ideal position of the distal of the canine and central fossas of posterior teeth") + Wk7. ✅
+- "**✂ FIXED** Step 4: "horizontal overlap at about **one-third of the tooth**" → "1-2 mm of posterior horizontal overlap — mandibular buccal cusps track the maxillary central grooves; prevents cheek and tongue biting" — **MonoGrade line 41** ("1-2 mm of horizontal overlap") + **Wk7 lines 48-50 verbatim** (overlap "critical… to prevent tongue and cheek biting"; "mandibular buccal cusps should correspond with the position of the central grooves of the maxillary posterior teeth"). The one-third figure was unsourced.
+- Steps 5-6 (acrylic balancing ramps; protrusion = anterior contact + 2 posterior contacts, one per side) — **Wk7 line 52** ("Bilateral balanced can be achieved via posterior acrylic ramp") + **Swade p.95 adjustment goals verbatim** ("in protrusion: 2 posterior contacts (1 on each side) and anterior contact"). ✅ ("alternative to anterior guidance, which needs PDL feedback" — Obrez occlusion-deck concept; image slides. ⏸ FLAG-keep.)
+- Step 7 (incisal pin stays at zero or VDO is lost) — Wk4 ("make sure the pin is set at zero") + standard articulator logic. ✅
+
+### Lab #5 — central-lab handoff
+- Audited previously (handoff-only reality per Jake/Sully + Swade p.91-92, p.197-198); unchanged this pass. ✅
+
+*Cases-tab CD pathway entries (cd-iid / combination / overdenture reading lists + keyDecisions): pending next pass tonight.*
