@@ -29133,6 +29133,10 @@ function Pathways() {
  // measurement (final layout) so a mid-animation re-measure can't zero them.
  const entryOffsetsRef = useRef({ id: null, offsets: {} });
  const arrowsRef = useRef([]);
+ // Last measurement actually committed to state — used to drop redundant
+ // re-measures (50ms timer, fonts.ready, resize echoes) that would
+ // otherwise re-fire the choreography effect for no visual reason.
+ const lastMeasureRef = useRef(null);
  // (Auto-scroll-to-schematic on pathway open was removed by request — it
  // jerked the viewport downward every time a pill was tapped. The pathway
  // now opens in place; the user scrolls down themselves if they want to.)
@@ -29146,6 +29150,10 @@ function Pathways() {
  setSchematicPositions(null);
  arrowsRef.ranFor = null;
  entryOffsetsRef.current = { id: null, offsets: {} };
+ // Reset the dedupe baseline too — without this, reopening the SAME
+ // pathway would compare the fresh measure against the stale map,
+ // skip the state set, and leave positions null (no arrows at all).
+ lastMeasureRef.current = null;
  const compute = () => {
  if (!schematicGridRef.current) return;
  const gridRect = schematicGridRef.current.getBoundingClientRect();
@@ -29171,6 +29179,24 @@ function Pathways() {
  height: r.height,
  };
  });
+ // Drop the set entirely when nothing moved (same tiles, every box within
+ // half a pixel). The 50ms timer, fonts.ready, window resize, and the
+ // ResizeObserver all funnel into compute(); a redundant state set
+ // re-fires the arrow-choreography effect below, whose CLEANUP cancels
+ // the in-flight rAF + fallback timer mid-animation — that froze the
+ // arrows at final geometry while the boxes kept sliding (the "wonky
+ // animation" regression). Deduping keeps the single choreography run
+ // alive through the whole 1.05s open.
+ const prev = lastMeasureRef.current;
+ const keys = Object.keys(pos);
+ const unchanged = prev && keys.length === Object.keys(prev).length &&
+ keys.every(k => {
+ const a = pos[k], b = prev[k];
+ return b && Math.abs(a.x - b.x) < 0.5 && Math.abs(a.y - b.y) < 0.5 &&
+ Math.abs(a.width - b.width) < 0.5 && Math.abs(a.height - b.height) < 0.5;
+ });
+ if (unchanged) return;
+ lastMeasureRef.current = pos;
  setSchematicPositions(pos);
  };
  const t = setTimeout(compute, 50);
@@ -29211,12 +29237,21 @@ function Pathways() {
  // animated in CSS, hence the rAF.)
  useLayoutEffect(() => {
  if (!schematicPositions) return;
- if (arrowsRef.ranFor === pathwayId) return;
- arrowsRef.ranFor = pathwayId;
  const grid = schematicGridRef.current;
  if (!grid) return;
  const DUR = 1350;
- const startT = performance.now();
+ // First run for this pathway starts the clock; a re-run (a REAL
+ // re-measure mid-animation, e.g. a font swap changing tile sizes)
+ // CONTINUES the same clock instead of bailing out. The old
+ // `if (ranFor === pathwayId) return;` was wrong: this effect's own
+ // cleanup had just cancelled the in-flight rAF and fallback timer, so
+ // the early return left the arrows frozen mid-fan with nothing left
+ // to finish the choreography.
+ if (arrowsRef.ranFor !== pathwayId) {
+ arrowsRef.ranFor = pathwayId;
+ arrowsRef.startT = performance.now();
+ }
+ const startT = arrowsRef.startT;
  let raf;
  const draw = (now) => {
  const done = now - startT >= DUR;
@@ -29241,7 +29276,7 @@ function Pathways() {
  lines[i].setAttribute("y1", arr[i].srcY);
  lines[i].setAttribute("y2", arr[i].dstY);
  }
- }, DUR + 300);
+ }, Math.max(0, DUR + 300 - (performance.now() - startT)));
  return () => { if (raf) cancelAnimationFrame(raf); clearTimeout(fin); };
  }, [schematicPositions, pathwayId]);
  // Vertical mouse-wheel / trackpad gesture over the schematic scrolls it
