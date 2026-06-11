@@ -612,4 +612,188 @@ Jake supplied the **numbered resource set Swade's own reference list points to**
 - **V4** ([21] appt 4): fricative-sound position check, mounting verification (else repeat CR + remount), **VDO by counting 60-to-70**, mirror sign-off.
 - **V6** ([21] appt 6 + [14]): PIP endpoints (max: horizontal palate + PPS + crest; mand: buccal shelves + RMP + crest), disclosing-wax borders, **CO/VDO check → clinical remount if off**, lab's 72-hour water soak (monomer leach), post-op: knife-cut soft food / no incising, reading aloud, extra saliva, denture brush + soft brush for gums, overnight soak **except night one (worn to bed for an honest 24-hr read)**, D5110C/D5120C + **D5120D IOD consult**.
 
-*Trove docs not yet folded in (next iterations): [2] PDI, [4] Facebow lab instructions, [6] JRR guide, [7]-[13], [15]-[20] — these feed the per-chapter sentence ledgers (Jake's item 1).*
+*All trove docs now read and folded in (passes 1–4).*
+
+---
+
+# Per-sentence chapter ledgers — cd-ch1 through cd-ch28 *(trove-integrated, 2026-06-11)*
+
+Jake's standard applied to every chapter: each substantive claim below carries its source. Cites: **[N]** = trove doc · **Sw** = Swade (line/page) · lecture names as before. Claims marked **ⓘ synth** are app-authored glue (sequencing prose, navigation, "why" explanations built from sourced components) — no fabricated specifics. **✂** = corrected this pass (trove pass 4, 28 edits).
+
+### cd-ch1 — Diagnostic impressions
+- Stock metal/plastic trays, multiple sizes, rope-wax beading, alginate + bowl/spatula — **[21] appt 1 materials** + Sw denture #1. Jeltrate/Identic — Sw materials. ✅
+- Tray covers ridge + 2-3 mm vestibular extension; utility-wax extension of short trays — Sw 3526 (add wax to extend tray) + ch16 anatomy. ✅ Adhesive ~30 s dry — mfr-standard ⓘ.
+- "Say ah while loose" (vibrating-line capture), posterior-first seating, tongue protrude/retrude for mandibular, retromolar-pad coverage check — Sw denture #1 steps + [3g] landmarks. ✅
+- Pour within 15 minutes — Sw says "immediately pour up in Microstone" (2187); the 15-min ceiling is the standard alginate window ⓘ (consistent, not contradicted). Type III microstone ✅ Tan-Tray/Sw.
+- Gagging tips (upright, nasal breathing, fast work, topical) — Sw urgent/denture tips + [2] (House patient psych context). ✅
+
+### cd-ch2 — Custom tray
+- One-sheet wax spacer + one-sheet Triad, selective pressure — Tan-Tray + **[1]** ✅. Red line at vestibule depth incl. retromolar pads + hamular notches — **[1] step 2 verbatim** ✅.
+- **✂** Blue line now "2-3 mm inside red" (**[1] step 3**; Tan's deck: 2 mm — both cited in-text).
+- **✂** Relief areas now [1]-verbatim: maxilla = part of palatal raphe + ALL rugae + incisive papilla, just lateral to crest; mandible = crest only, buccal shelf + RMP uncovered (stress-bearing contact) — **[1] step 4**. Tori/mylohyoid/knife-edge kept as additional relief marks (ch16/[3g] sourced).
+- Vaseline → drip-wax blockout (#7) → Vaseline over blockout → warm-sheet spacer (NOT drip wax) cut at blue line → NO Vaseline after spacer — **[1] steps 6-13 + Tan-Tray #3-#7 verbatim** (incl. "DO NOT USE DRIP WAX!!!" and spacer-stays-in). ✅
+- Triad press without trapped air, no overpressing ("tray not too thin") — [1] step 14 + Tan-Tray #8. ✅
+- **✂** Handle now [1] step 15: ½ inch wide/high, ~3 mm thick, vertical, concave grip depressions (grading-sheet ½×½×¼ variant cited in-text). Finger rests ≤2/3 RMP — GradeTray + Tan-Tray #9. ✅
+- **✂** Cure cycle now [1] steps 17-21: air-barrier → 1-1.5 min → cool → remove → 1 min off cast → wash barrier. ✅
+- Finishing: acrylic burs, smooth borders, seat-check with spacer retained, frenal/muscle clearance — [1] step 22 + Tan-Tray finishing. ✅ "What's on the sheet" callout = GradeTray criteria. ✅
+
+### cd-ch3 — Border molding
+- Greenstick through the Hanau torch, rotating constantly; temper in warm-water bath — Sw 3575/3595 verbatim + [21] appt 2 materials. ✅ Compound melts 122-124°F — greenstick mfr spec ⓘ-keep (consistent with "modeling plastic" standard).
+- Trim tray 2-3 mm short of vestibule before molding — [1] blue-line offset + Sw. ✅ Dry tray (compound won't stick wet) — Sw tips. ✅
+- Maxillary 6-region sequence (labial → buccal → distobuccal/coronoid → hamular → posterior/vibrating line → contralateral) with the movement per region — Sw border-molding table (3615-3645: suck/smile/massage movements) + [21]. ✅ Coronoid check via wide-opening + excursion — Sw. ✅
+- Thompson-stick vibrating line, tray just anterior — Sw 3590-3591 verbatim. ✅ "Don't form PPS in greenstick" — [21] appt 2 step f (trim spares the PPS area for the wash). ✅
+- Mandibular sequence incl. masseter/buccinator close-against-finger, retromolar pad coverage (not the incline), tongue protrude + lick-cheeks + lick-palate for lingual/retromylohyoid — Sw mandibular border-molding rows. ✅
+- QC list (symmetric, even, dull-not-shiny, no show-through) + "sharp borders are underextended" — SALARI deck (the chapter credits Salari). ✅
+
+### cd-ch4 — Final impression
+- **✂(earlier pass)** Medium-body PVS is the [21]-specified wash ("unless otherwise advised"); chapter's light/medium reading of the Salari deck noted in-text. ✅
+- Trim compound ~0.5 mm sparing PPS (#10 scalpel context), remove spacer, #8 rugae relief hole, adhesive + air-dry — **[21] appt 2 steps f-i** + Sw 3669. ✅
+- Dry tissues (PVS hydrophobic), thin load, roll wash up over the compound border — Sw + SALARI. ✅
+- Seat with retractors, repeat border movements the first minute, ~6-minute set — **[21] appt 2 steps j-l verbatim**. ✅
+- Inspection: sharp=underextended / thick-rolled=overextended (SALARI), remake triggers list — SALARI deck + Sw. ✅
+
+### cd-ch5 — Box, pour, record base, rims
+- **✂** 1:1 pumice:plaster (about one paper cup each), medium/creamy — **[1] pouring step 4 verbatim** (restores the "equal parts" cut with its source).
+- 3 mm putty margin below the border; land ~3 mm — [1] steps 9-12 + Box grading (3-4 mm width / 2-3 mm uncovered variants cited). ✅
+- **✂** Boxing wax 15-20 mm above the highest point = cast-base height — **[1] step 13 + Box grading verbatim** (the old "16 mm wall / 15-20 mm base" units-shuffle corrected).
+- Vacuum-mixed Type III microstone, gravity flow pour; warm-water soak to soften greenstick at separation — [1] steps 16-19. ✅
+- PPS scribe: #8 round bur terminal line at 1-1.5 mm, #7 spatula carve, deep-posterior→feather-anterior, Valsalva anterior border — **[3] steps 4-7 + [4] verbatim**. ✅ (The full-circle restoration — see the trove-pass flag resolution above.)
+- **✂** Record base: minimum block-out (excess = non-retentive), pink non-fibered VLC, fill-the-vestibule, air-barrier 1-1.5 min + 1 min off-cast + wash — **[3] steps 9-20**. (JRR guide's generic "~10 min" figure noted as the variant.) 2 mm uniform — RB-Grade. ✅
+- **✂** Rim dimensions corrected: 22/18 mm anterior heights (Wk3/[3]/JRR/RB-Grade), **both rims 3-4 mm anterior / 4-6 mm posterior** ([3] steps 7-9 — the old text had the widths split wrongly between arches), 15-20° anterior incline ([3] step 7), mandibular rises to 2/3 RMP ([3] step 8). ✅
+- Rim landmarks (8 mm papilla line = outermost central facial; crest line; 2/3 RMP) — [3] cast-prep + [9] landmarks verbatim. ✅
+
+### cd-ch6 — Face-bow (edentulous)
+- Ear-bow arbitrary type, bite fork, record base + rim as engagement — [7] facebow classification + [21] appt 3. ✅
+- **✂** Attachment method reordered to clinic standard: two bilateral notches at different directions + Vaseline + Regisil/PVS on the bitefork (**[21] appt 3 h-i, [9], [4] facebow instructions**); torch-soften/sticky-wax demoted to lab backup. 
+- Symmetric earpiece seating, level check — [4] Denar Slidematic instructions. ✅
+- 43 mm above relaxed lip (edentulous anterior reference) — **[7] verbatim** ("43 mm above… the relaxed lip"). ✅ (WhipMix nasion reference also in [7]; the 43-mm mark is the lecture's operative instruction.)
+- "5 mm hinge-axis deviation → ~0.2 mm AP at the second molar" — **[7] verbatim**. ✅
+- Preclinical jig callout (transfer jig + mounting jig standardization) — [4] facebow lab instructions + Wk4. ✅
+
+### cd-ch7 — Mounting on the Mark 320
+- Class III semi-adjustable arcon; WhipMix/Denar Mark 320 — **[7] verbatim**. ✅ Bennett fixed at 15° — [9] + Whip Mix manual (Mark300-Inst 218). ✅
+- **✂** Condylar default for setup now **20°** (×3 in the chapter) — **[5],[6],[9]**; refined by the protrusive record ([10]). The Wk14 checklist's 30° recorded here as the conflicting doc — ⏸ Jake: if Wk14 governs a different stage, say the word and I'll re-annotate.
+- Mounting sequence (facebow assembly → maxillary cast → stone → mandibular via CR record, pin 0, latch engaged; retention grooves in plates; sticky-wax stabilization) — Wk4 lab session + [9] + [13] (keep mounting stone). ✅ V-points/2-mm-groove indexing — ch9's sourced notch protocol. ✅
+
+### cd-ch8 — VDO methods
+- VDO = VDR − 2-3 mm — [6] verbatim (Sw + [10] "subtract 3"). ✅ Five methods (rest position, phonetics/closest-speaking-space, esthetics lower-third, swallow, old-denture comparison) — **[10] section 3 verbatim list**. ✅
+- Too-high signs (lip incompetency, clicking at 60-70, stretched lips) / too-low (aged look, deepened folds, drooling) — [10] + [6] facial-analysis. ✅ Freeway >4 mm flag — [10]-consistent (2-4 mm window). ✅
+
+### cd-ch9 — CR registration
+- CR definition (condyles anterior-superior against posterior slopes; rotational-only; repeatable) — **[6] verbatim**. ✅
+- Bimanual technique: 4 fingers on inferior border (fingertips on bone), thumbs at symphysis, open 35 mm, relax, soft upward lift + downward thumb force, NOT forced retrusion — **[6] "guiding the patient into CR" verbatim**. ✅
+- Regisil PB into maxillary V-notches (2/side, different directions) + mandibular 2-mm groove; stop at light rim contact; hold through set — [21] appt 3 + confirmed Regisil protocol. ✅ Working/set times (~45 s / 2-3 min) — Regisil mfr ⓘ-keep.
+- Inspection (sharp indexing, no smear/double) + retake criteria — Sw + [10] §4 (verify, retake, remount). ✅
+
+### cd-ch10 — Tooth selection
+- Portrait IPN (conventional) / Trubyte Classic (interim immediate) — **[6] + [16] verbatim**. ✅ Mould numbering (classification / proportion-contour / width) — [6]. ✅
+- Williams facial-form matching; four facial shapes — [6] facial analysis. ✅ Corners-of-nose ≈ distal of canines — [6] verbatim. ✅
+- Mould from two rim measurements (incisal-to-high-smile + canine-to-canine) — [21] appt 3 p-q. ✅ Intercommissural framing — ⓘ synth consistent with the canine-line method.
+- Shade at chair, natural light, patient collaboration, age-darkening — Sw 3822-3852 (A2/B2-A3/B3 common; gingival OR original). ✅
+- **✂** Posterior selection by scheme: lingualized corrected to **30° maxillary vs 0° mandibular with compensating curve** ([9] "our lab setups" + [15]); monoplane 0° + ramps ✅. "33° BBA" kept as the anatomic-scheme label — ⏸ note: [8]'s taxonomy calls anatomic teeth 30°; the 33° name appears only app-side. Flag for Jake (33° is a real commercial mould line, but the UIC docs say 30°).
+
+### cd-ch11 — Setup order & position rules
+- Canonical order (max anteriors → mand anteriors → mand posteriors → max posteriors), wax-window-at-a-time, never strip the rim — [9]/[5]/[6]instr + AntSetup. ✅ "2-3 lab sessions" pacing — ⓘ synth.
+- Central: long axis slightly distal, mesial at midline, facial at the 8-mm papilla line, incisal at the marked edge ([5]: 0.5 mm below plane — noted) — **[5] verbatim cluster**. ✅
+- Lateral 0.5 mm shorter; canine cusp at the central's level, distal-rotated corner, prominent neck — [5]. ✅ Symmetry caliper checks — [11] (≤1.5 mm consistency note recorded). ✅
+- Mandibular anteriors: perpendicular long axes, level incisal heights, ~0.5-1 mm overbite + 1-2 mm overjet, no centric contact — **[5] step 3 verbatim** (Tan ~1/~1 and [11] ≤1.5 variants noted in the Cases ledger). ✅
+- Mandibular posteriors first from the first premolar; central fossae over the crest; flat-plane contact of B+L cusps (Trubyte template); second molar never on the incline — **[6]instr steps 5-8 + [9] landmarks + Rim-Rem**. ✅
+- Maxillary posteriors: palatal cusps into fossae, first molar Class I first, cheek-bite rule (max lingual cusps over mand crest) — [11] verbatim ("start setting the maxillary teeth with the first molar, setting it in class I"). ✅
+- Centric verification ≥2 contacts/side, tap-don't-grind, reseat high/low teeth — MonoGrade + [11] articulating-paper verify. ✅
+- Wax rules (butt joint, no facial wax, reflow-don't-add, trim base then lingual never facial) — [5] step 2 + AntSetup. ✅
+- Faculty checkpoints — [1]/[3]/[21]'s FACULTY CHECK rhythm. ✅
+
+### cd-ch12 — Articulation schemes & Hanau's quint
+- Hanau's five factors + Theilemann qualitative formula + what's manipulable — Obrez occlusion deck (confirmed) + [8] determinant table. ✅
+- Natural-vs-denture occlusion contrasts (PDL loss, unit movement, incising dislodges, BBA desired) — **[8] table verbatim**. ✅
+- Tooth-form taxonomy: anatomic 30° / semi 10-20° / non-anatomic 0° — **[8] verbatim** (the chapter's "33° BBA" naming ⏸ flagged as above).
+- Monoplane: 0°, no compensating curve, no anterior vertical overlap, PASS/FAIL, anterior-contact-in-MI = gross deviation — MonoGrade verbatim. ✅
+- **✂** Monoplane+ramp overlaps corrected: 0.5-1 mm vertical / 1-2 mm horizontal anterior ([5]); posterior horizontal overlap **1-2 mm with cusp-in-groove tracking** (MonoGrade line 41 + [6]instr step 10 — replacing the unsourced "1/3 of tooth").
+- Ramp grading (working/balancing/protrusive contact requirements) — MonoGrade + [6]instr 12-13. ✅
+- Week-14 huddle compensating-curve gradient — already self-flagged in-text as illustrative pending the huddle key. ⏸ stands.
+- Christensen phenomenon + the two fixes (ramps / compensating curve) — **[10] §5 + [11] verbatim**. ✅
+
+### cd-ch13 — Wax try-in (9 steps)
+- "Last reversible step" framing + 1.5-2 hr plan — ⓘ synth on [10]'s checklist. The seven [10] evaluation domains (esthetics, phonetics, VDO, CR-verify, protrusive, PPS extent, approval) structure steps 2-8. ✅
+- Step 2 esthetics: individual seating, retention tugs, lower-third proportion, midline-vs-philtrum, incisal display, interpupillary cant check, wax lip-support test, characterization ask — **[10] §1 verbatim cluster** (incl. the 10-mm papilla maximum, flange ≥2 mm, thicker-flange-for-resorbed-ridge). ✅
+- Step 3 phonetics: F/V "fifty-five" wet-dry line; S count-the-sixties (whistle vs lisp causes); M lip-at-rest; E incisal length — **[10] §2 + [6] phonetic analysis verbatim**. ✅
+- Step 4 VDO: VDR−3, freeway window, the high/low signs — [10] §3. ✅
+- Step 5 CR verify: new record on mandibular posteriors only, close to FIRST contact (not into MI), teeth must drop into the indentations on the articulator, else remount — **[10] §4 verbatim** (incl. the pin-opened-by-record-thickness remount mechanics). ✅
+- Step 6 protrusive: 5-6 mm protrusion ([21] "5-6 mm" verbatim), sets condylar guidance, **✂** default now 20° in the why-it-matters line ([10]'s own example: "if you set 20° but the patient is 30°"). ✅
+- Step 7 PPS: "ah" + Valsalva + House class + the three-zone dimensions (hamular 1-2/1 · junction 4-6/1.5 · midline 2-3/1) — **[10] §6 verbatim** ([3]'s table variant — hamular width 1 vs 1-2 — noted). ✅
+- Step 8 approval: shape/color/arrangement/characterization + signed consent — [10] §7 + [21] appt 5 (DENTUR consent + DENTUR flow in Swade). ✅
+- Step 9 + callouts: remount jig BEFORE processing (Dixie-cup plaster index), clinical remount cast, lab Rx contents — **[14] steps 1, 6 verbatim**. ✅ (The old remount-jig FLAG is closed: this is canon.)
+
+### cd-ch14 — Processing & lab remount
+- SR Ivocap system: 20 g/30 mL capsule, Cap Vibrator 5 min, bolt the flask, inject, **35-min boiling cure under pressure**, gradual cool — **[13] injection-molding section verbatim** (20 g + 30 mL, 35 minutes, capsule-vibrator system; pressure values from the Ivocap unit spec ⓘ). ✅
+- **⏸ CONFLICT (recorded, not resolved):** [13] says "compression molding — we use this processing technique at UIC" while teaching BOTH techniques; the chapter (per the Processing+Festooning deck) builds on Ivocap injection. Both are official docs. The lab's actual workflow is the lab's; the chapter's Ivocap detail stands as taught. Jake: confirm which the 5th-floor lab runs if it ever matters clinically.
+- Flasking (separator, two pours, stone to occlusal level, lid overflow, 45-min set, clamp) — **[13] flasking verbatim**. ✅
+- **✂** Wax elimination: boiling water **5 minutes** restored (**[13] verbatim** — the earlier audit's cut of "4-5 min" was directionally right but the source says 5), detergent wash, all-wax-out-or-teeth-pop-out warning — [13] ★ verbatim. ✅
+- Tin-foil substitute on stone NOT teeth (teeth must bond) — [13] verbatim. ✅ Diatorics mention — [13]. ✅
+- Deflasking + cast-broken-to-remove (undercuts lock the denture) — **[13] verbatim** — and consistent with Sully's ground truth. ✅
+- Lab remount: technician's job; restore pin-to-table by reducing prematurities, never centric-holding cusps; BULL for excursions — **[14] §3 + Deliv-lec equilibration rules verbatim**. ✅
+- Finish/polish: borders preserved, intaglio never polished (matte = retention), cameo high-shine — [14] §5 verbatim. ✅ 72-hour water soak (monomer leach) — **[14] verbatim**. ✅
+
+### cd-ch15 — Delivery
+- Materials + before-appointment (finished dentures only — no casts/jigs back; masters destroyed) — [14] + Sully-confirmed + Sw. ✅
+- Fit/esthetics first, mirror approval — [21] appt 6 a-b + Sw. ✅
+- PPS check: "ah" + wet Thompson stick, reduce overextension, feather bevel — Sw 4132 region verbatim. ✅
+- Borders: pull-cheek/lift-tongue test, disclosing-wax ropes ≤2 mm, show-through = overextension — Sw p.95 + [14] §8b. ✅
+- PIP: dry, thin one-direction layer, Mizzy, light molar pressure no biting, ~5 s, reduce show-through, repeat — Sw p.94-95 verbatim + [21] c-g (with the [21] contact endpoints now in the Maps V6 detail). ✅
+- Occlusion light at delivery; horseshoe paper; even bilateral posterior contact; protrusion = 2 posterior + anterior contacts — Sw p.95 verbatim. ✅
+- Polish outside only — Sw/[14]. ✅
+- POI list: first-night wear ([14]/[16]/Sw "not to remove until 24 hr followup"), soft food/small bites, knife-cut no incising ([14]), reading aloud, saliva increase, denture brush + denture toothpaste, gum brushing, water soak never hot, Polident/Polygrip ok, bring-to-visits ultrasonic — **[14] §11 + Deliv-lec + Sw 4197 verbatim cluster**. ✅ Next-visit cadence (24 h; 1-day-severe/3-day-minor) — Deliv-lec + Sw. ✅
+
+### cd-ch16 — Edentulous anatomy
+- Support taxonomy with the book-vs-ACP conflicts EXPLICITLY recorded in-text (tuberosity primary-vs-secondary; RMP peripheral-vs-primary) — honest dual-cite ✅ ([3g] is the underlying deck; its extracted text confirms buccal shelf + RMP + papilla entries).
+- The 16 maxillary + 12 mandibular landmark entries (record/relieve verdicts) — [3g] + Obrez anatomy deck + standard anatomy; spot-checked: vibrating line hamular-to-hamular + anterior-to-fovea ([4] PPS guide verbatim), denture border occasionally 1-2 mm past the line ([4] verbatim), buccal shelf primary ([3g] line 162-166), mylohyoid relief, retromylohyoid extension (Sw border-molding). ✅ No fabricated specifics found on this re-pass.
+
+### cd-ch17 — PPS, vibrating line, House
+- Vibrating line definition + hamular-to-hamular + anterior-to-fovea + rare 1-2 mm posterior extension — **[4] verbatim**. ✅
+- PPS area between vibrating line and the attached-tissue junction; Valsalva for the anterior border; butterfly from the posterior nasal spine — **[4] verbatim**. ✅
+- Purpose list (shrinkage compensation, functional movement, food/air exclusion, retention, gag reduction) — [4] + [10] §6 functions. ✅
+- Scribing steps (#8 bur, 1-1.5 mm, deeper-posterior feather-anterior, positive bead) — **[3] steps 4-7 verbatim**. ✅
+- Trial-stage dimensions (1-2/1 · 4-6/1.5 · 2-3/1) — **[10] §6 verbatim**. ✅
+- House palate classes I/II/III with >5 mm / 1-5 mm / <1 mm displaceable tissue + ~45°/~70° angles + retention prognoses — **[4] verbatim**. ✅ The 30-second chairside-classing callout — ⓘ synth on [4]'s criteria (movement magnitudes are illustrative — ⏸ minor: the mm-of-movement numbers aren't in [4]; the class criteria are angle/tissue-based. Consider trimming the 1-2/3-5/6+ mm motion figures — left pending Jake).
+
+### cd-ch18 — Phonetics troubleshooting
+- **FLAG CLOSED:** the bilabial + vowel content is sourced — M = lip position at rest, E = incisal length (**[6] phonetic analysis**); F/V wet-dry line, S = position + VDO, lisp = excessive bucco-palatal (**[6] + [10] §2**). ✅
+- /s/ whistle-vs-lisp causes + VDO link; F/V muffled-vs-harsh; bilabial struggle = VDO high; vowel distortion = tongue space — [10] §2-§3 + [6], with the fix-direction logic ⓘ synth on those sources. ✅
+- 60-70 count callout — [10]/[21]/Sw confirmed. ✅ "1-2 weeks adaptation before adjusting" — Deliv-lec adaptation counsel ⓘ-keep.
+
+### cd-ch19 — Types & immediate scenarios
+- CID-vs-IID table (long-term/short-term, 1-vs-2 sets, esthetics-modifiable, cost, teeth-remaining) — **[16] verbatim**. ✅ Workflow offer hierarchy (conventional to all; interim+conventional if can't function; CID only in ideal circumstances) — [16] verbatim. ✅
+- **✂** Decision tree: CCD now "8-appointment"; CID soft-relines→hard reline 3-4 mo ✅ ([16] verbatim); **✂** IID definitive CCD "~6 months per the immediate guide".
+- Advantages/disadvantages/contraindications/consent lists — [16] rationale + adv/disadv verbatim (appearance, splint effect, no-esthetic-try-in, relines, cost). ✅ **✂** Consent "do NOT remove until the 24-hour follow-up" ([16]/[14]/Sw aligned).
+- Stage 1: posterior extractions retaining opposing premolars for VDO + 3-4 wk heal — **[16] verbatim**. ✅
+- Stage 2 tray: 1 mm edentulous / 2-3 mm dentate spacer + vertical-stop windows on incisal/cusp tips — **[16]/Agrawal verbatim** (the why-the-difference paragraph is ⓘ synth on the sourced spec). ✅
+- Stage 3-4: light-body around standing teeth, quick-snap removal, Type IV master, duplicate for surgery — [16] + standard ⓘ. Stage 5 cast surgery (gingival-level cut + 1 mm socket recess, facial reduction toward ⅓ vestibule, round + smooth) — **[16] cast-surgery steps verbatim** (ordering differs; operations match). ✅
+- Stage 6: posterior-rim-only records, CR-not-CO ([16] verbatim), posterior try-in is the only try-in, anteriors set one-at-a-time alternating sides ([16] verbatim), photo documentation. ✅ Stage 7 surgical guide for bone-reduction reference — [16] verbatim. ✅
+- Stage 9: trial-seat before suturing, 24-hour rule = swelling control/bandage effect — [16] ("it controls swelling") + Sw. ✅
+- **✂** Stage 10 cadence: conditioner at **2-4 weeks** ([16]'s soft-reline change interval; was 4-6); hard chairside 3-4 mo + lab 6 mo ladder ([16]). ✅
+- **✂ FLAG CLOSED (ch19 implant-OD):** insert-replacement intervals normalized to the cited IOD reference (1-2 yr), color-list dropped — consistent with Jake's ch27 strip decision. Attachment-type survey (Locator/ball/bar/conus) kept as orientation prose (named types only, no forces) — ⏸ trim further if Jake wants full ch27 parity.
+- Housing-pickup procedure (block-out around abutments, cold-cure, light MI close, 10-15 min, trim) — cross-cd-iod-implants' cited workflow + [21] D5120D consult rail. ✅
+
+### cd-ch20 — Reline, rebase, repair
+- Definitions trio — [17]/BY. ✅ Indications (immediates 3-6 mo, post-implant IOD, RRR, socioeconomic) — **BY 133-140 verbatim**. ✅ Contraindications list (abused tissue except temporary, excessive resorption, poor esthetics, MM relation, TMJ, speech, worn teeth, occlusal plane, undercuts) — BY verbatim. ✅
+- CAN/CANNOT-improve lists — ⓘ synth structured on BY's indication/contraindication logic; spot-checked clean (no invented numbers). The "90-day rule" callout — ⓘ synth (clinically conservative; no source number contradicts) ⏸ noted.
+- Lab reline technique steps 1-12 — **Sw lab-reline section verbatim** (2-week counsel, ultrasonic-if-gross, orientation note, 0.5 mm intaglio, 1 mm flanges, single palatal relief hole, 1-2 mm light body rolled over flanges, shade from original script, L199-OR, D5750/D5751). ✅
+- Repair: super-glue reassembly + pressure pot **20 min** — BY 365 + confirmed super-glue/pressure-pot protocol. ✅ Chairside repair walk-throughs (sticky-wax + stone matrix + V-groove + cold-cure) — BY repair section + ⓘ procedural synth; no invented numbers beyond bench-standard working times. ✅
+
+### cd-ch21 — Wax decoder
+- Task→wax mapping + the block-out-vs-spacer callout — app-synthesized decoder (audited previously); brand-free, number-light. ✅ The four wax descriptions — denture base materials 2024 + [19] (Bedran-Russo) lecture family; melting-point figures previously trimmed to the sourced ones. ✅ (No changes this pass.)
+
+### cd-ch22 — Loose denture differential
+- Diagnostic ladder + 11 ranked causes — app-synthesized differential (audited previously, kept per policy with the ⓘ synthesis note). **NEW corroboration from the trove:** [17] opens with exactly this complaint ("loose denture… often loss of suction"), lists underextension / overextension (coronoid, buccal shelf, muscle impingement) / occlusal interference as causes ✅, and **sources the 30%-chewing-efficiency expectation** (also now cited in the Cases entries). Xerostomia mechanism (interfacial tension) — SALARI. ✅ VDR−VDO 2-4 mm window — [10]/[6]. ✅
+
+### cd-ch23 — Post-delivery complaints
+- (Audited + per-claim ledgered earlier tonight — see the cd-ch23 section above.) Trove adds: complaint-cause mappings corroborated by [14] §12 (24-h protocol) and [21] appt 6; the 24-h/1-week cadence + 1-day-severe/3-day-minor split — Deliv-lec + [21]. ✅ No changes this pass.
+
+### cd-ch25 / cd-ch27 / cd-ch28
+- **ch25:** **✂** Pathway 1 now "8-appointment" (the last 7-vs-8 holdout). Rest audited earlier tonight (navigation meta-page; Pathway 2's scrubbed labels still ⏸ Jake's).
+- **ch27:** audited + stripped earlier tonight per Jake; [16] now ALSO corroborates the kept RCT-on-abutments workflow (lines 127-129 verbatim in the study guide). ✅
+- **ch28:** audited earlier; **✂** this pass aligned the IID bullet to [16]'s ladder (2-4 wk conditioner changes → hard chairside 3-4 mo → lab 6 mo). Coe Comfort/Soft/GC Reline = Sw materials verbatim. ⓘ product-pliability durations ("~4-6 wk", "1-3 mo") remain ⏸ unverified product claims — flagged, not cut (no contradicting source).
+
+---
+
+**STATUS: every CD chapter (cd-ch1–28) now has a per-claim/per-sentence ledger, integrated with the official numbered resources. Open items for Jake:** ① condylar 20° (setting docs) vs Wk14's 30° — card says 20°, confirm; ② "33° BBA" naming vs [8]'s 30° anatomic taxonomy; ③ [13] compression-vs-Ivocap lab conflict; ④ ch17's House-class movement-mm figures (illustrative); ⑤ ch25 Pathway 2 scrubbed labels; ⑥ ch19 attachment-survey paragraph — keep as orientation or strip to full ch27 parity; ⑦ Wk14-huddle compensating-curve values (self-flagged in-text).

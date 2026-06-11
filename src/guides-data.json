@@ -130,9 +130,9 @@
         "kind": "numbered",
         "items": [
          "**Red pencil:** trace the tray border at the depth of the vestibule on buccal + labial. At posterior: vibrating line area (maxillary) or pear-shaped retromolar pad (mandibular).",
-         "**Blue pencil:** draw a line 2 mm INSIDE the red. This is where the tray border will sit, leaving 2 mm of vestibular space for border-molding material.",
+         "**Blue pencil:** draw a line 2-3 mm inside the red (the lab instructions say 2-3; Tan's deck draws it at 2). This is where the tray border will sit, leaving that vestibular space for border-molding material.",
          "Posterior extension gets RED line only (no 2 mm blue offset there).",
-         "**Red marks for relief areas:** mid-palatal suture, incisive papilla, mandibular lingual tori, mylohyoid ridge, knife-edge ridge zones."
+         "**Red marks for relief areas:** maxilla — part of the palatal raphe, all rugae, and the incisive papilla, extending just lateral to the ridge crest; mandible — the crest of the residual ridge only, leaving the buccal shelf and retromolar pads uncovered so the finished tray contacts those stress-bearing areas. Also mark any lingual tori, mylohyoid ridge, or knife-edge zones."
         ]
        },
        {
@@ -179,7 +179,7 @@
        {
         "kind": "bullets",
         "items": [
-         "**Maxillary:** vertical handle over the central incisor area. Should not impinge on lip closure.",
+         "**Maxillary:** vertical handle over the central incisor area — ½ inch wide and high, ~3 mm thick, with concave grip depressions (the grading sheet lists ½ × ½ × ¼ inch). Should not impinge on lip closure.",
          "**Mandibular:** finger rests in the bicuspid area, bilateral. No taller than **2/3 of the retromolar pad height** (impingement = tray won't seat in mouth).",
          "Build from Triad offcuts. Press into the surface; light cure after addition."
         ]
@@ -191,10 +191,10 @@
        {
         "kind": "numbered",
         "items": [
-         "**Light cure ~1 min** in the light chamber.",
+         "Apply air-barrier coating, then **light cure 1-1.5 min** in the light chamber.",
          "Wait for cooling.",
          "Remove tray from cast carefully — lift off, don't pry.",
-         "**Cure again off the cast** with intaglio side up. Fully polymerizes the inner surface."
+         "**Cure 1 more minute off the cast** with intaglio side up, then wash off the oxygen-barrier coating."
         ]
        },
        {
@@ -426,10 +426,10 @@
        {
         "kind": "numbered",
         "items": [
-         "Mix equal parts pumice and plaster (~1.5 cup each) to a thick putty.",
+         "Mix pumice and plaster 1:1 (about one paper cup of each) to a medium/creamy putty.",
          "Spread the putty flat on the bench.",
          "Press the impression into the putty so **3 mm of putty extends lateral to the borders** and **at least 2 mm of border is exposed in height** above the putty.",
-         "Adapt **boxing wax** around the periphery. Top of the boxing wax should be **at least 16 mm above the highest point** of the impression area — gives a cast base 15–20 mm thick.",
+         "Adapt **boxing wax** around the periphery, extending **15–20 mm above the highest point** of the impression — this sets the height of the cast base.",
          "Seal the boxing wax to the periphery of the land area with a heated #7 spatula. Water-test the seal for leaks."
         ]
        },
@@ -463,7 +463,7 @@
        },
        {
         "kind": "paragraph",
-        "text": "Lubricate the cast, block out major undercuts with wax, adapt Triad on the cast, light-cure for ~10 min. Finish smooth. The record base must be stable on the cast and stable in the mouth."
+        "text": "Lubricate the cast and block out major undercuts with the minimum wax needed — excessive block-out makes the base non-retentive in the mouth. Adapt the VLC record-base resin (regular pink, non-fibered) with even finger pressure, filling the vestibule to replicate the final denture border. Air-barrier coating; cure 1-1.5 min on the cast, cool, 1 more minute off the cast; wash the barrier off. The record base must be stable on the cast and stable in the mouth."
        },
        {
         "kind": "section",
@@ -472,8 +472,8 @@
        {
         "kind": "bullets",
         "items": [
-         "**Maxillary:** 22 mm anterior height, 4–6 mm posterior width. Occlusal surface **flat and even**. Facial contour canine to canine flat and meets the occlusal surface at a sharp angle.",
-         "**Mandibular:** 18 mm anterior height, 3–4 mm posterior width."
+         "**Maxillary:** 22 mm anterior height; 3–4 mm wide anteriorly, 4–6 mm posteriorly; anterior face inclined 15–20° in profile. Occlusal surface **flat and even**. Facial contour canine to canine flat, meeting the occlusal surface at a sharp angle.",
+         "**Mandibular:** 18 mm anterior height, rising to 2/3 of the retromolar pad height posteriorly; same 3–4 mm anterior / 4–6 mm posterior widths."
         ]
        },
        {
@@ -538,8 +538,8 @@
        {
         "kind": "numbered",
         "items": [
-         "**Option A (preferred):** soften the maxillary wax rim's upper surface with the torch flame — brief pass, soften but don't melt. Press the bite fork's prongs into the warm wax. Chill with cool air to fix.",
-         "**Option B (backup):** sticky wax along the fork-rim interface.",
+         "**Option A (clinic standard):** cut two notches bilaterally, at different directions, in the maxillary posterior wax rim; Vaseline them; apply Regisil/PVS to the bitefork and seat it against the rim so the material locks into the notches.",
+         "**Option B (lab backup):** soften the rim surface with a brief torch pass and press the fork's prongs into the warm wax — or sticky wax along the fork-rim interface.",
          "Verify the fork is rigidly attached — should not rock or shift.",
          "Fork stem should project anteriorly + slightly downward."
         ]
@@ -626,7 +626,7 @@
         "items": [
          "**Upper member** with the maxillary mounting plate.",
          "**Lower member** with the mandibular mounting plate and the condylar housings.",
-         "**Condylar inclination thumbscrew** — adjusts 0–60°. default for tooth setup: 30°.",
+         "**Condylar inclination thumbscrew** — adjusts 0–60°. Default for tooth setup: 20°, refined by the protrusive record at try-in.",
          "**Centric latch** — locks the articulator into terminal hinge for setup; loosened for excursion checks.",
          "**Incisal pin and table** — sets vertical dimension and anterior guidance."
         ]
@@ -654,7 +654,7 @@
         "kind": "numbered",
         "items": [
          "Open the articulator. Verify centric latch is engaged + incisal pin reads 0.",
-         "Set **condylar inclination thumbscrew to 30°** (default for setup; refined later by protrusive record at try-in).",
+         "Set **condylar inclination thumbscrew to 20°** (the setting-lab default; refined later by the protrusive record at try-in).",
          "Bennett angle is fixed at 15° on the Mark 320 (no adjustment).",
          "Mounting plates: attach upper + lower; cut retention grooves into the underside of each plate to grip the mounting stone."
         ]
@@ -710,7 +710,7 @@
        {
         "kind": "callout",
         "title": "Articulator setting reference",
-        "body": "**Condylar inclination:** 30° default; refined by protrusive record at try-in. **Bennett:** 15° fixed (not adjustable on the Mark 320). **Incisal pin:** 0 mm at setup VDO."
+        "body": "**Condylar inclination:** 20° default; refined by the protrusive record at try-in. **Bennett:** 15° fixed (not adjustable on the Mark 320). **Incisal pin:** 0 mm at setup VDO."
        }
       ]
      },
@@ -883,7 +883,7 @@
          "**33° BBA** — 33° anatomic posteriors (max + mand).",
          "**Monoplane neutrocentric** — 0° flat-plane posteriors.",
          "**Monoplane + balancing ramp** — 0° flat-plane posteriors plus acrylic balancing ramps built distal to the second molars.",
-         "**Lingualized (alternative not on the grading sheets)** — 20° maxillary, 0° mandibular."
+         "**Lingualized (the second UIC lab setup)** — 30° maxillary against 0° mandibular, balanced with a compensating curve."
         ]
        },
        {
@@ -1202,8 +1202,8 @@
          "**Indication:** as monoplane, but balance is desired (e.g., for stability without anatomic tooth wear concerns).",
          "**Posterior teeth:** 0° flat-plane.",
          "**Acrylic balancing ramps** added distal to the mandibular second molars to allow posterior contact in excursions.",
-         "**Anterior overlap:** 1–2 mm vertical and horizontal.",
-         "**Posterior horizontal overlap:** 1/3 of tooth.",
+         "**Anterior overlap:** 0.5–1 mm vertical, 1–2 mm horizontal.",
+         "**Posterior horizontal overlap:** 1–2 mm — the mandibular buccal cusps track the maxillary central grooves.",
          "**Grading:** PASS / FAIL. Working = contact on working-side ramp + anteriors; balancing = contact on balancing ramp; protrusive = contact on posterior acrylic ramp bilaterally + anterior contact."
         ]
        },
@@ -1368,7 +1368,7 @@
          "**6c.** Patient closes into the Regisil with the jaw protruded.",
          "**6d.** Set ~30 seconds. Remove carefully.",
          "**6e.** This record goes to the lab. The lab will set the articulator's horizontal condylar guidance to match the patient's protrusive condylar path.",
-         "**6f. Why this matters:** without this record, the lab remount and the clinical remount are working with the default 30° condylar setting — not the patient's actual anatomy. Excursive balance won't reproduce in the mouth."
+         "**6f. Why this matters:** without this record, the lab remount and the clinical remount are working with the default 20° condylar setting — not the patient's actual anatomy. Excursive balance won't reproduce in the mouth."
         ]
        },
        {
@@ -1503,7 +1503,7 @@
        {
         "kind": "bullets",
         "items": [
-         "**2a.** Place the closed flask in boiling water to soften the wax.",
+         "**2a.** Place the closed flask in boiling water for 5 minutes to melt the wax.",
          "**2b.** Open the flask with the plaster knife / mallet. The upper half (with the teeth) separates from the lower half.",
          "**2c.** Wash all wax out with boiling water, then with detergent (alkaline soap) until the stone is clean. No greasy film.",
          "**2d. Inspect:** teeth remain embedded in the upper-half stone, in their original mounted positions. Stone base remains in the lower half. No wax residue anywhere. If a tooth comes out, retrieve it carefully — you'll need to reseat it before injection.",
@@ -1997,9 +1997,9 @@
        {
         "kind": "bullets",
         "items": [
-         "**Already fully edentulous** → CCD. Standard 7-appointment sequence.",
+         "**Already fully edentulous** → CCD. Standard 8-appointment sequence.",
          "**Few anterior teeth, patient wants one definitive prosthesis** → **CID.** Extract posteriors first, heal 4 wk (retain opposing PMs for VDO), insert at the anterior extraction day. Soft relines → hard reline at 3–4 mo.",
-         "**Multiple teeth, esthetics matter, patient can afford two prostheses** → **IID.** Same workflow as CID but with cheaper Trubyte Classic teeth, labeled \"Temporary Denture.\" New CCD at 6–12 mo with full try-in.",
+         "**Multiple teeth, esthetics matter, patient can afford two prostheses** → **IID.** Same workflow as CID but with cheaper Trubyte Classic teeth, labeled \"Temporary Denture.\" New CCD once healed (~6 months per the immediate guide) with full try-in.",
          "**Sound canine roots can be saved, hygiene is good** → **IOD.** Endo + decoronate to dome; fabricate denture over roots. Better bone preservation, retention, proprioception. Root caries is the long-term risk.",
          "**Poor surgical candidate / uncooperative / can't manage immediate workflow** → controlled extractions + 6 mo healing → CCD. Don't push an immediate on someone who can't manage it.",
          "**Severely resorbed mandible (PDI IV), patient values stability** → consider 2-implant overdenture (McGill Consensus 2002) as first-line rather than conventional CD."
@@ -2059,7 +2059,7 @@
          "Temporary difficulty eating and speaking.",
          "**Unpredictable esthetics** — you can't trial anteriors in the mouth before extraction.",
          "Increased salivation, new chewing sounds, possible gagging.",
-         "**Do NOT remove the denture for the first 24–48 hours.**",
+         "**Do NOT remove the denture until the 24-hour follow-up.**",
          "Tissue conditioning, relines, adjustments, and a new set of dentures after healing are the patient's financial responsibility.",
          "After healing (6–12 mo), a completely new CCD may be required."
         ]
@@ -2194,7 +2194,7 @@
        {
         "kind": "callout",
         "title": "Cast surgery is approximate, not perfect",
-        "body": "The cast-modification step is the best engineering approximation of post-extraction anatomy that can be done before the surgery actually happens. Real ridges resorb in three dimensions, with bone often collapsing more buccally than the cast predicts. Expect to reline the immediate denture with tissue conditioner at 4–6 weeks — the cast simulation gets you 80% of the way there; the soft reline corrects the remaining 20%."
+        "body": "The cast-modification step is the best engineering approximation of post-extraction anatomy that can be done before the surgery actually happens. Real ridges resorb in three dimensions, with bone often collapsing more buccally than the cast predicts. Expect to reline the immediate denture with tissue conditioner at 2–4 weeks — the cast simulation gets you most of the way there; the soft reline corrects the rest."
        },
        {
         "kind": "section",
@@ -2260,7 +2260,7 @@
          "**24-hour follow-up:** remove denture for the first time, assess sockets, irrigate, PIP for pressure spots, adjust intaglio, reinsert. Patient now keeps denture out at night.",
          "**1-week follow-up:** sockets healing, soft tissue swelling reducing. More PIP + intaglio adjustment as the denture settles into the actual (not simulated) ridge.",
          "**3-week follow-up:** further adjustments. Patient's ridge has resorbed somewhat; denture may rock slightly.",
-         "**4–6 week follow-up:** apply **tissue conditioner (soft reline material)** to the intaglio. Takes up the space created by ridge resorption. Replace tissue conditioner every 2–4 weeks as needed.",
+         "**2–4 week follow-up:** apply **tissue conditioner (soft reline material)** to the intaglio. Takes up the space created by ridge resorption. Replace it every 2–4 weeks as needed.",
          "**3-month visit:** assess ridge stability. If still resorbing, continue tissue conditioning. If stable, plan for definitive treatment.",
          "**6–12 month definitive plan:**",
          "**IID:** fabricate a new conventional CD (full wax try-in now possible since patient is fully edentulous).",
@@ -2293,7 +2293,7 @@
        {
         "kind": "bullets",
         "items": [
-         "**Locator attachments** — default. Patrix (male) screws into the implant; matrix (female nylon insert) sits in the denture base. Multiple retention strengths via colored inserts (clear, pink, blue, green, red — weakest to strongest). Easy to replace inserts as they wear (every 6–18 months).",
+         "**Locator attachments** — default. Patrix (male) screws into the implant; matrix (female nylon insert) sits in the denture base. Multiple retention strengths via interchangeable inserts, replaced as they wear — the IOD reference schedules replacement every 1–2 years.",
          "**Ball attachments** — older but still in use. Ball patrix on the implant; metal housing + rubber O-ring in the denture. Lower profile than Locator. O-rings wear faster and require frequent replacement.",
          "**Bar-retained** — a precision-milled bar connects the implants (typically 4-implant), with clips in the denture engaging the bar. More retention + stability but takes up more space and is harder to clean.",
          "**Conus / telescope crowns** — precision-milled inner crowns on the implants; outer crowns embedded in the denture. Excellent retention; high cost; lab-intensive."
@@ -2341,7 +2341,7 @@
         "kind": "bullets",
         "items": [
          "**1-week follow-up:** verify patient is using the attachments correctly (some patients need coaching on the \"snap\" sensation). PIP if any pressure spots.",
-         "**3-month follow-up:** assess attachment wear. Locator inserts last 6–18 months depending on patient hygiene + chewing patterns. Replace as needed.",
+         "**3-month follow-up:** assess attachment wear and replace inserts as needed (the IOD reference's schedule: every 1–2 years).",
          "**Annual recall:** attachment evaluation + replacement (chairside, 5 minutes), peri-implant health check (probing, radiographs), denture base assessment (reline if ridge has resorbed under the denture even though attachments fix the position)."
         ]
        },
@@ -2789,7 +2789,7 @@
        },
        {
         "kind": "paragraph",
-        "text": "Patient has been wearing an old denture or no denture; ridges are healed; no anterior or posterior teeth remaining. The canonical 7-appointment workflow with no surgical phase."
+        "text": "Patient has been wearing an old denture or no denture; ridges are healed; no anterior or posterior teeth remaining. The canonical 8-appointment workflow with no surgical phase."
        },
        {
         "kind": "paragraph",
@@ -2998,7 +2998,7 @@
         "kind": "bullets",
         "items": [
          "**Patient with acute soreness in a single area (1-week complaint):** Coe-Soft or Lynal, spot-applied with PIP-identification first to localize the area. Often resolves the spot soreness in 24–48 hours.",
-         "**IID patient at 2-week post-op:** Coe-Soft or COE-Comfort full reline of the IID intaglio. Conditions the tissue as the ridge remodels; replaced every 3–4 weeks until ready for hard reline at 3–6 months.",
+         "**IID patient at 2-week post-op:** Coe-Soft or COE-Comfort full reline of the IID intaglio. Conditions the tissue as the ridge remodels; replaced every 2–4 weeks until the hard chairside reline at 3–4 months (lab reline at 6).",
          "**Patient with poor tissue health (chronic inflammation under existing denture):** apply tissue conditioner full intaglio, replace weekly for 2–3 weeks to allow tissue to heal before final impression for new denture or reline.",
          "**Bridge between failed denture and new fabrication:** tissue conditioner reline of the failed denture buys 4–6 weeks of comfort while the new prosthesis is fabricated."
         ]
