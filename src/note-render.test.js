@@ -214,6 +214,19 @@ describe("regression locks", () => {
     expect(out).toMatch(/Pulpal diagnosis #8: Pulp necrosis/);
   });
 
+  it("POE (1091): the simple text/select fields reach the note", () => {
+    // Composite POE sections (probing grid, teeth selectors, gingiva/OHI
+    // checkboxes) are covered by the tripwire; this locks the plain fields.
+    const out = render("1091", { examFindings: {
+      EOE: "ZZEOE", TMJ: "ZZTMJ", IOE: "ZZIOE",
+      "oral cancer screening": "ZZOCS", "caries risk": "high", "endo testing": "ZZENDO",
+    } });
+    for (const s of ["ZZEOE","ZZTMJ","ZZIOE","ZZOCS","ZZENDO"]) {
+      expect(out, `${s} never reached the note — dead input`).toContain(s);
+    }
+    expect(out).toMatch(/caries risk[^\n]*high/i);
+  });
+
   it("Urgent Care Wisdom Tooth (448): every form field reaches the note", () => {
     const out = render("448", { examFindings: {
       cc: "ZZCC8", "wt-ioe": "ZZIOE8", "wt-pano": "ZZPANO8",
