@@ -181,6 +181,52 @@ describe("regression locks", () => {
     expect(dx).toMatch(/- Pulpal diagnosis #8: Pulp necrosis/);
   });
 
+  it("Urgent Care (374): EVERY form field reaches the note (consults-family sweep)", () => {
+    // One sentinel per UI field in the 374 exam form (App.jsx EXAM form def).
+    // A missing sentinel = that input silently never reaches the note — the
+    // exact failure mode of the consultations bug. Structured sections
+    // (endo rows, consults, dx rows, IOE dropdowns, yn-toggles) asserted by
+    // their handlers' output shapes.
+    const out = render("374", { examFindings: {
+      cc: "ZZCC",
+      location: "ZZLOC", inception: "ZZWHEN", quality: "ZZQUAL", intensity: "ZZINT",
+      frequency: "ZZFREQ", duration: "ZZDUR", triggers: "ZZTRIG", relief: "ZZREL",
+      "other symptoms": "ZZSYMP", "treatment/evaluation thus far": "ZZTX",
+      "last pain medication taken & effectiveness": "ZZMED", "anything else?": "ZZELSE",
+      "spontaneous pain": "Yes", "lingering pain": "No", "pain wakes pt up at night": "Yes",
+      "radiograph findings": "ZZRADS", "pt opts for": "ZZOPT", EOE: "ZZEOE",
+      "ioe restoration": "heavily restored", "ioe completeness": "partially edentulous",
+      "ioe perio": "heavy calculus & active periodontal disease",
+      "endo count": 1, "endo1 #": "8", "endo1 perc": "+++", "endo1 palp": "-",
+      "dx count": 1, "dx1 tooth": "#8", "dx1 pulpal": "Pulp necrosis",
+      consultations: [{ name: "Sweep", type: "perio" }],
+    } });
+    for (const s of ["ZZCC","ZZLOC","ZZWHEN","ZZQUAL","ZZINT","ZZFREQ","ZZDUR","ZZTRIG",
+                     "ZZREL","ZZSYMP","ZZTX","ZZMED","ZZELSE","ZZRADS","ZZOPT","ZZEOE"]) {
+      expect(out, `${s} never reached the note — dead input`).toContain(s);
+    }
+    expect(out).toMatch(/spontaneous pain:\s*Yes/i);
+    expect(out).toMatch(/lingering pain:\s*No/i);
+    expect(out).toMatch(/wakes pt up at night:\s*Yes/i);
+    expect(out).toMatch(/heavily restored dentition, partially edentulous/);
+    expect(out).toMatch(/- #8: percussion \+\+\+, palpation -/);
+    expect(out).toMatch(/- Dr\. Sweep -- perio consult:/);
+    expect(out).toMatch(/Pulpal diagnosis #8: Pulp necrosis/);
+  });
+
+  it("Urgent Care Wisdom Tooth (448): every form field reaches the note", () => {
+    const out = render("448", { examFindings: {
+      cc: "ZZCC8", "wt-ioe": "ZZIOE8", "wt-pano": "ZZPANO8",
+      "pericoronitis severity": "moderate", "extraction teeth": "1, 16",
+      "wt-consult-date": "ZZDATE8",
+    } });
+    for (const s of ["ZZCC8","ZZIOE8","ZZPANO8","ZZDATE8"]) {
+      expect(out, `${s} never reached the note — dead input`).toContain(s);
+    }
+    expect(out).toMatch(/moderate pericoronitis/);
+    expect(out).toMatch(/extraction #1, #16\./);
+  });
+
   it("Urgent Care (374): 'dx count' stored as a NUMBER does not throw (latent crash guard)", () => {
     // The UI writes update('dx count', n) as a number; the field loop's .trim()
     // would throw on it. Adding a 2nd diagnosis row must not crash the render.
