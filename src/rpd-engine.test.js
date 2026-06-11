@@ -6638,3 +6638,54 @@ describe("Iter 25-28 regression tests", () => {
     expect(r.majorConnector.type).toBe("Full Palatal Plate");
   });
 });
+
+// ============================================================================
+// RPD TREASURE TROVE (2026-06-11) — Swade RPD design guide + Kim Retainers
+// study guide refinements. Sources in docs/RPD-SOURCES.md.
+// ============================================================================
+describe("Trove refinements — perio-driven clasp + connector rules", () => {
+  it("Tooth-supported abutment with POOR perio prognosis gets Combination (wrought wire), not Akers", () => {
+    // Swade RPD design guide: "clasp of choice for tooth-supported areas
+    // with periodontally compromised teeth" = combination (0.02" undercut).
+    const c = rpdMakeBlankCase("mandibular");
+    for (const n of [19, 20]) c.teeth[n].status = "missing"; // bounded span: Class III
+    c.teeth[18].attrs = { ...(c.teeth[18].attrs || {}), perioPrognosis: "poor" };
+    const r = rpdRunEngine(c);
+    expect(r.kennedy.class).toBe("III");
+    const ab18 = r.abutmentDesigns.find(a => a.tooth === 18);
+    expect(ab18.claspType).toBe("Combination");
+    expect(ab18.retentiveArm).toMatch(/wrought wire.*0\.02/);
+    expect(ab18.claspAlternative).toBe("Akers");
+  });
+
+  it("Sound tooth-supported abutment still defaults to Akers (no perio downgrade)", () => {
+    const c = rpdMakeBlankCase("mandibular");
+    for (const n of [19, 20]) c.teeth[n].status = "missing";
+    const r = rpdRunEngine(c);
+    const ab18 = r.abutmentDesigns.find(a => a.tooth === 18);
+    expect(ab18.claspType).toBe("Akers");
+  });
+
+  it("Periodontally involved mandibular ANTERIOR triggers Lingual Plate over Lingual Bar", () => {
+    // Swade design guide lingual-bar contraindications: "teeth are
+    // periodontally involved" / "teeth will later need to be added".
+    const c = rpdMakeBlankCase("mandibular");
+    for (const n of [18, 19, 30, 31]) c.teeth[n].status = "missing";
+    c.measurements.lingualSulcusDepth = 9; // adequate — bar would win otherwise
+    c.teeth[26].attrs = { ...(c.teeth[26].attrs || {}), perioPrognosis: "fair" };
+    const r = rpdRunEngine(c);
+    expect(r.majorConnector.type).toBe("Lingual Plate");
+    expect(r.majorConnector.note).toMatch(/periodontally involved anterior/);
+  });
+
+  it("Compromised POSTERIOR does NOT flip the connector (scoped to anteriors)", () => {
+    // #21 poor (premolar) — the validated Class I case expects the connector
+    // unchanged; the perio response belongs to the clasp, not the plate.
+    const c = rpdMakeBlankCase("mandibular");
+    for (const n of [18, 19, 30, 31]) c.teeth[n].status = "missing";
+    c.measurements.lingualSulcusDepth = 9;
+    c.teeth[21].attrs = { ...(c.teeth[21].attrs || {}), perioPrognosis: "poor" };
+    const r = rpdRunEngine(c);
+    expect(r.majorConnector.type).toBe("Lingual Bar");
+  });
+});

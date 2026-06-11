@@ -1,0 +1,29 @@
+# RPD source ledger — designer engine vs the RPD Treasure Trove
+
+*Started 2026-06-11. Same regime as [CD-PATHWAY-SOURCES.md](CD-PATHWAY-SOURCES.md): citations live here, never user-facing. Sources extracted to /tmp/rpdtrove.*
+
+## The trove (`~/Downloads/RPD Treasure Trove`)
+
+Study guides: [1] Removable Pros + Sequencing + **Retainers** (Kim) · [2] Dx & TP + Base/Tissue/Final-Impression (Kim) · [3] Occlusion (Koslow) + Temporary RPD (Hofmeister) · [4] Pre-Prosthetic (Touloumi) + **Delivery** (Hofmeister) · [5] **Major & Minor Connectors** (Kim) + Reline/Rebase/Repair (Koslow). Lab instruction PDFs [1]–[10] (diagnostic impressions → setting teeth). Plus the **Swade RPD design guide** (the full option/rationale decision table) and the official **UIC Preliminary Design forms** (max + mand).
+
+**File notes:** `RPD Manual.pdf` extracted to zero text — it's image-based/scanned (OCR available on request). `Unconfirmed 238129.crdownload` is an incomplete Chrome download — whatever it was, re-download it.
+
+## Diff verdict: the engine already implements most of this
+
+The designer (src/rpd-engine.js, 4.4k lines, 1025 tests incl. Design Case I/II answer keys and huddle keys) was built from an earlier UIC RPD source set and matches the trove almost everywhere. Confirmed engine≡trove on this pass: the 8 mm lingual-bar rule (4+4 mm), A-P strap as maxillary default, horseshoe only for gag/torus, palatal strap for short Class III, RPI contraindications verbatim (mesial rest impossible / soft-tissue undercut >1 mm at 4-5 mm / vestibule <5 mm → Combination fallback), Combination's 0.02" wrought-wire spec, embrasure for the no-edentulous-space quadrant, ring for tilted molars (molars only), I-bar indications + contras, indirect retainers perpendicular to the fulcrum midpoint with **mandibular incisors + maxillary laterals excluded** (Kim Retainers verbatim — already coded), the mid-arch-clasp-replaces-indirect-retainer rule (the engine's canine dual-role skip), guide planes at the interproximal-lingual line angle on anteriors, Co-Cr default with gold-for-allergy, lattice-vs-mesh, facings/tube teeth, Kelly combination-syndrome mechanism + consequences (Koslow's five match the engine's five).
+
+## Changes made this pass (commit refs in git)
+
+1. **Tooth-supported abutment with fair/poor perio → Combination (wrought wire), Akers demoted to alternative.** Swade design guide: combination is the "clasp of choice for tooth-supported areas with periodontally compromised teeth" (0.02" undercut); Akers row: "if the tooth is periodontally compromised, use a wrought wire clasp instead… less stress on tooth." Kim Retainers: wrought wire flexes in all planes vs cast half-round's one. Implemented in `pickClaspMechanic`'s TS path, ahead of the Akers default; hopeless teeth remain excluded upstream. *Locked by 2 new tests.*
+2. **Periodontally involved mandibular anteriors (fair/poor, #22-27) → Lingual Plate over Lingual Bar.** The Swade guide's two non-space bar-contraindications: "teeth are periodontally involved" and "existing teeth will later need to be replaced by (added to) the existing RPD" — fair/poor anteriors trigger both (splinting now, easy addition later). Scoped to anteriors so the validated #21-poor Class I case keeps its Lingual Bar (the compromised-posterior response belongs to the clasp, not the connector). *Locked by 2 new tests.*
+3. **Reverse Akers rationale now carries the Kim guide's "do not use at UIC" flag** + the lab-Rx phrasing ("Akers clasp engaging the DL/DB undercut" — same physical clasp). The engine's Huddle-6-Q10 tilted-molar carve-out stands (answer-key authority); the naming guidance reconciles the two docs.
+4. **Class II mid-arch alternative text** now presents the Swade guide's option set: Combination engaging 0.02" MB as the choice, cast at 0.01" when retention is adequate + DE span short + abutment healthy + masticatory force low — alongside the engine's embrasure-pair (which is itself [Kim]-sourced for the no-space quadrant). Both designs surfaced; no behavioral change.
+5. **Reciprocation rationale enriched** with Kim's functional definition: rigid, tapers in thickness only, middle/cervical third, and contacts the tooth BEFORE the retentive tip passes the height of contour.
+
+Three snapshots updated — diffs verified to be exactly the intended rationale text (no clasp/connector type changed anywhere; answer-key outputs intact). Suite: 1344 total (1025 engine).
+
+## Deliberately NOT changed
+
+- **Maxillary Full-Palate threshold:** the guide's "prosthetic teeth > remaining teeth" trigger vs the engine's answer-key-derived Class-I-with-≤4-abutments rule — they agree on Design Case II; the engine's version is the validated one. No churn.
+- **"Clinical remount at 1 year / 3-month recall" in the engine's combination-syndrome + recall blocks:** Koslow's prevention list is *unnumbered* ("clinical remount **before delivery**… maintain appropriate recall interval… reline as needed… altered cast… avoid distal extensions by retaining posteriors/implants"), and [4] Hofmeister supports clinical remount for Class I/II occlusal adjustment without a 1-year figure. The engine's numbers came from its earlier source set ("Delivery RPD p.N" cites I can't re-check); left in place per the cited-to-unavailable-doc precedent. ⏸ Jake: if you have that paginated Delivery RPD doc, send it and I'll verify; otherwise consider softening to Koslow's unnumbered phrasing. (Same numbers stay cut from the Cases cross-cd-rpd entry, which had them uncited.)
+- **rpd-chN guide chapters + rpd-conventional Maps pathway:** the trove's 9 study guides + 10 lab PDFs could feed CD-style per-sentence chapter ledgers — a separate session-sized job, available on request. Tonight's pass deliberately stayed on the designer per "don't force anything."

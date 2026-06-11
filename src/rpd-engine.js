@@ -112,7 +112,7 @@ const RPD_RATIONALE = {
  "RPI": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01\" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
  "Combination": "Stress-releasing clasp assembly when RPI is contraindicated (vestibular depth <5 mm, undercut location mid-mesial/MB/DB). Cast rest + 18ga wrought-wire C-clasp arm engaging 0.02\" undercut; wrought wire flexes more than cast metal under stress.",
  "I-bar (esthetic)": "Clasp of choice for the esthetic zone (canine/premolar) when display is high. I-bar approach is invisible below gingival line; rest seat is cingulum (canine) or occlusal (premolar). Requires ≥5 mm vestibular depth and a buccal undercut.",
- "Reverse Akers": "Used when ONLY a mesial/lingual undercut is available on a bicuspid or cuspid (NEVER molar — aspiration risk per Retainers PDF p. 27). Cast clasp originates from the distal aspect of the tooth and wraps to engage a mesio-lingual undercut. Tier-downgraded for molars (use Combination or Embrasure instead).",
+ "Reverse Akers": "Used when ONLY a mesial/lingual undercut is available on a bicuspid or cuspid (NEVER molar — aspiration risk per Retainers PDF p. 27). Cast clasp originates from the distal aspect of the tooth and wraps to engage a mesio-lingual undercut. Tier-downgraded for molars (use Combination or Embrasure instead). NOTE: the Kim Retainers study guide flags the named 'Reverse Akers' design as do-not-use at UIC — on the lab Rx, write it as an Akers clasp engaging the [DL/DB] undercut (same physical clasp, the accepted phrasing).",
  "Embrasure": "Clasp of choice for a quadrant with no edentulous space (Class III mod 0 where retention is needed on a quadrant where no teeth are missing). Two opposing C-clasps cradle adjacent teeth at the embrasure; each engages a 0.01\" undercut. Requires a prepped occlusal rest seat at the embrasure between the two teeth.",
  "Ring": "Cast retainer for a tilted molar abutment where multiple undercut surfaces require encirclement. 360° wraparound with auxiliary occlusal rest; rare in modern practice.",
  "WW C-clasp": "18ga wrought-wire C-clasp for INTERIM RPD only (Summer 2023 IPD lecture). 0.02\" undercut engagement. Wrought wire is flexible enough to bend chairside but cannot be used in cast definitive frameworks.",
@@ -136,7 +136,7 @@ const RPD_RATIONALE = {
  },
  reciprocation: {
  plate: "Reciprocation provided by the major connector plating opposite the retentive arm. When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
- arm: "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line.",
+ arm: "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work (Kim Retainers guide).",
  },
  framework: {
  "Co-Cr": "Standard favorable choice for RPD frameworks (default per Final Impressions p. 18). Cobalt-chromium alloy; 0.5-1.0 mm major connector thickness; excellent rigidity-to-weight ratio; biocompatible; predictable casting; standard unless allergy.",
@@ -311,6 +311,31 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
  if (arch === "mandibular") {
  if (pf.mandibularTori) {
  return { type: "Lingual Plate", rationale: RPD_RATIONALE.major["Lingual Plate (Tori)"], width: "8mm contact above gingival third", note: "relief for mandibular tori", tier: "strong" };
+ }
+ // Periodontally involved mandibular anteriors → Lingual Plate. The Swade
+ // RPD design guide lists two lingual-bar contraindications beyond space:
+ // "if teeth are periodontally involved" and "if existing teeth will later
+ // need to be replaced by (added to) the existing RPD." Fair/poor anterior
+ // prognosis triggers both — the plate splints the involved anteriors AND
+ // makes a future tooth addition far easier than retrofitting a bar.
+ // Scoped to ANTERIOR teeth (22-27): the bar/plate decision lives in the
+ // anterior lingual region; a compromised posterior abutment is handled by
+ // the clasp/abutment logic, not the connector. Hopeless teeth are treated
+ // as pre-extraction elsewhere and intentionally don't trigger this.
+ const perioInvolvedAnteriors = [22, 23, 24, 25, 26, 27].filter(n => {
+ if (caseInput.teeth?.[n]?.status === "missing") return false;
+ const p = caseInput.teeth?.[n]?.attrs?.perioPrognosis;
+ return p === "fair" || p === "poor";
+ });
+ if (perioInvolvedAnteriors.length > 0) {
+ return {
+ type: "Lingual Plate", rationale: RPD_RATIONALE.major["Lingual Plate"],
+ width: "8mm contact above gingival third",
+ note: `periodontally involved anterior${perioInvolvedAnteriors.length > 1 ? "s" : ""} (#${perioInvolvedAnteriors.join(", #")}): plate splints the involved teeth and simplifies adding a tooth to the RPD if one is later lost (Swade RPD design guide)`,
+ tier: "judgment",
+ alternative: "Lingual Bar",
+ alternativeRationale: "Lingual Bar remains acceptable if the periodontal prognosis improves with therapy or if the patient cannot tolerate plate contact. Selected Lingual Plate because the Swade design guide lists periodontally involved teeth — and anticipated future additions — as lingual-bar contraindications.",
+ };
  }
  // Sublingual Bar indication: high lingual frenum AND sulcus too
  // shallow for a standard Lingual Bar (≥8mm). The Sublingual Bar sits
@@ -2022,6 +2047,26 @@ function pickClaspMechanic({
  };
  }
 
+ // Periodontally compromised tooth-supported abutment → Combination
+ // (wrought wire) instead of Akers. Swade RPD design guide: "if the tooth
+ // is periodontally compromised, use a wrought wire clasp instead to allow
+ // greater flexibility (less stress on tooth)"; combination is the "clasp
+ // of choice for tooth-supported areas with periodontally compromised
+ // teeth" and requires a 0.02" undercut. Kim Retainers guide: wrought wire
+ // flexes in all spatial planes vs. cast half-round's single plane.
+ // (Hopeless teeth never reach this point — excluded upstream.)
+ if (attrs.perioPrognosis === "fair" || attrs.perioPrognosis === "poor") {
+ return {
+ claspType: "Combination",
+ claspRationale: `${RPD_RATIONALE.clasp["Combination"]} Selected over Akers because this abutment's periodontal prognosis is ${attrs.perioPrognosis}: the wrought-wire retentive arm's all-plane flexibility transfers less stress to the compromised tooth (Swade RPD design guide — tooth-supported areas on periodontally compromised teeth take a combination clasp).`,
+ retentiveArm: "18ga wrought wire retentive arm engaging 0.02\" mesio-buccal undercut",
+ reciprocation: { type: "arm", text: `Cast ${reciprocalSurface} reciprocal arm`, rationale: RPD_RATIONALE.reciprocation.arm },
+ claspTier: "common",
+ claspAlternative: "Akers",
+ claspAlternativeRationale: "Akers (cast) is the standard tooth-supported choice when the abutment is periodontally sound. Selected Combination here because the prognosis is " + attrs.perioPrognosis + " — if perio therapy restores the prognosis to good, Akers becomes appropriate.",
+ };
+ }
+
  // Standard Akers (default for tooth-supported).
  // Reciprocation must be on the OPPOSITE surface from the retentive arm.
  // Previously hardcoded "Cast lingual reciprocal arm" — wrong when the
@@ -2218,7 +2263,7 @@ function rpdDesignEmbrasureAbutment({ tooth, pairedWith, caseInput, kennedy, att
  contraindications: [],
  claspTier: "strong",
  claspAlternative: "Single Akers on this tooth (forgoing the embrasure pair) — less retention but simpler if the partner tooth has poor undercut access.",
- claspAlternativeRationale: "Embrasure provides superior bilateral retention but requires an acceptable buccal undercut + suitable occlusal embrasure on BOTH teeth. If either fails clinical evaluation, fall back to a single Akers on the most posterior premolar/molar on this side.",
+ claspAlternativeRationale: "Embrasure provides superior bilateral retention but requires an acceptable buccal undercut + suitable occlusal embrasure on BOTH teeth. If either fails clinical evaluation, fall back to a single Akers on the most posterior premolar/molar on this side. The Swade RPD design guide's Class II option for this mid-arch position is a single clasp perpendicular to the fulcrum-line midpoint: a Combination clasp engaging a 0.02\" MB undercut as the choice, or a cast clasp at 0.01\" when its retention is adequate, the distal-extension span is short, the abutment is healthy, and masticatory forces are low — acceptable in place of the embrasure pair when one suitable abutment sits at that perpendicular.",
  };
 }
 
