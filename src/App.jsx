@@ -12698,12 +12698,15 @@ function Browse({
  const merged = useMemo(() => mergeEquipment(perProc), [perProc]);
  const totalItems = Object.values(merged).reduce((sum, list) => sum + list.length, 0);
 
+ // Entry order = render order. "Your Locker" sits LAST (Jake's call):
+ // the sterilization window is the first stop and the locker is your own
+ // stuff — you grab it whenever, so it shouldn't lead the list.
  const groupMeta = {
  sterilization: { label: "Sterilization" },
- locker: { label: "Your Locker" },
  clinic: { label: "In Clinic" },
  unit: { label: "In the Unit" },
  other: { label: "Other" },
+ locker: { label: "Your Locker" },
  };
 
  // ── Jump behavior ────────────────────────────────────────────────────
@@ -24515,10 +24518,17 @@ const PATHWAYS = [
  },
  {
  after: 5,
- title: "Process the RPD",
- body: "Once the wax try-in is approved, send the case to the lab for processing — the wax is replaced with heat-cured acrylic and the RPD is finished and polished around the framework.",
- detail: "1. With the wax try-in approved by the patient and faculty, send the trial RPD for processing by the compression-molding technique.\n\n2. Invest the case in a flask, then boil out the wax.\n\n3. Pack the acrylic resin and heat-process it.\n\n4. Deflask, then do a laboratory remount to refine the occlusion.\n\n5. Finish and polish the RPD around the framework.\n\n6. Collect the finished RPD and schedule the delivery appointment.",
- source: "clinic (swade) — RPD STEPS, laboratory step #7",
+ // Swade's laboratory step #7 is ONE line: "send RPD to lab for
+ // processing." The processing itself — invest, boil-out, pack,
+ // heat-process, deflask, remount, finish — is LAB work, not a
+ // student procedure. An earlier version of this detail wrote those
+ // as imperatives to the student (same leaked lab-as-student framing
+ // the CD pathway's L5 was purged of on 2026-05-29); Jake caught it
+ // here too. Student touches = the handoff and the pickup, period.
+ title: "Send to lab for processing",
+ body: "Once the wax try-in is approved, the case goes to the lab for processing — the wax is replaced with heat-cured acrylic and the RPD comes back finished and polished around the framework.",
+ detail: "1. With the wax try-in approved by the patient and faculty, submit the lab script in Axium and send the trial RPD to the lab for processing by the compression-molding technique.\n\n2. At the lab: the case is invested in a flask, the wax is boiled out, and acrylic resin is packed and heat-processed in its place.\n\n3. Still at the lab: deflasking, a laboratory remount to refine the occlusion, then finishing and polishing of the acrylic around the framework.\n\n4. You'll get an Axium message when the case is back — collect the finished RPD and schedule the delivery appointment.",
+ source: "clinic (swade) — RPD STEPS, laboratory step #7 (“send RPD to lab for processing” — the processing itself is the lab's work)",
  turnaround: "Before Visit 7 (delivery)",
  },
  ],
