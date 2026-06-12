@@ -12859,14 +12859,6 @@ function Browse({
  }}>
  {meta.label}
  </span>
- <span style={{
- marginLeft: "auto", fontSize: "11px",
- color: "var(--ink-faint)",
- fontFamily: "'Geist', sans-serif",
- fontVariantNumeric: "tabular-nums",
- }}>
- {items.length}
- </span>
  </div>
  {/* Plain grab-list — the checkboxes were cut (nobody checked them
  off; the panel is read at a glance on the way to sterilization).
@@ -19186,10 +19178,11 @@ function RPDPaperFormArchDrawing({
 // printable / screenshot-able so it can be copied directly to the paper
 // form.
 function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose = false }) {
- // Open by default — on the paper form the occlusal-view drawing is the
- // centerpiece of the header zone. The collapse toggle stays for when the
- // interactive chart is already on screen above this form.
- const [drawingOpen, setDrawingOpen] = useState(true);
+ // Collapsed by default (Jake's call): the interactive chart is already
+ // on screen right above this form, so auto-expanding the same drawing
+ // twice was redundant. The toggle keeps the paper form's drawing one
+ // click away; its position still mirrors the form's header zone.
+ const [drawingOpen, setDrawingOpen] = useState(false);
  // Rationale verbosity is controlled by the parent's `verbose` prop so a
  // single toggle drives both the Preliminary Design Form rationale column
  // AND the Lab Rx spec callouts. Default OFF = compressed (form-style,
