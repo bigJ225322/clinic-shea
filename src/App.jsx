@@ -15636,7 +15636,7 @@ function PETimeline({ pes, selectedId, onSelect, groupBy = "semester", onGroupBy
  </div>
  )}
  </div>
- <div style={{
+ <div className="pe-timeline-grid" style={{
  display: "grid",
  gridTemplateColumns: `repeat(${columns.length}, 1fr)`,
  gap: "6px",
@@ -18966,7 +18966,7 @@ function RPDPaperFormArchDrawing({
  };
 
  return (
- <div style={{ position: "relative" }}>
+ <div className="rpd-chart-scroll" style={{ position: "relative" }}>
  <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", display: "block", background: "#FDFCF7", userSelect: "none", WebkitUserSelect: "none" }}>
  {/* Midline guide */}
  <line x1={midlineX} y1={12} x2={midlineX} y2={H - 12}
@@ -31478,12 +31478,25 @@ export default function App() {
  the canonical workflow view, so we want it to survive sub-980px
  viewports — otherwise the Claude preview pane never matches what
  the user sees in a real browser. */
+ /* PE timeline: 6 semester columns (7 in category mode) can't shrink below
+    their chip labels, so the strip forces ~565px of page width on a phone.
+    Wrap to 3 columns — in semester mode that's one academic year per row. */
+ @media (max-width: 700px) {
+.pe-timeline-grid { grid-template-columns: repeat(3, 1fr)!important; }
+ }
  @media (max-width: 560px) {
 .rpd-chart-row { grid-template-columns: 1fr!important; }
  /* Loupes is a hover-driven fine-art magnifier — it does nothing useful on a
     touch screen, so hide its nav tab on mobile (the "O"/Loupes glyph parked at
     the right of the tab bar). Default tab is Note, so it's simply unreachable. */
 .loupes-tab { display: none!important; }
+ /* Phone: the 40px desktop gutters cost a fifth of the viewport. */
+ main { padding-left: 18px!important; padding-right: 18px!important; }
+ /* RPD tooth chart: at phone width the full arch renders teeth at ~10px —
+    untappable. Give the chart a minimum drawn width and let the wrapper
+    pan horizontally by touch instead. */
+.rpd-chart-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.rpd-chart-scroll > svg { min-width: 560px; }
  }
 
  /* RPD tooth chart hover + side-by-side layout */
