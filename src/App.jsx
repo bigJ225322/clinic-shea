@@ -29079,6 +29079,20 @@ function Pathways() {
  // on first land and avoids the "I didn't ask for Indirect" effect.
  const [domainId, setDomainId] = useState(null);
  const [pathwayId, setPathwayId] = useState(null);
+ // Entry animation plays ONLY when a map opens from the Maps home screen
+ // (pathwayId null → id). Switching between maps while one is already open
+ // (id → other id, via the domain switcher or a guide link) swaps content
+ // in settled, with no tile fan-out or arrow choreography — replaying the
+ // 1.05s open on every switch read as noise. Derived during render from
+ // the previous pathwayId so the very first frame of a switch already
+ // knows not to animate (an effect-set flag would lag one frame).
+ const prevPathwayIdRef = useRef(null);
+ const entryAnimRef = useRef(true);
+ if (pathwayId !== prevPathwayIdRef.current) {
+ entryAnimRef.current = prevPathwayIdRef.current === null && pathwayId !== null;
+ prevPathwayIdRef.current = pathwayId;
+ }
+ const entryAnim = entryAnimRef.current;
  const [searchQuery, setSearchQuery] = useState("");
  const [showAllDomains, setShowAllDomains] = useState(false);
  // Section collapse state — Set of anchorIds that are collapsed. Empty by
@@ -29272,6 +29286,14 @@ function Pathways() {
  if (!schematicPositions) return;
  const grid = schematicGridRef.current;
  if (!grid) return;
+ // Map-to-map switch: no entry choreography. The tiles render settled
+ // (no mapTileEnter, top stays 0), so the arrows' static x/y attributes
+ // are already final geometry — nothing to animate. Mark this pathway
+ // as run so a mid-life re-measure doesn't start a late animation.
+ if (!entryAnimRef.current) {
+ arrowsRef.ranFor = pathwayId;
+ return;
+ }
  const DUR = 1350;
  // First run for this pathway starts the clock; a re-run (a REAL
  // re-measure mid-animation, e.g. a font swap changing tile sizes)
@@ -30129,7 +30151,10 @@ function Pathways() {
  entryOffsetsRef.current = { id: pathwayId, offsets };
  }
  const entryOffsets = entryOffsetsRef.current.id === pathwayId ? entryOffsetsRef.current.offsets : {};
- const mapEntering = !!schematicPositions; // animation applies once positions are known
+ // mapEntering gates VISIBILITY (positions known -> opacity 1). entryAnim
+ // additionally gates the tile fan-out keyframe: switching maps while one
+ // is open renders tiles settled, no replayed entrance.
+ const mapEntering = !!schematicPositions;
  // Entry offset for the maintenance-branch cluster: match the lowest
  // animating row (most-negative offset = the bottom lab level, e.g. "Send
  // to central lab"), so the branches fan DOWN off V_last in lockstep with
@@ -30343,7 +30368,7 @@ function Pathways() {
  ? `${LAB_RIGHT_NUDGE[item.index]}%`
  : "0px",
  "--map-entry-dy": ((entryOffsets[item.key] || 0)) + "px",
- animation: mapEntering ? "mapTileEnter 1.05s cubic-bezier(.4,0,.2,1) 0s both" : undefined,
+ animation: mapEntering && entryAnim ? "mapTileEnter 1.05s cubic-bezier(.4,0,.2,1) 0s both" : undefined,
  visibility: isSourceTile ? "hidden" : "visible",
  }}
  >
@@ -30409,7 +30434,7 @@ function Pathways() {
  transform: "translateY(var(--tile-lift, 0px))",
  transition: "box-shadow 140ms ease, transform 140ms ease",
  "--map-entry-dy": branchDy + "px",
- animation: mapEntering ? "mapTileEnter 1.05s cubic-bezier(.4,0,.2,1) 0s both" : undefined,
+ animation: mapEntering && entryAnim ? "mapTileEnter 1.05s cubic-bezier(.4,0,.2,1) 0s both" : undefined,
  visibility: isSourceTile ? "hidden" : "visible",
  }}
  onFocus={(e) => { e.currentTarget.style.outline = "1px solid var(--accent)"; }}
