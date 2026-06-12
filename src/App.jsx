@@ -7488,15 +7488,22 @@ function extractCodes(text) {
  return Array.from(seen, ([code, desc]) => ({ code, desc }));
 }
 
-function ProseBlock({ text, highlight }) {
- // Strip zero-width spaces. Then rejoin PDF-extraction line wraps the same
- // way renderTemplate does — when a `\n` sits between content and a clear
- // continuation token (lowercase letter, opening parenthesis, ampersand)
- // it's a wrapped sentence, not intentional structure. Bullets, numbered
- // lists, and lines starting with capitals are left alone. Also strip the
- // single-space line indent that the PDF extraction left behind, while
- // preserving multi-space indentation for nested sub-bullets.
- const clean = (text || "")
+// Strip zero-width spaces. Then rejoin PDF-extraction line wraps the same
+// way renderTemplate does — when a `\n` sits between content and a clear
+// continuation token (lowercase letter, opening parenthesis, ampersand)
+// it's a wrapped sentence, not intentional structure. Bullets, numbered
+// lists, and lines starting with capitals are left alone (capital-start
+// wraps can't be auto-joined safely: the same shape is how the reduction
+// and lip-length TABLES encode their rows, and joining those would merge
+// table rows into one line). Also strip the single-space line indent that
+// the PDF extraction left behind, while preserving multi-space indentation
+// for nested sub-bullets.
+//
+// This is the ONLY text transform between a Swade chunk body and the Steps
+// tab — whitespace handling only, never words. steps-render.test.js locks
+// that invariant for every chunk in the corpus.
+function cleanProseText(text) {
+ return (text || "")
 .replace(/\u200b/g, "")
 .replace(/(\S)[ \t]*\n[ \t]+([a-z(&])/g, "$1 $2")
 // Strip ONE leading space when there's exactly one space at line start;
@@ -7504,6 +7511,10 @@ function ProseBlock({ text, highlight }) {
 // negative lookahead for the EMPTY pattern, which always FAILS, so the
 // regex matched zero positions and stripped nothing (silent no-op).
 .replace(/(^|\n) (?! )/g, "$1");
+}
+
+function ProseBlock({ text, highlight }) {
+ const clean = cleanProseText(text);
  const lines = clean.split("\n");
 
  // Highlighting helper — wraps query terms in <mark>.
@@ -12928,7 +12939,7 @@ function Browse({
  fontFamily: "'Geist', sans-serif", lineHeight: 1,
  pointerEvents: "none", whiteSpace: "nowrap",
  }}>
- Steps by <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em>
+ Steps from <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> verbatim
  </div>
  {/* Session label — left-side counterpart to "Steps by (swade)".
  Shows "Procedure A + Procedure B" when 2+ slots are in the
@@ -31682,4 +31693,4 @@ export default function App() {
 // renderTemplate is pure — (template string, fields) -> note string — so it can
 // be unit-tested with no React/DOM. TEMPLATES maps procedure id -> template;
 // DEFAULT_FIELDS is the baseline field object the UI starts from.
-export { renderTemplate, TEMPLATES, DEFAULT_FIELDS, noteTripwire };
+export { renderTemplate, TEMPLATES, DEFAULT_FIELDS, noteTripwire, cleanProseText, CHUNKS };
