@@ -29084,30 +29084,81 @@ if (import.meta.env.DEV) {
 }
 
 // ─── Miniature pathway map ──────────────────────────────────────────────
-// Tiny deterministic SVG preview of a pathway's visit/lab train for the
-// Maps landing cards: visits on the top lane (paper tiles with the ink
-// top edge), labs on the bottom lane (oxblood), chronological zigzag
-// arrows between them, dashed branch squares under the final visit.
-// Pure layout from the pathway data — no measurement, no refs; it just
-// needs to LOOK like the real schematic at thumbnail scale so the card
-// reads as "the whole map, small" before you zoom into it.
+// True scale model of the full schematic for the Maps landing cards: it
+// runs the SAME layout algorithm as the big map — chronological V/L
+// sequence, LANE_CAPACITY-item boustrophedon lanes (even lanes left-to-
+// right, odd lanes mirrored right-to-left about the visit grid), the
+// half-column stagger (+3 between alternating kinds, +6 between same),
+// and the cross-lane drop at the right edge — just rendered at sub-column
+// = 8px. So CD and RPD show their actual serpentine turn, and the
+// thumbnail genuinely IS the map you zoom into. Keep the constants here
+// in sync with the schematic's (LANE_CAPACITY, the +3/+6 rule, rtlAxis).
 function PathwayMiniMap({ pathway }) {
  const phases = pathway.phases || [];
- const labs = pathway.labSteps || [];
- const seq = [];
- phases.forEach((p, i) => {
- seq.push({ kind: "v" });
- labs.forEach((l) => { if (l.after === i) seq.push({ kind: "l" }); });
+ const labSteps = pathway.labSteps || [];
+ const sequence = [];
+ for (let i = 0; i < phases.length; i++) {
+ sequence.push({ kind: "visit", key: `v-${i}` });
+ const labIdx = labSteps.findIndex((ls) => ls.after === i);
+ if (labIdx !== -1) sequence.push({ kind: "lab", key: `l-${labIdx}` });
+ }
+ const LANE_CAPACITY = 8;
+ const lanes = [];
+ for (let i = 0; i < sequence.length; i += LANE_CAPACITY) {
+ lanes.push(sequence.slice(i, i + LANE_CAPACITY));
+ }
+ const laneData = lanes.map((laneItems) => {
+ const positions = [];
+ let col = 1;
+ for (let i = 0; i < laneItems.length; i++) {
+ positions.push({ ...laneItems[i], ltrCol: col });
+ if (i + 1 < laneItems.length) {
+ col += laneItems[i].kind === laneItems[i + 1].kind ? 6 : 3;
+ }
+ }
+ const width = positions.length > 0
+ ? Math.max(...positions.map((p) => p.ltrCol)) + 3
+ : 0;
+ return { positions, width };
  });
- const TW = 44, TH = 24, GAP = 12;
- const slot = TW + GAP;
- const topY = 3, botY = 41;
+ const maxVisitLtrCol = Math.max(1, ...laneData.flatMap(
+ (l) => l.positions.filter((p) => p.kind === "visit").map((p) => p.ltrCol)
+ ));
+ const rtlAxis = maxVisitLtrCol + 1;
+ const maxCols = Math.max(1, ...laneData.map((l) => l.width));
+ const placed = [];
+ laneData.forEach((lane, laneIdx) => {
+ const isRTL = laneIdx % 2 === 1;
+ lane.positions.forEach((item) => {
+ placed.push({
+ ...item,
+ gridCol: isRTL ? rtlAxis - item.ltrCol : item.ltrCol,
+ gridRow: laneIdx * 2 + (item.kind === "visit" ? 1 : 2),
+ });
+ });
+ });
+ // Mini geometry: one sub-column = SC px; tiles span 4 sub-columns.
+ const SC = 8, TW = 4 * SC, TH = 20, ROWGAP = 8, PAD = 3;
+ const X = (p) => PAD + (p.gridCol - 1) * SC;
+ const Y = (p) => PAD + (p.gridRow - 1) * (TH + ROWGAP);
  const branches = (pathway.branches || []).slice(0, 3);
- const W = Math.max(1, seq.length) * slot - GAP + 6;
- const H = branches.length > 0 ? 100 : 70;
- const pos = seq.map((s, idx) => ({ ...s, x: 3 + idx * slot, y: s.kind === "v" ? topY : botY }));
- const lastV = [...pos].reverse().find(p => p.kind === "v");
- const branchX = lastV ? Math.max(3, Math.min(lastV.x - 6, W - branches.length * 17 - 3)) : 3;
+ const numRows = placed.length ? Math.max(...placed.map((p) => p.gridRow)) : 1;
+ const W = PAD * 2 + (maxCols - 1) * SC + TW;
+ const H = PAD * 2 + numRows * TH + (numRows - 1) * ROWGAP + (branches.length ? 24 : 0);
+ // Arrows between consecutive sequence items (placed preserves order):
+ // rightward, leftward (return lane), or the cross-lane drop at the turn.
+ const arrows = [];
+ for (let i = 0; i + 1 < placed.length; i++) {
+ const a = placed[i], b = placed[i + 1];
+ const ax = X(a), ay = Y(a), bx = X(b), by = Y(b);
+ if (bx >= ax + TW) arrows.push({ x1: ax + TW, y1: ay + TH / 2, x2: bx, y2: by + TH / 2 });
+ else if (bx + TW <= ax) arrows.push({ x1: ax, y1: ay + TH / 2, x2: bx + TW, y2: by + TH / 2 });
+ else arrows.push({ x1: ax + TW / 2, y1: ay + TH, x2: bx + TW / 2, y2: by });
+ }
+ const lastTile = placed[placed.length - 1];
+ const branchX = lastTile
+ ? Math.max(PAD, Math.min(X(lastTile), W - branches.length * 17 - PAD))
+ : PAD;
  return (
  <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", display: "block" }} aria-hidden="true">
  <defs>
@@ -29116,21 +29167,20 @@ function PathwayMiniMap({ pathway }) {
  <path d="M 0 0 L 8 4 L 0 8 z" fill="var(--ink)" />
  </marker>
  </defs>
- {pos.slice(0, -1).map((a, i) => {
- const b = pos[i + 1];
- return <line key={i} x1={a.x + TW} y1={a.y + TH / 2} x2={b.x} y2={b.y + TH / 2}
- stroke="var(--ink)" strokeWidth="1.1" markerEnd="url(#mini-arrow)" opacity="0.8" />;
- })}
- {pos.map((p, i) => p.kind === "v" ? (
+ {arrows.map((a, i) => (
+ <line key={i} x1={a.x1} y1={a.y1} x2={a.x2} y2={a.y2}
+ stroke="var(--ink)" strokeWidth="1.1" markerEnd="url(#mini-arrow)" opacity="0.8" />
+ ))}
+ {placed.map((p, i) => p.kind === "visit" ? (
  <g key={i}>
- <rect x={p.x} y={p.y} width={TW} height={TH} rx="2"
+ <rect x={X(p)} y={Y(p)} width={TW} height={TH} rx="2"
  fill="var(--card, white)" stroke="var(--rule)" strokeWidth="1" />
- <rect x={p.x} y={p.y} width={TW} height="2.5" fill="var(--ink)" />
+ <rect x={X(p)} y={Y(p)} width={TW} height="2.5" fill="var(--ink)" />
  </g>
  ) : (
- <rect key={i} x={p.x} y={p.y} width={TW} height={TH} rx="2" fill="var(--accent)" />
+ <rect key={i} x={X(p)} y={Y(p)} width={TW} height={TH} rx="2" fill="var(--accent)" />
  ))}
- {lastV && branches.map((b, bi) => (
+ {lastTile && branches.map((b, bi) => (
  <rect key={`b${bi}`} x={branchX + bi * 17} y={H - 17} width={13} height={13} rx="2"
  fill="none" stroke="var(--ink-faint)" strokeWidth="1" strokeDasharray="2.5 2" />
  ))}
