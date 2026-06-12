@@ -12578,7 +12578,6 @@ function Browse({
  const [slots, setSlots] = useState(() =>
  [selectedProcedureId || null]);
  const [activeSlot, setActiveSlot] = useState(0);
- const [itemsChecked, setItemsChecked] = useState({});
 
  const activeProcId = slots[activeSlot]?? null;
 
@@ -12698,7 +12697,6 @@ function Browse({
 
  const merged = useMemo(() => mergeEquipment(perProc), [perProc]);
  const totalItems = Object.values(merged).reduce((sum, list) => sum + list.length, 0);
- const toggleItem = (key) => setItemsChecked(c => ({...c, [key]:!c[key] }));
 
  const groupMeta = {
  sterilization: { label: "Sterilization" },
@@ -12870,33 +12868,25 @@ function Browse({
  {items.length}
  </span>
  </div>
+ {/* Plain grab-list — the checkboxes were cut (nobody checked them
+ off; the panel is read at a glance on the way to sterilization).
+ Rows keep the soft hairlines plus a quiet · marker, same voice
+ as the steps article's sub-bullets, so multi-line items stay
+ scannable without any interactive chrome. */}
  <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
- {items.map((item, i) => {
- const ckey = `${key}:${item.text.toLowerCase()}`;
- const isChecked =!!itemsChecked[ckey];
- return (
+ {items.map((item, i) => (
  <li key={i} style={{
- padding: "4px 0",
+ padding: "5px 0",
  borderBottom: i < items.length - 1? "1px solid var(--rule-soft)": "none",
+ display: "flex", alignItems: "flex-start", gap: "10px",
  }}>
- <label style={{ display: "flex", alignItems: "flex-start", gap: "10px", cursor: "pointer" }}>
+ <span aria-hidden="true" style={{
+ color: "var(--ink-faint)", fontSize: "10px",
+ lineHeight: 1, marginTop: "6px", flexShrink: 0,
+ }}>·</span>
  <span style={{
- width: "14px", height: "14px", flexShrink: 0,
- border: `1.5px solid ${isChecked? "var(--accent)": "var(--rule)"}`,
- background: isChecked? "var(--accent)": "transparent",
- borderRadius: "2px", marginTop: "2px",
- display: "flex", alignItems: "center", justifyContent: "center",
- color: "var(--paper)", fontSize: "10px",
- transition: "background 120ms ease, border-color 120ms ease",
- }}>{isChecked? "✓": ""}</span>
- <input type="checkbox" checked={isChecked}
- onChange={() => toggleItem(ckey)}
- style={{ position: "absolute", opacity: 0, width: 0, height: 0 }} />
- <span style={{
- flex: 1, fontSize: "12px",
- color: isChecked? "var(--ink-faint)": "var(--ink)",
- textDecoration: isChecked? "line-through": "none",
- lineHeight: 1.5,
+ flex: 1, fontSize: "12.5px", color: "var(--ink)",
+ lineHeight: 1.55,
  }}>
  {item.text}
  {item.sources.length > 1 && (
@@ -12906,18 +12896,12 @@ function Browse({
  }}>×{item.sources.length}</span>
 )}
  </span>
- </label>
  </li>
-);
- })}
+))}
  </ul>
  </div>
 );
  })}
- <button className="ghost" onClick={() => setItemsChecked({})}
- style={{ width: "100%", marginTop: "4px", fontSize: "10px" }}>
- Reset checks
- </button>
  </div>
 )}
 
