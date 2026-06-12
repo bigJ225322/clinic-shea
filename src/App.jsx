@@ -29083,6 +29083,61 @@ if (import.meta.env.DEV) {
  });
 }
 
+// ─── Miniature pathway map ──────────────────────────────────────────────
+// Tiny deterministic SVG preview of a pathway's visit/lab train for the
+// Maps landing cards: visits on the top lane (paper tiles with the ink
+// top edge), labs on the bottom lane (oxblood), chronological zigzag
+// arrows between them, dashed branch squares under the final visit.
+// Pure layout from the pathway data — no measurement, no refs; it just
+// needs to LOOK like the real schematic at thumbnail scale so the card
+// reads as "the whole map, small" before you zoom into it.
+function PathwayMiniMap({ pathway }) {
+ const phases = pathway.phases || [];
+ const labs = pathway.labSteps || [];
+ const seq = [];
+ phases.forEach((p, i) => {
+ seq.push({ kind: "v" });
+ labs.forEach((l) => { if (l.after === i) seq.push({ kind: "l" }); });
+ });
+ const TW = 44, TH = 24, GAP = 12;
+ const slot = TW + GAP;
+ const topY = 3, botY = 41;
+ const branches = (pathway.branches || []).slice(0, 3);
+ const W = Math.max(1, seq.length) * slot - GAP + 6;
+ const H = branches.length > 0 ? 100 : 70;
+ const pos = seq.map((s, idx) => ({ ...s, x: 3 + idx * slot, y: s.kind === "v" ? topY : botY }));
+ const lastV = [...pos].reverse().find(p => p.kind === "v");
+ const branchX = lastV ? Math.max(3, Math.min(lastV.x - 6, W - branches.length * 17 - 3)) : 3;
+ return (
+ <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", display: "block" }} aria-hidden="true">
+ <defs>
+ <marker id="mini-arrow" viewBox="0 0 8 8" refX="7" refY="4"
+ markerWidth="4.5" markerHeight="4.5" orient="auto">
+ <path d="M 0 0 L 8 4 L 0 8 z" fill="var(--ink)" />
+ </marker>
+ </defs>
+ {pos.slice(0, -1).map((a, i) => {
+ const b = pos[i + 1];
+ return <line key={i} x1={a.x + TW} y1={a.y + TH / 2} x2={b.x} y2={b.y + TH / 2}
+ stroke="var(--ink)" strokeWidth="1.1" markerEnd="url(#mini-arrow)" opacity="0.8" />;
+ })}
+ {pos.map((p, i) => p.kind === "v" ? (
+ <g key={i}>
+ <rect x={p.x} y={p.y} width={TW} height={TH} rx="2"
+ fill="var(--card, white)" stroke="var(--rule)" strokeWidth="1" />
+ <rect x={p.x} y={p.y} width={TW} height="2.5" fill="var(--ink)" />
+ </g>
+ ) : (
+ <rect key={i} x={p.x} y={p.y} width={TW} height={TH} rx="2" fill="var(--accent)" />
+ ))}
+ {lastV && branches.map((b, bi) => (
+ <rect key={`b${bi}`} x={branchX + bi * 17} y={H - 17} width={13} height={13} rx="2"
+ fill="none" stroke="var(--ink-faint)" strokeWidth="1" strokeDasharray="2.5 2" />
+ ))}
+ </svg>
+ );
+}
+
 function Pathways() {
  // Nothing auto-selected: user opens the tab to a clean state and must
  // pick a domain (and then a scenario) explicitly. Reduces visual noise
@@ -29103,6 +29158,51 @@ function Pathways() {
  prevPathwayIdRef.current = pathwayId;
  }
  const entryAnim = entryAnimRef.current;
+ // Card-zoom FLIP: a landing card stores its bounding rect in zoomFromRef
+ // right before opening its pathway; the layout effect below measures the
+ // final layout and seeds `zoom` STATE, and the root renders its transform
+ // from that state. State-driven on purpose: the schematic-measure effect
+ // re-renders the root ~50ms into the open, and React reconciliation strips
+ // imperatively-set inline styles on re-render — an imperative FLIP got
+ // wiped mid-glide. With the transform in state, re-renders preserve it.
+ // Domain pills and the in-map switcher never set the ref, so map-to-map
+ // switches don't zoom (matches the entry-animation rule above).
+ const zoomFromRef = useRef(null);
+ const pathwaysRootRef = useRef(null);
+ const [zoom, setZoom] = useState(null); // { tx, ty, sx, sy }
+ useLayoutEffect(() => {
+ const r = zoomFromRef.current;
+ if (!r || !pathwayId) return;
+ zoomFromRef.current = null;
+ const el = pathwaysRootRef.current;
+ if (!el) return;
+ const final = el.getBoundingClientRect();
+ if (final.width < 8 || final.height < 8) return;
+ setZoom({
+ tx: r.left - final.left,
+ ty: r.top - final.top,
+ sx: Math.max(0.04, r.width / final.width),
+ sy: Math.max(0.04, r.height / final.height),
+ });
+ // StrictMode dev double-invoke: restore the rect so the replayed setup
+ // can seed the zoom again instead of finding the ref consumed.
+ return () => { if (!zoomFromRef.current) zoomFromRef.current = r; };
+ }, [pathwayId]);
+ // The glide itself is a CSS @keyframes (mapZoomIn) — like mapTileEnter,
+ // it runs to completion no matter how many times React re-renders the
+ // root mid-flight (a transition-based version was killed ~50ms in by the
+ // schematic-measure re-render). State only holds the start geometry and
+ // clears after the animation is over.
+ useEffect(() => {
+ if (!zoom) return;
+ const t = setTimeout(() => setZoom(null), 700);
+ return () => clearTimeout(t);
+ }, [zoom]);
+ const zoomStyle = zoom ? {
+ "--map-zoom-from": `translate(${zoom.tx}px, ${zoom.ty}px) scale(${zoom.sx}, ${zoom.sy})`,
+ transformOrigin: "top left",
+ animation: "mapZoomIn 460ms cubic-bezier(.2,.6,.2,1) both",
+ } : null;
  const [searchQuery, setSearchQuery] = useState("");
  const [showAllDomains, setShowAllDomains] = useState(false);
  // Section collapse state — Set of anchorIds that are collapsed. Empty by
@@ -29587,14 +29687,18 @@ function Pathways() {
  };
 
  return (
- <div className="fade-in" style={{ maxWidth: "880px", margin: "0 auto", padding: "8px 0 40px", textAlign: "left" }}>
+ <div ref={pathwaysRootRef} className="fade-in" style={{ maxWidth: "880px", margin: "0 auto", padding: "8px 0 40px", textAlign: "left", ...zoomStyle }}>
  {/* Search input removed per Jake — Maps opens to a single unselected
  domain pill; selecting it opens the map directly. */}
 
  {/* Landing: pathway cards before any domain is picked; the bare pill row otherwise */}
  {nothingSelected && MAPS_LANDING_CARDS ? (
  <div style={{ marginBottom: "10px" }}>
- <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(212px, 1fr))", gap: "12px" }}>
+ {/* Landing grid (2026-06-12, Jake's spec): flat tiles in the page's
+ own background — no paper surface — each previewing its WHOLE map
+ in miniature. Clicking a card FLIP-zooms into the full map (the
+ zoomFromRef capture below + the layout effect up top). */}
+ <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(258px, 1fr))", gap: "14px" }}>
  {PATHWAY_DOMAINS.map(d => {
  const p = PATHWAYS.find(x => x.domain === d.id);
  if (!p) return null;
@@ -29602,22 +29706,30 @@ function Pathways() {
  const labN = (p.labSteps || []).length;
  const sub = (PATHWAY_GROUPS[d.id] && PATHWAY_GROUPS[d.id][0] && PATHWAY_GROUPS[d.id][0].label) || "";
  return (
- <button key={d.id} onClick={() => handleDomainChange(d.id)}
+ <button key={d.id}
+ onClick={(e) => {
+ zoomFromRef.current = e.currentTarget.getBoundingClientRect();
+ handleDomainChange(d.id);
+ }}
  onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 5px 18px rgba(26,22,18,0.10)"; }}
- onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--rule)"; e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "0 1px 3px rgba(26,22,18,0.05)"; }}
+ onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--rule)"; e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "none"; }}
  onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(-1px) scale(0.985)"; }}
  onMouseUp={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; }}
  style={{
  textAlign: "left", display: "flex", flexDirection: "column",
- minHeight: "120px", padding: "15px 17px", borderRadius: "4px",
- border: "1px solid var(--rule)", background: "var(--card, white)",
+ minHeight: "168px", padding: "15px 17px", borderRadius: "4px",
+ border: "1px solid var(--rule)", background: "transparent",
  cursor: "pointer", fontFamily: "'Geist', sans-serif",
- boxShadow: "0 1px 3px rgba(26,22,18,0.05)",
  transition: "border-color 140ms ease, transform 140ms ease, box-shadow 140ms ease",
  }}>
- <div className="serif" style={{ fontSize: "22px", fontWeight: 500, color: "var(--ink)", lineHeight: 1.05, marginBottom: "5px" }}>{d.label}</div>
- <div style={{ fontSize: "12px", color: "var(--ink-soft)", lineHeight: 1.35 }}>{sub}</div>
- <div style={{ marginTop: "auto", paddingTop: "12px", fontSize: "10.5px", color: "var(--ink-faint)", fontFamily: "'JetBrains Mono', monospace", fontVariantNumeric: "tabular-nums", letterSpacing: "0.02em" }}>
+ <div style={{ display: "flex", alignItems: "baseline", gap: "10px", marginBottom: "3px" }}>
+ <div className="serif" style={{ fontSize: "22px", fontWeight: 500, color: "var(--ink)", lineHeight: 1.05 }}>{d.label}</div>
+ <div style={{ fontSize: "11.5px", color: "var(--ink-soft)", lineHeight: 1.3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{sub}</div>
+ </div>
+ <div style={{ margin: "12px 0 4px" }}>
+ <PathwayMiniMap pathway={p} />
+ </div>
+ <div style={{ marginTop: "auto", paddingTop: "10px", fontSize: "10.5px", color: "var(--ink-faint)", fontFamily: "'JetBrains Mono', monospace", fontVariantNumeric: "tabular-nums", letterSpacing: "0.02em" }}>
  {visits} visit{visits === 1? "": "s"} · {labN} lab step{labN === 1? "": "s"}
  </div>
  </button>
@@ -31340,6 +31452,15 @@ export default function App() {
  (line endpoints aren't CSS-animatable) — a rAF reads each box's live top
  and redraws the connected arrow endpoints so they stay attached and swing
  from straight to bent in perfect lockstep. */
+ /* Maps landing-card zoom: the whole Maps root starts at the clicked
+    card's rect (--map-zoom-from, set inline per click) and inflates to
+    identity. A keyframe, not a transition, so mid-open re-renders can't
+    cut the glide short. */
+ @keyframes mapZoomIn {
+ from { transform: var(--map-zoom-from); opacity: 0.35; }
+ to { transform: none; opacity: 1; }
+ }
+
  @keyframes mapTileEnter {
  from { top: var(--map-entry-dy, 0px); }
  to { top: 0px; }
