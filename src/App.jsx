@@ -31241,8 +31241,6 @@ export default function App() {
  fontFamily: "'Geist', 'Helvetica Neue', Arial, sans-serif",
  }}>
  <style>{`
- @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Geist:wght@300..600&family=JetBrains+Mono:wght@400;500&display=swap');
-
  * { box-sizing: border-box; }
  body { margin: 0; }
 
