@@ -29313,7 +29313,19 @@ function Pathways() {
  lastMeasureRef.current = null;
  const compute = () => {
  if (!schematicGridRef.current) return;
- const gridRect = schematicGridRef.current.getBoundingClientRect();
+ const grid = schematicGridRef.current;
+ const gridRect = grid.getBoundingClientRect();
+ // The card-zoom keyframe scales the whole Maps root for ~460ms after a
+ // home-open, and getBoundingClientRect returns VISUAL (scaled) boxes —
+ // but the SVG overlay draws in the grid's LAYOUT space. The 50ms
+ // measure lands mid-zoom, so without correction it stores ~1/3-scale
+ // geometry and the arrows render bunched at the top-left (same bug
+ // family as the mid-tile-animation measure). Unscale by the grid's
+ // visual/layout ratio: identity when nothing is transformed, exact
+ // under the zoom (or any future ancestor transform).
+ const sX = grid.offsetWidth ? gridRect.width / grid.offsetWidth : 1;
+ const sY = grid.offsetHeight ? gridRect.height / grid.offsetHeight : 1;
+ if (!sX || !sY) return;
  const pos = {};
  schematicTileRefs.current.forEach((el, key) => {
  if (!el) return;
@@ -29329,11 +29341,13 @@ function Pathways() {
  // place" bug: there the webfont load resolved mid-animation, so the follow-up
  // measure captured offset tiles.
  const topOffset = parseFloat(getComputedStyle(el).top) || 0;
+ // topOffset is a LAYOUT value (computed style), already unscaled —
+ // subtract it after converting the visual box back to layout space.
  pos[key] = {
- x: r.left - gridRect.left,
- y: (r.top - gridRect.top) - topOffset,
- width: r.width,
- height: r.height,
+ x: (r.left - gridRect.left) / sX,
+ y: (r.top - gridRect.top) / sY - topOffset,
+ width: r.width / sX,
+ height: r.height / sY,
  };
  });
  // Drop the set entirely when nothing moved (same tiles, every box within
