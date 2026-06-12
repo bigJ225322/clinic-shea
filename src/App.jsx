@@ -17115,6 +17115,12 @@ function RPDPaperFormArchDrawing({
  const halfMD = toothHalfMD(n);
  const halfBL = toothHalfBL(n);
  const present = isPresent(n);
+ // The UIC form's printed arch shows 14 teeth — third molars aren't
+ // drawn. Match that convention in static (form / lab-Rx) mode: a
+ // missing wisdom simply isn't depicted. Present wisdoms (rare, but
+ // Applegate Rule 8 cases exist) still draw. Interactive mode keeps
+ // all 16 so the ghost outline stays clickable.
+ if (!interactive &&!present && RPD_THIRD_MOLARS.has(n)) return null;
  const rad = radialUnit(n);
  const mes = mesialUnit(n);
  const isMolar = RPD_FIRST_MOLARS.has(n) || RPD_SECOND_MOLARS.has(n) || RPD_THIRD_MOLARS.has(n);
@@ -19196,7 +19202,10 @@ function RPDPaperFormArchDrawing({
 // printable / screenshot-able so it can be copied directly to the paper
 // form.
 function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose = false }) {
- const [drawingOpen, setDrawingOpen] = useState(false);
+ // Open by default — on the paper form the occlusal-view drawing is the
+ // centerpiece of the header zone. The collapse toggle stays for when the
+ // interactive chart is already on screen above this form.
+ const [drawingOpen, setDrawingOpen] = useState(true);
  // Rationale verbosity is controlled by the parent's `verbose` prop so a
  // single toggle drives both the Preliminary Design Form rationale column
  // AND the Lab Rx spec callouts. Default OFF = compressed (form-style,
@@ -19493,37 +19502,67 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  fontSize: "12px",
  lineHeight: 1.5,
  }}>
- {/* Header */}
- <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "16px", alignItems: "start", marginBottom: "16px", paddingBottom: "12px", borderBottom: "1.5px solid var(--ink)" }}>
+ {/* Header — title + Student/Patient stacked left; chart-number boxes +
+ Date right, mirroring the paper form's arrangement. The real form
+ carries the UIC logo and "COLLEGE OF DENTISTRY" wordmark up here;
+ deliberately NOT reproduced — layout parity only, so a screenshot
+ can never pass for the official document. */}
+ <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "24px", alignItems: "start", marginBottom: "18px" }}>
  <div>
- <div style={{ fontSize: "13px", fontWeight: 600, letterSpacing: "0.04em", lineHeight: 1.3 }}>
+ <div style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.04em", lineHeight: 1.35, marginBottom: "14px" }}>
  PRELIMINARY {arch}<br/>
  PARTIAL DENTURE DESIGN
  </div>
- </div>
- </div>
-
- {/* Student / Patient / Date */}
- <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 140px", gap: "20px", marginBottom: "20px" }}>
+ <div style={{ maxWidth: "340px" }}>
  {fieldRow("Student", "")}
  {fieldRow("Patient", "")}
+ </div>
+ </div>
+ <div style={{ minWidth: "230px" }}>
+ {/* Chart-number boxes — blank, as on the paper form */}
+ <div style={{ display: "flex", alignItems: "stretch", marginBottom: "10px" }}>
+ {[0, 1, 2, 3].map(i => (
+ <span key={`cl${i}`} style={{ width: "20px", height: "24px", border: "1px solid var(--ink)", marginLeft: i === 0? 0: "-1px" }} />
+))}
+ <span style={{ padding: "0 5px", fontWeight: 700, alignSelf: "center" }}>:</span>
+ {[0, 1, 2, 3, 4, 5].map(i => (
+ <span key={`cr${i}`} style={{ width: "20px", height: "24px", border: "1px solid var(--ink)", marginLeft: i === 0? 0: "-1px" }} />
+))}
+ </div>
  {fieldRow("Date", new Date().toISOString().slice(0,10))}
  </div>
+ </div>
 
- {/* Opposing / mold / shade row */}
- <div style={{
- display: "grid", gridTemplateColumns: "1fr 1fr",
- gap: "20px", marginBottom: "20px", padding: "12px 14px",
- border: "1px solid var(--rule)",
- }}>
+ {/* Arch drawing (left) + Opposing / mold / shade (right) — the form's
+ header zone leads with the occlusal-view drawing. */}
+ <div style={{ display: "grid", gridTemplateColumns: "1.15fr 1fr", gap: "22px", alignItems: "start", marginBottom: "16px" }}>
+ <div>
+ <button
+ onClick={() => setDrawingOpen(o =>!o)}
+ style={{
+ display: "flex", alignItems: "center", gap: "8px",
+ background: "none", border: "none", padding: "0 0 6px",
+ cursor: "pointer", color: "var(--ink-soft)",
+ fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em",
+ textTransform: "uppercase",
+ }}
+ >
+ <span style={{ fontSize: "10px" }}>{drawingOpen? "▾": "▸"}</span>
+ Design drawing — occlusal view
+ </button>
+ {drawingOpen && (
+ <div style={{ padding: "10px 12px", border: "1px solid var(--rule)", background: "#FDFCF7" }}>
+ <RPDPaperFormArchDrawing caseInput={caseInput} result={result} />
+ </div>
+)}
+ </div>
  <div>
  <div style={{ fontSize: "10px", fontWeight: 600, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.06em" }}>Opposing:</div>
  {checkboxRow("Natural dentition", pf.opposingArch === "natural" ||!pf.opposingArch)}
  {checkboxRow("Existing partial denture", pf.opposingArch === "partial_denture")}
  {checkboxRow("Existing complete denture", pf.opposingArch === "complete_denture")}
  {checkboxRow("New prosthesis/restoration to be made", pf.opposingArch === "new_prosthesis")}
- </div>
- <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", alignItems: "end" }}>
+ <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", alignItems: "end", marginTop: "16px" }}>
  <div>
  <div style={{ fontSize: "10px", fontWeight: 600, marginBottom: "4px" }}>Anterior mold</div>
  <div style={{ border: "1px solid var(--ink)", height: "20px" }} />
@@ -19538,31 +19577,11 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  </div>
  </div>
  </div>
+ </div>
 
- {/* Arch drawing — paper-form rendering of the design with ink colors.
- Skipped when showArchDrawing=false (e.g. when this form is rendered
- directly below the interactive chart; no need to redraw). */}
- {/* Arch drawing — collapsible toggle */}
- <div style={{ marginBottom: "20px" }}>
- <button
- onClick={() => setDrawingOpen(o =>!o)}
- style={{
- display: "flex", alignItems: "center", gap: "8px",
- background: "none", border: "none", padding: "6px 0",
- cursor: "pointer", color: "var(--ink-soft)",
- fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em",
- textTransform: "uppercase",
- }}
- >
- <span style={{ fontSize: "10px" }}>{drawingOpen? "▾": "▸"}</span>
- Design drawing — {arch === "MAXILLARY"? "Maxillary": "Mandibular"} arch (occlusal view)
- </button>
- {drawingOpen && (
- <div style={{ marginTop: "8px", padding: "18px 20px", border: "1.5px solid var(--ink)", background: "#FDFCF7" }}>
- <RPDPaperFormArchDrawing caseInput={caseInput} result={result} />
- </div>
-)}
- </div>
+ {/* Heavy rule — the form's thick divider between the header zone and
+ the design / rationale columns */}
+ <div style={{ borderTop: "3px solid var(--ink)", margin: "0 0 16px" }} />
 
  {/* Body: 2-column layout — Design on left, Rationale on right */}
  <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "24px" }}>
@@ -19603,16 +19622,17 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  }}>
  <thead>
  <tr>
- {["Tooth #", "Clasp", "Rest", "Retention", "Bracing"].map(h => (
+ {/* Italic lowercase headers echo the form's own sub-labels:
+ "tooth #  clasp  rest  retention  bracing" */}
+ {["tooth #", "clasp", "rest", "retention", "bracing"].map(h => (
  <th key={h} style={{
  padding: "4px 6px",
  borderBottom: "1px solid var(--ink)",
  borderRight: "1px solid var(--rule)",
- fontWeight: 600, textAlign: "left",
+ fontWeight: 400, textAlign: "left",
  background: "var(--paper)",
- fontSize: "10px",
- textTransform: "uppercase",
- letterSpacing: "0.04em",
+ fontSize: "10.5px",
+ fontStyle: "italic",
  }}>
  {h}
  </th>
@@ -19654,11 +19674,13 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  single source of state truth. */}
  </div>
  <div style={{ fontSize: "11px", lineHeight: 1.55 }}>
+ {/* Each entry sits on a solid ruled line — reads like handwriting
+ on the form's RATIONALE / COMMENTS column. */}
  {visibleRationaleLines.map((line, i) => (
  <div key={i} style={{
  marginBottom: "8px",
- paddingBottom: "6px",
- borderBottom: i === visibleRationaleLines.length - 1? "none": "1px dotted var(--rule)",
+ paddingBottom: "5px",
+ borderBottom: "1px solid var(--ink)",
  }}>
  {line}
  </div>
@@ -19667,8 +19689,10 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  </div>
  </div>
 
- {/* Footer */}
- <div style={{ marginTop: "24px", paddingTop: "12px", borderTop: "1px solid var(--ink)", display: "grid", gridTemplateColumns: "2fr 1fr", gap: "20px" }}>
+ {/* Footer — no rule above it on the paper form; the approved-by line
+ just floats at the bottom (it's where the instructor signs the
+ PAPER copy before the case goes to lab). */}
+ <div style={{ marginTop: "28px", display: "grid", gridTemplateColumns: "2fr 1fr", gap: "20px" }}>
  {fieldRow("Preliminary design approved by", "")}
  {fieldRow("Date", "")}
  </div>
