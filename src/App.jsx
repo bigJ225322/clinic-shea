@@ -29250,13 +29250,18 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  // The glide itself is a CSS @keyframes (mapZoomIn) — like mapTileEnter,
  // it runs to completion no matter how many times React re-renders the
  // root mid-flight (a transition-based version was killed ~50ms in by the
- // schematic-measure re-render). State only holds the start geometry and
- // clears after the animation is over.
+ // schematic-measure re-render).
+ //
+ // The completed keyframe stays APPLIED for the life of the open view:
+ // clearing it mid-view re-exposes the root's .fade-in class animation,
+ // and a re-applied CSS animation RESTARTS — the whole map blinked once
+ // ~700ms after open (the "little flicker right after the animation").
+ // With fill:both the finished zoom just holds identity, which costs
+ // nothing. We clear only when leaving the map for home, where the
+ // fadeIn replay reads as the landing grid's own entrance.
  useEffect(() => {
- if (!zoom) return;
- const t = setTimeout(() => setZoom(null), 700);
- return () => clearTimeout(t);
- }, [zoom]);
+ if (pathwayId === null && zoom) setZoom(null);
+ }, [pathwayId, zoom]);
  const zoomStyle = zoom ? {
  "--map-zoom-from": `translate(${zoom.tx}px, ${zoom.ty}px) scale(${zoom.sx}, ${zoom.sy})`,
  transformOrigin: "top left",
@@ -31856,11 +31861,12 @@ export default function App() {
  aria-label={t.id === "napoleon" ? "Loupes" : undefined}
  // Loupes tab is pushed to the far-right edge of the nav (margin-left: auto
  // consumes the free space before it in the flex row).
- style={t.id === "napoleon" ? { marginLeft: "auto" } : t.id === "pathways" ? { position: "relative" } : undefined}
+ style={t.id === "napoleon" ? { marginLeft: "auto" } : undefined}
+ title={t.id === "pathways" && tab === "pathways" && mapOpen ? "Back to all maps" : undefined}
  onClick={() => {
  // Re-clicking the active Maps tab homes the Maps view to its
- // landing grid (the circled-arrow cue below the label is part
- // of this same button, so clicking it does the same thing).
+ // landing grid (the home icon in the padding band below the
+ // label is part of this same button — same click, same place).
  if (t.id === "pathways" && tab === "pathways") setMapsHomeSignal((s) => s + 1);
  else setTab(t.id);
  }}>
@@ -31871,16 +31877,23 @@ export default function App() {
  <span className="lp-seg lp-rest">upes</span>
  </>
  ) : t.label}
+ {/* Home cue — appears only while a map is open, INSIDE the button's
+ existing 14px bottom padding (between the "Maps" label and the
+ nav rule), absolutely positioned so the nav's height never
+ changes. Sits just above the active-tab underline. */}
  {t.id === "pathways" && tab === "pathways" && mapOpen && (
- <span title="Back to all maps" style={{
- position: "absolute", top: "calc(100% + 7px)", left: "50%",
+ <svg aria-hidden="true" viewBox="0 0 24 24"
+ fill="none" stroke="currentColor" strokeWidth="2.6"
+ strokeLinecap="round" strokeLinejoin="round"
+ style={{
+ position: "absolute", bottom: "2.5px", left: "50%",
  transform: "translateX(-50%)",
- width: "26px", height: "26px", borderRadius: "50%",
- border: "1.5px solid var(--accent)", color: "var(--accent)",
- background: "var(--paper-soft, transparent)",
- display: "flex", alignItems: "center", justifyContent: "center",
- fontSize: "14px", lineHeight: 1, zIndex: 5,
- }}>←</span>
+ width: "11px", height: "11px",
+ color: "var(--accent)", pointerEvents: "none",
+ }}>
+ <path d="M3 11 L12 3.5 L21 11" />
+ <path d="M5.5 9.5 V20.5 H18.5 V9.5" />
+ </svg>
 )}
  </button>
 ))}
