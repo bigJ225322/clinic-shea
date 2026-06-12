@@ -29802,27 +29802,33 @@ function Pathways() {
  </div>
  </div>
  ) : (
- <div style={{ display: "flex", gap: "8px", marginBottom: "14px", flexWrap: "wrap", alignItems: "center" }}>
- {PATHWAY_DOMAINS.map(d => {
- const active =!showAllDomains && d.id === domainId;
- return (
- <button key={d.id} onClick={() => { handleDomainChange(d.id); setShowAllDomains(false); }}
- onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = "rgba(122,30,30,0.05)"; }}
- onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = "transparent"; }}
+ /* Slim back row — replaces the domain pill switcher (cut per Jake:
+ you go back to the landing grid and pick, not sideways between
+ maps). Left: the way home. Right: the open map's identity, since
+ the active pill was the only place the title lived. One ~24px row
+ instead of the ~48px pill band. */
+ <div style={{ display: "flex", alignItems: "baseline", gap: "12px", marginBottom: "10px" }}>
+ <button
+ onClick={() => { setDomainId(null); setPathwayId(null); }}
+ onMouseEnter={(e) => { e.currentTarget.style.color = "var(--accent)"; }}
+ onMouseLeave={(e) => { e.currentTarget.style.color = "var(--ink-soft)"; }}
  style={{
- padding: "7px 14px", borderRadius: "100px",
- border: `1px solid ${active? "var(--accent)": "var(--rule)"}`,
- background: active? "var(--accent)": "transparent",
- color: active? "var(--paper, white)": "var(--ink-soft)",
- opacity: showAllDomains? 0.5: 1,
- fontSize: "0.85rem", fontWeight: 500, cursor: "pointer",
+ background: "none", border: "none", padding: "2px 4px 2px 0",
+ cursor: "pointer", color: "var(--ink-soft)",
+ fontSize: "12px", fontWeight: 600, letterSpacing: "0.02em",
  fontFamily: "'Geist', sans-serif",
- transition: "all 120ms ease",
+ transition: "color 120ms ease", whiteSpace: "nowrap",
  }}>
- {d.label}
+ ← Maps
  </button>
-);
- })}
+ {selectedPathway && (
+ <div style={{ fontSize: "12px", color: "var(--ink-faint)", lineHeight: 1.4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+ <span className="serif" style={{ fontSize: "13.5px", color: "var(--ink-soft)" }}>
+ {(PATHWAY_DOMAINS.find(d => d.id === domainId) || {}).label}
+ </span>
+ {" "}· {selectedPathway.label}
+ </div>
+)}
  </div>
  )}
 
