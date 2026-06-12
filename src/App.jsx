@@ -29188,12 +29188,21 @@ function PathwayMiniMap({ pathway }) {
  );
 }
 
-function Pathways() {
+function Pathways({ homeSignal = 0, onOpenChange }) {
  // Nothing auto-selected: user opens the tab to a clean state and must
  // pick a domain (and then a scenario) explicitly. Reduces visual noise
  // on first land and avoids the "I didn't ask for Indirect" effect.
  const [domainId, setDomainId] = useState(null);
  const [pathwayId, setPathwayId] = useState(null);
+ // Homing from the nav: re-clicking the active Maps tab bumps homeSignal;
+ // returning to the landing grid here re-arms the zoom + entry-animation
+ // rule (null -> id) for the next open.
+ useEffect(() => {
+ if (homeSignal > 0) { setDomainId(null); setPathwayId(null); }
+ }, [homeSignal]);
+ // Tell App whether a map is open — drives the circled-arrow home cue
+ // under the Maps tab label.
+ useEffect(() => { if (onOpenChange) onOpenChange(pathwayId !== null); }, [pathwayId, onOpenChange]);
  // Entry animation plays ONLY when a map opens from the Maps home screen
  // (pathwayId null → id). Switching between maps while one is already open
  // (id → other id, via the domain switcher or a guide link) swaps content
@@ -29751,7 +29760,9 @@ function Pathways() {
  };
 
  return (
- <div ref={pathwaysRootRef} className="fade-in" style={{ maxWidth: "880px", margin: "0 auto", padding: "8px 0 40px", textAlign: "left", ...zoomStyle }}>
+ // Open-map view runs flush to the tab switcher (Jake: no vertical
+ // distance) — the nav's circled-arrow home cue is the only chrome.
+ <div ref={pathwaysRootRef} className="fade-in" style={{ maxWidth: "880px", margin: "0 auto", padding: selectedPathway ? "0 0 40px" : "8px 0 40px", textAlign: "left", ...zoomStyle }}>
  {/* Search input removed per Jake — Maps opens to a single unselected
  domain pill; selecting it opens the map directly. */}
 
@@ -29801,36 +29812,7 @@ function Pathways() {
  })}
  </div>
  </div>
- ) : (
- /* Slim back row — replaces the domain pill switcher (cut per Jake:
- you go back to the landing grid and pick, not sideways between
- maps). Left: the way home. Right: the open map's identity, since
- the active pill was the only place the title lived. One ~24px row
- instead of the ~48px pill band. */
- <div style={{ display: "flex", alignItems: "baseline", gap: "12px", marginBottom: "10px" }}>
- <button
- onClick={() => { setDomainId(null); setPathwayId(null); }}
- onMouseEnter={(e) => { e.currentTarget.style.color = "var(--accent)"; }}
- onMouseLeave={(e) => { e.currentTarget.style.color = "var(--ink-soft)"; }}
- style={{
- background: "none", border: "none", padding: "2px 4px 2px 0",
- cursor: "pointer", color: "var(--ink-soft)",
- fontSize: "12px", fontWeight: 600, letterSpacing: "0.02em",
- fontFamily: "'Geist', sans-serif",
- transition: "color 120ms ease", whiteSpace: "nowrap",
- }}>
- ← Maps
- </button>
- {selectedPathway && (
- <div style={{ fontSize: "12px", color: "var(--ink-faint)", lineHeight: 1.4, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
- <span className="serif" style={{ fontSize: "13.5px", color: "var(--ink-soft)" }}>
- {(PATHWAY_DOMAINS.find(d => d.id === domainId) || {}).label}
- </span>
- {" "}· {selectedPathway.label}
- </div>
-)}
- </div>
- )}
+ ) : null}
 
  {/* Scenario pills — same pill family as the domain pills above, but
  visually subordinate: thinner, slightly lighter, hairline-separated
@@ -31427,6 +31409,12 @@ function NapoleonTab({ imgIdx }) {
 
 export default function App() {
  const [tab, setTab] = useState("note");
+ // Maps homing: re-clicking the active Maps tab (or the circled-arrow cue
+ // that hangs below it while a map is open) returns the Maps view to its
+ // landing grid. The signal increments per request; mapOpen mirrors whether
+ // a pathway is open so the cue only shows when there's somewhere to go.
+ const [mapsHomeSignal, setMapsHomeSignal] = useState(0);
+ const [mapOpen, setMapOpen] = useState(false);
  const [loupeImg, setLoupeImg] = useState(0); // which Loupes painting is showing (0 = Coronation)
  // Eagerly preload the (large) Painting-tab image at app start rather than
  // lazy-fetching ~17 MB on the first P-tab click — so P opens instantly. Runs
@@ -31868,8 +31856,14 @@ export default function App() {
  aria-label={t.id === "napoleon" ? "Loupes" : undefined}
  // Loupes tab is pushed to the far-right edge of the nav (margin-left: auto
  // consumes the free space before it in the flex row).
- style={t.id === "napoleon" ? { marginLeft: "auto" } : undefined}
- onClick={() => setTab(t.id)}>
+ style={t.id === "napoleon" ? { marginLeft: "auto" } : t.id === "pathways" ? { position: "relative" } : undefined}
+ onClick={() => {
+ // Re-clicking the active Maps tab homes the Maps view to its
+ // landing grid (the circled-arrow cue below the label is part
+ // of this same button, so clicking it does the same thing).
+ if (t.id === "pathways" && tab === "pathways") setMapsHomeSignal((s) => s + 1);
+ else setTab(t.id);
+ }}>
  {t.id === "napoleon" ? (
  <>
  <span className="lp-seg lp-l">L</span>
@@ -31877,6 +31871,17 @@ export default function App() {
  <span className="lp-seg lp-rest">upes</span>
  </>
  ) : t.label}
+ {t.id === "pathways" && tab === "pathways" && mapOpen && (
+ <span title="Back to all maps" style={{
+ position: "absolute", top: "calc(100% + 7px)", left: "50%",
+ transform: "translateX(-50%)",
+ width: "26px", height: "26px", borderRadius: "50%",
+ border: "1.5px solid var(--accent)", color: "var(--accent)",
+ background: "var(--paper-soft, transparent)",
+ display: "flex", alignItems: "center", justifyContent: "center",
+ fontSize: "14px", lineHeight: 1, zIndex: 5,
+ }}>←</span>
+)}
  </button>
 ))}
  {/* Prev / next painting arrows — sit just right of the Loupes tab and only
@@ -31919,7 +31924,7 @@ export default function App() {
  onJumped={() => setPendingBrowseChunkId("")} />
 )}
  {tab === "guides" && <Guides />}
- {tab === "pathways" && <Pathways />}
+ {tab === "pathways" && <Pathways homeSignal={mapsHomeSignal} onOpenChange={setMapOpen} />}
  {tab === "rvus" && <RVUs />}
  {tab === "pes" && <PEs onShowSteps={handleShowSteps} />}
  {tab === "helpers" && <RPDHelper />}
