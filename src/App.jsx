@@ -24787,7 +24787,7 @@ const PATHWAYS = [
  {
  label: "Prep + intraoral scan + provisional",
  count: 4,
- detail: "Select the e.max shade (low translucency for crowns) → prep for all-ceramic (no undercuts, very rounded, 0.5 mm supragingival) → fabricate the Integrity provisional BEFORE scanning → pack two cords → scan with the TRIOS (opposing arch, prep arch, cord-removal re-scan, occlusion) and send to the UIC Dental Lab → cement the provisional (Gluma first). Rubber dam preferred.",
+ detail: "Select the e.max shade (low translucency for crowns) → prep for all-ceramic (no undercuts, very rounded, 0.5 mm supragingival) → fabricate the Integrity provisional BEFORE scanning → pack two cords → scan with the TRIOS (opposing arch, prep arch, cord-removal re-scan, occlusion) and send to the UIC Dental Lab to mill (you design it in 3Shape — see the lab step) → cement the provisional (Gluma first). Rubber dam preferred.",
  },
  {
  label: "Delivery",
