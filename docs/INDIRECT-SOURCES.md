@@ -98,3 +98,11 @@ Re-extracted the full legit corpus (swade + DAOB War Chest Fixed Prosth/Digital 
 - "die-trim ~3 mm root-form emergence" — figure traces only to the out-of-corpus Vlagos deck. Dropped the number (kept the qualitative goal).
 - "vacuum-mixed for strength and low expansion" → "for dense, void-free margins" (the real rationale).
 - all-ceramic dichotomy softened (as above).
+
+## Source-or-cut — chapter sweep (2026-06-13, same pass)
+The unsourced bridge claims also lived in the live brc-* chapters (rendered in the bridge map popups), not just the pathway keyDecisions. Cleaned:
+- **bridge phase detail** (App.jsx) still listed "crown-root ratio, Ante's Law, span risk" + "bis-acryl preferred" — rewritten to "restorable, periodontally sound" + "Jet Set-4 acrylic or bis-acryl."
+- **brc-abutment** (guides-data): cut the "Ante's Law + span length" section's Ante's-Law bullet + the span-cube "8D/27D + poor prognosis → implant/RPD" bullet → MFT connector-stiffness (cube of connector HEIGHT, ≈2 mm) + "abutments restorable & periodontally sound." Cut the separate "**crown-to-root 2:3 ideal / 1:1 minimum**" bullet → conceptual perio-support (no unsourced numbers).
+- **brc-provisional** (guides-data): two "bis-acryl preferred/stronger/wins for a bridge" claims → both materials neutral (acrylic Jet Set-4 + bis-acryl Integrity, lecture lists both; study guide uses Jet Set-4). The strength comparison is contested and unsourced.
+- **FERRULE — NOT cut (correction):** "ferrule" is sourced after all — the *Restoring Endodontically Treated Teeth* lecture teaches "ferrule of 1.5–2.0 mm" + managing absent ferrule (I'd missed extracting that lecture; earlier "0 hits" was wrong). The ferrule content in crownc-/brc-/digc-foundation chapters stays. Only the bridge keyDecision's over-binary "no ferrule → reconsider the abutment" framing was cut (the lecture teaches *managing* absent ferrule, not abandoning the tooth).
+- **ind-ch15** (orphaned Guides browser, NOT live Maps) still carries Ante's Law — left for the eventual ind-ch* deletion, since it doesn't render.

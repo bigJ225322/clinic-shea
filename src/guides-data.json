@@ -10854,19 +10854,19 @@
         "kind": "bullets",
         "items": [
          "**Full work-up per abutment** before prepping: intraoral, periodontal, radiographic, and pulpal exam. A compromised pulp gets endo *before* fixed pros; an RCT abutment must still have sound structure for a ferrule. Sometimes extraction beats trying to save a severely damaged abutment.",
-         "**Crown-to-root ratio:** 2:3 is ideal; **1:1 is the minimum** acceptable for an FPD abutment.",
+         "**Periodontal support:** the abutment needs adequate bone support — a favorable (not adverse) crown-to-root relationship and no significant mobility. A periodontally compromised tooth makes a poor abutment.",
          "**Root form:** roots broad facio-lingually beat round ones; widely separated multi-rooted teeth beat fused, converging, or conical roots. Perio bone loss shrinks support faster than bone height suggests — the center of rotation moves apically and the lever arm grows."
         ]
        },
        {
         "kind": "section",
-        "text": "Ante's Law + span length"
+        "text": "Span length + connector stiffness"
        },
        {
         "kind": "bullets",
         "items": [
-         "**Ante's Law:** don't make an FPD when the abutments' combined root surface area is **less than** the root surface area of the teeth being replaced.",
-         "**Span deflection (cube law):** deflection rises with the cube of span length — 1 pontic = D, 2 pontics = 8D, 3 pontics = 27D — and inversely with the cube of the pontic's occlusogingival thickness. **Replacing three posterior teeth has a poor prognosis** → recommend an implant or RPD. Long spans need bulky, rigid connectors and pontics."
+         "**Abutments must be restorable and periodontally sound** — assess each candidate's prognosis (save-vs-extract) before committing; a questionable abutment becomes the bridge's weakest link.",
+         "**Connector stiffness (MFT):** bending varies inversely with the cube of connector **height**, so connector height (about 2 mm minimum) matters more than width. The longer the edentulous span, the more it deflects — long spans lean hard on sound abutments and adequate connectors."
         ]
        },
        {
@@ -10975,7 +10975,7 @@
       "blocks": [
        {
         "kind": "paragraph",
-        "text": "The provisional bridge protects both preps, holds the abutments and the space, and develops the pontic-site tissue. Make it as **one connected unit** — provisionalizing a 3-unit FPD as two separate crowns lets the teeth shift, leaves the pontic site under-developed, and gives no trial of the final form. At UIC the material is **bis-acryl (Integrity)**, preferred over acrylic for a span because it's stronger (also low-shrinkage, low-exotherm, easy to mix and polish; the trade-off is it's brittle and less forgiving of under-reduction or undercuts)."
+        "text": "The provisional bridge protects both preps, holds the abutments and the space, and develops the pontic-site tissue. Make it as **one connected unit** — provisionalizing a 3-unit FPD as two separate crowns lets the teeth shift, leaves the pontic site under-developed, and gives no trial of the final form. At UIC the provisional is made from acrylic (Jet Set-4) or bis-acryl (Integrity) — the provisional lecture lists both, and the #3–5 FPD provisional study guide names Jet Set-4 acrylic. Bis-acryl is low-shrinkage and low-exotherm, easy to mix and polish, but brittle; acrylic (Jet Set-4) is cheaper and easy to repair."
        },
        {
         "kind": "section",
@@ -11007,7 +11007,7 @@
        {
         "kind": "callout",
         "title": "Bis-acryl vs acrylic",
-        "body": "Bis-acryl (Integrity) is the preference for a span — stronger, low-shrinkage, easy to handle, dispensed from a cartridge gun. The alternative is **acrylic (Jet Set-4)**, mixed powder-and-liquid through **soupy → doughy → rubbery → set** stages; it's cheaper and easier to repair but weaker, which is why bis-acryl wins for a bridge."
+        "body": "Two materials, both listed by the provisional lecture: **bis-acryl (Integrity)** — low-shrinkage, easy to handle, dispensed from a cartridge gun — and **acrylic (Jet Set-4)**, mixed powder-and-liquid through **soupy → doughy → rubbery → set** stages, cheaper and easy to repair. The #3–5 FPD provisional study guide uses Jet Set-4 acrylic."
        }
       ]
      },

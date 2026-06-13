@@ -24687,7 +24687,7 @@ const PATHWAYS = [
  {
  label: "Prep both abutments + provisional + final impression",
  count: 5,
- detail: "Evaluate and select the abutments first (perio-sound, crown-root ratio, Ante's Law, span risk). Then, in order: select the shade → prep **both abutments to a common path of insertion** (parallel axes, PFM reductions) → fabricate the provisional bridge (bis-acryl preferred; modified ridge-lap pontic, wax up the pontic site first) → pack two cords and take the final PVS impression → cement the provisional → send the impression with the **framework lab script** (alloy, margin design, pontic tissue side, contacts in porcelain vs metal).",
+ detail: "Evaluate and select the abutments first (restorable, periodontally sound). Then, in order: select the shade → prep **both abutments to a common path of insertion** (parallel axes, PFM reductions) → fabricate the provisional bridge (Jet Set-4 acrylic or bis-acryl; modified ridge-lap pontic, wax up the pontic site first) → pack two cords and take the final PVS impression → cement the provisional → send the impression with the **framework lab script** (alloy, margin design, pontic tissue side, contacts in porcelain vs metal).",
  },
  {
  label: "Metal framework try-in",
