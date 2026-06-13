@@ -29231,12 +29231,9 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  // on first land and avoids the "I didn't ask for Indirect" effect.
  const [domainId, setDomainId] = useState(null);
  const [pathwayId, setPathwayId] = useState(null);
- // Homing from the nav: re-clicking the active Maps tab bumps homeSignal;
- // returning to the landing grid here re-arms the zoom + entry-animation
- // rule (null -> id) for the next open.
- useEffect(() => {
- if (homeSignal > 0) { setDomainId(null); setPathwayId(null); }
- }, [homeSignal]);
+ // Homing from the nav (re-clicking the active Maps tab / home icon bumps
+ // homeSignal) is handled below, after the zoom geometry is declared — it
+ // plays the zoom-out exit before returning to the landing grid.
  // Tell App whether a map is open — drives the circled-arrow home cue
  // under the Maps tab label.
  useEffect(() => { if (onOpenChange) onOpenChange(pathwayId !== null); }, [pathwayId, onOpenChange]);
@@ -29266,6 +29263,11 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  const zoomFromRef = useRef(null);
  const pathwaysRootRef = useRef(null);
  const [zoom, setZoom] = useState(null); // { tx, ty, sx, sy }
+ // exiting=true while the zoom-OUT exit animation plays: the open map is
+ // held mounted for the animation's duration, then pathwayId clears and the
+ // grid swaps in. The stored `zoom` geometry is reused in reverse.
+ const [exiting, setExiting] = useState(false);
+ const homeExitTimerRef = useRef(null);
  useLayoutEffect(() => {
  const r = zoomFromRef.current;
  if (!r || !pathwayId) return;
@@ -29297,12 +29299,41 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  // nothing. We clear only when leaving the map for home, where the
  // fadeIn replay reads as the landing grid's own entrance.
  useEffect(() => {
- if (pathwayId === null && zoom) setZoom(null);
- }, [pathwayId, zoom]);
+ if (pathwayId === null) {
+ if (zoom) setZoom(null);
+ if (exiting) setExiting(false);
+ }
+ }, [pathwayId, zoom, exiting]);
+ // Zoom-out exit: re-clicking the active Maps tab (or the home icon) bumps
+ // homeSignal. If a map is open AND we still hold its landing-card geometry,
+ // play mapZoomOut (map shrinks back toward where its card will be) for one
+ // animation length, THEN clear pathwayId so the grid swaps in — its
+ // .fade-in reads as the grid's own entrance. No geometry / no open map →
+ // go straight home, as before.
+ useEffect(() => {
+ if (homeSignal === 0) return;
+ if (homeExitTimerRef.current) { clearTimeout(homeExitTimerRef.current); homeExitTimerRef.current = null; }
+ if (pathwayId !== null && zoom) {
+ setExiting(true);
+ homeExitTimerRef.current = setTimeout(() => {
+ homeExitTimerRef.current = null;
+ setExiting(false);
+ setDomainId(null);
+ setPathwayId(null);
+ }, 400);
+ } else {
+ setDomainId(null);
+ setPathwayId(null);
+ }
+ return () => { if (homeExitTimerRef.current) { clearTimeout(homeExitTimerRef.current); homeExitTimerRef.current = null; } };
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ }, [homeSignal]);
  const zoomStyle = zoom ? {
  "--map-zoom-from": `translate(${zoom.tx}px, ${zoom.ty}px) scale(${zoom.sx}, ${zoom.sy})`,
  transformOrigin: "top left",
- animation: "mapZoomIn 460ms cubic-bezier(.2,.6,.2,1) both",
+ animation: exiting
+ ? "mapZoomOut 380ms cubic-bezier(.4,0,.7,.5) both"
+ : "mapZoomIn 460ms cubic-bezier(.2,.6,.2,1) both",
  } : null;
  const [searchQuery, setSearchQuery] = useState("");
  const [showAllDomains, setShowAllDomains] = useState(false);
