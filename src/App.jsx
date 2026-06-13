@@ -17297,6 +17297,9 @@ function RPDPaperFormArchDrawing({
  style={interactive? { cursor: "pointer" }: undefined}
  onClick={handleClick}
  onDoubleClick={handleDoubleClick}>
+ {/* Recoil group — the click-recoil scale is scoped here so the tooth
+ body presses in but the number label (sibling below) stays put. */}
+ <g className={interactive? "rpd-tooth-recoil": undefined}>
  {/* Invisible hit-target — covers the tooth's full bounding box so
  missing teeth (dashed outlines) still catch clicks. */}
  {interactive && (
@@ -17329,6 +17332,8 @@ function RPDPaperFormArchDrawing({
  stroke="var(--accent)" strokeWidth={2.4}
  pointerEvents="none" />
 )}
+ </g>
+ {/* Tooth number — sits outside the recoil group so it holds still on press */}
  <text x={numX} y={numY} fontSize="20"
  fontFamily="'JetBrains Mono', monospace"
  fill={present? C_LABEL: C_MISSING}
@@ -31855,9 +31860,12 @@ export default function App() {
  /* Subtle oxblood drop-shadow on hover — mirrors the row-hover tint in
  the Codes tab and PE timeline. Cues "this tooth is hover-toggleable"
  without adding chrome. */
-.rpd-tooth-active { transition: filter 120ms ease, transform 130ms cubic-bezier(.2,.6,.2,1); transform-box: fill-box; transform-origin: center; }
+.rpd-tooth-active { transition: filter 120ms ease; }
 .rpd-tooth-active:hover { filter: drop-shadow(0 0 4px rgba(122, 26, 26, 0.28)); }
-.rpd-tooth-active:active { transform: scale(0.92); }
+ /* Click-recoil scale lives on an inner group so the number label — a
+ sibling outside it — doesn't move when the tooth body presses in. */
+.rpd-tooth-recoil { transition: transform 130ms cubic-bezier(.2,.6,.2,1); transform-box: fill-box; transform-origin: center; }
+.rpd-tooth-active:active .rpd-tooth-recoil { transform: scale(0.92); }
 
  /* Design-element annotation labels — hidden by default, revealed on
  hover, when the element is selected, or when its tooth is selected. */
