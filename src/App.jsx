@@ -29328,12 +29328,25 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  return () => { if (homeExitTimerRef.current) { clearTimeout(homeExitTimerRef.current); homeExitTimerRef.current = null; } };
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [homeSignal]);
- const zoomStyle = zoom ? {
- "--map-zoom-from": `translate(${zoom.tx}px, ${zoom.ty}px) scale(${zoom.sx}, ${zoom.sy})`,
+ const zoomFrom = zoom ? `translate(${zoom.tx}px, ${zoom.ty}px) scale(${zoom.sx}, ${zoom.sy})` : null;
+ // Entry: only the map is rendered, so the whole Pathways root zooms IN
+ // from the clicked card (mapZoomIn).
+ const rootZoomStyle = (zoom && !exiting) ? {
+ "--map-zoom-from": zoomFrom,
  transformOrigin: "top left",
- animation: exiting
- ? "mapZoomOut 380ms cubic-bezier(.4,0,.7,.5) both"
- : "mapZoomIn 460ms cubic-bezier(.2,.6,.2,1) both",
+ animation: "mapZoomIn 460ms cubic-bezier(.2,.6,.2,1) both",
+ } : null;
+ // Exit: the landing grid is rendered underneath (static — every card
+ // already in its slot) and the still-mounted map shrinks down onto its
+ // OWN card slot as an absolute overlay, fading out. So the sibling cards
+ // are REVEALED by the zoom-out (they were always there, we were just
+ // zoomed into one) rather than appearing after a separate animation.
+ const exitMapStyle = (zoom && exiting) ? {
+ position: "absolute", top: 0, left: 0, right: 0, zIndex: 4,
+ "--map-zoom-from": zoomFrom,
+ transformOrigin: "top left",
+ animation: "mapZoomOut 420ms cubic-bezier(.4,0,.7,.4) both",
+ pointerEvents: "none",
  } : null;
  const [searchQuery, setSearchQuery] = useState("");
  const [showAllDomains, setShowAllDomains] = useState(false);
@@ -29835,12 +29848,14 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  return (
  // Open-map view runs flush to the tab switcher (Jake: no vertical
  // distance) — the nav's circled-arrow home cue is the only chrome.
- <div ref={pathwaysRootRef} className="fade-in" style={{ maxWidth: "880px", margin: "0 auto", padding: selectedPathway ? "0 0 40px" : "8px 0 40px", textAlign: "left", ...zoomStyle }}>
+ <div ref={pathwaysRootRef} className="fade-in" style={{ maxWidth: "880px", margin: "0 auto", padding: selectedPathway ? "0 0 40px" : "8px 0 40px", textAlign: "left", position: "relative", ...rootZoomStyle }}>
  {/* Search input removed per Jake — Maps opens to a single unselected
  domain pill; selecting it opens the map directly. */}
 
- {/* Landing: pathway cards before any domain is picked; the bare pill row otherwise */}
- {nothingSelected && MAPS_LANDING_CARDS ? (
+ {/* Landing: pathway cards before any domain is picked; the bare pill row
+ otherwise. During the zoom-out exit we also render the grid here (under
+ the shrinking map overlay) so the cards are revealed by the animation. */}
+ {(nothingSelected || exiting) && MAPS_LANDING_CARDS ? (
  <div style={{ marginBottom: "10px" }}>
  {/* Landing grid (2026-06-12, Jake's spec): flat tiles in the page's
  own background — no paper surface — each previewing its WHOLE map
@@ -29894,7 +29909,7 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  In the nothing-selected state we render nothing — no eyebrow, no
  prompt, no pills. The domain pills + search + All toggle above are
  enough signal that the user needs to pick something. */}
- {(nothingSelected || singleAutoScenario) ? null : (
+ {(nothingSelected || singleAutoScenario || exiting) ? null : (
  <div style={{ marginBottom: "20px" }}>
  {/* "Specific situation" eyebrow removed — the "N scenarios" count
  on the right already describes what's below, and the dotted top-
@@ -30145,7 +30160,7 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
 
  {/* Customized guide */}
  {selectedPathway && (
- <>
+ <div style={exitMapStyle || undefined}>
  {/* Header card cut 2026-05-28: the schematic below IS the orientation.
  Title + description + category badge were redundant once the
  concept map became the primary view — the title is already
@@ -30829,7 +30844,7 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  }
  return null;
  })()}
- </>
+ </div>
 )}
  </div>
 );
@@ -31622,7 +31637,7 @@ export default function App() {
     .fade-in plays as the grid's entrance. */
  @keyframes mapZoomOut {
  from { transform: none; opacity: 1; }
- to { transform: var(--map-zoom-from); opacity: 0.12; }
+ to { transform: var(--map-zoom-from); opacity: 0; }
  }
 
  @keyframes mapTileEnter {
