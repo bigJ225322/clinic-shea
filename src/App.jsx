@@ -31740,15 +31740,24 @@ export default function App() {
 .tab-button:active { transform: scale(0.95); }
 .tab-button:hover { color: var(--ink); }
 .tab-button.active { color: var(--accent); font-weight: 500; }
-.tab-button.active::after {
+ /* The red underline lives on EVERY tab as an ::after, scaled by state.
+    At rest it's scaleX(0) (invisible). Holding a tab down coils it to a
+    short centred nub — a spring loading under the finger — and releasing
+    into the active state shoots it out to full width with a springy
+    overshoot. Center origin + the >1 control point make it spring open
+    from the middle rather than slide in from a corner. */
+.tab-button::after {
  content: ""; position: absolute; bottom: -1px; left: 0; right: 0;
  height: 2px; background: var(--accent);
- animation: tabSlide 240ms cubic-bezier(.2,.6,.2, 1);
+ transform: scaleX(0); transform-origin: center;
+ transition: transform 300ms cubic-bezier(.34, 1.56, .64, 1);
+ pointer-events: none;
  }
- @keyframes tabSlide {
- from { transform: scaleX(0); transform-origin: left; }
- to { transform: scaleX(1); transform-origin: left; }
- }
+.tab-button.active::after { transform: scaleX(1); }
+ /* Coiled spring while held: a short nub appears under the pressed tab,
+    quick to load. Declared AFTER .active so re-pressing the active tab
+    recoils its underline too, then springs back out on release. */
+.tab-button:active::after { transform: scaleX(0.2); transition: transform 130ms ease-out; }
  /* Loupes tab — at rest the glyph is just a lens: a magnified "o". On hover (or
     when active) it blooms into the word "Loupes", the lens settling down into
     its own lowercase o. The o is enlarged with transform: scale (NOT font-size),
