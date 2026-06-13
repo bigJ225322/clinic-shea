@@ -31272,25 +31272,16 @@ const TABS = [
  // the program still require of me"), so they share a single nav slot.
  // Internal ids "rvus"/"pes" live on as the toggle views inside <Reqs>.
  { id: "reqs", label: "Reqs", hint: "RVU progress & performance exams" },
- // RPD then Cases as the last two tabs (per user). RPD is the
- // procedural-helper context-switcher; Cases is the scenario-driven
- // customized guide and sits at the far right as the primary
- // workflow-launching tab.
- { id: "helpers", label: "RPD", hint: "Design helper for removable partial dentures" },
- // "Cases" is the renamed Pathways tab — internal id stays "pathways"
- // so any deep links / cached state continues to work; only the visible
- // label changed. The standalone "Guides" tab was cut earlier; its
- // content is reached via Cases (every chapter renders inside a
- // customized guide for the scenario it belongs to). The Guides
- // component + GUIDES const are retained because the Cases patcher
- // reads them; they're just not directly navigable as a top-level tab.
- //
- // ── UNHIDDEN 2026-05-27 for cd-conventional model-pathway review ─────
- // First real rebuilt pathway (cd-conventional) is live for user review
- // per CASES-BUILD-PLAN.md Step 3. After review feedback lands, the
- // workflow is iterate → fan out to siblings (cd-iid, cd-adjustment,
- // cd-reline-lab) → continue with rpd-kennedy3 and ind-conventional-crown.
+ // "Maps" is the renamed Pathways tab — internal id stays "pathways" so any
+ // deep links / cached state keep working; only the visible label changed.
+ // Sits between Reqs and RPD (per Jake). The standalone "Guides" tab was cut
+ // earlier; its content is reached via Maps (every chapter renders inside a
+ // customized guide for the scenario it belongs to). The Guides component +
+ // GUIDES const are retained because the Maps patcher reads them; they're
+ // just not directly navigable as a top-level tab.
  { id: "pathways", label: "Maps", hint: "Visual map of the multi-visit workflow with lab interactions" },
+ // RPD — design helper for removable partial dentures.
+ { id: "helpers", label: "RPD", hint: "Design helper for removable partial dentures" },
  { id: "napoleon", label: "Loupes", hint: "Look closely" },
 ];
 
