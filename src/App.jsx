@@ -31423,6 +31423,14 @@ function NapoleonTab({ imgIdx }) {
  borderTop: "1px solid var(--rule)",
  }}>
  <img
+ // key per source: switching paintings mounts a FRESH <img> instead of
+ // reusing one element. Without it, the old painting's decoded pixels
+ // stay in the element while the new painting's geometry (different
+ // aspect ratio → different width/height/left/top) is applied — so the
+ // old image visibly stretches into the new box for a frame ("reformats
+ // awkwardly") before the new file paints. A fresh element has nothing
+ // stale to stretch; the preloaded source paints immediately.
+ key={cur.src}
  src={cur.src}
  alt={cur.alt}
  draggable={false}
