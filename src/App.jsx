@@ -31570,6 +31570,13 @@ export default function App() {
  from { transform: var(--map-zoom-from); opacity: 0.35; }
  to { transform: none; opacity: 1; }
  }
+ /* Exit: same geometry in reverse — the open map shrinks back toward
+    its landing-card rect and fades; the home render then swaps in and
+    .fade-in plays as the grid's entrance. */
+ @keyframes mapZoomOut {
+ from { transform: none; opacity: 1; }
+ to { transform: var(--map-zoom-from); opacity: 0.12; }
+ }
 
  @keyframes mapTileEnter {
  from { top: var(--map-entry-dy, 0px); }
@@ -31930,16 +31937,14 @@ export default function App() {
  changes. Sits just above the active-tab underline. */}
  {t.id === "pathways" && tab === "pathways" && mapOpen && (
  <svg aria-hidden="true" viewBox="0 0 24 24"
- fill="none" stroke="currentColor" strokeWidth="2.6"
- strokeLinecap="round" strokeLinejoin="round"
+ fill="var(--accent)"
  style={{
  position: "absolute", bottom: "2.5px", left: "50%",
  transform: "translateX(-50%)",
  width: "11px", height: "11px",
- color: "var(--accent)", pointerEvents: "none",
+ pointerEvents: "none",
  }}>
- <path d="M3 11 L12 3.5 L21 11" />
- <path d="M5.5 9.5 V20.5 H18.5 V9.5" />
+ <path d="M12 2.8 L2.6 10.6 H5 V21 H10 V14.2 H14 V21 H19 V10.6 H21.4 Z" />
  </svg>
 )}
  </button>
