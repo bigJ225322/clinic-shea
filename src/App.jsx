@@ -18925,15 +18925,18 @@ function RPDPaperFormArchDrawing({
  })();
  const abutments = isFPD? [mesialAbutment, distalAbutment].filter(Boolean): [];
 
- // Label position — centered on the missing run, lingual to avoid the
- // tooth-number label on the buccal side.
+ // Label position — pulled OFF the missing run toward the open palatal
+ // void (the arch centroid) rather than a fixed lingual offset. A fixed
+ // offset still let a wide horizontal word ("IMPLANTS") overlap a
+ // diagonally-placed run like #3-4-5: its left edge reached back over the
+ // tooth models, obscuring "IM". Moving ~46% of the way to the arch centre
+ // lands the whole word in clear space for any run, and the pull scales
+ // automatically with how far the teeth sit from centre.
  const labelTooth = sortedTeeth[Math.floor(sortedTeeth.length / 2)];
  const { cx: lcx, cy: lcy } = positionOf(labelTooth);
- const lrad = radialUnit(labelTooth);
- const lhalfBL = toothHalfBL(labelTooth);
- const labelOffset = lhalfBL + 28;
- const labelX = lcx - lrad.x * labelOffset;
- const labelY = lcy - lrad.y * labelOffset + 5;
+ const LABEL_PULL = 0.46;
+ const labelX = lcx + (midlineX - lcx) * LABEL_PULL;
+ const labelY = lcy + (archCenterY - lcy) * LABEL_PULL;
  // For multi-pontic FPDs we also label the bridge units, e.g. "4-unit FPD".
  const labelText = isFPD
 ? (teeth.length > 1? `${teeth.length + 2}-unit FPD`: "FPD")
