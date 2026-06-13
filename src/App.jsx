@@ -16058,6 +16058,43 @@ function PEs({ onShowSteps }) {
 );
 }
 
+// ───────── Reqs ─────────
+// Consolidated "requirements" tab: merges the former Codes (RVU/MEE
+// progress) and PEs tabs behind one segmented toggle. Both are low-traffic
+// reference surfaces that answer the same question — "what does the program
+// still require of me" — so they share one nav slot instead of two. The two
+// views render their existing components (<RVUs />, <PEs />) unchanged; only
+// the switcher is new. Defaults to Codes (the broader day-to-day lookup).
+function Reqs({ onShowSteps }) {
+ const [view, setView] = useState("codes"); // "codes" | "pes"
+ const OPTS = [{ id: "codes", label: "Codes" }, { id: "pes", label: "PEs" }];
+ return (
+ <div>
+ {/* Segmented toggle — mirrors the PETimeline Semester/Category control
+ (same paper-soft track, oxblood active fill, Geist 500) so it reads as
+ native to the design language rather than a bolted-on switcher. */}
+ <div style={{
+ display: "flex", background: "var(--paper-soft)",
+ border: "1px solid var(--rule)", borderRadius: "3px",
+ overflow: "hidden", width: "fit-content", marginBottom: "18px",
+ }}>
+ {OPTS.map(opt => (
+ <button key={opt.id} onClick={() => setView(opt.id)}
+ style={{
+ padding: "5px 14px", fontSize: "11px", letterSpacing: "0.04em",
+ background: view === opt.id ? "var(--accent)" : "transparent",
+ color: view === opt.id ? "var(--paper)" : "var(--ink-soft)",
+ border: "none", cursor: "pointer",
+ fontFamily: "'Geist', sans-serif", fontWeight: 500,
+ transition: "background 100ms, color 100ms",
+ }}>{opt.label}</button>
+ ))}
+ </div>
+ {view === "codes" ? <RVUs /> : <PEs onShowSteps={onShowSteps} />}
+ </div>
+);
+}
+
 
 /* ============================================================================
  * RPD DESIGN ENGINE — standards
@@ -31169,8 +31206,12 @@ function PathwaySidebarTOC({ sections, activeIdx, collapsedSections, onToggle, o
 const TABS = [
  { id: "note", label: "Note", hint: "Generate chart notes" },
  { id: "browse", label: "Steps", hint: "Read the guide" },
- { id: "rvus", label: "Codes", hint: "Progress & code lookup" },
- { id: "pes", label: "PEs", hint: "Performance exam reference" },
+ // Reqs — consolidates the former Codes (RVU/MEE progress) and PEs tabs
+ // behind one segmented toggle (see the <Reqs> component). Both are
+ // low-traffic reference surfaces answering the same question ("what does
+ // the program still require of me"), so they share a single nav slot.
+ // Internal ids "rvus"/"pes" live on as the toggle views inside <Reqs>.
+ { id: "reqs", label: "Reqs", hint: "RVU progress & performance exams" },
  // RPD then Cases as the last two tabs (per user). RPD is the
  // procedural-helper context-switcher; Cases is the scenario-driven
  // customized guide and sits at the far right as the primary
@@ -31938,8 +31979,7 @@ export default function App() {
 )}
  {tab === "guides" && <Guides />}
  {tab === "pathways" && <Pathways homeSignal={mapsHomeSignal} onOpenChange={setMapOpen} />}
- {tab === "rvus" && <RVUs />}
- {tab === "pes" && <PEs onShowSteps={handleShowSteps} />}
+ {tab === "reqs" && <Reqs onShowSteps={handleShowSteps} />}
  {tab === "helpers" && <RPDHelper />}
  </main>
  )}
