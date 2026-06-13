@@ -30907,7 +30907,13 @@ function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, s
  card.style.transition = "transform 420ms cubic-bezier(0.4, 0, 0.6, 0.38)";
  card.style.transform = `translate(${dx}px, ${dy}px) scale(${scale}) rotateX(10deg) rotateY(-80deg)`;
  }, [closing, sourceRect]);
- return (
+ // The Pathways tab uses `.fade-in` and `.app-root` ancestors that animate
+ // via `transform`, which creates a new containing block for descendants and
+ // breaks `position: fixed` — the scrim would otherwise only cover the
+ // transformed map area (the dark "zone" behind the tile) instead of the
+ // whole viewport. Portal to document.body so the overlay pins to the
+ // viewport and darkens the entire background.
+ return createPortal((
  <div
  onClick={onClose}
  style={{
@@ -31001,7 +31007,7 @@ function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, s
  <div>{children}</div>
  </div>
  </div>
- );
+ ), document.body);
 }
 
 function PathwaySidebarTOC({ sections, activeIdx, collapsedSections, onToggle, onCollapseAll, onExpandAll }) {
