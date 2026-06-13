@@ -76,3 +76,25 @@
 ---
 
 **STATUS:** with these three plus cd-conventional (in CD-PATHWAY-SOURCES.md) and rpd-conventional (in RPD-SOURCES.md), **every pathway in the Maps tab now has a per-sentence source ledger.** Open items: ① the Vlagos Mounting & Die Trimming deck wasn't found in tonight's corpus (its claims are from the prior verified pass — send the deck if you have it and I'll verbatim-check the ~3 mm ditching figure); ② Lab4-23 (RPD design lab) is image-only — the path-of-insertion ~10° / rod ½-⅔ specifics stay flag-kept on answer-key authority.
+## Source-or-cut autonomous pass — 2026-06-13 (Jake: "find a real source or cut it")
+Re-extracted the full legit corpus (swade + DAOB War Chest Fixed Prosth/Digital + board criteria) to /tmp and grepped every contested claim. **AI slop confirmed & excluded:** the entire `ALL INDIRECT RESTORATION FILES` folder = the two "Comprehensive Guide" files only.
+
+**bridge-pfm — abutment block CUT (zero corpus hits):**
+- "**Ante's Law** / root surface area ≥" — `grep -ri "ante" / "root surface"` across the whole corpus = **0 hits**. CUT. keyDecision[0] rewritten to restorable + periodontally-sound abutment (Levin/Jameson *Assessing Tooth Restorability Part 2* = the save-vs-extract review — the only abutment-prognosis source).
+- "**crown-root 2:3 ideal / 1:1 minimum**" — Swade's only "crown to root ratio" is line 591 in a **perio charting** context, no numbers. CUT the ratios.
+- "**3 posterior teeth = poor prognosis → implant/RPD instead**" — no FPD-span-prognosis source anywhere. CUT (directive removed).
+- "**deflection rises with the cube of the span (8×)**" — MFT's cube law is for **connector height**, not span length; "8×" was a 2³ extrapolation. Rewrote keyDecision[1] to MFT's actual claim (bending ∝ 1/connector-height³; height > width; ≈2 mm min). labStep "connectors ≥ 2 mm … cube of pontic thickness" → "about 2 mm … cube of connector height" (MFT verbatim).
+- "**no ferrule → reconsider abutment**" — "ferrule" = **0 corpus hits**. CUT.
+- "**bis-acryl preferred for the span because it is stronger**" — the Acrylic Provisional lecture says "acrylic OR bis-acryl" (no preference); the board guide names **Jet Set-4 acrylic** as the material. Rewrote to "acrylic (Jet Set-4) or bis-acryl — lecture lists both," dropped the stronger/preferred claim.
+- pontic "touches **only attached keratinized gingiva**" — PPA says convex/cleansable/light contact, not "only keratinized." Softened.
+
+**digital-emax — proper-noun + dichotomy fixes:**
+- "**Design Studio**" — 0 hits in any digital source. The real name is **3Shape** ("Open 3Shape Software"; "3Shape chairside System" — Inlay Scan and Design doc). All "Design Studio" → "3Shape chairside software." The operator-designs claim itself IS sourced (the Inlay Scan & Design doc is the operator's 3Shape design workflow) — kept, dropped the absolute "not the lab's."
+- "all-ceramic **is the route** / PFM goes conventional" false dichotomy — softened to "at UIC, typically…" (Swade: "no right or wrong crown material — talk with your instructor").
+- "crowns LT / inlays HT" — restored the source's "generally" + "block choice also depends on stump shade."
+
+**crown-pfm:**
+- **Cross-tab contradiction FIXED:** guides-data `crownc-prep` said facial finish line "1.2–1.5 mm"; Swade's reduction table (line 2563-2567) says PFM facial = **1.0–1.25 mm deep chamfer**. Corrected guides-data to Swade. (Maps keyDecision was already correct.)
+- "die-trim ~3 mm root-form emergence" — figure traces only to the out-of-corpus Vlagos deck. Dropped the number (kept the qualitative goal).
+- "vacuum-mixed for strength and low expansion" → "for dense, void-free margins" (the real rationale).
+- all-ceramic dichotomy softened (as above).
