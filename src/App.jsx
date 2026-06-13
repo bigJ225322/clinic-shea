@@ -31755,17 +31755,17 @@ export default function App() {
     springy overshoot must NOT apply here — its >1 control point makes a
     shrinking bar dip past zero and bounce back, leaving a sliver that
     lingers for a frame at the end. */
- transition: transform 200ms cubic-bezier(.4, 0, .2, 1);
+ transition: transform 140ms cubic-bezier(.4, 0, .2, 1);
  pointer-events: none;
  }
  /* Grow into the active state: THIS is where the spring lives (overshoot
     past full, then settle). Scoped to .active::after so it only fires on
     the appearing bar, never the retracting one. */
-.tab-button.active::after { transform: scaleX(1); transition: transform 300ms cubic-bezier(.34, 1.56, .64, 1); }
+.tab-button.active::after { transform: scaleX(1); transition: transform 200ms cubic-bezier(.34, 1.56, .64, 1); }
  /* Coiled spring while held: a short nub appears under the pressed tab,
     quick to load. Declared AFTER .active so re-pressing the active tab
     recoils its underline too, then springs back out on release. */
-.tab-button:active::after { transform: scaleX(0.2); transition: transform 130ms ease-out; }
+.tab-button:active::after { transform: scaleX(0.2); transition: transform 90ms ease-out; }
  /* Loupes tab — at rest the glyph is just a lens: a magnified "o". On hover (or
     when active) it blooms into the word "Loupes", the lens settling down into
     its own lowercase o. The o is enlarged with transform: scale (NOT font-size),
