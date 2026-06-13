@@ -31269,20 +31269,23 @@ function PathwaySidebarTOC({ sections, activeIdx, collapsedSections, onToggle, o
 const TABS = [
  { id: "note", label: "Note", hint: "Generate chart notes" },
  { id: "browse", label: "Steps", hint: "Read the guide" },
+ // "Maps" is the renamed Pathways tab — internal id stays "pathways" so any
+ // deep links / cached state keep working; only the visible label changed.
+ // Sits right after Steps: both are "what do I do for this procedure"
+ // surfaces (Steps = the verbatim list, Maps = the multi-visit visual). The
+ // standalone "Guides" tab was cut earlier; its content is reached via Maps
+ // (every chapter renders inside a customized guide for its scenario). The
+ // Guides component + GUIDES const are retained because the Maps patcher
+ // reads them; they're just not directly navigable as a top-level tab.
+ { id: "pathways", label: "Maps", hint: "Visual map of the multi-visit workflow with lab interactions" },
  // Reqs — consolidates the former Codes (RVU/MEE progress) and PEs tabs
  // behind one segmented toggle (see the <Reqs> component). Both are
  // low-traffic reference surfaces answering the same question ("what does
  // the program still require of me"), so they share a single nav slot.
  // Internal ids "rvus"/"pes" live on as the toggle views inside <Reqs>.
+ // Tucked between Maps and RPD (per Jake) so the row doesn't close on the
+ // stress-inducing progress tracker — RPD, the cool feature, ends the row.
  { id: "reqs", label: "Reqs", hint: "RVU progress & performance exams" },
- // "Maps" is the renamed Pathways tab — internal id stays "pathways" so any
- // deep links / cached state keep working; only the visible label changed.
- // Sits between Reqs and RPD (per Jake). The standalone "Guides" tab was cut
- // earlier; its content is reached via Maps (every chapter renders inside a
- // customized guide for the scenario it belongs to). The Guides component +
- // GUIDES const are retained because the Maps patcher reads them; they're
- // just not directly navigable as a top-level tab.
- { id: "pathways", label: "Maps", hint: "Visual map of the multi-visit workflow with lab interactions" },
  // RPD — design helper for removable partial dentures.
  { id: "helpers", label: "RPD", hint: "Design helper for removable partial dentures" },
  { id: "napoleon", label: "Loupes", hint: "Look closely" },
