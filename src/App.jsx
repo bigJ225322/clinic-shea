@@ -20602,7 +20602,7 @@ function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) 
  <span style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--ink-soft)" }}>
  3 · Upper six anterior curve width
  </span>
- <InfoPopover text="On an edentulous patient there are no canines to measure between — you take this off the maxillary wax rim. Mark a canine line on each side by dropping a vertical from the ala of the nose (the canine sits roughly under the ala), then measure straight across between the two lines with a ruler. UIC's note template calls this the intercanine distance. If a pre-extraction diagnostic cast, an old denture, or a photo of the natural teeth is available, measure canine-to-canine on that instead." />
+ <InfoPopover text="On an edentulous patient there are no canines to measure between — you take this off the maxillary wax rim. Mark a canine line on each side by dropping a vertical from the ala of the nose (the canine sits roughly under the ala), then measure straight across between the two lines with a ruler. UIC's note template calls this the intercanine distance. If a pre-extraction diagnostic cast or an old denture is available, measure canine-to-canine on that instead — both are 1:1, so a ruler reads true. (A photo of the natural teeth only fixes the tooth shape/mould, not the distance — there's no scale to measure against.)" />
  </div>
  <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
  <input type="text" inputMode="decimal" placeholder="e.g. 49"
