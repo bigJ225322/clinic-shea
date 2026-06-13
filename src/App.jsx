@@ -30948,6 +30948,14 @@ function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, s
  <div
  onClick={onClose}
  style={{
+ // Portaling to document.body escapes .app-root, where the theme
+ // CSS variables (ROOT_TOKENS) and the base Geist font are scoped —
+ // so re-apply them here, or the modal renders with no --rule
+ // dividers, default backgrounds, and a serif (Times New Roman)
+ // fallback font. The scrim's own literal color is unaffected.
+ ...ROOT_TOKENS,
+ fontFamily: "'Geist', 'Helvetica Neue', Arial, sans-serif",
+ color: "var(--ink)",
  position: "fixed", inset: 0,
  background: "rgba(26, 22, 18, 0.55)",
  zIndex: 1000,
