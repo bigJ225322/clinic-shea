@@ -6747,7 +6747,7 @@
         "items": [
          "**Anesthesia + prep materials** (same as conventional): anesthesia, isolation, bur block, retraction cord, hemostatic agent.",
          "**3Shape TRIOS scanner** in its cradle, with the tip warmed (button on the handle, ~3 min warm-up to avoid fogging).",
-         "**Design Studio software** open on the operatory computer, patient case created.",
+         "**3Shape chairside software** open on the operatory computer, patient case created.",
          "**e.max block** (lithium disilicate) in the patient's shade, or zirconia block. stocks B1, A2, A3, A3.5 commonly. Verify shade before milling.",
          "**CEREC MC X or Roland mill** with fresh diamonds (replace at the diamond-tip indicator).",
          "**Crystallization is sent to the lab tech** (Dan) for the ~25 min Programat firing — students don't operate the furnace themselves. Hand off the milled, sprue-removed restoration in a labeled cup; pick up crystallized.",
@@ -6766,7 +6766,7 @@
         "kind": "bullets",
         "items": [
          "Scanner tip warmed and ready (insert into the cradle warmer 3+ min before).",
-         "Design Studio open, patient case created with: tooth #, restoration type, material, shade.",
+         "3Shape software open, patient case created with: tooth #, restoration type, material, shade.",
          "Mill prepped: dummy block in place, diamonds inspected, water reservoir full.",
          "Hand-off plan to the lab tech (Dan) confirmed — restoration will be brought over after milling for crystallization (~25 min round trip). Brief Dan if the case is rushed.",
          "Stain + glaze kit on the lab bench, brushes clean.",
@@ -6784,7 +6784,7 @@
        },
        {
         "kind": "paragraph",
-        "text": "Visualization slider in Design Studio toggles between pre-prep and prep scans. Pre-prep scan should stay under ~1,000 images; preparation scans under 2,000 (zoom into specific areas once exceeded)."
+        "text": "Visualization slider in the 3Shape software toggles between pre-prep and prep scans. Pre-prep scan should stay under ~1,000 images; preparation scans under 2,000 (zoom into specific areas once exceeded)."
        },
        {
         "kind": "paragraph",
@@ -6854,7 +6854,7 @@
        },
        {
         "kind": "paragraph",
-        "text": "Step 5 · Analyze + margin select (in Design Studio)"
+        "text": "Step 5 · Analyze + margin select (in the 3Shape software)"
        },
        {
         "kind": "numbered",
@@ -6982,10 +6982,10 @@
        {
         "kind": "callout",
         "title": "Issues (digital workflow)",
-        "body": "**Scanner can't capture the finish line:** tissue isn't retracted enough. Re-pack cord, wait 5 min, re-scan only the affected region. Don't blame the scanner — tissue is almost always the issue. **Scan has >2,000 images and is degrading:** stop, clear, restart with a more efficient pattern. Don't add to a corrupt scan. **Bite scan doesn't align with the prep + opposing scans:** the bite was scanned with the patient not in MI, or there's a tooth shift. Re-scan with the patient firmly biting MI, verify alignment in software before proceeding. **Mill fails or fractures during milling:** check the diamond burs (replace if dull or chipped) and the block (verify it's seated correctly). Re-mill with a fresh block. **Crystallized e.max comes back from the lab with cracks or distortion:** firing-pin placement was wrong, or the firing paste was inadequate. Document, remake from the same case file; consult with the lab tech about the firing parameters used. **Crystallized e.max is too dark / wrong shade:** block was wrong shade. Verify the block lot # against the order; remill from the correct block. **Try-in shows the crown won't seat:** check for prep undercut you missed (Design Studio undercuts tool should have caught it). Adjust the intaglio with the red-stripe diamond at the binding spot. Verify with Fit Checker. **Occlusion is too high at try-in:** articulating paper marks, adjust with red-stripe diamond. Polish to high luster with rubber points after adjustment. **Margin gap visible after cementation:** intaglio wasn't fully seated — cement set with the crown in suspension. Remake. Common cause: missed sprue removal, or undercut prep."
+        "body": "**Scanner can't capture the finish line:** tissue isn't retracted enough. Re-pack cord, wait 5 min, re-scan only the affected region. Don't blame the scanner — tissue is almost always the issue. **Scan has >2,000 images and is degrading:** stop, clear, restart with a more efficient pattern. Don't add to a corrupt scan. **Bite scan doesn't align with the prep + opposing scans:** the bite was scanned with the patient not in MI, or there's a tooth shift. Re-scan with the patient firmly biting MI, verify alignment in software before proceeding. **Mill fails or fractures during milling:** check the diamond burs (replace if dull or chipped) and the block (verify it's seated correctly). Re-mill with a fresh block. **Crystallized e.max comes back from the lab with cracks or distortion:** firing-pin placement was wrong, or the firing paste was inadequate. Document, remake from the same case file; consult with the lab tech about the firing parameters used. **Crystallized e.max is too dark / wrong shade:** block was wrong shade. Verify the block lot # against the order; remill from the correct block. **Try-in shows the crown won't seat:** check for prep undercut you missed (the 3Shape undercuts tool should have caught it). Adjust the intaglio with the red-stripe diamond at the binding spot. Verify with Fit Checker. **Occlusion is too high at try-in:** articulating paper marks, adjust with red-stripe diamond. Polish to high luster with rubber points after adjustment. **Margin gap visible after cementation:** intaglio wasn't fully seated — cement set with the crown in suspension. Remake. Common cause: missed sprue removal, or undercut prep."
        }
       ],
-      "verdict": "the digital track uses 3Shape TRIOS + Design Studio chairside design software, plus lab-milled paths through the same software when needed. Same-day chairside is the lithium disilicate single-unit standard. Plan 3–4 hours for same-day chairside e.max single units."
+      "verdict": "the digital track uses 3Shape TRIOS + the 3Shape chairside design software, plus lab-milled paths through the same software when needed. Same-day chairside is the lithium disilicate single-unit standard. Plan 3–4 hours for same-day chairside e.max single units."
      },
      {
       "id": "ind-ch3",
