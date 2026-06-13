@@ -21360,17 +21360,21 @@ function RPDDesignElementDetail({ element, result, caseInput, onClose }) {
  // on an Akers abutment, where the engine translates to DB / MB).
  const effective = abutment?.effectiveUndercutLocation
  || attrs.undercutLocation || "mid-buccal";
+ const userSet = attrs.undercutLocation || "mid-buccal";
  title = `Undercut — ${rpdToothName(tooth)}`;
  lines = [
  ["Location", effective],
  ["Depth", attrs.undercutDepth || "0.01\""],
  ];
- // If the engine translated the user's input, surface that explicitly
- // so the panel reads as consistent with the user's setting.
- if (effective!== (attrs.undercutLocation || "mid-buccal")) {
- lines.push(["Inferred from", `your "${attrs.undercutLocation || "mid-buccal"}" setting + Akers convention on this abutment`]);
- }
  rationale = "Red marking indicates the surveyed undercut where the clasp engages for retention. Standard: cast clasps engage 0.01\" undercuts; wrought-wire engages 0.02\".";
+ // When the engine drew a different surface than the user picked, explain
+ // it in plain language. (This used to be a debug-style "Inferred from"
+ // key/value row; folding it into the rationale reads as a student-facing
+ // side note rather than exposed engine internals.)
+ if (effective!== userSet) {
+ const claspName = abutment?.claspType? `the ${abutment.claspType} clasp`: "this clasp";
+ rationale = `You set "${userSet}," but ${effective} is drawn here — that's the surface ${claspName} actually engages on this abutment. ` + rationale;
+ }
  } else if (kind === 'surveyLine' && tooth!= null) {
  title = `Survey line (HOC) — ${rpdToothName(tooth)}`;
  lines = [["Function", "Marks height-of-contour around the tooth"]];
