@@ -10663,7 +10663,7 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
  </div>
 
  {/* Four staging fields on one row: Recession, BOP, BL %, Teeth Lost */}
- <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "12px" }}>
+ <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: "12px" }}>
  <Field label="Recession At Max PD (mm)">
  <TextInput value={fields.perioCOEMaxRecession || ""}
  onChange={v => setField("perioCOEMaxRecession", v.replace(/[^\d.]/g, ""))}
@@ -10673,20 +10673,20 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
  <Select value={fields.perioCOEBOP || ""}
  onChange={v => setField("perioCOEBOP", v)}>
  <option value="">— select —</option>
- <option value="none">None (no BOP)</option>
- <option value="localized">Localized (&lt;30% of sites)</option>
- <option value="generalized">Generalized (≥30% of sites)</option>
+ <option value="none">None</option>
+ <option value="localized">Localized</option>
+ <option value="generalized">Generalized</option>
  </Select>
  </Field>
  <Field label="BL %">
  <Select value={fields.perioCOEBoneLossPct || ""}
  onChange={v => setField("perioCOEBoneLossPct", v)}>
  <option value="">— select —</option>
- <option value="0">0% (no bone loss)</option>
- <option value="<15">&lt;15% (coronal third)</option>
- <option value="15-33">15–33% (coronal-to-mid)</option>
- <option value="33-50">33–50% (mid third)</option>
- <option value=">50">&gt;50% (apical third)</option>
+ <option value="0">0%</option>
+ <option value="<15">&lt;15%</option>
+ <option value="15-33">15–33%</option>
+ <option value="33-50">33–50%</option>
+ <option value=">50">&gt;50%</option>
  </Select>
  </Field>
  <Field label="Teeth Lost From Perio">
