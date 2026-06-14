@@ -10663,7 +10663,7 @@ function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
  </div>
 
  {/* Four staging fields on one row: Recession, BOP, BL %, Teeth Lost */}
- <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: "12px" }}>
+ <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "12px" }}>
  <Field label="Recession At Max PD (mm)">
  <TextInput value={fields.perioCOEMaxRecession || ""}
  onChange={v => setField("perioCOEMaxRecession", v.replace(/[^\d.]/g, ""))}
