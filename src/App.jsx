@@ -31331,7 +31331,7 @@ const LOUPE_IMAGES = [
  // crops only its cuttable top-sky / bottom-lawn before it ever letterboxes.
  { src: "/napoleon.jpg", alt: "The Coronation of Napoleon — Jacques-Louis David, 1807", fit: "cover", anchor: "bottom", w: 8088, h: 5028 },
  { src: "/Sunday.jpg", alt: "A Sunday on La Grande Jatte — Georges Seurat, 1886", fit: "smart", topCut: 0.10, botCut: 0.12, w: 3840, h: 2556 },
- { src: "/Entrance.jpg", alt: "The Entrance to the Grand Canal, Venice — Canaletto, c. 1730", fit: "cover", anchor: "bottom", w: 3840, h: 2619 },
+ { src: "/Entrance.jpg", alt: "The Entrance to the Grand Canal, Venice — Canaletto, c. 1730", fit: "cover", anchor: "bottom", w: 8392, h: 5724 },
  // School of Athens — cover anchored to the BOTTOM. The empty gold arch and
  // coffered ceiling fill the top third of the fresco, so a centred crop on a wide
  // screen shows dead architecture up top and slices the foreground philosophers
