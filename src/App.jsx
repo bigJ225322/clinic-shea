@@ -31861,11 +31861,13 @@ export default function App() {
  /* RPD tooth chart hover + side-by-side layout */
 .rpd-tooth-active.rpd-circle { transition: stroke 140ms ease, stroke-width 140ms ease, fill 140ms ease; }
 .rpd-tooth-active:hover.rpd-circle { stroke: var(--accent); stroke-width: 1.8; }
- /* Subtle oxblood drop-shadow on hover — mirrors the row-hover tint in
- the Codes tab and PE timeline. Cues "this tooth is hover-toggleable"
- without adding chrome. */
-.rpd-tooth-active { transition: filter 120ms ease; }
-.rpd-tooth-active:hover { filter: drop-shadow(0 0 4px rgba(122, 26, 26, 0.28)); }
+ /* Hover feedback: a gentle oxblood-outlined lift on the tooth body.
+ Uses transform + stroke — both reliable in WebKit — instead of CSS
+ filter: drop-shadow(), which Safari will NOT render on an SVG <g>
+ (so the old glow was invisible in Safari = no hover feedback). */
+.rpd-tooth-recoil > path { transition: stroke 120ms ease, stroke-width 120ms ease; }
+.rpd-tooth-active:hover .rpd-tooth-recoil { transform: scale(1.05); }
+.rpd-tooth-active:hover .rpd-tooth-recoil > path { stroke: var(--accent); stroke-width: 1.6; }
  /* Click-recoil scale lives on an inner group so the number label — a
  sibling outside it — doesn't move when the tooth body presses in. */
 .rpd-tooth-recoil { transition: transform 130ms cubic-bezier(.2,.6,.2,1); transform-box: fill-box; transform-origin: center; }
@@ -31896,14 +31898,16 @@ export default function App() {
  }
 .rpd-elem.is-selected.rpd-elem-label,
 .rpd-elem:hover.rpd-elem-label { fill: var(--accent); }
- /* Hover-highlight on the entire element group — visible accent-colored
- glow on the path/circle so the user can SEE which element their
- cursor is over before clicking. */
+ /* Hover-highlight on the element group — recolor the stroke to the
+ accent (alongside the label reveal above) so the user can SEE which
+ element the cursor is over. Stroke recolor renders in Safari; CSS
+ filter: drop-shadow() on an SVG <g> does not. */
 .rpd-elem {
- transition: filter 120ms ease;
+ transition: stroke 120ms ease, stroke-width 120ms ease;
  }
 .rpd-elem:hover {
- filter: drop-shadow(0 0 4px var(--accent));
+ stroke: var(--accent);
+ stroke-width: 2;
  }
 .rpd-elem.rpd-elem-leader {
  opacity: 0;
