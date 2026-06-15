@@ -8134,7 +8134,7 @@ const EXAM_FINDINGS_CONFIG = {
  [{ label: "odontogram", type: "odontogram",
  displayLabel: "Updated Odontogram With Clinical And Radiographic Findings",
  placeholder: "List each finding on its own line. Press Enter to add another.",
- seedOnFocus: true, showNoTxPlanCheckbox: true }],
+ seedOnFocus: true, showNoTxPlanCheckbox: true, quickPick: "findings" }],
  ],
  },
  {
@@ -8740,20 +8740,26 @@ function OdontogramField({ value, onChange, placeholder, bullet = "-", seedOnFoc
 // own line out of the text, so the picker re-opens to what's already there and
 // hand-typed edits survive. Treatments also surface the implied CDT codes.
 const QUICKPICK_FINDINGS = [
- { key: "Caries", label: "Caries" },
- { key: "Decalcification", label: "Decalc." },
- { key: "Abrasion", label: "Abrasion" },
- { key: "Attrition", label: "Attrition" },
- { key: "Erosion", label: "Erosion" },
- { key: "Abfraction", label: "Abfraction" },
+ { key: "Caries", label: "Caries", surfaces: true },
+ { key: "Decalcification", label: "Decalc.", surfaces: true },
+ { key: "Abrasion", label: "Abrasion", surfaces: true },
+ { key: "Attrition", label: "Attrition", surfaces: true },
+ { key: "Erosion", label: "Erosion", surfaces: true },
+ { key: "Abfraction", label: "Abfraction", surfaces: true },
+ // Existing restorations charted on the odontogram (esp. a comprehensive exam).
+ // Composite takes surfaces; full crowns are whole-tooth.
+ { key: "Existing resin composite restoration", label: "Existing composite", surfaces: true },
+ { key: "Existing PFM crown", label: "Existing PFM", surfaces: false },
+ { key: "Existing ceramic crown", label: "Existing ceramic", surfaces: false },
 ];
 // Treatments: surfaces → R. Composite only; buildup → crowns get a "BU" toggle
-// in the picker; EXT is whole-tooth.
+// in the picker; EXT is whole-tooth. `phase` drives the re-evaluation codes
+// (fillings/extractions = Phase 1, crowns = Phase 3).
 const QUICKPICK_TREATMENTS = [
- { key: "R. Composite", label: "R. Composite", surfaces: true },
- { key: "PFM crown", label: "PFM", buildup: true },
- { key: "E.max crown", label: "E. max", buildup: true },
- { key: "EXT", label: "EXT" },
+ { key: "R. Composite", label: "R. Composite", surfaces: true, phase: 1 },
+ { key: "PFM crown", label: "PFM", buildup: true, phase: 3 },
+ { key: "E.max crown", label: "E. max", buildup: true, phase: 3 },
+ { key: "EXT", label: "EXT", phase: 1 },
 ];
 // CDT descriptions for the codes the tx-plan readout can emit. Composite,
 // buildup and extraction codes mirror the master predoctoral code list; the
@@ -8766,6 +8772,8 @@ const QUICKPICK_CODE_DESC = {
  D2393: "Resin comp – 3 surf, post.", D2394: "Resin comp – 4+ surf, post.",
  D2740: "Crown – porcelain/ceramic", D2750: "Crown – PFM (high noble)",
  D2950: "Core buildup, incl. pins", D7140: "Extraction, erupted tooth",
+ D0120: "Periodic oral evaluation", D1110: "Prophy – adult",
+ D0101: "Phase 1 re-evaluation", D0103: "Phase 3 re-evaluation",
 };
 const quickIsAnterior = (n) => (n >= 6 && n <= 11) || (n >= 22 && n <= 27);
 const quickCompositeCode = (toothNum, surfCount) => {
@@ -8827,8 +8835,9 @@ const quickRecompose = (value, key, readable) => {
 };
 // CDT codes implied by the treatment-plan text.
 const quickTreatmentCodes = (value) => {
- const rows = [];
- const push = (tooth, code) => rows.push({ tooth, code, desc: QUICKPICK_CODE_DESC[code] || "" });
+ const txRows = [];
+ const phases = new Set();
+ const push = (tooth, code) => txRows.push({ tooth, code, desc: QUICKPICK_CODE_DESC[code] || "" });
  const grab = (content, key) => {
  const pfx = (key + ":").toLowerCase();
  return content.toLowerCase().startsWith(pfx)? content.slice(key.length + 1).trim(): null;
@@ -8837,6 +8846,7 @@ const quickTreatmentCodes = (value) => {
  const content = ln.replace(/^\s*[-—]\s*/, "").trim();
  const comp = grab(content, "R. Composite");
  if (comp != null) {
+ phases.add(1);
  comp.split(",").forEach(tk => {
  const m = tk.trim().match(/^#?(\d+)(?:-([A-Za-z]+))?$/);
  if (m) push(`#${m[1]}`, quickCompositeCode(+m[1], m[2]? m[2].length: 1));
@@ -8848,6 +8858,7 @@ const quickTreatmentCodes = (value) => {
  const cr = grab(content, ckey);
  if (cr == null) continue;
  matchedCrown = true;
+ phases.add(3);
  cr.split(",").forEach(tk => {
  const t = tk.trim();
  const m = t.match(/^#?(\d+)/);
@@ -8860,13 +8871,22 @@ const quickTreatmentCodes = (value) => {
  if (matchedCrown) continue;
  const ext = grab(content, "EXT");
  if (ext != null) {
+ phases.add(1);
  ext.split(",").forEach(tk => {
  const m = tk.trim().match(/^#?(\d+)/);
  if (m) push(`#${m[1]}`, "D7140");
  });
  }
  }
- return rows;
+ // Only surface the full code list once there's a planned treatment. Lead with
+ // the visit codes the user asked to always include (POE + prophy), then the
+ // treatments, then a re-evaluation code per phase that's present.
+ if (txRows.length === 0) return [];
+ const visit = ["D0120", "D1110"].map(code => ({ tooth: "", code, desc: QUICKPICK_CODE_DESC[code] }));
+ const reevals = [];
+ if (phases.has(1)) reevals.push({ tooth: "", code: "D0101", desc: QUICKPICK_CODE_DESC.D0101 });
+ if (phases.has(3)) reevals.push({ tooth: "", code: "D0103", desc: QUICKPICK_CODE_DESC.D0103 });
+ return [...visit, ...txRows, ...reevals];
 };
 const QUICK_BTN_STYLE = {
  padding: "4px 9px", fontSize: "12px", fontFamily: "'Geist', sans-serif",
@@ -8877,9 +8897,10 @@ const QUICK_BTN_STYLE = {
 
 function QuickPick({ mode, value, onChange }) {
  const [activeType, setActiveType] = useState(null);
+ const [allCopied, setAllCopied] = useState(false);
  const types = mode === "treatment"? QUICKPICK_TREATMENTS: QUICKPICK_FINDINGS;
  const active = types.find(t => t.key === activeType) || null;
- const useSurfaces = !!active && (mode === "findings" ||!!active.surfaces ||!!active.buildup);
+ const useSurfaces = !!active && (!!active.surfaces ||!!active.buildup);
 
  const tsiValue = active? quickReadableToTsi(quickParseLine(value, active.key),!!active.buildup): "";
  const handleTsi = (nextTsi) => {
@@ -8887,6 +8908,18 @@ function QuickPick({ mode, value, onChange }) {
  onChange(quickRecompose(value, active.key, quickTsiToReadable(nextTsi,!!active.buildup)));
  };
  const codes = mode === "treatment"? quickTreatmentCodes(value): [];
+ const copyAllCodes = async () => {
+ const text = codes.map(c => c.code).join("\n");
+ try { await navigator.clipboard.writeText(text); }
+ catch {
+ const ta = document.createElement("textarea");
+ ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+ document.body.appendChild(ta); ta.select();
+ try { document.execCommand("copy"); } catch (_) {}
+ document.body.removeChild(ta);
+ }
+ setAllCopied(true); setTimeout(() => setAllCopied(false), 1200);
+ };
 
  return (
  <div style={{ marginTop: "8px" }}>
@@ -8927,20 +8960,26 @@ function QuickPick({ mode, value, onChange }) {
 
  {mode === "treatment" && codes.length > 0 && (
  <div style={{ marginTop: "12px" }}>
- <div style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase",
- color: "var(--accent)", fontWeight: 500, fontFamily: "'Geist', sans-serif", marginBottom: "6px" }}>
- Codes for Tx Plan
- </div>
- <div style={{ display: "grid", gap: "3px" }}>
+ <Disclosure title="Codes for Tx Plan"
+ summary={`${codes.length} code${codes.length === 1? "": "s"} · click any to copy`}>
+ <div style={{ display: "grid", gap: "2px" }}>
  {codes.map((c, i) => (
- <div key={i} style={{ display: "grid", gridTemplateColumns: "40px 58px 1fr",
- gap: "8px", alignItems: "baseline", fontSize: "12px" }}>
+ <div key={i} style={{ display: "grid", gridTemplateColumns: "38px 92px 1fr",
+ gap: "6px", alignItems: "center", fontSize: "12px" }}>
  <span style={{ fontFamily: "'JetBrains Mono', monospace", color: "var(--ink-soft)" }}>{c.tooth}</span>
- <span style={{ fontFamily: "'JetBrains Mono', monospace", color: "var(--accent)", fontWeight: 600 }}>{c.code}</span>
+ <div style={{ justifySelf: "start" }}><ClickToCopyCode code={c.code} /></div>
  <span style={{ color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif" }}>{c.desc}</span>
  </div>
 ))}
  </div>
+ <button type="button" onClick={copyAllCodes}
+ style={{...QUICK_BTN_STYLE, marginTop: "10px",
+ background: allCopied? "var(--accent)": "transparent",
+ color: allCopied? "var(--paper)": "var(--accent)",
+ borderColor: "var(--accent)" }}>
+ {allCopied? "Copied ✓": "Copy all codes"}
+ </button>
+ </Disclosure>
  </div>
 )}
  </div>
