@@ -4128,7 +4128,8 @@ function renderTemplate(raw, f) {
  // "Probed" is unchecked the whole "Updated perio EPR & perio chart:" block
  // (probing depths → gingiva) comes out. Gated to the maintenance note so a
  // lingering unchecked state can't strip another procedure's perio chart.
- if (f.perioProbed === false && raw.includes("Perio maintenance:")) {
+ // Also fires for the POE note (1091) — same chart block, same Probed checkbox.
+ if (f.perioProbed === false && (raw.includes("Perio maintenance:") || raw.includes("for POE"))) {
  t = sub(t, /[ \t]*Updated perio EPR & perio chart:[\s\S]*?gingiva[ \t]*\n\n/, "", "perioChart-strip");
  }
 
@@ -8324,6 +8325,11 @@ const EXAM_FINDINGS_CONFIG = {
  {
  title: "Perio chart",
  poeOnlyHide: true,
+ // "Probed" (default on) gates the chart independently of the prophy:
+ // unchecking hides these inputs and strips the chart block from the
+ // note while KEEPING the cleaning — a prophy visit may skip probing
+ // (perio charting is only ~1x/year, a prophy is every 6 months).
+ headerCheckbox: { field: "perioProbed", label: "Probed", hideWhenUnchecked: true },
  rows: [
  [
  { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
