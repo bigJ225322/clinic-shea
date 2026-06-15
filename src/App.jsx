@@ -6786,8 +6786,8 @@ const TSI_PRIMARY_ANTERIOR = new Set(['C','D','E','F','G','H','M','N','O','P','Q
 // odontogram: B/F top, L bottom, O/I center, M/D sides (M/D flip by quadrant).
 // defaultPrimary: open in primary-teeth mode (for peds context).
 // Adult and primary teeth can be selected simultaneously.
-function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = false }) {
- const [open, setOpen] = useState(false);
+function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = false, buildupMode = false, autoOpen = false }) {
+ const [open, setOpen] = useState(autoOpen);
  const [activeTooth, setActiveTooth] = useState(null);
  const [tailLeft, setTailLeft] = useState(0);
  const [cardLeft, setCardLeft] = useState(0);
@@ -6848,7 +6848,7 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
  val.split(",").forEach(token => {
  const m = token.trim().match(/^#?([A-Za-z0-9]+)(?:-([A-Za-z]+))?$/);
  if (!m) return;
- out[m[1].toUpperCase()] = m[2]? m[2].toUpperCase().split(""): [];
+ out[m[1].toUpperCase()] = m[2]? (buildupMode? [m[2].toUpperCase()]: m[2].toUpperCase().split("")): [];
  });
  return out;
  };
@@ -6872,6 +6872,7 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
  if (!all.length) return "";
  return all.map(([key, surfs]) => {
  if (!withSurfaces || surfs.length === 0) return key;
+ if (buildupMode) return `${key}-${surfs.join("")}`;
  const sorted = [...surfs].sort((a, b) =>
  (SURF_ORDER[a]?? 99) - (SURF_ORDER[b]?? 99));
  return `${key}-${sorted.join("")}`;
@@ -7044,6 +7045,27 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
 );
  };
 
+ // Buildup toggle — replaces the surface diamond when the picker is in
+ // crown/buildup mode (PFM, E.max). One tap marks this tooth's crown as
+ // needing a core buildup; serializes as e.g. "3-BU".
+ const buBtn = () => {
+ const on = (sels[String(activeTooth)] || []).includes("BU");
+ return (
+ <button type="button" onClick={e => { e.stopPropagation(); toggleSurface("BU"); }}
+ style={{
+ minWidth: "54px", height: "34px", padding: "0 12px",
+ background: on? "var(--accent)": "var(--paper)",
+ color: on? "var(--paper)": "var(--ink)",
+ border: `1px solid ${on? "var(--accent)": "var(--rule)"}`,
+ borderRadius: "3px", cursor: "pointer",
+ fontSize: "12px", fontFamily: "'Geist', sans-serif", fontWeight: 600,
+ transition: "background 100ms, color 100ms",
+ }}>
+ BU
+ </button>
+);
+ };
+
  const [focused, setFocused] = useState(false);
  const sl = activeTooth? surfLayout(activeTooth): null;
 
@@ -7146,6 +7168,18 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
  fontSize: "13px", fontWeight: 600, color: "var(--accent)",
  minWidth: "32px", flexShrink: 0,
  }}>#{activeTooth}</span>
+ {buildupMode? (
+ <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+ {buBtn()}
+ <span style={{
+ fontSize: "11px", color: "var(--ink-faint)",
+ fontStyle: "italic", fontFamily: "'Geist', sans-serif",
+ }}>
+ core buildup?
+ </span>
+ </div>
+): (
+ <>
  {/* 3×3 diamond grid */}
  <div style={{
  display: "grid",
@@ -7168,6 +7202,8 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
  }}>
  {isAnterior(activeTooth)? "anterior": "posterior"}
  </span>
+ </>
+)}
  </div>
  </div>
 )}
@@ -8318,7 +8354,7 @@ const EXAM_FINDINGS_CONFIG = {
  [{ label: "odontogram", type: "odontogram",
  displayLabel: "Updated Odontogram With Clinical And Radiographic Findings",
  placeholder: "List each finding on its own line. Press Enter to add another.",
- seedOnFocus: true }],
+ seedOnFocus: true, quickPick: "findings" }],
  ],
  },
  { type: "prophy-toggle" },
@@ -8365,7 +8401,7 @@ const EXAM_FINDINGS_CONFIG = {
  headerCheckbox: { field: "noTreatmentsPlanned", label: "No treatments" },
  fields: [
  { label: "treatment plan", type: "odontogram", hideLabel: true,
- placeholder: "List each treatment on its own line. Press Enter to add another.", seedOnFocus: true },
+ placeholder: "List each treatment on its own line. Press Enter to add another.", seedOnFocus: true, quickPick: "treatment" },
  ],
  },
  ],
@@ -8693,6 +8729,221 @@ function OdontogramField({ value, onChange, placeholder, bullet = "-", seedOnFoc
  fontFamily: "'Geist', sans-serif", fontSize: "13px",
  lineHeight: 1.5,
  }} />
+);
+}
+
+// ── Quick-pick: structured finding / treatment entry ──────────────────────
+// A row of one-tap buttons under the findings and treatment-plan boxes.
+// Tapping a button opens the tooth+surface picker; the selection is written
+// back into the OdontogramField as a labeled line ("Caries: #3-MO, #18-D").
+// The textarea stays the single source of truth — each button re-parses its
+// own line out of the text, so the picker re-opens to what's already there and
+// hand-typed edits survive. Treatments also surface the implied CDT codes.
+const QUICKPICK_FINDINGS = [
+ { key: "Caries", label: "Caries" },
+ { key: "Decalcification", label: "Decalc." },
+ { key: "Abrasion", label: "Abrasion" },
+ { key: "Attrition", label: "Attrition" },
+ { key: "Erosion", label: "Erosion" },
+ { key: "Abfraction", label: "Abfraction" },
+];
+// Treatments: surfaces → R. Composite only; buildup → crowns get a "BU" toggle
+// in the picker; EXT is whole-tooth.
+const QUICKPICK_TREATMENTS = [
+ { key: "R. Composite", label: "R. Composite", surfaces: true },
+ { key: "PFM crown", label: "PFM", buildup: true },
+ { key: "E.max crown", label: "E. max", buildup: true },
+ { key: "EXT", label: "EXT" },
+];
+// CDT descriptions for the codes the tx-plan readout can emit. Composite,
+// buildup and extraction codes mirror the master predoctoral code list; the
+// two definitive single-crown codes (D2740 ceramic / D2750 PFM) aren't in that
+// list, so they're spelled out here.
+const QUICKPICK_CODE_DESC = {
+ D2330: "Resin comp – 1 surf, ant.", D2331: "Resin comp – 2 surf, ant.",
+ D2332: "Resin comp – 3 surf, ant.", D2335: "Resin comp – 4+ surf, ant.",
+ D2391: "Resin comp – 1 surf, post.", D2392: "Resin comp – 2 surf, post.",
+ D2393: "Resin comp – 3 surf, post.", D2394: "Resin comp – 4+ surf, post.",
+ D2740: "Crown – porcelain/ceramic", D2750: "Crown – PFM (high noble)",
+ D2950: "Core buildup, incl. pins", D7140: "Extraction, erupted tooth",
+};
+const quickIsAnterior = (n) => (n >= 6 && n <= 11) || (n >= 22 && n <= 27);
+const quickCompositeCode = (toothNum, surfCount) => {
+ const n = Math.max(1, surfCount);
+ if (quickIsAnterior(toothNum)) return n >= 4? "D2335": n === 3? "D2332": n === 2? "D2331": "D2330";
+ return n >= 4? "D2394": n === 3? "D2393": n === 2? "D2392": "D2391";
+};
+// ToothSurfaceInput value ("3-MO, 18-D" | "3-BU, 14") → readable "#" tokens
+// ("#3-MO, #18-D" | "#3 (w/ buildup), #14").
+const quickTsiToReadable = (tsiVal, buildup) => {
+ if (!tsiVal ||!tsiVal.trim()) return "";
+ return tsiVal.split(",").map(tok => {
+ const t = tok.trim();
+ if (buildup) {
+ const m = t.match(/^(\w+)-BU$/);
+ if (m) return `#${m[1]} (w/ buildup)`;
+ }
+ return `#${t}`;
+ }).join(", ");
+};
+const quickReadableToTsi = (readable, buildup) => {
+ if (!readable ||!readable.trim()) return "";
+ return readable.split(",").map(tok => {
+ const t = tok.trim();
+ if (buildup) {
+ const m = t.match(/^#?(\w+)\s*\(w\/ buildup\)$/i);
+ if (m) return `${m[1]}-BU`;
+ }
+ return t.replace(/^#/, "").replace(/\s*\(w\/ buildup\)/i, "");
+ }).join(", ");
+};
+// Pull the existing "Key: …" line for a type back out of the textarea.
+const quickParseLine = (value, key) => {
+ const pfx = (key + ":").toLowerCase();
+ for (const ln of (value || "").split("\n")) {
+ const content = ln.replace(/^\s*[-—]\s*/, "").trim();
+ if (content.toLowerCase().startsWith(pfx)) return content.slice(key.length + 1).trim();
+ }
+ return "";
+};
+// Replace / insert / remove the "Key: …" line, preserving every other line
+// and dropping empty bullet stubs.
+const quickRecompose = (value, key, readable) => {
+ const newLine = readable? `- ${key}: ${readable}`: "";
+ const pfx = (key + ":").toLowerCase();
+ const out = [];
+ let placed = false;
+ for (const ln of (value || "").split("\n")) {
+ const content = ln.replace(/^\s*[-—]\s*/, "").trim();
+ if (content.toLowerCase().startsWith(pfx)) {
+ if (newLine &&!placed) { out.push(newLine); placed = true; }
+ } else if (content !== "") {
+ out.push(ln);
+ }
+ }
+ if (newLine &&!placed) out.push(newLine);
+ const result = out.join("\n");
+ return result.trim()? result: "- ";
+};
+// CDT codes implied by the treatment-plan text.
+const quickTreatmentCodes = (value) => {
+ const rows = [];
+ const push = (tooth, code) => rows.push({ tooth, code, desc: QUICKPICK_CODE_DESC[code] || "" });
+ const grab = (content, key) => {
+ const pfx = (key + ":").toLowerCase();
+ return content.toLowerCase().startsWith(pfx)? content.slice(key.length + 1).trim(): null;
+ };
+ for (const ln of (value || "").split("\n")) {
+ const content = ln.replace(/^\s*[-—]\s*/, "").trim();
+ const comp = grab(content, "R. Composite");
+ if (comp != null) {
+ comp.split(",").forEach(tk => {
+ const m = tk.trim().match(/^#?(\d+)(?:-([A-Za-z]+))?$/);
+ if (m) push(`#${m[1]}`, quickCompositeCode(+m[1], m[2]? m[2].length: 1));
+ });
+ continue;
+ }
+ let matchedCrown = false;
+ for (const [ckey, ccode] of [["PFM crown", "D2750"], ["E.max crown", "D2740"]]) {
+ const cr = grab(content, ckey);
+ if (cr == null) continue;
+ matchedCrown = true;
+ cr.split(",").forEach(tk => {
+ const t = tk.trim();
+ const m = t.match(/^#?(\d+)/);
+ if (!m) return;
+ push(`#${m[1]}`, ccode);
+ if (/\(w\/ buildup\)|\bBU\b/i.test(t)) push(`#${m[1]}`, "D2950");
+ });
+ break;
+ }
+ if (matchedCrown) continue;
+ const ext = grab(content, "EXT");
+ if (ext != null) {
+ ext.split(",").forEach(tk => {
+ const m = tk.trim().match(/^#?(\d+)/);
+ if (m) push(`#${m[1]}`, "D7140");
+ });
+ }
+ }
+ return rows;
+};
+const QUICK_BTN_STYLE = {
+ padding: "4px 9px", fontSize: "12px", fontFamily: "'Geist', sans-serif",
+ fontWeight: 500, border: "1px solid var(--rule)", borderRadius: "3px",
+ cursor: "pointer", lineHeight: 1.3,
+ transition: "background 120ms, color 120ms, border-color 120ms, transform 120ms cubic-bezier(.2,.6,.2,1)",
+};
+
+function QuickPick({ mode, value, onChange }) {
+ const [activeType, setActiveType] = useState(null);
+ const types = mode === "treatment"? QUICKPICK_TREATMENTS: QUICKPICK_FINDINGS;
+ const active = types.find(t => t.key === activeType) || null;
+ const useSurfaces = !!active && (mode === "findings" ||!!active.surfaces ||!!active.buildup);
+
+ const tsiValue = active? quickReadableToTsi(quickParseLine(value, active.key),!!active.buildup): "";
+ const handleTsi = (nextTsi) => {
+ if (!active) return;
+ onChange(quickRecompose(value, active.key, quickTsiToReadable(nextTsi,!!active.buildup)));
+ };
+ const codes = mode === "treatment"? quickTreatmentCodes(value): [];
+
+ return (
+ <div style={{ marginTop: "8px" }}>
+ <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", alignItems: "center" }}>
+ <span style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase",
+ color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginRight: "2px" }}>
+ Quick add
+ </span>
+ {types.map(t => {
+ const on = activeType === t.key;
+ const has = quickParseLine(value, t.key).trim() !== "";
+ return (
+ <button key={t.key} type="button" className="tactile"
+ onClick={() => setActiveType(on? null: t.key)}
+ style={{...QUICK_BTN_STYLE,
+ background: on? "var(--accent)": has? "rgba(122,26,26,0.07)": "transparent",
+ color: on? "var(--paper)": "var(--ink)",
+ borderColor: (on || has)? "var(--accent)": "var(--rule)",
+ }}>
+ {t.label}{has &&!on? " ✓": ""}
+ </button>
+);
+ })}
+ </div>
+
+ {active && (
+ <div style={{ marginTop: "8px" }}>
+ <ToothSurfaceInput key={active.key} autoOpen value={tsiValue}
+ onChange={handleTsi} withSurfaces={useSurfaces} buildupMode={!!active.buildup} />
+ {active.buildup && (
+ <div style={{ fontSize: "11px", color: "var(--ink-faint)", fontStyle: "italic",
+ marginTop: "5px", fontFamily: "'Geist', sans-serif" }}>
+ Pick the tooth, then tap <strong>BU</strong> if the crown needs a core buildup.
+ </div>
+)}
+ </div>
+)}
+
+ {mode === "treatment" && codes.length > 0 && (
+ <div style={{ marginTop: "12px" }}>
+ <div style={{ fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase",
+ color: "var(--accent)", fontWeight: 500, fontFamily: "'Geist', sans-serif", marginBottom: "6px" }}>
+ Codes for Tx Plan
+ </div>
+ <div style={{ display: "grid", gap: "3px" }}>
+ {codes.map((c, i) => (
+ <div key={i} style={{ display: "grid", gridTemplateColumns: "40px 58px 1fr",
+ gap: "8px", alignItems: "baseline", fontSize: "12px" }}>
+ <span style={{ fontFamily: "'JetBrains Mono', monospace", color: "var(--ink-soft)" }}>{c.tooth}</span>
+ <span style={{ fontFamily: "'JetBrains Mono', monospace", color: "var(--accent)", fontWeight: 600 }}>{c.code}</span>
+ <span style={{ color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif" }}>{c.desc}</span>
+ </div>
+))}
+ </div>
+ </div>
+)}
+ </div>
 );
 }
 
@@ -9917,11 +10168,17 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
 ))}
  </select>
 ): field.type === "odontogram"? (
+ <>
  <OdontogramField value={value}
  onChange={(v) => update(field.label, v)}
  placeholder={field.placeholder}
  bullet={field.bullet}
  seedOnFocus={field.seedOnFocus} />
+ {field.quickPick && (
+ <QuickPick mode={field.quickPick} value={value || ""}
+ onChange={(v) => update(field.label, v)} />
+)}
+ </>
 ): field.type === "teeth-selector"? (
  <TeethSelectorPanel value={value}
  onChange={(v) => update(field.label, v)}
