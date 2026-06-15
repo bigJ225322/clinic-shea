@@ -8749,15 +8749,15 @@ const QUICKPICK_FINDINGS = [
  // Existing restorations charted on the odontogram — "existing" is implied by
  // the findings context, so the labels stay short. Composite takes surfaces;
  // full crowns are whole-tooth.
- { key: "Composite", label: "Composite", surfaces: true },
+ { key: "Resin Composite", label: "Composite", surfaces: true },
  { key: "PFM", label: "PFM", surfaces: false },
  { key: "Ceramic", label: "Ceramic", surfaces: false },
 ];
-// Treatments: surfaces → R. Composite only; buildup → crowns get a "BU" toggle
-// in the picker; EXT is whole-tooth. `phase` drives the re-evaluation codes
-// (fillings/extractions = Phase 1, crowns = Phase 3).
+// Treatments: surfaces → Resin Composite only; buildup → crowns get a "BU"
+// toggle in the picker; EXT is whole-tooth. `phase` drives the re-evaluation
+// codes (fillings/extractions = Phase 1, crowns = Phase 3).
 const QUICKPICK_TREATMENTS = [
- { key: "R. Composite", label: "R. Composite", surfaces: true, phase: 1 },
+ { key: "Resin Composite", label: "Composite", surfaces: true, phase: 1 },
  { key: "PFM crown", label: "PFM", buildup: true, phase: 3 },
  { key: "E.max crown", label: "E. max", buildup: true, phase: 3 },
  { key: "EXT", label: "EXT", phase: 1 },
@@ -8845,7 +8845,7 @@ const quickTreatmentCodes = (value) => {
  };
  for (const ln of (value || "").split("\n")) {
  const content = ln.replace(/^\s*[-—]\s*/, "").trim();
- const comp = grab(content, "R. Composite");
+ const comp = grab(content, "Resin Composite");
  if (comp != null) {
  phases.add(1);
  comp.split(",").forEach(tk => {
