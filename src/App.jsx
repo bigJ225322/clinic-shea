@@ -6519,6 +6519,7 @@ const ICC_FIELD_CFG = {
  "endodontic findings": { label: "Endodontic findings", wnl: true },
  "soft tissue conditions": { label: "Soft tissue conditions", wnl: true },
  "hard tissue conditions": { label: "Hard tissue conditions", wnl: true },
+ "caries risk": { label: "Caries risk", type: "dropdown", options: ["Low", "Moderate", "High", "Extreme"] },
  "F1 OR F2 OR F3 OR F4": { label: "Behavior (Frankl)" },
  "treatment priorities": { label: "Treatment priorities", type: "odontogram", placeholder: "List each treatment on its own line. Press Enter to add another." },
  "30G 25mm OR 27G 35mm": { label: "Needle" },
@@ -6616,7 +6617,7 @@ function ICCNoteInputs({ rawTemplate, values, onChange }) {
  if (type === "dropdown") { const ol = cfg.optionLabels || {}; return (
  <select value={v} onChange={e => set(e.target.value)} style={ICC_SELECT_STYLE}>
  <option value="">— select —</option>
- {(p.options || []).map(o => <option key={o} value={o}>{ol[o] || o}</option>)}
+ {(cfg.options || p.options || []).map(o => <option key={o} value={o}>{ol[o] || o}</option>)}
  </select>
  ); }
  if (cfg.wnl) {
