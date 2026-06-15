@@ -8896,6 +8896,7 @@ const QUICK_BTN_STYLE = {
 
 function QuickPick({ mode, value, onChange }) {
  const [activeType, setActiveType] = useState(null);
+ const [otherOpen, setOtherOpen] = useState(false);
  const types = mode === "treatment"? QUICKPICK_TREATMENTS: QUICKPICK_FINDINGS;
  const active = types.find(t => t.key === activeType) || null;
  const useSurfaces = !!active && (!!active.surfaces ||!!active.buildup);
@@ -8958,9 +8959,18 @@ function QuickPick({ mode, value, onChange }) {
 ))}
  </div>
  {codes.other.length > 0 && (
- <div style={{ marginTop: "10px" }}>
- <Disclosure title="Other">
- <div style={{ display: "grid", gap: "2px" }}>
+ <div style={{ marginTop: "12px" }}>
+ <button type="button" onClick={() => setOtherOpen(o =>!o)}
+ style={{ display: "flex", alignItems: "center", gap: "5px",
+ background: "transparent", border: "none", padding: 0, cursor: "pointer",
+ fontSize: "9px", letterSpacing: "0.14em", textTransform: "uppercase",
+ color: "var(--ink-faint)", fontWeight: 500, fontFamily: "'Geist', sans-serif" }}>
+ Other
+ <span aria-hidden style={{ fontSize: "8px",
+ transform: otherOpen? "rotate(180deg)": "rotate(0deg)", transition: "transform 200ms ease" }}>▼</span>
+ </button>
+ {otherOpen && (
+ <div style={{ display: "grid", gap: "2px", marginTop: "5px" }}>
  {codes.other.map((c, i) => (
  <div key={i} style={{ display: "grid", gridTemplateColumns: "38px 92px 1fr",
  gap: "6px", alignItems: "center", fontSize: "12px" }}>
@@ -8970,7 +8980,7 @@ function QuickPick({ mode, value, onChange }) {
  </div>
 ))}
  </div>
- </Disclosure>
+)}
  </div>
 )}
  </Disclosure>
