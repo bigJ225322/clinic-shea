@@ -7134,7 +7134,7 @@ function ToothSurfaceInput({ value, onChange, withSurfaces, defaultPrimary = fal
 
  {/* Surface picker — centered under the active tooth */}
  {withSurfaces && activeTooth && sl && (
- <div style={{ position: "relative", marginTop: "10px", height: "132px" }}>
+ <div style={{ position: "relative", marginTop: "10px", height: buildupMode? "56px": "132px" }}>
  {/* Caret pointing up toward the active tooth */}
  <div style={{
  position: "absolute", top: -7, left: tailLeft,
