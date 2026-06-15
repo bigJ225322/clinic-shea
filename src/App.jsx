@@ -8946,8 +8946,7 @@ function QuickPick({ mode, value, onChange }) {
 
  {mode === "treatment" && codes.tx.length > 0 && (
  <div style={{ marginTop: "12px" }}>
- <Disclosure title="Codes for Tx Plan"
- summary={`${codes.tx.length + codes.other.length} code${(codes.tx.length + codes.other.length) === 1? "": "s"} · click any to copy`}>
+ <Disclosure title="Codes for Tx Plan">
  <div style={{ display: "grid", gap: "2px" }}>
  {codes.tx.map((c, i) => (
  <div key={i} style={{ display: "grid", gridTemplateColumns: "38px 92px 1fr",
@@ -8959,12 +8958,8 @@ function QuickPick({ mode, value, onChange }) {
 ))}
  </div>
  {codes.other.length > 0 && (
- <>
- <div style={{ fontSize: "9px", letterSpacing: "0.14em", textTransform: "uppercase",
- color: "var(--ink-faint)", fontWeight: 500, fontFamily: "'Geist', sans-serif",
- margin: "12px 0 4px" }}>
- Other
- </div>
+ <div style={{ marginTop: "10px" }}>
+ <Disclosure title="Other">
  <div style={{ display: "grid", gap: "2px" }}>
  {codes.other.map((c, i) => (
  <div key={i} style={{ display: "grid", gridTemplateColumns: "38px 92px 1fr",
@@ -8975,7 +8970,8 @@ function QuickPick({ mode, value, onChange }) {
  </div>
 ))}
  </div>
- </>
+ </Disclosure>
+ </div>
 )}
  </Disclosure>
  </div>
