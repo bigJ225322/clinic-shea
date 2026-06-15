@@ -8325,11 +8325,11 @@ const EXAM_FINDINGS_CONFIG = {
  {
  title: "Perio chart",
  poeOnlyHide: true,
- // "Probed" (default on) gates the chart independently of the prophy:
- // unchecking hides these inputs and strips the chart block from the
- // note while KEEPING the cleaning — a prophy visit may skip probing
- // (perio charting is only ~1x/year, a prophy is every 6 months).
- headerCheckbox: { field: "perioProbed", label: "Probed", hideWhenUnchecked: true },
+ // Gated by the "Probed" checkbox next to the Prophy toggle (perioProbed):
+ // unchecking hides this whole section and strips the chart block from the
+ // note, keeping the cleaning — a prophy visit may skip probing (charting
+ // is ~1x/year, a prophy every 6 months).
+ hideWhenNotProbed: true,
  rows: [
  [
  { label: "probing depths", type: "probing-depths", displayLabel: "PD Range" },
@@ -9109,9 +9109,12 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  if (!config) return null;
  // When poeOnly is true for POE (1091), hide the perio chart / OHI sections
  // so the form matches the stripped template.
- const visibleConfig = poeOnly
-? config.filter(s =>!s.poeOnlyHide)
-: config;
+ const visibleConfig = config.filter(s => {
+ if (poeOnly && s.poeOnlyHide) return false;
+ // "Probed" (next to the Prophy toggle) gates the perio chart section.
+ if (s.hideWhenNotProbed && fields.perioProbed === false) return false;
+ return true;
+ });
 
  const update = (label, value) => {
  setFindings({...findings, [label]: value });
@@ -10042,23 +10045,32 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  {visibleConfig.map((section, i) => {
  // Prophy toggle — special section for POE
  if (section.type === "prophy-toggle") {
- return (
- <div key={i} style={{ marginTop: "16px" }}>
- <label style={{
+ const toggleLabelStyle = {
  display: "flex", alignItems: "center", gap: "10px",
  fontSize: "13px", color: "var(--ink)",
  cursor: "pointer", padding: "6px 0",
  fontFamily: "'Geist', sans-serif",
- }}>
+ };
+ const toggleBoxStyle = { width: "16px", height: "16px", accentColor: "var(--accent)", cursor: "pointer" };
+ const toggleTextStyle = { color: "var(--ink-soft)", fontSize: "12px" };
+ return (
+ <div key={i} style={{ marginTop: "16px", display: "flex", alignItems: "center", gap: "24px" }}>
+ <label style={toggleLabelStyle}>
  <input type="checkbox"
  checked={!poeOnly}
  onChange={e => onPoeToggle && onPoeToggle(!e.target.checked)}
- style={{
- width: "16px", height: "16px",
- accentColor: "var(--accent)", cursor: "pointer",
- }} />
- <span style={{ color: "var(--ink-soft)", fontSize: "12px" }}>Prophy</span>
+ style={toggleBoxStyle} />
+ <span style={toggleTextStyle}>Prophy</span>
  </label>
+ {!poeOnly && (
+ <label style={toggleLabelStyle}>
+ <input type="checkbox"
+ checked={fields.perioProbed !== false}
+ onChange={e => setField("perioProbed", e.target.checked)}
+ style={toggleBoxStyle} />
+ <span style={toggleTextStyle}>Probed</span>
+ </label>
+)}
  </div>
 );
  }
