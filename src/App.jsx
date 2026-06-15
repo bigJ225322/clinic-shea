@@ -8746,11 +8746,12 @@ const QUICKPICK_FINDINGS = [
  { key: "Attrition", label: "Attrition", surfaces: true },
  { key: "Erosion", label: "Erosion", surfaces: true },
  { key: "Abfraction", label: "Abfraction", surfaces: true },
- // Existing restorations charted on the odontogram (esp. a comprehensive exam).
- // Composite takes surfaces; full crowns are whole-tooth.
- { key: "Existing resin composite restoration", label: "Existing composite", surfaces: true },
- { key: "Existing PFM crown", label: "Existing PFM", surfaces: false },
- { key: "Existing ceramic crown", label: "Existing ceramic", surfaces: false },
+ // Existing restorations charted on the odontogram — "existing" is implied by
+ // the findings context, so the labels stay short. Composite takes surfaces;
+ // full crowns are whole-tooth.
+ { key: "Composite", label: "Composite", surfaces: true },
+ { key: "PFM", label: "PFM", surfaces: false },
+ { key: "Ceramic", label: "Ceramic", surfaces: false },
 ];
 // Treatments: surfaces → R. Composite only; buildup → crowns get a "BU" toggle
 // in the picker; EXT is whole-tooth. `phase` drives the re-evaluation codes
@@ -8878,15 +8879,13 @@ const quickTreatmentCodes = (value) => {
  });
  }
  }
- // Only surface the full code list once there's a planned treatment. Lead with
- // the visit codes the user asked to always include (POE + prophy), then the
- // treatments, then a re-evaluation code per phase that's present.
- if (txRows.length === 0) return [];
- const visit = ["D0120", "D1110"].map(code => ({ tooth: "", code, desc: QUICKPICK_CODE_DESC[code] }));
- const reevals = [];
- if (phases.has(1)) reevals.push({ tooth: "", code: "D0101", desc: QUICKPICK_CODE_DESC.D0101 });
- if (phases.has(3)) reevals.push({ tooth: "", code: "D0103", desc: QUICKPICK_CODE_DESC.D0103 });
- return [...visit, ...txRows, ...reevals];
+ // Only surface codes once there's a planned treatment. Tooth-specific
+ // treatment codes go in `tx`; POE + prophy + per-phase re-evals go in `other`.
+ if (txRows.length === 0) return { tx: [], other: [] };
+ const other = ["D0120", "D1110"].map(code => ({ code, desc: QUICKPICK_CODE_DESC[code] }));
+ if (phases.has(1)) other.push({ code: "D0101", desc: QUICKPICK_CODE_DESC.D0101 });
+ if (phases.has(3)) other.push({ code: "D0103", desc: QUICKPICK_CODE_DESC.D0103 });
+ return { tx: txRows, other };
 };
 const QUICK_BTN_STYLE = {
  padding: "4px 9px", fontSize: "12px", fontFamily: "'Geist', sans-serif",
@@ -8897,7 +8896,6 @@ const QUICK_BTN_STYLE = {
 
 function QuickPick({ mode, value, onChange }) {
  const [activeType, setActiveType] = useState(null);
- const [allCopied, setAllCopied] = useState(false);
  const types = mode === "treatment"? QUICKPICK_TREATMENTS: QUICKPICK_FINDINGS;
  const active = types.find(t => t.key === activeType) || null;
  const useSurfaces = !!active && (!!active.surfaces ||!!active.buildup);
@@ -8907,19 +8905,7 @@ function QuickPick({ mode, value, onChange }) {
  if (!active) return;
  onChange(quickRecompose(value, active.key, quickTsiToReadable(nextTsi,!!active.buildup)));
  };
- const codes = mode === "treatment"? quickTreatmentCodes(value): [];
- const copyAllCodes = async () => {
- const text = codes.map(c => c.code).join("\n");
- try { await navigator.clipboard.writeText(text); }
- catch {
- const ta = document.createElement("textarea");
- ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
- document.body.appendChild(ta); ta.select();
- try { document.execCommand("copy"); } catch (_) {}
- document.body.removeChild(ta);
- }
- setAllCopied(true); setTimeout(() => setAllCopied(false), 1200);
- };
+ const codes = mode === "treatment"? quickTreatmentCodes(value): { tx: [], other: [] };
 
  return (
  <div style={{ marginTop: "8px" }}>
@@ -8958,12 +8944,12 @@ function QuickPick({ mode, value, onChange }) {
  </div>
 )}
 
- {mode === "treatment" && codes.length > 0 && (
+ {mode === "treatment" && codes.tx.length > 0 && (
  <div style={{ marginTop: "12px" }}>
  <Disclosure title="Codes for Tx Plan"
- summary={`${codes.length} code${codes.length === 1? "": "s"} · click any to copy`}>
+ summary={`${codes.tx.length + codes.other.length} code${(codes.tx.length + codes.other.length) === 1? "": "s"} · click any to copy`}>
  <div style={{ display: "grid", gap: "2px" }}>
- {codes.map((c, i) => (
+ {codes.tx.map((c, i) => (
  <div key={i} style={{ display: "grid", gridTemplateColumns: "38px 92px 1fr",
  gap: "6px", alignItems: "center", fontSize: "12px" }}>
  <span style={{ fontFamily: "'JetBrains Mono', monospace", color: "var(--ink-soft)" }}>{c.tooth}</span>
@@ -8972,13 +8958,25 @@ function QuickPick({ mode, value, onChange }) {
  </div>
 ))}
  </div>
- <button type="button" onClick={copyAllCodes}
- style={{...QUICK_BTN_STYLE, marginTop: "10px",
- background: allCopied? "var(--accent)": "transparent",
- color: allCopied? "var(--paper)": "var(--accent)",
- borderColor: "var(--accent)" }}>
- {allCopied? "Copied ✓": "Copy all codes"}
- </button>
+ {codes.other.length > 0 && (
+ <>
+ <div style={{ fontSize: "9px", letterSpacing: "0.14em", textTransform: "uppercase",
+ color: "var(--ink-faint)", fontWeight: 500, fontFamily: "'Geist', sans-serif",
+ margin: "12px 0 4px" }}>
+ Other
+ </div>
+ <div style={{ display: "grid", gap: "2px" }}>
+ {codes.other.map((c, i) => (
+ <div key={i} style={{ display: "grid", gridTemplateColumns: "38px 92px 1fr",
+ gap: "6px", alignItems: "center", fontSize: "12px" }}>
+ <span />
+ <div style={{ justifySelf: "start" }}><ClickToCopyCode code={c.code} /></div>
+ <span style={{ color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif" }}>{c.desc}</span>
+ </div>
+))}
+ </div>
+ </>
+)}
  </Disclosure>
  </div>
 )}
