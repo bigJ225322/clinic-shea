@@ -6503,6 +6503,7 @@ const ICC_FIELD_CFG = {
  "BP": { label: "Blood pressure", type: "bp", group: "vitals" },
  "pulse": { label: "Pulse", group: "vitals" },
  "blood glucose": { label: "Blood glucose (blank to omit)" },
+ "medications": { label: "Medications", type: "meds" },
  "ASA I OR ASA II OR ASA III OR ASA IV": { label: "ASA classification" },
  "last dental visit": { label: "Last dental visit", group: "ldv" },
  "Brush # x/day": { label: "Brushing frequency", type: "selectOther", options: ["2x a day", "1x a day", "3x a day", "a few times per week", "never"], group: "ldv" },
@@ -6532,6 +6533,257 @@ const ICC_FIELD_CFG = {
  "urgent care OR limited exam": { label: "Visit type" },
  "3M OR 4M": { label: "Maintenance interval" },
 };
+
+// ── Medication typeahead ──────────────────────────────────────────────────
+// Curated common + dentally-loaded medications for autocomplete. `g` = generic
+// (the only thing inserted), `b` = brand aliases (also matched, shown faint).
+// Deliberately NOT exhaustive — anticoagulants, antiresorptives, and other
+// chairside-relevant drugs are weighted in, but free text always wins.
+const MED_LIST = [
+ // anticoagulants / antiplatelets
+ { g: "warfarin", b: ["Coumadin", "Jantoven"] }, { g: "apixaban", b: ["Eliquis"] },
+ { g: "rivaroxaban", b: ["Xarelto"] }, { g: "dabigatran", b: ["Pradaxa"] },
+ { g: "edoxaban", b: ["Savaysa"] }, { g: "clopidogrel", b: ["Plavix"] },
+ { g: "ticagrelor", b: ["Brilinta"] }, { g: "prasugrel", b: ["Effient"] },
+ { g: "aspirin", b: ["ASA", "Ecotrin"] }, { g: "enoxaparin", b: ["Lovenox"] },
+ // antiresorptives / bone
+ { g: "alendronate", b: ["Fosamax"] }, { g: "risedronate", b: ["Actonel"] },
+ { g: "ibandronate", b: ["Boniva"] }, { g: "zoledronic acid", b: ["Reclast", "Zometa"] },
+ { g: "denosumab", b: ["Prolia", "Xgeva"] }, { g: "raloxifene", b: ["Evista"] },
+ { g: "teriparatide", b: ["Forteo"] }, { g: "romosozumab", b: ["Evenity"] },
+ // antihypertensives / cardiac
+ { g: "lisinopril", b: ["Prinivil", "Zestril"] }, { g: "enalapril", b: ["Vasotec"] },
+ { g: "ramipril", b: ["Altace"] }, { g: "benazepril", b: ["Lotensin"] },
+ { g: "losartan", b: ["Cozaar"] }, { g: "valsartan", b: ["Diovan"] },
+ { g: "olmesartan", b: ["Benicar"] }, { g: "irbesartan", b: ["Avapro"] },
+ { g: "amlodipine", b: ["Norvasc"] }, { g: "nifedipine", b: ["Procardia"] },
+ { g: "diltiazem", b: ["Cardizem"] }, { g: "verapamil", b: ["Calan"] },
+ { g: "metoprolol", b: ["Lopressor", "Toprol XL"] }, { g: "atenolol", b: ["Tenormin"] },
+ { g: "carvedilol", b: ["Coreg"] }, { g: "bisoprolol", b: ["Zebeta"] },
+ { g: "propranolol", b: ["Inderal"] }, { g: "nebivolol", b: ["Bystolic"] },
+ { g: "hydrochlorothiazide", b: ["HCTZ", "Microzide"] }, { g: "chlorthalidone" },
+ { g: "furosemide", b: ["Lasix"] }, { g: "spironolactone", b: ["Aldactone"] },
+ { g: "clonidine", b: ["Catapres"] }, { g: "hydralazine" },
+ { g: "doxazosin", b: ["Cardura"] }, { g: "digoxin", b: ["Lanoxin"] },
+ { g: "isosorbide mononitrate", b: ["Imdur"] }, { g: "nitroglycerin", b: ["Nitrostat"] },
+ { g: "amiodarone", b: ["Pacerone"] }, { g: "ranolazine", b: ["Ranexa"] },
+ // lipids
+ { g: "atorvastatin", b: ["Lipitor"] }, { g: "rosuvastatin", b: ["Crestor"] },
+ { g: "simvastatin", b: ["Zocor"] }, { g: "pravastatin", b: ["Pravachol"] },
+ { g: "lovastatin", b: ["Mevacor"] }, { g: "pitavastatin", b: ["Livalo"] },
+ { g: "ezetimibe", b: ["Zetia"] }, { g: "fenofibrate", b: ["Tricor"] },
+ { g: "gemfibrozil", b: ["Lopid"] },
+ // diabetes
+ { g: "metformin", b: ["Glucophage"] }, { g: "glipizide", b: ["Glucotrol"] },
+ { g: "glimepiride", b: ["Amaryl"] }, { g: "glyburide" },
+ { g: "sitagliptin", b: ["Januvia"] }, { g: "linagliptin", b: ["Tradjenta"] },
+ { g: "empagliflozin", b: ["Jardiance"] }, { g: "dapagliflozin", b: ["Farxiga"] },
+ { g: "canagliflozin", b: ["Invokana"] }, { g: "pioglitazone", b: ["Actos"] },
+ { g: "semaglutide", b: ["Ozempic", "Wegovy", "Rybelsus"] }, { g: "dulaglutide", b: ["Trulicity"] },
+ { g: "liraglutide", b: ["Victoza", "Saxenda"] }, { g: "tirzepatide", b: ["Mounjaro", "Zepbound"] },
+ { g: "insulin glargine", b: ["Lantus", "Basaglar"] }, { g: "insulin lispro", b: ["Humalog"] },
+ { g: "insulin aspart", b: ["NovoLog"] },
+ // thyroid
+ { g: "levothyroxine", b: ["Synthroid", "Levoxyl"] }, { g: "liothyronine", b: ["Cytomel"] },
+ { g: "methimazole", b: ["Tapazole"] },
+ // GI
+ { g: "omeprazole", b: ["Prilosec"] }, { g: "pantoprazole", b: ["Protonix"] },
+ { g: "esomeprazole", b: ["Nexium"] }, { g: "lansoprazole", b: ["Prevacid"] },
+ { g: "famotidine", b: ["Pepcid"] }, { g: "sucralfate", b: ["Carafate"] },
+ { g: "ondansetron", b: ["Zofran"] }, { g: "polyethylene glycol", b: ["MiraLAX"] },
+ // respiratory
+ { g: "albuterol", b: ["Ventolin", "ProAir"] }, { g: "ipratropium", b: ["Atrovent"] },
+ { g: "tiotropium", b: ["Spiriva"] }, { g: "fluticasone", b: ["Flonase", "Flovent"] },
+ { g: "budesonide", b: ["Pulmicort"] }, { g: "montelukast", b: ["Singulair"] },
+ { g: "fluticasone-salmeterol", b: ["Advair"] }, { g: "budesonide-formoterol", b: ["Symbicort"] },
+ // steroids
+ { g: "prednisone", b: ["Deltasone"] }, { g: "prednisolone" },
+ { g: "methylprednisolone", b: ["Medrol"] }, { g: "dexamethasone", b: ["Decadron"] },
+ // psych / neuro
+ { g: "sertraline", b: ["Zoloft"] }, { g: "escitalopram", b: ["Lexapro"] },
+ { g: "citalopram", b: ["Celexa"] }, { g: "fluoxetine", b: ["Prozac"] },
+ { g: "paroxetine", b: ["Paxil"] }, { g: "venlafaxine", b: ["Effexor"] },
+ { g: "duloxetine", b: ["Cymbalta"] }, { g: "bupropion", b: ["Wellbutrin"] },
+ { g: "mirtazapine", b: ["Remeron"] }, { g: "trazodone", b: ["Desyrel"] },
+ { g: "amitriptyline", b: ["Elavil"] }, { g: "nortriptyline", b: ["Pamelor"] },
+ { g: "alprazolam", b: ["Xanax"] }, { g: "lorazepam", b: ["Ativan"] },
+ { g: "clonazepam", b: ["Klonopin"] }, { g: "diazepam", b: ["Valium"] },
+ { g: "buspirone", b: ["Buspar"] }, { g: "gabapentin", b: ["Neurontin"] },
+ { g: "pregabalin", b: ["Lyrica"] }, { g: "lamotrigine", b: ["Lamictal"] },
+ { g: "levetiracetam", b: ["Keppra"] }, { g: "divalproex", b: ["Depakote"] },
+ { g: "topiramate", b: ["Topamax"] }, { g: "carbamazepine", b: ["Tegretol"] },
+ { g: "phenytoin", b: ["Dilantin"] }, { g: "quetiapine", b: ["Seroquel"] },
+ { g: "risperidone", b: ["Risperdal"] }, { g: "aripiprazole", b: ["Abilify"] },
+ { g: "olanzapine", b: ["Zyprexa"] }, { g: "lithium" },
+ { g: "zolpidem", b: ["Ambien"] }, { g: "methylphenidate", b: ["Ritalin", "Concerta"] },
+ { g: "amphetamine-dextroamphetamine", b: ["Adderall"] }, { g: "lisdexamfetamine", b: ["Vyvanse"] },
+ { g: "atomoxetine", b: ["Strattera"] }, { g: "levodopa-carbidopa", b: ["Sinemet"] },
+ { g: "donepezil", b: ["Aricept"] }, { g: "memantine", b: ["Namenda"] },
+ { g: "sumatriptan", b: ["Imitrex"] }, { g: "hydroxyzine", b: ["Vistaril", "Atarax"] },
+ // pain / MSK
+ { g: "ibuprofen", b: ["Advil", "Motrin"] }, { g: "naproxen", b: ["Aleve", "Naprosyn"] },
+ { g: "meloxicam", b: ["Mobic"] }, { g: "celecoxib", b: ["Celebrex"] },
+ { g: "diclofenac", b: ["Voltaren"] }, { g: "ketorolac", b: ["Toradol"] },
+ { g: "acetaminophen", b: ["Tylenol"] }, { g: "tramadol", b: ["Ultram"] },
+ { g: "hydrocodone-acetaminophen", b: ["Norco", "Vicodin"] }, { g: "oxycodone", b: ["OxyContin"] },
+ { g: "oxycodone-acetaminophen", b: ["Percocet"] }, { g: "codeine" },
+ { g: "morphine", b: ["MS Contin"] }, { g: "hydromorphone", b: ["Dilaudid"] },
+ { g: "cyclobenzaprine", b: ["Flexeril"] }, { g: "baclofen" },
+ { g: "tizanidine", b: ["Zanaflex"] }, { g: "buprenorphine-naloxone", b: ["Suboxone"] },
+ // antibiotics / antimicrobials
+ { g: "amoxicillin", b: ["Amoxil"] }, { g: "amoxicillin-clavulanate", b: ["Augmentin"] },
+ { g: "penicillin VK" }, { g: "cephalexin", b: ["Keflex"] },
+ { g: "azithromycin", b: ["Zithromax", "Z-Pak"] }, { g: "clarithromycin", b: ["Biaxin"] },
+ { g: "clindamycin", b: ["Cleocin"] }, { g: "doxycycline", b: ["Vibramycin"] },
+ { g: "metronidazole", b: ["Flagyl"] }, { g: "ciprofloxacin", b: ["Cipro"] },
+ { g: "levofloxacin", b: ["Levaquin"] }, { g: "trimethoprim-sulfamethoxazole", b: ["Bactrim", "Septra"] },
+ { g: "nitrofurantoin", b: ["Macrobid"] }, { g: "valacyclovir", b: ["Valtrex"] },
+ { g: "acyclovir", b: ["Zovirax"] }, { g: "fluconazole", b: ["Diflucan"] },
+ { g: "nystatin" },
+ // immunosuppressants / biologics
+ { g: "methotrexate", b: ["Trexall"] }, { g: "hydroxychloroquine", b: ["Plaquenil"] },
+ { g: "adalimumab", b: ["Humira"] }, { g: "etanercept", b: ["Enbrel"] },
+ { g: "infliximab", b: ["Remicade"] }, { g: "tacrolimus", b: ["Prograf"] },
+ { g: "cyclosporine", b: ["Neoral"] }, { g: "mycophenolate", b: ["CellCept"] },
+ { g: "azathioprine", b: ["Imuran"] },
+ // allergy
+ { g: "diphenhydramine", b: ["Benadryl"] }, { g: "cetirizine", b: ["Zyrtec"] },
+ { g: "loratadine", b: ["Claritin"] }, { g: "fexofenadine", b: ["Allegra"] },
+ { g: "promethazine", b: ["Phenergan"] },
+ // other common
+ { g: "finasteride", b: ["Proscar", "Propecia"] }, { g: "tamsulosin", b: ["Flomax"] },
+ { g: "oxybutynin", b: ["Ditropan"] }, { g: "sildenafil", b: ["Viagra"] },
+ { g: "tadalafil", b: ["Cialis"] }, { g: "allopurinol", b: ["Zyloprim"] },
+ { g: "colchicine", b: ["Colcrys"] }, { g: "ferrous sulfate", b: ["iron"] },
+ { g: "vitamin D", b: ["cholecalciferol"] }, { g: "cyanocobalamin", b: ["vitamin B12"] },
+ { g: "folic acid" }, { g: "calcium carbonate", b: ["Tums"] },
+ { g: "fish oil", b: ["omega-3"] }, { g: "multivitamin" },
+ { g: "potassium chloride", b: ["K-Dur"] }, { g: "estradiol", b: ["Estrace"] },
+ { g: "medroxyprogesterone", b: ["Provera", "Depo-Provera"] }, { g: "testosterone", b: ["AndroGel"] },
+ { g: "epinephrine", b: ["EpiPen"] }, { g: "varenicline", b: ["Chantix"] },
+ { g: "naltrexone", b: ["Vivitrol"] }, { g: "methadone" },
+];
+
+// Rank the med list against a query: generic-prefix > brand-prefix >
+// generic-substring > brand-substring. Returns up to 7 entries.
+function rankMeds(q) {
+ const query = (q || "").trim().toLowerCase();
+ if (!query) return [];
+ const out = [];
+ for (const m of MED_LIST) {
+ const g = m.g.toLowerCase();
+ const brands = (m.b || []).map(x => x.toLowerCase());
+ let score = -1;
+ if (g.startsWith(query)) score = 100;
+ else if (brands.some(x => x.startsWith(query))) score = 80;
+ else if (g.includes(query)) score = 50;
+ else if (brands.some(x => x.includes(query))) score = 30;
+ if (score >= 0) out.push({ m, score });
+ }
+ out.sort((a, b) => b.score - a.score || a.m.g.length - b.m.g.length || a.m.g.localeCompare(b.m.g));
+ return out.slice(0, 7).map(o => o.m);
+}
+
+// Chips combobox for the Medications field. Value is a comma-joined string of
+// meds (flows straight into the note's [medications]). Each med is a discrete
+// chip; Enter accepts the highlighted suggestion (inserts the generic), a comma
+// commits the typed text as-is and the next segment auto-completes again.
+// Backspace on an empty input removes the last chip. Free text always wins.
+function MedicationInput({ value, onChange, placeholder }) {
+ const meds = (value || "").split(",").map(s => s.trim()).filter(Boolean);
+ const [query, setQuery] = useState("");
+ const [activeIdx, setActiveIdx] = useState(0);
+ const [open, setOpen] = useState(false);
+ const wrapRef = useRef(null);
+ const inputRef = useRef(null);
+
+ const matches = open ? rankMeds(query) : [];
+ const setMeds = (arr) => onChange(arr.join(", "));
+ const addMed = (name) => {
+ const n = (name || "").trim();
+ if (n && !meds.some(m => m.toLowerCase() === n.toLowerCase())) setMeds([...meds, n]);
+ setQuery(""); setActiveIdx(0); setOpen(false);
+ };
+ // Comma (typed or pasted) splits off completed meds; the tail keeps typing.
+ const onInput = (raw) => {
+ if (raw.includes(",")) {
+ const parts = raw.split(",");
+ const tail = parts.pop();
+ const done = parts.map(s => s.trim()).filter(Boolean);
+ if (done.length) {
+ const next = [...meds];
+ done.forEach(d => { if (!next.some(m => m.toLowerCase() === d.toLowerCase())) next.push(d); });
+ setMeds(next);
+ }
+ setQuery(tail);
+ } else {
+ setQuery(raw);
+ }
+ setActiveIdx(0); setOpen(true);
+ };
+ const onKeyDown = (e) => {
+ if (e.key === "Enter") {
+ e.preventDefault();
+ if (open && matches[activeIdx]) addMed(matches[activeIdx].g);
+ else if (query.trim()) addMed(query);
+ } else if (e.key === "ArrowDown") {
+ e.preventDefault(); setOpen(true); setActiveIdx(i => Math.min(i + 1, Math.max(matches.length - 1, 0)));
+ } else if (e.key === "ArrowUp") {
+ e.preventDefault(); setActiveIdx(i => Math.max(i - 1, 0));
+ } else if (e.key === "Escape") {
+ setOpen(false);
+ } else if (e.key === "Backspace" && query === "" && meds.length) {
+ e.preventDefault(); setMeds(meds.slice(0, -1));
+ }
+ };
+ useEffect(() => {
+ if (!open) return;
+ const h = (e) => { if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false); };
+ document.addEventListener("mousedown", h);
+ return () => document.removeEventListener("mousedown", h);
+ }, [open]);
+
+ return (
+ <div ref={wrapRef} style={{ position: "relative" }}>
+ <div onClick={() => inputRef.current && inputRef.current.focus()}
+ style={{...inputStyle, display: "flex", flexWrap: "wrap", gap: "5px", alignItems: "center",
+ minHeight: "38px", padding: "5px 8px", cursor: "text", height: "auto" }}>
+ {meds.map((m, i) => (
+ <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: "5px",
+ background: "rgba(122,26,26,0.08)", color: "var(--ink)", border: "1px solid var(--accent)",
+ borderRadius: "3px", padding: "2px 6px", fontSize: "12px", fontFamily: "'Geist', sans-serif" }}>
+ {m}
+ <button type="button" onClick={(e) => { e.stopPropagation(); setMeds(meds.filter((_, j) => j !== i)); }}
+ title="Remove" style={{ background: "transparent", border: "none", cursor: "pointer",
+ color: "var(--accent)", fontSize: "14px", lineHeight: 1, padding: 0 }}>×</button>
+ </span>
+ ))}
+ <input ref={inputRef} type="text" value={query}
+ onChange={(e) => onInput(e.target.value)} onKeyDown={onKeyDown}
+ onFocus={() => { if (query) setOpen(true); }}
+ placeholder={meds.length ? "" : (placeholder || "type a medication…")}
+ style={{ flex: 1, minWidth: "100px", border: "none", outline: "none", background: "transparent",
+ fontSize: "13px", fontFamily: "'Geist', sans-serif", color: "var(--ink)", padding: "2px 0" }} />
+ </div>
+ {open && matches.length > 0 && (
+ <div style={{ position: "absolute", top: "100%", left: 0, right: 0, marginTop: "3px", zIndex: 50,
+ background: "var(--paper)", border: "1px solid var(--rule)", borderRadius: "3px",
+ boxShadow: "0 4px 16px rgba(0,0,0,0.12)", overflow: "hidden" }}>
+ {matches.map((m, i) => (
+ <div key={m.g} onMouseDown={(e) => { e.preventDefault(); addMed(m.g); }}
+ onMouseEnter={() => setActiveIdx(i)}
+ style={{ padding: "7px 10px", cursor: "pointer", fontSize: "13px", fontFamily: "'Geist', sans-serif",
+ background: i === activeIdx ? "rgba(122,26,26,0.08)" : "transparent",
+ display: "flex", justifyContent: "space-between", gap: "10px", alignItems: "baseline" }}>
+ <span style={{ color: "var(--ink)", fontWeight: 500 }}>{m.g}</span>
+ {m.b && m.b.length > 0 && <span style={{ color: "var(--ink-faint)", fontSize: "11px" }}>{m.b.join(", ")}</span>}
+ </div>
+ ))}
+ </div>
+ )}
+ </div>
+ );
+}
 
 function SelectOrOtherInput({ value, onChange, options, defaultOption }) {
  // Dropdown of `options` plus an "Other…" entry that reveals a free-text box.
@@ -6601,6 +6853,7 @@ function ICCNoteInputs({ rawTemplate, values, onChange }) {
  </div>
  );
  }
+ if (type === "meds") return <MedicationInput value={v} onChange={set} placeholder="type a medication…" />;
  if (type === "bp") return <BPInput value={v} onChange={set} />;
  if (type === "checkbox") return (
  <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "var(--ink)", cursor: "pointer", padding: "4px 0" }}>
@@ -9622,10 +9875,9 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  alignItems: "end" }}>
  <div>
  <label style={lblS}>Medications</label>
- <input type="text"
- value={fields.medications || ""}
- onChange={e => setField("medications", e.target.value)}
- placeholder="no medications" style={inS} />
+ <MedicationInput value={fields.medications || ""}
+ onChange={v => setField("medications", v)}
+ placeholder="no medications" />
  </div>
  <label style={{
  display: "flex", alignItems: "center", gap: "6px",
@@ -12229,7 +12481,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
 )}
  {needsMedications && (
  <Field label="Medications">
- <TextInput value={fields.medications} onChange={v=>setField("medications",v)} placeholder="none / list meds" />
+ <MedicationInput value={fields.medications || ""} onChange={v=>setField("medications",v)} placeholder="none / list meds" />
  </Field>
 )}
  {(needsAllergies || needsPedsAllergies || needsBP || needsBG) && (
