@@ -54,8 +54,8 @@ describe("AAP 2018 — complexity factors elevate the stage", () => {
     expect(stage({ maxIntPD: "4", boneLossPct: "15-33", complexityFactors: ["vertical-3mm"] })).toBe("III"));
   it("Stage IV elevator (mobility ≥2) on Stage III severity → IV", () =>
     expect(stage({ maxIntPD: "6", boneLossPct: "33-50", complexityFactors: ["mobility-2plus"] })).toBe("IV"));
-  it("low CAL (3-4) + 1–4 teeth + a IV elevator STAYS Stage III — IV needs CAL ≥5 (EFP Step 3c)", () =>
-    expect(stage({ maxIntPD: "4", boneLossPct: "15-33", teethLostFromPerio: "1-4", complexityFactors: ["mobility-2plus"] })).toBe("III"));
+  it("Tonetti Table 3: 1–4 teeth (→III) + a Stage IV factor → IV, irrespective of CAL", () =>
+    expect(stage({ maxIntPD: "4", boneLossPct: "15-33", teethLostFromPerio: "1-4", complexityFactors: ["mobility-2plus"] })).toBe("IV"));
   it("CAL ≥5 + a IV elevator → IV", () =>
     expect(stage({ maxIntPD: "6", boneLossPct: "33-50", complexityFactors: ["mobility-2plus"] })).toBe("IV"));
   it("no complexity factor does NOT elevate a Stage I case", () =>
@@ -123,9 +123,10 @@ describe("EFP decision tree (Sanz & Tonetti 2019)", () => {
   // Step 3b: "If CAL ≤5mm... look for furcation II/III. If present → Stage III or IV."
   it("Step 3b — furcation II/III on a CAL 3-4 case → Stage III", () =>
     expect(stage({ maxIntPD: "4", boneLossPct: "15-33", complexityFactors: ["furcation-23"] })).toBe("III"));
-  // Step 3c: "Stage IV if... CAL is 5mm or more" — a complexity-only III cannot reach IV.
-  it("Step 3c — furcation-elevated III + mobility STAYS III without CAL ≥5", () =>
-    expect(stage({ maxIntPD: "4", boneLossPct: "15-33", complexityFactors: ["furcation-23", "mobility-2plus"] })).toBe("III"));
+  // Tonetti 2018 Table 3: complexity shifts the stage "irrespective of CAL", and
+  // a Stage IV factor (in addition to Stage III complexity) reaches IV.
+  it("Table 3 — furcation-elevated III + a Stage IV factor → IV (irrespective of CAL)", () =>
+    expect(stage({ maxIntPD: "4", boneLossPct: "15-33", complexityFactors: ["furcation-23", "mobility-2plus"] })).toBe("IV"));
   it("Step 3c — CAL ≥5 + a Stage IV factor → IV", () =>
     expect(stage({ maxIntPD: "6", boneLossPct: "33-50", complexityFactors: ["ridge-severe"] })).toBe("IV"));
   it("Step 3c — PTL >4 teeth → Stage IV on its own", () =>
