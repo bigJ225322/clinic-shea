@@ -840,3 +840,14 @@ Reading-order / scenario-routing chapter (which chapters to read per patient typ
 ## cd-ch28 — "Chairside liners / tissue conditioners" (audited 2026-06-20)
 - ✅ "replace every 2–4 weeks; conditioner used ~3 months" — **Bin Yang reline lecture** ("replacement every 3 weeks - 3 Month"); "pressure pot 20 min" — CD lecture ("pressure pot for 20 min"). Brand roles correct (Coe Comfort = tissue conditioner, Coe Soft = soft reline, GC Reline = hard reline; Visco-gel/Lynal honestly marked "general knowledge, not on clinic reference"). Nystatin for denture stomatitis ✓.
 - ⚠ **Material-property timeframes NOT in the UIC materials reference** (`denture base materials_2024.pdf` lists no Coe brands/specs) or the reline lecture: Coe Comfort "pliable 4–6 weeks", Coe Soft "1–3 months", set "90 sec–3 min", "1:1 powder:liquid", soreness resolves "24–48 h", "lab reline at 6 [months]." Manufacturer/clinical figures — hedged in the text ("per manufacturer", "check the package"), plausible, but UNSOURCED in UIC docs → **SOURCE-MAP FLAG #8**. NB: Coe Comfort "4–6 weeks pliable" looks long for a short-term conditioner (~2 wks typical). Kept (real materials, hedged); flagged rather than mass-cut.
+
+## cd-conventional PATHWAY PROSE (App.jsx :24927) — audited 2026-06-20 — VERIFIED, densely sourced
+The live pathway prose (description + 8 phase details + 6 labStep bodies/details) is the prior CD audit's thorough work — every labStep carries a `source:` field. Spot-checked the most specific quantitative claims; **all verbatim in the UIC sources**:
+- ✅✅ "dentures function at ~30% of a normal dentition" — **Swade 3618 verbatim** ("they function at 30% of a normal dentition's 100%").
+- ✅✅ wax-rim heights "22 mm maxillary / 18 mm mandibular" — **CD lecture verbatim** ("maxillary - 22mm; mandibular - 18mm; total 40-42mm").
+- ✅✅ "soaked … water ~72 hours" — **CD lecture verbatim** ("Soak dentures in water for 72 hours prior").
+- ✅ incisive-papilla landmark + reline ladder ("soft reline 2–4 wk, hard chairside 3–4 mo, lab reline at 6 mo — Yang lecture's lab window 3–6 mo") cited to Yang — also grounds part of cd-ch28 FLAG #8 (the reline *ladder* IS Yang-sourced; only the brand-pliability specs aren't).
+- ✅ **Condylar 20-vs-30 conflict properly HEDGED** in the prose ("UIC docs disagree, confirm with faculty") — matches the CD flag; Bennett 15° cited to Denar Mark 300/320 manual.
+- No fabrications; densely cited; no fixes needed.
+
+### ✅✅ CD PATHWAY COMPLETE — cd-ch1..28 + cd-conventional pathway prose all audited. Fixes shipped over the whole CD audit: condylar 20-vs-30 hedge restored, freeway 2–4→2–3 mm (cd-ch22), reline-longevity durations cut (cd-ch22). Flags open for Jake: condylar 20-vs-30 (faculty), cd-ch28 liner timeframes (#8).
