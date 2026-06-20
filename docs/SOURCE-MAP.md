@@ -71,15 +71,25 @@ A claim is **verified ✓** only after the actual slide/page has been read and t
 ### All-ceramic (e.max) prep — corroborated (4th source)
 - e.max axial 1.25–1.5, occlusal/incisal 1.5–2.0, deep chamfer / round shoulder → **All Ceramic Crown Prep Step-by-step, slide 2** + **All-Ceramic Crown Eval Form (04), p.1** (facial axial 1.25–1.5, lingual 1.0–1.25; incisal 1.5–2.0) — ✓ consistent with Swade p.58/p.114, no fix. Anterior all-ceramic incisal reduction = **1.5–2.0 mm**.
 
+### Digital e.max — non-reduction chapters (digc-scan / digc-selection / digc-delivery / ind-ch28)
+- **IOS image count:** recommended **< 2,000 images**; **2,000–3,000** clinically acceptable; **> 3,000** exceeds what the software allows → **Rubric for IOS PPC, criterion 14** (+ scan-intro deck s35). **FIXED** the fabricated "under ~1000 / 2000 absolute max" in BOTH `digc-scan` AND `ind-ch28` (recurring-term sweep).
+- **Subgingival margin capture** = retract tissue + capture **2–3 mm of gingiva** around the margin → scan-intro deck s18/21/28 + Rubric "scan" criterion. **CUT** the fabricated "scanner reaches ~17 mm depth" (`digc-selection`).
+- **e.max minimum material thickness 1.2 mm** → **CAD CAM Dentistry Overview** deck (literal "1.2mm") — the map's "1.2–1.5 mm" is SOURCED, left as-is (do NOT normalize to 1.25).
+- **Bond/etch durations** (Ivoclean 20 s, IPS Ceramic Etching Gel **5% HF 20 s** on lithium disilicate, Clearfil Ceramic Primer, Panavia ED Primer 30 s, light-cure 20 s/surface) = manufacturer-IFU standard; the per-step UIC source not yet located → carried as plausible, **source pending** (find the cementation handout).
+
+### ⚠ FLAGS for Jake (digital e.max) — do NOT silently rewrite
+1. **Crystallization-state conflict.** `digc-delivery` says the crown arrives "milled but **pre-crystallized — soft**," you adjust it soft, then "**crystallize it in-house** (~25 min)." But **Anterior Crown Delivery deck slide 6** states: "**You will receive a crystallized restoration** with no glaze and sprue still present," and slide 7 warns to adjust gently *because it is already crystallized* ("can overheat"). That deck's workflow = receive **crystallized** → adjust → characterize/stain → **glaze + correction firing** (slides 13–19), NOT student-side crystallization. The map may describe the wrong arrival state / firing. Needs the authoritative cementation-protocol source before any rewrite.
+2. **ind-ch15 FPD span:** "3 posterior teeth replaced is the absolute maximum / >2 teeth = high risk" — verify vs Ante's law during the bridge audit.
+
 ---
 
 ## Audit progress (loop — resumable across firings)
 
-**✓ Verified — fixed prosth, reductions/prep params:** crown axial/occlusal/finish-line for all materials (Swade p.58 + p.114; PFM Crowns slides 13–15; All-Ceramic deck slide 2 + eval form p.1); inlay prep params (Inlays&Onlays slides 26–27 + Swade p.112). Fixes shipped: e.max axial/chamfer/zirconia, inlay pulpal floor, the "1.5 functional/1.0 non-functional" occlusal fabrication.
+**✓ Verified — fixed prosth:** crown reductions all materials (Swade p.58/114; PFM Crowns s13–15; All-Ceramic deck s2 + eval form); inlay prep params (Inlays&Onlays s26–27 + Swade p.112); **digital e.max non-reduction — scan + selection chapters** (Rubric IOS PPC c.14; scan-intro deck s18–35; CAD/CAM Overview). Fixes shipped so far: e.max axial/chamfer/zirconia, inlay pulpal floor, occlusal "1.5/1.0" fabrication, IOS image-count (digc-scan + ind-ch28), "~17 mm depth."
 
-**▶ Next queue (each: open the cited deck, verify every number vs the slide, fix+cite, deploy):**
-1. digital-emax map — scan / material-selection / design / mill / delivery chapters (cement protocols, HF-etch times, zirconia yttria %, shade, etc.)
-2. crown-pfm map — impression / provisional / lab-script / delivery chapters
-3. bridge-pfm map — **pontic designs + connectors (MFT deck — the cube-law claim has prior history) + abutment/Ante's-law**
-4. CD pathway (`MASTER REFERENCE CS/02`)
-5. RPD pathway (`MASTER REFERENCE CS/03`)
+**▶ Next queue:**
+1. digital e.max — **resolve the `digc-delivery` crystallization-state flag** (locate the cementation-protocol source: Ivoclean/HF/Clearfil/Panavia durations + soft-vs-crystallized arrival) + verify provisional/recement/removal
+2. crown-pfm (`crownc-*`) — impression / provisional / delivery / foundation / recement
+3. bridge-pfm (`brc-*` / `ind-ch15`) — pontic designs + connectors (MFT) + abutment / Ante's-law / span
+4. CD pathway (`cd-ch22..28` + `cd-conventional` prose) — per docs/CD-PATHWAY-SOURCES.md
+5. RPD pathway (`rpd-*` / `rpdc-*`)
