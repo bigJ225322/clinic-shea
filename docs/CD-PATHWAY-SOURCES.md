@@ -819,3 +819,10 @@ The chapter is a **constructed clinical differential** (11 causes ranked by freq
 - 🔧 **Reline-longevity durations:** "reline of an occlusally-failing denture buys **~3 months**; tissue-resorption case buys **1–2 years**" — precise durations in **no source** (fabricated). Cut the numbers, kept the qualitative point ("band-aid" vs "holds far longer").
 - ⓘ Time-since-delivery buckets ("occlusal drift most common at 6–12 months", "resorption at 2+ years") + "denture out 1–2 weeks for tissue recovery" — plausible clinical patterns (a lecture does carry "AT 6-12 MONTHS"); left as ⓘ, not pinned to one slide.
 - ✅ "occlusal scheme drift → **remake**" — correctly says remake (NOT the clinical-remount-for-worn claim the loop flagged; not present in this form).
+
+## cd-ch23 — "Post-delivery complaints" (audited 2026-06-20) — CLEAN, well-sourced
+- ✅✅ "see them at **1 day if severe** adjustment, **3 days if minor**" — **Delivery lecture (Gheisarifar) lines 585/587 VERBATIM** ("1 Day- If had severe adjustment"; "3 day- If had minor adjustment"). *(Nearly flagged this as fabricated — it's real. Read the source before cutting.)*
+- ✅ "24-hour recall + two recall adjustment appointments + 6-month recall" — CD delivery source ("scheduled for a 24 hour recall visit"; "Following two recall adjustment appointments"; "6 month recall schedule").
+- ✅✅ "**BULL rule**" for equilibration — CD source ("rule of BULL (buccal of the [upper]…)"; "Use the rule of BULL").
+- ⓘ Complaint-by-complaint differential (soreness / function / esthetic / speech / gagging → cause → fix) = standard CD post-delivery troubleshooting (Swade denture-adjustment p.94–96 + Delivery lecture). Qualitative cause→fix mappings, no fabricated numbers; adaptation timeframes ("1–2 weeks", "1 month") plausible.
+- **No fabrications, no cuts.**
