@@ -84,14 +84,27 @@ A claim is **verified ✓** only after the actual slide/page has been read and t
 1. **Crystallization LOCATION (lab vs in-house) — workflow-ambiguous; Jake to confirm.** Resolved the alarm from last tick: the *material facts* are SOURCED and correct — e.max CAD is milled in the blue (pre-crystallized) block and fired **15–25 min** to crystallize (**Chairside Materials s19**), so the map's "~25 min" and "milled pre-crystallized" are both right. The only open question is WHERE crystallization happens: `digc-delivery` has the **student** crystallize in-house ("take it to Dan, ~25 min"); the **Anterior Crown Delivery deck** (s2 "milled and fired *prior to* the delivery session"; s6 "you will *receive* a crystallized restoration") has the **lab** crystallize, with the student doing characterization + glaze firing. These are two legitimate workflows (monolithic in-house-crystallize vs lab-crystallized + chairside characterize/glaze). **Jake: which should the digc map describe?** Left as-is — a clinical-workflow choice, not a fabrication, so not rewritten.
 2. **ind-ch15 FPD span:** "3 posterior teeth replaced is the absolute maximum / >2 teeth = high risk" — verify vs Ante's law during the bridge audit.
 
+### Crown-PFM (`crownc-*`) — verified, clinically sound
+Read all `crownc-*` chapters (impression / provisional / delivery / foundation / recement). No fabricated specifics to cut — every quantitative claim sits within standard restorative ranges:
+- **Impression:** biologic width ~1+1 mm / don't prep >0.5 mm into sulcus; two-cord (#00 bottom no-tail, #0 top tail; range #000–#3); PVS full set ~6 min. ✓
+- **Provisional:** Integrity seat ~45 s; TempBond fill 80–90 %; posterior cotton-roll ~2 min. ✓
+- **Delivery:** disinfect Cavicide 5 min + CHX 5 min; contacts→intaglio→occlusion sequence; RelyX/FujiCem wait 1–2 min, cotton-roll ~3 min; codes D2750A/B/C (PFM high noble) correct. ✓
+- **Foundation:** ferrule ~2 mm; Vitrebond 0.5 mm / cure 20 s; etch 15 s / rinse 5 s; **Scotchbond 20 s / air-thin 5 s / cure 10 s = IFU-correct**; post ≥ crown height + retain ≥4 mm GP apically; D2950/D2954 correct. ✓
+- **Recement:** D2920 correct. ✓
+
+### ⚠ FLAGS for Jake (crown-pfm)
+3. **Gluma timing inconsistency.** `crownc-provisional` = Gluma "scrubbing layer **15 s, wait 30 s**"; `crownc-foundation` = "**45 s, wait 15 s**." Only these two carry a duration; Swade just says "place sealer (Gluma)"; Kuraray IFU = 30–60 s then dry. Both land in range but disagree with each other — which is UIC-taught? Not normalized (no authoritative number to pick).
+4. **D0275 bitewing code (×4: crown / bridge / digital delivery).** Not a standard CDT code — real bitewing codes are D0270 (1) / D0272 (2) / D0274 (4) / D0277 (vertical). Used consistently 4× and the app already uses UIC-internal codes (D2750A/B/C, I9002), so likely a deliberate UIC-internal code — but confirm it isn't a typo for D0274.
+
 ---
 
 ## Audit progress (loop — resumable across firings)
 
 **✓ Verified — fixed prosth, DIGITAL E.MAX COMPLETE:** crown reductions all materials (Swade p.58/114; PFM Crowns s13–15; All-Ceramic deck s2 + eval form); inlay prep params (Inlays&Onlays s26–27 + Swade p.112); **all digital e.max `digc-*` chapters** — selection/scan/prep/provisional/delivery/foundation/recement/removal (Rubric IOS PPC c.14; scan-intro deck s18–35; Chairside Materials s19/s21; CAD/CAM Overview). Fixes shipped: e.max axial/chamfer/zirconia, inlay pulpal floor, occlusal "1.5/1.0" fabrication, IOS image-count (digc-scan + ind-ch28), "~17 mm depth." One workflow flag open for Jake (crystallization location).
 
+**✓ Also verified — crown-pfm (`crownc-*`):** impression / provisional / delivery / foundation / recement all read, clinically sound, no fabrications cut. 2 flags (Gluma timing, D0275 code) logged above.
+
 **▶ Next queue:**
-1. **crown-pfm (`crownc-*`)** — prep (mostly done) → impression / provisional / delivery / foundation / recement
-2. bridge-pfm (`brc-*` / `ind-ch15`) — pontic designs + connectors (MFT; e.max connector 16 mm² already banked) + abutment / Ante's-law / span
-3. CD pathway (`cd-ch22..28` + `cd-conventional` prose) — per docs/CD-PATHWAY-SOURCES.md
-4. RPD pathway (`rpd-*` / `rpdc-*`)
+1. **bridge-pfm (`brc-*` / `ind-ch15`)** — pontic designs + connectors (MFT; e.max connector 16 mm² already banked) + abutment / Ante's-law / span
+2. CD pathway (`cd-ch22..28` + `cd-conventional` prose) — per docs/CD-PATHWAY-SOURCES.md
+3. RPD pathway (`rpd-*` / `rpdc-*`)
