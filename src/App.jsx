@@ -21031,7 +21031,7 @@ const REDUCTION_FIGS = {
   pfm:      { label: "PFM",       sub: "porcelain-fused",     axial: [1.25, 1.5], occl: [1.5, 2.0],  chamfer: [1.0, 1.25], margin: "deep chamfer" },
   emax:     { label: "e.max",     sub: "lithium disilicate",  axial: [1.25, 1.5], occl: [1.5, 2.0],  chamfer: [1.0, 1.25], margin: "deep chamfer" },
 };
-const RG_ORDER = ["metal", "zirconia", "pfm", "emax"];
+const RG_ORDER = ["zirconia", "pfm", "emax"]; // no gold — UIC doesn't do full-gold crowns
 const rgMid = (a) => (a[0] + a[1]) / 2;
 const rgRange = (a) => `${a[0]}–${a[1]}`;
 
