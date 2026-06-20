@@ -3954,41 +3954,56 @@ function computePerioCOEDx(inputs) {
  else if (cal <= 4) calBucket = "3-4";
  else calBucket = "≥5";
 
- // ── Stage ── (worst single criterion sets the overall stage)
+ // ── Stage ── AAP 2018: the stage is the WORST of the severity criteria
+ // (interdental CAL, radiographic bone loss, tooth loss from perio), and
+ // complexity factors floor it upward — they can raise a stage, never lower it.
  let stage;
  let stageRationale;
- // Start from CAL
- let calStage = calBucket === "≤2"? 1: calBucket === "3-4"? 2: 3;
- // Bone loss can override upward
- let bl = boneLossPct === "<15"? 1: boneLossPct === "15-33"? 2: 3;
- let baseStage = Math.max(calStage, bl);
- // Tooth loss + complexity can push to Stage IV. Stage IV requires either
- // ≥5 teeth lost OR rehabilitation-complexity elevators (severe ridge
- // defect, mobility ≥2 / secondary occlusal trauma, <20 remaining teeth).
- // Stage III modifiers (vertical ≥3mm, furcation II/III, moderate ridge
- // defect) keep a case at Stage III but don't push to IV on their own.
+ const calStage = calBucket === "≤2"? 1: calBucket === "3-4"? 2: 3;
+ const blStage = boneLossPct === "<15"? 1: boneLossPct === "15-33"? 2: 3;
+ // Tooth loss FROM periodontitis is a severity criterion in its own right:
+ // ≤4 teeth lost = at least Stage III, ≥5 = Stage IV. (You can't lose teeth to
+ // perio and still be Stage I/II — the worst evidence was extracted.)
+ const toothStage = teethLostFromPerio === "≥5"? 4: teethLostFromPerio === "1-4"? 3: 0;
  const factors = complexityFactors || [];
+ // Stage III complexity (vertical BL ≥3mm, furcation II/III, moderate ridge
+ // defect) elevates an otherwise-lower case to Stage III. Stage IV elevators
+ // (mobility ≥2 / secondary occlusal trauma, severe ridge defect, <20 teeth)
+ // push to IV once severity is already Stage III+.
+ const stageIIIComplex = factors.includes("vertical-3mm")
+ || factors.includes("furcation-23") || factors.includes("ridge-moderate");
  const hasStageIVElevator = factors.includes("mobility-2plus")
- || factors.includes("ridge-severe")
- || factors.includes("lt20-teeth");
- if (teethLostFromPerio === "≥5") {
- stage = "IV";
- stageRationale = `CAL ${cal}mm with ≥5 teeth lost from periodontitis — rehabilitation complexity drives Stage IV`;
- } else if (baseStage >= 3 && hasStageIVElevator) {
- stage = "IV";
- const reasons = [];
- if (factors.includes("mobility-2plus")) reasons.push("secondary occlusal trauma (mobility ≥2)");
- if (factors.includes("ridge-severe")) reasons.push("severe ridge defect");
- if (factors.includes("lt20-teeth")) reasons.push("<20 remaining teeth");
- stageRationale = `CAL ${cal}mm + Stage IV rehabilitation criteria (${reasons.join(", ")})`;
- } else if (baseStage === 3) {
- stage = "III";
- stageRationale = `${cal}mm max interdental CAL, bone loss ${(boneLossPct === ">33" || boneLossPct === "33-50" || boneLossPct === ">50")? "extending to mid-third or beyond": boneLossPct} — severe (Stage III)`;
- } else if (baseStage === 2) {
- stage = "II";
+ || factors.includes("ridge-severe") || factors.includes("lt20-teeth");
+ let baseStage = Math.max(calStage, blStage, toothStage, stageIIIComplex? 3: 0);
+ if (baseStage >= 3 && hasStageIVElevator) baseStage = 4;
+ stage = ["I", "II", "III", "IV"][baseStage - 1];
+
+ // ── Stage rationale — name the criterion(s) that actually drove the call ──
+ const blPhrase = (boneLossPct === "33-50" || boneLossPct === ">50")
+? "bone loss extending to mid-third or beyond": `bone loss ${boneLossPct}`;
+ if (stage === "IV") {
+ const r = [];
+ if (teethLostFromPerio === "≥5") r.push("≥5 teeth lost from periodontitis");
+ if (factors.includes("mobility-2plus")) r.push("secondary occlusal trauma (mobility ≥2)");
+ if (factors.includes("ridge-severe")) r.push("severe ridge defect");
+ if (factors.includes("lt20-teeth")) r.push("<20 remaining teeth");
+ stageRationale = `CAL ${cal}mm — Stage IV rehabilitation complexity (${r.join(", ")})`;
+ } else if (stage === "III") {
+ const r = [];
+ if (calStage === 3) r.push(`${cal}mm interdental CAL`);
+ if (blStage === 3) r.push(blPhrase);
+ if (toothStage === 3) r.push("1–4 teeth lost from periodontitis");
+ if (stageIIIComplex) {
+ const c = [];
+ if (factors.includes("vertical-3mm")) c.push("vertical bone loss ≥3mm");
+ if (factors.includes("furcation-23")) c.push("furcation II–III");
+ if (factors.includes("ridge-moderate")) c.push("moderate ridge defect");
+ r.push(`Stage III complexity (${c.join(", ")})`);
+ }
+ stageRationale = `${r.join("; ")} — severe (Stage III)`;
+ } else if (stage === "II") {
  stageRationale = `${cal}mm max interdental CAL, bone loss ${boneLossPct} — moderate (Stage II)`;
  } else {
- stage = "I";
  stageRationale = `${cal}mm max interdental CAL, bone loss ${boneLossPct} — early (Stage I)`;
  }
 
@@ -11089,7 +11104,7 @@ function buildPerioCOERationale(dx, inputs) {
  else stageDrivers.push({ k: "Bone loss", v: boneLossPct === ">50"? ">50%": "33–50%", says: "Stage III or IV (mid third or beyond)" });
  // Tooth loss
  if (teethLostFromPerio === "≥5") stageDrivers.push({ k: "Teeth lost from perio", v: "≥5", says: "Stage IV (rehabilitation complexity)" });
- else if (teethLostFromPerio === "1-4") stageDrivers.push({ k: "Teeth lost from perio", v: "1–4", says: "Stage III ceiling unless Stage IV elevators present" });
+ else if (teethLostFromPerio === "1-4") stageDrivers.push({ k: "Teeth lost from perio", v: "1–4", says: "floors the case at Stage III (≤4 teeth lost from perio is a Stage III severity criterion)" });
  else stageDrivers.push({ k: "Teeth lost from perio", v: "0", says: "No tooth-loss contribution to staging" });
 
  const gradeDrivers = [];
@@ -11105,11 +11120,8 @@ function buildPerioCOERationale(dx, inputs) {
  if (boneLossPct === "15-33" && cal >= 5) ambiguity.push("Bone loss in the 15–33% bracket combined with CAL ≥5mm is unusual — typically severe CAL is accompanied by more radiographic bone loss.");
  const hasStageIVElevator = (complexityFactors || []).some(f => ["mobility-2plus", "ridge-severe", "lt20-teeth"].includes(f));
  const stageIIIComplex = (complexityFactors || []).some(f => ["vertical-3mm", "furcation-23", "ridge-moderate"].includes(f));
- if (dx.stage === "III" && hasStageIVElevator && teethLostFromPerio!== "≥5") {
- ambiguity.push("Stage IV elevators are checked but tooth loss is <5. Engine kept the case at Stage III; AAP 2018 says complexity 'may' elevate to IV. A periodontist could argue either way here.");
- }
- if (stageIIIComplex && dx.stage === "II") {
- ambiguity.push("Stage III complexity modifiers (vertical ≥3mm, furcation II–III, moderate ridge defect) are checked, but CAL/bone loss suggest Stage II. AAP 2018 allows these modifiers to elevate the stage — engine defaults to the more conservative reading.");
+ if (stageIIIComplex || hasStageIVElevator) {
+ ambiguity.push("Complexity factors are in play, and the engine lets them elevate the stage per AAP 2018 — Stage III factors (vertical ≥3mm, furcation II–III, moderate ridge defect) floor the case at III; Stage IV elevators (mobility ≥2, severe ridge defect, <20 teeth) push to IV once severity is already Stage III+. Complexity is the fuzziest part of the system, so sanity-check the call yourself.");
  }
  if ((complexityFactors || []).includes("ridge-moderate") || (complexityFactors || []).includes("ridge-severe")) {
  ambiguity.push("Ridge defect severity (moderate vs severe) is NOT mm-quantified in AAP 2018 — it's a clinical judgment about rehabilitation difficulty.");
@@ -11118,7 +11130,7 @@ function buildPerioCOERationale(dx, inputs) {
  // Judgment calls the engine made
  const judgmentCalls = [
  "AAP 2018 case definitions are descriptive, not algorithmic. Some thresholds are anchored (CAL, bone loss %, ratio bands); others (\"complex rehabilitation\", \"ridge defect severity\") require clinical judgment.",
- "Stage = worst single criterion among CAL / bone loss / tooth loss. Engine applies AAP's stated rule.",
+ "Stage = worst of CAL / bone loss / tooth loss (severity); complexity factors then floor it upward — they can raise a stage, never lower it. Engine applies AAP's stated rule.",
  "Stage IV requires either ≥5 teeth lost from perio OR Stage III baseline + a rehabilitation-complexity elevator (mobility ≥2, severe ridge defect, <20 remaining teeth). This threshold is the engine's reading — the manual is fuzzy here.",
  "Grade = worst of three factors: bone-loss/age ratio, smoking, or diabetes. Any single Grade C trigger (ratio >1.0, ≥10 cig/day, or HbA1c ≥7) makes the case Grade C regardless of the other two.",
  ];
@@ -32665,4 +32677,4 @@ export default function App() {
 // renderTemplate is pure — (template string, fields) -> note string — so it can
 // be unit-tested with no React/DOM. TEMPLATES maps procedure id -> template;
 // DEFAULT_FIELDS is the baseline field object the UI starts from.
-export { renderTemplate, TEMPLATES, DEFAULT_FIELDS, noteTripwire, cleanProseText, CHUNKS };
+export { renderTemplate, TEMPLATES, DEFAULT_FIELDS, noteTripwire, cleanProseText, CHUNKS, computePerioCOEDx };
