@@ -76,20 +76,22 @@ A claim is **verified ✓** only after the actual slide/page has been read and t
 - **Subgingival margin capture** = retract tissue + capture **2–3 mm of gingiva** around the margin → scan-intro deck s18/21/28 + Rubric "scan" criterion. **CUT** the fabricated "scanner reaches ~17 mm depth" (`digc-selection`).
 - **e.max minimum material thickness 1.2 mm** → **CAD CAM Dentistry Overview** deck (literal "1.2mm") — the map's "1.2–1.5 mm" is SOURCED, left as-is (do NOT normalize to 1.25).
 - **Bond/etch durations** (Ivoclean 20 s, IPS Ceramic Etching Gel **5% HF 20 s** on lithium disilicate, Clearfil Ceramic Primer, Panavia ED Primer 30 s, light-cure 20 s/surface) = manufacturer-IFU standard; the per-step UIC source not yet located → carried as plausible, **source pending** (find the cementation handout).
+- **Crystallization "~25 min"** → SOURCED: **Chairside Materials s19** — "Restoration needs to be fired 15–25 min" (blue/pre-crystallized → crystallized). ✓
+- **e.max "1.2–1.5 mm" thickness** → SOURCED VERBATIM: **Chairside Materials s21** — "1.2–1.5 of tooth reduction" (= ≥1 mm ceramic + cement space + overmill). Same slide: **6° taper**; **e.max connector 16 mm²** (banked for the bridge audit); flexural strength **130±30 MPa** (blue) → **360±60 MPa** (crystallized) at s19.
+- **`digc-foundation` / `digc-recement` / `digc-removal`** → read, **CLEAN**, no fabricated specifics. Codes correct: D2950 (+D2954 post) foundation, D2920 recement. "4 mm apical GP" = standard endo figure (not deck-sourced; textbook-correct), left as-is.
 
 ### ⚠ FLAGS for Jake (digital e.max) — do NOT silently rewrite
-1. **Crystallization-state conflict.** `digc-delivery` says the crown arrives "milled but **pre-crystallized — soft**," you adjust it soft, then "**crystallize it in-house** (~25 min)." But **Anterior Crown Delivery deck slide 6** states: "**You will receive a crystallized restoration** with no glaze and sprue still present," and slide 7 warns to adjust gently *because it is already crystallized* ("can overheat"). That deck's workflow = receive **crystallized** → adjust → characterize/stain → **glaze + correction firing** (slides 13–19), NOT student-side crystallization. The map may describe the wrong arrival state / firing. Needs the authoritative cementation-protocol source before any rewrite.
+1. **Crystallization LOCATION (lab vs in-house) — workflow-ambiguous; Jake to confirm.** Resolved the alarm from last tick: the *material facts* are SOURCED and correct — e.max CAD is milled in the blue (pre-crystallized) block and fired **15–25 min** to crystallize (**Chairside Materials s19**), so the map's "~25 min" and "milled pre-crystallized" are both right. The only open question is WHERE crystallization happens: `digc-delivery` has the **student** crystallize in-house ("take it to Dan, ~25 min"); the **Anterior Crown Delivery deck** (s2 "milled and fired *prior to* the delivery session"; s6 "you will *receive* a crystallized restoration") has the **lab** crystallize, with the student doing characterization + glaze firing. These are two legitimate workflows (monolithic in-house-crystallize vs lab-crystallized + chairside characterize/glaze). **Jake: which should the digc map describe?** Left as-is — a clinical-workflow choice, not a fabrication, so not rewritten.
 2. **ind-ch15 FPD span:** "3 posterior teeth replaced is the absolute maximum / >2 teeth = high risk" — verify vs Ante's law during the bridge audit.
 
 ---
 
 ## Audit progress (loop — resumable across firings)
 
-**✓ Verified — fixed prosth:** crown reductions all materials (Swade p.58/114; PFM Crowns s13–15; All-Ceramic deck s2 + eval form); inlay prep params (Inlays&Onlays s26–27 + Swade p.112); **digital e.max non-reduction — scan + selection chapters** (Rubric IOS PPC c.14; scan-intro deck s18–35; CAD/CAM Overview). Fixes shipped so far: e.max axial/chamfer/zirconia, inlay pulpal floor, occlusal "1.5/1.0" fabrication, IOS image-count (digc-scan + ind-ch28), "~17 mm depth."
+**✓ Verified — fixed prosth, DIGITAL E.MAX COMPLETE:** crown reductions all materials (Swade p.58/114; PFM Crowns s13–15; All-Ceramic deck s2 + eval form); inlay prep params (Inlays&Onlays s26–27 + Swade p.112); **all digital e.max `digc-*` chapters** — selection/scan/prep/provisional/delivery/foundation/recement/removal (Rubric IOS PPC c.14; scan-intro deck s18–35; Chairside Materials s19/s21; CAD/CAM Overview). Fixes shipped: e.max axial/chamfer/zirconia, inlay pulpal floor, occlusal "1.5/1.0" fabrication, IOS image-count (digc-scan + ind-ch28), "~17 mm depth." One workflow flag open for Jake (crystallization location).
 
 **▶ Next queue:**
-1. digital e.max — **resolve the `digc-delivery` crystallization-state flag** (locate the cementation-protocol source: Ivoclean/HF/Clearfil/Panavia durations + soft-vs-crystallized arrival) + verify provisional/recement/removal
-2. crown-pfm (`crownc-*`) — impression / provisional / delivery / foundation / recement
-3. bridge-pfm (`brc-*` / `ind-ch15`) — pontic designs + connectors (MFT) + abutment / Ante's-law / span
-4. CD pathway (`cd-ch22..28` + `cd-conventional` prose) — per docs/CD-PATHWAY-SOURCES.md
-5. RPD pathway (`rpd-*` / `rpdc-*`)
+1. **crown-pfm (`crownc-*`)** — prep (mostly done) → impression / provisional / delivery / foundation / recement
+2. bridge-pfm (`brc-*` / `ind-ch15`) — pontic designs + connectors (MFT; e.max connector 16 mm² already banked) + abutment / Ante's-law / span
+3. CD pathway (`cd-ch22..28` + `cd-conventional` prose) — per docs/CD-PATHWAY-SOURCES.md
+4. RPD pathway (`rpd-*` / `rpdc-*`)
