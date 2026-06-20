@@ -206,3 +206,38 @@ The same-day pass cut "~3 mm root-form emergence" calling the Vlagos *Mounting &
 - ⓘ "A crown that keeps coming off usually has short/over-tapered walls or a lost cement seal — re-cement buys time; the real fix is a remake with better retention form." — standard retention-form principle (taper/wall-height = Principles of Tooth Prep); sound, not slide-quoted.
 
 **Net:** crownc-recement — **no fabrications, nothing to cut.** It's general prosthodontic decision-knowledge (re-cement vs remake), honestly marked ⓘ; the two concrete specifics (RelyX/FujiCem cements, D2920 code) are both correct. ✅ CROWN-PFM PATHWAY COMPLETE (impression/provisional/delivery/foundation/recement + prep done earlier).
+
+---
+
+# BRIDGE-PFM (brc-*) — per-sentence
+
+> **Source key:** FPD lec = `04 …/Modified version Posterior FPD Preparation and Pontic Design.pdf` (30 sl); Goodacre = `04 …/Goodacre - Tooth preparations for complete crowns.pdf`; build-up = Swade restorative; Chairside Materials s21 (e.max connector 16 mm²).
+
+## brc-abutment — ⚠️ CORRECTED a prior mis-audit
+- 🔧 **FIX (deployed):** the 2026-06-13 pass had CUT Ante's Law + the span-cube law from this chapter (calling them "unsourced") and replaced them with a connector-**height**-cube claim. **Both are verbatim in the FPD lecture** — I read s18–21 and restored them:
+  - ✅ **Ante's Law** — "the root surface of the abutment teeth should equal or exceed that of the teeth being replaced with pontics" — **FPD lec s18** (verbatim, + relative-root-area chart).
+  - ✅ **Span-cube** — "bending varies **directly with the cube of the length**; a two-pontic span will bend **8 times more**" — **FPD lec s20** (verbatim). The replaced "inversely with cube of connector height" is true beam mechanics for a connector's *own* stiffness but is NOT this lecture's law; restored as a secondary clause + kept the sourced e.max connector 16 mm² (Chairside Materials s21).
+  - ✅ **Double (splinted) abutments** overcome long-span + unfavorable crown-to-root ratio — **FPD lec s19**.
+- ✅ "Replacing 3 posterior teeth is the absolute maximum; >2 teeth is high-risk; 4 adjacent edentulous (other than 4 incisors) → RPD/implants." — **FPD lec s21** (verbatim). **This also RESOLVES SOURCE-MAP FLAG #2 (ind-ch15 span).**
+- ✅ Abutment work-up (perio/radiographic/pulpal; favorable crown-to-root; no mobility; root form: broad>round, separated>fused) — standard FPD abutment criteria (FPD lec abutment slides + Swade); ⓘ.
+- ✅ Pier abutment → nonrigid connector; cantilever → multiple/double abutments + implant consult; tilted molar → upright/extract 3rd molar first — **FPD lec s15** ("1, 3, or >3 abutments; splinted or pier") + standard; ⓘ.
+
+## brc-pontic — fully verified (FPD lec s23–29)
+- ✅✅ "Tissue surface convex + cleansable, contacting the ridge, floss passes underneath; touches only attached keratinized gingiva." — **FPD lec s23** (verbatim: "area of contact … should be **convex**"; "pontic should only touch **attached keratinized gingiva**").
+- ✅✅ Ovate (most esthetic; needs soft-tissue volume / surgical or socket site development) — **s29**.
+- ✅✅ Modified ridge lap (all-convex, ease of cleaning, non-anatomical palatal/lingual, "moderate esthetic") — **s28**. ⓘ "UIC default" not literally on the slide but it's the standard posterior choice.
+- ✅✅ Sanitary/hygienic (no tissue contact, excellent cleaning but food entrapment, no esthetics, posterior only) — **s25**.
+- ✅✅ Conical (thin mandibular ridges, compromised esthetics, acceptable cleaning) — **s26**.
+- ✅ Ridge lap (saddle) = "looks natural but impossible to clean, not recommended" — **s27**; the map correctly treats ridge-lapping as the design to avoid.
+
+## brc-prep — verified
+- ✅✅ "Taper 4–10° between the opposing axial walls (shared path of draw)." — **FPD lec s4** (verbatim "Taper 4-10 degrees between opposing axial walls"). ⚠ the "retention/resistance fall ~50% per extra 5° convergence" specific not found in FPD lec / Goodacre (Goodacre s2 shows TOC 5–25° diagrams; the ~50%/5° figure is unsourced here) → flagged, kept.
+- ✅ Reductions (PFM): axial 1.25–1.5, occlusal 1.5–2.0, deep chamfer/shoulder 1.0–1.25 (lingual chamfer 0.8–1.0), supragingival ~0.5 mm — **the verified PFM crown figures** (Swade p.58/p.114; PFM Crowns deck). Consistent.
+- ✅ Common-path sequence (interproximal → axial toward shared path → occlusal + functional cusp bevel → verify draw) — **FPD lec s6–8/s12** (path-of-draw slides) + crown-prep sequence.
+
+## brc-foundation — verified (= crownc-foundation sources)
+- ✅ Same build-up + post content as crownc-foundation, applied to the abutment(s): build-up = Swade restorative (verbatim, see crownc-foundation); ferrule + post = Restoring-Endo + Alapati; "preserve ≥4 mm apical GP"; "no ferrule → abutment-selection/restorability problem, reconsider abutment/implant/RPD"; D2950/D2954. No new fabrications.
+
+**Note — orphaned ind-ch5 / ind-ch15:** carry the connector-height-cube claim too (ind-ch5 "connector min 2 mm height, height>width"; ind-ch15 "cube of pontic occlusogingival thickness"). These are **NOT live in the Maps tab** (older Guides-browser set) and the height³ framing is *correct* connector-stiffness mechanics — left as-is, not cut. (ind-ch5's "2 mm connector height min" figure worth a check if ever un-orphaned.)
+
+**Net:** bridge-pfm — **brc-pontic fully verbatim (s23–29); brc-prep taper verbatim (s4); brc-abutment CORRECTED** (restored Ante's Law s18 + span-cube s20 that a prior pass wrongly cut). 1 fix deployed, 1 ⚠ (the ~50%/5° retention figure), FLAG #2 resolved. The prior audit's error is exactly why reading the primary slides matters.

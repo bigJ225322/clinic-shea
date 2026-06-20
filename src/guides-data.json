@@ -10866,7 +10866,7 @@
                 "kind": "bullets",
                 "items": [
                   "**Abutments must be restorable and periodontally sound** — assess each candidate's prognosis (save-vs-extract) before committing; a questionable abutment becomes the bridge's weakest link.",
-                  "**Connector stiffness (MFT):** bending varies inversely with the cube of connector **height**, so connector height (about 2 mm minimum) matters more than width. The longer the edentulous span, the more it deflects — long spans lean hard on sound abutments and adequate connectors."
+                  "**Ante's Law + span deflection:** the combined root-surface area of the abutments should equal or exceed that of the teeth being replaced by the pontics — the abutments carry their own load *plus* the pontic's. Bending varies directly with the **cube of the span length**, so a two-pontic span deflects about **8× more** than a single pontic — longer spans are higher-risk and may need **double (splinted) abutments** to overcome a long span or an unfavorable crown-to-root ratio. Connectors must be tall enough to resist that bending (stiffness rises with connector height, so height matters more than width; the e.max connector minimum is ~16 mm² in cross-section)."
                 ]
               },
               {
