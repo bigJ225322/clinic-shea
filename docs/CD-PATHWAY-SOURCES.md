@@ -810,3 +810,12 @@ Corrected to **30°** in: pathway Lab 3 body + detail (App.jsx), and guides-data
 
 ## CORRECTION — 2026-06-13 (re-checked against the CD Treasure Trove, which the same-day pass had NOT searched)
 The 2026-06-13 "condylar 30 not 20" fix was made against ALL CD FILES (grading sheets) ONLY — it did NOT search the **CD Treasure Trove** (`~/Downloads/Complete Denture CD Treasure Trove…`), where the original ledger's 20° came from. Re-extracted the trove: it genuinely says **20°** — `[9] Setting Anterior Teeth (Touloumi)` "condylar inclination = 20°"; `[5]`/`[6]` lab instructions "200" (= 20°). So this is a **real conflict between official UIC docs**, not a ledger error: setting-teeth instructions + Touloumi study guide = **20°**, the 33° BBA / Monoplane setup **grading sheets** = **30°±5°**. **✂ FIXED:** the flat "30°" is now "per your setup sheet — UIC docs disagree (20° vs 30°±5°), confirm with faculty" across the pathway (body + detail) + both guides-data cd chapters. This is exactly the "Card states both + confirm with faculty" the ledger always intended (the hedge that had been lost). Lesson: searching ALL CD FILES ≠ searching the trove; the per-sentence ledgers were built against the troves.
+
+---
+
+## cd-ch22 — "Loose denture differential" (audited 2026-06-20)
+The chapter is a **constructed clinical differential** (11 causes ranked by frequency) — not a single UIC lecture; the diagnostic ladder + cause/fix logic is sound clinical reasoning (ⓘ), kept. Two fabricated specifics fixed (deployed):
+- 🔧 **Freeway space:** map said "VDR−VDO outside **2–4 mm** → VDO wrong." UIC sources say **2–3 mm**: CD lecture "**2–3 mm less than the VDR**"; Swade 4567/4656 "interocclusal space — at least 2 mm"; the prior CD audit CONFIRMED "VDO=VDR−2–3mm." → corrected to **2–3 mm** (consistency + source fidelity).
+- 🔧 **Reline-longevity durations:** "reline of an occlusally-failing denture buys **~3 months**; tissue-resorption case buys **1–2 years**" — precise durations in **no source** (fabricated). Cut the numbers, kept the qualitative point ("band-aid" vs "holds far longer").
+- ⓘ Time-since-delivery buckets ("occlusal drift most common at 6–12 months", "resorption at 2+ years") + "denture out 1–2 weeks for tissue recovery" — plausible clinical patterns (a lecture does carry "AT 6-12 MONTHS"); left as ⓘ, not pinned to one slide.
+- ✅ "occlusal scheme drift → **remake**" — correctly says remake (NOT the clinical-remount-for-worn claim the loop flagged; not present in this form).
