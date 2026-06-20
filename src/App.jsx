@@ -21035,11 +21035,16 @@ const RG_ORDER = ["metal", "zirconia", "pfm", "emax"];
 const rgMid = (a) => (a[0] + a[1]) / 2;
 const rgRange = (a) => `${a[0]}–${a[1]}`;
 
-function CrownReductionGuide({ compact = false }) {
-  const [crown, setCrown] = useState("pfm");
+function CrownReductionGuide({ compact = false, initialCrown = "pfm" }) {
+  const [crown, setCrown] = useState(initialCrown);
   const [view, setView] = useState("bl");
   const [region, setRegion] = useState("post");
+  const [tooth, setTooth] = useState(19);
+  const [arch, setArch] = useState("mand");
   const isAnt = region === "ant";
+  // mandibular functional cusp = buccal; maxillary functional cusp = palatal/lingual
+  const bevelOnBuccal = arch === "mand";
+  const funcCuspLabel = arch === "mand" ? "buccal" : "palatal";
   const fig = REDUCTION_FIGS[crown];
   const ax = rgMid(fig.axial) * RG_MM;
   const oc = rgMid(fig.occl) * RG_MM;
@@ -21061,7 +21066,9 @@ function CrownReductionGuide({ compact = false }) {
   const ghost =
     `M 56 ${mY} L 70 ${occBase} Q 120 ${occBase + 14} 172 116 ` +
     `Q 224 ${occBase + 12} 274 ${occBase + 4} L 288 ${mY}`;
-  const bevel = `M ${bWt} ${occY + 4} Q ${bWt + 8} ${occY - 8} ${bWt + 22} ${occY + 2} L ${bWt + 14} ${occY + 12} Q ${bWt + 4} ${occY + 10} ${bWt} ${occY + 4} Z`;
+  const bevel = bevelOnBuccal
+    ? `M ${bWt} ${occY + 4} Q ${bWt + 8} ${occY - 8} ${bWt + 22} ${occY + 2} L ${bWt + 14} ${occY + 12} Q ${bWt + 4} ${occY + 10} ${bWt} ${occY + 4} Z`
+    : `M ${lWt} ${occY + 4} Q ${lWt - 8} ${occY - 8} ${lWt - 22} ${occY + 2} L ${lWt - 14} ${occY + 12} Q ${lWt - 4} ${occY + 10} ${lWt} ${occY + 4} Z`;
 
   // ANTERIOR labiolingual (incisor): two-plane labial reduction, lingual concavity,
   // incisal-edge reduction (= the occl figure), cingulum — NO cusps, NO cusp bevel.
@@ -21089,6 +21096,20 @@ function CrownReductionGuide({ compact = false }) {
 
   return (
     <div style={{ border: "1px solid var(--rule)", borderRadius: 12, padding: compact ? 12 : 16, background: "var(--card, #faf5ec)" }}>
+      <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 8, marginBottom: 10 }}>
+        <label style={{ fontSize: compact ? "0.74rem" : "0.82rem", fontWeight: 700, color: "var(--ink)" }}>Tooth</label>
+        <select value={tooth} onChange={(e) => {
+          const n = Number(e.target.value);
+          setTooth(n);
+          const antSet = new Set([6, 7, 8, 9, 10, 11, 22, 23, 24, 25, 26, 27]);
+          setRegion(antSet.has(n) ? "ant" : "post");
+          setArch(n <= 16 ? "max" : "mand");
+        }} style={{ padding: "5px 8px", borderRadius: 7, border: "1px solid var(--rule)", background: "transparent", color: "var(--ink)", fontSize: compact ? "0.74rem" : "0.82rem" }}>
+          <optgroup label="Maxillary (1–16)">{Array.from({ length: 16 }, (_, i) => i + 1).map((n) => (<option key={n} value={n}>#{n}</option>))}</optgroup>
+          <optgroup label="Mandibular (17–32)">{Array.from({ length: 16 }, (_, i) => i + 17).map((n) => (<option key={n} value={n}>#{n}</option>))}</optgroup>
+        </select>
+        <span style={{ fontSize: compact ? "0.72rem" : "0.78rem", color: "var(--muted)" }}>{arch === "max" ? "Maxillary" : "Mandibular"} · {isAnt ? "anterior" : "posterior"} · functional cusp = {funcCuspLabel}</span>
+      </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
         {RG_ORDER.map((k) => (
           <button key={k} onClick={() => setCrown(k)} style={seg(k)}>{REDUCTION_FIGS[k].label}</button>
@@ -21149,7 +21170,7 @@ function CrownReductionGuide({ compact = false }) {
       )}
 
       <div style={{ marginTop: 10, fontSize: compact ? "0.78rem" : "0.85rem", color: "var(--ink)", lineHeight: 1.55 }}>
-        <strong>{fig.label}</strong> <span style={{ color: "var(--muted)" }}>({fig.sub})</span> — axial <b>{rgRange(fig.axial)}</b>, occlusal/incisal <b>{rgRange(fig.occl)}</b>, {fig.margin} <b>{rgRange(fig.chamfer)} mm</b>; uniform axial reduction all around, {isAnt ? "two-plane labial reduction + reduced lingual concavity" : "functional cusp bevel on the functional cusp"}, finish line ~0.5&nbsp;mm supragingival, 6–10° total taper.
+        <strong>{fig.label}</strong> <span style={{ color: "var(--muted)" }}>({fig.sub})</span> — axial <b>{rgRange(fig.axial)}</b>, occlusal/incisal <b>{rgRange(fig.occl)}</b>, {fig.margin} <b>{rgRange(fig.chamfer)} mm</b>; uniform axial reduction all around, {isAnt ? "two-plane labial reduction + reduced lingual concavity" : ("functional cusp bevel on the " + funcCuspLabel + " cusp")}, finish line ~0.5&nbsp;mm supragingival, 6–10° total taper.
       </div>
     </div>
   );
@@ -25515,6 +25536,8 @@ const PATHWAYS = [
  {
  label: "Prep + intraoral scan + provisional",
  count: 4,
+ widget: "crownReductionGuide",
+ crownDefault: "emax",
  detail: "Select the e.max shade (low translucency for crowns) → prep for all-ceramic (no undercuts, very rounded, 0.5 mm supragingival) → fabricate the Integrity provisional BEFORE scanning → pack two cords → scan with the TRIOS (opposing arch, prep arch, cord-removal re-scan, occlusion) and send to the UIC Dental Lab to mill (you design it in 3Shape — see the lab step) → cement the provisional (Gluma first). Rubber dam preferred.",
  },
  {
@@ -31483,7 +31506,7 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  )}
  {phase.widget === "crownReductionGuide" && (
  <div style={{ marginBottom: "24px" }}>
- <CrownReductionGuide compact />
+ <CrownReductionGuide compact initialCrown={phase.crownDefault || "pfm"} />
  </div>
  )}
  {/* If the phase carries its own structured detail (used when the
