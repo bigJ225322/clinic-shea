@@ -21037,164 +21037,75 @@ const rgRange = (a) => `${a[0]}–${a[1]}`;
 
 function CrownReductionGuide({ compact = false, initialCrown = "pfm" }) {
   const [crown, setCrown] = useState(initialCrown);
-  const [view, setView] = useState("bl");
-  const [region, setRegion] = useState("post");
   const [tooth, setTooth] = useState(19);
+  const [region, setRegion] = useState("post");
   const [arch, setArch] = useState("mand");
   const isAnt = region === "ant";
-  // mandibular functional cusp = buccal; maxillary functional cusp = palatal/lingual
-  const bevelOnBuccal = arch === "mand";
-  const funcCuspLabel = arch === "mand" ? "buccal" : "palatal";
-  const effView = isAnt && view === "occ" ? "bl" : view;   // anterior has no occlusal tab
+  const funcCusp = arch === "mand" ? "buccal" : "palatal";
   const fig = REDUCTION_FIGS[crown];
-  const ax = rgMid(fig.axial) * RG_MM;
-  const oc = rgMid(fig.occl) * RG_MM;
-  const ch = Math.max(rgMid(fig.chamfer) * RG_MM, 8);
 
-  // POSTERIOR buccolingual — uniform axial inset (ax) on BOTH walls, anatomic
-  // occlusal dropped by oc, deep-chamfer margin of depth ch, functional cusp bevel.
-  const mY = 226, occBase = 70;
-  const bMx = 56 + ax, lMx = 288 - ax;          // prepped margins (uniform inset)
-  const bWt = bMx + 7, lWt = lMx - 7;           // wall tops (6–10° convergence)
-  const occY = occBase + oc;                    // reduced cusp height
-  const grY = 116 + oc * 0.7;                   // reduced central groove
-  const prepped =
-    `M ${bMx} ${mY} L ${bWt} ${occY + 4} ` +
-    `Q ${bWt + 8} ${occY - 8} ${bWt + 22} ${occY + 2} ` +   // buccal cusp + functional bevel
-    `L 172 ${grY} ` +                                        // central groove
-    `Q ${lWt - 14} ${occY - 6} ${lWt} ${occY + 4} ` +        // lingual cusp
-    `L ${lMx} ${mY} Z`;
-  const ghost =
-    `M 56 ${mY} L 70 ${occBase} Q 120 ${occBase + 14} 172 116 ` +
-    `Q 224 ${occBase + 12} 274 ${occBase + 4} L 288 ${mY}`;
-  const bevel = bevelOnBuccal
-    ? `M ${bWt} ${occY + 4} Q ${bWt + 8} ${occY - 8} ${bWt + 22} ${occY + 2} L ${bWt + 14} ${occY + 12} Q ${bWt + 4} ${occY + 10} ${bWt} ${occY + 4} Z`
-    : `M ${lWt} ${occY + 4} Q ${lWt - 8} ${occY - 8} ${lWt - 22} ${occY + 2} L ${lWt - 14} ${occY + 12} Q ${lWt - 4} ${occY + 10} ${lWt} ${occY + 4} Z`;
-
-  // ANTERIOR labiolingual (incisor): two-plane labial reduction, lingual concavity,
-  // incisal-edge reduction (= the occl figure), cingulum — NO cusps, NO cusp bevel.
-  const aIncY = 66 + oc;
-  const aLaMx = 110 + ax, aLiMx = 250 - ax;     // labial / lingual prepped margins (uniform)
-  const aPrepped =
-    `M ${aLaMx} ${mY} L ${aLaMx} 150 L ${aLaMx + 8} ${aIncY + 14} ` +  // labial: cervical + incisal planes
-    `L 176 ${aIncY} ` +                                                 // reduced incisal edge
-    `Q 210 ${aIncY + 28} ${aLiMx} 150 L ${aLiMx} ${mY} Z`;              // lingual concavity reduced + wall
-  const aGhost =
-    `M 104 ${mY} Q 94 150 168 66 L 184 66 Q 244 110 256 170 Q 260 200 256 ${mY}`;
-
-  // pick the active buccolingual paths + margin x's by region
-  const blPrepped = isAnt ? aPrepped : prepped;
-  const blGhost = isAnt ? aGhost : ghost;
-  const blBMx = isAnt ? aLaMx : bMx, blLMx = isAnt ? aLiMx : lMx;
-
-  const seg = (k) => ({
-    padding: compact ? "5px 9px" : "6px 12px", fontSize: compact ? "0.72rem" : "0.8rem",
+  const seg = (active) => ({
+    padding: compact ? "5px 11px" : "7px 14px", fontSize: compact ? "0.76rem" : "0.84rem",
     fontWeight: 600, cursor: "pointer", border: "1px solid var(--rule)",
-    background: (k === crown || k === effView || k === region) ? "var(--ink)" : "transparent",
-    color: (k === crown || k === effView || k === region) ? "var(--paper, #fff)" : "var(--ink)",
-    borderRadius: 7,
+    background: active ? "var(--ink)" : "transparent",
+    color: active ? "var(--paper, #fff)" : "var(--ink)", borderRadius: 8,
   });
 
+  const rows = [
+    { k: "Axial walls", v: `${rgRange(fig.axial)} mm`, n: "uniform — same all the way around" },
+    { k: isAnt ? "Incisal edge" : "Occlusal", v: `${rgRange(fig.occl)} mm`, n: isAnt ? "plus reduce the lingual concavity" : "anatomic — follow the cusp inclines" },
+    { k: "Finish line", v: `${fig.margin} ${rgRange(fig.chamfer)} mm`, n: "~0.5 mm supragingival" },
+    { k: "Taper", v: "6–10°", n: "total occlusal convergence" },
+  ];
+
   return (
-    <div style={{ border: "1px solid var(--rule)", borderRadius: 12, padding: compact ? 12 : 16, background: "var(--card, #faf5ec)" }}>
-      <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 8, marginBottom: 10 }}>
-        <label style={{ fontSize: compact ? "0.74rem" : "0.82rem", fontWeight: 700, color: "var(--ink)" }}>Tooth</label>
-        <select value={tooth} onChange={(e) => {
-          const n = Number(e.target.value);
-          setTooth(n);
-          const antSet = new Set([6, 7, 8, 9, 10, 11, 22, 23, 24, 25, 26, 27]);
-          setRegion(antSet.has(n) ? "ant" : "post");
-          setArch(n <= 16 ? "max" : "mand");
-        }} style={{ padding: "5px 8px", borderRadius: 7, border: "1px solid var(--rule)", background: "transparent", color: "var(--ink)", fontSize: compact ? "0.74rem" : "0.82rem" }}>
-          <optgroup label="Maxillary (1–16)">{Array.from({ length: 16 }, (_, i) => i + 1).map((n) => (<option key={n} value={n}>#{n}</option>))}</optgroup>
-          <optgroup label="Mandibular (17–32)">{Array.from({ length: 16 }, (_, i) => i + 17).map((n) => (<option key={n} value={n}>#{n}</option>))}</optgroup>
-        </select>
-        <span style={{ fontSize: compact ? "0.72rem" : "0.78rem", color: "var(--muted)" }}>{arch === "max" ? "Maxillary" : "Mandibular"} · {isAnt ? "anterior" : "posterior"} · functional cusp = {funcCuspLabel}</span>
+    <div style={{ border: "1px solid var(--rule)", borderRadius: 12, padding: compact ? 14 : 18, background: "var(--card, #faf5ec)" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: 14 }}>
+        <div style={{ fontWeight: 800, fontSize: compact ? "1rem" : "1.1rem", color: "var(--ink)" }}>Crown-prep reduction</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <label style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--muted)" }}>Tooth</label>
+          <select value={tooth} onChange={(e) => {
+            const n = Number(e.target.value);
+            setTooth(n);
+            const antSet = new Set([6, 7, 8, 9, 10, 11, 22, 23, 24, 25, 26, 27]);
+            setRegion(antSet.has(n) ? "ant" : "post");
+            setArch(n <= 16 ? "max" : "mand");
+          }} style={{ padding: "5px 9px", borderRadius: 7, border: "1px solid var(--rule)", background: "transparent", color: "var(--ink)", fontSize: "0.82rem" }}>
+            <optgroup label="Maxillary (1–16)">{Array.from({ length: 16 }, (_, i) => i + 1).map((n) => (<option key={n} value={n}>#{n}</option>))}</optgroup>
+            <optgroup label="Mandibular (17–32)">{Array.from({ length: 16 }, (_, i) => i + 17).map((n) => (<option key={n} value={n}>#{n}</option>))}</optgroup>
+          </select>
+        </div>
       </div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
+
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 12 }}>
         {RG_ORDER.map((k) => (
-          <button key={k} onClick={() => setCrown(k)} style={seg(k)}>{REDUCTION_FIGS[k].label}</button>
+          <button key={k} onClick={() => setCrown(k)} style={seg(k === crown)}>{REDUCTION_FIGS[k].label}</button>
         ))}
       </div>
-      <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
-        <button onClick={() => setRegion("post")} style={seg("post")}>Posterior</button>
-        <button onClick={() => setRegion("ant")} style={seg("ant")}>Anterior</button>
-      </div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
-        <button onClick={() => setView("bl")} style={seg("bl")}>{isAnt ? "Labiolingual section" : "Buccolingual section"}</button>
-        {!isAnt && <button onClick={() => setView("occ")} style={seg("occ")}>Occlusal view</button>}
-        <button onClick={() => setView("prox")} style={seg("prox")}>Proximal view</button>
+
+      <div style={{ fontSize: "0.8rem", color: "var(--muted)", marginBottom: 4 }}>
+        <b style={{ color: "var(--ink)" }}>{fig.label}</b> ({fig.sub}) · {arch === "max" ? "maxillary" : "mandibular"} {isAnt ? "anterior" : "posterior"} (#{tooth})
       </div>
 
-      {effView === "bl" && (
-        <svg viewBox="0 0 360 300" width="100%" style={{ maxWidth: 480, display: "block", margin: "0 auto" }} fontFamily="inherit">
-          <text x="18" y="250" fontSize="13" fontWeight="700" fill="var(--ink)">{isAnt ? "La" : "B"}</text>
-          <text x="326" y="250" fontSize="13" fontWeight="700" fill="var(--ink)">{isAnt ? "Li" : "L"}</text>
-          {/* gingiva + root */}
-          <path d="M30 228 Q90 216 150 222 L210 222 Q270 216 330 228 L330 246 Q180 238 30 246 Z" fill="var(--gum, #d99aa0)" opacity="0.5" />
-          <path d="M150 226 Q150 282 180 296 Q210 282 210 226 Z" fill="var(--card, #f3ead9)" stroke="var(--ink)" strokeWidth="2" />
-          {/* original (ghost) */}
-          <path d={blGhost} fill="none" stroke="var(--muted, #b08a93)" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.9" />
-          {/* prepped tooth */}
-          <path d={blPrepped} fill="var(--card, #f3ead9)" stroke="var(--ink)" strokeWidth="2.4" strokeLinejoin="round" />
-          {!isAnt && <path d={bevel} fill="var(--good, #0d8f8f)" opacity="0.2" />}
-          {/* chamfer margins both sides (uniform) */}
-          <path d={`M ${blBMx} ${mY} q ${-ch} 1 ${-ch} 9`} fill="none" stroke="var(--ink)" strokeWidth="2.4" />
-          <path d={`M ${blLMx} ${mY} q ${ch} 1 ${ch} 9`} fill="none" stroke="var(--ink)" strokeWidth="2.4" />
-          {/* dimension callouts */}
-          <g stroke="var(--good, #0d8f8f)" strokeWidth="1.4" fill="none">
-            <line x1="176" y1={(isAnt ? 66 : occBase) + 8} x2="176" y2={isAnt ? aIncY : grY} />
-            <line x1={isAnt ? 104 : 56} y1="178" x2={blBMx} y2="178" />
-            <line x1={blLMx} y1="178" x2={isAnt ? 256 : 288} y2="178" />
-          </g>
-          <text x="178" y={(isAnt ? 66 : occBase) + 26} fontSize="12.5" fontWeight="700" fill="var(--ink)">{isAnt ? "incisal" : "occl"} {rgRange(fig.occl)}</text>
-          <text x="14" y="194" fontSize="12" fontWeight="700" fill="var(--ink)">axial {rgRange(fig.axial)}</text>
-          <text x="248" y="194" fontSize="12" fontWeight="700" fill="var(--ink)">axial {rgRange(fig.axial)}</text>
-          <text x="200" y="288" fontSize="12" fontWeight="700" fill="var(--ink)">{fig.margin} {rgRange(fig.chamfer)} mm · 6–10° taper</text>
-        </svg>
-      )}
+      {rows.map((r, i) => (
+        <div key={i} style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12, padding: "10px 2px", borderTop: "1px solid var(--rule)" }}>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: compact ? "0.86rem" : "0.92rem", color: "var(--ink)" }}>{r.k}</div>
+            <div style={{ fontSize: "0.73rem", color: "var(--muted)" }}>{r.n}</div>
+          </div>
+          <div style={{ fontWeight: 800, fontSize: compact ? "0.96rem" : "1.05rem", color: "var(--good, #0d8f8f)", whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums" }}>{r.v}</div>
+        </div>
+      ))}
 
-      {effView === "occ" && (
-        <svg viewBox="0 0 300 300" width="100%" style={{ maxWidth: 360, display: "block", margin: "0 auto" }} fontFamily="inherit">
-          <path d="M40 150 Q150 110 260 150 Q300 250 260 350 Q150 380 40 350 Q20 250 40 150 Z" transform="scale(1,0.78) translate(0,18)" fill="none" stroke="var(--muted,#b08a93)" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.85" />
-          <path d="M58 160 Q150 130 242 160 Q276 250 242 326 Q150 352 58 326 Q26 250 58 160 Z" transform="scale(1,0.78) translate(0,18)" fill="var(--card,#f3ead9)" stroke="var(--ink)" strokeWidth="2.4" strokeLinejoin="round" />
-          {/* central groove + cusp ridges = anatomy, not flat */}
-          <g stroke="var(--ink)" fill="none">
-            <path d="M70 195 Q150 178 230 195 Q150 212 70 195 Z" strokeWidth="1.4" opacity="0.6" />
-            <path d="M150 150 L150 195 M150 195 L150 250" strokeWidth="1.1" opacity="0.4" />
-            <path d="M78 172 Q120 184 78 196 M222 172 Q180 184 222 196 M78 218 Q120 206 78 194 M222 218 Q180 206 222 194" strokeWidth="1" opacity="0.35" />
-          </g>
-          <path d="M58 160 Q26 250 58 326 Q90 250 58 160 Z" transform="scale(1,0.78) translate(0,18)" fill="var(--good,#0d8f8f)" opacity="0.16" />
-          <text x="20" y="250" fontSize="12" fontWeight="700" fill="var(--ink)">B</text>
-          <text x="262" y="250" fontSize="12" fontWeight="700" fill="var(--ink)">L</text>
-          <text x="150" y="292" fontSize="11.5" fill="var(--muted,#8a6a72)" textAnchor="middle">cusp inclines + central groove · margin = {fig.margin}</text>
-        </svg>
-      )}
-
-      {effView === "prox" && (
-        <svg viewBox="0 0 360 300" width="100%" style={{ maxWidth: 480, display: "block", margin: "0 auto" }} fontFamily="inherit">
-          <text x="18" y="250" fontSize="13" fontWeight="700" fill="var(--ink)">M</text>
-          <text x="326" y="250" fontSize="13" fontWeight="700" fill="var(--ink)">D</text>
-          {/* gingiva + root */}
-          <path d="M30 228 Q90 216 150 222 L210 222 Q270 216 330 228 L330 246 Q180 238 30 246 Z" fill="var(--gum, #d99aa0)" opacity="0.5" />
-          <path d="M150 226 Q150 282 180 296 Q210 282 210 226 Z" fill="var(--card, #f3ead9)" stroke="var(--ink)" strokeWidth="2" />
-          {/* mesiodistal section: same axial/occlusal reductions, both proximal walls = interproximal reduction */}
-          <path d={blGhost} fill="none" stroke="var(--muted, #b08a93)" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.9" />
-          <path d={blPrepped} fill="var(--card, #f3ead9)" stroke="var(--ink)" strokeWidth="2.4" strokeLinejoin="round" />
-          <path d={`M ${blBMx} ${mY} q ${-ch} 1 ${-ch} 9`} fill="none" stroke="var(--ink)" strokeWidth="2.4" />
-          <path d={`M ${blLMx} ${mY} q ${ch} 1 ${ch} 9`} fill="none" stroke="var(--ink)" strokeWidth="2.4" />
-          <g stroke="var(--good, #0d8f8f)" strokeWidth="1.4" fill="none">
-            <line x1={isAnt ? 104 : 56} y1="178" x2={blBMx} y2="178" />
-            <line x1={blLMx} y1="178" x2={isAnt ? 256 : 288} y2="178" />
-          </g>
-          <text x="12" y="194" fontSize="11.5" fontWeight="700" fill="var(--ink)">interprox {rgRange(fig.axial)}</text>
-          <text x="244" y="194" fontSize="11.5" fontWeight="700" fill="var(--ink)">interprox {rgRange(fig.axial)}</text>
-          <text x="180" y="288" fontSize="12" fontWeight="700" fill="var(--ink)" textAnchor="middle">mesiodistal section · {fig.margin} {rgRange(fig.chamfer)} mm · path of insertion 6–10°</text>
-        </svg>
-      )}
-
-      <div style={{ marginTop: 10, fontSize: compact ? "0.78rem" : "0.85rem", color: "var(--ink)", lineHeight: 1.55 }}>
-        <strong>{fig.label}</strong> <span style={{ color: "var(--muted)" }}>({fig.sub})</span> — axial <b>{rgRange(fig.axial)}</b>, occlusal/incisal <b>{rgRange(fig.occl)}</b>, {fig.margin} <b>{rgRange(fig.chamfer)} mm</b>; uniform axial reduction all around, {isAnt ? "two-plane labial reduction + reduced lingual concavity" : ("functional cusp bevel on the " + funcCuspLabel + " cusp")}, finish line ~0.5&nbsp;mm supragingival, 6–10° total taper.
+      <div style={{ marginTop: 12, fontSize: compact ? "0.78rem" : "0.84rem", color: "var(--ink)", lineHeight: 1.55 }}>
+        {crown === "pfm" && <p style={{ margin: "0 0 6px" }}><b>PFM:</b> 0.8–2.0 mm porcelain space over a 0.2–0.3 mm metal coping; keep occlusal contacts off the metal–porcelain junction.</p>}
+        {crown === "emax" && <p style={{ margin: "0 0 6px" }}><b>e.max:</b> bonded — HF-etch (5% · 20 s) + silane + resin cement; low-translucency block for crowns.</p>}
+        {(crown === "metal" || crown === "zirconia") && <p style={{ margin: "0 0 6px" }}><b>{fig.label}:</b> monolithic, chamfer margin — the most conservative reduction.</p>}
+        <p style={{ margin: 0, color: "var(--muted)" }}>
+          {isAnt
+            ? "Anterior: two-plane labial reduction, reduce the lingual concavity + cingulum; finish line follows the gingival contour."
+            : `Posterior: functional cusp bevel on the ${funcCusp} cusp (${arch === "max" ? "maxillary = palatal" : "mandibular = buccal"} functional cusp).`}
+        </p>
       </div>
     </div>
   );
