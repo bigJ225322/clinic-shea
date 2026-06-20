@@ -11063,14 +11063,14 @@
                   "Seat the framework. **Both margins must close simultaneously** (check with an explorer) with a **passive fit and no rocking**.",
                   "If the margins aren't closed or it rocks, find the binding spots with **Fit Checker** — lubricate, fill the intaglio, seat, remove at ~1 min, relieve wherever the silicone is thin or perforated, and repeat until you get a thin uniform layer with no perforations.",
                   "**Radiograph** to confirm complete seating and closed margins.",
-                  "Check **interocclusal clearance** — you need **0.5–0.8 mm** of space for the porcelain. Adjust the metal with an aluminum-oxide stone (preferred) or a fine diamond; use calipers to keep at least 0.2–0.3 mm of metal, work in one direction, and use **no diamond-coated burs** on the alloy (particles embed and bubble the ceramic during firing).",
+                  "Check **interocclusal clearance** — you need **0.8–2.0 mm** of space for the porcelain (0.8 mm minimum, 2.0 mm maximum). Adjust the metal with an aluminum-oxide stone (preferred) or a fine diamond; use calipers to keep at least 0.2–0.3 mm of metal, work in one direction, and use **no diamond-coated burs** on the alloy (particles embed and bubble the ceramic during firing).",
                   "Verify the mounting with a check-bite (PVS or resin) if needed."
                 ]
               },
               {
                 "kind": "troubleshoot",
                 "title": "If it still rocks — section and solder",
-                "body": "A framework that rocks or won't seat passively after adjustment gets **sectioned** (about the thickness of a business card), the segments tried in individually, and — if each abutment fits — re-joined intraorally with a **resin index**, then returned to the lab to **solder** (joining the segments below 450 °C with added metal). Decision tree: if the margins are closed on the cast but not in the mouth → start over with a new impression; if they're open on the cast too → remake the framework."
+                "body": "A framework that rocks or won't seat passively after adjustment gets **sectioned** (about the thickness of a business card), the segments tried in individually, and — if each abutment fits — re-joined intraorally with a **resin index**, then returned to the lab to **solder** (re-joining the segments with an added lower-melting filler metal). Decision tree: if the margins are closed on the cast but not in the mouth → start over with a new impression; if they're open on the cast too → remake the framework."
               },
               {
                 "kind": "section",

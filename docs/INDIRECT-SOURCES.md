@@ -241,3 +241,29 @@ The same-day pass cut "~3 mm root-form emergence" calling the Vlagos *Mounting &
 **Note — orphaned ind-ch5 / ind-ch15:** carry the connector-height-cube claim too (ind-ch5 "connector min 2 mm height, height>width"; ind-ch15 "cube of pontic occlusogingival thickness"). These are **NOT live in the Maps tab** (older Guides-browser set) and the height³ framing is *correct* connector-stiffness mechanics — left as-is, not cut. (ind-ch5's "2 mm connector height min" figure worth a check if ever un-orphaned.)
 
 **Net:** bridge-pfm — **brc-pontic fully verbatim (s23–29); brc-prep taper verbatim (s4); brc-abutment CORRECTED** (restored Ante's Law s18 + span-cube s20 that a prior pass wrongly cut). 1 fix deployed, 1 ⚠ (the ~50%/5° retention figure), FLAG #2 resolved. The prior audit's error is exactly why reading the primary slides matters.
+
+> **Source key (bridge procedural):** Metal Framework lec = `04 …/Metal Framework Fabrication & Try-in.pdf` (34 sl); Porcelain lec = `04 …/PFM Porcelain Application and Final Contouring.pdf`; provisional/delivery inherit crownc-* sources (Bis-Acryl lec + Swade).
+
+## brc-framework — verified + 2 FIXES (Metal Framework Try-in lec)
+- ✅✅ "keep at least 0.2–0.3 mm of metal" — **s13** (verbatim: "adequate thickness of metal (0.2-0.3mm minimum)"; diagram "cast metal substructure 0.2-0.3 mm").
+- 🔧 **FIX (deployed):** porcelain interocclusal space — map said "0.5–0.8 mm"; **s13 says "0.8mm minimum, 2.0mm maximum"** (diagram "fused porcelain 1.2 mm"). Corrected to **0.8–2.0 mm**.
+- 🔧 **FIX (deployed):** "solder … below 450 °C" — metallurgically backwards (dental framework "soldering" is technically brazing, done **above** 450 °C, ~650–900 °C) and not in the lecture. Cut the wrong temperature → "re-joining the segments with an added lower-melting filler metal."
+- ✅ **Connector height-cube IS sourced here:** **s14** ("Design of connectors extremely critical for strength"; "Connector height more important than width"; "Bending varies inversely with the cube of the occlusal-gingival thickness of pontic"). → confirms BOTH laws are real UIC teaching: span-cube (FPD s20) + connector-height-cube (Framework s14). Validates the brc-abutment fix carrying both.
+- ✅ "Confirm fit before porcelain; passive fit, no rocking; Fit-Checker silicone; radiograph; no diamond burs on the alloy" — **s21–24** + standard.
+- ⚠ "section ~business-card thickness → re-join with resin index → solder; decision tree (closed on cast not mouth → new impression; open on cast too → remake)" — standard framework troubleshooting; sectioning not on the grepped slides → ⓘ.
+
+## brc-bisque — verified (PFM Porcelain Application lec)
+- ✅ Adjustment **sequence** (interproximal contacts → margins → … → contours → shade) — **s13** ("1. Interproximal contacts, 2. Margins, 5. Contours") + s2/s15 ("bisque bake = unglazed and unstained"); "initially over-contoured, final contour with diamond burs" — s10/s12.
+- ⓘ "over-firing → devitrification (crystalline, ↑opacity + thermal expansion)" — correct standard porcelain science, not on the grepped slides.
+- ⚠ "tooth-ledge underextension < 0.25 mm acceptable; open margin → remake" — margin criteria (eval-form territory), not pinned → flagged, kept.
+
+## brc-provisional — verified (= crownc-provisional sources + bridge specifics)
+- ✅ Fabrication specifics inherit crownc-provisional's verified sources (45 s seat = Bis-Acryl s17; firm-elastic s19; pea-size s14; 6–7 min trim s21; flowable repair 20 s+20–40 s s32; Shimstock 8 µm/Accufilm s33; Gluma-except-RCT + TempBond/UltraTemp 80–90% = Swade 2915–2937). Bridge-specific: "one connected unit," "modified ridge-lap pontic," "both abutments no rocking" — standard. Jet Set-4 vs Integrity both lecture-listed (2026-06-13 neutralized). ✅
+
+## brc-delivery — verified (= crownc-delivery Swade + bridge specifics + codes)
+- ✅ Cavicide+CHX 5 min, Fit-Checker, scaler-not-bur, ½–⅔ fill, RelyX/FujiCem → **Swade** (= crownc-delivery, verbatim). Bridge-specific: "all retainers seat simultaneously, no rocking," "polish metal collar brown→green points," "clean under the pontic (floss threader/proxabrush)" — standard.
+- ✅ Codes **D6750A/B/C** (PFM retainer crown, high noble, ×2 abutments) + **D6240A/B/C** (PFM pontic, high noble) — correct CDT bridge codes.
+
+## brc-recement / brc-removal — standard (= crownc-recement/removal); no fabricated specifics.
+
+**Net (bridge procedural):** brc-framework — **2 fixes deployed** (porcelain space → 0.8–2.0 mm; cut the wrong "below 450 °C" solder temp); metal 0.2–0.3 mm + connector height-cube verbatim (s13/s14). brc-bisque sequence verified (s13). brc-provisional/delivery inherit verified crown sources + correct D6750/D6240 codes. ✅ **BRIDGE-PFM PATHWAY COMPLETE.**
