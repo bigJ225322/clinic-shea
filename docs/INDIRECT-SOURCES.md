@@ -196,3 +196,13 @@ The same-day pass cut "~3 mm root-form emergence" calling the Vlagos *Mounting &
 - ✅ "Codes: D2950 core build-up (incl. pins); D2954 when you place a prefabricated post + core." — CDT correct (D2950 = core buildup incl. pins; D2954 = prefab post & core in addition to crown).
 
 **Net:** crownc-foundation — **build-up block verbatim to Swade; post block verbatim to Alapati + Restoring-Endo.** 2 ⚠ flags (the "final increment 60 s" not in Swade; the ParaPost fiber-vs-metal model) → SOURCE-MAP FLAGS #5/#6, neither cut (one plausible, one concept-correct). No fabrications.
+
+## crownc-recement — per-sentence (standard prosth knowledge; cements/code pinned)
+> Swade has no dedicated crown re-cement/debond decision section (its recement lines 2920/3000 are *provisional* recement). This chapter is general prosthodontic decision-making — honest about that.
+- ⓘ "Three-way check before any cement: crown intact? prep intact (no recurrent caries, adequate ferrule)? intaglio cleanable? Any 'no' → remake, not re-cement." — standard re-cement-vs-remake decision (consistent with the ferrule restorability principle, Restoring-Endo s35/s17). Not a single-slide claim; no fabricated specifics.
+- ✅/ⓘ "Clean the intaglio thoroughly — the #1 cause of a second debond; remove all old cement; cementing onto a contaminated intaglio fails." — Swade's delivery cleaning principle (3111 "remove all excess cement with a scaler") applied to the intaglio; the "#1 cause" framing is standard, not slide-quoted.
+- ✅ "Re-cement with RelyX (if retention doubt) or FujiCem; remove excess, verify margins/contacts/occlusion." — same cements as delivery, **Swade 3107** ("RelyX cement or FujiCem cement").
+- ✅ "Code D2920 (re-cement or re-bond crown)." — correct CDT (D2920 = recement/rebond indirect restoration). ⓘ not explicitly in Swade, but a valid real code.
+- ⓘ "A crown that keeps coming off usually has short/over-tapered walls or a lost cement seal — re-cement buys time; the real fix is a remake with better retention form." — standard retention-form principle (taper/wall-height = Principles of Tooth Prep); sound, not slide-quoted.
+
+**Net:** crownc-recement — **no fabrications, nothing to cut.** It's general prosthodontic decision-knowledge (re-cement vs remake), honestly marked ⓘ; the two concrete specifics (RelyX/FujiCem cements, D2920 code) are both correct. ✅ CROWN-PFM PATHWAY COMPLETE (impression/provisional/delivery/foundation/recement + prep done earlier).
