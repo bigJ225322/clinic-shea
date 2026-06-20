@@ -267,3 +267,39 @@ The same-day pass cut "~3 mm root-form emergence" calling the Vlagos *Mounting &
 ## brc-recement / brc-removal — standard (= crownc-recement/removal); no fabricated specifics.
 
 **Net (bridge procedural):** brc-framework — **2 fixes deployed** (porcelain space → 0.8–2.0 mm; cut the wrong "below 450 °C" solder temp); metal 0.2–0.3 mm + connector height-cube verbatim (s13/s14). brc-bisque sequence verified (s13). brc-provisional/delivery inherit verified crown sources + correct D6750/D6240 codes. ✅ **BRIDGE-PFM PATHWAY COMPLETE.**
+
+---
+
+# DIGITAL-EMAX (digc-*) — per-sentence (consolidates earlier-tick verifications)
+
+> **Source key:** Case-Selection deck = `05 …/Case Selection- Decision Tree presentation(1).pdf`; Scan-intro = `05 …/2024- Intraoral scan introduction- presentation.pdf`; Rubric = `05 …/Rubric for IOS PPC- final.pdf`; Chairside = `05 …/Chairside Materials (11).pdf`; CAD/CAM = `05 …/CAD CAM Dentistry Oveview- 2024.pdf`; Ant-Delivery = `05 …/Anterior Crown Delivery.pdf`; All-Ceramic = `05 …/All Ceramic Crown Prep Step-by-step Guide.pdf`; reductions also Swade p.114.
+
+## digc-selection
+- ✅ "Digital e.max = the esthetic route (most anterior crowns, metal-free); PFM stays conventional when strength is priority; material = lithium disilicate (e.max CAD), milled + bonded." — Case-Selection deck + CAD/CAM (lithium disilicate) + Chairside s2.
+- ✅✅ "any prep allowing **1.2–1.5 mm** of material" — **Chairside s21** ("1.2–1.5 of tooth reduction") + CAD/CAM ("1.2mm"). Verbatim.
+- ✅ "Subgingival margins workable as long as you retract + capture **2–3 mm of gingiva** around the margin." — Scan-intro s18/21/28 (this REPLACED the fabricated "~17 mm depth" — FIXED earlier).
+- ⓘ "Contraindications: surveyed crowns, rest seats, lower anterior (too thin for 1.2–1.5), >2 adjacent units, can't control moisture." — Case-Selection deck (contraindications) + standard e.max span limit.
+- ✅✅ "milled in a pre-crystallized 'blue' block, crystallized later to full strength + final shade; crowns use low-translucency blocks, high-translucency for inlays/onlays." — **Chairside s18–19** (blue block 130±30 → crystallized 360±60 MPa) + s22 (HT/LT/MT) + s18 block shown "LT A1."
+
+## digc-scan
+- ✅ "Intraoral scan (TRIOS) instead of PVS; provisional made FIRST; scan prep/opposing/bite → UIC Dental Lab." — Scan-intro deck (workflow).
+- ✅ "Fabricate Integrity provisional before scanning; pack two cords (smaller bottom no-tail; larger top ≥size 1 ideally size 2; half in sulcus, tail)." — Scan-intro cord slides + crownc-impression cord technique (Marcano s10–15).
+- ✅✅ "keep the count **under 2,000 images** (2,000–3,000 borderline, >3,000 over the limit)." — **Rubric criterion 14** (this REPLACED the fabricated "~1000/2000 absolute max" in digc-scan + ind-ch28 — FIXED earlier).
+- ✅ "Lock/Trim/remove top cord/re-scan the prep (fills the finish line the cord hid); turn off colors to check margin; confirm contacts + clearance; mark tooth; scan occlusion." — Scan-intro deck (cord trick + analyze slides).
+- ✅ "Cement provisional (Gluma except RCT), remove cords. Codes DD2740A (prep) + DD2740B (scan & design)." — Scan-intro deck + Swade provisional cementation.
+
+## digc-prep — ✅ (reductions verified earlier)
+- e.max axial **1.25–1.5**, occlusal/incisal **1.5–2.0**, **deep chamfer 1.0–1.25**, 6° taper, supragingival ~0.5 mm → **Swade p.58/p.114** + **All-Ceramic deck s2** + **Chairside s21** (cross-verified across 5 docs). The original "1.0 axial / 0.5–1.0 chamfer / 2.0 zirconia" drift was the first fix of this whole audit.
+
+## digc-provisional — ✅ = crownc-provisional (Integrity, Gluma-except-RCT, TempBond) — Bis-Acryl lec + Swade 2915–2937.
+
+## digc-delivery
+- ⚠ FLAG "comes back milled but **pre-crystallized (soft)** … crystallize in-house (~25 min)" — material facts SOURCED (Chairside s18–19: milled blue → fired 15–25 min); but **Ant-Delivery s6 says "you will receive a CRYSTALLIZED restoration."** Workflow-ambiguous (monolithic in-house-crystallize vs lab-crystallized + characterize/glaze) → **SOURCE-MAP FLAG #1**, left for Jake.
+- ✅ "if it won't seat, adjust the PREP not the crown margins; remove sprue holding the restoration; Isodry; bitewing to confirm seating." — **Ant-Delivery s4/s7/s9/s10** ("DO NOT ADJUST MARGINS… adjust preparation first"; "X-ray to verify seating"; sprue caution).
+- ✅ "Crystallize ~25 min." — **Chairside s19** ("fired 15–25 min").
+- ⚠ **Bond protocol** "Ivoclean 20 s → IPS Ceramic Etching Gel 5% HF 20 s → Clearfil Ceramic Primer 60 s → Panavia ED Primer 30 s → Panavia paste → light-cure 20 s" — **NO UIC digital deck contains this sequence** (searched all of folder 05). Manufacturer-IFU standard: Ivoclean 20 s ✓, 5% HF on lithium disilicate 20 s ✓ (Ivoclar IFU), Panavia ED Primer 30 s ✓ (Kuraray IFU); **Clearfil Ceramic Primer "60 s" is off-IFU** (IFU = apply + dry, no 60 s hold) → **NEW FLAG #7 for Jake**. Kept (the bond is real + necessary), durations carried as IFU-standard.
+- ✅ "Code DD2740C." — Scan/delivery codes.
+
+## digc-foundation / digc-recement / digc-removal — ✅ verified clean earlier (codes D2950/D2954/D2920 correct; no fabricated specifics).
+
+**Net (digital-emax):** ✅ **DIGITAL-EMAX PATHWAY COMPLETE** at per-sentence granularity. 3 fixes shipped earlier (occlusal "1.5/1.0" fabrication, IOS image-count ×2, "~17 mm depth"); reductions cross-verified across 5 docs; 2 flags open for Jake (crystallization location #1; Clearfil 60 s #7). The Ivoclean/HF/Panavia bond sequence has no UIC deck source — carried as manufacturer-IFU.
