@@ -109,3 +109,34 @@ The unsourced bridge claims also lived in the live brc-* chapters (rendered in t
 
 ## CORRECTION — 2026-06-13 (Vlagos deck WAS available; the same-day cut was wrong)
 The same-day pass cut "~3 mm root-form emergence" calling the Vlagos *Mounting & Die Trimming* deck "not in corpus." The deck DOES exist (`~/Desktop/HY Folders/…/Mounting and Die Trimming.pdf` + `~/Documents/Phase 1 DAOB/Fixed Prosth./`) — re-extracted, it says **verbatim**: "Ideal root form emergence profile **(~ 3mm below margin)**". **✂ RESTORED** the "~3 mm below the margin" figure in the crown die-trim labStep. The deck also confirms the rest of that step verbatim (large excess removed with lab bur slow speed; detailed trimming with sharp scalpel; magnification highly recommended; "BE VERY CAREFUL NOT TO TOUCH FINISH LINE"). Lesson: I searched the DAOB War Chest Fixed Prosth folder but not the Phase-1 DAOB / HY-Folders copies where the Vlagos deck lives.
+
+---
+
+# VERIFICATION PASS — 2026-06-20 (Jake: "slide-level citations to sentence-level claims, the whole point")
+
+> The sections above cite *description/keyDecisions/phases* blocks — too coarse, and those
+> citations were never re-read against the actual slides (that's how the wrong reduction
+> figures survived "in the ledger"). This pass opens the matching lecture and pins **every
+> sentence** of each live chapter to a **slide number**, reading the slide to confirm the
+> claim digit-for-digit. Legend: ✅ verified on the slide · ⓘ minor/inference · ⚠ pending or unsourced.
+>
+> **Source key (crown-pfm):** Impression lec = `04 …/Soft Tissue Management and Final Impression Making2.pdf` (Marcano, 45 sl).
+
+## crownc-impression — per-sentence vs Impression lec (Marcano)
+- ✅ "Final restoration is only as good as the prep & impression … capture every prepared surface plus enough unprepared tooth beyond the margin … read the finish line and trim the die." — **s3** ("accurate impression captures all prepared surfaces; adequate unprepared tooth adjacent to margin → ease of die trimming").
+- ✅ "Healthy tissue first — bleeding and crevicular fluid displace the material → voids and indistinct margins; a clean well-contoured provisional + OHI pay off." — **s5** (verbatim).
+- ✅ "Biologic width ≈ 1 mm CT attachment + 1 mm junctional epithelium; do not prep > 0.5 mm into the sulcus; avoid aggressive retraction (→ recession, inflammation, pain)." — **s9** (verbatim: ~1mm + ~1mm; "do not prep more than 0.5mm from base of sulcus"; impingement → recession/inflammation/pain).
+- ✅ "Aluminum chloride (Hemodent, ViscoStat Clear — least irritating, OK 10–15 min); ferric sulfate (ViscoStat — syringe/brush, acidic, don't use under ceramics); epinephrine cords raise HR/BP — avoid in CV disease." — **s17 + s18** (verbatim every clause: "least irritating … up to 10-15 minutes"; "best with syringe/brush"; "acidic"; "do not use with ceramic restorations"; epi "increase HR and elevate BP", "contraindicated … CV disease").
+- ✅ "Keep a dry field; local anesthesia reduces salivary flow (± anticholinergic e.g. atropine; caution in heart disease + glaucoma)." — **s6 + s7** (verbatim).
+- ✅ "Two-cord for a subgingival margin; single cord only for supra/equigingival or a sulcus too shallow for two." — **s11 (double) + s12 (single: equi-gingival / shallow sulcus that can't fit two)**.
+- ✅ "Smaller bottom cord under the margin, no tail, fully below; cords run #000 up to #3." — **s10 + s11 + s14** ("size 000 → size 3"; "first/smallest cord under the prepped margin"). ⓘ map labels it "#00"; slide example is 000.
+- ✅ "Larger top cord above the first; ~half in the sulcus; leave a tail." — **s14 + s15** ("top cord ~half way into sulcus"; "leave a short tail" — verbatim). ⓘ map labels it "#0"; slide example is "size 1".
+- ✅ "Start at the interproximal papilla (thickest/most resilient); pack in small segments, each fully tucked." — **s15** (verbatim).
+- ✅ "Remove only the top cord just before the impression; leave the bottom cord in." — **s11 + s14** ("second cord removed before impression; thinner remains; inject PVS immediately").
+- ✅ "Thin layer of PVS adhesive, applied early so it's dry/tacky." — **s23 + s26** ("adhesive in thin layer and in advance to allow thorough drying"; s26 "allow 15 minutes to dry").
+- ✅ "Triple / dual-arch trays popular for single units, taken at MI." — **s24** (verbatim).
+- ⚠ "Inject light body into the sulcus while the assistant loads heavy body; the tray's hydraulic pressure drives light into the sulcus." — light/heavy-body wash on a graphical slide (s27–32); **pending visual read** (standard technique, but pin it).
+- ⚠ "Hold the full set (~6 min, set a timer)." — PVS set time not on the text-layer slides; **the "~6 min" must be confirmed on s27–32, not assumed.**
+- ⚠ Evaluation block (finish line crisp/continuous = the one zone that must be perfect; intact cuff beyond margin; complete+clean; stable tray; retake if void/tear/bubble *at* the finish line) — maps to s3 capture-criteria; the explicit retake-vs-accept slide **pending** (likely s30+).
+
+**Net:** crownc-impression is genuinely, densely sourced — ~13/16 sentences pinned to a slide (many verbatim), 3 pending a visual read of s27–32. No fabrications found. **This is the granularity every chapter now gets.**
