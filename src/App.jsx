@@ -21019,6 +21019,121 @@ function ToothMouldNoMatchHint({ requested, suggestions }) {
 // / width / cusp angle inputs. Bottom half: computed maxillary mould +
 // suggested mandibular + recommended posterior, with an optional callback
 // to inject the selection into a parent form (lab Rx, note builder, etc).
+// ── Crown-prep reduction guide ───────────────────────────────────────────
+// Parametrized from the Phase-1-verified reduction figures
+// (docs/REDUCTION-GUIDE-PLAN.md). The drawn offsets scale with the numbers so
+// the picture always agrees with the labels. Posterior buccolingual + occlusal
+// views for now; anterior geometry + proximal view + tooth picker come next.
+const RG_MM = 13; // px per mm
+const REDUCTION_FIGS = {
+  metal:    { label: "Metal",    sub: "full cast gold",     axial: [1.0, 1.25], occl: [1.25, 1.5], chamfer: [0.5, 0.8],  margin: "chamfer" },
+  zirconia: { label: "Zirconia", sub: "monolithic",          axial: [1.0, 1.25], occl: [1.25, 1.5], chamfer: [0.5, 0.8],  margin: "chamfer" },
+  pfm:      { label: "PFM",       sub: "porcelain-fused",     axial: [1.25, 1.5], occl: [1.5, 2.0],  chamfer: [1.0, 1.25], margin: "deep chamfer" },
+  emax:     { label: "e.max",     sub: "lithium disilicate",  axial: [1.25, 1.5], occl: [1.5, 2.0],  chamfer: [1.0, 1.25], margin: "deep chamfer" },
+};
+const RG_ORDER = ["metal", "zirconia", "pfm", "emax"];
+const rgMid = (a) => (a[0] + a[1]) / 2;
+const rgRange = (a) => `${a[0]}–${a[1]}`;
+
+function CrownReductionGuide({ compact = false }) {
+  const [crown, setCrown] = useState("pfm");
+  const [view, setView] = useState("bl");
+  const fig = REDUCTION_FIGS[crown];
+  const ax = rgMid(fig.axial) * RG_MM;
+  const oc = rgMid(fig.occl) * RG_MM;
+  const ch = Math.max(rgMid(fig.chamfer) * RG_MM, 8);
+
+  // Buccolingual section geometry — uniform axial inset (ax) on BOTH walls,
+  // anatomic occlusal dropped by oc, deep-chamfer margin of depth ch.
+  const mY = 226, occBase = 70;
+  const bMx = 56 + ax, lMx = 288 - ax;          // prepped margins (uniform inset)
+  const bWt = bMx + 7, lWt = lMx - 7;           // wall tops (6–10° convergence)
+  const occY = occBase + oc;                    // reduced cusp height
+  const grY = 116 + oc * 0.7;                   // reduced central groove
+  const prepped =
+    `M ${bMx} ${mY} L ${bWt} ${occY + 4} ` +
+    `Q ${bWt + 8} ${occY - 8} ${bWt + 22} ${occY + 2} ` +   // buccal cusp + functional bevel
+    `L 172 ${grY} ` +                                        // central groove
+    `Q ${lWt - 14} ${occY - 6} ${lWt} ${occY + 4} ` +        // lingual cusp
+    `L ${lMx} ${mY} Z`;
+  const ghost =
+    `M 56 ${mY} L 70 ${occBase} Q 120 ${occBase + 14} 172 116 ` +
+    `Q 224 ${occBase + 12} 274 ${occBase + 4} L 288 ${mY}`;
+  // functional cusp bevel facet (buccal = functional cusp on a mandibular molar)
+  const bevel = `M ${bWt} ${occY + 4} Q ${bWt + 8} ${occY - 8} ${bWt + 22} ${occY + 2} L ${bWt + 14} ${occY + 12} Q ${bWt + 4} ${occY + 10} ${bWt} ${occY + 4} Z`;
+
+  const seg = (k) => ({
+    padding: compact ? "5px 9px" : "6px 12px", fontSize: compact ? "0.72rem" : "0.8rem",
+    fontWeight: 600, cursor: "pointer", border: "1px solid var(--rule)",
+    background: (k === crown || k === view) ? "var(--ink)" : "transparent",
+    color: (k === crown || k === view) ? "var(--paper, #fff)" : "var(--ink)",
+    borderRadius: 7,
+  });
+
+  return (
+    <div style={{ border: "1px solid var(--rule)", borderRadius: 12, padding: compact ? 12 : 16, background: "var(--card, #faf5ec)" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
+        {RG_ORDER.map((k) => (
+          <button key={k} onClick={() => setCrown(k)} style={seg(k)}>{REDUCTION_FIGS[k].label}</button>
+        ))}
+      </div>
+      <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
+        <button onClick={() => setView("bl")} style={seg("bl")}>Buccolingual section</button>
+        <button onClick={() => setView("occ")} style={seg("occ")}>Occlusal view</button>
+      </div>
+
+      {view === "bl" && (
+        <svg viewBox="0 0 360 300" width="100%" style={{ maxWidth: 480, display: "block", margin: "0 auto" }} fontFamily="inherit">
+          <text x="18" y="250" fontSize="13" fontWeight="700" fill="var(--ink)">B</text>
+          <text x="330" y="250" fontSize="13" fontWeight="700" fill="var(--ink)">L</text>
+          {/* gingiva + root */}
+          <path d="M30 228 Q90 216 150 222 L210 222 Q270 216 330 228 L330 246 Q180 238 30 246 Z" fill="var(--gum, #d99aa0)" opacity="0.5" />
+          <path d="M140 226 Q140 280 180 296 Q220 280 220 226 Z" fill="var(--card, #f3ead9)" stroke="var(--ink)" strokeWidth="2" />
+          {/* original (ghost) */}
+          <path d={ghost} fill="none" stroke="var(--muted, #b08a93)" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.9" />
+          {/* prepped tooth */}
+          <path d={prepped} fill="var(--card, #f3ead9)" stroke="var(--ink)" strokeWidth="2.4" strokeLinejoin="round" />
+          <path d={bevel} fill="var(--good, #0d8f8f)" opacity="0.2" />
+          {/* chamfer margins both sides (uniform) */}
+          <path d={`M ${bMx} ${mY} q ${-ch} 1 ${-ch} 9`} fill="none" stroke="var(--ink)" strokeWidth="2.4" />
+          <path d={`M ${lMx} ${mY} q ${ch} 1 ${ch} 9`} fill="none" stroke="var(--ink)" strokeWidth="2.4" />
+          {/* dimension callouts */}
+          <g stroke="var(--good, #0d8f8f)" strokeWidth="1.4" fill="none">
+            <line x1="172" y1={occBase + 8} x2="172" y2={grY} />
+            <line x1="56" y1="170" x2={bMx} y2="170" />
+            <line x1={lMx} y1="170" x2="288" y2="170" />
+          </g>
+          <text x="176" y={occBase + 26} fontSize="12.5" fontWeight="700" fill="var(--ink)">occl {rgRange(fig.occl)}</text>
+          <text x="14" y="186" fontSize="12" fontWeight="700" fill="var(--ink)">axial {rgRange(fig.axial)}</text>
+          <text x="246" y="186" fontSize="12" fontWeight="700" fill="var(--ink)">axial {rgRange(fig.axial)}</text>
+          <text x="200" y="288" fontSize="12" fontWeight="700" fill="var(--ink)">{fig.margin} {rgRange(fig.chamfer)} mm · 6–10° taper</text>
+        </svg>
+      )}
+
+      {view === "occ" && (
+        <svg viewBox="0 0 300 300" width="100%" style={{ maxWidth: 360, display: "block", margin: "0 auto" }} fontFamily="inherit">
+          <path d="M40 150 Q150 110 260 150 Q300 250 260 350 Q150 380 40 350 Q20 250 40 150 Z" transform="scale(1,0.78) translate(0,18)" fill="none" stroke="var(--muted,#b08a93)" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.85" />
+          <path d="M58 160 Q150 130 242 160 Q276 250 242 326 Q150 352 58 326 Q26 250 58 160 Z" transform="scale(1,0.78) translate(0,18)" fill="var(--card,#f3ead9)" stroke="var(--ink)" strokeWidth="2.4" strokeLinejoin="round" />
+          {/* central groove + cusp ridges = anatomy, not flat */}
+          <g stroke="var(--ink)" fill="none">
+            <path d="M70 195 Q150 178 230 195 Q150 212 70 195 Z" strokeWidth="1.4" opacity="0.6" />
+            <path d="M150 150 L150 195 M150 195 L150 250" strokeWidth="1.1" opacity="0.4" />
+            <path d="M78 172 Q120 184 78 196 M222 172 Q180 184 222 196 M78 218 Q120 206 78 194 M222 218 Q180 206 222 194" strokeWidth="1" opacity="0.35" />
+          </g>
+          <path d="M58 160 Q26 250 58 326 Q90 250 58 160 Z" transform="scale(1,0.78) translate(0,18)" fill="var(--good,#0d8f8f)" opacity="0.16" />
+          <text x="20" y="250" fontSize="12" fontWeight="700" fill="var(--ink)">B</text>
+          <text x="262" y="250" fontSize="12" fontWeight="700" fill="var(--ink)">L</text>
+          <text x="150" y="292" fontSize="11.5" fill="var(--muted,#8a6a72)" textAnchor="middle">cusp inclines + central groove · margin = {fig.margin}</text>
+        </svg>
+      )}
+
+      <div style={{ marginTop: 10, fontSize: compact ? "0.78rem" : "0.85rem", color: "var(--ink)", lineHeight: 1.55 }}>
+        <strong>{fig.label}</strong> <span style={{ color: "var(--muted)" }}>({fig.sub})</span> — axial <b>{rgRange(fig.axial)}</b>, occlusal/incisal <b>{rgRange(fig.occl)}</b>, {fig.margin} <b>{rgRange(fig.chamfer)} mm</b>; uniform axial reduction all around, functional cusp bevel on the functional cusp, finish line ~0.5&nbsp;mm supragingival, 6–10° total taper.
+      </div>
+    </div>
+  );
+}
+
 function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) {
  // Collapsed by default in all integration points (lab Rx, note builder,
  // steps). The picker is a chair-side reference, not the primary form
@@ -25227,6 +25342,7 @@ const PATHWAYS = [
  {
  label: "Crown prep + provisional + final impression",
  count: 3,
+ widget: "crownReductionGuide",
  detail: "Beforehand you need a diagnostic cast (poured from a diagnostic alginate impression). If the tooth is broken down or mis-shaped, wax it back to its ideal shape on the cast first; then make a putty matrix off it before the patient is seated — that putty is what you fabricate the provisional in, so the provisional comes out the shape you want.\n\nThe appointment, in order: select the shade → crown prep (PFM reductions, deep chamfer/shoulder all around) → fabricate the Integrity provisional in the putty (do not cement yet) → pack two cords (#00 under the margin, #0 above) → take the final PVS impression (light + heavy body) → cement the provisional (Gluma first, except RCT teeth) → send the impression + lab script. Anesthetize as needed.",
  },
  {
@@ -31342,6 +31458,11 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  {phase.widget === "mouldSelector" && (
  <div style={{ marginBottom: "24px" }}>
  <ToothMouldSelector compact />
+ </div>
+ )}
+ {phase.widget === "crownReductionGuide" && (
+ <div style={{ marginBottom: "24px" }}>
+ <CrownReductionGuide compact />
  </div>
  )}
  {/* If the phase carries its own structured detail (used when the
