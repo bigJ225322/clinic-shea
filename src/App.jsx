@@ -21038,13 +21038,15 @@ const rgRange = (a) => `${a[0]}–${a[1]}`;
 function CrownReductionGuide({ compact = false }) {
   const [crown, setCrown] = useState("pfm");
   const [view, setView] = useState("bl");
+  const [region, setRegion] = useState("post");
+  const isAnt = region === "ant";
   const fig = REDUCTION_FIGS[crown];
   const ax = rgMid(fig.axial) * RG_MM;
   const oc = rgMid(fig.occl) * RG_MM;
   const ch = Math.max(rgMid(fig.chamfer) * RG_MM, 8);
 
-  // Buccolingual section geometry — uniform axial inset (ax) on BOTH walls,
-  // anatomic occlusal dropped by oc, deep-chamfer margin of depth ch.
+  // POSTERIOR buccolingual — uniform axial inset (ax) on BOTH walls, anatomic
+  // occlusal dropped by oc, deep-chamfer margin of depth ch, functional cusp bevel.
   const mY = 226, occBase = 70;
   const bMx = 56 + ax, lMx = 288 - ax;          // prepped margins (uniform inset)
   const bWt = bMx + 7, lWt = lMx - 7;           // wall tops (6–10° convergence)
@@ -21059,14 +21061,29 @@ function CrownReductionGuide({ compact = false }) {
   const ghost =
     `M 56 ${mY} L 70 ${occBase} Q 120 ${occBase + 14} 172 116 ` +
     `Q 224 ${occBase + 12} 274 ${occBase + 4} L 288 ${mY}`;
-  // functional cusp bevel facet (buccal = functional cusp on a mandibular molar)
   const bevel = `M ${bWt} ${occY + 4} Q ${bWt + 8} ${occY - 8} ${bWt + 22} ${occY + 2} L ${bWt + 14} ${occY + 12} Q ${bWt + 4} ${occY + 10} ${bWt} ${occY + 4} Z`;
+
+  // ANTERIOR labiolingual (incisor): two-plane labial reduction, lingual concavity,
+  // incisal-edge reduction (= the occl figure), cingulum — NO cusps, NO cusp bevel.
+  const aIncY = 66 + oc;
+  const aLaMx = 110 + ax, aLiMx = 250 - ax;     // labial / lingual prepped margins (uniform)
+  const aPrepped =
+    `M ${aLaMx} ${mY} L ${aLaMx} 150 L ${aLaMx + 8} ${aIncY + 14} ` +  // labial: cervical + incisal planes
+    `L 176 ${aIncY} ` +                                                 // reduced incisal edge
+    `Q 210 ${aIncY + 28} ${aLiMx} 150 L ${aLiMx} ${mY} Z`;              // lingual concavity reduced + wall
+  const aGhost =
+    `M 104 ${mY} Q 94 150 168 66 L 184 66 Q 244 110 256 170 Q 260 200 256 ${mY}`;
+
+  // pick the active buccolingual paths + margin x's by region
+  const blPrepped = isAnt ? aPrepped : prepped;
+  const blGhost = isAnt ? aGhost : ghost;
+  const blBMx = isAnt ? aLaMx : bMx, blLMx = isAnt ? aLiMx : lMx;
 
   const seg = (k) => ({
     padding: compact ? "5px 9px" : "6px 12px", fontSize: compact ? "0.72rem" : "0.8rem",
     fontWeight: 600, cursor: "pointer", border: "1px solid var(--rule)",
-    background: (k === crown || k === view) ? "var(--ink)" : "transparent",
-    color: (k === crown || k === view) ? "var(--paper, #fff)" : "var(--ink)",
+    background: (k === crown || k === view || k === region) ? "var(--ink)" : "transparent",
+    color: (k === crown || k === view || k === region) ? "var(--paper, #fff)" : "var(--ink)",
     borderRadius: 7,
   });
 
@@ -21078,39 +21095,43 @@ function CrownReductionGuide({ compact = false }) {
         ))}
       </div>
       <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
-        <button onClick={() => setView("bl")} style={seg("bl")}>Buccolingual section</button>
-        <button onClick={() => setView("occ")} style={seg("occ")}>Occlusal view</button>
+        <button onClick={() => setRegion("post")} style={seg("post")}>Posterior</button>
+        <button onClick={() => setRegion("ant")} style={seg("ant")}>Anterior</button>
+      </div>
+      <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
+        <button onClick={() => setView("bl")} style={seg("bl")}>{isAnt ? "Labiolingual section" : "Buccolingual section"}</button>
+        {!isAnt && <button onClick={() => setView("occ")} style={seg("occ")}>Occlusal view</button>}
       </div>
 
-      {view === "bl" && (
+      {(view === "bl" || isAnt) && (
         <svg viewBox="0 0 360 300" width="100%" style={{ maxWidth: 480, display: "block", margin: "0 auto" }} fontFamily="inherit">
-          <text x="18" y="250" fontSize="13" fontWeight="700" fill="var(--ink)">B</text>
-          <text x="330" y="250" fontSize="13" fontWeight="700" fill="var(--ink)">L</text>
+          <text x="18" y="250" fontSize="13" fontWeight="700" fill="var(--ink)">{isAnt ? "La" : "B"}</text>
+          <text x="326" y="250" fontSize="13" fontWeight="700" fill="var(--ink)">{isAnt ? "Li" : "L"}</text>
           {/* gingiva + root */}
           <path d="M30 228 Q90 216 150 222 L210 222 Q270 216 330 228 L330 246 Q180 238 30 246 Z" fill="var(--gum, #d99aa0)" opacity="0.5" />
-          <path d="M140 226 Q140 280 180 296 Q220 280 220 226 Z" fill="var(--card, #f3ead9)" stroke="var(--ink)" strokeWidth="2" />
+          <path d="M150 226 Q150 282 180 296 Q210 282 210 226 Z" fill="var(--card, #f3ead9)" stroke="var(--ink)" strokeWidth="2" />
           {/* original (ghost) */}
-          <path d={ghost} fill="none" stroke="var(--muted, #b08a93)" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.9" />
+          <path d={blGhost} fill="none" stroke="var(--muted, #b08a93)" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.9" />
           {/* prepped tooth */}
-          <path d={prepped} fill="var(--card, #f3ead9)" stroke="var(--ink)" strokeWidth="2.4" strokeLinejoin="round" />
-          <path d={bevel} fill="var(--good, #0d8f8f)" opacity="0.2" />
+          <path d={blPrepped} fill="var(--card, #f3ead9)" stroke="var(--ink)" strokeWidth="2.4" strokeLinejoin="round" />
+          {!isAnt && <path d={bevel} fill="var(--good, #0d8f8f)" opacity="0.2" />}
           {/* chamfer margins both sides (uniform) */}
-          <path d={`M ${bMx} ${mY} q ${-ch} 1 ${-ch} 9`} fill="none" stroke="var(--ink)" strokeWidth="2.4" />
-          <path d={`M ${lMx} ${mY} q ${ch} 1 ${ch} 9`} fill="none" stroke="var(--ink)" strokeWidth="2.4" />
+          <path d={`M ${blBMx} ${mY} q ${-ch} 1 ${-ch} 9`} fill="none" stroke="var(--ink)" strokeWidth="2.4" />
+          <path d={`M ${blLMx} ${mY} q ${ch} 1 ${ch} 9`} fill="none" stroke="var(--ink)" strokeWidth="2.4" />
           {/* dimension callouts */}
           <g stroke="var(--good, #0d8f8f)" strokeWidth="1.4" fill="none">
-            <line x1="172" y1={occBase + 8} x2="172" y2={grY} />
-            <line x1="56" y1="170" x2={bMx} y2="170" />
-            <line x1={lMx} y1="170" x2="288" y2="170" />
+            <line x1="176" y1={(isAnt ? 66 : occBase) + 8} x2="176" y2={isAnt ? aIncY : grY} />
+            <line x1={isAnt ? 104 : 56} y1="178" x2={blBMx} y2="178" />
+            <line x1={blLMx} y1="178" x2={isAnt ? 256 : 288} y2="178" />
           </g>
-          <text x="176" y={occBase + 26} fontSize="12.5" fontWeight="700" fill="var(--ink)">occl {rgRange(fig.occl)}</text>
-          <text x="14" y="186" fontSize="12" fontWeight="700" fill="var(--ink)">axial {rgRange(fig.axial)}</text>
-          <text x="246" y="186" fontSize="12" fontWeight="700" fill="var(--ink)">axial {rgRange(fig.axial)}</text>
+          <text x="178" y={(isAnt ? 66 : occBase) + 26} fontSize="12.5" fontWeight="700" fill="var(--ink)">{isAnt ? "incisal" : "occl"} {rgRange(fig.occl)}</text>
+          <text x="14" y="194" fontSize="12" fontWeight="700" fill="var(--ink)">axial {rgRange(fig.axial)}</text>
+          <text x="248" y="194" fontSize="12" fontWeight="700" fill="var(--ink)">axial {rgRange(fig.axial)}</text>
           <text x="200" y="288" fontSize="12" fontWeight="700" fill="var(--ink)">{fig.margin} {rgRange(fig.chamfer)} mm · 6–10° taper</text>
         </svg>
       )}
 
-      {view === "occ" && (
+      {view === "occ" && !isAnt && (
         <svg viewBox="0 0 300 300" width="100%" style={{ maxWidth: 360, display: "block", margin: "0 auto" }} fontFamily="inherit">
           <path d="M40 150 Q150 110 260 150 Q300 250 260 350 Q150 380 40 350 Q20 250 40 150 Z" transform="scale(1,0.78) translate(0,18)" fill="none" stroke="var(--muted,#b08a93)" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.85" />
           <path d="M58 160 Q150 130 242 160 Q276 250 242 326 Q150 352 58 326 Q26 250 58 160 Z" transform="scale(1,0.78) translate(0,18)" fill="var(--card,#f3ead9)" stroke="var(--ink)" strokeWidth="2.4" strokeLinejoin="round" />
@@ -21128,7 +21149,7 @@ function CrownReductionGuide({ compact = false }) {
       )}
 
       <div style={{ marginTop: 10, fontSize: compact ? "0.78rem" : "0.85rem", color: "var(--ink)", lineHeight: 1.55 }}>
-        <strong>{fig.label}</strong> <span style={{ color: "var(--muted)" }}>({fig.sub})</span> — axial <b>{rgRange(fig.axial)}</b>, occlusal/incisal <b>{rgRange(fig.occl)}</b>, {fig.margin} <b>{rgRange(fig.chamfer)} mm</b>; uniform axial reduction all around, functional cusp bevel on the functional cusp, finish line ~0.5&nbsp;mm supragingival, 6–10° total taper.
+        <strong>{fig.label}</strong> <span style={{ color: "var(--muted)" }}>({fig.sub})</span> — axial <b>{rgRange(fig.axial)}</b>, occlusal/incisal <b>{rgRange(fig.occl)}</b>, {fig.margin} <b>{rgRange(fig.chamfer)} mm</b>; uniform axial reduction all around, {isAnt ? "two-plane labial reduction + reduced lingual concavity" : "functional cusp bevel on the functional cusp"}, finish line ~0.5&nbsp;mm supragingival, 6–10° total taper.
       </div>
     </div>
   );
