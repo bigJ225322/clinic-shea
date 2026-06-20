@@ -826,3 +826,17 @@ The chapter is a **constructed clinical differential** (11 causes ranked by freq
 - ✅✅ "**BULL rule**" for equilibration — CD source ("rule of BULL (buccal of the [upper]…)"; "Use the rule of BULL").
 - ⓘ Complaint-by-complaint differential (soreness / function / esthetic / speech / gagging → cause → fix) = standard CD post-delivery troubleshooting (Swade denture-adjustment p.94–96 + Delivery lecture). Qualitative cause→fix mappings, no fabricated numbers; adaptation timeframes ("1–2 weeks", "1 month") plausible.
 - **No fabrications, no cuts.**
+
+## cd-ch25 — "Patient pathways" (audited 2026-06-20) — navigational, CLEAN
+Reading-order / scenario-routing chapter (which chapters to read per patient type). Clinical claims that appear are standard + sourced where checked:
+- ✅✅ "2-implant mandibular overdenture = McGill Consensus first-line for resorbed lower ridges" — **CD Delivery lecture VERBATIM** ("McGill Consensus Conference 2002 - 2-implant supported overdenture should become the first choice of treatment for the edentulous [mandible]").
+- ✅ 8-appointment CCD workflow; phase 1/2/3 full-mouth sequencing; 2–4 sound canine roots for IOD; Kennedy III combo case — all standard, navigational. No fabrications.
+
+## cd-ch27 — "Overdentures" (audited 2026-06-20) — verbatim-sourced
+- ✅✅ "2-implant mandibular OD = McGill Consensus (2002) first choice" — CD Delivery lecture verbatim (as above).
+- ✅✅ "RCT on overdenture abutments → prepare abutments → extract remaining teeth (+ osteoplasty), deliver over surgical template" — **Immediate Dentures lecture VERBATIM** ("Complete Root Canal Therapy for any overdenture abutments (IOD)"; "Prepare overdenture abutments… extract remaining teeth, osteoplasty"; "endodontic evaluation if immediate overdentures are considered").
+- ✅ Sound roots (usually canines) retained for bone preservation + stability + proprioception — standard OD rationale. Honest scoping (Locator/ball/bar attachments deferred to the Implants guide). No fabrications.
+
+## cd-ch28 — "Chairside liners / tissue conditioners" (audited 2026-06-20)
+- ✅ "replace every 2–4 weeks; conditioner used ~3 months" — **Bin Yang reline lecture** ("replacement every 3 weeks - 3 Month"); "pressure pot 20 min" — CD lecture ("pressure pot for 20 min"). Brand roles correct (Coe Comfort = tissue conditioner, Coe Soft = soft reline, GC Reline = hard reline; Visco-gel/Lynal honestly marked "general knowledge, not on clinic reference"). Nystatin for denture stomatitis ✓.
+- ⚠ **Material-property timeframes NOT in the UIC materials reference** (`denture base materials_2024.pdf` lists no Coe brands/specs) or the reline lecture: Coe Comfort "pliable 4–6 weeks", Coe Soft "1–3 months", set "90 sec–3 min", "1:1 powder:liquid", soreness resolves "24–48 h", "lab reline at 6 [months]." Manufacturer/clinical figures — hedged in the text ("per manufacturer", "check the package"), plausible, but UNSOURCED in UIC docs → **SOURCE-MAP FLAG #8**. NB: Coe Comfort "4–6 weeks pliable" looks long for a short-term conditioner (~2 wks typical). Kept (real materials, hedged); flagged rather than mass-cut.
