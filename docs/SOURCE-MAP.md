@@ -93,8 +93,8 @@ Read all `crownc-*` chapters (impression / provisional / delivery / foundation /
 - **Recement:** D2920 correct. ✓
 
 ### ⚠ FLAGS for Jake (crown-pfm)
-3. **Gluma timing inconsistency.** `crownc-provisional` = Gluma "scrubbing layer **15 s, wait 30 s**"; `crownc-foundation` = "**45 s, wait 15 s**." Only these two carry a duration; Swade just says "place sealer (Gluma)"; Kuraray IFU = 30–60 s then dry. Both land in range but disagree with each other — which is UIC-taught? Not normalized (no authoritative number to pick).
-4. **D0275 bitewing code (×4: crown / bridge / digital delivery).** Not a standard CDT code — real bitewing codes are D0270 (1) / D0272 (2) / D0274 (4) / D0277 (vertical). Used consistently 4× and the app already uses UIC-internal codes (D2750A/B/C, I9002), so likely a deliberate UIC-internal code — but confirm it isn't a typo for D0274.
+3. **Gluma timing — ✅ RESOLVED (both correct, two contexts).** `crownc-provisional`'s "15 s, wait 30 s" matches **Swade provisional-cementation (line ~2919)** verbatim; `crownc-foundation`'s "45 s, wait 15 s" matches **Swade restorative-buildup (lines 1481/1584/1685)** verbatim. Swade deliberately teaches different Gluma timings for *provisional cementation* vs *restorative desensitization* — NOT an inconsistency. No change. (Caught this before "fixing" the correct value — read Swade first.)
+4. **D0275 bitewing code — ✅ RESOLVED (real Swade code).** **Swade line 3133:** "D0275 (Bitewing N/C)" (N/C = no charge), listed with I9002 (Lab quality review, Swade 3134). Deliberate UIC/Swade code, not a typo for D0274. No change.
 
 ---
 
