@@ -80,3 +80,12 @@ Audited the live `rpdc-*` Maps chapters (guides-data) against this ledger + the 
 **Verified-sourced, kept as-is (agent flagged as "not in ledger"; they ARE in the lab docs, just never enumerated here):** all of rpdc-prep's rest-seat/guide-plane specifics — `#35 inverted cone` (cingulum), `#4/#6 round` (premolar occlusal rest), `#4/#6/#8 round` (molar), `1.5 mm marginal-ridge reduction`, `1/3 B-L width (2/3 cusp-tip to cusp-tip)`, `2/3 tooth length from marginal ridge`, premolar `1/3 M-D` / molar `≥1/4 M-D` — all **verbatim in `[5] RPD Lab_ Guide Planes & Rest Seats` + Fall 2025 Lab 3**. Solid.
 
 **Lower-priority candidates left flagged (specific but unverified this pass, mostly likely-sourced in the facebow/final-impression/delivery labs):** rpdc-facebow `42 mm` orbital reference; rpdc-records `1–2 mm` bite-reg clearance; rpdc-finalimp `0.5 mm` compound reduction + maxillary-only relief hole + `10 min` PVS adhesive dry; rpdc-delivery Bird-Beak/three-prong pliers + I-bar/Akers adjustment-plane claims + pumice/rag-wheel polishing; rpdc-followup `Prevident 5000`; rpdc-surveycrown `2.5–3.0 mm` reduction (this one IS Swade-sourced — see guides crownc/survey-crown). Not chased; none are obvious errors.
+
+## 2026-06-20 — ALL the above flagged specifics CHASED + VERIFIED VERBATIM (RPD lectures)
+Re-confirmed rpdc-prep verbatim (independent of the prior pass), then closed every lower-priority flag — all VERBATIM in the RPD lab lectures:
+- ✅✅ rpdc-facebow **"42 mm"** — "Mark **42 mm** from the patient right lateral incisor: orbital pointer points to this point."
+- ✅✅ rpdc-records **"1–2 mm"** — "**1-2 mm space** must be created between the wax rims and opposing."
+- ✅✅ rpdc-finalimp — "Reduce thickness of the border molding (**0.5mm**)"; "Place a relief hole into the **maxillary tray, but not into the** [mandibular]"; "Apply PVS adhesive: **let it dry for ten minutes**."
+- ✅✅ rpdc-followup — "Prescription toothpaste – **Prevident 5000**"; "Fluoride Varnish 1.1% NaF."
+- ✅ Codes **D5213** (max) / **D5214** (mand) cast-metal RPD — correct CDT (15× / 11× in guides-data).
+- **RPD PATHWAY VERIFIED: zero fabrications, zero fixes.** Design engine answer-key-locked (1025 tests, Design Case I/II keys); all prep + procedural specifics verbatim-sourced.

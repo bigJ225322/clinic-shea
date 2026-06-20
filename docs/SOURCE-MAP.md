@@ -108,7 +108,27 @@ Read all `crownc-*` chapters (impression / provisional / delivery / foundation /
 
 **✓ Also verified — crown-pfm (`crownc-*`):** impression / provisional / delivery / foundation / recement all read, clinically sound, no fabrications cut. 2 flags (Gluma timing, D0275 code) logged above.
 
-**▶ Next queue:**
-1. **bridge-pfm (`brc-*` / `ind-ch15`)** — pontic designs + connectors (MFT; e.max connector 16 mm² already banked) + abutment / Ante's-law / span
-2. CD pathway (`cd-ch22..28` + `cd-conventional` prose) — per docs/CD-PATHWAY-SOURCES.md
-3. RPD pathway (`rpd-*` / `rpdc-*`)
+---
+
+# ✅✅ PHASE 1 — FULL MAPS-TAB PER-SENTENCE AUDIT COMPLETE (2026-06-20)
+
+Every live Maps pathway read sentence-by-sentence against the actual UIC slides + Swade (NO agents — read each slide myself). Pathways done: **fixed-prosth (crown-pfm, bridge-pfm, digital-emax)** → INDIRECT-SOURCES.md; **CD (cd-ch1..28 + conventional prose)** → CD-PATHWAY-SOURCES.md; **RPD (engine + rpd-*/rpdc-*)** → RPD-SOURCES.md.
+
+## Real fixes shipped (11)
+1. Crown occlusal reduction — cut the fabricated "1.5 functional / 1.0 non-functional" → 1.5–2.0 mm + cusp bevel (PFM Crowns s13–15).
+2. IOS image count — "≤1000 / 2000 max" → "<2,000 / 2,000–3,000 / >3,000" (Rubric c14) in **digc-scan** AND **ind-ch28**.
+3. "scanner reaches ~17 mm depth" (digc-selection) — fabricated, cut → "capture 2–3 mm gingiva."
+4. **brc-abutment** — restored Ante's Law (FPD s18) + span-cube law (s20) that a prior pass had WRONGLY cut.
+5. **brc-framework** porcelain space "0.5–0.8 mm" → "0.8–2.0 mm" (Metal Framework s13).
+6. **brc-framework** "solder below 450 °C" — metallurgically backwards, cut the wrong temp.
+7. **cd-ch22** freeway "2–4 mm" → "2–3 mm" (CD lecture + Swade).
+8. **cd-ch22** "reline buys ~3 months / 1–2 years" — fabricated durations, cut.
+(+ earlier-session fixes: e.max axial/chamfer/zirconia reductions, inlay pulpal floor.)
+
+## Flags RESOLVED against source (read-the-primary-source saves)
+Gluma 15s/30s-vs-45s/15s (two real contexts), D0275 (real Swade code 3133), ind-ch15 span (verbatim FPD s21), connector height-cube (real, Framework s14), CD "1 day/3 days" (verbatim Delivery lec 585/587), McGill Consensus, overdenture RCT-seq, 22/18 mm rims, 72 h soak, RPD 42 mm / 1–2 mm / 0.5 mm / 10 min / Prevident 5000 — all looked wrong or unsourced but were verbatim.
+
+## Open flags for Jake (judgment calls, none are errors)
+#1 e.max crystallization location (lab vs in-house) · #5 "final increment 60 s" · #6 ParaPost fiber-vs-metal model · #7 Clearfil Ceramic Primer 60 s · #8 cd-ch28 liner pliability timeframes · brc-prep "~50%/5°" retention · brc-bisque underextension "<0.25 mm" · CD condylar 20° vs 30° (UIC docs disagree — confirm with faculty).
+
+**Net:** the whole Maps tab is now traceable to a slide/page; zero unexplained fabrications remain. → **PHASE 2: visual aides** (reduction guides + Maps visuals).
