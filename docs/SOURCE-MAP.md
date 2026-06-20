@@ -95,6 +95,8 @@ Read all `crownc-*` chapters (impression / provisional / delivery / foundation /
 ### ⚠ FLAGS for Jake (crown-pfm)
 3. **Gluma timing — ✅ RESOLVED (both correct, two contexts).** `crownc-provisional`'s "15 s, wait 30 s" matches **Swade provisional-cementation (line ~2919)** verbatim; `crownc-foundation`'s "45 s, wait 15 s" matches **Swade restorative-buildup (lines 1481/1584/1685)** verbatim. Swade deliberately teaches different Gluma timings for *provisional cementation* vs *restorative desensitization* — NOT an inconsistency. No change. (Caught this before "fixing" the correct value — read Swade first.)
 4. **D0275 bitewing code — ✅ RESOLVED (real Swade code).** **Swade line 3133:** "D0275 (Bitewing N/C)" (N/C = no charge), listed with I9002 (Lab quality review, Swade 3134). Deliberate UIC/Swade code, not a typo for D0274. No change.
+5. **crownc-foundation "cure the final increment 60 s."** — NOT in Swade (restorative section line 1591 says only "cure 20-40s after each increment"). Plausible longer final cure, but no UIC source → kept, flagged. (Open for Jake.)
+6. **crownc-foundation ParaPost fiber-vs-metal.** — The map calls UIC's post a "fiber post … close to dentin in stiffness." The fiber-≈-dentin *concept* is well-sourced (Alapati post deck s36 modulus chart + s40), but **Restoring-Endo lecture s32 lists ParaPost XT/XP under METAL posts**; "ParaPost" is a brand with both metal (XT/XP) and fiber (Fiber Lux/White) lines. **Jake: confirm which ParaPost the clinic dispenses** — if it's the metal XP, the "fiber / close-to-dentin" wording mis-describes it. Not changed (concept correct, brand-model ambiguous).
 
 ---
 
