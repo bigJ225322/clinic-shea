@@ -654,7 +654,7 @@
                 "kind": "numbered",
                 "items": [
                   "Open the articulator. Verify centric latch is engaged + incisal pin reads 0.",
-                  "Set **condylar inclination thumbscrew** per your setup sheet (UIC docs conflict — the setting-teeth lab instructions say 20°, the setup grading sheets say 30°±5°; confirm with faculty); refined later by the protrusive record at try-in.",
+                  "Set **condylar inclination thumbscrew** to **30°** (per your setup sheet — the Denar default and the monoplane setup grading sheets; refined later by the protrusive record at try-in).",
                   "Bennett angle is fixed at 15° on the Mark 320 (no adjustment).",
                   "Mounting plates: attach upper + lower; cut retention grooves into the underside of each plate to grip the mounting stone."
                 ]
@@ -1368,7 +1368,7 @@
                   "**6c.** Patient closes into the Regisil with the jaw protruded.",
                   "**6d.** Set ~30 seconds. Remove carefully.",
                   "**6e.** This record goes to the lab. The lab will set the articulator's horizontal condylar guidance to match the patient's protrusive condylar path.",
-                  "**6f. Why this matters:** without this record, the lab remount and the clinical remount are working with the default condylar setting (20–30° per the setup sheet) — not the patient's actual anatomy. Excursive balance won't reproduce in the mouth."
+                  "**6f. Why this matters:** without this record, the lab remount and the clinical remount are working with the default condylar setting (30° per the setup sheet) — not the patient's actual anatomy. Excursive balance won't reproduce in the mouth."
                 ]
               },
               {
