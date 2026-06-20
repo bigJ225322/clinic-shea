@@ -21200,6 +21200,59 @@ function CrownReductionGuide({ compact = false, initialCrown = "pfm" }) {
   );
 }
 
+// ── e.max bond-protocol stepper ──────────────────────────────────────────
+function BondProtocolStepper({ compact = false }) {
+  const steps = [
+    { t: "Ivoclean", s: "20 s", d: "clean try-in saliva off the intaglio · rinse + dry" },
+    { t: "5% HF etch", s: "20 s", d: "IPS Ceramic Etching Gel · etch the lithium disilicate · rinse + dry" },
+    { t: "Silane primer", s: "60 s", d: "Clearfil Ceramic Primer (MDP + silane) · no rinse · dry" },
+    { t: "Panavia A + B", s: "seat", d: "tooth: ED Primer 30 s · mix paste A+B to the intaglio · seat" },
+    { t: "Light-cure", s: "20 s/surf", d: "tack, remove excess, final cure" },
+  ];
+  return (
+    <div style={{ border: "1px solid var(--rule)", borderRadius: 12, padding: compact ? 12 : 16, background: "var(--card, #faf5ec)" }}>
+      <div style={{ fontWeight: 700, fontSize: compact ? "0.86rem" : "0.95rem", color: "var(--ink)", marginBottom: 10 }}>e.max bonding — Panavia adhesive protocol</div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+        {steps.map((s, i) => (
+          <div key={i} style={{ flex: "1 1 118px", minWidth: 118, border: "1px solid var(--rule)", borderRadius: 9, padding: 9, background: "var(--paper, #fff)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
+              <span style={{ width: 18, height: 18, borderRadius: "50%", background: "var(--ink)", color: "var(--paper,#fff)", fontSize: "0.7rem", fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center", flex: "0 0 auto" }}>{i + 1}</span>
+              <strong style={{ fontSize: "0.8rem", color: "var(--ink)" }}>{s.t}</strong>
+            </div>
+            <div style={{ fontSize: "0.74rem", fontWeight: 700, color: "var(--good, #0d8f8f)" }}>{s.s}</div>
+            <div style={{ fontSize: "0.72rem", color: "var(--muted)", lineHeight: 1.4, marginTop: 2 }}>{s.d}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ marginTop: 8, fontSize: "0.72rem", color: "var(--muted)" }}>Durations are manufacturer-IFU standard (Ivoclar / Kuraray), not on a UIC deck — confirm the Clearfil hold (SOURCE-MAP flag #7).</div>
+    </div>
+  );
+}
+
+// ── Bridge connector note ────────────────────────────────────────────────
+function ConnectorNote({ compact = false }) {
+  return (
+    <div style={{ border: "1px solid var(--rule)", borderRadius: 12, padding: compact ? 12 : 16, background: "var(--card, #faf5ec)" }}>
+      <div style={{ fontWeight: 700, fontSize: compact ? "0.86rem" : "0.95rem", color: "var(--ink)", marginBottom: 10 }}>Connector design — strength is in the height</div>
+      <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
+        <svg viewBox="0 0 200 130" width="180" style={{ flex: "0 0 auto" }} fontFamily="inherit">
+          <rect x="14" y="40" width="46" height="60" rx="6" fill="var(--card,#f3ead9)" stroke="var(--ink)" strokeWidth="2" />
+          <rect x="140" y="40" width="46" height="60" rx="6" fill="var(--card,#f3ead9)" stroke="var(--ink)" strokeWidth="2" />
+          <rect x="74" y="48" width="52" height="44" rx="6" fill="var(--card,#f3ead9)" stroke="var(--ink)" strokeWidth="2" />
+          <rect x="58" y="56" width="18" height="26" fill="var(--good,#0d8f8f)" opacity="0.3" stroke="var(--good,#0d8f8f)" />
+          <rect x="124" y="56" width="18" height="26" fill="var(--good,#0d8f8f)" opacity="0.3" stroke="var(--good,#0d8f8f)" />
+          <line x1="50" y1="56" x2="50" y2="82" stroke="var(--good,#0d8f8f)" strokeWidth="1.3" markerStart="" />
+          <text x="36" y="74" fontSize="9" fill="var(--good,#0d8f8f)" fontWeight="700">h</text>
+          <text x="100" y="120" fontSize="9.5" textAnchor="middle" fill="var(--muted)">retainer · pontic · retainer</text>
+        </svg>
+        <div style={{ flex: "1 1 210px", fontSize: compact ? "0.78rem" : "0.85rem", color: "var(--ink)", lineHeight: 1.55 }}>
+          e.max connector ≥ <b>16 mm²</b> cross-section. <b>Connector height matters more than width</b> — bending varies inversely with the cube of the occluso-gingival height (h³). Span length cubes too: a <b>two-pontic span bends ~8× more</b> than a single pontic — long spans need taller connectors and double abutments.
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ToothMouldSelector({ onApply, initialAngle = "a10", compact = false }) {
  // Collapsed by default in all integration points (lab Rx, note builder,
  // steps). The picker is a chair-side reference, not the primary form
@@ -25474,7 +25527,8 @@ const PATHWAYS = [
  {
  label: "Metal framework try-in",
  count: 1,
- detail: "The lab returns the cast metal framework before any porcelain. Verify the fit: margins closed on **both** preps simultaneously, passive seat with **no rocking** (Fit Checker for binding spots), a radiograph to confirm seating, and 0.5–0.8 mm interocclusal clearance for the porcelain. If it rocks, **section and solder** (cut, re-join intraorally with resin index, return to the lab). Then send it back with the porcelain lab script.",
+ widget: "connectorNote",
+ detail: "The lab returns the cast metal framework before any porcelain. Verify the fit: margins closed on **both** preps simultaneously, passive seat with **no rocking** (Fit Checker for binding spots), a radiograph to confirm seating, and 0.8–2.0 mm interocclusal clearance for the porcelain (over 0.2–0.3 mm of metal). If it rocks, **section and solder** (cut, re-join intraorally with resin index, return to the lab). Then send it back with the porcelain lab script.",
  },
  {
  label: "Bisque-bake try-in (when ordered)",
@@ -25567,6 +25621,7 @@ const PATHWAYS = [
  {
  label: "Delivery",
  count: 1,
+ widget: "bondStepper",
  detail: "The milled, pre-crystallized crown is back. Remove the sprue → try in and adjust (contacts first, then round the PREP's sharp spots — not the crown margins) → adjust occlusion + contour → polish → crystallize in-house (Dan, ~25 min) → re-try → bond with Panavia (HF etch + Clearfil primer) → verify + post-op.",
  },
  ],
@@ -31531,6 +31586,16 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  {phase.widget === "crownReductionGuide" && (
  <div style={{ marginBottom: "24px" }}>
  <CrownReductionGuide compact initialCrown={phase.crownDefault || "pfm"} />
+ </div>
+ )}
+ {phase.widget === "bondStepper" && (
+ <div style={{ marginBottom: "24px" }}>
+ <BondProtocolStepper compact />
+ </div>
+ )}
+ {phase.widget === "connectorNote" && (
+ <div style={{ marginBottom: "24px" }}>
+ <ConnectorNote compact />
  </div>
  )}
  {/* If the phase carries its own structured detail (used when the
