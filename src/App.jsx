@@ -21040,12 +21040,8 @@ function CrownReductionGuide({ compact = false, initialCrown = "pfm" }) {
   const [tooth, setTooth] = useState(19);
   const [region, setRegion] = useState("post");
   const [arch, setArch] = useState("mand");
-  const [imgView, setImgView] = useState("buccal");
   const isAnt = region === "ant";
   const funcCusp = arch === "mand" ? "buccal" : "palatal";
-  const rgImg = isAnt
-    ? "/reductions/rg-anterior.png"
-    : (imgView === "occlusal" ? "/reductions/rg-posterior-occlusal.png" : "/reductions/rg-posterior-buccal.png");
   const fig = REDUCTION_FIGS[crown];
 
   const seg = (active) => ({
@@ -21089,18 +21085,6 @@ function CrownReductionGuide({ compact = false, initialCrown = "pfm" }) {
 
       <div style={{ fontSize: "0.8rem", color: "var(--muted)", marginBottom: 8 }}>
         <b style={{ color: "var(--ink)" }}>{fig.label}</b> ({fig.sub}) · {arch === "max" ? "maxillary" : "mandibular"} {isAnt ? "anterior" : "posterior"} (#{tooth})
-      </div>
-
-      <div style={{ margin: "0 0 14px", textAlign: "center" }}>
-        {!isAnt && (
-          <div style={{ display: "flex", gap: 6, justifyContent: "center", marginBottom: 7 }}>
-            <button onClick={() => setImgView("buccal")} style={seg(imgView === "buccal")}>Buccal</button>
-            <button onClick={() => setImgView("occlusal")} style={seg(imgView === "occlusal")}>Occlusal</button>
-          </div>
-        )}
-        <img src={rgImg} alt={isAnt ? "Anterior crown-prep reduction" : "Posterior crown-prep reduction"} loading="lazy"
-          style={{ maxWidth: "100%", borderRadius: 10, border: "1px solid var(--rule)", display: "block", margin: "0 auto" }} />
-        <div style={{ fontSize: "0.7rem", color: "var(--muted)", marginTop: 5 }}>Illustrative crown-prep reduction (general ranges) — UIC figures below.</div>
       </div>
 
       {rows.map((r, i) => (
