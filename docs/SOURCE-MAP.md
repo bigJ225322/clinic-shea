@@ -61,5 +61,9 @@ A claim is **verified ✓** only after the actual slide/page has been read and t
 - Pulpal floor **1.5 mm (minimum)** → **Inlays & Onlays Overview, slides 26–27** + **Swade p.112** — **✓ verified** (corrected from the overstated "1.5–2.0 mm").
 - Interproximal cavosurface **100–120°**; B/L divergence **6–10°**; butt-joint margin → **Swade p.112** + Overview slides 26–27 — **✓ verified**.
 
-### ⚠ Flagged — multi-source conflict, NOT yet resolved
-- Crown occlusal "**1.5 mm functional / 1.0 mm non-functional cusp**" (appears 2× in the maps): conflicts with **Swade p.58** PFM/e.max (**1.5–2.0**) and with **PFM Crowns guide** ("Final occlusal reduction **1.25–1.5 mm**"). Three different UIC figures. Needs visual read of PFM Crowns + Full Crown Prep decks to pick the authoritative one before any edit. **Do not "fix" until resolved.**
+### Crown occlusal reduction — RESOLVED by reading the slides
+- Crown occlusal reduction **1.5–2.0 mm** (anatomic) + a separate **functional cusp bevel** → **PFM Crowns deck, slides 13–14** (PFM-vs-FGC table: PFM occlusal/incisal 1.5–2.0; prep diagram labels "occlusal reduction 1.5–2mm"; sequence step 4 = functional cusp bevel) + **Swade p.58/p.114** — **✓ verified visually**.
+- The "1.25–1.5 mm" that text-extraction surfaced is the **GOLD/FGC** column (Full Crown Prep guide p.20; PFM Crowns slide 13 gold column) — not PFM.
+- The map's old "**1.5 functional / 1.0 non-functional cusp**" was a fabrication present in NO source — **fixed** in guides-data + the note-builder "O:" template menu.
+- Crown axial **1.25–1.5 mm** (PFM); **taper 2–5°/wall** → PFM Crowns slides 13–14 (≈4–10° total, consistent with Swade's 6–10°). ✓ verified.
+- ⚠ Minor finish-line discrepancy to confirm later: **Swade p.58** PFM deep chamfer = **1.0–1.25 mm**; **PFM Crowns slide 13** = deep chamfer/shoulder **1.2–1.5 mm** (~0.2 mm apart). e.max map currently uses Swade's 1.0–1.25. Low priority.
