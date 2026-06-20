@@ -67,3 +67,19 @@ A claim is **verified ✓** only after the actual slide/page has been read and t
 - The map's old "**1.5 functional / 1.0 non-functional cusp**" was a fabrication present in NO source — **fixed** in guides-data + the note-builder "O:" template menu.
 - Crown axial **1.25–1.5 mm** (PFM); **taper 2–5°/wall** → PFM Crowns slides 13–14 (≈4–10° total, consistent with Swade's 6–10°). ✓ verified.
 - ⚠ Minor finish-line discrepancy to confirm later: **Swade p.58** PFM deep chamfer = **1.0–1.25 mm**; **PFM Crowns slide 13** = deep chamfer/shoulder **1.2–1.5 mm** (~0.2 mm apart). e.max map currently uses Swade's 1.0–1.25. Low priority.
+
+### All-ceramic (e.max) prep — corroborated (4th source)
+- e.max axial 1.25–1.5, occlusal/incisal 1.5–2.0, deep chamfer / round shoulder → **All Ceramic Crown Prep Step-by-step, slide 2** + **All-Ceramic Crown Eval Form (04), p.1** (facial axial 1.25–1.5, lingual 1.0–1.25; incisal 1.5–2.0) — ✓ consistent with Swade p.58/p.114, no fix. Anterior all-ceramic incisal reduction = **1.5–2.0 mm**.
+
+---
+
+## Audit progress (loop — resumable across firings)
+
+**✓ Verified — fixed prosth, reductions/prep params:** crown axial/occlusal/finish-line for all materials (Swade p.58 + p.114; PFM Crowns slides 13–15; All-Ceramic deck slide 2 + eval form p.1); inlay prep params (Inlays&Onlays slides 26–27 + Swade p.112). Fixes shipped: e.max axial/chamfer/zirconia, inlay pulpal floor, the "1.5 functional/1.0 non-functional" occlusal fabrication.
+
+**▶ Next queue (each: open the cited deck, verify every number vs the slide, fix+cite, deploy):**
+1. digital-emax map — scan / material-selection / design / mill / delivery chapters (cement protocols, HF-etch times, zirconia yttria %, shade, etc.)
+2. crown-pfm map — impression / provisional / lab-script / delivery chapters
+3. bridge-pfm map — **pontic designs + connectors (MFT deck — the cube-law claim has prior history) + abutment/Ante's-law**
+4. CD pathway (`MASTER REFERENCE CS/02`)
+5. RPD pathway (`MASTER REFERENCE CS/03`)
