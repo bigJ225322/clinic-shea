@@ -54,8 +54,10 @@ describe("AAP 2018 — complexity factors elevate the stage", () => {
     expect(stage({ maxIntPD: "4", boneLossPct: "15-33", complexityFactors: ["vertical-3mm"] })).toBe("III"));
   it("Stage IV elevator (mobility ≥2) on Stage III severity → IV", () =>
     expect(stage({ maxIntPD: "6", boneLossPct: "33-50", complexityFactors: ["mobility-2plus"] })).toBe("IV"));
-  it("compound: 1–4 teeth (→III) + a Stage IV elevator → IV even at low CAL", () =>
-    expect(stage({ maxIntPD: "4", boneLossPct: "15-33", teethLostFromPerio: "1-4", complexityFactors: ["mobility-2plus"] })).toBe("IV"));
+  it("low CAL (3-4) + 1–4 teeth + a IV elevator STAYS Stage III — IV needs CAL ≥5 (EFP Step 3c)", () =>
+    expect(stage({ maxIntPD: "4", boneLossPct: "15-33", teethLostFromPerio: "1-4", complexityFactors: ["mobility-2plus"] })).toBe("III"));
+  it("CAL ≥5 + a IV elevator → IV", () =>
+    expect(stage({ maxIntPD: "6", boneLossPct: "33-50", complexityFactors: ["mobility-2plus"] })).toBe("IV"));
   it("no complexity factor does NOT elevate a Stage I case", () =>
     expect(stage({ maxIntPD: "2", boneLossPct: "<15" })).toBe("I"));
 });
@@ -106,4 +108,34 @@ describe("AAP 2018 FAQ — worked examples", () => {
   // Grading: "if the HbA1c is 9%... assign a grade of C."
   it("uncontrolled diabetes (HbA1c ≥7) → Grade C", () =>
     expect(grade({ boneLossPct: "<15", age: "55", diabetes: "uncontrolled" })).toBe("C"));
+});
+
+// ---------------------------------------------------------------------------
+// EFP / Tonetti "clinical decision tree for staging and grading" (Sanz &
+// Tonetti, EFP, March 2019; based on Tonetti & Sanz, J Clin Periodontol 2019).
+// Verbatim algorithmic criteria — the authoritative implementation algorithm.
+// ---------------------------------------------------------------------------
+describe("EFP decision tree (Sanz & Tonetti 2019)", () => {
+  // Step 3c: "Stage I if BL <15% and CAL 1-2mm; Stage II if BL 15-33% and CAL 3-4mm."
+  it("Step 3c — Stage I: BL <15% + CAL 1-2", () => expect(stage({ maxIntPD: "2", boneLossPct: "<15" })).toBe("I"));
+  it("Step 3c — Stage II: BL 15-33% + CAL 3-4", () => expect(stage({ maxIntPD: "4", boneLossPct: "15-33" })).toBe("II"));
+  it("Step 3c — Stage III: CAL ≥5 / BL mid-third", () => expect(stage({ maxIntPD: "6", boneLossPct: "33-50" })).toBe("III"));
+  // Step 3b: "If CAL ≤5mm... look for furcation II/III. If present → Stage III or IV."
+  it("Step 3b — furcation II/III on a CAL 3-4 case → Stage III", () =>
+    expect(stage({ maxIntPD: "4", boneLossPct: "15-33", complexityFactors: ["furcation-23"] })).toBe("III"));
+  // Step 3c: "Stage IV if... CAL is 5mm or more" — a complexity-only III cannot reach IV.
+  it("Step 3c — furcation-elevated III + mobility STAYS III without CAL ≥5", () =>
+    expect(stage({ maxIntPD: "4", boneLossPct: "15-33", complexityFactors: ["furcation-23", "mobility-2plus"] })).toBe("III"));
+  it("Step 3c — CAL ≥5 + a Stage IV factor → IV", () =>
+    expect(stage({ maxIntPD: "6", boneLossPct: "33-50", complexityFactors: ["ridge-severe"] })).toBe("IV"));
+  it("Step 3c — PTL >4 teeth → Stage IV on its own", () =>
+    expect(stage({ maxIntPD: "5", boneLossPct: "33-50", teethLostFromPerio: "≥5" })).toBe("IV"));
+  // Step 4a (verbatim): "BL/A <0.25 → Grade A; 0.25-1.0 → Grade B; >1.0 → Grade C."
+  it("Step 4a — Grade A: BL/age <0.25", () => expect(grade({ boneLossPct: "<15", age: "60" })).toBe("A"));
+  it("Step 4a — Grade B: BL/age 0.25-1.0", () => expect(grade({ boneLossPct: "15-33", age: "50" })).toBe("B"));
+  it("Step 4a — Grade C: BL/age >1.0", () => expect(grade({ boneLossPct: ">50", age: "40" })).toBe("C"));
+  // Step 4a modifiers (verbatim): "≥10 cig/day → C; HbA1c ≥7.0 → C; <10 cig / HbA1c<7 → upgrade to B."
+  it("Step 4a — smoking ≥10/day → Grade C", () => expect(grade({ boneLossPct: "<15", age: "60", smoking: "≥10" })).toBe("C"));
+  it("Step 4a — HbA1c ≥7 → Grade C", () => expect(grade({ boneLossPct: "<15", age: "60", diabetes: "uncontrolled" })).toBe("C"));
+  it("Step 4a — smoking <10/day lifts Grade A → B", () => expect(grade({ boneLossPct: "<15", age: "60", smoking: "<10" })).toBe("B"));
 });

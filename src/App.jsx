@@ -3969,13 +3969,17 @@ function computePerioCOEDx(inputs) {
  // Stage III complexity (vertical BL ≥3mm, furcation II/III, moderate ridge
  // defect) elevates an otherwise-lower case to Stage III. Stage IV elevators
  // (mobility ≥2 / secondary occlusal trauma, severe ridge defect, <20 teeth)
- // push to IV once severity is already Stage III+.
+ // push III → IV — but EFP Step 3c is explicit that Stage IV requires CAL ≥5mm
+ // (or bone loss to the mid-third or beyond): real SEVERITY, not merely a
+ // complexity-elevated III. So a CAL 3-4 case raised to III by a furcation
+ // cannot jump to IV on a complexity factor — it needs CAL/BL at the III level.
+ // (≥5 teeth lost is Stage IV on its own, handled by toothStage in the max.)
  const stageIIIComplex = factors.includes("vertical-3mm")
  || factors.includes("furcation-23") || factors.includes("ridge-moderate");
  const hasStageIVElevator = factors.includes("mobility-2plus")
  || factors.includes("ridge-severe") || factors.includes("lt20-teeth");
  let baseStage = Math.max(calStage, blStage, toothStage, stageIIIComplex? 3: 0);
- if (baseStage >= 3 && hasStageIVElevator) baseStage = 4;
+ if ((calStage >= 3 || blStage >= 3) && hasStageIVElevator) baseStage = 4;
  stage = ["I", "II", "III", "IV"][baseStage - 1];
 
  // ── Stage rationale — name the criterion(s) that actually drove the call ──
@@ -11121,7 +11125,7 @@ function buildPerioCOERationale(dx, inputs) {
  const hasStageIVElevator = (complexityFactors || []).some(f => ["mobility-2plus", "ridge-severe", "lt20-teeth"].includes(f));
  const stageIIIComplex = (complexityFactors || []).some(f => ["vertical-3mm", "furcation-23", "ridge-moderate"].includes(f));
  if (stageIIIComplex || hasStageIVElevator) {
- ambiguity.push("Complexity factors are in play, and the engine lets them elevate the stage per AAP 2018 — Stage III factors (vertical ≥3mm, furcation II–III, moderate ridge defect) floor the case at III; Stage IV elevators (mobility ≥2, severe ridge defect, <20 teeth) push to IV once severity is already Stage III+. Complexity is the fuzziest part of the system, so sanity-check the call yourself.");
+ ambiguity.push("Complexity factors are in play, and the engine lets them elevate the stage per AAP 2018 / EFP — Stage III factors (vertical ≥3mm, furcation II–III, moderate ridge defect) floor the case at III; Stage IV elevators (mobility ≥2, severe ridge defect, <20 teeth) push to IV ONLY when CAL/bone-loss severity is already at Stage III (CAL ≥5mm or bone loss to the mid-third) — EFP Step 3c requires that for Stage IV, so a furcation-only Stage III won't jump to IV. Complexity is the fuzziest part of the system, so sanity-check the call yourself.");
  }
  if ((complexityFactors || []).includes("ridge-moderate") || (complexityFactors || []).includes("ridge-severe")) {
  ambiguity.push("Ridge defect severity (moderate vs severe) is NOT mm-quantified in AAP 2018 — it's a clinical judgment about rehabilitation difficulty.");
