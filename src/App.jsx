@@ -21045,6 +21045,7 @@ function CrownReductionGuide({ compact = false, initialCrown = "pfm" }) {
   // mandibular functional cusp = buccal; maxillary functional cusp = palatal/lingual
   const bevelOnBuccal = arch === "mand";
   const funcCuspLabel = arch === "mand" ? "buccal" : "palatal";
+  const effView = isAnt && view === "occ" ? "bl" : view;   // anterior has no occlusal tab
   const fig = REDUCTION_FIGS[crown];
   const ax = rgMid(fig.axial) * RG_MM;
   const oc = rgMid(fig.occl) * RG_MM;
@@ -21089,8 +21090,8 @@ function CrownReductionGuide({ compact = false, initialCrown = "pfm" }) {
   const seg = (k) => ({
     padding: compact ? "5px 9px" : "6px 12px", fontSize: compact ? "0.72rem" : "0.8rem",
     fontWeight: 600, cursor: "pointer", border: "1px solid var(--rule)",
-    background: (k === crown || k === view || k === region) ? "var(--ink)" : "transparent",
-    color: (k === crown || k === view || k === region) ? "var(--paper, #fff)" : "var(--ink)",
+    background: (k === crown || k === effView || k === region) ? "var(--ink)" : "transparent",
+    color: (k === crown || k === effView || k === region) ? "var(--paper, #fff)" : "var(--ink)",
     borderRadius: 7,
   });
 
@@ -21119,12 +21120,13 @@ function CrownReductionGuide({ compact = false, initialCrown = "pfm" }) {
         <button onClick={() => setRegion("post")} style={seg("post")}>Posterior</button>
         <button onClick={() => setRegion("ant")} style={seg("ant")}>Anterior</button>
       </div>
-      <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
         <button onClick={() => setView("bl")} style={seg("bl")}>{isAnt ? "Labiolingual section" : "Buccolingual section"}</button>
         {!isAnt && <button onClick={() => setView("occ")} style={seg("occ")}>Occlusal view</button>}
+        <button onClick={() => setView("prox")} style={seg("prox")}>Proximal view</button>
       </div>
 
-      {(view === "bl" || isAnt) && (
+      {effView === "bl" && (
         <svg viewBox="0 0 360 300" width="100%" style={{ maxWidth: 480, display: "block", margin: "0 auto" }} fontFamily="inherit">
           <text x="18" y="250" fontSize="13" fontWeight="700" fill="var(--ink)">{isAnt ? "La" : "B"}</text>
           <text x="326" y="250" fontSize="13" fontWeight="700" fill="var(--ink)">{isAnt ? "Li" : "L"}</text>
@@ -21152,7 +21154,7 @@ function CrownReductionGuide({ compact = false, initialCrown = "pfm" }) {
         </svg>
       )}
 
-      {view === "occ" && !isAnt && (
+      {effView === "occ" && (
         <svg viewBox="0 0 300 300" width="100%" style={{ maxWidth: 360, display: "block", margin: "0 auto" }} fontFamily="inherit">
           <path d="M40 150 Q150 110 260 150 Q300 250 260 350 Q150 380 40 350 Q20 250 40 150 Z" transform="scale(1,0.78) translate(0,18)" fill="none" stroke="var(--muted,#b08a93)" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.85" />
           <path d="M58 160 Q150 130 242 160 Q276 250 242 326 Q150 352 58 326 Q26 250 58 160 Z" transform="scale(1,0.78) translate(0,18)" fill="var(--card,#f3ead9)" stroke="var(--ink)" strokeWidth="2.4" strokeLinejoin="round" />
@@ -21166,6 +21168,28 @@ function CrownReductionGuide({ compact = false, initialCrown = "pfm" }) {
           <text x="20" y="250" fontSize="12" fontWeight="700" fill="var(--ink)">B</text>
           <text x="262" y="250" fontSize="12" fontWeight="700" fill="var(--ink)">L</text>
           <text x="150" y="292" fontSize="11.5" fill="var(--muted,#8a6a72)" textAnchor="middle">cusp inclines + central groove · margin = {fig.margin}</text>
+        </svg>
+      )}
+
+      {effView === "prox" && (
+        <svg viewBox="0 0 360 300" width="100%" style={{ maxWidth: 480, display: "block", margin: "0 auto" }} fontFamily="inherit">
+          <text x="18" y="250" fontSize="13" fontWeight="700" fill="var(--ink)">M</text>
+          <text x="326" y="250" fontSize="13" fontWeight="700" fill="var(--ink)">D</text>
+          {/* gingiva + root */}
+          <path d="M30 228 Q90 216 150 222 L210 222 Q270 216 330 228 L330 246 Q180 238 30 246 Z" fill="var(--gum, #d99aa0)" opacity="0.5" />
+          <path d="M150 226 Q150 282 180 296 Q210 282 210 226 Z" fill="var(--card, #f3ead9)" stroke="var(--ink)" strokeWidth="2" />
+          {/* mesiodistal section: same axial/occlusal reductions, both proximal walls = interproximal reduction */}
+          <path d={blGhost} fill="none" stroke="var(--muted, #b08a93)" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.9" />
+          <path d={blPrepped} fill="var(--card, #f3ead9)" stroke="var(--ink)" strokeWidth="2.4" strokeLinejoin="round" />
+          <path d={`M ${blBMx} ${mY} q ${-ch} 1 ${-ch} 9`} fill="none" stroke="var(--ink)" strokeWidth="2.4" />
+          <path d={`M ${blLMx} ${mY} q ${ch} 1 ${ch} 9`} fill="none" stroke="var(--ink)" strokeWidth="2.4" />
+          <g stroke="var(--good, #0d8f8f)" strokeWidth="1.4" fill="none">
+            <line x1={isAnt ? 104 : 56} y1="178" x2={blBMx} y2="178" />
+            <line x1={blLMx} y1="178" x2={isAnt ? 256 : 288} y2="178" />
+          </g>
+          <text x="12" y="194" fontSize="11.5" fontWeight="700" fill="var(--ink)">interprox {rgRange(fig.axial)}</text>
+          <text x="244" y="194" fontSize="11.5" fontWeight="700" fill="var(--ink)">interprox {rgRange(fig.axial)}</text>
+          <text x="180" y="288" fontSize="12" fontWeight="700" fill="var(--ink)" textAnchor="middle">mesiodistal section · {fig.margin} {rgRange(fig.chamfer)} mm · path of insertion 6–10°</text>
         </svg>
       )}
 
