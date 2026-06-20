@@ -11126,6 +11126,9 @@ function buildPerioCOERationale(dx, inputs) {
  if ((complexityFactors || []).includes("ridge-moderate") || (complexityFactors || []).includes("ridge-severe")) {
  ambiguity.push("Ridge defect severity (moderate vs severe) is NOT mm-quantified in AAP 2018 — it's a clinical judgment about rehabilitation difficulty.");
  }
+ if (dx.grade === "C" && (smoking === "≥10" || diabetes === "uncontrolled") && (ratio === "n/a" || Number(ratio) <= 1.0)) {
+ ambiguity.push("Grade C here is driven by a risk-factor modifier (smoking ≥10/day or HbA1c ≥7%), applied mechanically at the table threshold. The AAP FAQ notes this isn't fully automatic — a borderline value (e.g. HbA1c just over 7%) can stay Grade B if, in your judgment, progression isn't clearly impacted; a clearly high value (HbA1c ~9%) is Grade C. Use judgment near the threshold.");
+ }
 
  // Judgment calls the engine made
  const judgmentCalls = [

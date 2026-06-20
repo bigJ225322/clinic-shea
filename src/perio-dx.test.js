@@ -74,3 +74,36 @@ describe("AAP 2018 — composite diagnosis line", () => {
     expect(computePerioCOEDx(base({ maxIntPD: "6", boneLossPct: "33-50", age: "50" })).aap)
       .toBe("Generalized Stage III Grade B periodontitis"));
 });
+
+// ---------------------------------------------------------------------------
+// Stress test vs the AAP "FAQs on the 2018 Classification" worked examples
+// (American Academy of Periodontology, © 2019) — the authoritative source.
+// ---------------------------------------------------------------------------
+describe("AAP 2018 FAQ — worked examples", () => {
+  // "Does the area with the most severe destruction determine the stage? Yes."
+  // Generalized mild-to-moderate + localized severe (CAL ≥5, PD ≥6) → Generalized Stage III.
+  it("worst site sets the stage: localized CAL ≥5 → Generalized Stage III", () => {
+    const dx = computePerioCOEDx(base({ maxIntPD: "6", boneLossPct: "33-50", extent: "generalized" }));
+    expect(dx.stage).toBe("III");
+    expect(dx.extentLabel).toBe("Generalized");
+  });
+  // "2 teeth previously lost + 3 planned for extraction = 5 lost due to perio → Stage IV."
+  it("5 teeth lost from perio (incl. planned extractions) → Stage IV", () =>
+    expect(stage({ maxIntPD: "5", boneLossPct: "33-50", teethLostFromPerio: "≥5" })).toBe("IV"));
+  // Regeneration example: a case is "Stage III DUE TO a vertical defect ≥3mm or
+  // Class II furcation"; after regeneration (CAL 3-4, furcation Class I/none,
+  // PD ≤5) it drops to Stage II.
+  it("Class II/III furcation makes a CAL-3-4 case Stage III (per the FAQ)", () =>
+    expect(stage({ maxIntPD: "4", boneLossPct: "15-33", complexityFactors: ["furcation-23"] })).toBe("III"));
+  it("a vertical defect ≥3mm makes a CAL-3-4 case Stage III", () =>
+    expect(stage({ maxIntPD: "4", boneLossPct: "15-33", complexityFactors: ["vertical-3mm"] })).toBe("III"));
+  it("after regeneration (CAL 3-4, no furcation/defect) → Stage II", () =>
+    expect(stage({ maxIntPD: "4", boneLossPct: "15-33", complexityFactors: [] })).toBe("II"));
+  // Stage severity anchors from "How does a clinician arrive at the proper stage".
+  it("Stage I: CAL 1-2", () => expect(stage({ maxIntPD: "2", boneLossPct: "<15" })).toBe("I"));
+  it("Stage II: CAL 3-4", () => expect(stage({ maxIntPD: "4", boneLossPct: "15-33" })).toBe("II"));
+  it("Stage III: CAL ≥5", () => expect(stage({ maxIntPD: "6", boneLossPct: "33-50" })).toBe("III"));
+  // Grading: "if the HbA1c is 9%... assign a grade of C."
+  it("uncontrolled diabetes (HbA1c ≥7) → Grade C", () =>
+    expect(grade({ boneLossPct: "<15", age: "55", diabetes: "uncontrolled" })).toBe("C"));
+});
