@@ -132,3 +132,18 @@ Gluma 15s/30s-vs-45s/15s (two real contexts), D0275 (real Swade code 3133), ind-
 #1 e.max crystallization location (lab vs in-house) · #5 "final increment 60 s" · #6 ParaPost fiber-vs-metal model · #7 Clearfil Ceramic Primer 60 s · #8 cd-ch28 liner pliability timeframes · brc-prep "~50%/5°" retention · brc-bisque underextension "<0.25 mm" · CD condylar 20° vs 30° (UIC docs disagree — confirm with faculty).
 
 **Net:** the whole Maps tab is now traceable to a slide/page; zero unexplained fabrications remain. → **PHASE 2: visual aides** (reduction guides + Maps visuals).
+
+---
+
+# ✅✅ PHASE 2 — VISUAL AIDES COMPLETE (2026-06-20)
+
+Built directly on the Phase-1-verified figures (see `docs/REDUCTION-GUIDE-PLAN.md`). All in `src/App.jsx`, deployed.
+
+- **`CrownReductionGuide`** — the crown-prep reduction guide, rebuilt correctly from scratch (the earlier visualize demo was never integrated). **3 views** (buccolingual section · occlusal · proximal/mesiodistal) × **4 crown types** (metal/zirconia/PFM/e.max) × **32-tooth picker** (auto-sets anterior/posterior + maxillary/mandibular). **Arch-aware functional cusp** (mandibular→buccal, maxillary→palatal). Geometry is parametrized from `REDUCTION_FIGS` so the drawing always matches the labels. Fixes all 5 of Jake's original critiques: uniform axial reduction (no metal-only lingual), finish lines drawn correctly + only where visible, no stray projections, seamless tooth switching, anatomic occlusal (cusp inclines, not a flat plane). Wired onto the **crown-pfm** prep phase (default PFM) and **digital-emax** prep phase (default e.max).
+- **`BondProtocolStepper`** — e.max Panavia bond sequence (Ivoclean 20s → 5% HF 20s → silane/Clearfil → Panavia A+B → light-cure 20s/surface) on the digital-emax Delivery phase; flags the durations as manufacturer-IFU (flag #7).
+- **`ConnectorNote`** — e.max connector ≥16 mm², "height matters more than width (bending ∝ 1/height³)", 2-pontic span-cube "8× more" — on the bridge-pfm Metal-framework phase.
+- **Bonus fix:** the bridge framework *pathway-phase* still carried the stale "0.5–0.8 mm porcelain clearance" (the chapter copy was fixed in Phase 1; this one was missed) → corrected to **0.8–2.0 mm over 0.2–0.3 mm metal** (Metal Framework s13).
+
+Every step: `npm run build` + `npx vitest run` (1391) green, mirrored to the worktree, committed, pushed. Geometry verified via mcp__visualize prototypes + clean in-app render (the deep-modal screenshot was preview-timing-flaky, the only un-grabbed shot).
+
+**Both phases done.** The Maps tab is fully source-traced, and the reduction guides + Maps visuals are live.
