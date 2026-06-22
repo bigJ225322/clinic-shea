@@ -2529,6 +2529,15 @@ function getAllProcedures() {
 const ALL_PROCEDURES = getAllProcedures();
 const findProcedure = (id) => ALL_PROCEDURES.find(p => p.id === id);
 
+// ICC and Peds procedures share CDT codes and labels with the standard clinic
+// versions (e.g. "Class I", "Prophy", "COE", "Sealants"). In the Note Builder
+// search those duplicates are hard to tell apart, so each is prefixed
+// ("ICC: " / "Peds: ") and sorted below the standard codes — distinguishable
+// at a glance, and out of the way of the everyday procedures.
+const procPrefix = (categoryId) =>
+  categoryId === "icc" ? "ICC: " : categoryId === "peds" ? "Peds: " : "";
+const isBottomTier = (categoryId) => categoryId === "icc" || categoryId === "peds";
+
 // Flatten a category's groups into a single procedures list with each
 // procedure tagged with its group label as a prefix where helpful. This
 // preserves the simpler 2-dropdown picker used by Note Builder and Prep
@@ -3547,6 +3556,7 @@ const DEFAULT_INJECTION = {
  techIAN: false, // IAN + long buccal block
  techBuccalInfil: false, // Buccal infiltration #X
  techGreaterPalatine: false, // Greater palatine block
+ techMental: false, // Mental block
  techNasopalatine: false, // Nasopalatine block
  techMaxInfil: false, // Maxillary buccal infiltration
 };
@@ -5652,6 +5662,7 @@ function renderTemplate(raw, f) {
  const techParts = [];
  if (inj.techIAN) techParts.push(`IAN & long buccal block on ${side}`);
  if (inj.techGreaterPalatine) techParts.push(`greater palatine block on ${side === "left"? "L": "R"}`);
+ if (inj.techMental) techParts.push(`mental block on ${side === "left"? "L": "R"}`);
  if (inj.techNasopalatine) techParts.push("nasopalatine block");
  if (inj.techMaxInfil) techParts.push(`maxillary buccal infiltrations on the ${side === "right"? "UR": "UL"}`);
  if (inj.techBuccalInfil) {
@@ -5683,7 +5694,7 @@ function renderTemplate(raw, f) {
  // engages and the engine takes over.
  const allDefaults = injections.length === 1 &&
 !injections[0].techIAN &&!injections[0].techBuccalInfil &&
-!injections[0].techGreaterPalatine &&!injections[0].techNasopalatine &&
+!injections[0].techGreaterPalatine &&!injections[0].techMental &&!injections[0].techNasopalatine &&
 !injections[0].techMaxInfil;
 
  if (!allDefaults) {
@@ -7769,6 +7780,9 @@ function InjectionEditor({ index, total, injection, tooth, isSRP, onChange, onRe
  <Checkbox checked={injection.techGreaterPalatine}
  onChange={(v) => set("techGreaterPalatine", v)}
  label="Greater palatine block" />
+ <Checkbox checked={injection.techMental}
+ onChange={(v) => set("techMental", v)}
+ label="Mental block" />
  {!isSRP && (
  <Checkbox checked={injection.techNasopalatine}
  onChange={(v) => set("techNasopalatine", v)}
@@ -11786,7 +11800,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  if (!needsAnesthetic ||!fields.tooth) return;
  const inj = fields.injections[0] || {};
  const pristine =!inj.techIAN &&!inj.techBuccalInfil &&
-!inj.techGreaterPalatine &&!inj.techNasopalatine &&!inj.techMaxInfil;
+!inj.techGreaterPalatine &&!inj.techMental &&!inj.techNasopalatine &&!inj.techMaxInfil;
  const stillAuto = autoInjRef.current &&
  JSON.stringify(inj) === JSON.stringify(autoInjRef.current);
  if (!pristine &&!stillAuto) return;
@@ -11884,7 +11898,11 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  .filter(p => TEMPLATES[p.id])
  .map(p => ({ p, s: score(p) }))
  .filter(x => x.s > 0)
- .sort((a, b) => b.s - a.s)
+ // ICC + Peds procedures sort below everything else (then by score within
+ // each tier), so the standard codes always lead the results.
+ .sort((a, b) =>
+ Number(isBottomTier(a.p.categoryId)) - Number(isBottomTier(b.p.categoryId))
+ || b.s - a.s)
  .slice(0, 10)
  .map(x => x.p);
  })();
@@ -11950,7 +11968,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  background: hot? "rgba(122, 26, 26, 0.06)": "transparent",
  cursor: "pointer", transition: "background 100ms, transform 130ms cubic-bezier(.2,.6,.2,1)",
  }}>
- <span style={{ fontSize: "13px", color: "var(--ink)", fontFamily: "'Geist', sans-serif" }}>{p.label}</span>
+ <span style={{ fontSize: "13px", color: "var(--ink)", fontFamily: "'Geist', sans-serif" }}>{procPrefix(p.categoryId)}{p.label}</span>
  <span style={{
  fontSize: "11px", whiteSpace: "nowrap", flexShrink: 0,
  fontFamily: "'Geist', sans-serif",
