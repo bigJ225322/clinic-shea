@@ -2433,8 +2433,8 @@ const CATEGORIES = [
  ]},
  { id: "icc", label: "ICC", groups: [
  { id: "icc-exams", label: "Exams & Screening", procedures: [
- { id: "icc-coe", label: "COE", pinnedCodes: ["D0150","D0330","D0274"] },
- { id: "icc-poe", label: "POE", pinnedCodes: ["D0120","D0274"] },
+ { id: "icc-coe", label: "COE", pinnedCodes: ["D0150","D0330","D0274","D0604"] },
+ { id: "icc-poe", label: "POE", pinnedCodes: ["D0120","D0274","D0604"] },
  { id: "icc-screening", label: "Screening", pinnedCodes: ["D0190"] },
  { id: "icc-virtual", label: "Virtual Screening", pinnedCodes: ["D9995","D0140"] },
  { id: "icc-urgent", label: "Urgent Care / Limited Exam", pinnedCodes: ["D0140","D9110"] },
@@ -12992,10 +12992,16 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  const nutriChecked = iccPinned || ef["nutritional counseling"] === true;
  const tobaccoChecked = iccPinned || ef["tobacco cessation"] === true;
  const impressionsChecked = iccPinned || ef["impressions"] === true;
- const selectedRisk = (ef["caries risk"] || "").trim();
- // Only inject D060x when this procedure actually has a caries risk form field —
+ // ICC notes are bracket-driven, so their caries-risk value lives in
+ // labPlaceholders (not examFindings). Read from both so the D060x injection
+ // fires for ICC COE/POE the same way it does for the standard COE/POE.
+ const iccCariesRisk = iccPinned && /\[caries risk\]/i.test(rawTemplate);
+ const selectedRisk = (ef["caries risk"]
+ || (iccCariesRisk? (fields.labPlaceholders || {})["caries risk"]: "")
+ || "").trim();
+ // Only inject D060x when this procedure actually has a caries risk field —
  // prevents a prior procedure's selection from bleeding into unrelated notes.
- const hasCariesRiskField = (EXAM_FINDINGS_CONFIG[procedureId] || []).some(s =>
+ const hasCariesRiskField = iccCariesRisk || (EXAM_FINDINGS_CONFIG[procedureId] || []).some(s =>
  [...(s.fields || []),...(s.rows || []).flat()].some(f => f.label === "caries risk")
 );
  const CARIES_CODES = {
@@ -30153,7 +30159,10 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  position: "absolute", top: 0, left: 0, right: 0, zIndex: 4,
  "--map-zoom-from": zoomFrom,
  transformOrigin: "top left",
- animation: "mapZoomOut 420ms cubic-bezier(.4,0,.7,.4) both",
+ // 400ms matches the home-exit timer below (was 420 vs 400 — the map was
+ // yanked ~20ms before its animation finished). Gentler ease-out than the
+ // old cubic-bezier(.4,0,.7,.4), which read abrupt on the way out.
+ animation: "mapZoomOut 400ms cubic-bezier(.4,0,.2,1) both",
  pointerEvents: "none",
  } : null;
  const [searchQuery, setSearchQuery] = useState("");
@@ -32451,9 +32460,13 @@ export default function App() {
  }
  /* Exit: same geometry in reverse — the open map shrinks back toward
     its landing-card rect and fades; the home render then swaps in and
-    .fade-in plays as the grid's entrance. */
+    .fade-in plays as the grid's entrance. The opacity reaches 0 well
+    before the shrink completes (by 55%) so the heavy deep-scale tail of
+    a complex schematic is masked behind the fade — the grid underneath
+    is already revealed, so the dismiss reads smooth instead of janky. */
  @keyframes mapZoomOut {
  from { transform: none; opacity: 1; }
+ 55% { opacity: 0; }
  to { transform: var(--map-zoom-from); opacity: 0; }
  }
 
