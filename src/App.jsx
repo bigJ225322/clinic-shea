@@ -5505,6 +5505,21 @@ function renderTemplate(raw, f) {
  t = sub(t, /\n[ \t]*-[ \t]*endo testing:[^\n]*/g, "", "endoTesting-strip");
  }
 
+ // Occlusal assessment: omit the stub when left blank (Restorative COE —
+ // placeholder says "blank to omit"). Only an EMPTY stub is stripped, so the
+ // peds Class-summary fill and any typed 703 value are preserved.
+ if (!(ef["occlusal assessment"] || "").trim()) {
+ t = sub(t, /\n[ \t]*-[ \t]*occlusal assessment:[ \t]*(?=\n|$)/g, "", "occlusalAssessment-strip");
+ }
+
+ // Amalgam findings: the QuickPick always writes the plural "Amalgam
+ // Restorations:"; rewrite to the singular "Amalgam Restoration:" when only a
+ // single tooth is listed (one comma-separated token).
+ t = t.replace(/Amalgam Restorations:[ \t]*([^\n]+)/g, (_m, teeth) =>
+ teeth.split(",").filter(s => s.trim()).length === 1
+ ? `Amalgam Restoration: ${teeth}`
+ : _m);
+
  // Other symptoms (urgent care HPI): omit "- other symptoms:" line when blank.
  // The form field's placeholder says "blank to omit" so users expect this.
  if (!(ef["other symptoms"] || "").trim()) {
@@ -8826,7 +8841,9 @@ const EXAM_FINDINGS_CONFIG = {
  [{ label: "odontogram", type: "odontogram",
  displayLabel: "Radiographic & Intraoral Hard Tissue Findings",
  placeholder: "List each finding on its own line. Press Enter to add another.",
- seedOnFocus: true }],
+ // quickPickPrimary → the quick-add tooth picker defaults to the primary
+ // (A–T) dentition for peds; the student can still toggle to adult teeth.
+ seedOnFocus: true, quickPick: "findings", quickPickPrimary: true }],
  [{ type: "peds-occlusal" }],
  ],
  },
@@ -9034,10 +9051,14 @@ const QUICKPICK_FINDINGS = [
  { key: "Attrition", label: "Attrition", surfaces: true },
  { key: "Erosion", label: "Erosion", surfaces: true },
  { key: "Abfraction", label: "Abfraction", surfaces: true },
+ // Missing teeth — whole-tooth, no surfaces. Note line reads "Missing: …".
+ { key: "Missing", label: "Missing", surfaces: false },
  // Existing restorations charted on the odontogram — "existing" is implied by
- // the findings context, so the labels stay short. Composite takes surfaces;
- // full crowns are whole-tooth.
+ // the findings context, so the labels stay short. Composite & amalgam take
+ // surfaces; full crowns are whole-tooth. Amalgam's key is the plural
+ // "Amalgam Restorations"; the note render singularizes it for a lone tooth.
  { key: "Resin Composite", label: "Composite", surfaces: true },
+ { key: "Amalgam Restorations", label: "Amalgam", surfaces: true },
  { key: "PFM", label: "PFM", surfaces: false },
  { key: "Ceramic", label: "Ceramic", surfaces: false },
 ];
@@ -9182,7 +9203,7 @@ const QUICK_BTN_STYLE = {
  transition: "background 120ms, color 120ms, border-color 120ms, transform 120ms cubic-bezier(.2,.6,.2,1)",
 };
 
-function QuickPick({ mode, value, onChange }) {
+function QuickPick({ mode, value, onChange, primary = false }) {
  const [activeType, setActiveType] = useState(null);
  const [otherOpen, setOtherOpen] = useState(false);
  const types = mode === "treatment"? QUICKPICK_TREATMENTS: QUICKPICK_FINDINGS;
@@ -9223,7 +9244,8 @@ function QuickPick({ mode, value, onChange }) {
  {active && (
  <div style={{ marginTop: "8px" }}>
  <ToothSurfaceInput key={active.key} autoOpen value={tsiValue}
- onChange={handleTsi} withSurfaces={useSurfaces} buildupMode={!!active.buildup} />
+ onChange={handleTsi} withSurfaces={useSurfaces} buildupMode={!!active.buildup}
+ defaultPrimary={primary} />
  {active.buildup && (
  <div style={{ fontSize: "11px", color: "var(--ink-faint)", fontStyle: "italic",
  marginTop: "5px", fontFamily: "'Geist', sans-serif" }}>
@@ -10510,6 +10532,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  seedOnFocus={field.seedOnFocus} />
  {field.quickPick && (
  <QuickPick mode={field.quickPick} value={value || ""}
+ primary={field.quickPickPrimary}
  onChange={(v) => update(field.label, v)} />
 )}
  </>
