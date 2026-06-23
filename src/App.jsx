@@ -3735,11 +3735,11 @@ const DEFAULT_FIELDS = {
  // poeOnly: when true for POE (1091), strips the Prophy section from the note
  // and hides the perio chart & OHI form sections.
  poeOnly: false,
- // noTreatmentsPlanned: when true for POE/Peds/Restorative COE, strips the
+ // noTreatmentsPlanned: when true for POE/Peds, strips the
  // "Treatment planned for the following treatments:" block and the
  // "Thoroughly reviewed all treatment options..." boilerplate paragraph
- // from the note. For Restorative COE, also drops "treatment plan" from
- // "- NV: treatment plan".
+ // from the note. (Restorative COE uses the separate "None" findings
+ // checkbox — NO_FINDINGS_TEXT — instead.)
  noTreatmentsPlanned: false,
  // tookBitewings: default true — templates ship with "Took 4 bitewings; …"
  // baked in. Unchecking strips the bitewings phrase, leaving just the
@@ -4138,19 +4138,17 @@ function renderTemplate(raw, f) {
  t = t.replace(/\(with (?:an )?assistant using HVE\)/g, "(with Isodry)");
 
  // -------- 0b. Strip the treatment plan section when the user checks
- // "No treatments planned" on the exam findings form. The
+ // "No treatments" on the POE / Peds exam findings form. The
  // "Treatment planned for the following treatments:" heading,
  // its dash stub, and the boilerplate "Thoroughly reviewed all
  // treatment options..." paragraph (POE) / "Findings & treatment
  // options... signed treatment plan." paragraph (Peds) all go.
- // For Restorative COE, also drop "treatment plan" from the
- // "- NV: treatment plan" line. --------
+ // (Restorative COE uses a separate "None" findings checkbox instead.) --------
  if (f.noTreatmentsPlanned) {
  t = t.replace(
  /Treatment planned for the following treatments:\n[\s\S]*?(?:tx plan\.|signed treatment plan\.)\s*\n/,
  ""
 );
- t = t.replace(/(-\s*NV:)\s*treatment plan\b/, "$1");
  }
 
  // -------- 0c-perio. perioProbed = false strips the perio chart block from
@@ -8422,7 +8420,9 @@ const EXAM_FINDINGS_CONFIG = {
  [{ label: "odontogram", type: "odontogram",
  displayLabel: "Updated Odontogram With Clinical And Radiographic Findings",
  placeholder: "List each finding on its own line. Press Enter to add another.",
- seedOnFocus: true, showNoTxPlanCheckbox: true, quickPick: "findings" }],
+ // "None" checkbox in this section's header fills the odontogram with the
+ // no-findings boilerplate (NO_FINDINGS_TEXT) for a clean, caries-free exam.
+ seedOnFocus: true, showNoFindingsCheckbox: true, quickPick: "findings" }],
  ],
  },
  {
@@ -9640,6 +9640,10 @@ function HelpPopup({ children, align = "left", width = "240px" }) {
 );
 }
 
+// Boilerplate the Restorative COE "None" checkbox writes into the findings
+// odontogram — a clean exam with nothing to chart.
+const NO_FINDINGS_TEXT = "Did not note any restorations or signs of pathology.";
+
 function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle,
  fields, setField }) {
  // Local toggle for the perio COE Dx engine (square "Dx" button next to
@@ -10451,7 +10455,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
 
  return (
  <div key={field.label} style={{ marginBottom: "9px" }}>
- {(display || field.showNoTxPlanCheckbox) && (
+ {(display || field.showNoFindingsCheckbox) && (
  <div style={{
  display: "flex", alignItems: "center", justifyContent: "space-between",
  gap: "10px", marginBottom: "3px",
@@ -10463,7 +10467,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  {display}
  </label>
 ): <span style={{ flex: 1 }} />}
- {field.showNoTxPlanCheckbox && (
+ {field.showNoFindingsCheckbox && (
  <label style={{
  display: "flex", alignItems: "center", gap: "5px",
  fontSize: "10px", color: "var(--ink-soft)",
@@ -10471,11 +10475,11 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  whiteSpace: "nowrap", letterSpacing: "0.02em",
  }}>
  <input type="checkbox"
- checked={!!fields.noTreatmentsPlanned}
- onChange={e => setField("noTreatmentsPlanned", e.target.checked)}
+ checked={findings[field.label] === NO_FINDINGS_TEXT}
+ onChange={e => update(field.label, e.target.checked? NO_FINDINGS_TEXT: "")}
  style={{ width: "13px", height: "13px",
  accentColor: "var(--teal)", cursor: "pointer", margin: 0 }} />
- <span>No treatments planned</span>
+ <span>None</span>
  </label>
 )}
  </div>
