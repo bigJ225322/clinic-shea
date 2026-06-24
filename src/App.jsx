@@ -2271,7 +2271,7 @@ const RVU_DATA = [
 const CATEGORIES = [
  { id: "exams", label: "Exams", groups: [
  { id: "exam-procs", label: "Procedures", procedures: [
- // Order per Jake: most common at top (POE, COEs, treatment-plan
+ // Order per the owner: most common at top (POE, COEs, treatment-plan
  // presentation), then screening, then urgent care and consults.
  { id: "1091", label: "POE" },
  { id: "573", label: "Perio COE" },
@@ -2546,7 +2546,7 @@ function flattenCategory(cat) {
  const procs = [];
  for (const grp of cat.groups) {
  for (const p of grp.procedures) {
- // Procedure labels render bare — no "Group — " prefix — per Jake.
+ // Procedure labels render bare — no "Group — " prefix — per the owner.
  // The group is still tracked in groupLabel (used by search ranking),
  // it just isn't shown in the Procedure dropdown.
  procs.push({ id: p.id, label: p.label, groupId: grp.id, groupLabel: grp.label });
@@ -2575,7 +2575,7 @@ const FLAT_CATEGORIES = (() => {
  if (cat.id === "restorative") {
  const lab = CATEGORIES.find(c => c.id === "lab");
  if (lab) ordered.push(lab);
- // ICC sits right after Lab Scripts in the dropdown (per Jake), not at its
+ // ICC sits right after Lab Scripts in the dropdown (per the owner), not at its
  // canonical CATEGORIES position (after Oral Surgery). It's a note-only
  // clinic so it never appears in the Steps browse.
  const icc = CATEGORIES.find(c => c.id === "icc");
@@ -5603,7 +5603,7 @@ function renderTemplate(raw, f) {
  t = t.replace(/\n+\s*Prophy:\s*\n+/, "\n\n");
  // 2. Strip the perio chart block — heading + every dash-bulleted
  // sub-line (probing depths, BoP, recession, furcation, mobility,
- // mucogingival defects, gingiva). Per Jake: if no prophy this
+ // mucogingival defects, gingiva). Per the owner: if no prophy this
  // visit, no perio chart either — these are charted as one workflow.
  t = t.replace(
  /\n\s*Updated perio EPR & perio chart:\s*\n(?:[ \t]*-[ \t]*[^\n]*\n)*/i,
@@ -5616,7 +5616,7 @@ function renderTemplate(raw, f) {
  "\n\n"
  );
  // 4. Strip the OHI sentence ("Reviewed OHI with demonstration ...").
- // Per Jake: if no prophy this visit, no OHI offered either. This
+ // Per the owner: if no prophy this visit, no OHI offered either. This
  // also removes whatever extension the OHI-checkboxes added (e.g.
  // "& completed nutritional counseling and tobacco cessation.").
  t = t.replace(
@@ -5926,7 +5926,7 @@ const ROOT_TOKENS = {
  * SMALL PRESENTATIONAL HELPERS
  * ==========================================================================*/
 const labelStyle = {
- // Title-case (source text shown as-is), centered field labels per Jake.
+ // Title-case (source text shown as-is), centered field labels per the owner.
  // Earlier passes went uppercase → lowercase; the all-lowercase variant
  // mangled acronyms ("PD Range" → "pd range", "BP" → "bp"). Letting the
  // source string flow through unchanged keeps "Age", "PD Range", "Blood
@@ -7676,7 +7676,7 @@ function Checkbox({ checked, onChange, label, hint }) {
 
 // Small section label inside a card (between Hairlines).
 function SubsectionLabel({ children }) {
- // Centered subsection header (2026-05-27 per Jake). Letter-spacing
+ // Centered subsection header (2026-05-27 per the owner). Letter-spacing
  // is preserved on the tracked caps; with centering the marginLeft
  // optical-correction trick isn't needed (the whole block is
  // symmetric about its center).
@@ -8712,7 +8712,7 @@ const EXAM_FINDINGS_CONFIG = {
  },
  {
  // OHI section hides in POE-only mode (no prophy this visit).
- // Per Jake: if no prophy, no "Reviewed OHI with demonstration"
+ // Per the owner: if no prophy, no "Reviewed OHI with demonstration"
  // sentence and no nutritional/tobacco offer. The poeOnly
  // substitution in renderTemplate also strips the OHI sentence
  // from the rendered note when poeOnly is true.
@@ -8792,7 +8792,7 @@ const EXAM_FINDINGS_CONFIG = {
  // with periodontal health + rationale + maintenance interval just
  // before NV, so the form flows top-down matching the rendered
  // note's order). The Maintenance interval used to live in its own
- // Assessment section here, but Jake wanted it adjacent to the
+ // Assessment section here, but the owner wanted it adjacent to the
  // periodontal-health + rationale fields (which live in NoteBuilder
  // for state-architecture reasons), so it moved up to NoteBuilder
  // and writes to fields.maintenanceInterval.
@@ -8934,7 +8934,7 @@ const EXAM_FINDINGS_CONFIG = {
 };
 
 // Title-case every word: split on spaces, capitalize first char of each word,
-// preserve internal capitalization so acronyms (BoP, PD, OHI) survive. Per Jake
+// preserve internal capitalization so acronyms (BoP, PD, OHI) survive. Per the owner
 // the form labels should be true Title Case ("Plaque Level", not "Plaque level").
 // All words capitalized — no a/the/of skip-list, because med-tech labels read
 // cleaner with consistent capitalization (e.g. "Out Of Range" not "Out of Range").
@@ -9637,7 +9637,7 @@ function HelpPopup({ children, align = "left", width = "240px" }) {
  // Visual matches RPDInfoIcon (italic-i in oxblood/ink-soft circle)
  // so the whole site uses one info-icon convention. The "?" version
  // was the older convention; "i" is the current one. Updated
- // 2026-05-27 per Jake.
+ // 2026-05-27 per the owner.
  display: "inline-flex", alignItems: "center", justifyContent: "center",
  width: "16px", height: "16px",
  borderRadius: "50%",
@@ -10181,7 +10181,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  // Brushing options carry their own unit ("/day" or "few times per
  // week") inside the dropdown — the old "/day" suffix outside the
  // select assumed every option was per-day, which left no room for
- // a "few times per week" option Jake wanted.
+ // a "few times per week" option the owner wanted.
  const brushOpts = ["1x/day", "2x/day", "3x/day", "a few times per week"];
  const flossOpts = ["1x/week", "2x/week", "3-4x/week", "1x/day"];
  const techOpts = ["poor", "average", "good"];
@@ -12693,7 +12693,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </div>
  </div>
  {/* Maintenance interval — moved here from the ExamFindings
- "Assessment" section per Jake so it sits in flow with the
+ "Assessment" section per the owner so it sits in flow with the
  periodontal-health + rationale fields (and just above NV).
  Writes to fields.maintenanceInterval; substitution lives in
  renderTemplate step 6f2. */}
@@ -12712,7 +12712,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  </>
 )}
 
- {/* Order updated 2026-05-27 per Jake: form fields should appear in
+ {/* Order updated 2026-05-27 per the owner: form fields should appear in
  the same order the corresponding text appears in the note template.
  For peds restorative notes the template starts with nitrous + LA
  admin, then the restoration itself. Previously removedRestoration
@@ -13367,7 +13367,7 @@ function Browse({
  const merged = useMemo(() => mergeEquipment(perProc), [perProc]);
  const totalItems = Object.values(merged).reduce((sum, list) => sum + list.length, 0);
 
- // Entry order = render order. "Your Locker" sits LAST (Jake's call):
+ // Entry order = render order. "Your Locker" sits LAST (the owner's call):
  // the sterilization window is the first stop and the locker is your own
  // stuff — you grab it whenever, so it shouldn't lead the list.
  const groupMeta = {
@@ -13411,7 +13411,7 @@ function Browse({
  return (
  <div className="layout" style={{
  // Left column: navigation + search + items list. Right column: the
- // steps article (the actual content students read). Per Jake, the
+ // steps article (the actual content students read). Per the owner, the
  // left column was wider than needed — the procedure picker and item
  // checklists don't need that much horizontal room, and the steps
  // article gets squeezed when bullet text wraps mid-clause. Trimmed
@@ -13517,7 +13517,7 @@ function Browse({
  voice (just scaled down), so the items panel reads as a peer of
  the right-hand content card rather than as small utility chrome.
  Earlier 13px/500 felt like form-label tier and got visually lost.
- The decorative Unicode icons (⚙ ❏ ✦) were removed per Jake — the
+ The decorative Unicode icons (⚙ ❏ ✦) were removed per the owner — the
  bucket label alone reads clearly without them. */}
  <div style={{
  display: "flex", alignItems: "baseline", gap: "10px",
@@ -16258,7 +16258,7 @@ function PETimeline({ pes, selectedId, onSelect, groupBy = "semester", onGroupBy
  <div style={{ marginBottom: "20px" }}>
  {/* The "TIMELINE" / "BY CATEGORY" header was redundant with the
  Semester/Category toggle on the right (the active button names
- the current view). Cut per Jake — the toggle alone communicates
+ the current view). Cut per the owner — the toggle alone communicates
  the group-by state. */}
  <div style={{
  display: "flex", alignItems: "center", justifyContent: "flex-end",
@@ -16694,7 +16694,7 @@ function PEDetail({ pe, onShowSteps }) {
 
 function PEs({ onShowSteps }) {
  const [selectedId, setSelectedId] = useState(null);
- // Default to Semester grouping per Jake — semester is the lens students
+ // Default to Semester grouping per the owner — semester is the lens students
  // actually plan around (which PEs are due this term vs next), and
  // grouping by Type buries the date-relevant grouping under category.
  const [groupBy, setGroupBy] = useState("semester"); // "type" | "semester"
@@ -16718,7 +16718,7 @@ function PEs({ onShowSteps }) {
  <PETimeline pes={PES_ALL} selectedId={selectedId} onSelect={handleSelect}
  groupBy={groupBy} onGroupByChange={setGroupBy} />
 
- {/* Detail panel — full-width. Empty state renders nothing per Jake;
+ {/* Detail panel — full-width. Empty state renders nothing per the owner;
  the timeline boxes are clickable affordance enough. */}
  <div>
  {selectedPE && <PEDetail pe={selectedPE} onShowSteps={onShowSteps} />}
@@ -19895,7 +19895,7 @@ function RPDPaperFormArchDrawing({
 // printable / screenshot-able so it can be copied directly to the paper
 // form.
 function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose = false }) {
- // Collapsed by default (Jake's call): the interactive chart is already
+ // Collapsed by default (the owner's call): the interactive chart is already
  // on screen right above this form, so auto-expanding the same drawing
  // twice was redundant. The toggle keeps the paper form's drawing one
  // click away; its position still mirrors the form's header zone.
@@ -23563,7 +23563,7 @@ function RPDHelper() {
  severity word ("Notice:", "Warning:", "Important:") leads the
  message itself, and the background tint still distinguishes
  severity levels. */}
- {/* RPD engine red-flag notices removed per Jake's instruction 2026-05-27.
+ {/* RPD engine red-flag notices removed per the owner's instruction 2026-05-27.
  The engine still computes redFlags internally (used by other logic like
  the FPD-recommended verdict); just no longer surfaced as a notice
  panel under the standard output. To re-enable: uncomment the original
@@ -25021,7 +25021,7 @@ function Guides() {
 // any "Comprehensive CD Guide" compilation). See CASES-BUILD-PLAN.md Step 3
 // for the binding source map.
 //
-// Source map for cd-conventional (all in /Users/jakeshea/Documents/Dentistry Files/ALL CD FILES/):
+// Source map for cd-conventional (all in ~/Documents/Dentistry Files/ALL CD FILES/):
 //   Visit 1 + Lab #1 — diagnostic casts + custom trays:
 //     • Custom tray_Boxing_ Technique.pdf (Dr. Swee C. Tan)
 //     • Custom Tray Grading Sheet_2022.pdf
@@ -25103,7 +25103,7 @@ function Guides() {
 //        prior version ("Final wax contouring + processing + lab remount")
 //        dressed up the LAB's festoon/process/remount as a student
 //        procedure — leaked framing from the disqualified AI "Comprehensive
-//        Guide". Reality (Jake confirmed firsthand): the case goes to UIC's
+//        Guide". Reality (the owner confirmed firsthand): the case goes to UIC's
 //        central lab (5th floor); the student only does the handoff. This
 //        tile now shows handoff logistics only. Verified vs Delivery of
 //        Final Denture(2).pdf p.1 + Swade p.91-92.
@@ -25386,7 +25386,7 @@ const PATHWAYS = [
  // heat-process, deflask, remount, finish — is LAB work, not a
  // student procedure. An earlier version of this detail wrote those
  // as imperatives to the student (same leaked lab-as-student framing
- // the CD pathway's L5 was purged of on 2026-05-29); Jake caught it
+ // the CD pathway's L5 was purged of on 2026-05-29); the owner caught it
  // here too. Student touches = the handoff and the pickup, period.
  title: "Send to lab for processing",
  body: "Once the wax try-in is approved, the case goes to the lab for processing — the wax is replaced with heat-cured acrylic and the RPD comes back finished and polished around the framework.",
@@ -30680,10 +30680,10 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  };
 
  return (
- // Open-map view runs flush to the tab switcher (Jake: no vertical
+ // Open-map view runs flush to the tab switcher (the owner: no vertical
  // distance) — the nav's circled-arrow home cue is the only chrome.
  <div ref={pathwaysRootRef} className="fade-in" style={{ maxWidth: "880px", margin: "0 auto", padding: selectedPathway ? "0 0 40px" : "8px 0 40px", textAlign: "left", position: "relative", ...rootZoomStyle }}>
- {/* Search input removed per Jake — Maps opens to a single unselected
+ {/* Search input removed per the owner — Maps opens to a single unselected
  domain pill; selecting it opens the map directly. */}
 
  {/* Landing: pathway cards before any domain is picked; the bare pill row
@@ -30691,7 +30691,7 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  the shrinking map overlay) so the cards are revealed by the animation. */}
  {(nothingSelected || exiting) && MAPS_LANDING_CARDS ? (
  <div style={{ marginBottom: "10px" }}>
- {/* Landing grid (2026-06-12, Jake's spec): flat tiles in the page's
+ {/* Landing grid (2026-06-12, the owner's spec): flat tiles in the page's
  own background — no paper surface — each previewing its WHOLE map
  in miniature. Clicking a card FLIP-zooms into the full map (the
  zoomFromRef capture below + the layout effect up top). */}
@@ -32129,7 +32129,7 @@ const TABS = [
  // low-traffic reference surfaces answering the same question ("what does
  // the program still require of me"), so they share a single nav slot.
  // Internal ids "rvus"/"pes" live on as the toggle views inside <Reqs>.
- // Tucked between Maps and RPD (per Jake) so the row doesn't close on the
+ // Tucked between Maps and RPD (per the owner) so the row doesn't close on the
  // stress-inducing progress tracker — RPD, the cool feature, ends the row.
  { id: "reqs", label: "Reqs", hint: "RVU progress & performance exams" },
  // RPD — design helper for removable partial dentures.

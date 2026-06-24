@@ -16,7 +16,7 @@ Loop reads this file each iteration. Check off groups as you finish. Add notes i
 - [ ] ~~Inventory + source-map.~~ Create `VETTING-SOURCE-MAP.md` with three tables:
     1. **Chapter → Swade source**: every chapter id (96 total: 17 direct, 30 indirect, 28 CD, 21 RPD) mapped to the Swade page range that covers it (or "no direct Swade match" if UIC-lecture-only).
     2. **Swade topic → Chapter**: scan Swade page-by-page; for each distinct topic Swade covers, either name the chapter that covers it OR mark `[GAP]`. **This is the gap-finding inventory.**
-    3. **Dentistry Files lecture → Chapter**: same for the lecture PDFs in the 5 subdirectories under `/Users/jakeshea/Documents/Dentistry Files/`.
+    3. **Dentistry Files lecture → Chapter**: same for the lecture PDFs in the 5 subdirectories under `~/Documents/Dentistry Files/`.
     
     This file unlocks every subsequent iteration. Loop should not start vetting or gap-filling until this exists.
 

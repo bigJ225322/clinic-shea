@@ -5,7 +5,7 @@
 
 import {
   rpdMakeBlankCase, rpdRunEngine,
-} from "/Users/jakeshea/Desktop/clinic-shea/.claude/worktrees/distracted-elbakyan-0b643b/src/rpd-engine.js";
+} from "~/Desktop/clinic-shea/.claude/worktrees/distracted-elbakyan-0b643b/src/rpd-engine.js";
 
 const setMissing = (c, teeth) => {
   for (const n of teeth) c.teeth[n].status = "missing";

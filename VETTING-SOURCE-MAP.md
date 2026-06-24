@@ -106,8 +106,8 @@ Visit structure cross-checks to Swade's RPD sequence: main path V1-V9 = Swade #4
 Built iteration 1, autonomous loop. Three tables below, plus a gap analysis section identifying topics Swade covers that the Cases tab does NOT.
 
 **Sources:**
-- Swade UIC clinical manual: `/Users/jakeshea/Desktop/clinic (swade).pdf` (220 pages)
-- Dentistry Files: `/Users/jakeshea/Documents/Dentistry Files/`
+- Swade UIC clinical manual: `~/Desktop/clinic (swade).pdf` (220 pages)
+- Dentistry Files: `~/Documents/Dentistry Files/`
 
 ---
 

@@ -210,7 +210,7 @@ Sources: **Mark300-Inst manual** + **Articulator+Facebow lec** + **Jaw Relation 
 - ✅ mount maxillary via face-bow, mandibular via CR record — Swade ("mount maxillary cast using facebow & mandibular cast using bite registration/wax rims", line 3249). Mounting-stone set "~10–15 min" = ⓘ.
 - **✂ CUT (no source):** the "white table for setup / black customized incisal table built from the protrusive record" (zero hits; and per clinic reality the protrusive/custom-table workflow isn't done).
 
-> ⚠ **Flag for the CR-record chapter (next, ~line 756):** it still says **"Regisil PB"** — but the Jaw Relation Records lecture *literally uses "Regisil PB"* (line 252), so it's source-accurate there (unlike the cd-ch15 delivery use Jake renamed). Will confirm at that chapter.
+> ⚠ **Flag for the CR-record chapter (next, ~line 756):** it still says **"Regisil PB"** — but the Jaw Relation Records lecture *literally uses "Regisil PB"* (line 252), so it's source-accurate there (unlike the cd-ch15 delivery use the owner renamed). Will confirm at that chapter.
 
 ---
 
@@ -305,7 +305,7 @@ Primary source: **Clinical Evaluation of the Trial Denture lec** (try-in steps) 
 - ✅ Protrusive record (5–6 mm, Regisil, ~30 s) — Clinical Eval step 6 + Swade.
 - **✂ CUT:** **"Boley gauge"** (×2 here + the bracket-table one = 3 in cd-ch13; ALSO retro-cut one I'd missed in cd-ch11) → "caliper"; the **10 per-step "(N min)" timing annotations**.
 
-> ⚠ **FLAG for Jake — remount-jig callouts [23]/[24]:** the chapter has a "face-bow remount jig" + a lab-Rx callout ("remount the maxillary cast … clinical remount casts"). These ARE source-backed (Delivery lec "Fabrication of Face-bow remount jig" + Swade lab-remount), so they survive the source audit — BUT they're the **lab-side remount**, which connects to the chairside clinical remount you cut from cd-ch15. Per Sully the lab does the remount and you don't. **Your call whether to also strip the remount-jig prep from the try-in chapter** (sourced ≠ "you do it"). Left in for now, flagged.
+> ⚠ **FLAG for the owner — remount-jig callouts [23]/[24]:** the chapter has a "face-bow remount jig" + a lab-Rx callout ("remount the maxillary cast … clinical remount casts"). These ARE source-backed (Delivery lec "Fabrication of Face-bow remount jig" + Swade lab-remount), so they survive the source audit — BUT they're the **lab-side remount**, which connects to the chairside clinical remount you cut from cd-ch15. Per Sully the lab does the remount and you don't. **Your call whether to also strip the remount-jig prep from the try-in chapter** (sourced ≠ "you do it"). Left in for now, flagged.
 
 ---
 
@@ -321,7 +321,7 @@ Primary source: **26_Denture_processing(1) lec** + **Processing+Festooning lec**
 - ✅ Wax elimination (boil-out + detergent), deflasking, finish/polish — processing lec + Swade. PMMA chemistry (polymer/monomer/benzoyl peroxide) — Processing+Festooning 183–199.
 - **✂ CUT:** 7 per-step "(N min)" timings; wax-elimination "at 100 °C **for 4–5 min**" → "in boiling water" (kept boil-out, cut the fabricated time).
 
-> ⚠ **FLAG (same as cd-ch13, Jake's call):** Step 6 "Lab remount + equilibration" uses the **face-bow remount jig + clinical remount cast** — source-backed (Delivery lec) and genuinely lab-side, but part of the remount theme you cut at delivery. Left in + flagged.
+> ⚠ **FLAG (same as cd-ch13, the owner's call):** Step 6 "Lab remount + equilibration" uses the **face-bow remount jig + clinical remount cast** — source-backed (Delivery lec) and genuinely lab-side, but part of the remount theme you cut at delivery. Left in + flagged.
 
 ---
 
@@ -367,7 +367,7 @@ Primary source: **Clinical Eval of Trial Denture lec** (phonetics section) + JR 
 - ✅ "practice resolves transient issues over 1–2 wks" — Delivery lec patient-ed (speak/practice).
 - ⓘ Pound phonetic framework — cited in JR lec (Pound E. 1951).
 
-> ⚠ **FLAG for Jake — unsourced-but-valid sections:** the **/p/–/b/–/m/ bilabial** section (VDO-too-high indicator) and the **vowel-quality** section are standard Pound/prosthodontic phonetics but are **NOT in the UIC phonetics materials** (which cover fricative + sibilant + the 60–70 count only). They're clinically correct, not fabricated — so unlike a made-up number I didn't auto-cut them. **Your call: keep as general knowledge, or cut for strict sourcing.** (bilabials = ⚠ zero corpus hits; vowels likewise.)
+> ⚠ **FLAG for the owner — unsourced-but-valid sections:** the **/p/–/b/–/m/ bilabial** section (VDO-too-high indicator) and the **vowel-quality** section are standard Pound/prosthodontic phonetics but are **NOT in the UIC phonetics materials** (which cover fricative + sibilant + the 60–70 count only). They're clinically correct, not fabricated — so unlike a made-up number I didn't auto-cut them. **Your call: keep as general knowledge, or cut for strict sourcing.** (bilabials = ⚠ zero corpus hits; vowels likewise.)
 
 ---
 
@@ -386,7 +386,7 @@ Sources: **IMMEDIATE DENTURES - Dr. Agrawal lec** + Immediate Dentures_1_ + Trea
 
 **Implant-overdenture half (blocks 42–52):**
 - ✅ **Concept** sourced: implant overdenture / **IOD** (Huddle 15 line 21; Treatment planning 432), **McGill** (Delivery lec).
-- ⚠ **FLAG for Jake — detailed Locator-attachment workflow** (colored inserts clear→red, patrix/matrix housing pickup, 6–18 mo insert life, ball/bar options): valid implant prosthodontics but **NOT in the UIC CD materials** (matrix/patrix hits are unrelated tooth-mould/resin). Same as cd-ch18: real, not fabricated → left in, flagged. **Your call: keep as reference vs cut (out of CD-lecture scope).**
+- ⚠ **FLAG for the owner — detailed Locator-attachment workflow** (colored inserts clear→red, patrix/matrix housing pickup, 6–18 mo insert life, ball/bar options): valid implant prosthodontics but **NOT in the UIC CD materials** (matrix/patrix hits are unrelated tooth-mould/resin). Same as cd-ch18: real, not fabricated → left in, flagged. **Your call: keep as reference vs cut (out of CD-lecture scope).**
 
 ---
 
@@ -403,7 +403,7 @@ Primary source: **Reline rebase and repair - Bin Yang lec** + Processing+Festoon
 - ⓘ "**90-day rule**" callout (early reline = delivery fit error, not resorption) — sound clinical logic, but the named "rule" isn't sourced.
 - **✂ CUT:** [12] worn-occlusal-scheme fix "**clinical remount + selective grinding** (if minor) OR remake" → "**remake**" — unsourced (zero hits in Bin Yang) + the clinical-remount you cut at delivery; remake is the realistic path.
 
-> **Remount/grinding sweep:** remaining "clinical remount / selective grinding" hits are the already-FLAGGED cd-ch13/14 lab-remount (sourced, lab-side — left for Jake) + cd-ch22 (occlusal drift) + cd-ch23 (adjustment) — will handle those at their chapters.
+> **Remount/grinding sweep:** remaining "clinical remount / selective grinding" hits are the already-FLAGGED cd-ch13/14 lab-remount (sourced, lab-side — left for the owner) + cd-ch22 (occlusal drift) + cd-ch23 (adjustment) — will handle those at their chapters.
 
 ---
 
@@ -447,11 +447,11 @@ Sources: lecture **Complete Denture Delivery and follow-up.txt** ("V. Follow-up"
 
 ---
 
-## cd-ch24 — "Edge-case patient management"  *(✂ CUT ENTIRELY — Jake's decision)*
+## cd-ch24 — "Edge-case patient management"  *(✂ CUT ENTIRELY — the owner's decision)*
 
 Corpus check (grep across Swade + all 51 lectures): **0 hits** for pilocarpine / cevimeline / Salagen / Evoxac, the saliva-substitute brands (Biotène/Oasis/MouthKote/BioXtra), bisphosphonate / MRONJ / osteonecrosis, soft-liner brands (Permasoft/Mollosil), Locator / ball attachments, gag pharmacology (benzocaine/ondansetron), dexterity conditions (arthritis/Parkinson's), and TMD/temporomandibular. The whole chapter was AI-synthesized, beyond UIC CD-course scope, with fabricated drug doses (pilocarpine 5 mg TID, benzocaine 20%, etc.) and invented stats ("30% of natural dentition", "4–6 weeks", "delay 8–12 weeks").
 
-- **✂ CUT:** entire `cd-ch24` chapter object removed from `guides-data.json` (~7.8 KB). Jake chose "cut the whole chapter."
+- **✂ CUT:** entire `cd-ch24` chapter object removed from `guides-data.json` (~7.8 KB). the owner chose "cut the whole chapter."
 - Reference cleanup so nothing dangles: removed the App.jsx stub-registry entry + **5** cross-link `{ guideId:"cd", chapterId:"cd-ch24" }` sites (Cases/Maps reading lists), and reworded the **3** prose "reading order" references in other chapters (the combined-treatment planner + the RPD TMD pathway) to drop the edge-case pointer. `cd-ch24` now appears nowhere in the repo.
 - Numbering: left a gap at 24 (the data already skips 26), consistent with the existing structure — no renumber.
 
@@ -469,11 +469,11 @@ This is a **meta/navigation page** (study order by patient type, 10 pathways), n
 
 ---
 
-## cd-ch27 — "Overdentures — tooth-supported & implant"  *(✂ STRIPPED to sourced basics — Jake's call)*
+## cd-ch27 — "Overdentures — tooth-supported & implant"  *(✂ STRIPPED to sourced basics — the owner's call)*
 
 Was "Attachment systems for implant overdentures…" — 5 attachment systems (Locator/ball/bar/magnetic/ERA) with fabricated retention forces (1.5–5 lb etc.), angulation tolerances (40°/10°), and replacement schedules. Corpus check: the "Locator" hits are the facebow **Reference Plane Locator**; "magnetic" hits are **articulator mounting plates** — neither is a denture attachment. Ball/bar/ERA/retention-force specifics = 0 hits.
 
-- **✂ STRIPPED:** rebuilt the chapter (16 blocks → 6) keeping only what's sourced, so its 6 cross-refs still resolve. Jake chose "strip to sourced IOD basics."
+- **✂ STRIPPED:** rebuilt the chapter (16 blocks → 6) keeping only what's sourced, so its 6 cross-refs still resolve. the owner chose "strip to sourced IOD basics."
 - ✅ Sourced core kept: tooth-supported overdenture = retain sound roots (canines), **finish RCT on the overdenture abutments → prepare them → extract remaining teeth → deliver** (Immediate Dentures lecture: lines 127/129; OS consult if multiple extractions/tori, line 109); implant overdenture = **2-implant mandibular = McGill Consensus 2002 first choice** (Delivery lecture line 771). Title changed + App.jsx stub title synced.
 - **✂ CUT:** all retention-force / angulation / replacement-schedule numbers + the 5-system breakdown + the maintenance-time callout + troubleshoot block (none sourced; attachment hardware is an implant-prosth topic beyond the CD course).
 
@@ -530,7 +530,7 @@ Audit of the pathway prose at App.jsx ~24272 (description, phase details, lab-st
 - "**✂ FIXED** Step 12: "about 1 minute **(400–500 nm, rotating table)**" → "about 1 minute — not less — in the light chamber" — **Tan-Tray #10** ("Cure for about 1 min (not less)"); the nm/rotating-table prose belongs to the JRR record-base context, not the tray step.
 - Step 13 (re-cure off cast) — Tan-Tray #11 ("repeat step #10 OFF THE CAST"). ✅ Step 14 (acrylic burs, smooth borders, frenal/muscle clearance, spacer retained) — Tan-Tray finishing notes verbatim. ✅
 - Step 1 "Type III stone (microstone)" — Tan-Tray pour note ("Pour the impression in Type III stone (microstone)") + Swade 2187. ✅
-- "**➕ ADDED (Jake-approved 2026-06-11):** Immediate-denture variant — 1 mm wax on edentulous areas / 2-3 mm on dentate areas / windows in the wax as vertical stops" — **Agrawal lines 226-229 verbatim** ("CUSTOM TRAY FOR IMMEDIATE DENTURE FINAL IMPRESSION: 1 mm thickness baseplate wax on edentulous area; 2-3 mm thickness in dentate area - AND VERTICAL STOP (windows in wax)"). Window SIZE: **not specified in any source** — the card says so explicitly. "Triad and curing unchanged" = continuation of the Tan protocol (Agrawal doesn't restate the material). ⓘ
+- "**➕ ADDED (the owner-approved 2026-06-11):** Immediate-denture variant — 1 mm wax on edentulous areas / 2-3 mm on dentate areas / windows in the wax as vertical stops" — **Agrawal lines 226-229 verbatim** ("CUSTOM TRAY FOR IMMEDIATE DENTURE FINAL IMPRESSION: 1 mm thickness baseplate wax on edentulous area; 2-3 mm thickness in dentate area - AND VERTICAL STOP (windows in wax)"). Window SIZE: **not specified in any source** — the card says so explicitly. "Triad and curing unchanged" = continuation of the Tan protocol (Agrawal doesn't restate the material). ⓘ
 
 ### Lab #2 — box/pour, PPS, record bases, wax rims
 - "**✂ FIXED** Step 1: "(equal parts, thick)… 3 mm lateral… 2 mm exposed" → "3-4 mm of pumice/plaster width all around and 2-3 mm of the impression border left uncovered" — **Box verbatim** ("3-4 mm of width of pumice/plaster all around"; "2-3mm of impression borders uncovered by pumice"). "Equal parts" appears nowhere → dropped.
@@ -557,7 +557,7 @@ Audit of the pathway prose at App.jsx ~24272 (description, phase details, lab-st
 - Step 7 (incisal pin stays at zero or VDO is lost) — Wk4 ("make sure the pin is set at zero") + standard articulator logic. ✅
 
 ### Lab #5 — central-lab handoff
-- Audited previously (handoff-only reality per Jake/Sully + Swade p.91-92, p.197-198); unchanged this pass. ✅
+- Audited previously (handoff-only reality per the owner/Sully + Swade p.91-92, p.197-198); unchanged this pass. ✅
 
 # Cases-tab CD pathway entries — audit *(2026-06-11, overnight pass 2)*
 
@@ -571,13 +571,13 @@ All ten CD entries + the CD-touching cross entries (App.jsx ~26100–27470). Rea
 - **cd-iod-canine-roots** — ✅ RCT-before-prosthesis + hygiene counseling (Immediate-1 127/109). **✂ FIXED:** "(ball, magnet, Locator)" hardware menu → attachment-choice-with-faculty phrasing (ch27 standard).
 - **cd-anxious-firsttime** — ⓘ number-free behavioral synthesis (no fabricated specifics). FLAG-keep.
 - **cd-xerostomic** — ✅ retention mechanism (adhesion/cohesion/**interfacial surface tension**) = SALARI Final Impression lecture 45-47. **✂ FIXED:** "prescribe pilocarpine or cevimeline" → **pilocarpine 5 mg (Salagen) kept WITH its source** (Swade Rx reference, line ~9119) + physician coordination; **cevimeline cut** (nowhere in corpus). Conditioner brand corrected Coe-Soft → **Coe Comfort** (Swade materials: Comfort = conditioner, Soft = soft reline — the entry contradicted cd-iid's own correct distinction).
-- **cd-limited-dexterity** — **✂ CUT:** "pink ~1.5 lb / clear ~0.5 lb" Locator retention forces + insert-color system (ch24/ch27 fabrication family) → lower-retention-inserts concept with implant-team coordination. Behavioral spine (caregiver training) kept. **⏸ FLAG for Jake:** this entry + cd-anxious-firsttime + cd-xerostomic cover the same ground as the cut cd-ch24 — keep as (now number-free) navigation, or cut like ch24? Your call.
+- **cd-limited-dexterity** — **✂ CUT:** "pink ~1.5 lb / clear ~0.5 lb" Locator retention forces + insert-color system (ch24/ch27 fabrication family) → lower-retention-inserts concept with implant-team coordination. Behavioral spine (caregiver training) kept. **⏸ FLAG for the owner:** this entry + cd-anxious-firsttime + cd-xerostomic cover the same ground as the cut cd-ch24 — keep as (now number-free) navigation, or cut like ch24? Your call.
 - **cd-rapid-need** — ✅ SR Ivocap (ch14) + **microwave-cured** (denture base materials 2024, Type 5). **✂ FIXED:** "7-appointment timeline" → 8 (consistency with Swade p.80 + the rest of the app).
 - **cross-cd-rpd** — ✅ combination-syndrome concept + Kelly attribution teased in Treatment-planning lecture ("Kelly's syndrome???", line 387); the 5 classic signs are textbook-real (⏸ FLAG-keep: full list not in extracted corpus). **✂ CUT:** "1.5×/1.5x chair time" (×2, invented multiplier), "1-year clinical remount + 3-month perio recall" (invented protocol numbers; also conflicted with the lab-does-remount corrections) → regular-recall phrasing. **✂ FIXED:** "altered-cast adds D5810/D5811 (interim/diagnostic impression)" — wrong-fact: D5810/D5811 are interim complete dentures, not impression codes → reworded, no phantom code.
 - **cross-cd-iod-implants** — ✅ left intact: its specifics carry explicit citations to UIC implant docs outside tonight's corpus (PIP p.3 predoc scope, IOD ref p.29 bone height, p.31 insert schedule) — prior-session verification; not re-checkable tonight, internally consistent.
 - **rpd-implant-hybrid + repair-fractured-cd (adjacent domains, same families):** **✂ CUT** "Locator inserts wear out at 6–12 months" (×2 → IOD-ref 1–2 yr), "(~30 min)" repair duration ×2, "full strength at 30 min" (**BY 365: "pressure pot for 20 min"** → corrected to 20), "remake recommended at 6–12 mo" (unsourced timeline → definitive-solution phrasing).
 
-**Ledger correction (cd-ch24 section above):** the ch24 corpus-check line claiming "0 hits for pilocarpine/Salagen" was a false negative from a broken grep alternation — **Swade's Rx reference DOES list pilocarpine 5 mg (Salagen) for xerostomia** (cevimeline/Evoxac, the saliva-substitute brand list, MRONJ content, soft-liner brands, and the attachment forces remain genuinely absent). The ch24 cut stands on Jake's scope decision; this note corrects the record.
+**Ledger correction (cd-ch24 section above):** the ch24 corpus-check line claiming "0 hits for pilocarpine/Salagen" was a false negative from a broken grep alternation — **Swade's Rx reference DOES list pilocarpine 5 mg (Salagen) for xerostomia** (cevimeline/Evoxac, the saliva-substitute brand list, MRONJ content, soft-liner brands, and the attachment forces remain genuinely absent). The ch24 cut stands on the owner's scope decision; this note corrects the record.
 
 *Remaining 6–12 instances in the file are legitimate: the peds 6-12-year-old age range and the BWX recall intervals (ADA guidance).*
 
@@ -585,7 +585,7 @@ All ten CD entries + the CD-touching cross entries (App.jsx ~26100–27470). Rea
 
 # Treasure-trove pass — official UIC numbered resources *(2026-06-11, ~03:30)*
 
-Jake supplied the **numbered resource set Swade's own reference list points to** (`~/Downloads/Complete Denture CD Treasure Trove…`, extracted to /tmp/cdtrove). New source key — cite as **[N]**:
+the owner supplied the **numbered resource set Swade's own reference list points to** (`~/Downloads/Complete Denture CD Treasure Trove…`, extracted to /tmp/cdtrove). New source key — cite as **[N]**:
 [1] Custom Tray/Box & Pour instructions (Touloumi) · [1g] Intro to Dentures guide · [2] Dx & TP guide + PDI classification · [3] Wax Rims lab instructions · [3g] Edentulous Anatomy (Obrez) · [4] PPS guide (Obrez) + Facebow lab instructions (incl. official Denar doc) · [5] Final Impression guide + Setting Anterior instructions · [6] JRR guide (Mohammad) + Setting Posterior instructions · [7] Facebow & Articulator guide · [8] Occlusion (Obrez) · [9]/[11] Setting Ant/Post guides · [10] Try-In guide · [12] Festooning · [13] Processing · [14] Delivery (Yuan) · [15] Lingualized · [16] Immediate (Agrawal) · [17] Reline (Yang) · [18] CAD/CAM · [19] Materials (Bedran-Russo) · [20] CD Review · **[21] Complete Dentures Clinic Guide** (the official appointment-by-appointment workflow: materials, codes, faculty checks).
 
 ### Flags RESOLVED by the trove
@@ -595,7 +595,7 @@ Jake supplied the **numbered resource set Swade's own reference list points to**
 - **"equal parts" pumice-plaster (cut earlier tonight):** **[1] step 4 verbatim** ("mix 1:1 quantities of pumice and plaster") — RESTORED as 1:1, medium/creamy.
 
 ### Conflicts recorded (both sides official — card states both or follows the operative doc)
-- **Condylar inclination:** [5] AND [6] (the operative setting-lab instructions) set **20°**; the Week-14 checklist says **30°**. Card now states both + "confirm with faculty." ⏸ Jake: which does your clinic case use?
+- **Condylar inclination:** [5] AND [6] (the operative setting-lab instructions) set **20°**; the Week-14 checklist says **30°**. Card now states both + "confirm with faculty." ⏸ the owner: which does your clinic case use?
 - **Tray handle:** [1] = ½ inch wide/high, **3 mm** thick, vertical, concave grip depressions; grading sheet = ½ × ½ × **¼ inch**. Card cites both.
 - **Record-base cure:** [3] lab instructions = air-barrier, **1-1.5 min on cast + 1 min off**, wash barrier; the JRR study guide's generic description says ~10 min total. Card follows [3]; the 400-500 nm wavelength stays ledger-only.
 
@@ -618,7 +618,7 @@ Jake supplied the **numbered resource set Swade's own reference list points to**
 
 # Per-sentence chapter ledgers — cd-ch1 through cd-ch28 *(trove-integrated, 2026-06-11)*
 
-Jake's standard applied to every chapter: each substantive claim below carries its source. Cites: **[N]** = trove doc · **Sw** = Swade (line/page) · lecture names as before. Claims marked **ⓘ synth** are app-authored glue (sequencing prose, navigation, "why" explanations built from sourced components) — no fabricated specifics. **✂** = corrected this pass (trove pass 4, 28 edits).
+the owner's standard applied to every chapter: each substantive claim below carries its source. Cites: **[N]** = trove doc · **Sw** = Swade (line/page) · lecture names as before. Claims marked **ⓘ synth** are app-authored glue (sequencing prose, navigation, "why" explanations built from sourced components) — no fabricated specifics. **✂** = corrected this pass (trove pass 4, 28 edits).
 
 ### cd-ch1 — Diagnostic impressions
 - Stock metal/plastic trays, multiple sizes, rope-wax beading, alginate + bowl/spatula — **[21] appt 1 materials** + Sw denture #1. Jeltrate/Identic — Sw materials. ✅
@@ -672,7 +672,7 @@ Jake's standard applied to every chapter: each substantive claim below carries i
 
 ### cd-ch7 — Mounting on the Mark 320
 - Class III semi-adjustable arcon; WhipMix/Denar Mark 320 — **[7] verbatim**. ✅ Bennett fixed at 15° — [9] + Whip Mix manual (Mark300-Inst 218). ✅
-- **✂** Condylar default for setup now **20°** (×3 in the chapter) — **[5],[6],[9]**; refined by the protrusive record ([10]). The Wk14 checklist's 30° recorded here as the conflicting doc — ⏸ Jake: if Wk14 governs a different stage, say the word and I'll re-annotate.
+- **✂** Condylar default for setup now **20°** (×3 in the chapter) — **[5],[6],[9]**; refined by the protrusive record ([10]). The Wk14 checklist's 30° recorded here as the conflicting doc — ⏸ the owner: if Wk14 governs a different stage, say the word and I'll re-annotate.
 - Mounting sequence (facebow assembly → maxillary cast → stone → mandibular via CR record, pin 0, latch engaged; retention grooves in plates; sticky-wax stabilization) — Wk4 lab session + [9] + [13] (keep mounting stone). ✅ V-points/2-mm-groove indexing — ch9's sourced notch protocol. ✅
 
 ### cd-ch8 — VDO methods
@@ -690,7 +690,7 @@ Jake's standard applied to every chapter: each substantive claim below carries i
 - Williams facial-form matching; four facial shapes — [6] facial analysis. ✅ Corners-of-nose ≈ distal of canines — [6] verbatim. ✅
 - Mould from two rim measurements (incisal-to-high-smile + canine-to-canine) — [21] appt 3 p-q. ✅ Intercommissural framing — ⓘ synth consistent with the canine-line method.
 - Shade at chair, natural light, patient collaboration, age-darkening — Sw 3822-3852 (A2/B2-A3/B3 common; gingival OR original). ✅
-- **✂** Posterior selection by scheme: lingualized corrected to **30° maxillary vs 0° mandibular with compensating curve** ([9] "our lab setups" + [15]); monoplane 0° + ramps ✅. "33° BBA" kept as the anatomic-scheme label — ⏸ note: [8]'s taxonomy calls anatomic teeth 30°; the 33° name appears only app-side. Flag for Jake (33° is a real commercial mould line, but the UIC docs say 30°).
+- **✂** Posterior selection by scheme: lingualized corrected to **30° maxillary vs 0° mandibular with compensating curve** ([9] "our lab setups" + [15]); monoplane 0° + ramps ✅. "33° BBA" kept as the anatomic-scheme label — ⏸ note: [8]'s taxonomy calls anatomic teeth 30°; the 33° name appears only app-side. Flag for the owner (33° is a real commercial mould line, but the UIC docs say 30°).
 
 ### cd-ch11 — Setup order & position rules
 - Canonical order (max anteriors → mand anteriors → mand posteriors → max posteriors), wax-window-at-a-time, never strip the rim — [9]/[5]/[6]instr + AntSetup. ✅ "2-3 lab sessions" pacing — ⓘ synth.
@@ -726,7 +726,7 @@ Jake's standard applied to every chapter: each substantive claim below carries i
 
 ### cd-ch14 — Processing & lab remount
 - SR Ivocap system: 20 g/30 mL capsule, Cap Vibrator 5 min, bolt the flask, inject, **35-min boiling cure under pressure**, gradual cool — **[13] injection-molding section verbatim** (20 g + 30 mL, 35 minutes, capsule-vibrator system; pressure values from the Ivocap unit spec ⓘ). ✅
-- **⏸ CONFLICT (recorded, not resolved):** [13] says "compression molding — we use this processing technique at UIC" while teaching BOTH techniques; the chapter (per the Processing+Festooning deck) builds on Ivocap injection. Both are official docs. The lab's actual workflow is the lab's; the chapter's Ivocap detail stands as taught. Jake: confirm which the 5th-floor lab runs if it ever matters clinically.
+- **⏸ CONFLICT (recorded, not resolved):** [13] says "compression molding — we use this processing technique at UIC" while teaching BOTH techniques; the chapter (per the Processing+Festooning deck) builds on Ivocap injection. Both are official docs. The lab's actual workflow is the lab's; the chapter's Ivocap detail stands as taught. the owner: confirm which the 5th-floor lab runs if it ever matters clinically.
 - Flasking (separator, two pours, stone to occlusal level, lid overflow, 45-min set, clamp) — **[13] flasking verbatim**. ✅
 - **✂** Wax elimination: boiling water **5 minutes** restored (**[13] verbatim** — the earlier audit's cut of "4-5 min" was directionally right but the source says 5), detergent wash, all-wax-out-or-teeth-pop-out warning — [13] ★ verbatim. ✅
 - Tin-foil substitute on stone NOT teeth (teeth must bond) — [13] verbatim. ✅ Diatorics mention — [13]. ✅
@@ -754,7 +754,7 @@ Jake's standard applied to every chapter: each substantive claim below carries i
 - Purpose list (shrinkage compensation, functional movement, food/air exclusion, retention, gag reduction) — [4] + [10] §6 functions. ✅
 - Scribing steps (#8 bur, 1-1.5 mm, deeper-posterior feather-anterior, positive bead) — **[3] steps 4-7 verbatim**. ✅
 - Trial-stage dimensions (1-2/1 · 4-6/1.5 · 2-3/1) — **[10] §6 verbatim**. ✅
-- House palate classes I/II/III with >5 mm / 1-5 mm / <1 mm displaceable tissue + ~45°/~70° angles + retention prognoses — **[4] verbatim**. ✅ The 30-second chairside-classing callout — ⓘ synth on [4]'s criteria (movement magnitudes are illustrative — ⏸ minor: the mm-of-movement numbers aren't in [4]; the class criteria are angle/tissue-based. Consider trimming the 1-2/3-5/6+ mm motion figures — left pending Jake).
+- House palate classes I/II/III with >5 mm / 1-5 mm / <1 mm displaceable tissue + ~45°/~70° angles + retention prognoses — **[4] verbatim**. ✅ The 30-second chairside-classing callout — ⓘ synth on [4]'s criteria (movement magnitudes are illustrative — ⏸ minor: the mm-of-movement numbers aren't in [4]; the class criteria are angle/tissue-based. Consider trimming the 1-2/3-5/6+ mm motion figures — left pending the owner).
 
 ### cd-ch18 — Phonetics troubleshooting
 - **FLAG CLOSED:** the bilabial + vowel content is sourced — M = lip position at rest, E = incisal length (**[6] phonetic analysis**); F/V wet-dry line, S = position + VDO, lisp = excessive bucco-palatal (**[6] + [10] §2**). ✅
@@ -771,7 +771,7 @@ Jake's standard applied to every chapter: each substantive claim below carries i
 - Stage 6: posterior-rim-only records, CR-not-CO ([16] verbatim), posterior try-in is the only try-in, anteriors set one-at-a-time alternating sides ([16] verbatim), photo documentation. ✅ Stage 7 surgical guide for bone-reduction reference — [16] verbatim. ✅
 - Stage 9: trial-seat before suturing, 24-hour rule = swelling control/bandage effect — [16] ("it controls swelling") + Sw. ✅
 - **✂** Stage 10 cadence: conditioner at **2-4 weeks** ([16]'s soft-reline change interval; was 4-6); hard chairside 3-4 mo + lab 6 mo ladder ([16]). ✅
-- **✂ FLAG CLOSED (ch19 implant-OD):** insert-replacement intervals normalized to the cited IOD reference (1-2 yr), color-list dropped — consistent with Jake's ch27 strip decision. Attachment-type survey (Locator/ball/bar/conus) kept as orientation prose (named types only, no forces) — ⏸ trim further if Jake wants full ch27 parity.
+- **✂ FLAG CLOSED (ch19 implant-OD):** insert-replacement intervals normalized to the cited IOD reference (1-2 yr), color-list dropped — consistent with the owner's ch27 strip decision. Attachment-type survey (Locator/ball/bar/conus) kept as orientation prose (named types only, no forces) — ⏸ trim further if the owner wants full ch27 parity.
 - Housing-pickup procedure (block-out around abutments, cold-cure, light MI close, 10-15 min, trim) — cross-cd-iod-implants' cited workflow + [21] D5120D consult rail. ✅
 
 ### cd-ch20 — Reline, rebase, repair
@@ -790,15 +790,15 @@ Jake's standard applied to every chapter: each substantive claim below carries i
 - (Audited + per-claim ledgered earlier tonight — see the cd-ch23 section above.) Trove adds: complaint-cause mappings corroborated by [14] §12 (24-h protocol) and [21] appt 6; the 24-h/1-week cadence + 1-day-severe/3-day-minor split — Deliv-lec + [21]. ✅ No changes this pass.
 
 ### cd-ch25 / cd-ch27 / cd-ch28
-- **ch25:** **✂** Pathway 1 now "8-appointment" (the last 7-vs-8 holdout). Rest audited earlier tonight (navigation meta-page; Pathway 2's scrubbed labels still ⏸ Jake's).
-- **ch27:** audited + stripped earlier tonight per Jake; [16] now ALSO corroborates the kept RCT-on-abutments workflow (lines 127-129 verbatim in the study guide). ✅
+- **ch25:** **✂** Pathway 1 now "8-appointment" (the last 7-vs-8 holdout). Rest audited earlier tonight (navigation meta-page; Pathway 2's scrubbed labels still ⏸ the owner's).
+- **ch27:** audited + stripped earlier tonight per the owner; [16] now ALSO corroborates the kept RCT-on-abutments workflow (lines 127-129 verbatim in the study guide). ✅
 - **ch28:** audited earlier; **✂** this pass aligned the IID bullet to [16]'s ladder (2-4 wk conditioner changes → hard chairside 3-4 mo → lab 6 mo). Coe Comfort/Soft/GC Reline = Sw materials verbatim. ⓘ product-pliability durations ("~4-6 wk", "1-3 mo") remain ⏸ unverified product claims — flagged, not cut (no contradicting source).
 
 ---
 
-**STATUS: every CD chapter (cd-ch1–28) now has a per-claim/per-sentence ledger, integrated with the official numbered resources. Open items for Jake:** ① condylar 20° (setting docs) vs Wk14's 30° — card says 20°, confirm; ② "33° BBA" naming vs [8]'s 30° anatomic taxonomy; ③ [13] compression-vs-Ivocap lab conflict; ④ ch17's House-class movement-mm figures (illustrative); ⑤ ch25 Pathway 2 scrubbed labels; ⑥ ch19 attachment-survey paragraph — keep as orientation or strip to full ch27 parity; ⑦ Wk14-huddle compensating-curve values (self-flagged in-text).
+**STATUS: every CD chapter (cd-ch1–28) now has a per-claim/per-sentence ledger, integrated with the official numbered resources. Open items for the owner:** ① condylar 20° (setting docs) vs Wk14's 30° — card says 20°, confirm; ② "33° BBA" naming vs [8]'s 30° anatomic taxonomy; ③ [13] compression-vs-Ivocap lab conflict; ④ ch17's House-class movement-mm figures (illustrative); ⑤ ch25 Pathway 2 scrubbed labels; ⑥ ch19 attachment-survey paragraph — keep as orientation or strip to full ch27 parity; ⑦ Wk14-huddle compensating-curve values (self-flagged in-text).
 
-## Actor-voice audit — 2026-06-12 (triggered by Jake catching the RPD Lab-6 "you boil the wax" framing)
+## Actor-voice audit — 2026-06-12 (triggered by the owner catching the RPD Lab-6 "you boil the wax" framing)
 Swept all five live pathways (descriptions, keyDecisions, every phase detail, every lab step, branch chapters) for lab/faculty work written as student imperatives — the class the CD L5 purge (2026-05-29) and RPD Lab 6 fix (today) belong to. Results: crown/bridge/digital lab steps already split "you" vs "the lab" explicitly ✅; CD L1–L4 and RPD L1–L5 are genuinely student bench work (Tan/Kim/grading-sheet sourced) ✅; reline/rebase/repair chapters attribute chairside-vs-lab correctly (Bin Yang) ✅. **✂ FIXED: CD Lab 3 body said "30° condylar" while its own detail said 20° — internal contradiction left from the Wk-14 conflict; body corrected to 20° (the settled CD setting-lab value).** Also confirmed: the imperative-lab-verb grep over guides-data hits ONLY the ind-ch* chapters (mill-prep checklist etc.) — those are UNREACHABLE (no nav sets tab="guides"; only the quarantined legacy array references them) but are pre-ledger content of Comprehensive-Guide provenance; recommended for deletion in the App.jsx extraction.
 
 ## Source-or-cut autonomous pass — 2026-06-13 (condylar value CORRECTED)
@@ -850,4 +850,4 @@ The live pathway prose (description + 8 phase details + 6 labStep bodies/details
 - ✅ **Condylar 20-vs-30 conflict properly HEDGED** in the prose ("UIC docs disagree, confirm with faculty") — matches the CD flag; Bennett 15° cited to Denar Mark 300/320 manual.
 - No fabrications; densely cited; no fixes needed.
 
-### ✅✅ CD PATHWAY COMPLETE — cd-ch1..28 + cd-conventional pathway prose all audited. Fixes shipped over the whole CD audit: condylar 20-vs-30 hedge restored, freeway 2–4→2–3 mm (cd-ch22), reline-longevity durations cut (cd-ch22). Flags open for Jake: condylar 20-vs-30 (faculty), cd-ch28 liner timeframes (#8).
+### ✅✅ CD PATHWAY COMPLETE — cd-ch1..28 + cd-conventional pathway prose all audited. Fixes shipped over the whole CD audit: condylar 20-vs-30 hedge restored, freeway 2–4→2–3 mm (cd-ch22), reline-longevity durations cut (cd-ch22). Flags open for the owner: condylar 20-vs-30 (faculty), cd-ch28 liner timeframes (#8).

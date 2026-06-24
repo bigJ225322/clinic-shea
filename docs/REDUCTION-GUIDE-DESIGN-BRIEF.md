@@ -38,4 +38,4 @@ All: **6–10° total taper**, finish line **~0.5 mm supragingival**. (**No gold
 ## Output format (so they drop straight into the app)
 - **PNG**, transparent or cream background, ~**1100–1400 px** wide, landscape-ish per the views.
 - Name them: `rg-post-buccal.png`, `rg-anterior.png`, `rg-post-occlusal.png` (+ `rg-premolar.png` / `*-zirconia.png` variants if made).
-- Drop into `/Users/jakeshea/Desktop/clinic-shea/public/reductions/`. Tell me the filenames + which view/material each is; I wire them into the reduction-guide card (right image per tooth-type, with the verified numbers beneath).
+- Drop into `~/Desktop/clinic-shea/public/reductions/`. Tell me the filenames + which view/material each is; I wire them into the reduction-guide card (right image per tooth-type, with the verified numbers beneath).

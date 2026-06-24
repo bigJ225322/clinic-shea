@@ -41,7 +41,7 @@ data preserved. Rebuild in progress.
 
 ## Source PDFs
 
-Located at `/Users/jakeshea/Desktop/HY Folders/Dentistry Files/`.
+Located at `~/Desktop/HY Folders/Dentistry Files/`.
 
 ### Treatment Planning + Diagnosis (the structural skeleton)
 Path: `01 Clinical Reference/Treatment Planning and Diagnosis/`

@@ -17,9 +17,9 @@ A claim is **verified ✓** only after the actual slide/page has been read and t
 ## Path index (resolve short-names here)
 
 ### Swade master
-- **Swade** → `/Users/jakeshea/Desktop/clinic (swade).pdf` (printed page numbers; e.g. reduction table = **p.58**, digital crown-prep guidelines = **p.114**)
+- **Swade** → `~/Desktop/clinic (swade).pdf` (printed page numbers; e.g. reduction table = **p.58**, digital crown-prep guidelines = **p.114**)
 
-### Fixed prosth — `/Users/jakeshea/Desktop/MASTER REFERENCE CS/04 — Fixed Prosth — Crown & Bridge/`
+### Fixed prosth — `~/Desktop/MASTER REFERENCE CS/04 — Fixed Prosth — Crown & Bridge/`
 - **Principles of Tooth Prep** → `Principles of Tooth Preparation.pdf`
 - **Full Crown Prep guide** → `Full crown preparation - Step-by-step guide.pdf`
 - **PFM Crowns** → `PFM Crowns.pdf`
@@ -28,7 +28,7 @@ A claim is **verified ✓** only after the actual slide/page has been read and t
 - **Restorability 1/2/3** → `Assessing Tooth Restorability Part 1.pdf` / `…Part 2.pdf` / `Assessing tooth restorability Part 3.pdf`
 - **All-Ceramic Crown Eval Form** → `All Ceramic Crown Preparation Evaluation Form 2023 version.pdf`
 
-### Digital — `/Users/jakeshea/Desktop/MASTER REFERENCE CS/05 — Digital Dentistry/`
+### Digital — `~/Desktop/MASTER REFERENCE CS/05 — Digital Dentistry/`
 - **Inlays & Onlays Overview** → `Inlays and Onlays Overview .pdf` (40 slides; prep parameters = **slides 26–27**)
 - **Inlay/Onlay Criteria** → `Inlays to Onlay criteria.pdf` (+ `.pptx`)
 - **All-Ceramic Crown Step-by-step** → `All Ceramic Crown Prep Step-by-step Guide.pdf`
@@ -37,14 +37,14 @@ A claim is **verified ✓** only after the actual slide/page has been read and t
 - **Posterior crown prep #5** → `Posterior crown prep #5.pdf`
 
 ### Perio (Dx engine)
-- **Tonetti 2018 (framework — THE authority)** → `/Users/jakeshea/Downloads/Perio Papers/Journal of Periodontology - 2018 - Tonetti - Staging and grading of periodontitis  Framework and proposal of a new.pdf` (Table 3 = staging, Table 4 = grading)
-- **EFP decision tree** → `/Users/jakeshea/Downloads/perio grading staging.pdf` (simplification — defer to Tonetti on conflict; see [[perio-dx-source-hierarchy]])
-- **2017 World Workshop full set** → `/Users/jakeshea/Downloads/Perio Papers/` (all workgroup papers)
-- **UIC perio criteria** → `/Users/jakeshea/Desktop/MASTER REFERENCE CS/07 — Board Criteria, Exam & Clinic Forms/2025-dental-periodontal-criteria.pdf`
+- **Tonetti 2018 (framework — THE authority)** → `~/Downloads/Perio Papers/Journal of Periodontology - 2018 - Tonetti - Staging and grading of periodontitis  Framework and proposal of a new.pdf` (Table 3 = staging, Table 4 = grading)
+- **EFP decision tree** → `~/Downloads/perio grading staging.pdf` (simplification — defer to Tonetti on conflict; see [[perio-dx-source-hierarchy]])
+- **2017 World Workshop full set** → `~/Downloads/Perio Papers/` (all workgroup papers)
+- **UIC perio criteria** → `~/Desktop/MASTER REFERENCE CS/07 — Board Criteria, Exam & Clinic Forms/2025-dental-periodontal-criteria.pdf`
 
 ### CD + RPD source folders (to be path-indexed per source as those pathways are audited)
-- CD → `/Users/jakeshea/Desktop/MASTER REFERENCE CS/02 — Complete Dentures/`
-- RPD → `/Users/jakeshea/Desktop/MASTER REFERENCE CS/03 — Removable Partial Denture (RPD)/`
+- CD → `~/Desktop/MASTER REFERENCE CS/02 — Complete Dentures/`
+- RPD → `~/Desktop/MASTER REFERENCE CS/03 — Removable Partial Denture (RPD)/`
 
 ---
 
@@ -80,8 +80,8 @@ A claim is **verified ✓** only after the actual slide/page has been read and t
 - **e.max "1.2–1.5 mm" thickness** → SOURCED VERBATIM: **Chairside Materials s21** — "1.2–1.5 of tooth reduction" (= ≥1 mm ceramic + cement space + overmill). Same slide: **6° taper**; **e.max connector 16 mm²** (banked for the bridge audit); flexural strength **130±30 MPa** (blue) → **360±60 MPa** (crystallized) at s19.
 - **`digc-foundation` / `digc-recement` / `digc-removal`** → read, **CLEAN**, no fabricated specifics. Codes correct: D2950 (+D2954 post) foundation, D2920 recement. "4 mm apical GP" = standard endo figure (not deck-sourced; textbook-correct), left as-is.
 
-### ⚠ FLAGS for Jake (digital e.max) — do NOT silently rewrite
-1. **Crystallization LOCATION (lab vs in-house) — workflow-ambiguous; Jake to confirm.** Resolved the alarm from last tick: the *material facts* are SOURCED and correct — e.max CAD is milled in the blue (pre-crystallized) block and fired **15–25 min** to crystallize (**Chairside Materials s19**), so the map's "~25 min" and "milled pre-crystallized" are both right. The only open question is WHERE crystallization happens: `digc-delivery` has the **student** crystallize in-house ("take it to Dan, ~25 min"); the **Anterior Crown Delivery deck** (s2 "milled and fired *prior to* the delivery session"; s6 "you will *receive* a crystallized restoration") has the **lab** crystallize, with the student doing characterization + glaze firing. These are two legitimate workflows (monolithic in-house-crystallize vs lab-crystallized + chairside characterize/glaze). **Jake: which should the digc map describe?** Left as-is — a clinical-workflow choice, not a fabrication, so not rewritten.
+### ⚠ FLAGS for the owner (digital e.max) — do NOT silently rewrite
+1. **Crystallization LOCATION (lab vs in-house) — workflow-ambiguous; the owner to confirm.** Resolved the alarm from last tick: the *material facts* are SOURCED and correct — e.max CAD is milled in the blue (pre-crystallized) block and fired **15–25 min** to crystallize (**Chairside Materials s19**), so the map's "~25 min" and "milled pre-crystallized" are both right. The only open question is WHERE crystallization happens: `digc-delivery` has the **student** crystallize in-house ("take it to Dan, ~25 min"); the **Anterior Crown Delivery deck** (s2 "milled and fired *prior to* the delivery session"; s6 "you will *receive* a crystallized restoration") has the **lab** crystallize, with the student doing characterization + glaze firing. These are two legitimate workflows (monolithic in-house-crystallize vs lab-crystallized + chairside characterize/glaze). **the owner: which should the digc map describe?** Left as-is — a clinical-workflow choice, not a fabrication, so not rewritten.
 2. **ind-ch15 FPD span — ✅ RESOLVED (verbatim).** "Replacing 3 posterior teeth is the absolute maximum; any FPD replacing more than 2 teeth is high risk; 4 adjacent edentulous (other than 4 incisors) → RPD/implants" is **verbatim FPD lec s21**. Also lives correctly in the live `brc-abutment`. **Bonus correction:** reading FPD lec s18–21 caught that the 2026-06-13 pass had wrongly CUT Ante's Law (s18) + the span-cube law (s20, "two-pontic span bends 8× more") from `brc-abutment` — **restored + deployed** (they're verbatim in the lecture; the replacement "connector height-cube" is true mechanics but not this lecture's law).
 
 ### Crown-PFM (`crownc-*`) — verified, clinically sound
@@ -92,19 +92,19 @@ Read all `crownc-*` chapters (impression / provisional / delivery / foundation /
 - **Foundation:** ferrule ~2 mm; Vitrebond 0.5 mm / cure 20 s; etch 15 s / rinse 5 s; **Scotchbond 20 s / air-thin 5 s / cure 10 s = IFU-correct**; post ≥ crown height + retain ≥4 mm GP apically; D2950/D2954 correct. ✓
 - **Recement:** D2920 correct. ✓
 
-### ⚠ FLAGS for Jake (crown-pfm)
+### ⚠ FLAGS for the owner (crown-pfm)
 3. **Gluma timing — ✅ RESOLVED (both correct, two contexts).** `crownc-provisional`'s "15 s, wait 30 s" matches **Swade provisional-cementation (line ~2919)** verbatim; `crownc-foundation`'s "45 s, wait 15 s" matches **Swade restorative-buildup (lines 1481/1584/1685)** verbatim. Swade deliberately teaches different Gluma timings for *provisional cementation* vs *restorative desensitization* — NOT an inconsistency. No change. (Caught this before "fixing" the correct value — read Swade first.)
 4. **D0275 bitewing code — ✅ RESOLVED (real Swade code).** **Swade line 3133:** "D0275 (Bitewing N/C)" (N/C = no charge), listed with I9002 (Lab quality review, Swade 3134). Deliberate UIC/Swade code, not a typo for D0274. No change.
-5. **crownc-foundation "cure the final increment 60 s."** — NOT in Swade (restorative section line 1591 says only "cure 20-40s after each increment"). Plausible longer final cure, but no UIC source → kept, flagged. (Open for Jake.)
-6. **crownc-foundation ParaPost fiber-vs-metal.** — The map calls UIC's post a "fiber post … close to dentin in stiffness." The fiber-≈-dentin *concept* is well-sourced (Alapati post deck s36 modulus chart + s40), but **Restoring-Endo lecture s32 lists ParaPost XT/XP under METAL posts**; "ParaPost" is a brand with both metal (XT/XP) and fiber (Fiber Lux/White) lines. **Jake: confirm which ParaPost the clinic dispenses** — if it's the metal XP, the "fiber / close-to-dentin" wording mis-describes it. Not changed (concept correct, brand-model ambiguous).
-7. **digc-delivery Clearfil Ceramic Primer "60 s".** — The e.max bond sequence (Ivoclean 20 s / 5% HF 20 s / Clearfil primer / Panavia ED Primer 30 s / light-cure 20 s) has **no UIC digital-deck source** (searched all of folder 05); it's manufacturer-IFU. Ivoclean 20 s, HF 20 s, ED Primer 30 s are IFU-correct, but **Clearfil Ceramic Primer "60 s" is off-IFU** (Kuraray IFU = apply + dry, no 60 s hold). Kept (real, necessary step); Jake: confirm the clinic's Clearfil timing.
-8. **cd-ch28 tissue-conditioner material timeframes.** — Coe Comfort "pliable 4–6 weeks", Coe Soft "1–3 months", set "90 s–3 min", "1:1 powder:liquid", soreness "24–48 h", "lab reline at 6 months" are **not in the UIC materials reference (`denture base materials_2024.pdf`) or the Bin Yang reline lecture**. The replace-every-~3-weeks/3-month schedule + pressure-pot 20 min ARE sourced. Manufacturer/clinical figures, hedged + plausible, kept; "Coe Comfort 4–6 weeks pliable" looks long for a short-term conditioner. Jake: verify vs the actual Coe IFU / clinic materials list.
+5. **crownc-foundation "cure the final increment 60 s."** — NOT in Swade (restorative section line 1591 says only "cure 20-40s after each increment"). Plausible longer final cure, but no UIC source → kept, flagged. (Open for the owner.)
+6. **crownc-foundation ParaPost fiber-vs-metal.** — The map calls UIC's post a "fiber post … close to dentin in stiffness." The fiber-≈-dentin *concept* is well-sourced (Alapati post deck s36 modulus chart + s40), but **Restoring-Endo lecture s32 lists ParaPost XT/XP under METAL posts**; "ParaPost" is a brand with both metal (XT/XP) and fiber (Fiber Lux/White) lines. **the owner: confirm which ParaPost the clinic dispenses** — if it's the metal XP, the "fiber / close-to-dentin" wording mis-describes it. Not changed (concept correct, brand-model ambiguous).
+7. **digc-delivery Clearfil Ceramic Primer "60 s".** — The e.max bond sequence (Ivoclean 20 s / 5% HF 20 s / Clearfil primer / Panavia ED Primer 30 s / light-cure 20 s) has **no UIC digital-deck source** (searched all of folder 05); it's manufacturer-IFU. Ivoclean 20 s, HF 20 s, ED Primer 30 s are IFU-correct, but **Clearfil Ceramic Primer "60 s" is off-IFU** (Kuraray IFU = apply + dry, no 60 s hold). Kept (real, necessary step); the owner: confirm the clinic's Clearfil timing.
+8. **cd-ch28 tissue-conditioner material timeframes.** — Coe Comfort "pliable 4–6 weeks", Coe Soft "1–3 months", set "90 s–3 min", "1:1 powder:liquid", soreness "24–48 h", "lab reline at 6 months" are **not in the UIC materials reference (`denture base materials_2024.pdf`) or the Bin Yang reline lecture**. The replace-every-~3-weeks/3-month schedule + pressure-pot 20 min ARE sourced. Manufacturer/clinical figures, hedged + plausible, kept; "Coe Comfort 4–6 weeks pliable" looks long for a short-term conditioner. the owner: verify vs the actual Coe IFU / clinic materials list.
 
 ---
 
 ## Audit progress (loop — resumable across firings)
 
-**✓ Verified — fixed prosth, DIGITAL E.MAX COMPLETE:** crown reductions all materials (Swade p.58/114; PFM Crowns s13–15; All-Ceramic deck s2 + eval form); inlay prep params (Inlays&Onlays s26–27 + Swade p.112); **all digital e.max `digc-*` chapters** — selection/scan/prep/provisional/delivery/foundation/recement/removal (Rubric IOS PPC c.14; scan-intro deck s18–35; Chairside Materials s19/s21; CAD/CAM Overview). Fixes shipped: e.max axial/chamfer/zirconia, inlay pulpal floor, occlusal "1.5/1.0" fabrication, IOS image-count (digc-scan + ind-ch28), "~17 mm depth." One workflow flag open for Jake (crystallization location).
+**✓ Verified — fixed prosth, DIGITAL E.MAX COMPLETE:** crown reductions all materials (Swade p.58/114; PFM Crowns s13–15; All-Ceramic deck s2 + eval form); inlay prep params (Inlays&Onlays s26–27 + Swade p.112); **all digital e.max `digc-*` chapters** — selection/scan/prep/provisional/delivery/foundation/recement/removal (Rubric IOS PPC c.14; scan-intro deck s18–35; Chairside Materials s19/s21; CAD/CAM Overview). Fixes shipped: e.max axial/chamfer/zirconia, inlay pulpal floor, occlusal "1.5/1.0" fabrication, IOS image-count (digc-scan + ind-ch28), "~17 mm depth." One workflow flag open for the owner (crystallization location).
 
 **✓ Also verified — crown-pfm (`crownc-*`):** impression / provisional / delivery / foundation / recement all read, clinically sound, no fabrications cut. 2 flags (Gluma timing, D0275 code) logged above.
 
@@ -128,7 +128,7 @@ Every live Maps pathway read sentence-by-sentence against the actual UIC slides 
 ## Flags RESOLVED against source (read-the-primary-source saves)
 Gluma 15s/30s-vs-45s/15s (two real contexts), D0275 (real Swade code 3133), ind-ch15 span (verbatim FPD s21), connector height-cube (real, Framework s14), CD "1 day/3 days" (verbatim Delivery lec 585/587), McGill Consensus, overdenture RCT-seq, 22/18 mm rims, 72 h soak, RPD 42 mm / 1–2 mm / 0.5 mm / 10 min / Prevident 5000 — all looked wrong or unsourced but were verbatim.
 
-## Open flags for Jake (judgment calls, none are errors)
+## Open flags for the owner (judgment calls, none are errors)
 #1 e.max crystallization location (lab vs in-house) · #5 "final increment 60 s" · #6 ParaPost fiber-vs-metal model · #7 Clearfil Ceramic Primer 60 s · #8 cd-ch28 liner pliability timeframes · brc-prep "~50%/5°" retention · brc-bisque underextension "<0.25 mm" · CD condylar 20° vs 30° (UIC docs disagree — confirm with faculty).
 
 **Net:** the whole Maps tab is now traceable to a slide/page; zero unexplained fabrications remain. → **PHASE 2: visual aides** (reduction guides + Maps visuals).
@@ -139,7 +139,7 @@ Gluma 15s/30s-vs-45s/15s (two real contexts), D0275 (real Swade code 3133), ind-
 
 Built directly on the Phase-1-verified figures (see `docs/REDUCTION-GUIDE-PLAN.md`). All in `src/App.jsx`, deployed.
 
-- **`CrownReductionGuide`** — the crown-prep reduction guide, rebuilt correctly from scratch (the earlier visualize demo was never integrated). **3 views** (buccolingual section · occlusal · proximal/mesiodistal) × **4 crown types** (metal/zirconia/PFM/e.max) × **32-tooth picker** (auto-sets anterior/posterior + maxillary/mandibular). **Arch-aware functional cusp** (mandibular→buccal, maxillary→palatal). Geometry is parametrized from `REDUCTION_FIGS` so the drawing always matches the labels. Fixes all 5 of Jake's original critiques: uniform axial reduction (no metal-only lingual), finish lines drawn correctly + only where visible, no stray projections, seamless tooth switching, anatomic occlusal (cusp inclines, not a flat plane). Wired onto the **crown-pfm** prep phase (default PFM) and **digital-emax** prep phase (default e.max).
+- **`CrownReductionGuide`** — the crown-prep reduction guide, rebuilt correctly from scratch (the earlier visualize demo was never integrated). **3 views** (buccolingual section · occlusal · proximal/mesiodistal) × **4 crown types** (metal/zirconia/PFM/e.max) × **32-tooth picker** (auto-sets anterior/posterior + maxillary/mandibular). **Arch-aware functional cusp** (mandibular→buccal, maxillary→palatal). Geometry is parametrized from `REDUCTION_FIGS` so the drawing always matches the labels. Fixes all 5 of the owner's original critiques: uniform axial reduction (no metal-only lingual), finish lines drawn correctly + only where visible, no stray projections, seamless tooth switching, anatomic occlusal (cusp inclines, not a flat plane). Wired onto the **crown-pfm** prep phase (default PFM) and **digital-emax** prep phase (default e.max).
 - **`BondProtocolStepper`** — e.max Panavia bond sequence (Ivoclean 20s → 5% HF 20s → silane/Clearfil → Panavia A+B → light-cure 20s/surface) on the digital-emax Delivery phase; flags the durations as manufacturer-IFU (flag #7).
 - **`ConnectorNote`** — e.max connector ≥16 mm², "height matters more than width (bending ∝ 1/height³)", 2-pontic span-cube "8× more" — on the bridge-pfm Metal-framework phase.
 - **Bonus fix:** the bridge framework *pathway-phase* still carried the stale "0.5–0.8 mm porcelain clearance" (the chapter copy was fixed in Phase 1; this one was missed) → corrected to **0.8–2.0 mm over 0.2–0.3 mm metal** (Metal Framework s13).

@@ -1,6 +1,6 @@
 # Review Notes
 
-Working file. Loop iterations append findings here. Untracked by git — these are scratch notes for Jake to review, not product content.
+Working file. Loop iterations append findings here. Untracked by git — these are scratch notes for the owner to review, not product content.
 
 ---
 
@@ -33,7 +33,7 @@ Working file. Loop iterations append findings here. Untracked by git — these a
 
 The user's earlier note "Earlier a lattice was suggested to replace #7" could mean: in a previous engine version, single-anterior #7 was outputting Open Lattice (default rule 5) because rule 4 hadn't been written yet to catch the single-anterior case. That's now fixed — rule 4 explicitly captures `isAnterior && !isDE && span.teeth.length <= 2`.
 
-**Open question for Jake:** is there a clinical scenario where Open Lattice is actually preferred over Mesh for #7 alone? Possible cases:
+**Open question for the owner:** is there a clinical scenario where Open Lattice is actually preferred over Mesh for #7 alone? Possible cases:
 1. Heavily resorbed ridge where retention area matters more than esthetic bulk — Open Lattice's broader retention footprint helps. *Engine doesn't currently factor ridge resorption (`monthsSinceExtraction` only gates healing, not resorption pattern).*
 2. Patient with thick lip/poor smile-line visibility — esthetic priority drops, retention priority rises. *Engine has no "smile-line-visibility" input.*
 3. Cementation lab error history (engine doesn't know this) — Open Lattice gives the lab more mechanical retention surface.
@@ -127,7 +127,7 @@ None this iteration (no edits made — focused on RPD scenario theory + UI brain
 
 ### RPD #7 actual scenario probe results
 
-Wrote `/Users/jakeshea/Desktop/clinic-shea/.claude/worktrees/distracted-elbakyan-0b643b/rpd_probe_7.mjs` — runs 5 scenarios through the real engine:
+Wrote `~/Desktop/clinic-shea/.claude/worktrees/distracted-elbakyan-0b643b/rpd_probe_7.mjs` — runs 5 scenarios through the real engine:
 
 | Scenario | Inputs | Engine output | Alt offered |
 |----------|--------|---------------|-------------|
@@ -287,7 +287,7 @@ Engine state: vitest 998/998, build clean, no warnings beyond the pre-existing c
 
 **Pattern 3** (`712d8e6`): When a span-boundary (dual-role) candidate is more anterior to the diagonal fulcrum line than the type-priority pick, the engine now prefers it as the indirect retainer. Confirmed by Huddle 6 Case 2: `#9` (maxillary central, dual-role) is more anterior (score 29.1) than `#12` (1st premolar, type-priority pick, score 18.0) → engine now correctly picks `#9`. 4 tests added; 1012 total passing.
 
-### Remaining RPD discrepancy — for Jake's review
+### Remaining RPD discrepancy — for the owner's review
 
 **Design Case II maxillary — A-P Strap vs Full Palate**
 
@@ -303,7 +303,7 @@ If the threshold were `abutmentCount ≤ 4` instead of `presentCount ≤ 4`, the
 
 If you want me to wire this → say "fix RPD max-connector threshold."
 
-### #28 esthetic-zone disagreement — for Jake's review
+### #28 esthetic-zone disagreement — for the owner's review
 
 Design Case II mandibular: answer key says #28 (mandibular right 1st premolar) gets I-bar esthetic; engine gives Akers. Current `RPD_ESTHETIC_ZONE` includes only canines and anterior teeth, not premolars. The engine's Akers for #28 is defensible — mandibular first premolars are not consistently visible during smiling. The answer key may reflect the instructor's preference for I-bar on the premolar adjacent to the anterior space.
 
@@ -368,7 +368,7 @@ RESOLVED (was in REVIEW). Changed `presentCount ≤ 4` to `(kennedy.class === "I
 - Case 7 (Class III, 4 abutments): Single Palatal Strap ✓
 - 1012/1012 tests pass.
 
-### Cases UI — "Electric wire" concept (Jake's request, 2026-05-22)
+### Cases UI — "Electric wire" concept (the owner's request, 2026-05-22)
 
 **Concept:** Collapse all category headers to abbreviated tokens on one horizontal bar (Dir · Ind · Endo · OS · Perio · Peds · RPD · CD · Repair). Clicking a token:
 1. Expands it to full name ("Complete Dentures"), turns oxblood/red
@@ -376,7 +376,7 @@ RESOLVED (was in REVIEW). Changed `presentCount ≤ 4` to `(kennedy.class === "I
 3. As the user navigates deeper (subcategory → procedure → step), the cord extends all the way down the chain
 4. A rolling "electricity" (animated spark/highlight, yellow or teal, ~2px line) runs along the cord to visually reinforce which step is currently active
 
-**Jake's specific notes:**
+**the owner's specific notes:**
 - Yellow felt right for the electricity; try teal for comparison
 - "Chain" metaphor — every parent stays lit, electric runs to the current node
 - The hard problem: individual step → which step gets the electric? Options considered:
@@ -385,14 +385,14 @@ RESOLVED (was in REVIEW). Changed `presentCount ≤ 4` to `(kennedy.class === "I
   c. Always highlights the most recently touched step
 - Everything starts collapsed; "Expand all" button remains
 
-**My assessment (don't implement yet, for Jake's review):**
+**My assessment (don't implement yet, for the owner's review):**
 - Option (a) scroll-based rolling is the cleanest because it requires no explicit user action — just reading gives the electric animation a natural driver
 - The cord + electric should run LEFT-RAIL not inline with content, so the content column stays uncluttered
 - The abbreviated tokens line at the top needs enough spacing to be touchable on mobile — consider pill buttons rather than plain text tokens
 - Electricity animation: CSS `@keyframes` offset-path on an SVG polyline would be smooth and not affect layout; simpler than canvas
 - Color: yellow (`#F5C518` or similar gold) would match the existing gold-in-progress palette; teal would also read well and stay on-brand
 
-**Verdict:** Very achievable, moderately complex. The hardest piece is the SVG cord geometry recalculating on layout change. The scroll-based step tracker is elegant. Flagging for Jake's go-ahead before implementation.
+**Verdict:** Very achievable, moderately complex. The hardest piece is the SVG cord geometry recalculating on layout change. The scroll-based step tracker is elegant. Flagging for the owner's go-ahead before implementation.
 
 To implement → say "build the electric wire Cases nav."
 
@@ -463,7 +463,7 @@ Against the actual Lab Rx filed by Dr. Kim (Ottawa lab, 2019/2020):
 | #23-26 base | Mesh | Mesh | ✅ |
 | #29 base | Tube Tooth | Tube Tooth | ✅ |
 
-#### Borderline for Jake's review: Esthetic zone boundary (#28)
+#### Borderline for the owner's review: Esthetic zone boundary (#28)
 
 **Finding:** Design Case II uses **I-bar** on #28 (lower right 1st PM). The current engine uses **Akers** because #28 is not in `RPD_ESTHETIC_ZONE` (which caps at #27/#6 canines). The rest seat direction is already correct: engine outputs distal rest + distal guide plane on #28 ✅.
 
@@ -475,7 +475,7 @@ Against the actual Lab Rx filed by Dr. Kim (Ottawa lab, 2019/2020):
 
 **Suggested middle path:** Add #21, #28 to esthetic zone only when they bound a span that itself contains esthetic-zone teeth (i.e., the span is in the visible area). This requires span-context when selecting clasp type.
 
-→ **Jake's decision needed.** Say "expand RPD esthetic zone to mand 1st premolars" to implement.
+→ **the owner's decision needed.** Say "expand RPD esthetic zone to mand 1st premolars" to implement.
 
 ---
 
@@ -533,7 +533,7 @@ The engine doesn't generate embrasure clasp pairs on contiguous adjacent molars 
 
 Both designs are clinically valid. The embrasure pair is more elegant (uses the natural embrasure between two adjacent molars), but the Akers solution is also fine. Adding embrasure-pair recognition for Class II is a future enhancement — for now the engine's behavior is defensible.
 
-→ Save for Jake's review.
+→ Save for the owner's review.
 
 #### Borderline finding 2: Anterior-with-PM span gets Open Lattice instead of Mesh
 
@@ -553,7 +553,7 @@ This is the same pattern as the canineModIndirect routing that already exists in
 
 A fix would be: in `appendSpanBoundaryRetainers`, when the boundary tooth of an anterior span is a premolar AND it's more anterior than the DE-side abutment (geometrically serves as IR), route it to indirectRetainers as rest-only.
 
-→ This is a real engine improvement opportunity. Save for Jake's go-ahead before implementing — it changes clasp output for Class II/Class IV cases.
+→ This is a real engine improvement opportunity. Save for the owner's go-ahead before implementing — it changes clasp output for Class II/Class IV cases.
 
 ---
 
@@ -575,7 +575,7 @@ A fix would be: in `appendSpanBoundaryRetainers`, when the boundary tooth of an 
 
 ### Cases UI alternatives (brainstorm, no implementation)
 
-Per Jake's original loop prompt: "think about new directions for the Cases tab UI. It's really nice, but i bet there's a cooler way."
+Per the owner's original loop prompt: "think about new directions for the Cases tab UI. It's really nice, but i bet there's a cooler way."
 
 Three additional concepts on top of the already-documented **Electric Wire** nav idea (Iteration 6):
 
@@ -613,9 +613,9 @@ Pick 2-4 procedures and view them side-by-side. Common steps collapse; differenc
 
 ---
 
-### Save for Jake's review
+### Save for the owner's review
 
-All four UI concepts above. Pick one (or remix) when there's time. No implementation yet — Jake's call which direction is most worth building.
+All four UI concepts above. Pick one (or remix) when there's time. No implementation yet — the owner's call which direction is most worth building.
 
 ---
 
@@ -632,7 +632,7 @@ Live deployment confirmed healthy at 7:50 AM (clinic start):
 - Cases pathway expand + right-TOC visible at 0.4 opacity → clinic-usable
 - Tooth selector panel input-centered with proper viewport clamping (left=17 when input is on the far left, panel still fits entirely on screen)
 
-### Tooth selector centering — corrected per Jake's clarification
+### Tooth selector centering — corrected per the owner's clarification
 
 User clarified: "I did mean center the tooth selector on the field and not the screen. only constraint is that if the end of the tooth selector hits the edge of the screen it shouldn't become partially off screen/unusable to accommodate the centering rule."
 
@@ -665,7 +665,7 @@ ITR is currently referenced in:
 
 **Suggested expansion**: dedicated `pedo-itr` pathway with the full retention table + technique. Would slot under Pediatric Dentistry alongside pedo-sdf and pedo-strip-crown.
 
-→ Save for Jake's review. Trivial to add but the user warned about over-editing — defer the call.
+→ Save for the owner's review. Trivial to add but the user warned about over-editing — defer the call.
 
 ### Borderline find: 3M ESPE vs Unitek SSC reduction differences
 
@@ -689,7 +689,7 @@ The current `pedo-stainless-crown` pathway gives a 1.5-2.0mm occlusal reduction 
 **Suggested expansion**: add a key decision in `pedo-stainless-crown` like:
 > "Brand-matched reduction: 3M ESPE Ion crowns have DEEP occlusal anatomy → 2.0mm reduction needed; Unitek crowns have SHALLOW anatomy → 1.5mm reduction adequate. Check which brand your clinic stocks before prepping. If unsure, start at 1.5mm, try the crown, add reduction only if it won't seat."
 
-→ Save for Jake's review. Trivial to add. The user warned about over-editing, so I'm holding off without explicit go-ahead.
+→ Save for the owner's review. Trivial to add. The user warned about over-editing, so I'm holding off without explicit go-ahead.
 
 ### Borderline find: SSC vs amalgam outcome data
 
@@ -698,7 +698,7 @@ The lecture cites a Randall 2002 pooled review (5 studies, 2201 amalgams + 1210 
 - Preformed metal crown (SSC): 7% failure rate at mean 5 years
 - Individual study spreads: amalgam failure 12-87%; SSC failure 2-25%
 
-This evidence is referenced indirectly in the current pathway ("composite has higher replacement rates here") but the specific Randall 2002 numbers aren't cited. Worth adding if Jake wants a strict evidence trail — but the clinical conclusion is already there. Defer to Jake's preference.
+This evidence is referenced indirectly in the current pathway ("composite has higher replacement rates here") but the specific Randall 2002 numbers aren't cited. Worth adding if the owner wants a strict evidence trail — but the clinical conclusion is already there. Defer to the owner's preference.
 
 ### Borderline find: long-span Class III + NMCD
 
@@ -717,7 +717,7 @@ The engine has a Class IV short-span check (`primarySpan.teeth.length > 4` → c
 **Adjacent question — Kennedy classification edge case**:
 For span #5-#12 (8 teeth crossing midline, bounded by #4 and #13 premolars), the engine reports Class III Mod 0. Some interpretations of Applegate's rules would call this Class IV because the edentulous area crosses the midline. The engine's choice (Class III since the span is tooth-bounded with posterior teeth present bilaterally) is defensible by stricter Applegate readings but might confuse students learning the textbook definition.
 
-→ Save for Jake's review. Both findings are real but require clinical judgment on whether to encode them.
+→ Save for the owner's review. Both findings are real but require clinical judgment on whether to encode them.
 
 ### Borderline find: 6-week space-loss timing window
 
@@ -735,7 +735,7 @@ A student looking at the pathway today won't know:
 **Suggested expansion**: add a key decision to `pedo-space-maintainer` like:
 > "Timing: place within 6 weeks of extraction. Per Alsaleh's lecture, space loss occurs in a fast phase within the first 6 weeks (then slows). The drift is unidirectional (no spontaneous correction). Schedule the impression visit at the extraction itself if possible; band/loop delivery 1-2 weeks later."
 
-Defer to Jake. Borderline edit but clinically actionable.
+Defer to the owner. Borderline edit but clinically actionable.
 
 ### Confirmed: primary canine + primary incisor space-loss patterns
 
@@ -765,7 +765,7 @@ The current pedo Cases pathways hardcode "Isodry (size M)" in note templates and
 
 **Suggested expansion**: add a key decision in `pedo-poe-recall` and/or `pedo-composite` with the age table. Forceps checkout location worth a clinic-logistics callout in `pedo-extraction`.
 
-→ Save for Jake's review. Useful clinic-time reference; defer the call on adding it.
+→ Save for the owner's review. Useful clinic-time reference; defer the call on adding it.
 
 ### Other useful clinical details from Extra Peds Texts.docx
 
@@ -875,7 +875,7 @@ Fix would require an input shape change: either add an optional "max bone loss %
 
 C1. **RPD design assertions panel** — a sticky right-side rail in the RPD builder that lists the design's structural assertions (e.g. "≥2 retentive clasps", "no anterior single-tooth no-clasp", "guide planes complete on every abutment") and ticks them off as the user enters teeth. Would catch the zero-retentive-clasps case earlier in the workflow before the red flag fires.
 
-C2. **Cases pathway preview cards** — instead of the current list-of-labels grid, show pathway cards with: (a) the verdict italic at top, (b) the phases as compact dots/numbers, (c) the keyDecisions count as a chip. Helps Jake scan the Cases tab faster on clinic prep mornings.
+C2. **Cases pathway preview cards** — instead of the current list-of-labels grid, show pathway cards with: (a) the verdict italic at top, (b) the phases as compact dots/numbers, (c) the keyDecisions count as a chip. Helps the owner scan the Cases tab faster on clinic prep mornings.
 
 C3. **Perio Dx ambiguity badges** — when the engine returns ambiguity notes, surface them as small caution-color chips next to the Stage/Grade values rather than buried in the rationale. The "AAP allows X" notes are the most clinically relevant output and should be visible without expanding.
 
@@ -1099,7 +1099,7 @@ Same for crown lengthening. Both indicators may compound. Impossible to send the
 **Borderlines saved:**
 - B14: Bruxism flag missing in engine (Cases TMD pathway already covers it; defer)
 - B15: Mandibular FPD recommendation gap (mand single tooth-bounded gap = Lingual Bar, not FPD recommendation; deferred — Lingual Bar isn't overtreatment like Full Palatal Plate would be)
-- B16: Leading-space-stripper regex `(?!)` is always-false, has been silently broken since project start. Fix is one character (`(?!)` → `(?! )`). Significant visual change to every rendered note + ProseBlock output. Saved for Jake's decision.
+- B16: Leading-space-stripper regex `(?!)` is always-false, has been silently broken since project start. Fix is one character (`(?!)` → `(?! )`). Significant visual change to every rendered note + ProseBlock output. Saved for the owner's decision.
 
 **Tests:** 1017/1017 passing throughout. Latest commit: 48a692a.
 
@@ -1684,20 +1684,20 @@ Found by background agent. Condition `if ((kennedy.class === "I" && abutmentCoun
 ### Background agent findings — borderlines (NOT auto-fixed)
 
 **B28. Mand Class III "anterior span only" picks I-bar (esthetic) on canines instead of Rest-Only.**
-Engine output for {#23-26 missing, mand}: classifies as Kennedy IV (correct — anterior span crosses midline), picks Lingual Plate + I-bar (esthetic) clasps on #22 and #27 with "Rest Only" listed as alternative. Many UIC instructors prefer "cingulum/ML ball rest + no clasp, retention from lingual plate contact" for these tooth-supported anterior spans (less invasive, doesn't require ≥5mm vestibular depth / undercut prep). The engine offers it as alternative; debatable whether it should be primary. Decision for Jake.
+Engine output for {#23-26 missing, mand}: classifies as Kennedy IV (correct — anterior span crosses midline), picks Lingual Plate + I-bar (esthetic) clasps on #22 and #27 with "Rest Only" listed as alternative. Many UIC instructors prefer "cingulum/ML ball rest + no clasp, retention from lingual plate contact" for these tooth-supported anterior spans (less invasive, doesn't require ≥5mm vestibular depth / undercut prep). The engine offers it as alternative; debatable whether it should be primary. Decision for the owner.
 
 **B29. Mand Class I bilateral DE: only one IR placed when one side's canine is the primary abutment.**
-Mand Class I with primary abutments at #21 (L 1st PM) and #27 (R canine): engine places IR on #22 (L canine, anterior to #21) but NOT on the right side, because the right side's #25/#26 are mand incisors (excluded as too weak) and #27 itself is being used as a direct retainer. Clinically the Lingual Plate's tissue contact across the mand incisors does provide indirect retention, but the engine output doesn't make this dual-role explicit. Worth a small enhancement: emit a "dual-role: #27 mesial cingulum rest also functions as right-side IR" marker (similar to existing kennedy-iv-bounding-dual-role). Decision for Jake.
+Mand Class I with primary abutments at #21 (L 1st PM) and #27 (R canine): engine places IR on #22 (L canine, anterior to #21) but NOT on the right side, because the right side's #25/#26 are mand incisors (excluded as too weak) and #27 itself is being used as a direct retainer. Clinically the Lingual Plate's tissue contact across the mand incisors does provide indirect retention, but the engine output doesn't make this dual-role explicit. Worth a small enhancement: emit a "dual-role: #27 mesial cingulum rest also functions as right-side IR" marker (similar to existing kennedy-iv-bounding-dual-role). Decision for the owner.
 
 **B30. Engine has no `anteriorMobility` input.**
-Mand Class I with shallow sulcus → Lingual Plate. But Lingual Plate's own rationale notes it's contraindicated for "healthy mobile anteriors" (the plate creates ortho-style lingual force on mobile incisors). Engine has `perioPrognosis` but no `anteriorMobility` input, so a perio-good but mobile incisor will still route to Lingual Plate. Add as an explicit input toggle. Decision for Jake.
+Mand Class I with shallow sulcus → Lingual Plate. But Lingual Plate's own rationale notes it's contraindicated for "healthy mobile anteriors" (the plate creates ortho-style lingual force on mobile incisors). Engine has `perioPrognosis` but no `anteriorMobility` input, so a perio-good but mobile incisor will still route to Lingual Plate. Add as an explicit input toggle. Decision for the owner.
 
 **B31. Reverse Akers on molars: engine flags off-label but still emits the prohibited clasp label.**
-Reverse Akers is curricularly prohibited on molars (aspiration risk). Engine notes the off-label nature and downgrades tier to "judgment" but still uses the label "Reverse Akers" in the lab Rx output. Should refuse and emit "Akers engaging 0.01" DB undercut" instead. Decision for Jake.
+Reverse Akers is curricularly prohibited on molars (aspiration risk). Engine notes the off-label nature and downgrades tier to "judgment" but still uses the label "Reverse Akers" in the lab Rx output. Should refuse and emit "Akers engaging 0.01" DB undercut" instead. Decision for the owner.
 
 ### Background agent findings — Cases tab content gaps (5 top + 7 notable)
 
-Currently 124 top-level pathway labels. Background agent identified procedures described in `/Users/jakeshea/Documents/Dentistry Files/` and `/Users/jakeshea/Desktop/All of Peds Semester Content/` that have NO corresponding pathway. **All flagged as borderline for Jake's review — not auto-added.**
+Currently 124 top-level pathway labels. Background agent identified procedures described in `~/Documents/Dentistry Files/` and `~/Desktop/All of Peds Semester Content/` that have NO corresponding pathway. **All flagged as borderline for the owner's review — not auto-added.**
 
 **G1. Vital bleaching (in-office + take-home tray).**
 Source: `Tooth Bleaching 2024 BB Echo.pdf`. Zero esthetic-non-restorative coverage currently. Students get bleaching requests routinely; bleach-vs-restore sequencing, peroxide concentration, sensitivity management, ≥2 wk post-bleach bond delay — none covered. Veneers/single crown pathways skip this whole pre-step.
@@ -1777,7 +1777,7 @@ When a 3rd molar (#1, #16, #17, #32) bounds a span with a real clasp, the engine
 ### Borderline (not auto-fixed):
 
 **B32. Class II without mod has no contralateral retention.**
-Background-agent flagged: mand Class II R missing #29-32 → only #28 RPI; no clasp on left. Engine author's documented interpretation of McCracken Ch 10 is that the indirect retainer on the opposite side provides contralateral function (rests are vertical stops, not retention proper). Agent's interpretation differed — claimed bilateral direct retention is required. Without explicit McCracken text to settle, the engine's existing interpretation stands. Decision for Jake.
+Background-agent flagged: mand Class II R missing #29-32 → only #28 RPI; no clasp on left. Engine author's documented interpretation of McCracken Ch 10 is that the indirect retainer on the opposite side provides contralateral function (rests are vertical stops, not retention proper). Agent's interpretation differed — claimed bilateral direct retention is required. Without explicit McCracken text to settle, the engine's existing interpretation stands. Decision for the owner.
 
 ### Verified-matches Design Cases:
 
@@ -2109,7 +2109,7 @@ User caught a concrete AI-slop bug: the "PFM crown" pathway was rendering "Step 
 
 ### Iter 32 knowledge gaps flagged for user input
 
-These are real disagreements where I could not resolve without UIC-specific lecture content from `/Users/jakeshea/Documents/Dentistry Files`:
+These are real disagreements where I could not resolve without UIC-specific lecture content from `~/Documents/Dentistry Files`:
 
 **A. Pulpotomy medicament.** Swade p.152-154 explicitly: Viscostat (ferric sulfate) hemostasis + IRM placement. `pedo-pulpotomy` Cases keyDecisions: "MTA is UIC's gold standard (per Alsaleh's Week 7 lecture, slide 42)... Ferric sulfate downranked." Two possibilities: (a) Alsaleh updated UIC protocol post-Swade and the Cases pathway is the newer truth; (b) the slide citation is fabricated and Swade is authoritative. Need user to check the actual Alsaleh peds lecture (`Dentistry Files / All of Peds Semester Content`). Left Cases pathway unchanged pending input — but this is a real clinical disagreement worth resolving.
 
@@ -2521,7 +2521,7 @@ Tests: 1021/1021 passing throughout. Build: clean. All pushed to main and live o
 
 ### Iter 37 — coverage gap audit (after user prompt about Dentistry Files folder)
 
-User asked if I had read every relevant file in `/Users/jakeshea/Documents/Dentistry Files/` and reviewed the lecture-titles docx. Honest answer was NO — the folder has 51 top-level entries with many subfolders. Spawned a folder-survey agent + read the lecture-titles docx + read the Vital Bleaching lecture (UIC, Chang + Lamb 2024).
+User asked if I had read every relevant file in `~/Documents/Dentistry Files/` and reviewed the lecture-titles docx. Honest answer was NO — the folder has 51 top-level entries with many subfolders. Spawned a folder-survey agent + read the lecture-titles docx + read the Vital Bleaching lecture (UIC, Chang + Lamb 2024).
 
 #### Gaps closed this iter
 

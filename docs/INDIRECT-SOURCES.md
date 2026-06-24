@@ -4,7 +4,7 @@
 
 ## Source situation — read this first
 
-**`ALL INDIRECT RESTORATION FILES` contains ONLY the two "Comprehensive Guide" files — both are the AI-generated slop Jake flagged. Nothing in that folder is usable.** The real fixed-pros corpus lives elsewhere:
+**`ALL INDIRECT RESTORATION FILES` contains ONLY the two "Comprehensive Guide" files — both are the AI-generated slop the owner flagged. Nothing in that folder is usable.** The real fixed-pros corpus lives elsewhere:
 
 - **Sw** = Swade's crown + digital sections (the reduction table ~2440-2500, crown prep/final-impression/delivery steps, digital prep/scan/delivery steps ~4880-5150, lab scripts, turnaround table).
 - **WC** = `DAOB Phase 2 War Chest/Fixed Prosth/` → /tmp/fixedfiles: **MFT** = Metal Framework Fabrication & Try-in · **PPA** = PFM Porcelain Application and Final Contouring · **Shade** = Shade Taking and Porcelain Characterization · **FPD-Rx-fw / FPD-Rx-porc** = the two "Information to include on lab prescription" docs · **Prov** = Acrylic Provisional Restorations for Posterior FPD · **Restorability** = Assessing Tooth Restorability Part 2 · Dental Alloys.
@@ -76,7 +76,7 @@
 ---
 
 **STATUS:** with these three plus cd-conventional (in CD-PATHWAY-SOURCES.md) and rpd-conventional (in RPD-SOURCES.md), **every pathway in the Maps tab now has a per-sentence source ledger.** Open items: ① the Vlagos Mounting & Die Trimming deck wasn't found in tonight's corpus (its claims are from the prior verified pass — send the deck if you have it and I'll verbatim-check the ~3 mm ditching figure); ② Lab4-23 (RPD design lab) is image-only — the path-of-insertion ~10° / rod ½-⅔ specifics stay flag-kept on answer-key authority.
-## Source-or-cut autonomous pass — 2026-06-13 (Jake: "find a real source or cut it")
+## Source-or-cut autonomous pass — 2026-06-13 (the owner: "find a real source or cut it")
 Re-extracted the full legit corpus (swade + DAOB War Chest Fixed Prosth/Digital + board criteria) to /tmp and grepped every contested claim. **AI slop confirmed & excluded:** the entire `ALL INDIRECT RESTORATION FILES` folder = the two "Comprehensive Guide" files only.
 
 **bridge-pfm — abutment block CUT (zero corpus hits):**
@@ -112,7 +112,7 @@ The same-day pass cut "~3 mm root-form emergence" calling the Vlagos *Mounting &
 
 ---
 
-# VERIFICATION PASS — 2026-06-20 (Jake: "slide-level citations to sentence-level claims, the whole point")
+# VERIFICATION PASS — 2026-06-20 (the owner: "slide-level citations to sentence-level claims, the whole point")
 
 > The sections above cite *description/keyDecisions/phases* blocks — too coarse, and those
 > citations were never re-read against the actual slides (that's how the wrong reduction
@@ -294,12 +294,12 @@ The same-day pass cut "~3 mm root-form emergence" calling the Vlagos *Mounting &
 ## digc-provisional — ✅ = crownc-provisional (Integrity, Gluma-except-RCT, TempBond) — Bis-Acryl lec + Swade 2915–2937.
 
 ## digc-delivery
-- ⚠ FLAG "comes back milled but **pre-crystallized (soft)** … crystallize in-house (~25 min)" — material facts SOURCED (Chairside s18–19: milled blue → fired 15–25 min); but **Ant-Delivery s6 says "you will receive a CRYSTALLIZED restoration."** Workflow-ambiguous (monolithic in-house-crystallize vs lab-crystallized + characterize/glaze) → **SOURCE-MAP FLAG #1**, left for Jake.
+- ⚠ FLAG "comes back milled but **pre-crystallized (soft)** … crystallize in-house (~25 min)" — material facts SOURCED (Chairside s18–19: milled blue → fired 15–25 min); but **Ant-Delivery s6 says "you will receive a CRYSTALLIZED restoration."** Workflow-ambiguous (monolithic in-house-crystallize vs lab-crystallized + characterize/glaze) → **SOURCE-MAP FLAG #1**, left for the owner.
 - ✅ "if it won't seat, adjust the PREP not the crown margins; remove sprue holding the restoration; Isodry; bitewing to confirm seating." — **Ant-Delivery s4/s7/s9/s10** ("DO NOT ADJUST MARGINS… adjust preparation first"; "X-ray to verify seating"; sprue caution).
 - ✅ "Crystallize ~25 min." — **Chairside s19** ("fired 15–25 min").
-- ⚠ **Bond protocol** "Ivoclean 20 s → IPS Ceramic Etching Gel 5% HF 20 s → Clearfil Ceramic Primer 60 s → Panavia ED Primer 30 s → Panavia paste → light-cure 20 s" — **NO UIC digital deck contains this sequence** (searched all of folder 05). Manufacturer-IFU standard: Ivoclean 20 s ✓, 5% HF on lithium disilicate 20 s ✓ (Ivoclar IFU), Panavia ED Primer 30 s ✓ (Kuraray IFU); **Clearfil Ceramic Primer "60 s" is off-IFU** (IFU = apply + dry, no 60 s hold) → **NEW FLAG #7 for Jake**. Kept (the bond is real + necessary), durations carried as IFU-standard.
+- ⚠ **Bond protocol** "Ivoclean 20 s → IPS Ceramic Etching Gel 5% HF 20 s → Clearfil Ceramic Primer 60 s → Panavia ED Primer 30 s → Panavia paste → light-cure 20 s" — **NO UIC digital deck contains this sequence** (searched all of folder 05). Manufacturer-IFU standard: Ivoclean 20 s ✓, 5% HF on lithium disilicate 20 s ✓ (Ivoclar IFU), Panavia ED Primer 30 s ✓ (Kuraray IFU); **Clearfil Ceramic Primer "60 s" is off-IFU** (IFU = apply + dry, no 60 s hold) → **NEW FLAG #7 for the owner**. Kept (the bond is real + necessary), durations carried as IFU-standard.
 - ✅ "Code DD2740C." — Scan/delivery codes.
 
 ## digc-foundation / digc-recement / digc-removal — ✅ verified clean earlier (codes D2950/D2954/D2920 correct; no fabricated specifics).
 
-**Net (digital-emax):** ✅ **DIGITAL-EMAX PATHWAY COMPLETE** at per-sentence granularity. 3 fixes shipped earlier (occlusal "1.5/1.0" fabrication, IOS image-count ×2, "~17 mm depth"); reductions cross-verified across 5 docs; 2 flags open for Jake (crystallization location #1; Clearfil 60 s #7). The Ivoclean/HF/Panavia bond sequence has no UIC deck source — carried as manufacturer-IFU.
+**Net (digital-emax):** ✅ **DIGITAL-EMAX PATHWAY COMPLETE** at per-sentence granularity. 3 fixes shipped earlier (occlusal "1.5/1.0" fabrication, IOS image-count ×2, "~17 mm depth"); reductions cross-verified across 5 docs; 2 flags open for the owner (crystallization location #1; Clearfil 60 s #7). The Ivoclean/HF/Panavia bond sequence has no UIC deck source — carried as manufacturer-IFU.

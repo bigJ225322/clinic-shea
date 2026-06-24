@@ -47,7 +47,7 @@ Pending in BACKLOG.md at loop start:
 
 ### Sources consulted
 - Swade pp. 1-220 (scanned via 3 parallel Explore agents covering pp. 1-75, 76-150, 151-220)
-- Top-level inventory of `/Users/jakeshea/Documents/Dentistry Files/` folder structure
+- Top-level inventory of `~/Documents/Dentistry Files/` folder structure
 
 ### Findings & corrections
 - Built Table 1: 96 chapter ids mapped to Swade source pages (many marked "no direct Swade match" for Cases-tab original content)

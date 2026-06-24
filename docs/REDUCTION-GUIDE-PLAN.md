@@ -4,7 +4,7 @@
 > `mcp__visualize` demo was never integrated; this is the plan to build a real,
 > parametrized React component and wire it into the Maps tab.
 
-## Jake's critiques of the first attempt (must all be fixed)
+## the owner's critiques of the first attempt (must all be fixed)
 1. **Axial reduction is uniform all around** — no "metal-only lingual", no different facial vs lingual amount. Same gap every wall.
 2. **Margins illustrated correctly** — the finish line is a real chamfer/shoulder of the right depth, drawn at ~0.5 mm supragingival, shown ONLY in views where it's actually visible.
 3. **No random projections** — nothing stray.
@@ -38,7 +38,7 @@ All: **6–10° total taper**, **~0.5 mm supragingival** finish line. e.max brid
 - Wire into the Maps tab under `crownc-prep` / `digc-prep` (and a standalone entry), as a `widget` like `mouldSelector`.
 
 ## Status — ✅ COMPLETE (2026-06-20)
-- ✅ `CrownReductionGuide` (src/App.jsx) shipped: **3 views** (buccolingual section · occlusal · proximal/mesiodistal), **32-tooth picker** (auto region + arch), **4 crown types** (metal/zirconia/PFM/e.max), **arch-aware functional cusp** (mandibular→buccal, maxillary→palatal), all drawn from `REDUCTION_FIGS` so the picture always matches the labels. Fixes all 5 of Jake's original critiques (uniform axial, correct margins, no stray projections, tooth switching, anatomic occlusal). Wired as a phase widget on the **crown-pfm** (default PFM) and **digital-emax** (default e.max) prep phases.
+- ✅ `CrownReductionGuide` (src/App.jsx) shipped: **3 views** (buccolingual section · occlusal · proximal/mesiodistal), **32-tooth picker** (auto region + arch), **4 crown types** (metal/zirconia/PFM/e.max), **arch-aware functional cusp** (mandibular→buccal, maxillary→palatal), all drawn from `REDUCTION_FIGS` so the picture always matches the labels. Fixes all 5 of the owner's original critiques (uniform axial, correct margins, no stray projections, tooth switching, anatomic occlusal). Wired as a phase widget on the **crown-pfm** (default PFM) and **digital-emax** (default e.max) prep phases.
 - ✅ Maps visual aides: **BondProtocolStepper** (Ivoclean 20s → 5% HF 20s → silane/Clearfil → Panavia A+B → light-cure) on the digital-emax Delivery phase; **ConnectorNote** (e.max ≥16 mm², height³ rule, 2-pontic 8× span-cube) on the bridge-pfm framework phase.
 - Verified each step: `npm run build` + `npx vitest run` (1391) green; app/Maps render confirmed via preview screenshots; geometry validated via mcp__visualize prototypes (PFM molar + e.max incisor). The in-app modal screenshot was the only flaky step (preview render timing) — covered by build/tests + the geometry renders.
 - Possible future polish (not blocking): premolar 2-cusp vs molar 3–4-cusp distinction; exact per-tooth crown silhouettes; an anterior incisal-edge top-down view.

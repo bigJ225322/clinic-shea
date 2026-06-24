@@ -195,7 +195,7 @@ This combination moves the engine's robustness from ~C+ toward A.
   preview-eval pattern: set the Category + Procedure selects, read the longest
   `<textarea>` value as the note output).
 
-## Open items (Jake's call, not bugs)
+## Open items (the owner's call, not bugs)
 - **icc-refusal** leaves its ~11 fill-in `[brackets]` (`[declined recommendation 1]`,
   `[interpreter name]`, etc.) visible when the form is left blank — currently *by
   design* (legal form forcing completion). Decide whether it should strip-when-

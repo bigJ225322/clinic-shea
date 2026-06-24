@@ -47,7 +47,7 @@ class ErrorBoundary extends Component {
           }}>This tab hit a bug.</h1>
           <p style={{ fontSize: '14px', lineHeight: 1.5, margin: '0 0 16px 0' }}>
             Something errored while rendering the page. The error message is
-            below — if you can screenshot it and share it with Jake, he can
+            below — if you can screenshot it and share it with the developer, who can
             fix it faster. Reloading the page usually clears the state and
             gets you back to a working view.
           </p>
