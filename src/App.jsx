@@ -3028,7 +3028,7 @@ const REF_DATA = {
  ["Cardiac transplant", "recipients who develop cardiac valvulopathy"],
  ]},
  { title: "Prosthetic joints",
- body: "Antibiotic prophylaxis is usually NOT required. The current ADA/CSA guideline reserves prophylaxis for medically compromised patients — and only after consultation with the orthopedic surgeon. When antibiotics are deemed necessary, the orthopedic surgeon should recommend the regimen and, when reasonable, write the prescription.",
+ body: "Antibiotic prophylaxis is usually NOT required. Current guidelines reserve prophylaxis for medically compromised patients — and only after consultation with the orthopedic surgeon. When antibiotics are deemed necessary, the orthopedic surgeon should recommend the regimen and, when reasonable, write the prescription.",
  },
  ]},
  { type: "prose", heading: "Procedures requiring prophylaxis", lines: [
@@ -3931,11 +3931,11 @@ function computePerioCOEDx(inputs) {
  aap = "Periodontally healthy (intact periodontium, no inflammation)";
  ada = "No periodontitis (Type I exclusion — no BOP)";
  } else if (bopVal === "localized") {
- narrative = `Localized gingivitis on intact periodontium (AAP 2018). Probing depths (${pdNum}mm max) within physiologic sulcus range; no radiographic bone loss; no attachment loss; BOP localized (<30% of sites). Reversible with improved hygiene + prophy.`;
+ narrative = `Localized gingivitis on intact periodontium. Probing depths (${pdNum}mm max) within physiologic sulcus range; no radiographic bone loss; no attachment loss; BOP localized (<30% of sites). Reversible with improved hygiene + prophy.`;
  aap = "Localized gingivitis on intact periodontium";
  ada = "Type I (gingivitis, localized)";
  } else if (bopVal === "generalized") {
- narrative = `Generalized gingivitis on intact periodontium (AAP 2018). Probing depths (${pdNum}mm max) within physiologic sulcus range; no radiographic bone loss; no attachment loss; BOP generalized (≥30% of sites). Treatment: prophy + OHI; recheck in 6-8 weeks.`;
+ narrative = `Generalized gingivitis on intact periodontium. Probing depths (${pdNum}mm max) within physiologic sulcus range; no radiographic bone loss; no attachment loss; BOP generalized (≥30% of sites). Treatment: prophy + OHI; recheck in 6-8 weeks.`;
  aap = "Generalized gingivitis on intact periodontium";
  ada = "Type I (gingivitis, generalized)";
  } else {
@@ -11168,9 +11168,9 @@ function buildPerioCOERationale(dx, inputs) {
 
  const stageDrivers = [];
  // CAL contribution
- if (cal <= 2) stageDrivers.push({ k: "CAL", v: `${cal}mm`, says: "Stage I per AAP 2018 (CAL 1–2mm)" });
- else if (cal <= 4) stageDrivers.push({ k: "CAL", v: `${cal}mm`, says: "Stage II per AAP 2018 (CAL 3–4mm)" });
- else stageDrivers.push({ k: "CAL", v: `${cal}mm`, says: "Stage III or IV per AAP 2018 (CAL ≥5mm)" });
+ if (cal <= 2) stageDrivers.push({ k: "CAL", v: `${cal}mm`, says: "Stage I (CAL 1–2mm)" });
+ else if (cal <= 4) stageDrivers.push({ k: "CAL", v: `${cal}mm`, says: "Stage II (CAL 3–4mm)" });
+ else stageDrivers.push({ k: "CAL", v: `${cal}mm`, says: "Stage III or IV (CAL ≥5mm)" });
  // Bone loss
  if (boneLossPct === "<15") stageDrivers.push({ k: "Bone loss", v: "<15%", says: "Stage I (coronal third)" });
  else if (boneLossPct === "15-33") stageDrivers.push({ k: "Bone loss", v: "15–33%", says: "Stage II (coronal-to-mid third)" });
@@ -11189,24 +11189,24 @@ function buildPerioCOERationale(dx, inputs) {
 
  // Ambiguity flags
  const ambiguity = [];
- if (cal === 4 || cal === 5) ambiguity.push("CAL sits at the Stage II / III boundary. AAP 2018 anchors II at 3–4mm and III at ≥5mm; rounding or measurement variance can shift the call.");
+ if (cal === 4 || cal === 5) ambiguity.push("CAL sits at the Stage II / III boundary. Staging anchors II at 3–4mm and III at ≥5mm; rounding or measurement variance can shift the call.");
  if (boneLossPct === "15-33" && cal >= 5) ambiguity.push("Bone loss in the 15–33% bracket combined with CAL ≥5mm is unusual — typically severe CAL is accompanied by more radiographic bone loss.");
  const hasStageIVElevator = (complexityFactors || []).some(f => ["mobility-2plus", "ridge-severe", "lt20-teeth"].includes(f));
  const stageIIIComplex = (complexityFactors || []).some(f => ["vertical-3mm", "furcation-23", "ridge-moderate"].includes(f));
  if (stageIIIComplex || hasStageIVElevator) {
- ambiguity.push("Complexity factors are in play, and the engine lets them elevate the stage per Tonetti 2018 Table 3 — Stage III factors (vertical ≥3mm, furcation II–III, moderate ridge defect) floor the case at III; Stage IV factors (mobility ≥2, severe ridge defect, <20 teeth), in addition to Stage III complexity, push it to IV. The table is explicit that complexity shifts the stage 'irrespective of CAL' and one factor is enough to move up a stage. Complexity is the fuzziest part of the system, so sanity-check the call yourself.");
+ ambiguity.push("Complexity factors are in play, and the engine lets them elevate the stage — Stage III factors (vertical ≥3mm, furcation II–III, moderate ridge defect) floor the case at III; Stage IV factors (mobility ≥2, severe ridge defect, <20 teeth), in addition to Stage III complexity, push it to IV. The table is explicit that complexity shifts the stage 'irrespective of CAL' and one factor is enough to move up a stage. Complexity is the fuzziest part of the system, so sanity-check the call yourself.");
  }
  if ((complexityFactors || []).includes("ridge-moderate") || (complexityFactors || []).includes("ridge-severe")) {
- ambiguity.push("Ridge defect severity (moderate vs severe) is NOT mm-quantified in AAP 2018 — it's a clinical judgment about rehabilitation difficulty.");
+ ambiguity.push("Ridge defect severity (moderate vs severe) is NOT mm-quantified — it's a clinical judgment about rehabilitation difficulty.");
  }
  if (dx.grade === "C" && (smoking === "≥10" || diabetes === "uncontrolled") && (ratio === "n/a" || Number(ratio) <= 1.0)) {
- ambiguity.push("Grade C here is driven by a risk-factor modifier (smoking ≥10/day or HbA1c ≥7%), applied mechanically at the table threshold. The AAP FAQ notes this isn't fully automatic — a borderline value (e.g. HbA1c just over 7%) can stay Grade B if, in your judgment, progression isn't clearly impacted; a clearly high value (HbA1c ~9%) is Grade C. Use judgment near the threshold.");
+ ambiguity.push("Grade C here is driven by a risk-factor modifier (smoking ≥10/day or HbA1c ≥7%), applied mechanically at the table threshold. Note this isn't fully automatic — a borderline value (e.g. HbA1c just over 7%) can stay Grade B if, in your judgment, progression isn't clearly impacted; a clearly high value (HbA1c ~9%) is Grade C. Use judgment near the threshold.");
  }
 
  // Judgment calls the engine made
  const judgmentCalls = [
- "AAP 2018 case definitions are descriptive, not algorithmic. Some thresholds are anchored (CAL, bone loss %, ratio bands); others (\"complex rehabilitation\", \"ridge defect severity\") require clinical judgment.",
- "Stage = worst of CAL / bone loss / tooth loss (severity); complexity factors then floor it upward — they can raise a stage, never lower it. Engine applies AAP's stated rule.",
+ "The case definitions are descriptive, not algorithmic. Some thresholds are anchored (CAL, bone loss %, ratio bands); others (\"complex rehabilitation\", \"ridge defect severity\") require clinical judgment.",
+ "Stage = worst of CAL / bone loss / tooth loss (severity); complexity factors then floor it upward — they can raise a stage, never lower it. Engine applies the stated rule.",
  "Stage IV requires either ≥5 teeth lost from perio OR Stage III baseline + a rehabilitation-complexity elevator (mobility ≥2, severe ridge defect, <20 remaining teeth). This threshold is the engine's reading — the manual is fuzzy here.",
  "Grade = worst of three factors: bone-loss/age ratio, smoking, or diabetes. Any single Grade C trigger (ratio >1.0, ≥10 cig/day, or HbA1c ≥7) makes the case Grade C regardless of the other two.",
  ];
@@ -29452,7 +29452,7 @@ const PATHWAYS_LEGACY_2026_05 = [
  keyDecisions: [
  "ACETAMINOPHEN. Children <12 years: 10–15 mg/kg/dose q4–6h; max daily 75 mg/kg, not to exceed 4,000 mg/24h. Children ≥12 years / adolescents: 325–650 mg q4–6h or 1,000 mg q6–8h; max 4,000 mg/day. Formulations: liquid (160 mg/5 mL), chewables (80 mg), suppositories. Note: liquid Tylenol concentration changed in 2012 — confirm the concentration on the bottle with the parent before dosing.",
  "IBUPROFEN. Children <12 years (≥6 months): 4–10 mg/kg/dose q6–8h; max single dose 600 mg. Children ≥12 years / adolescents: 200–400 mg q4–6h; max 3,200 mg/day. NOT indicated in children <6 months. Give with food to reduce GI irritation. Alternating APAP + ibuprofen (offset by 3h) achieves better analgesia than either alone without exceeding individual drug limits.",
- "CODEINE AND OPIOID ALTERNATIVES — CONTRAINDICATED IN CHILDREN. Per the AAP (Tobias et al. 2016 'Codeine: Time to Say No'), codeine, oxycodone, hydrocodone, morphine, and tramadol are NOT recommended for pediatric analgesia. Codeine is a prodrug converted to morphine by CYP2D6; ultrarapid metabolizers (up to 28% of some populations) convert at dangerous rates → respiratory depression + death. FDA issued Black Box Warning restricting codeine in children <12 for cough or pain (2013). Use ibuprofen + APAP alternating as the pediatric dental analgesic regimen.",
+ "CODEINE AND OPIOID ALTERNATIVES — CONTRAINDICATED IN CHILDREN. Per the AAP, codeine, oxycodone, hydrocodone, morphine, and tramadol are NOT recommended for pediatric analgesia. Codeine is a prodrug converted to morphine by CYP2D6; ultrarapid metabolizers (up to 28% of some populations) convert at dangerous rates → respiratory depression + death. FDA issued Black Box Warning restricting codeine in children <12 for cough or pain (2013). Use ibuprofen + APAP alternating as the pediatric dental analgesic regimen.",
  "AMOXICILLIN (odontogenic infections, first-line). Children <40 kg: 25–45 mg/kg/day ÷ q12h (max 875 mg/dose), or 20–40 mg/kg/day ÷ q8h (max 500 mg/dose). Duration: 5–7 days. If penicillin allergy (non-anaphylactic): clindamycin 20–30 mg/kg/day ÷ q8h (max 450 mg/dose). If Type I (anaphylactic) PCN allergy: azithromycin 10–12 mg/kg on day 1 (max 500 mg), then 5–6 mg/kg/day × 4 additional days (5-day course). Amoxicillin-clavulanate for mixed aerobic/anaerobic: children <40 kg, 25–45 mg/kg/day ÷ q12h (max 875 mg/dose amox component).",
  "PENICILLIN V POTASSIUM (alternative first-line for streptococcal odontogenic infection). Children/adolescents: 25–50 mg/kg/day ÷ q6h; max 2,000 mg/day. Narrower spectrum than amoxicillin — appropriate when gram-positive coverage is sufficient and amoxicillin has GI intolerance.",
  "ENDOCARDITIS PROPHYLAXIS. Amoxicillin: 50 mg/kg (max 2,000 mg) PO 30–60 min before procedure. Alternatives: cephalexin 50 mg/kg (max 2,000 mg); azithromycin 15 mg/kg (max 500 mg); clarithromycin 15 mg/kg (max 500 mg). Clindamycin is NO longer recommended for SBE prophylaxis (2021 AHA update — C. diff risk). Prophylaxis indicated: prosthetic valves, previous IE, congenital heart disease (unrepaired cyanotic, repaired with prosthetic material within 6 months, repaired with residual defect), cardiac transplant with valve disease.",

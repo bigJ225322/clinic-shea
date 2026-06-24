@@ -2002,7 +2002,7 @@
                   "**Multiple teeth, esthetics matter, patient can afford two prostheses** → **IID.** Same workflow as CID but with cheaper Trubyte Classic teeth, labeled \"Temporary Denture.\" New CCD once healed (~6 months per the immediate guide) with full try-in.",
                   "**Sound canine roots can be saved, hygiene is good** → **IOD.** Endo + decoronate to dome; fabricate denture over roots. Better bone preservation, retention, proprioception. Root caries is the long-term risk.",
                   "**Poor surgical candidate / uncooperative / can't manage immediate workflow** → controlled extractions + 6 mo healing → CCD. Don't push an immediate on someone who can't manage it.",
-                  "**Severely resorbed mandible (PDI IV), patient values stability** → consider 2-implant overdenture (McGill Consensus 2002) as first-line rather than conventional CD."
+                  "**Severely resorbed mandible (PDI IV), patient values stability** → consider 2-implant overdenture as first-line rather than conventional CD."
                 ]
               },
               {
@@ -2284,7 +2284,7 @@
               },
               {
                 "kind": "paragraph",
-                "text": "Distinct from the tooth-root overdenture (IOD) covered above. The implant-supported overdenture (sometimes \"IOD-implant\") sits on 2 or 4 implants placed in the resorbed ridge, retained by mechanical attachments (Locator, ball, bar) rather than soft-tissue suction. **McGill Consensus (2002):** the 2-implant mandibular overdenture is the first-line standard of care for the edentulous mandible — not conventional CD. The surgical workflow lives in the Implants guide; this section covers what the CD-side clinician does."
+                "text": "Distinct from the tooth-root overdenture (IOD) covered above. The implant-supported overdenture (sometimes \"IOD-implant\") sits on 2 or 4 implants placed in the resorbed ridge, retained by mechanical attachments (Locator, ball, bar) rather than soft-tissue suction. The 2-implant mandibular overdenture is the first-line standard of care for the edentulous mandible — not conventional CD. The surgical workflow lives in the Implants guide; this section covers what the CD-side clinician does."
               },
               {
                 "kind": "paragraph",
@@ -2845,7 +2845,7 @@
               },
               {
                 "kind": "paragraph",
-                "text": "Patient has been wearing a conventional lower denture and hates the looseness, OR is presenting for new-denture treatment and asks about implants. 2-implant mandibular overdenture is the McGill Consensus first-line for resorbed lower ridges."
+                "text": "Patient has been wearing a conventional lower denture and hates the looseness, OR is presenting for new-denture treatment and asks about implants. 2-implant mandibular overdenture is first-line for resorbed lower ridges."
               },
               {
                 "kind": "paragraph",
@@ -2958,7 +2958,7 @@
               {
                 "kind": "bullets",
                 "items": [
-                  "**The 2-implant mandibular overdenture is the McGill Consensus (2002) first choice** for the edentulous mandible — retention and stability far exceed a conventional lower CD on a resorbed ridge.",
+                  "**The 2-implant mandibular overdenture is the first choice** for the edentulous mandible — retention and stability far exceed a conventional lower CD on a resorbed ridge.",
                   "**The surgical + attachment workflow lives in the Implants guide** (consult → placement → healing → attachment-level impression → loading). On the CD side, the denture base is made with space for the attachment housings, which are picked up chairside."
                 ]
               },
@@ -3686,7 +3686,7 @@
               },
               {
                 "kind": "section",
-                "text": "Step by step (12 steps per Kim)"
+                "text": "Step by step (12 steps)"
               },
               {
                 "kind": "numbered",
@@ -8307,7 +8307,7 @@
               },
               {
                 "kind": "section",
-                "text": "Prep (gold — differs per Sturdevant's)"
+                "text": "Prep (gold — differs)"
               },
               {
                 "kind": "bullets",
@@ -8333,7 +8333,7 @@
                 "body": "**Feather-edge margin** — milling bur cannot fabricate, scanner cannot capture. **Parallel walls and undercuts** — impossible path of insertion. **Sharp internal angles** — overmill leads to thin restoration that fractures. **Insufficient isthmus** — restoration too thin in the middle, fractures. **Interproximal undercuts** — same path-of-insertion problem."
               }
             ],
-            "verdict": "A fixed intracoronal restoration luted into a prepared cavity (Glossary of Prosthodontic Terms). Cusps remain intact. The escalation point above direct composite but below cuspal coverage."
+            "verdict": "A fixed intracoronal restoration luted into a prepared cavity. Cusps remain intact. The escalation point above direct composite but below cuspal coverage."
           },
           {
             "id": "ind-ch14",
@@ -8433,7 +8433,7 @@
               },
               {
                 "kind": "paragraph",
-                "text": "**Bis-acryl vs PMMA** comparison per Marcano:"
+                "text": "**Bis-acryl vs PMMA** comparison:"
               },
               {
                 "kind": "bullets",
