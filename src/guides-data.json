@@ -130,7 +130,7 @@
                 "kind": "numbered",
                 "items": [
                   "**Red pencil:** trace the tray border at the depth of the vestibule on buccal + labial. At posterior: vibrating line area (maxillary) or pear-shaped retromolar pad (mandibular).",
-                  "**Blue pencil:** draw a line 2-3 mm inside the red (the lab instructions say 2-3; Tan's deck draws it at 2). This is where the tray border will sit, leaving that vestibular space for border-molding material.",
+                  "**Blue pencil:** draw a line 2-3 mm inside the red (the lab instructions say 2-3). This is where the tray border will sit, leaving that vestibular space for border-molding material.",
                   "Posterior extension gets RED line only (no 2 mm blue offset there).",
                   "**Red marks for relief areas:** maxilla — part of the palatal raphe, all rugae, and the incisive papilla, extending just lateral to the ridge crest; mandible — the crest of the residual ridge only, leaving the buccal shelf and retromolar pads uncovered so the finished tray contacts those stress-bearing areas. Also mark any lingual tori, mylohyoid ridge, or knife-edge zones."
                 ]
@@ -307,7 +307,7 @@
               },
               {
                 "kind": "callout",
-                "title": "Salari's verdict",
+                "title": "Impression material verdict",
                 "body": "*\"Sharp borders are underextended borders.\"* If the green-stick comes to a thin sharp edge, you didn't reach the depth of the vestibule. Add more compound and remold."
               },
               {
@@ -334,7 +334,7 @@
                 "kind": "bullets",
                 "items": [
                   "**Border-molded custom tray** (just completed in step above).",
-                  "**PVS light or medium body** per Salari's review (the deck has both \"most viscous heavy\" and \"light/medium\" references — practical reading: light/medium for the wash when borders are already molded in green-stick).",
+                  "**PVS light or medium body** (references list both \"most viscous heavy\" and \"light/medium\" references — practical reading: light/medium for the wash when borders are already molded in green-stick).",
                   "**PVS dispenser gun** + cartridge + fresh mixing tip.",
                   "**Tray adhesive** appropriate for the PVS brand (brush + dappen dish; use new brushes each visit — no double-dipping).",
                   "**#8 round acrylic bur** for the rugae escape vent (maxillary).",
@@ -391,7 +391,7 @@
               {
                 "kind": "bullets",
                 "items": [
-                  "**Sharp borders = underextended** (Salari).",
+                  "**Sharp borders = underextended**.",
                   "**Thick rolled borders = overextended.**",
                   "Voids in the palate or on the ridge = retake.",
                   "Tray show-through anywhere on the border = retake.",
@@ -883,7 +883,7 @@
                   "**33° BBA** — 33° anatomic posteriors (max + mand).",
                   "**Monoplane neutrocentric** — 0° flat-plane posteriors.",
                   "**Monoplane + balancing ramp** — 0° flat-plane posteriors plus acrylic balancing ramps built distal to the second molars.",
-                  "**Lingualized (the second UIC lab setup)** — 30° maxillary against 0° mandibular, balanced with a compensating curve."
+                  "**Lingualized (the second lab setup)** — 30° maxillary against 0° mandibular, balanced with a compensating curve."
                 ]
               },
               {
@@ -1056,7 +1056,7 @@
                   "**7f.** Set the maxillary second molar.",
                   "**7g.** **Cheek-bite prevention rule:** the maxillary lingual cusps should sit over the crest of the mandibular ridge (not lateral to the mandibular buccal cusps). If the maxillary teeth are set too buccal, the patient bites their cheek.",
                   "**7h.** Mirror to contralateral side.",
-                  "**7i.** **Compensating curve for 33° BBA**: build mm of wax under the posterior cusps per the Week 14 huddle. Mandibular fossae sit on the curve, not on a flat plane."
+                  "**7i.** **Compensating curve for 33° BBA**: build mm of wax under the posterior cusps. Mandibular fossae sit on the curve, not on a flat plane."
                 ]
               },
               {
@@ -1173,7 +1173,7 @@
                 "items": [
                   "**Indication:** good ridges, good neuromuscular control, prior anatomic wearer, transition from natural dentition.",
                   "**Posterior teeth:** 33° anatomic, max + mand.",
-                  "**Compensating curve** built per the Week 14 huddle.",
+                  "**Compensating curve** built into the posterior setup.",
                   "**Goal:** bilateral contact in centric, in working, in balancing, and in protrusive excursions.",
                   "**Grading:** 0/0.5/1 point per parameter; out of 20 points; pass at 16+."
                 ]
@@ -1209,12 +1209,12 @@
               },
               {
                 "kind": "section",
-                "text": "Week 14 huddle: compensating-curve build-up for 33° BBA"
+                "text": "Compensating-curve build-up for 33° BBA"
               },
               {
                 "kind": "bullets",
                 "items": [
-                  "*The specific mm values below are illustrative of the gradient (anterior 0 → posterior elevated); the clinic huddle-key values may differ slightly. Verify against your current Week 14 huddle key.*",
+                  "*The specific mm values below are illustrative of the gradient (anterior 0 → posterior elevated); the clinic's key values may differ slightly. Verify against your current key.*",
                   "**Mandibular 2nd molar central fossa:** 1.5–2.0 mm above the metal occlusal plate.",
                   "**Mandibular 1st molar central fossa:** 1.0–1.5 mm above the plate.",
                   "**Mandibular 2nd premolar central fossa:** 0.5–1.0 mm above the plate.",
@@ -2698,7 +2698,7 @@
               {
                 "kind": "callout",
                 "title": "The 24-hour and 1-week follow-ups",
-                "body": "Schedule two follow-ups: a 24-hour visit (ask what's bothering them, full oral exam, check the intaglio for pressure areas with PIP, evaluate occlusion / refine equilibration) and a 1-week visit (re-check PIP + occlusion). The delivery lecture splits the first visit by severity — see them at 1 day if the delivery needed a severe adjustment, 3 days if it was minor."
+                "body": "Schedule two follow-ups: a 24-hour visit (ask what's bothering them, full oral exam, check the intaglio for pressure areas with PIP, evaluate occlusion / refine equilibration) and a 1-week visit (re-check PIP + occlusion). The first visit splits by severity — see them at 1 day if the delivery needed a severe adjustment, 3 days if it was minor."
               },
               {
                 "kind": "callout",
@@ -2947,8 +2947,8 @@
                 "kind": "bullets",
                 "items": [
                   "**Keep selected roots rather than extracting them.** Sound roots with good periodontal support — usually the canines — are retained to preserve alveolar bone and add stability and proprioception.",
-                  "**Finish root canal therapy on the overdenture abutments, then prepare them** — the denture seats over the prepared roots. (Immediate Dentures lecture: RCT on the overdenture abutments → prepare the abutments → extract the remaining teeth → deliver over a surgical template for the immediate case.)",
-                  "**Work the case up first:** if overdentures are being considered, complete the evaluation; an oral-surgery consult is warranted when there are multiple extractions or tori. (Immediate Dentures lecture.)"
+                  "**Finish root canal therapy on the overdenture abutments, then prepare them** — the denture seats over the prepared roots. (RCT on the overdenture abutments → prepare the abutments → extract the remaining teeth → deliver over a surgical template for the immediate case.)",
+                  "**Work the case up first:** if overdentures are being considered, complete the evaluation; an oral-surgery consult is warranted when there are multiple extractions or tori."
                 ]
               },
               {
@@ -2958,7 +2958,7 @@
               {
                 "kind": "bullets",
                 "items": [
-                  "**The 2-implant mandibular overdenture is the McGill Consensus (2002) first choice** for the edentulous mandible — retention and stability far exceed a conventional lower CD on a resorbed ridge. (Complete Denture Delivery & follow-up lecture.)",
+                  "**The 2-implant mandibular overdenture is the McGill Consensus (2002) first choice** for the edentulous mandible — retention and stability far exceed a conventional lower CD on a resorbed ridge.",
                   "**The surgical + attachment workflow lives in the Implants guide** (consult → placement → healing → attachment-level impression → loading). On the CD side, the denture base is made with space for the attachment housings, which are picked up chairside."
                 ]
               },
@@ -3182,7 +3182,7 @@
             "blocks": [
               {
                 "kind": "paragraph",
-                "text": "Mounting is the step that converts your impressions into a 3D model of the patient's static + dynamic occlusion. mounting required for RPD diagnosis — the impressions lecture (4A) calls it \"absolutely necessary\", a hard gate before any design work. Plan a 90-minute lab session."
+                "text": "Mounting is the step that converts your impressions into a 3D model of the patient's static + dynamic occlusion. mounting required for RPD diagnosis — it's \"absolutely necessary\", a hard gate before any design work. Plan a 90-minute lab session."
               },
               {
                 "kind": "section",
@@ -5484,7 +5484,7 @@
             "blocks": [
               {
                 "kind": "paragraph",
-                "text": "The facebow registers the maxillary arch in three planes of space and transfers it to the articulator, so the upper cast is mounted at the same distance and angle from the hinge axis as the maxilla sits from the condyles. The bite registration then mounts the lower cast to it. UIC uses the Denar facebow and a Denar semi-adjustable articulator."
+                "text": "The facebow registers the maxillary arch in three planes of space and transfers it to the articulator, so the upper cast is mounted at the same distance and angle from the hinge axis as the maxilla sits from the condyles. The bite registration then mounts the lower cast to it. The clinic uses the Denar facebow and a Denar semi-adjustable articulator."
               },
               {
                 "kind": "section",
@@ -5545,7 +5545,7 @@
             "blocks": [
               {
                 "kind": "paragraph",
-                "text": "When the casts cannot be hand-articulated, you make record bases and wax rims so a bite registration can capture the patient's maximum intercuspation (MI) and mount the lower cast. UIC builds the record bases from light-cured Triad and the rims from hard baseplate wax."
+                "text": "When the casts cannot be hand-articulated, you make record bases and wax rims so a bite registration can capture the patient's maximum intercuspation (MI) and mount the lower cast. The clinic builds the record bases from light-cured Triad and the rims from hard baseplate wax."
               },
               {
                 "kind": "section",
@@ -6402,12 +6402,12 @@
               {
                 "kind": "bullets",
                 "items": [
-                  "**4a. Depth-cut grooves:** use the 845KR diamond to cut occlusal depth grooves to guide an *anatomic* reduction — follow the cusps, don't flatten. **e.max: 1.5–2.0 mm** (Swade's all-ceramic column), deeper on the functional cusp slope, plus a functional cusp bevel. Per Swade's reduction table, monolithic **zirconia and full-metal need *less*, 1.25–1.5 mm** occlusally — don't over-reduce a zirconia prep.",
+                  "**4a. Depth-cut grooves:** use the 845KR diamond to cut occlusal depth grooves to guide an *anatomic* reduction — follow the cusps, don't flatten. **e.max: 1.5–2.0 mm** (all-ceramic column), deeper on the functional cusp slope, plus a functional cusp bevel. Per the reduction table, monolithic **zirconia and full-metal need *less*, 1.25–1.5 mm** occlusally — don't over-reduce a zirconia prep.",
                   "**4b. Reduce occlusal surface** to the depth-groove level. Use the 845KR or football diamond.",
-                  "**4c. Axial depth-cut grooves:** use the chamfer diamond. Cut **1.25–1.5 mm** axial grooves on B + L + M + D (Swade's all-ceramic / PFM axial reduction; zirconia + full-metal are 1.0–1.25 mm).",
+                  "**4c. Axial depth-cut grooves:** use the chamfer diamond. Cut **1.25–1.5 mm** axial grooves on B + L + M + D (all-ceramic / PFM axial reduction; zirconia + full-metal are 1.0–1.25 mm).",
                   "**4d. Reduce axial walls** to the depth-groove level. Maintain a 6–10° total occlusal convergence (a tapered, parallel-to-itself axial wall).",
                   "**4e. Path of draw:** for multiple-unit FPDs, the most-misaligned abutment determines the path. Taper non-parallel abutments inward to achieve common path (e.g., for #3–5 FPD with #5 distally inclined: taper the distal axial wall of #5 more aggressively; taper the mesial axial wall of #3 to match).",
-                  "**4f. Finish the margin** with a fine-grit chamfer diamond. **e.max / PFM: a deep chamfer, 1.0–1.25 mm** (Swade's table; zirconia + full-metal use a lighter 0.5–0.8 mm chamfer). Margin location: 0.5–1.0 mm subgingival for esthetic zones (single cord retraction will pull tissue away), supragingival or equigingival otherwise.",
+                  "**4f. Finish the margin** with a fine-grit chamfer diamond. **e.max / PFM: a deep chamfer, 1.0–1.25 mm** (zirconia + full-metal use a lighter 0.5–0.8 mm chamfer). Margin location: 0.5–1.0 mm subgingival for esthetic zones (single cord retraction will pull tissue away), supragingival or equigingival otherwise.",
                   "**4g. Smooth all line angles + surfaces.** Sharp angles concentrate stress; smooth flowing surfaces give the crown material adequate bulk + clean seating.",
                   "**4h. Verify reduction with the putty matrix:** seat the matrix, look for 1.5–2.0 mm clearance throughout the prep tooth. **Use a 1.0 mm probe (or condenser) inside the putty** — classic error is acceptable-looking putty clearance from the outside that's actually under-reduced when measured inside.",
                   "**4i.** Verify with explorer that no exposed dentin shows undercuts (undercuts trap impression material + interfere with crown seating)."
@@ -7227,7 +7227,7 @@
                 "items": [
                   "**PFM crown (single unit or bridge):** **RelyX or FujiCem** — the clinic default. RelyX is the resin option; FujiCem is the RMGI option. Either acceptable for PFM with adequate prep retention.",
                   "**e.max (digital chairside, inlay/onlay/crown):** **Panavia (dual-cure resin)** per the digital workflow protocol — Ivoclean cleanup → 5% HF etch → Clearfil Ceramic Primer → Panavia A+B paste mix → seat → light cure 20 sec each surface.",
-                  "**e.max (lab-fabricated):** **RelyX Ultimate** (the resin for ceramic restorations per the Materials reference).",
+                  "**e.max (lab-fabricated):** **RelyX Ultimate** (the resin for ceramic restorations).",
                   "**Zirconia:** **Panavia + Clearfil Ceramic Primer** by analogy with the e.max digital protocol; HF does NOT etch zirconia — air-abrasion + MDP primer is the only effective surface treatment. Clinic may use a different MDP primer system for zirconia.",
                   "**Cast gold:** **RelyX or FujiCem**. Either works; cement choice is less critical because cast gold's marginal accuracy is high and retention form is good.",
                   "**Bridge / FPD (PFM):** same as PFM single crown — **RelyX or FujiCem**.",
@@ -7528,7 +7528,7 @@
                 "kind": "bullets",
                 "items": [
                   "Anterior esthetic zone where the metal collar shows a gray hue at the gingival.",
-                  "Patients with metal allergy — particularly Ni (5–8% of female population per Dental Alloys lecture).",
+                  "Patients with metal allergy — particularly Ni (5–8% of female population).",
                   "Cases where bond-strength advantages of resin-cemented all-ceramics are desired."
                 ]
               },
@@ -7764,7 +7764,7 @@
               },
               {
                 "kind": "section",
-                "text": "Prep (molar FGC, per FPD lecture)"
+                "text": "Prep (molar FGC)"
               },
               {
                 "kind": "bullets",
@@ -7995,7 +7995,7 @@
               {
                 "kind": "bullets",
                 "items": [
-                  "**Onlays** per — the Inlays/Onlays lecture states the weaker resin-based blocks \"could not be used for onlays.\"",
+                  "**Onlays** the weaker resin-based blocks \"could not be used for onlays.\"",
                   "Long-term esthetic-stability cases (color drift over time).",
                   "High-load posterior single units."
                 ]
@@ -8210,7 +8210,7 @@
               {
                 "kind": "bullets",
                 "items": [
-                  "**Occlusal reduction:** 1.5–2.0 mm, anatomic — follow the cusp inclines, don't flatten — plus a separate functional cusp bevel. Same as a conventional PFM/e.max crown (PFM Crowns deck slides 13–14; Swade p.58/p.114).",
+                  "**Occlusal reduction:** 1.5–2.0 mm, anatomic — follow the cusp inclines, don't flatten — plus a separate functional cusp bevel. Same as a conventional PFM/e.max crown.",
                   "**Lingual axial reduction:** 1.0 mm chamfer (cast gold) or 1.5 mm shoulder (PFM ¾, rare).",
                   "**Proximal axial reduction:** 1.0 mm chamfer extending from the lingual line angle around the proximal toward the facial line angle but stopping ~1 mm short of the facial midline.",
                   "**Proximal grooves:** 1.0 mm deep grooves carved into the mesiolingual and distolingual line angles. These are the retentive features that replace the missing facial wall.",
@@ -8252,7 +8252,7 @@
                 "body": "Most patients who would accept a ¾ crown (conservative, partial coverage) end up accepting a full crown because the cost is similar, the lab work is similar, and the full crown is more forgiving of prep variation. The ¾ remains useful because it teaches conservative thinking + path of draw + retention form via grooves — concepts that transfer to inlay/onlay design. Don't expect to do many of these in clinic; expect to be encountered with the principles."
               }
             ],
-            "verdict": "A partial-coverage option that preserves one un-prepared surface (typically the facial). covers conceptually within the partial-coverage continuum but doesn't dedicate a lecture — full coverage is usually preferred in early training."
+            "verdict": "A partial-coverage option that preserves one un-prepared surface (typically the facial). covers conceptually within the partial-coverage continuum — full coverage is usually preferred in early training."
           },
           {
             "id": "ind-ch13",
@@ -10064,7 +10064,7 @@
               },
               {
                 "kind": "paragraph",
-                "text": "The clinic uses **3Shape TRIOS** as the documented intraoral scanner. The workflow goes through the **UIC Dental Lab** option in the TRIOS software for crown/inlay/onlay cases milled to **e.max CAD**."
+                "text": "The clinic uses **3Shape TRIOS** as the documented intraoral scanner. The workflow goes through the **dental lab** option in the TRIOS software for crown/inlay/onlay cases milled to **e.max CAD**."
               },
               {
                 "kind": "bullets",
@@ -10085,7 +10085,7 @@
                 "kind": "numbered",
                 "items": [
                   "**1.** Open TRIOS software. Click 'Default operator'. Search for the patient (existing) or click 'New Patient' (first scan in digital clinic).",
-                  "**2.** Click 'New Case'. Click 'UIC Dental Lab'.",
+                  "**2.** Click 'New Case'. Click the dental-lab option.",
                   "**3.** Select the tooth on the model. Click 'Anatomy'. Select restoration type (crown / inlay / onlay). Set material to **e.max CAD**. Select shade. Pick any delivery date.",
                   "**4.** Scan the **opposing arch first**. Maxillary: occlusal → buccal → lingual. Mandibular: occlusal → lingual → buccal.",
                   "**5.** Scan the **arch with the prep**. Same image limits.",
@@ -10310,7 +10310,7 @@
             "id": "ind-ch31",
             "num": 31,
             "title": "Crown removal — sectioning, spreader, airway protection",
-            "verdict": "When an existing crown needs to come off — fractured tooth underneath, recurrent caries that's exhausted the margin, failed endo through the crown, or planning a remake — you section the crown with a crown-removing bur, split it with a crown spreader, and pull. The case turns on airway protection (Isodry over gauze), accurate sectioning that goes through to dentin, and not fracturing porcelain into the patient's airway. Source: Swade p. 70.",
+            "verdict": "When an existing crown needs to come off — fractured tooth underneath, recurrent caries that's exhausted the margin, failed endo through the crown, or planning a remake — you section the crown with a crown-removing bur, split it with a crown spreader, and pull. The case turns on airway protection (Isodry over gauze), accurate sectioning that goes through to dentin, and not fracturing porcelain into the patient's airway.",
             "blocks": [
               {
                 "kind": "paragraph",
@@ -10318,7 +10318,7 @@
               },
               {
                 "kind": "section",
-                "text": "Materials checklist (Swade)"
+                "text": "Materials checklist"
               },
               {
                 "kind": "bullets",
@@ -10330,7 +10330,7 @@
               },
               {
                 "kind": "section",
-                "text": "Procedure (the Swade 10-step sequence)"
+                "text": "Procedure (10-step sequence)"
               },
               {
                 "kind": "numbered",
@@ -10372,7 +10372,7 @@
             "id": "ind-ch32",
             "num": 32,
             "title": "Crown endo access fill — composite over Vitrebond after RCT through a crown",
-            "verdict": "When endodontic treatment was done through an existing crown (rather than removing the crown to do the RCT and then placing a new crown), the access cavity needs to be filled. Vitrebond goes over the gutta-percha as a base; composite fills the access. Code D2950 (core buildup including pins). Source: Swade p. 71.",
+            "verdict": "When endodontic treatment was done through an existing crown (rather than removing the crown to do the RCT and then placing a new crown), the access cavity needs to be filled. Vitrebond goes over the gutta-percha as a base; composite fills the access. Code D2950 (core buildup including pins).",
             "blocks": [
               {
                 "kind": "paragraph",
@@ -10380,7 +10380,7 @@
               },
               {
                 "kind": "section",
-                "text": "Materials checklist (Swade)"
+                "text": "Materials checklist"
               },
               {
                 "kind": "bullets",
@@ -10431,7 +10431,7 @@
             "blocks": [
               {
                 "kind": "paragraph",
-                "text": "A PFM crown needs room for **both** the metal substructure and the porcelain veneer, so it is the most reduction-heavy crown prep. At UIC you prepare a deep chamfer / shoulder all around."
+                "text": "A PFM crown needs room for **both** the metal substructure and the porcelain veneer, so it is the most reduction-heavy crown prep. You prepare a deep chamfer / shoulder all around."
               },
               {
                 "kind": "section",
@@ -10442,7 +10442,7 @@
                 "items": [
                   "**Axial:** 1.25–1.5 mm.",
                   "**Occlusal / incisal:** 1.5–2.0 mm.",
-                  "**Finish line:** facial **deep chamfer / shoulder 1.0–1.25 mm**; lingual chamfer 0.5–0.8 mm (or deep chamfer/shoulder). *For UIC, prepare a deep chamfer / shoulder all around.*",
+                  "**Finish line:** facial **deep chamfer / shoulder 1.0–1.25 mm**; lingual chamfer 0.5–0.8 mm (or deep chamfer/shoulder). *Prepare a deep chamfer / shoulder all around.*",
                   "**Taper:** 2–5° per wall. Place the finish line **0.5 mm coronal to the free gingival margin** — do not prep more than 0.5 mm into the sulcus (biologic width)."
                 ]
               },
@@ -10517,7 +10517,7 @@
               {
                 "kind": "bullets",
                 "items": [
-                  "The standard at UIC is the **two-cord technique** for a subgingival margin. A single cord is enough only for a supragingival/equigingival margin or a sulcus too shallow for two."
+                  "The standard is the **two-cord technique** for a subgingival margin. A single cord is enough only for a supragingival/equigingival margin or a sulcus too shallow for two."
                 ]
               },
               {
@@ -10566,7 +10566,7 @@
             "blocks": [
               {
                 "kind": "paragraph",
-                "text": "The provisional protects the prep, holds the tooth's position and occlusion, and keeps the tissue healthy for the impression. At UIC you fabricate it from Integrity (bis-acryl) in a **putty matrix made off the diagnostic cast** — formed *before* the impression, cemented *after*."
+                "text": "The provisional protects the prep, holds the tooth's position and occlusion, and keeps the tissue healthy for the impression. You fabricate it from Integrity (bis-acryl) in a **putty matrix made off the diagnostic cast** — formed *before* the impression, cemented *after*."
               },
               {
                 "kind": "section",
@@ -10730,7 +10730,7 @@
                 "kind": "numbered",
                 "items": [
                   "**Re-check the ferrule first.** With an inadequate ferrule, longevity is compromised no matter which post you use — confirm there is a sound collar of tooth before committing.",
-                  "**Choose the post.** Default to a **prefabricated fiber post** (UIC's is **ParaPost**): custom-fit to the canal, cost-effective, and close to dentin in stiffness, so it distributes stress and lowers root-fracture risk versus a rigid metal post. Pick one that **fits passively** — reserve active (threaded) posts for short teeth, since they raise fracture risk and are harder to retrieve.",
+                  "**Choose the post.** Default to a **prefabricated fiber post** (**ParaPost**): custom-fit to the canal, cost-effective, and close to dentin in stiffness, so it distributes stress and lowers root-fracture risk versus a rigid metal post. Pick one that **fits passively** — reserve active (threaded) posts for short teeth, since they raise fracture risk and are harder to retrieve.",
                   "**Size the post space.** Post length ≈ **at least the crown height**, extending apically past the crest of bone, while you **retain ≥4 mm of gutta-percha apically** (leave ~5 mm radiographically to allow for angulation). Remove as little dentin as possible — root curvature and cervical dentin are the limits; over-widening invites root fracture or perforation.",
                   "**Bond it under a rubber dam.** Contamination is *enemy number one* for an endo-treated tooth — isolate, then bond the post with adhesive resin at **both the radicular and coronal levels**, choosing post + core materials that behave like dentin.",
                   "**Build the core over the seated post** using the build-up steps above, preserve the ferrule, and proceed to the crown prep."
@@ -10950,7 +10950,7 @@
                 "kind": "bullets",
                 "items": [
                   "**Ovate** — most esthetic; a convex tissue surface sits in a small concavity in the ridge so the pontic looks like it erupts from the gingiva. Needs ridge volume / surgical site development.",
-                  "**Modified ridge lap** — the UIC default. An all-convex, cleansable tissue surface that touches **only the buccal attached keratinized gingiva** (hides the buccal, stays cleansable on the lingual). Best balance of esthetics + hygiene.",
+                  "**Modified ridge lap** — the default. An all-convex, cleansable tissue surface that touches **only the buccal attached keratinized gingiva** (hides the buccal, stays cleansable on the lingual). Best balance of esthetics + hygiene.",
                   "**Sanitary (hygienic)** — the tissue surface stays clear of the ridge entirely (easiest to clean); non-esthetic posterior spans only.",
                   "**Conical** — a rounded, near-point tissue contact for thin / knife-edge ridges; less esthetic."
                 ]
@@ -10975,7 +10975,7 @@
             "blocks": [
               {
                 "kind": "paragraph",
-                "text": "The provisional bridge protects both preps, holds the abutments and the space, and develops the pontic-site tissue. Make it as **one connected unit** — provisionalizing a 3-unit FPD as two separate crowns lets the teeth shift, leaves the pontic site under-developed, and gives no trial of the final form. At UIC the provisional is made from acrylic (Jet Set-4) or bis-acryl (Integrity) — the provisional lecture lists both, and the #3–5 FPD provisional study guide names Jet Set-4 acrylic. Bis-acryl is low-shrinkage and low-exotherm, easy to mix and polish, but brittle; acrylic (Jet Set-4) is cheaper and easy to repair."
+                "text": "The provisional bridge protects both preps, holds the abutments and the space, and develops the pontic-site tissue. Make it as **one connected unit** — provisionalizing a 3-unit FPD as two separate crowns lets the teeth shift, leaves the pontic site under-developed, and gives no trial of the final form. The provisional is made from acrylic (Jet Set-4) or bis-acryl (Integrity) — both are options, and the #3–5 FPD provisional study guide names Jet Set-4 acrylic. Bis-acryl is low-shrinkage and low-exotherm, easy to mix and polish, but brittle; acrylic (Jet Set-4) is cheaper and easy to repair."
               },
               {
                 "kind": "section",
@@ -11007,7 +11007,7 @@
               {
                 "kind": "callout",
                 "title": "Bis-acryl vs acrylic",
-                "body": "Two materials, both listed by the provisional lecture: **bis-acryl (Integrity)** — low-shrinkage, easy to handle, dispensed from a cartridge gun — and **acrylic (Jet Set-4)**, mixed powder-and-liquid through **soupy → doughy → rubbery → set** stages, cheaper and easy to repair. The #3–5 FPD provisional study guide uses Jet Set-4 acrylic."
+                "body": "Two materials, both options: **bis-acryl (Integrity)** — low-shrinkage, easy to handle, dispensed from a cartridge gun — and **acrylic (Jet Set-4)**, mixed powder-and-liquid through **soupy → doughy → rubbery → set** stages, cheaper and easy to repair. The #3–5 FPD provisional study guide uses Jet Set-4 acrylic."
               }
             ]
           },
@@ -11299,7 +11299,7 @@
             "blocks": [
               {
                 "kind": "paragraph",
-                "text": "Instead of a PVS impression you capture an **intraoral scan** with the TRIOS. The provisional is made *first* (before scanning); then you scan the prep, the opposing arch, and the bite, and send the case straight to the UIC Dental Lab."
+                "text": "Instead of a PVS impression you capture an **intraoral scan** with the TRIOS. The provisional is made *first* (before scanning); then you scan the prep, the opposing arch, and the bite, and send the case straight to the dental lab."
               },
               {
                 "kind": "section",
@@ -11309,11 +11309,11 @@
                 "kind": "numbered",
                 "items": [
                   "**Fabricate the Integrity provisional before scanning** (set it aside — you cement it after the scan), then **pack two cords**: a smaller bottom cord under the margin (no tail) and a larger top cord above (at least size 1, ideally size 2; half in the sulcus, leave a tail).",
-                  "Open **TRIOS**, pick the patient (or New Patient), select **UIC Dental Lab**, select the tooth, set restoration = crown, material = **e.max CAD**, and the shade; pick any delivery date; Next.",
+                  "Open **TRIOS**, pick the patient (or New Patient), select the **dental lab**, select the tooth, set restoration = crown, material = **e.max CAD**, and the shade; pick any delivery date; Next.",
                   "**Scan the opposing arch first** (maxillary: occlusal → buccal → lingual; mandibular: occlusal → lingual → buccal), keeping the count under 2,000 images (2,000–3,000 is borderline; >3,000 is more than the software allows—erase + re-scan if you go over).",
                   "**Scan the prep arch.** Then the cord trick: **Lock** everything except the prep, **Trim** to erase the prep, remove the **top** cord intraorally, and **immediately re-scan the prep** — the scanner fills in the finish line the cord was hiding.",
                   "Turn off colors to check the margin; confirm you captured the **interproximal contacts and enough occlusal clearance**; **mark the tooth**; then **scan the occlusion** (the software auto-occludes).",
-                  "Instructor checks the scans → **Next → Send** to the UIC Dental Lab."
+                  "Instructor checks the scans → **Next → Send** to the dental lab."
                 ]
               },
               {
@@ -11496,11 +11496,11 @@
             "id": "dir-ch2",
             "num": 2,
             "title": "Isodry isolation for direct restorations",
-            "verdict": "Isodry is the UIC default for direct-restoration isolation — a single-use bite-block device with built-in suction that retracts the tongue and cheek, captures aerosols, and keeps the field dry. Faster to place than a rubber dam, no clamps, no extra anesthesia for clamp placement. (Rubber dam is reserved for endo at UIC.)",
+            "verdict": "Isodry is the default for direct-restoration isolation — a single-use bite-block device with built-in suction that retracts the tongue and cheek, captures aerosols, and keeps the field dry. Faster to place than a rubber dam, no clamps, no extra anesthesia for clamp placement. (Rubber dam is reserved for endo.)",
             "blocks": [
               {
                 "kind": "paragraph",
-                "text": "Bond strength to enamel drops by 30–40% with even trace saliva contamination, and dentin bond strength drops more steeply. The clinical consequence is post-op sensitivity, marginal staining, and recurrent caries within 1–3 years. Isodry closes this gap reliably and is far faster to place than the rubber-dam workflow students may have learned in pre-clinical lab. UIC uses Isodry for every direct-restoration scenario; rubber dam is reserved for endodontic procedures."
+                "text": "Bond strength to enamel drops by 30–40% with even trace saliva contamination, and dentin bond strength drops more steeply. The clinical consequence is post-op sensitivity, marginal staining, and recurrent caries within 1–3 years. Isodry closes this gap reliably and is far faster to place than the rubber-dam workflow students may have learned in pre-clinical lab. The clinic uses Isodry for every direct-restoration scenario; rubber dam is reserved for endodontic procedures."
               },
               {
                 "kind": "section",
@@ -11543,8 +11543,8 @@
               },
               {
                 "kind": "callout",
-                "title": "Why not rubber dam at UIC?",
-                "body": "Rubber dam isolation is the gold standard for moisture control but the placement workflow is slow (5-10 minutes), requires clamp placement (often with supplemental anesthesia), and the clamps + frame can be uncomfortable for patients. Isodry provides 90%+ of the moisture-control benefit in 30-60 seconds of placement, with built-in airway protection from its continuous suction. UIC's standard is Isodry for direct work; rubber dam stays in the endo clinic where the procedure justifies the extra setup time."
+                "title": "Why not rubber dam?",
+                "body": "Rubber dam isolation is the gold standard for moisture control but the placement workflow is slow (5-10 minutes), requires clamp placement (often with supplemental anesthesia), and the clamps + frame can be uncomfortable for patients. Isodry provides 90%+ of the moisture-control benefit in 30-60 seconds of placement, with built-in airway protection from its continuous suction. The standard is Isodry for direct work; rubber dam stays in the endo clinic where the procedure justifies the extra setup time."
               },
               {
                 "kind": "troubleshoot",
@@ -12126,7 +12126,7 @@
             "id": "dir-ch16",
             "num": 16,
             "title": "Amalgam restoration — Class I and Class II",
-            "verdict": "Amalgam is the legacy posterior restorative — non-adhesive, mechanical retention, slowly disappearing from clinical practice but still on the indication list for Class II preps with subgingival margins where bonding is unreliable, for patients with cost barriers to composite, and for any case where a clean dry field can't be reliably maintained. The case turns on prep geometry (this is one of the few restorations where Black's prep parameters still rule), proper matrix + wedging for Class II, condensation that overfills then carves back to anatomy, and a Gluma sealer step that is mandatory under amalgam to prevent post-op sensitivity. Source: Swade pp. 35-36.",
+            "verdict": "Amalgam is the legacy posterior restorative — non-adhesive, mechanical retention, slowly disappearing from clinical practice but still on the indication list for Class II preps with subgingival margins where bonding is unreliable, for patients with cost barriers to composite, and for any case where a clean dry field can't be reliably maintained. The case turns on prep geometry (this is one of the few restorations where Black's prep parameters still rule), proper matrix + wedging for Class II, condensation that overfills then carves back to anatomy, and a Gluma sealer step that is mandatory under amalgam to prevent post-op sensitivity.",
             "blocks": [
               {
                 "kind": "paragraph",
@@ -12134,7 +12134,7 @@
               },
               {
                 "kind": "section",
-                "text": "Materials checklist (Swade)"
+                "text": "Materials checklist"
               },
               {
                 "kind": "bullets",
@@ -12147,7 +12147,7 @@
               },
               {
                 "kind": "section",
-                "text": "Procedure (the Swade 15-step sequence)"
+                "text": "Procedure (15-step sequence)"
               },
               {
                 "kind": "numbered",
@@ -12172,7 +12172,7 @@
               },
               {
                 "kind": "callout",
-                "title": "Amalgam prep parameters (Swade — these are non-negotiable)",
+                "title": "Amalgam prep parameters (non-negotiable)",
                 "body": "Amalgam needs specific geometry because it retains by mechanical undercut, not bonding. The 5 specs:\n\n**1. Convergent buccal and lingual walls** (occlusally) — creates the mechanical undercut.\n**2. Parallel or slightly divergent proximal walls** — prevents over-thinning and gives the restoration draw.\n**3. At least 1.5 mm deep** — deeper if decay extends deeper. Less than 1.5 mm risks fracture.\n**4. Flat pulpal floor with rounded line angles + beveled axiopulpal walls** — distributes occlusal force evenly; rounded angles avoid stress concentrations.\n**5. Does not undermine marginal ridges** — unsupported enamel will fracture later."
               },
               {
@@ -12196,7 +12196,7 @@
             "id": "dir-ch17",
             "num": 17,
             "title": "Sealants — caries prevention + incipient-lesion arrest",
-            "verdict": "Sealants are placed on caries-free teeth to prevent pit-and-fissure caries, OR on teeth with non-cavitated enamel lesions to arrest them before they progress. Quick, single-visit, code D1351 per tooth. The case turns on absolutely dry isolation (Isodry — saliva contamination kills the bond), pumice + dry the surface clean, etch + optional bond + sealant material, light cure. Material is thick; over-application causes occlusal interference, so check with articulating paper before dismissing. Source: Swade p. 51.",
+            "verdict": "Sealants are placed on caries-free teeth to prevent pit-and-fissure caries, OR on teeth with non-cavitated enamel lesions to arrest them before they progress. Quick, single-visit, code D1351 per tooth. The case turns on absolutely dry isolation (Isodry — saliva contamination kills the bond), pumice + dry the surface clean, etch + optional bond + sealant material, light cure. Material is thick; over-application causes occlusal interference, so check with articulating paper before dismissing.",
             "blocks": [
               {
                 "kind": "paragraph",
@@ -12204,20 +12204,20 @@
               },
               {
                 "kind": "section",
-                "text": "Materials checklist (Swade)"
+                "text": "Materials checklist"
               },
               {
                 "kind": "bullets",
                 "items": [
                   "**From sterilization:** composite kit, handpieces, prophy handpiece, composite finishing burs, curing light, Isodry, patient goggles, blood glucose kit.",
                   "**From locker:** blood pressure cuff, loupes / eye protection.",
-                  "**In clinic:** articulating paper, etch, ScotchBond, **sealant material** (note: at UIC the sealant material lives in the peds clinic supply — pick it up there if it's not on your operatory cart). Sealant material per Swade: Ultradent UltraSeal XT Plus.",
+                  "**In clinic:** articulating paper, etch, ScotchBond, **sealant material** (note: the sealant material lives in the peds clinic supply — pick it up there if it's not on your operatory cart). Sealant material: Ultradent UltraSeal XT Plus.",
                   "**In unit:** prophy pumice (fluoride-free), prophy angle."
                 ]
               },
               {
                 "kind": "section",
-                "text": "Procedure (Swade 9-step sequence)"
+                "text": "Procedure (9-step sequence)"
               },
               {
                 "kind": "numbered",
@@ -12254,7 +12254,7 @@
             "id": "dir-ch18",
             "num": 18,
             "title": "Local anesthesia reference — maxillary + mandibular blocks",
-            "verdict": "Comprehensive reference for every block technique used in restorative dentistry — maxillary infiltrations + 6 named max blocks, the IAN + long buccal + mental for the mandible, plus the innervation lookup table and the maximum-dose table for every anesthetic-vasoconstrictor combination. Use as a chairside reference when planning anesthesia for a procedure that's outside your routine. Source: Swade pp. 175-180.",
+            "verdict": "Comprehensive reference for every block technique used in restorative dentistry — maxillary infiltrations + 6 named max blocks, the IAN + long buccal + mental for the mandible, plus the innervation lookup table and the maximum-dose table for every anesthetic-vasoconstrictor combination. Use as a chairside reference when planning anesthesia for a procedure that's outside your routine.",
             "blocks": [
               {
                 "kind": "paragraph",
@@ -12502,7 +12502,7 @@
               },
               {
                 "kind": "callout",
-                "title": "Maximum dose reference (Swade p. 180)",
+                "title": "Maximum dose reference",
                 "body": "**Per carpule (1.8 mL):**\n- 2% lidocaine: 36 mg\n- 3% mepivacaine: 54 mg\n- 4% prilocaine or 4% articaine: 72 mg\n\n**Maximum total dose (typical adult):**\n- 2% lidocaine + 1:100k epi: 500 mg max, ≈13 carpules. With 1:50k epi: 5 carpules (epi limits before lidocaine does).\n- 3% mepivacaine (no vasoconstrictor): 400 mg max, ≈7 carpules.\n- 2% mepivacaine + 1:200k levonordefrin: 400 mg max, ≈11 carpules.\n- 4% prilocaine + 1:200k epi: 600 mg max, ≈8 carpules.\n- 4% articaine + 1:200k epi: 500 mg max, ≈6 carpules. With 1:100k epi: ≈6 carpules.\n- 0.5% bupivacaine + 1:200k epi: 90 mg max, ≈10 carpules.\n\n**By weight:** lidocaine 7 mg/kg, mepivacaine 6.6 mg/kg, prilocaine 8 mg/kg, articaine 7 mg/kg, bupivacaine 1.3 mg/kg.\n\n**Vasoconstrictor limits (typical adult):** 0.2 mg epi total. With cardiac patients, 0.04 mg epi total. 1:100k = 0.018 mg per carpule; 1:50k = 0.036 mg per carpule; 1:200k = 0.009 mg per carpule."
               },
               {
@@ -12516,7 +12516,7 @@
             "id": "dir-ch19",
             "num": 19,
             "title": "PRR (Preventive Resin Restoration) — small cavitation in a sealable surface",
-            "verdict": "PRR is the case in between a sealant and a Class I composite — there's a small cavitation that needs restoration, but the surrounding occlusal anatomy is sealable. You restore the cavitation with composite AND seal the rest of the occlusal at the same visit. Single code D2391 (cannot bill sealant separately on the same tooth on the same day). The case turns on minimal-prep philosophy (the smallest cavity prep that addresses the caries), uniform etch + bond across the whole occlusal surface, composite in the cavitation, sealant material as the top layer covering both composite and remaining pits. Source: Swade pp. 136-137.",
+            "verdict": "PRR is the case in between a sealant and a Class I composite — there's a small cavitation that needs restoration, but the surrounding occlusal anatomy is sealable. You restore the cavitation with composite AND seal the rest of the occlusal at the same visit. Single code D2391 (cannot bill sealant separately on the same tooth on the same day). The case turns on minimal-prep philosophy (the smallest cavity prep that addresses the caries), uniform etch + bond across the whole occlusal surface, composite in the cavitation, sealant material as the top layer covering both composite and remaining pits.",
             "blocks": [
               {
                 "kind": "paragraph",
@@ -12524,7 +12524,7 @@
               },
               {
                 "kind": "section",
-                "text": "Materials checklist (Swade)"
+                "text": "Materials checklist"
               },
               {
                 "kind": "bullets",
@@ -12536,7 +12536,7 @@
               },
               {
                 "kind": "section",
-                "text": "Procedure (Swade 10-step sequence)"
+                "text": "Procedure (10-step sequence)"
               },
               {
                 "kind": "numbered",
@@ -12574,7 +12574,7 @@
             "id": "dir-ch22",
             "num": 22,
             "title": "SDF (Silver Diamine Fluoride) — non-surgical caries arrest",
-            "verdict": "SDF is a topical liquid that arrests caries in place — no drilling, no anesthesia, no restoration required. Used for cases where definitive treatment isn't possible: very young / very anxious patients, patients with significant medical or behavioral barriers to operative work, palliative cases in the elderly, root caries in patients who can't tolerate restorative procedures. The patient (or guardian) MUST be informed that SDF stains carious lesions black permanently — show pictures during consent. Source: Swade p. 133.",
+            "verdict": "SDF is a topical liquid that arrests caries in place — no drilling, no anesthesia, no restoration required. Used for cases where definitive treatment isn't possible: very young / very anxious patients, patients with significant medical or behavioral barriers to operative work, palliative cases in the elderly, root caries in patients who can't tolerate restorative procedures. The patient (or guardian) MUST be informed that SDF stains carious lesions black permanently — show pictures during consent.",
             "blocks": [
               {
                 "kind": "paragraph",
@@ -12582,7 +12582,7 @@
               },
               {
                 "kind": "section",
-                "text": "Materials checklist (Swade)"
+                "text": "Materials checklist"
               },
               {
                 "kind": "bullets",
@@ -12593,7 +12593,7 @@
               },
               {
                 "kind": "section",
-                "text": "Procedure (Swade 9-step sequence)"
+                "text": "Procedure (9-step sequence)"
               },
               {
                 "kind": "numbered",
@@ -13944,7 +13944,7 @@
                   "**Periapical or vertical bitewing series** to evaluate bone loss pattern. CBCT for advanced or atypical cases.",
                   "**Medical history review** - anticoagulants (no contraindication for SRP but bleeding management plan needed), bisphosphonates (no contraindication for non-surgical), uncontrolled diabetes (worse outcomes; coordinate with PCP for HbA1c management).",
                   "**Discuss prognosis and time commitment.** SRP requires 2-4 visits, costs vary by insurance, and the patient must commit to 3-month maintenance afterward indefinitely.",
-                  "**Schedule by quadrant or half-mouth.** Most UIC predoctoral cases: Mx in one visit, Mn in next (or one half-mouth per visit). Full-mouth disinfection (all four quadrants in 24 hours) has slightly better outcomes but requires staff support most predoctoral clinics don't have."
+                  "**Schedule by quadrant or half-mouth.** Most predoctoral cases: Mx in one visit, Mn in next (or one half-mouth per visit). Full-mouth disinfection (all four quadrants in 24 hours) has slightly better outcomes but requires staff support most predoctoral clinics don't have."
                 ]
               },
               {
@@ -14077,7 +14077,7 @@
                   "**Walk the probe** along the gingival sulcus, stepping in 1 mm increments. The deepest reading wins for each surface.",
                   "**Six surfaces per tooth:** mesiobuccal, mid-buccal, distobuccal, mesiolingual, mid-lingual, distolingual.",
                   "**Read the depth at the gingival margin** - the millimeter mark where the probe disappears under the gingival edge.",
-                  "**Record as you go, by arch and side.** UIC workflow: sweep all buccal surfaces across the maxillary arch first, then all maxillary lingual, then repeat on the mandibular. Walking by surface side (not tooth-by-tooth through all 6 surfaces) keeps probe angle and body position constant and reduces transcription errors."
+                  "**Record as you go, by arch and side.** Workflow: sweep all buccal surfaces across the maxillary arch first, then all maxillary lingual, then repeat on the mandibular. Walking by surface side (not tooth-by-tooth through all 6 surfaces) keeps probe angle and body position constant and reduces transcription errors."
                 ]
               },
               {
@@ -14503,7 +14503,7 @@
               {
                 "kind": "numbered",
                 "items": [
-                  "**Weigh the child** (scale by front door at UIC) before any anesthesia decision.",
+                  "**Weigh the child** (scale by front door) before any anesthesia decision.",
                   "**Calculate max dose** in mg and convert to carpules. Write it on the chart.",
                   "**Apply topical (20% benzocaine, HurriCaine):** thin layer at the injection site for 1-2 minutes. Cover with cotton roll if the child resists having the gel on the gums.",
                   "**Position the child:** semi-supine, head turned slightly away from the operator. Some children prefer parent in operatory for the injection; others prefer parent in waiting room. Ask.",
@@ -14558,7 +14558,7 @@
             "id": "pedo-ch11",
             "num": 11,
             "title": "Stainless steel crown (SSC) - sizing, festooning, crimping, cementation",
-            "verdict": "SSCs are the workhorse pediatric crown - preformed, full-coverage, glass-ionomer-cemented, ~5-7 year service life matching primary molar lifespan. Sizing is the critical decision: too small won't seat, too large won't engage contacts. Conventional preparation involves occlusal + interproximal + axial reduction; Hall technique skips prep but isn't taught at UIC. Plan 60 min for a single SSC with pulpotomy.",
+            "verdict": "SSCs are the workhorse pediatric crown - preformed, full-coverage, glass-ionomer-cemented, ~5-7 year service life matching primary molar lifespan. Sizing is the critical decision: too small won't seat, too large won't engage contacts. Conventional preparation involves occlusal + interproximal + axial reduction; Hall technique skips prep but isn't taught here. Plan 60 min for a single SSC with pulpotomy.",
             "blocks": [
               {
                 "kind": "paragraph",
@@ -14585,7 +14585,7 @@
               {
                 "kind": "bullets",
                 "items": [
-                  "**SSC kit:** sizes 2-7 for mandibular (D, DLM, E, EUL, F for maxillary; or by tooth number). UIC kits provide both sides + both arches.",
+                  "**SSC kit:** sizes 2-7 for mandibular (D, DLM, E, EUL, F for maxillary; or by tooth number). Kits provide both sides + both arches.",
                   "**Boley gauge:** measures mesio-distal width of the tooth to determine size.",
                   "**Crown shears or scissors:** for trimming the cervical margin.",
                   "**Crown-crimping pliers (Howe utility pliers or specific crimping pliers):** for crimping the cervical band inward.",
