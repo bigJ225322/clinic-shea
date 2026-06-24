@@ -2433,7 +2433,7 @@ const CATEGORIES = [
  ]},
  { id: "icc", label: "ICC", groups: [
  { id: "icc-exams", label: "Exams & Screening", procedures: [
- { id: "icc-coe", label: "COE", pinnedCodes: ["D0150","D0330","D0274","D0604"] },
+ { id: "icc-coe", label: "COE", pinnedCodes: ["D0150A","D0150B","D0330","D0274","D0604"] },
  { id: "icc-poe", label: "POE", pinnedCodes: ["D0120","D0274","D0604"] },
  { id: "icc-screening", label: "Screening", pinnedCodes: ["D0190"] },
  { id: "icc-virtual", label: "Virtual Screening", pinnedCodes: ["D9995","D0140"] },
@@ -5648,8 +5648,14 @@ function renderTemplate(raw, f) {
  // multiple injections, the first follows the standard "Applied 20% topical
  // benzocaine & administered..." form, and subsequent ones are appended as
  // "Then administered..." sentences (topical only applied once at the start).
+ // Matches the template's anesthetic sentence up to its terminating period.
+ // The needle bracket "[ 30G 25mm / 27G 35mm ]" is OPTIONAL: the peds
+ // restorative templates (6284/6406/… SSC, PRR, etc.) write "…epi as IAN…"
+ // with no needle clause, so requiring the bracket meant the selector never
+ // rebuilt peds notes. The rebuild only runs when the user actually picks a
+ // technique (!allDefaults), so untouched notes keep their template wording.
  const anesSentenceRe =
- /Applied 20% topical benzocaine & administered [^.]*?\[\s*30G 25mm\s*\/\s*27G 35\s*mm\s*\][^.]*?\./;
+ /Applied 20% topical benzocaine & administered [^.]*?\./;
 
  // Helper: build the trailing portion of one injection sentence.
  // Returns "X carpules of 2% drug with NEEDLE needle as TECHNIQUES."
@@ -5837,6 +5843,14 @@ function renderTemplate(raw, f) {
  // Lotus room is a checkbox — an untouched (unchecked) box reads as NO.
  t = t.split("[YES OR NO]").join("NO");
  t = t.replace(/^Blood glucose:\s*\[blood glucose\][ \t]*\n?/m, "");
+ // Findings/conditions fields with a blankFallback: when left blank they
+ // render the fallback ("No findings noted") instead of an empty value, so
+ // the line never ships incomplete. Runs before the bracket strip below.
+ for (const [key, cfg] of Object.entries(ICC_FIELD_CFG)) {
+ if (!cfg.blankFallback) continue;
+ const v = ((f.labPlaceholders || {})[key] || "").trim();
+ if (!v) t = t.split(`[${key}]`).join(cfg.blankFallback);
+ }
  // Eliminate placeholder-as-default: any field still holding its raw "[prompt]"
  // renders blank — the form input is the reminder now, not the note body. (The
  // Refusal note is excluded by the "UG ICC clinic" gate above; its
@@ -6565,10 +6579,13 @@ const ICC_FIELD_CFG = {
  "preventive goals": { label: "Preventive goals", group: "pgsw" },
  "social worker consult": { label: "Social worker consult", group: "pgsw" },
  "names": { label: "Names", placeholder: "S.Swade/Dr. Nice/W.Assistant" },
- "occlusal considerations": { label: "Occlusal considerations", wnl: true },
- "endodontic findings": { label: "Endodontic findings", wnl: true },
- "soft tissue conditions": { label: "Soft tissue conditions", wnl: true },
- "hard tissue conditions": { label: "Hard tissue conditions", wnl: true },
+ // Findings/conditions fields: the "W" button fills "WNL"; the placeholder
+ // also hints WNL. Left blank, the note renders blankFallback ("No findings
+ // noted") instead of an empty value, so the line never ships incomplete.
+ "occlusal considerations": { label: "Occlusal considerations", wnl: true, placeholder: "WNL", blankFallback: "No findings noted" },
+ "endodontic findings": { label: "Endodontic findings", wnl: true, placeholder: "WNL", blankFallback: "No findings noted" },
+ "soft tissue conditions": { label: "Soft tissue conditions", wnl: true, placeholder: "WNL", blankFallback: "No findings noted" },
+ "hard tissue conditions": { label: "Hard tissue conditions", wnl: true, placeholder: "WNL", blankFallback: "No findings noted" },
  "caries risk": { label: "Caries risk", type: "dropdown", options: ["Low", "Moderate", "High", "Extreme"] },
  "F1 OR F2 OR F3 OR F4": { label: "Behavior (Frankl)" },
  "treatment priorities": { label: "Treatment priorities", type: "odontogram", placeholder: "List each treatment on its own line. Press Enter to add another." },
