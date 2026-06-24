@@ -30682,7 +30682,11 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  return (
  // Open-map view runs flush to the tab switcher (the owner: no vertical
  // distance) — the nav's circled-arrow home cue is the only chrome.
- <div ref={pathwaysRootRef} className="fade-in" style={{ maxWidth: "880px", margin: "0 auto", padding: selectedPathway ? "0 0 40px" : "8px 0 40px", textAlign: "left", position: "relative", ...rootZoomStyle }}>
+ // Top padding: 0 for the open map (flush to the tab switcher), 8px for the
+ // landing grid. During the zoom-out exit the grid is already showing, so use
+ // the grid's 8px here too — otherwise padding flips 0→8px the instant the
+ // exit ends and the whole grid jumps down 8px ("icons shift down" stutter).
+ <div ref={pathwaysRootRef} className="fade-in" style={{ maxWidth: "880px", margin: "0 auto", padding: (selectedPathway && !exiting) ? "0 0 40px" : "8px 0 40px", textAlign: "left", position: "relative", ...rootZoomStyle }}>
  {/* Search input removed per the owner — Maps opens to a single unselected
  domain pill; selecting it opens the map directly. */}
 
