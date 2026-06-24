@@ -17800,7 +17800,7 @@ function RPDPaperFormArchDrawing({
  const halfMD = toothHalfMD(n);
  const halfBL = toothHalfBL(n);
  const present = isPresent(n);
- // The UIC form's printed arch shows 14 teeth — third molars aren't
+ // The official form's printed arch shows 14 teeth — third molars aren't
  // drawn. Match that convention in static (form / lab-Rx) mode: a
  // missing wisdom simply isn't depicted. Present wisdoms (rare, but
  // Applegate Rule 8 cases exist) still draw. Interactive mode keeps
@@ -19964,7 +19964,7 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  })
 .join("; ");
 
- // ─── Abutment preparations (single consolidated field per the UIC
+ // ─── Abutment preparations (single consolidated field per the
  // paper form). The paper form has ONE box labelled
  // "Abutment preparations, guide planes, recontouring, restorations:"
  // — so guide planes, undercut modifications (composite / survey
@@ -20198,9 +20198,9 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  }}>
  {/* Header — title + Student/Patient stacked left; chart-number boxes +
  Date right, mirroring the paper form's arrangement. The real form
- carries the UIC logo and "COLLEGE OF DENTISTRY" wordmark up here;
- deliberately NOT reproduced — layout parity only, so a screenshot
- can never pass for the official document. */}
+ carries a school logo and wordmark up here; deliberately NOT
+ reproduced — layout parity only, so a screenshot can never pass
+ for the official document. */}
  <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "24px", alignItems: "start", marginBottom: "18px" }}>
  <div>
  <div style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.04em", lineHeight: 1.35, marginBottom: "14px" }}>
@@ -20285,7 +20285,7 @@ function RPDPreliminaryDesignForm({ caseInput, result, compact = false, verbose 
  Partial Denture Design
  </div>
 
- {/* Layout mirrors the actual UIC paper form field-by-field:
+ {/* Layout mirrors the actual paper form field-by-field:
  Framework metal → Major connector → Abutment teeth →
  Abutment preparations (consolidated) → Direct retainers table →
  Indirect retainers → Facings/pontics/tube teeth → Retention webbing.
