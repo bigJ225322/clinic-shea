@@ -86,7 +86,7 @@ const RPD_ABUTMENT_DEFAULTS = {
  // "none" by default; specify which surface needs lowering when the
  // surveyed HOC sits too coronally for the planned clasp tip.
  hocAdjustment: "none", // none | lower-DB | lower-MB | lower-DL | lower-ML | general
- // Esthetic constraint per Dr. Shahin's Design Case format — "No clasp
+ // Esthetic constraint per the Design Case format — "No clasp
  // due to esthetic" type annotations on anterior abutments. The engine
  // already softens clasp choice in the maxillary anterior; this flag
  // surfaces the operator-confirmed esthetic-driven decision in the
@@ -109,14 +109,14 @@ const RPD_RATIONALE = {
  },
  clasp: {
  "Akers": "Cast circumferential clasp of choice for tooth-supported abutments (Kennedy III/IV). Engages 0.01\" buccal undercut on mesial half of tooth; rigid until terminal third where it flexes into undercut. Reciprocation by opposite-arch plating or cast lingual arm. NOT for distal extension (causes Class I torquing).",
- "RPI": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01\" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
+ "RPI": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface) + I-bar engaging 0.01\" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement. Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
  "Combination": "Stress-releasing clasp assembly when RPI is contraindicated (vestibular depth <5 mm, undercut location mid-mesial/MB/DB). Cast rest + 18ga wrought-wire C-clasp arm engaging 0.02\" undercut; wrought wire flexes more than cast metal under stress.",
  "I-bar (esthetic)": "Clasp of choice for the esthetic zone (canine/premolar) when display is high. I-bar approach is invisible below gingival line; rest seat is cingulum (canine) or occlusal (premolar). Requires ≥5 mm vestibular depth and a buccal undercut.",
  "Reverse Akers": "Used when ONLY a mesial/lingual undercut is available on a bicuspid or cuspid (NEVER molar — aspiration risk). Cast clasp originates from the distal aspect of the tooth and wraps to engage a mesio-lingual undercut. Tier-downgraded for molars (use Combination or Embrasure instead). NOTE: the named 'Reverse Akers' design is best avoided — on the lab Rx, write it as an Akers clasp engaging the [DL/DB] undercut (same physical clasp, the accepted phrasing).",
  "Embrasure": "Clasp of choice for a quadrant with no edentulous space (Class III mod 0 where retention is needed on a quadrant where no teeth are missing). Two opposing C-clasps cradle adjacent teeth at the embrasure; each engages a 0.01\" undercut. Requires a prepped occlusal rest seat at the embrasure between the two teeth.",
  "Ring": "Cast retainer for a tilted molar abutment where multiple undercut surfaces require encirclement. 360° wraparound with auxiliary occlusal rest; rare in modern practice.",
- "WW C-clasp": "18ga wrought-wire C-clasp for INTERIM RPD only (Summer 2023 IPD lecture). 0.02\" undercut engagement. Wrought wire is flexible enough to bend chairside but cannot be used in cast definitive frameworks.",
- "Ball Clasp": "18ga wrought-wire ball clasp engaging buccal embrasure (Summer 2023 IPD lecture). INTERIM only; provides retention without etching tooth surface. Common on mandibular premolar embrasures.",
+ "WW C-clasp": "18ga wrought-wire C-clasp for INTERIM RPD only. 0.02\" undercut engagement. Wrought wire is flexible enough to bend chairside but cannot be used in cast definitive frameworks.",
+ "Ball Clasp": "18ga wrought-wire ball clasp engaging buccal embrasure. INTERIM only; provides retention without etching tooth surface. Common on mandibular premolar embrasures.",
  },
  guidePlane: {
  standard: "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
@@ -136,7 +136,7 @@ const RPD_RATIONALE = {
  },
  reciprocation: {
  plate: "Reciprocation provided by the major connector plating opposite the retentive arm. When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
- arm: "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work (Kim Retainers guide).",
+ arm: "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work.",
  },
  framework: {
  "Co-Cr": "Standard favorable choice for RPD frameworks (default per Final Impressions p. 18). Cobalt-chromium alloy; 0.5-1.0 mm major connector thickness; excellent rigidity-to-weight ratio; biocompatible; predictable casting; standard unless allergy.",
@@ -388,10 +388,10 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
  return {
  type: "Lingual Plate", rationale: RPD_RATIONALE.major["Lingual Plate"],
  width: "8mm contact above gingival third",
- note: "severe ridge resorption: plate adds horizontal rotation resistance the resorbed ridge can no longer provide (McCracken 12e Ch 5)",
+ note: "severe ridge resorption: plate adds horizontal rotation resistance the resorbed ridge can no longer provide",
  tier: "common",
  alternative: "Lingual Bar",
- alternativeRationale: "Lingual Bar is acceptable if the resorption is mild-moderate or if the patient cannot tolerate plate contact on the anteriors. With severe resorption + Class I, McCracken Ch 5 indication #2 explicitly favors the plate for rotation resistance.",
+ alternativeRationale: "Lingual Bar is acceptable if the resorption is mild-moderate or if the patient cannot tolerate plate contact on the anteriors. With severe resorption + Class I, the standard indication explicitly favors the plate for rotation resistance.",
  };
  }
  return {
@@ -539,7 +539,7 @@ function rpdSelectMajorConnector(caseInput, kennedy) {
  rationale: `Short unilateral tooth-bounded space (${totalMissing} missing ${totalMissing === 1 ? "tooth" : "teeth"} in one span on one side). A definitive RPD is indicated only when a fixed prosthesis is not possible or the span is long — neither holds here, so this is a fixed/implant case. ${totalMissing >= 3 ? "With " + totalMissing + " pontics a " + (totalMissing + 2) + "-unit bridge is a long span; implant crowns are usually the better choice (a 3-pontic fixed bridge over-loads the abutments — reserve it for strong, well-distributed abutments)." : "Restore it with a " + (totalMissing + 2) + "-unit fixed bridge or implant crown" + (totalMissing > 1 ? "s" : "") + "."} A unilateral (Nesbit) RPD is not permitted (aspiration risk), and a cross-arch cast RPD for a single bounded gap is overtreatment.`,
  tier: "strong",
  alternative: "Implant-supported crowns or Interim Partial Denture (non-metal clasp)",
- alternativeRationale: "Primary alternative if the patient declines bridging: individual implant crowns at each missing-tooth site. If the patient declines BOTH FPD and implants (cost, surgical contraindication), indicates an Interim Partial Denture (IPD) with non-metal (e.g., Valplast/Duraflex thermoplastic) clasps — explicitly indicated for Class III / short-span IV cases per the IPD lecture. Unilateral cantilever (Nesbit) RPDs are banned due to aspiration risk; definitive cast-metal RPD is not appropriate for this configuration.",
+ alternativeRationale: "Primary alternative if the patient declines bridging: individual implant crowns at each missing-tooth site. If the patient declines BOTH FPD and implants (cost, surgical contraindication), indicates an Interim Partial Denture (IPD) with non-metal (e.g., Valplast/Duraflex thermoplastic) clasps — explicitly indicated for Class III / short-span IV cases. Unilateral cantilever (Nesbit) RPDs are banned due to aspiration risk; definitive cast-metal RPD is not appropriate for this configuration.",
  };
  }
  // Long unilateral span — fall back to Full Palatal Plate as the
@@ -984,7 +984,7 @@ function planRetentionClassIII(caseInput, kennedy) {
  });
  } else {
  notDesignable = {
- reason: "Class III configuration with all span-derived abutments on one side AND no viable contralateral retention possible (no acceptable posterior tooth on the missing side). RPD design would be unilateral (Nesbit), which is prohibited (McCracken p. 69 + Final RPD Huddle 2 Q2 — aspiration risk). Recommend fixed prosthesis (FPD or implant) for this configuration.",
+ reason: "Class III configuration with all span-derived abutments on one side AND no viable contralateral retention possible (no acceptable posterior tooth on the missing side). RPD design would be unilateral (Nesbit), which is prohibited (aspiration risk). Recommend fixed prosthesis (FPD or implant) for this configuration.",
  };
  }
  }
@@ -1070,9 +1070,9 @@ function pickClassIIIAnticipatedIndirectRetainer(caseInput, kennedy, oppositeSid
  return {
  tooth: pick,
  restType,
- rationale: `Class III with compromised distal abutment (poor/hopeless prognosis). Per McCracken Fig 8-2 G, design ANTICIPATES future tooth loss, which would convert this case to Class II. Indirect retainer placed on the side opposite the compromised tooth, perpendicular to the anticipated diagonal fulcrum line. ${RPD_RATIONALE.rest.indirectFulcrum}`,
+ rationale: `Class III with compromised distal abutment (poor/hopeless prognosis). The design ANTICIPATES future tooth loss, which would convert this case to Class II. Indirect retainer placed on the side opposite the compromised tooth, perpendicular to the anticipated diagonal fulcrum line. ${RPD_RATIONALE.rest.indirectFulcrum}`,
  tier: "common",
- alternativeRationale: "If the compromised tooth's prognosis improves with treatment (perio therapy, endo, splinting), the indirect retainer can be omitted — but designing for the more pessimistic scenario is safer and McCracken-recommended.",
+ alternativeRationale: "If the compromised tooth's prognosis improves with treatment (perio therapy, endo, splinting), the indirect retainer can be omitted — but designing for the more pessimistic scenario is safer.",
  };
 }
 
@@ -1167,7 +1167,7 @@ function appendSpanBoundaryRetainers({
  + (hasLingualPlate
  ? `the lingual plate contacts and braces the lingual surface, making a clasp arm both esthetically unacceptable and biomechanically redundant. `
  : `with a lingual bar (no plate contact on the canine), the ball rest alone provides the rotational counterpoise — bilateral RPI on the DE terminals + ring-rigid bar across the arch supplies the retention, while a canine clasp would be esthetically prominent and biomechanically duplicative. Note: with shallow sulcus or mand tori a lingual plate is the cleaner choice. `)
- + `McCracken Ch 5 + Design Case II (Prelim Case 2) protocol.`,
+ + ``,
  tier: "strong",
  alternativeRationale: null,
  },
@@ -1423,7 +1423,7 @@ function planClassIIIndirectRetainers(caseInput, kennedy) {
 
  const projAnteriority = anteriority(pick);
  const rationaleSuffix = isDualRole
- ? ` Per McCracken Fig 8-2 D, this tooth's anterior position relative to the diagonal fulcrum line (#${deTerminal}–#${oppDistalmost}) permits dual-role direct + indirect retention; no separate IR tooth is needed.`: ` Indirect retainer placement chosen via diagonal fulcrum-line geometry (McCracken Fig 8-2 C): fulcrum endpoints #${deTerminal} (DE terminal) and #${oppDistalmost} (opposite-side distalmost); perpendicular projection from fulcrum midpoint = ${projAnteriority.toFixed(1)} mm anterior. Among the preferred tooth types on opposite side, this tooth has the greatest anteriority.`;
+ ? ` This tooth's anterior position relative to the diagonal fulcrum line (#${deTerminal}–#${oppDistalmost}) permits dual-role direct + indirect retention; no separate IR tooth is needed.`: ` Indirect retainer placement chosen via diagonal fulcrum-line geometry: fulcrum endpoints #${deTerminal} (DE terminal) and #${oppDistalmost} (opposite-side distalmost); perpendicular projection from fulcrum midpoint = ${projAnteriority.toFixed(1)} mm anterior. Among the preferred tooth types on opposite side, this tooth has the greatest anteriority.`;
 
  return [{
  tooth: pick,
@@ -1740,7 +1740,7 @@ function hydrateInterimAbutment(tooth) {
  return {
  tooth, claspType: "WW C-clasp",
  claspRationale: RPD_RATIONALE.clasp["WW C-clasp"] +
- " (Summer 2023 IPD lecture: wrought wire clasps are mostly used; lab can fabricate cast clasps when indicated).",
+ " (wrought wire clasps are mostly used; lab can fabricate cast clasps when indicated).",
  retentiveArm: "18ga wrought wire C-clasp engaging 0.02\" undercut (re-contour abutment if no usable undercut surveyed)",
  reciprocation: null, restSeat: null, restRationale: null,
  guidePlane: null, guidePlaneRationale: null,
@@ -1927,7 +1927,7 @@ function pickClaspMechanic({
  retentiveArm: "I-bar engaging 0.01\" mid-buccal undercut at the greatest curvature of the buccal surface (mesial-buccal aspect)",
  reciprocation: {
  type: "plate",
- text: "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
+ text: "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (house rule) + lingual plating for reciprocation",
  rationale: RPD_RATIONALE.reciprocation.plate,
  },
  claspTier: "strong",
@@ -1986,7 +1986,7 @@ function pickClaspMechanic({
  reciprocation: { type: "plate", text: "Lingual plating for reciprocation", rationale: RPD_RATIONALE.reciprocation.plate },
  claspTier: "judgment",
  claspAlternative: "Rest Only (no clasp)",
- claspAlternativeRationale: "Design Case II uses Rest Only on max-anterior abutments when the case already has adequate retention from other clasps (e.g., bilateral RPI on premolars). Consider Rest Only if the design has ≥2 strong retentive clasps elsewhere.",
+ claspAlternativeRationale: "Use Rest Only on max-anterior abutments when the case already has adequate retention from other clasps (e.g., bilateral RPI on premolars). Consider Rest Only if the design has ≥2 strong retentive clasps elsewhere.",
  };
  }
  // Mand incisor / max lateral fallback: Rest Only (no clasp). The
@@ -2002,7 +2002,7 @@ function pickClaspMechanic({
  : isMandCanine ? "Mandibular canine"
  : "Anterior tooth";
  const rationaleDetail = isMandCanine
- ? "lacks a strong labial buccal undercut and the interproximal gingival height is short — Retainers lecture defaults mand canines to Rest Only with cingulum/ML ball, not I-bar esthetic. If the survey shows a measurable mid-buccal or mesio-buccal undercut, set userUndercut to that value to allow an esthetic I-bar."
+ ? "lacks a strong labial buccal undercut and the interproximal gingival height is short — the default for mand canines is Rest Only with cingulum/ML ball, not I-bar esthetic. If the survey shows a measurable mid-buccal or mesio-buccal undercut, set userUndercut to that value to allow an esthetic I-bar."
  : "anatomy (small crown, narrow B-L width, short single root, minimal usable buccal undercut depth) cannot support an I-bar (esthetic) clasp";
  return {
  claspType: "Rest Only (no clasp)",
@@ -2031,8 +2031,8 @@ function pickClaspMechanic({
  + ` (retentive arm engages ${userUndercut} undercut)`
  + (isBicuspidOrCanine ? "":
  isTiltedTerminalMolar ?
- " — Huddle 6 Q10 carve-out: lingually inclined terminal molar permits Reverse Akers (or Ring clasp). The tilt makes lingual surface the practical engagement location.":
- " — NOTE: restricts Reverse Akers to bicuspids and cuspids (or tilted terminal molars per Huddle 6 Q10); this tooth is outside that indication scope. Consider Ring clasp instead for a tilted molar with distal undercut."),
+ " — carve-out: lingually inclined terminal molar permits Reverse Akers (or Ring clasp). The tilt makes lingual surface the practical engagement location.":
+ " — NOTE: restricts Reverse Akers to bicuspids and cuspids (or tilted terminal molars); this tooth is outside that indication scope. Consider Ring clasp instead for a tilted molar with distal undercut."),
  retentiveArm: `Cast retentive arm engaging 0.01" ${userUndercut} undercut`,
  reciprocation: {
  type: "arm",
@@ -2043,7 +2043,7 @@ function pickClaspMechanic({
  claspAlternative: isBicuspidOrCanine ? null: "Ring clasp",
  claspAlternativeRationale: isBicuspidOrCanine
  ? "the lab Rx convention writes \"Akers clasp engaging 0.01\" [DL/DB] undercut\" rather than \"Reverse Akers\" explicitly — same physical design, different name. Either notation is accepted.": isTiltedTerminalMolar
- ? "Ring clasp is the alternative for tilted terminal molars with lingual undercut: ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut. Both Reverse Akers AND Ring are acceptable for this scenario (Huddle 6 Q10).": "Ring clasp is the typical choice for a tilted molar with a distal undercut: ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut. Reverse Akers on a non-tilted molar is off-label per the Retainers lecture scope.",
+ ? "Ring clasp is the alternative for tilted terminal molars with lingual undercut: ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut. Both Reverse Akers AND Ring are acceptable for this scenario.": "Ring clasp is the typical choice for a tilted molar with a distal undercut: ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut. Reverse Akers on a non-tilted molar is off-label.",
  };
  }
 
@@ -2052,7 +2052,7 @@ function pickClaspMechanic({
  // is periodontally compromised, use a wrought wire clasp instead to allow
  // greater flexibility (less stress on tooth)"; combination is the "clasp
  // of choice for tooth-supported areas with periodontally compromised
- // teeth" and requires a 0.02" undercut. Kim Retainers guide: wrought wire
+ // teeth" and requires a 0.02" undercut. Retainers guide: wrought wire
  // flexes in all spatial planes vs. cast half-round's single plane.
  // (Hopeless teeth never reach this point — excluded upstream.)
  if (attrs.perioPrognosis === "fair" || attrs.perioPrognosis === "poor") {
@@ -2188,7 +2188,7 @@ function rpdDesignEmbrasureAbutment({ tooth, pairedWith, caseInput, kennedy, att
  role: "embrasure-retention", pairedWith,
  claspType: "WW C-clasp",
  claspRationale: RPD_RATIONALE.clasp["WW C-clasp"] +
- ` Paired with a WW C-clasp on ${partner} for contralateral retention — avoids unilateral (Nesbit) design (PROHIBITS, Final RPD Huddle 2 answer key Q2, aspiration risk).`,
+ ` Paired with a WW C-clasp on ${partner} for contralateral retention — avoids unilateral (Nesbit) design (prohibited — aspiration risk).`,
  retentiveArm: `18ga wrought wire C-clasp engaging 0.02" buccal undercut`,
  reciprocation: null,
  restSeat: null, restRationale: null,
@@ -2243,7 +2243,7 @@ function rpdDesignEmbrasureAbutment({ tooth, pairedWith, caseInput, kennedy, att
  role: "embrasure-retention", pairedWith,
  claspType: "Embrasure",
  claspRationale: RPD_RATIONALE.clasp["Embrasure"] +
- ` This Embrasure clasp provides PRIMARY cross-arch retention paired with ${partner}, required to satisfy the bilateral direct-retention invariant. Without it the design would be unilateral (Nesbit) — PROHIBITS Nesbit RPDs (Final RPD Huddle 2 answer key Q2, aspiration risk).`,
+ ` This Embrasure clasp provides PRIMARY cross-arch retention paired with ${partner}, required to satisfy the bilateral direct-retention invariant. Without it the design would be unilateral (Nesbit) — PROHIBITS Nesbit RPDs (aspiration risk).`,
  retentiveArm: `Cast C-clasp arm engaging 0.01" buccal undercut on ${rpdToothName(tooth)}, continuous with the opposing arm on ${partner} via the shared embrasure rest`,
  reciprocation: {
  type: "arm",
@@ -2316,7 +2316,7 @@ function rpdDesignContralateralAkers({ tooth, caseInput, kennedy, attrs }) {
  claspType: "Akers",
  effectiveUndercutLocation: "disto-buccal",
  claspRationale: RPD_RATIONALE.clasp["Akers"] +
- " Engine added this Akers as contralateral retention because no viable Embrasure pair exists on this side. Without it, the design would be unilateral (Nesbit), which PROHIBITS (Final RPD Huddle 2 answer key Q2, aspiration risk).",
+ " Engine added this Akers as contralateral retention because no viable Embrasure pair exists on this side. Without it, the design would be unilateral (Nesbit), which PROHIBITS (aspiration risk).",
  retentiveArm: `Cast Akers retentive arm engaging 0.01" disto-buccal undercut on the mesial half of the tooth`,
  reciprocation: {
  type: "arm",
@@ -2395,7 +2395,7 @@ function rpdPlaceIndirectRetainers(caseInput, kennedy) {
  tooth: t, restType,
  rationale: RPD_RATIONALE.rest.classIVAnterior +
  (isMaxCentral
- ? " Per Huddle 6 Q8, a distal ball rest on a maxillary central incisor bounding the anterior span can serve simultaneously as direct retainer AND indirect retainer.": ""),
+ ? " A distal ball rest on a maxillary central incisor bounding the anterior span can serve simultaneously as direct retainer AND indirect retainer.": ""),
  dualRole: true, // flags that this tooth is BOTH a primary abutment AND indirect retainer
  });
  }
@@ -2642,7 +2642,7 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
  flags.push({
  severity: "info",
  type: "nesbit-prohibition",
- message: `Nesbit (unilateral cantilever) RPD is PROHIBITED per Final RPD Huddle 2 answer key Q2 — aspiration risk. The span-derived abutments alone would have been unilateral, so the engine satisfied the bilateral direct-retention invariant by adding cross-arch retention. ${ctrlSummary} Confirm RPD is the appropriate modality for this short unilateral span; a fixed solution (FPD or implant) is often preferable for Class III mod 0. If the patient declines fixed treatment, this RPD design is acceptable.`,
+ message: `Nesbit (unilateral cantilever) RPD is PROHIBITED — aspiration risk. The span-derived abutments alone would have been unilateral, so the engine satisfied the bilateral direct-retention invariant by adding cross-arch retention. ${ctrlSummary} Confirm RPD is the appropriate modality for this short unilateral span; a fixed solution (FPD or implant) is often preferable for Class III mod 0. If the patient declines fixed treatment, this RPD design is acceptable.`,
  });
  }
  }
@@ -2665,7 +2665,7 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
  flags.push({
  severity: "info",
  type: "class-iii-compromised-abutment",
- message: `Class III abutment #${t} has ${perio} periodontal prognosis. Per McCracken Fig 8-2 G, the design ANTICIPATES future tooth loss — when #${t} is lost, this case effectively becomes Class II with a diagonal fulcrum line. Engine added an indirect retainer on the side opposite #${t} to handle that anticipated configuration. If perio prognosis improves with treatment (perio therapy, splinting), the indirect retainer can be omitted. Document the prognosis in the chart; re-evaluate the design at each maintenance visit.`,
+ message: `Class III abutment #${t} has ${perio} periodontal prognosis. The design ANTICIPATES future tooth loss — when #${t} is lost, this case effectively becomes Class II with a diagonal fulcrum line. Engine added an indirect retainer on the side opposite #${t} to handle that anticipated configuration. If perio prognosis improves with treatment (perio therapy, splinting), the indirect retainer can be omitted. Document the prognosis in the chart; re-evaluate the design at each maintenance visit.`,
  });
  // Only emit once per case even if multiple compromised abutments
  break;
@@ -3009,7 +3009,7 @@ function rpdCheckRedFlags(caseInput, kennedy, abutmentDesigns) {
  flags.push({
  severity: "info",
  type: "class-ii-contralateral-stabilization",
- message: `Class II without modification — only ONE retentive clasp (on the distal-extension abutment). The opposite side (${oppositeSide}) has no clasp because there's no edentulous span on that side to retain to. Contralateral stabilization is still provided: (1) the indirect retainer's mesial rest acts as a vertical stop against lifting forces during chewing/excursion, (2) the major connector (Lingual Bar or A-P Strap) contacts the lingual surface of all remaining teeth, providing bracing against lateral displacement. Per McCracken Ch 10, this is the correct design for Class II without mod — adding a second retentive clasp on the contralateral side is unnecessary and would be over-retention.`,
+ message: `Class II without modification — only ONE retentive clasp (on the distal-extension abutment). The opposite side (${oppositeSide}) has no clasp because there's no edentulous span on that side to retain to. Contralateral stabilization is still provided: (1) the indirect retainer's mesial rest acts as a vertical stop against lifting forces during chewing/excursion, (2) the major connector (Lingual Bar or A-P Strap) contacts the lingual surface of all remaining teeth, providing bracing against lateral displacement. This is the correct design for Class II without mod — adding a second retentive clasp on the contralateral side is unnecessary and would be over-retention.`,
  });
  }
 
@@ -3196,10 +3196,10 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
  if (isInterim) {
  lines.push(`Please fabricate ${archLc} interim immediate acrylic removable partial denture.`);
  lines.push("");
- lines.push("IPD lecture goal statement (Summer 2023 IPD-BS p. 20): \"Avoid IPD if possible. Aimed for short period only.\" Document specific transitional purpose in chart note (esthetic, space maintenance, trial occlusal change, patient conditioning, or bridge-to-implant interval).");
+ lines.push("Goal: \"Avoid IPD if possible. Aimed for short period only.\" Document specific transitional purpose in chart note (esthetic, space maintenance, trial occlusal change, patient conditioning, or bridge-to-implant interval).");
  lines.push("");
  lines.push("Base: rigid acrylic — Red Pattern resin OR Ortho Resin Denture material.");
- lines.push("(Triad NOT advisable — does not bond reliably to denture teeth per protocol IPD lecture.)");
+ lines.push("(Triad NOT advisable — does not bond reliably to denture teeth.)");
  lines.push("(Acrylic clasps are an option per p. 13 but impinge gingiva and cause irritation — discourages routine use.)");
  lines.push("");
  lines.push("Set posterior teeth over the residual ridge. Do NOT increase VDO (unless this is a deliberate trial-VDO IPD).");
@@ -3459,9 +3459,9 @@ function rpdGenerateLabScript({ arch, framework, majorConnector, abutmentDesigns
  if (hasDistalExtension) {
  lines.push("");
  if (arch === "mandibular") {
- lines.push("Distal extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — BOTH buccally AND lingually (Huddle 6 Q11 — verbatim rule). Maximum tissue contact distributes occlusal load across the residual ridge and resists framework rotation under load.");
+ lines.push("Distal extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — BOTH buccally AND lingually. Maximum tissue contact distributes occlusal load across the residual ridge and resists framework rotation under load.");
  } else {
- lines.push("Distal extension saddle acrylic: must COMPLETELY engage the BUCCAL sulcus (Huddle 6 Q11). Palatal coverage is provided by the major connector — saddle extension is buccal-only on the maxilla.");
+ lines.push("Distal extension saddle acrylic: must COMPLETELY engage the BUCCAL sulcus. Palatal coverage is provided by the major connector — saddle extension is buccal-only on the maxilla.");
  }
  }
 
@@ -3615,7 +3615,7 @@ const RPD_AXIUM_STEPS = [
  step: 3,
  phase: "Diagnostic & Treatment Planning",
  clinic: "Survey Diagnostic Casts + Preliminary Partial Denture Design Form",
- action: "SURVEYING PROTOCOL (— required before any design decisions):\n 1. Mount diagnostic cast on dental surveyor (Ney-style); horizontal table.\n 2. Determine PATH OF INSERTION (POI): standard is SINGLE LEVEL POI (no tilt). Rotational paths are reserved for advanced cases.\n 3. With analyzing rod (graphite tip), mark SURVEY LINE on every potential abutment — the line of greatest convexity (HOC, height of contour) along the POI.\n 4. Identify clasp-tip position candidates BELOW the survey line in the gingival 1/3 of the crown.\n 5. With undercut gauge (0.01\" for cast, 0.02\" for wrought wire), measure undercut depth at candidate clasp-tip locations. Record location (mid-B, MB, DB, ML, DL) + depth.\n 6. TRIPOD the cast: scribe 3 reference dots on the cast (one anterior, two posterior) that share a single Z-plane at the chosen POI. This locks the POI so the cast can be re-mounted later.\n 7. BLOCK OUT undercuts NOT engaged by the clasp design with wax — prevents framework binding during seating.\n 8. Mark proximal GUIDE PLANE locations on the cast.\nDESIGN STEPS (after surveying):\n • Propose RPD design per protocol prosthodontic principles.\n • Identify tooth modifications needed; survey-crown vs enameloplasty decisions.\n • Duplicate diagnostic cast; practice tooth modifications.\n • Fill out Preliminary Partial Denture Design Form (Lab 4 p. 2 sequence: propose with peer → instructor confirms → survey casts → complete form → draw on casts → complete lab Rx → practice guide planes/rest seats).\n • Form must mark all 7 elements: guide planes, rest seats, undercuts, HOC, clasps, minor connectors, major connector (Lab 4 p. 4).\n • RED-PEN items on form: acrylic portion, undercuts, the circle around HOC, tissue stop (Lab 4 p. 6).\nDESIGN PROHIBITIONS:\n • INTRACORONAL RETAINERS (precision attachments within crown restorations) are CONTRAINDICATED for distal extension RPDs. They lack a stress-breaker mechanism — under occlusal load on the saddle, the framework transmits torque directly to the abutment via the rigid intracoronal pin, risking tooth fracture or PDL trauma. Use RPI or Combination for distal extensions instead.\nCLASP ASSEMBLY FUNCTION MAP (Huddle 3 p. 1 Q1 — exam identification):\n • PROXIMAL PLATE → connection of the clasp assembly to the major connector.\n • RECIPROCAL ARM → stabilization (resists horizontal forces, counters the retentive arm during insertion).\n • RETENTIVE ARM → retention (engages undercut; flexes over HOC during seating + removal).\n • REST → support (positive vertical stop; transmits occlusal load through long axis of abutment).\nEvery RPD direct retainer must include ALL FOUR components or have one explicitly substituted (e.g., RPI replaces the cast circumferential reciprocal arm with the major connector plating + proximal plate combination).\nENCIRCLEMENT RULE: clasp assembly must encompass >180° of tooth circumference OR have a minimum of 3 widely separated contact points. Insufficient encirclement = unstable clasp + risk of orthodontic force on abutment.\nCLASP ARM TAPER (Retainers PDF p. 12, McCracken): retentive arm tapers in BOTH thickness AND width (only terminal third flexes); reciprocal arm tapers in thickness ONLY (width stays uniform for rigidity). Taper region ≈ one tenth or less of clasp length.\nCLASP MATERIAL FLEXIBILITY (Retainers PDF p. 11-13): wrought wire (round cross-section) flexes in ALL spatial planes → flexible. Cast metal flexes in ONE plane only → rigid. Flexibility rank: wrought wire > cast gold > Cr-Co. This is why Combination uses WW for the retentive arm (stress-release) on a distal extension where the saddle moves.\nSUPRABULGE vs INFRABULGE TAXONOMY:\n • SUPRABULGE clasps (approach survey line from occlusal): Akers, Embrasure, Ring. Origin from rest seat above HOC, retentive third drops below HOC.\n • INFRABULGE clasps (approach from gingival vestibule): I-bar (RPI), T-bar, modified T-bar, Y-bar. Origin from the major connector at the vestibule level, retentive third rises to engage HOC from below. Only ONE terminal engages the undercut — more esthetic than suprabulge (less metal visible).\nBAR CLASP VARIANTS:\n • I-bar: straight vertical bar from major connector, single terminal point engaging mid-buccal undercut at gingival 1/3. Standard RPI component.\n • T-bar: I-bar approach + horizontal cross-bar at the terminal forming a T-shape. Engages two points across the buccal HOC. Used when single-point retention is inadequate.\n • Modified T-bar: T-bar with one shorter terminal arm (asymmetric T). Used when one side of the tooth has unfavorable contour.\n • Y-bar: I-bar approach with bifurcated terminal forming a Y-shape. Engages mesio-buccal AND disto-buccal undercuts simultaneously. Highest retention of the bar family, used when patient cannot tolerate forces of multiple I-bars elsewhere.",
+ action: "SURVEYING PROTOCOL (— required before any design decisions):\n 1. Mount diagnostic cast on dental surveyor (Ney-style); horizontal table.\n 2. Determine PATH OF INSERTION (POI): standard is SINGLE LEVEL POI (no tilt). Rotational paths are reserved for advanced cases.\n 3. With analyzing rod (graphite tip), mark SURVEY LINE on every potential abutment — the line of greatest convexity (HOC, height of contour) along the POI.\n 4. Identify clasp-tip position candidates BELOW the survey line in the gingival 1/3 of the crown.\n 5. With undercut gauge (0.01\" for cast, 0.02\" for wrought wire), measure undercut depth at candidate clasp-tip locations. Record location (mid-B, MB, DB, ML, DL) + depth.\n 6. TRIPOD the cast: scribe 3 reference dots on the cast (one anterior, two posterior) that share a single Z-plane at the chosen POI. This locks the POI so the cast can be re-mounted later.\n 7. BLOCK OUT undercuts NOT engaged by the clasp design with wax — prevents framework binding during seating.\n 8. Mark proximal GUIDE PLANE locations on the cast.\nDESIGN STEPS (after surveying):\n • Propose RPD design per protocol prosthodontic principles.\n • Identify tooth modifications needed; survey-crown vs enameloplasty decisions.\n • Duplicate diagnostic cast; practice tooth modifications.\n • Fill out Preliminary Partial Denture Design Form (sequence: propose with peer → instructor confirms → survey casts → complete form → draw on casts → complete lab Rx → practice guide planes/rest seats).\n • Form must mark all 7 elements: guide planes, rest seats, undercuts, HOC, clasps, minor connectors, major connector.\n • RED-PEN items on form: acrylic portion, undercuts, the circle around HOC, tissue stop.\nDESIGN PROHIBITIONS:\n • INTRACORONAL RETAINERS (precision attachments within crown restorations) are CONTRAINDICATED for distal extension RPDs. They lack a stress-breaker mechanism — under occlusal load on the saddle, the framework transmits torque directly to the abutment via the rigid intracoronal pin, risking tooth fracture or PDL trauma. Use RPI or Combination for distal extensions instead.\nCLASP ASSEMBLY FUNCTION MAP:\n • PROXIMAL PLATE → connection of the clasp assembly to the major connector.\n • RECIPROCAL ARM → stabilization (resists horizontal forces, counters the retentive arm during insertion).\n • RETENTIVE ARM → retention (engages undercut; flexes over HOC during seating + removal).\n • REST → support (positive vertical stop; transmits occlusal load through long axis of abutment).\nEvery RPD direct retainer must include ALL FOUR components or have one explicitly substituted (e.g., RPI replaces the cast circumferential reciprocal arm with the major connector plating + proximal plate combination).\nENCIRCLEMENT RULE: clasp assembly must encompass >180° of tooth circumference OR have a minimum of 3 widely separated contact points. Insufficient encirclement = unstable clasp + risk of orthodontic force on abutment.\nCLASP ARM TAPER: retentive arm tapers in BOTH thickness AND width (only terminal third flexes); reciprocal arm tapers in thickness ONLY (width stays uniform for rigidity). Taper region ≈ one tenth or less of clasp length.\nCLASP MATERIAL FLEXIBILITY: wrought wire (round cross-section) flexes in ALL spatial planes → flexible. Cast metal flexes in ONE plane only → rigid. Flexibility rank: wrought wire > cast gold > Cr-Co. This is why Combination uses WW for the retentive arm (stress-release) on a distal extension where the saddle moves.\nSUPRABULGE vs INFRABULGE TAXONOMY:\n • SUPRABULGE clasps (approach survey line from occlusal): Akers, Embrasure, Ring. Origin from rest seat above HOC, retentive third drops below HOC.\n • INFRABULGE clasps (approach from gingival vestibule): I-bar (RPI), T-bar, modified T-bar, Y-bar. Origin from the major connector at the vestibule level, retentive third rises to engage HOC from below. Only ONE terminal engages the undercut — more esthetic than suprabulge (less metal visible).\nBAR CLASP VARIANTS:\n • I-bar: straight vertical bar from major connector, single terminal point engaging mid-buccal undercut at gingival 1/3. Standard RPI component.\n • T-bar: I-bar approach + horizontal cross-bar at the terminal forming a T-shape. Engages two points across the buccal HOC. Used when single-point retention is inadequate.\n • Modified T-bar: T-bar with one shorter terminal arm (asymmetric T). Used when one side of the tooth has unfavorable contour.\n • Y-bar: I-bar approach with bifurcated terminal forming a Y-shape. Engages mesio-buccal AND disto-buccal undercuts simultaneously. Highest retention of the bar family, used when patient cannot tolerate forces of multiple I-bars elsewhere.",
  axiumEntry: "Surveying note: POI determined + tripod marks scribed + undercut measurements per abutment recorded. Preliminary Partial Denture Design Form (separate from lab Rx); design rationales documented.",
  design: "Finalize Kennedy classification. Run engine: major connector, per-abutment clasp + rest + guide plane, indirect retainers, base design, framework material. Surface red flags for clinician review.",
  },
@@ -3650,7 +3650,7 @@ const RPD_AXIUM_STEPS = [
  step: 7,
  phase: "Phase III: Prosthetic",
  clinic: "Final Impression + Lab Rx + Framework Fabrication",
- action: "CUSTOM TRAY (FI protocol):\n • Material: Triad LC (light-cured resin). Pattern resin is fallback if Triad doesn't bond securely.\n • Spacer asymmetry: 2 sheets baseplate wax over teeth + tooth-supported edentulous areas; 1 sheet over distal extension areas (this is the selective-pressure technique).\n • Vestibular extension: 2 mm short of full vestibular depth.\n • Border wax relief: remove 2 mm wax from intaglio borders on impression day to allow border-mold compound.\n • Cure cycle: 2 min top, 1 min intaglio. WAX MUST NOT MELT.\n • Relief hole: maxillary tray YES, mandibular tray NO.\n • Handles: finger rests at 1st molar region; anterior handle so it doesn't interfere with impression.\nBORDER MOLDING:\n • Maxillary: distal extension areas only.\n • Mandibular: distal extension areas AND entire lingual vestibule.\n • Material: green-stick compound, Hanau torch.\n • Reduce border thickness 0.5 mm before final impression.\nFINAL IMPRESSION:\n • PVS adhesive applied to tray, 10-minute dry time before loading.\n • Light body PVS on teeth; medium or heavy body in tray.\n • Single-step selective-pressure technique (the 2/1 spacer asymmetry + viscosity split IS the selective pressure).\nMASTER CAST POUR:\n • Type III stone (Coe-Cal or Microstone).\n • Wait 24-48 hours; soak cast in warm water before separating impression to soften compound.\nMASTER CAST PRE-LAB CHECKLIST (Huddle 3 p. 3 Q4 — required before shipping):\n ☐ HOC (Height of Contour) lines drawn on every potential abutment with analyzing rod (graphite tip).\n ☐ Undercut depth marked with RED DOT at each clasp-tip location + label: 0.01\" (cast clasps) or 0.02\" (wrought wire).\n ☐ Tripod marks scribed: 3 reference points at single Z-plane — convention is a BLACK LINE through a RED CIRCLE at each tripod point.\n ☐ Block out completed: all undercuts NOT engaged by clasps filled with hard baseplate wax.\n ☐ Path of insertion (POI) clearly documented (single level POI for predoctoral; rotational only for advanced).\nMARKING CONVENTION FOR LAB CAST:\n • Master cast: tripod marks, exact undercut points (RED), HOC of abutments.\n • Design cast: full framework design.\n • Metal components: BLUE ink (framework outline, rests, clasps, major connector).\n • RED ink: tissue stops, wrought wire, acrylic base extensions, undercut points, relief over palatal raphe/incisive papilla.\nSEND TO LAB: Axium Lab Rx (this engine's output), master cast, design cast.\nFRAMEWORK TRY-IN (in order):\n 1. On master cast first: verify rest seats flush, clasps engage correct undercuts, major connector adapted.\n 2. Intraorally with disclosing wax thinly painted on metal-tooth contact areas.\n 3. DO NOT FORCE the framework — adjust binding spots with high-speed coarse diamond bur.\n 4. Repeat until passive seating intraorally matches cast seating.\nFRAMEWORK TRY-IN 6-POINT FAILURE CHECKLIST (Fabrication of Custom Tray + Framework Try-In — verify all 6 before approving):\n ☐ DESIGN correctness: framework matches the Preliminary Design Form + lab Rx.\n ☐ ROCKING: framework does not rock when seated; pressure on one rest does not lift the contralateral side.\n ☐ REST SEATS flush + fully seated: no gap between rest and prepared rest seat (verify with disclosing wax).\n ☐ CLASPS engaging the CORRECT undercut surface + depth.\n ☐ MAJOR CONNECTOR adapted to tissue with no gross discrepancies.\n ☐ LATTICE-TO-TISSUE DISTANCE noted: large gap at distal extension = altered cast technique likely needed; small uniform gap is normal (acrylic will fill).\nADJUSTMENT RULE: leave BROAD AND EVEN contacts; remove only SMALL METAL SHOW-THROUGHS in disclosing wax. Broad contacts distribute load; pinpoint contacts concentrate force on abutment.\nOCCLUSION CHECK: occlusion must be the SAME with AND without framework in place. If bilateral arches, check one arch at a time, then both together.\nALTERED CAST: only if framework-try-in disclosing wax reveals discrepancy between cast and mouth, OR flabby distal-extension tissue. default is single-step.\nDuring altered-cast impression: PRESS ON REST SEATS ONLY — do NOT press on distal extension framework.\nWAX RIM / TEETH SET-UP / PROCESSING / DELIVERY.",
+ action: "CUSTOM TRAY (FI protocol):\n • Material: Triad LC (light-cured resin). Pattern resin is fallback if Triad doesn't bond securely.\n • Spacer asymmetry: 2 sheets baseplate wax over teeth + tooth-supported edentulous areas; 1 sheet over distal extension areas (this is the selective-pressure technique).\n • Vestibular extension: 2 mm short of full vestibular depth.\n • Border wax relief: remove 2 mm wax from intaglio borders on impression day to allow border-mold compound.\n • Cure cycle: 2 min top, 1 min intaglio. WAX MUST NOT MELT.\n • Relief hole: maxillary tray YES, mandibular tray NO.\n • Handles: finger rests at 1st molar region; anterior handle so it doesn't interfere with impression.\nBORDER MOLDING:\n • Maxillary: distal extension areas only.\n • Mandibular: distal extension areas AND entire lingual vestibule.\n • Material: green-stick compound, Hanau torch.\n • Reduce border thickness 0.5 mm before final impression.\nFINAL IMPRESSION:\n • PVS adhesive applied to tray, 10-minute dry time before loading.\n • Light body PVS on teeth; medium or heavy body in tray.\n • Single-step selective-pressure technique (the 2/1 spacer asymmetry + viscosity split IS the selective pressure).\nMASTER CAST POUR:\n • Type III stone (Coe-Cal or Microstone).\n • Wait 24-48 hours; soak cast in warm water before separating impression to soften compound.\nMASTER CAST PRE-LAB CHECKLIST (required before shipping):\n ☐ HOC (Height of Contour) lines drawn on every potential abutment with analyzing rod (graphite tip).\n ☐ Undercut depth marked with RED DOT at each clasp-tip location + label: 0.01\" (cast clasps) or 0.02\" (wrought wire).\n ☐ Tripod marks scribed: 3 reference points at single Z-plane — convention is a BLACK LINE through a RED CIRCLE at each tripod point.\n ☐ Block out completed: all undercuts NOT engaged by clasps filled with hard baseplate wax.\n ☐ Path of insertion (POI) clearly documented (single level POI for predoctoral; rotational only for advanced).\nMARKING CONVENTION FOR LAB CAST:\n • Master cast: tripod marks, exact undercut points (RED), HOC of abutments.\n • Design cast: full framework design.\n • Metal components: BLUE ink (framework outline, rests, clasps, major connector).\n • RED ink: tissue stops, wrought wire, acrylic base extensions, undercut points, relief over palatal raphe/incisive papilla.\nSEND TO LAB: Axium Lab Rx (this engine's output), master cast, design cast.\nFRAMEWORK TRY-IN (in order):\n 1. On master cast first: verify rest seats flush, clasps engage correct undercuts, major connector adapted.\n 2. Intraorally with disclosing wax thinly painted on metal-tooth contact areas.\n 3. DO NOT FORCE the framework — adjust binding spots with high-speed coarse diamond bur.\n 4. Repeat until passive seating intraorally matches cast seating.\nFRAMEWORK TRY-IN 6-POINT FAILURE CHECKLIST (Fabrication of Custom Tray + Framework Try-In — verify all 6 before approving):\n ☐ DESIGN correctness: framework matches the Preliminary Design Form + lab Rx.\n ☐ ROCKING: framework does not rock when seated; pressure on one rest does not lift the contralateral side.\n ☐ REST SEATS flush + fully seated: no gap between rest and prepared rest seat (verify with disclosing wax).\n ☐ CLASPS engaging the CORRECT undercut surface + depth.\n ☐ MAJOR CONNECTOR adapted to tissue with no gross discrepancies.\n ☐ LATTICE-TO-TISSUE DISTANCE noted: large gap at distal extension = altered cast technique likely needed; small uniform gap is normal (acrylic will fill).\nADJUSTMENT RULE: leave BROAD AND EVEN contacts; remove only SMALL METAL SHOW-THROUGHS in disclosing wax. Broad contacts distribute load; pinpoint contacts concentrate force on abutment.\nOCCLUSION CHECK: occlusion must be the SAME with AND without framework in place. If bilateral arches, check one arch at a time, then both together.\nALTERED CAST: only if framework-try-in disclosing wax reveals discrepancy between cast and mouth, OR flabby distal-extension tissue. default is single-step.\nDuring altered-cast impression: PRESS ON REST SEATS ONLY — do NOT press on distal extension framework.\nWAX RIM / TEETH SET-UP / PROCESSING / DELIVERY.",
  axiumEntry: "Lab Rx submitted (D5213/D5214 definitive; D5820/D5821 interim); framework try-in note (disclosing-wax check); altered cast impression note if indicated; final delivery note",
  design: "This engine's lab script section becomes the Rx text. Procedure code in metadata. Maxillary lab Rx must include 0.5 mm relief over incisive papilla and median palatal raphe.",
  },

@@ -7,7 +7,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
+      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement. Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
       "claspTier": "strong",
       "claspType": "RPI",
       "contraindications": [],
@@ -21,7 +21,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "isPrimaryAbutment": true,
       "reciprocation": {
         "rationale": "Reciprocation provided by the major connector plating opposite the retentive arm. When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
-        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
+        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (house rule) + lingual plating for reciprocation",
         "type": "plate",
       },
       "restRationale": null,
@@ -41,7 +41,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
+      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement. Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
       "claspTier": "strong",
       "claspType": "RPI",
       "contraindications": [],
@@ -55,7 +55,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "isPrimaryAbutment": true,
       "reciprocation": {
         "rationale": "Reciprocation provided by the major connector plating opposite the retentive arm. When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
-        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
+        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (house rule) + lingual plating for reciprocation",
         "type": "plate",
       },
       "restRationale": null,
@@ -218,7 +218,7 @@ Acrylic gingival shade: [TBD via the gingival shade guide — typically L199-OR 
 
 Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per surveyor protocol). Lab to verify block-out integrity before duplicating cast for framework investing.
 
-Distal extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — BOTH buccally AND lingually (Huddle 6 Q11 — verbatim rule). Maximum tissue contact distributes occlusal load across the residual ridge and resists framework rotation under load.
+Distal extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — BOTH buccally AND lingually. Maximum tissue contact distributes occlusal load across the residual ridge and resists framework rotation under load.
 
 Please return for try-in. Thank you.",
   "majorConnector": {
@@ -290,7 +290,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": true,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work (Kim Retainers guide).",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work.",
         "text": "Cast lingual reciprocal arm",
         "type": "arm",
       },
@@ -324,7 +324,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": false,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work (Kim Retainers guide).",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work.",
         "text": "Cast lingual reciprocal arm",
         "type": "arm",
       },
@@ -343,9 +343,9 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
     },
     {
       "claspAlternative": "Ring clasp",
-      "claspAlternativeRationale": "Ring clasp is the alternative for tilted terminal molars with lingual undercut: ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut. Both Reverse Akers AND Ring are acceptable for this scenario (Huddle 6 Q10).",
+      "claspAlternativeRationale": "Ring clasp is the alternative for tilted terminal molars with lingual undercut: ~360° encirclement with primary mesial occlusal rest + distal auxiliary rest + supportive strut. Both Reverse Akers AND Ring are acceptable for this scenario.",
       "claspAlternatives": null,
-      "claspRationale": "Used when ONLY a mesial/lingual undercut is available on a bicuspid or cuspid (NEVER molar — aspiration risk). Cast clasp originates from the distal aspect of the tooth and wraps to engage a mesio-lingual undercut. Tier-downgraded for molars (use Combination or Embrasure instead). NOTE: the named 'Reverse Akers' design is best avoided — on the lab Rx, write it as an Akers clasp engaging the [DL/DB] undercut (same physical clasp, the accepted phrasing). (retentive arm engages disto-lingual undercut) — Huddle 6 Q10 carve-out: lingually inclined terminal molar permits Reverse Akers (or Ring clasp). The tilt makes lingual surface the practical engagement location.",
+      "claspRationale": "Used when ONLY a mesial/lingual undercut is available on a bicuspid or cuspid (NEVER molar — aspiration risk). Cast clasp originates from the distal aspect of the tooth and wraps to engage a mesio-lingual undercut. Tier-downgraded for molars (use Combination or Embrasure instead). NOTE: the named 'Reverse Akers' design is best avoided — on the lab Rx, write it as an Akers clasp engaging the [DL/DB] undercut (same physical clasp, the accepted phrasing). (retentive arm engages disto-lingual undercut) — carve-out: lingually inclined terminal molar permits Reverse Akers (or Ring clasp). The tilt makes lingual surface the practical engagement location.",
       "claspTier": "common",
       "claspType": "Reverse Akers",
       "contraindications": [
@@ -363,7 +363,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": false,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work (Kim Retainers guide).",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work.",
         "text": "Cast buccal reciprocal arm",
         "type": "arm",
       },
@@ -418,7 +418,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
     {
       "alternativeRationale": "If the indirect retainer's chosen tooth has compromised support, the next-best tooth in the priority class (canine ↔ premolar) can be used. Geometric perpendicular ranking is a refinement, not a hard rule — instructor judgment can pick a different anterior tooth if support is inadequate at the geometric ideal.",
       "dualRole": false,
-      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II. Indirect retainer placement chosen via diagonal fulcrum-line geometry (McCracken Fig 8-2 C): fulcrum endpoints #21 (DE terminal) and #31 (opposite-side distalmost); perpendicular projection from fulcrum midpoint = 15.5 mm anterior. Among the preferred tooth types on opposite side, this tooth has the greatest anteriority.",
+      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II. Indirect retainer placement chosen via diagonal fulcrum-line geometry: fulcrum endpoints #21 (DE terminal) and #31 (opposite-side distalmost); perpendicular projection from fulcrum midpoint = 15.5 mm anterior. Among the preferred tooth types on opposite side, this tooth has the greatest anteriority.",
       "restType": "mesial occlusal rest",
       "source": "fulcrum-diagonal-perpendicular",
       "tier": "common",
@@ -521,7 +521,7 @@ Acrylic gingival shade: [TBD via the gingival shade guide — typically L199-OR 
 
 Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per surveyor protocol). Lab to verify block-out integrity before duplicating cast for framework investing.
 
-Distal extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — BOTH buccally AND lingually (Huddle 6 Q11 — verbatim rule). Maximum tissue contact distributes occlusal load across the residual ridge and resists framework rotation under load.
+Distal extension saddle acrylic: must engage the sulcus IN ITS ENTIRETY — BOTH buccally AND lingually. Maximum tissue contact distributes occlusal load across the residual ridge and resists framework rotation under load.
 
 Please return for try-in. Thank you.",
   "majorConnector": {
@@ -588,7 +588,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": false,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work (Kim Retainers guide).",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work.",
         "text": "Cast lingual reciprocal arm",
         "type": "arm",
       },
@@ -622,7 +622,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
       "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": false,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work (Kim Retainers guide).",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work.",
         "text": "Cast lingual reciprocal arm",
         "type": "arm",
       },
@@ -642,7 +642,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
     {
       "claspAlternative": "Single Akers on this tooth (forgoing the embrasure pair) — less retention but simpler if the partner tooth has poor undercut access.",
       "claspAlternativeRationale": "Embrasure provides superior bilateral retention but requires an acceptable buccal undercut + suitable occlusal embrasure on BOTH teeth. If either fails clinical evaluation, fall back to a single Akers on the most posterior premolar/molar on this side. The Swade RPD design guide's Class II option for this mid-arch position is a single clasp perpendicular to the fulcrum-line midpoint: a Combination clasp engaging a 0.02" MB undercut as the choice, or a cast clasp at 0.01" when its retention is adequate, the distal-extension span is short, the abutment is healthy, and masticatory forces are low — acceptable in place of the embrasure pair when one suitable abutment sits at that perpendicular.",
-      "claspRationale": "Clasp of choice for a quadrant with no edentulous space (Class III mod 0 where retention is needed on a quadrant where no teeth are missing). Two opposing C-clasps cradle adjacent teeth at the embrasure; each engages a 0.01" undercut. Requires a prepped occlusal rest seat at the embrasure between the two teeth. This Embrasure clasp provides PRIMARY cross-arch retention paired with #31, required to satisfy the bilateral direct-retention invariant. Without it the design would be unilateral (Nesbit) — PROHIBITS Nesbit RPDs (Final RPD Huddle 2 answer key Q2, aspiration risk).",
+      "claspRationale": "Clasp of choice for a quadrant with no edentulous space (Class III mod 0 where retention is needed on a quadrant where no teeth are missing). Two opposing C-clasps cradle adjacent teeth at the embrasure; each engages a 0.01" undercut. Requires a prepped occlusal rest seat at the embrasure between the two teeth. This Embrasure clasp provides PRIMARY cross-arch retention paired with #31, required to satisfy the bilateral direct-retention invariant. Without it the design would be unilateral (Nesbit) — PROHIBITS Nesbit RPDs (aspiration risk).",
       "claspTier": "strong",
       "claspType": "Embrasure",
       "contraindications": [],
@@ -672,7 +672,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Mandib
     {
       "claspAlternative": "Single Akers on this tooth (forgoing the embrasure pair) — less retention but simpler if the partner tooth has poor undercut access.",
       "claspAlternativeRationale": "Embrasure provides superior bilateral retention but requires an acceptable buccal undercut + suitable occlusal embrasure on BOTH teeth. If either fails clinical evaluation, fall back to a single Akers on the most posterior premolar/molar on this side. The Swade RPD design guide's Class II option for this mid-arch position is a single clasp perpendicular to the fulcrum-line midpoint: a Combination clasp engaging a 0.02" MB undercut as the choice, or a cast clasp at 0.01" when its retention is adequate, the distal-extension span is short, the abutment is healthy, and masticatory forces are low — acceptable in place of the embrasure pair when one suitable abutment sits at that perpendicular.",
-      "claspRationale": "Clasp of choice for a quadrant with no edentulous space (Class III mod 0 where retention is needed on a quadrant where no teeth are missing). Two opposing C-clasps cradle adjacent teeth at the embrasure; each engages a 0.01" undercut. Requires a prepped occlusal rest seat at the embrasure between the two teeth. This Embrasure clasp provides PRIMARY cross-arch retention paired with #30, required to satisfy the bilateral direct-retention invariant. Without it the design would be unilateral (Nesbit) — PROHIBITS Nesbit RPDs (Final RPD Huddle 2 answer key Q2, aspiration risk).",
+      "claspRationale": "Clasp of choice for a quadrant with no edentulous space (Class III mod 0 where retention is needed on a quadrant where no teeth are missing). Two opposing C-clasps cradle adjacent teeth at the embrasure; each engages a 0.01" undercut. Requires a prepped occlusal rest seat at the embrasure between the two teeth. This Embrasure clasp provides PRIMARY cross-arch retention paired with #30, required to satisfy the bilateral direct-retention invariant. Without it the design would be unilateral (Nesbit) — PROHIBITS Nesbit RPDs (aspiration risk).",
       "claspTier": "strong",
       "claspType": "Embrasure",
       "contraindications": [],
@@ -825,7 +825,7 @@ Please return for try-in. Thank you.",
   },
   "redFlags": [
     {
-      "message": "Nesbit (unilateral cantilever) RPD is PROHIBITED per Final RPD Huddle 2 answer key Q2 — aspiration risk. The span-derived abutments alone would have been unilateral, so the engine satisfied the bilateral direct-retention invariant by adding cross-arch retention. Engine added Embrasure clasp pair on #30 + #31 for the required contralateral retention. Confirm RPD is the appropriate modality for this short unilateral span; a fixed solution (FPD or implant) is often preferable for Class III mod 0. If the patient declines fixed treatment, this RPD design is acceptable.",
+      "message": "Nesbit (unilateral cantilever) RPD is PROHIBITED — aspiration risk. The span-derived abutments alone would have been unilateral, so the engine satisfied the bilateral direct-retention invariant by adding cross-arch retention. Engine added Embrasure clasp pair on #30 + #31 for the required contralateral retention. Confirm RPD is the appropriate modality for this short unilateral span; a fixed solution (FPD or implant) is often preferable for Class III mod 0. If the patient declines fixed treatment, this RPD design is acceptable.",
       "severity": "info",
       "type": "nesbit-prohibition",
     },
@@ -858,7 +858,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": false,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work (Kim Retainers guide).",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work.",
         "text": "Cast palatal reciprocal arm",
         "type": "arm",
       },
@@ -897,7 +897,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": false,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work (Kim Retainers guide).",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work.",
         "text": "Cast palatal reciprocal arm",
         "type": "arm",
       },
@@ -1024,7 +1024,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "guidePlaneRationale": "Establishes path of insertion. Cylindrical diamond bur prep on proximal surface of abutment adjacent to edentulous span; parallel to other guide planes in the arch; 2-3 mm occluso-gingival height, full B-L width.",
       "isPrimaryAbutment": true,
       "reciprocation": {
-        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work (Kim Retainers guide).",
+        "rationale": "Cast lingual/buccal reciprocal arm opposing the retentive arm. Used when major connector does not contact the abutment surface opposite the retentive arm; the arm provides the counter-force at the survey line. It must be rigid (tapers in thickness only, not width), sit in the middle or cervical third, and contact the tooth BEFORE the retentive tip passes over the height of contour during seating — that timing is what makes reciprocation work.",
         "text": "Cast palatal reciprocal arm",
         "type": "arm",
       },
@@ -1113,7 +1113,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
     {
       "alternativeRationale": "If the indirect retainer's chosen tooth has compromised support, the next-best tooth in the priority class (canine ↔ premolar) can be used. Geometric perpendicular ranking is a refinement, not a hard rule — instructor judgment can pick a different anterior tooth if support is inadequate at the geometric ideal.",
       "dualRole": true,
-      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II. Per McCracken Fig 8-2 D, this tooth's anterior position relative to the diagonal fulcrum line (#12–#2) permits dual-role direct + indirect retention; no separate IR tooth is needed.",
+      "rationale": "Indirect retainer placed perpendicular to the fulcrum line, as far from the axis of rotation as possible, to resist up-lifting of the distal extension base when masticatory forces displace the saddle apically (-10). Standard locations: max canines for Class I/II, mand canines or first premolars for mand Class I/II. This tooth's anterior position relative to the diagonal fulcrum line (#12–#2) permits dual-role direct + indirect retention; no separate IR tooth is needed.",
       "restType": "mesial cingulum rest",
       "source": "fulcrum-diagonal-perpendicular",
       "tier": "common",
@@ -1303,7 +1303,7 @@ Acrylic gingival shade: [TBD via the gingival shade guide — typically L199-OR 
 
 Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per surveyor protocol). Lab to verify block-out integrity before duplicating cast for framework investing.
 
-Distal extension saddle acrylic: must COMPLETELY engage the BUCCAL sulcus (Huddle 6 Q11). Palatal coverage is provided by the major connector — saddle extension is buccal-only on the maxilla.
+Distal extension saddle acrylic: must COMPLETELY engage the BUCCAL sulcus. Palatal coverage is provided by the major connector — saddle extension is buccal-only on the maxilla.
 
 Please return for try-in. Thank you.",
   "majorConnector": {
@@ -1361,7 +1361,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
+      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement. Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
       "claspTier": "strong",
       "claspType": "RPI",
       "contraindications": [],
@@ -1375,7 +1375,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "isPrimaryAbutment": true,
       "reciprocation": {
         "rationale": "Reciprocation provided by the major connector plating opposite the retentive arm. When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
-        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
+        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (house rule) + lingual plating for reciprocation",
         "type": "plate",
       },
       "restRationale": null,
@@ -1451,7 +1451,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "claspAlternative": null,
       "claspAlternativeRationale": null,
       "claspAlternatives": null,
-      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II) (Retainers PDF p. 16, 31, 35). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface — Kratochvil-vs-Krol compromise, Retainers p. 31) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement (Retainers p. 32). Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
+      "claspRationale": "Stress-releasing clasp assembly of choice for distal-extension abutments (Kennedy I/II). Rest mesial + Proximal plate distal (house spec: covers 1/2 to 2/3 of the occluso-gingival height of the distal proximal surface) + I-bar engaging 0.01" mid-buccal undercut at gingival 1/3. I-bar geometry: 3 mm horizontal arm + 1.5 mm vertical engagement. Vertical-projection I-bar rotates AWAY from abutment under occlusal load → stress-release.",
       "claspTier": "strong",
       "claspType": "RPI",
       "contraindications": [],
@@ -1465,7 +1465,7 @@ exports[`SNAPSHOTS — full engine output for canonical cases > snapshot: Maxill
       "isPrimaryAbutment": true,
       "reciprocation": {
         "rationale": "Reciprocation provided by the major connector plating opposite the retentive arm. When retentive arm engages buccal undercut, plating on lingual/palatal surface counteracts the buccal-pull force during insertion — prevents tooth torquing.",
-        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (house rule, between Kratochvil and Krol) + lingual plating for reciprocation",
+        "text": "Distal proximal plate contacting 1/2–2/3 of the occluso-gingival height of the abutment's distal proximal surface (house rule) + lingual plating for reciprocation",
         "type": "plate",
       },
       "restRationale": null,
@@ -1717,7 +1717,7 @@ Acrylic gingival shade: [TBD via the gingival shade guide — typically L199-OR 
 
 Block out: all undercuts NOT engaged by clasps have been blocked out on the master cast with hard baseplate wax (per surveyor protocol). Lab to verify block-out integrity before duplicating cast for framework investing.
 
-Distal extension saddle acrylic: must COMPLETELY engage the BUCCAL sulcus (Huddle 6 Q11). Palatal coverage is provided by the major connector — saddle extension is buccal-only on the maxilla.
+Distal extension saddle acrylic: must COMPLETELY engage the BUCCAL sulcus. Palatal coverage is provided by the major connector — saddle extension is buccal-only on the maxilla.
 
 Please return for try-in. Thank you.",
   "majorConnector": {

@@ -18056,7 +18056,7 @@ function RPDPaperFormArchDrawing({
  return d;
  };
 
- // HOC / survey-line marker — per Lab 4 + Performance Exam convention,
+ // HOC / survey-line marker — per standard drawing convention,
  // drawn as a small RED OVAL at the tripod/HOC point on the buccal or
  // lingual surface where the undercut sits. Replaces the prior 3-dash
  // row which didn't match the form convention.
@@ -22755,7 +22755,7 @@ function RPDToothEditor({ tooth, caseInput, result, onUpdateTooth, onClose, hori
  </select>
  </div>
  <div style={rowStyle}>
- <span>Modification method (Lab 4 #3)</span>
+ <span>Modification method</span>
  <select style={selectStyle} value={attrs.modification || "auto"} onChange={(e) => setAttr("modification", e.target.value)}>
  <option value="auto">Auto (engine picks)</option>
  <option value="none">None — natural anatomy adequate</option>
@@ -22765,7 +22765,7 @@ function RPDToothEditor({ tooth, caseInput, result, onUpdateTooth, onClose, hori
  </select>
  </div>
  <div style={rowStyle}>
- <span>HOC adjustment (Lab 4 #4)</span>
+ <span>HOC adjustment</span>
  <select style={selectStyle} value={attrs.hocAdjustment || "none"} onChange={(e) => setAttr("hocAdjustment", e.target.value)}>
  <option value="none">None</option>
  <option value="lower-DB">Lower DB</option>
@@ -23514,8 +23514,7 @@ function RPDHelper() {
  <div style={{ marginTop: "12px", marginBottom: "20px" }}>
  {/* Verbose toggle — controls both the Preliminary Design Form
  rationale column AND the Lab Rx spec callouts. OFF = matches
- source PDFs (Design Case I/II, LabRx Examples A/B, framework
- Case 1) 1:1. ON = expands rationales to full educational text
+ the source examples 1:1. ON = expands rationales to full educational text
  with page refs + adds engine's explicit spec callouts. Quiet
  gray styling so it doesn't compete with the form content below.
  Class name `rpd-print-hide` keeps the chip off the printed Rx. */}

@@ -4424,8 +4424,6 @@ describe("UIC-AUDIT — Retainers PDF deep-mine: encirclement + taxonomy + varia
     const d29 = r.abutmentDesigns.find(a => a.tooth === 29);
     if (d29?.claspType === "RPI") {
       expect(d29.claspRationale).toMatch(/1\/2 to 2\/3/);
-      expect(d29.claspRationale).toMatch(/Kratochvil/);
-      expect(d29.claspRationale).toMatch(/Krol/);
     }
   });
   it("Step 3 includes intracoronal retainer contraindication for DE", () => {
@@ -4645,7 +4643,7 @@ describe("UIC-AUDIT — Reverse Akers exception for lingually inclined terminal 
       expect(d18.claspType).toBe("Reverse Akers");
       // Tier should be "common" for tilted terminal molar carve-out (not "judgment")
       expect(d18.claspTier).toBe("common");
-      expect(d18.claspRationale).toMatch(/Huddle 6.*carve-out/);
+      expect(d18.claspRationale).toMatch(/carve-out/);
     }
   });
 });
@@ -6455,7 +6453,7 @@ describe("INV-18 — Class II diagonal fulcrum-line geometry", () => {
     const c = rpdMakeBlankCase("mandibular");
     missing(c, [17, 32, 18, 19, 20]);
     const r = rpdRunEngine(c);
-    expect(r.indirectRetainers[0].rationale).toMatch(/Fig 8-2 C|McCracken/);
+    expect(r.indirectRetainers[0].rationale).toMatch(/diagonal fulcrum-line/);
     expect(r.indirectRetainers[0].rationale).toMatch(/fulcrum endpoints/);
   });
 

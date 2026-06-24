@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 .claude/
 .vercel
+
+# Private source record for the RPD engine — keep local, never publish
+docs/RPD-ENGINE-SOURCES.md
