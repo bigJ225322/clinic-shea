@@ -32181,6 +32181,7 @@ function NapoleonTab({ imgIdx }) {
  const lcRef = useRef(null);   // loupe container — positioned imperatively
  const liRef = useRef(null);   // loupe inner image — panned imperatively
  const posRef = useRef(null);  // last cursor pos (container px), for re-syncing
+ const autoHintRef = useRef(false); // discovery hint: auto-engages the spotlight once per visit
  // Container metrics: width, viewport height, scroll-independent document-top.
  // Height is DERIVED as vh − top (the rendered height is itself
  // calc(100vh − top), so measuring it at mount captures a stale value).
@@ -32262,13 +32263,27 @@ function NapoleonTab({ imgIdx }) {
  useLayoutEffect(() => {
  if (posRef.current) positionLoupe(posRef.current.x, posRef.current.y);
  });
+ // Discovery hint: most users don't realize the glass clicks to dim the
+ // surround into a spotlight. If they only hover (no click) for ~3s, auto-
+ // engage it — with the same "punch" a click gives — so the gesture teaches
+ // itself. Fires once per visit; any real click cancels it (autoHintRef).
+ useEffect(() => {
+ if (!hovering || dimmed || autoHintRef.current) return;
+ const t = setTimeout(() => {
+ autoHintRef.current = true;
+ setPressed(true);
+ setTimeout(() => setPressed(false), 150);
+ setDimmed(true);
+ }, 3000);
+ return () => clearTimeout(t);
+ }, [hovering, dimmed]);
  return (
  <div ref={wrapRef}
  onMouseMove={onMove}
  onMouseLeave={() => { setHovering(false); setPressed(false); }}
  onMouseDown={() => setPressed(true)}
  onMouseUp={() => setPressed(false)}
- onClick={() => setDimmed((d) => !d)}
+ onClick={() => { autoHintRef.current = true; setDimmed((d) => !d); }}
  style={{
  position: "relative",
  width: "100%",
