@@ -130,7 +130,7 @@
                 "kind": "numbered",
                 "items": [
                   "**Red pencil:** trace the tray border at the depth of the vestibule on buccal + labial. At posterior: vibrating line area (maxillary) or pear-shaped retromolar pad (mandibular).",
-                  "**Blue pencil:** draw a line 2-3 mm inside the red (the lab instructions say 2-3). This is where the tray border will sit, leaving that vestibular space for border-molding material.",
+                  "**Blue pencil:** draw a line 2-3 mm inside the red. This is where the tray border will sit, leaving that vestibular space for border-molding material.",
                   "Posterior extension gets RED line only (no 2 mm blue offset there).",
                   "**Red marks for relief areas:** maxilla — part of the palatal raphe, all rugae, and the incisive papilla, extending just lateral to the ridge crest; mandible — the crest of the residual ridge only, leaving the buccal shelf and retromolar pads uncovered so the finished tray contacts those stress-bearing areas. Also mark any lingual tori, mylohyoid ridge, or knife-edge zones."
                 ]
@@ -179,7 +179,7 @@
               {
                 "kind": "bullets",
                 "items": [
-                  "**Maxillary:** vertical handle over the central incisor area — ½ inch wide and high, ~3 mm thick, with concave grip depressions (the grading sheet lists ½ × ½ × ¼ inch). Should not impinge on lip closure.",
+                  "**Maxillary:** vertical handle over the central incisor area — ½ inch wide and high, ~3 mm thick, with concave grip depressions (typically ½ × ½ × ¼ inch). Should not impinge on lip closure.",
                   "**Mandibular:** finger rests in the bicuspid area, bilateral. No taller than **2/3 of the retromolar pad height** (impingement = tray won't seat in mouth).",
                   "Build from Triad offcuts. Press into the surface; light cure after addition."
                 ]
@@ -654,7 +654,7 @@
                 "kind": "numbered",
                 "items": [
                   "Open the articulator. Verify centric latch is engaged + incisal pin reads 0.",
-                  "Set **condylar inclination thumbscrew** to **30°** (per your setup sheet — the Denar default and the monoplane setup grading sheets; refined later by the protrusive record at try-in).",
+                  "Set **condylar inclination thumbscrew** to **30°** (per your setup sheet — the Denar default and the monoplane setup standard; refined later by the protrusive record at try-in).",
                   "Bennett angle is fixed at 15° on the Mark 320 (no adjustment).",
                   "Mounting plates: attach upper + lower; cut retention grooves into the underside of each plate to grip the mounting stone."
                 ]
@@ -1140,7 +1140,7 @@
             "blocks": [
               {
                 "kind": "paragraph",
-                "text": "Three schemes are taught, with one variant. Each scheme has an indication and a grading sheet. Hanau's quint is the theoretical framework that explains why each scheme works (or doesn't) for a given patient."
+                "text": "Three schemes are taught, with one variant. Each scheme has its own indication. Hanau's quint is the theoretical framework that explains why each scheme works (or doesn't) for a given patient."
               },
               {
                 "kind": "section",
@@ -1270,7 +1270,7 @@
               {
                 "kind": "bullets",
                 "items": [
-                  "Verify wax dentures came back from setup faculty-approved (signed grading sheet).",
+                  "Verify wax dentures came back from setup faculty-approved (signed off).",
                   "Confirm both bases articulate together cleanly on the Mark 320 in centric (incisal pin contacts the table, centric latch engages without prying).",
                   "Inspect intaglio and borders with a thumb pad: no sharp wax edges, no air voids, no debris.",
                   "Soak the trial dentures in lukewarm water 5 min before seating — cold wax is brittle and easier to fracture in the mouth.",
@@ -3302,7 +3302,7 @@
                   "**Hard baseplate wax** for blocking out unwanted undercuts.",
                   "**Soft pencil + small carbide pencil sharpener** for marking on the cast.",
                   "**Tripod marker** (or a permanent pencil) for scribing reference dots.",
-                  "**the Lab 4 Design Form** (paper or digital) to record findings."
+                  "**the RPD Design Form** (paper or digital) to record findings."
                 ]
               },
               {
@@ -3329,7 +3329,7 @@
                   "Surveyor on a level bench, no wobble.",
                   "Analyzing rod tip sharp (graphite). Replace if dull — you can't read HOC lines that aren't crisp.",
                   "Cast oriented on the platform: occlusal plane roughly parallel to the platform initially. You'll adjust tilt during Step 2.",
-                  "Lab 4 Design Form on the bench, ready to fill in."
+                  "RPD Design Form on the bench, ready to fill in."
                 ]
               },
               {
@@ -3386,7 +3386,7 @@
                   "**4c.** Switch the analyzing rod for the **0.01\" undercut gauge**. The gauge tip extends 0.01\" out from the vertical spindle.",
                   "**4d.** Lower the gauge along the path of insertion. When the gauge tip touches the tooth at the gingival 1/3, that's the depth point: there's **0.01\" of usable undercut** at that point.",
                   "**4e.** If no 0.01\" undercut exists, try the 0.02\" gauge for wrought-wire clasps. If still no undercut, plan to either (1) add composite to create an undercut, (2) change path of insertion, or (3) place a survey crown.",
-                  "**4f.** Record undercut location (mid-B, MB, DB, ML, DL) and depth on the Lab 4 Design Form."
+                  "**4f.** Record undercut location (mid-B, MB, DB, ML, DL) and depth on the RPD Design Form."
                 ]
               },
               {
@@ -3428,7 +3428,7 @@
                 "items": [
                   "**7a.** Identify the proximal surfaces (mesial / distal) on each abutment that will host guide planes — typically the proximal surface facing the edentulous area.",
                   "**7b.** Mark on the cast with a soft pencil: \"GP\" or a shaded box on the proximal surface.",
-                  "**7c.** Record on the Lab 4 Design Form: tooth #, guide plane location (M or D), planned vertical extent (typically the cervical 2/3 of the proximal surface).",
+                  "**7c.** Record on the RPD Design Form: tooth #, guide plane location (M or D), planned vertical extent (typically the cervical 2/3 of the proximal surface).",
                   "**7d.** Guide planes will be prepared chairside at the tooth preparation appointment."
                 ]
               },
@@ -3440,7 +3440,7 @@
               {
                 "kind": "dropdown",
                 "title": "Tips",
-                "body": "**Cast won't stay flat on the platform:** bottom of the cast wasn't trimmed flat. Trim flat on the model trimmer; re-mount. **Graphite tip leaves no mark:** the lead is dull or the cast surface is wet. Sharpen the lead; dry the cast. **Multiple potential paths of insertion all look equivalent:** consult faculty. There's almost always one path that's better — usually the one that engages the most desirable undercuts and provides better esthetics for clasps. **No usable undercut on a key abutment after exhausting tilts:** document on Lab 4 form, then either (1) plan composite addition (etch + bond + composite to create 0.01\" undercut on the buccal cervical 1/3), (2) plan a survey crown, or (3) use a different abutment with a different clasp type. Discuss with faculty. **Tripod dots get smudged before transfer:** re-scribe deeper / darker. Tripod marks are critical — the master cast survey depends on them. **Block-out wax doesn't shave cleanly with the trimmer:** wax was too soft or too hard. Reheat to a soft (not liquid) consistency; reapply; try again."
+                "body": "**Cast won't stay flat on the platform:** bottom of the cast wasn't trimmed flat. Trim flat on the model trimmer; re-mount. **Graphite tip leaves no mark:** the lead is dull or the cast surface is wet. Sharpen the lead; dry the cast. **Multiple potential paths of insertion all look equivalent:** consult faculty. There's almost always one path that's better — usually the one that engages the most desirable undercuts and provides better esthetics for clasps. **No usable undercut on a key abutment after exhausting tilts:** document on the design form, then either (1) plan composite addition (etch + bond + composite to create 0.01\" undercut on the buccal cervical 1/3), (2) plan a survey crown, or (3) use a different abutment with a different clasp type. Discuss with faculty. **Tripod dots get smudged before transfer:** re-scribe deeper / darker. Tripod marks are critical — the master cast survey depends on them. **Block-out wax doesn't shave cleanly with the trimmer:** wax was too soft or too hard. Reheat to a soft (not liquid) consistency; reapply; try again."
               }
             ]
           },
@@ -3719,7 +3719,7 @@
             "blocks": [
               {
                 "kind": "paragraph",
-                "text": "The Lab 4 form is completed before the tooth-preparation appointment. It serves two purposes — a personal checklist so no component is forgotten, and a faculty sign-off gate before any tooth modification begins."
+                "text": "The RPD Design Form is completed before the tooth-preparation appointment. It serves two purposes — a personal checklist so no component is forgotten, and a faculty sign-off gate before any tooth modification begins."
               },
               {
                 "kind": "section",
@@ -3791,7 +3791,7 @@
                 "kind": "bullets",
                 "items": [
                   "Diagnostic casts mounted + surveyed (+ complete).",
-                  "RPD framework designed on the diagnostic cast (Lab 4 Design Form complete).",
+                  "RPD framework designed on the diagnostic cast (RPD Design Form complete).",
                   "**Duplicate the diagnostic cast** with an alginate impression of the cast + pour a second cast for practice prep + wax-up.",
                   "On the duplicate, practice the abutment preparation in wax (or with burs on the stone cast) — reduce the area where the survey crown will sit.",
                   "Wax up the survey crown to its **ideal contour** — with the planned rest seat, guide plane, undercut, and HOC.",
@@ -5206,7 +5206,7 @@
                   "Verify the framework on its working cast first. If it rocks on the cast, the lab made an error — call before the patient arrives.",
                   "Re-survey the framework against the design form: are all the rest seats present? Are clasps engaging the planned undercuts? Is the major connector the form you specified?",
                   "Inspect for casting defects: pits, nodules, sharp edges. Polish any rough spots with a green stone before chairside.",
-                  "Confirm the design form, Rx, and grading sheet are at hand."
+                  "Confirm the design form and Rx are at hand."
                 ]
               },
               {
@@ -10975,7 +10975,7 @@
             "blocks": [
               {
                 "kind": "paragraph",
-                "text": "The provisional bridge protects both preps, holds the abutments and the space, and develops the pontic-site tissue. Make it as **one connected unit** — provisionalizing a 3-unit FPD as two separate crowns lets the teeth shift, leaves the pontic site under-developed, and gives no trial of the final form. The provisional is made from acrylic (Jet Set-4) or bis-acryl (Integrity) — both are options, and the #3–5 FPD provisional study guide names Jet Set-4 acrylic. Bis-acryl is low-shrinkage and low-exotherm, easy to mix and polish, but brittle; acrylic (Jet Set-4) is cheaper and easy to repair."
+                "text": "The provisional bridge protects both preps, holds the abutments and the space, and develops the pontic-site tissue. Make it as **one connected unit** — provisionalizing a 3-unit FPD as two separate crowns lets the teeth shift, leaves the pontic site under-developed, and gives no trial of the final form. The provisional is made from acrylic (Jet Set-4) or bis-acryl (Integrity) — both are options, and the #3–5 FPD provisional standard is Jet Set-4 acrylic. Bis-acryl is low-shrinkage and low-exotherm, easy to mix and polish, but brittle; acrylic (Jet Set-4) is cheaper and easy to repair."
               },
               {
                 "kind": "section",
@@ -11007,7 +11007,7 @@
               {
                 "kind": "callout",
                 "title": "Bis-acryl vs acrylic",
-                "body": "Two materials, both options: **bis-acryl (Integrity)** — low-shrinkage, easy to handle, dispensed from a cartridge gun — and **acrylic (Jet Set-4)**, mixed powder-and-liquid through **soupy → doughy → rubbery → set** stages, cheaper and easy to repair. The #3–5 FPD provisional study guide uses Jet Set-4 acrylic."
+                "body": "Two materials, both options: **bis-acryl (Integrity)** — low-shrinkage, easy to handle, dispensed from a cartridge gun — and **acrylic (Jet Set-4)**, mixed powder-and-liquid through **soupy → doughy → rubbery → set** stages, cheaper and easy to repair. The #3–5 FPD provisional standard is Jet Set-4 acrylic."
               }
             ]
           },
