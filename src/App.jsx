@@ -8611,6 +8611,7 @@ const EXAM_FINDINGS_CONFIG = {
  { label: "caries risk", type: "select", options: ["", "Low", "Moderate", "High", "Extreme"] },
  { label: "endo testing", type: "input", placeholder: "blank to omit" },
  ],
+ [{ type: "endo-dx" }],
  [{ label: "occlusal assessment", type: "input",
  placeholder: "blank to omit" }],
  [{ label: "odontogram", type: "odontogram",
@@ -9852,6 +9853,9 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  // Local toggle for the perio COE Dx engine (square "Dx" button next to
  // the AAP/ADA dropdowns expands the staging+grading form inline below).
  const [dxOpen, setDxOpen] = useState(false);
+ // Local toggle for the endo Dx engine (the "Endo Dx" button expands the
+ // pulpal + periapical diagnosis panel inline below).
+ const [endoDxOpen, setEndoDxOpen] = useState(false);
  const config = EXAM_FINDINGS_CONFIG[procedureId];
 
  // Initialize wNLDefault fields to "WNL" when the procedure loads.
@@ -10474,6 +10478,49 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  {dxOpen && fields && setField && (
  <div style={{ marginTop: "10px" }}>
  <PerioCOEDxForm
+ fields={fields}
+ setField={setField}
+ findings={findings}
+ applyToFindings={(updates) => setFindings({...findings,...updates })}
+ />
+ </div>
+)}
+ </div>
+);
+ }
+
+ if (field.type === "endo-dx") {
+ return (
+ <div key="endo-dx" style={{ marginBottom: "9px" }}>
+ <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+ <button
+ type="button"
+ onClick={() => setEndoDxOpen(o =>!o)}
+ style={{
+ padding: "7px 12px", height: "32px",
+ background: endoDxOpen? "var(--accent)": "var(--paper-soft)",
+ color: endoDxOpen? "white": "var(--ink-soft)",
+ border: "1px solid " + (endoDxOpen? "var(--accent)": "var(--rule)"),
+ borderRadius: "2px", cursor: "pointer",
+ fontFamily: "'Geist', sans-serif",
+ fontSize: "12px", fontWeight: 700, letterSpacing: "0.02em",
+ display: "flex", alignItems: "center",
+ }}
+ onMouseEnter={e => { if (!endoDxOpen) e.currentTarget.style.background = "var(--paper)"; }}
+ onMouseLeave={e => { if (!endoDxOpen) e.currentTarget.style.background = "var(--paper-soft)"; }}
+ title="Compute pulpal + periapical diagnosis from the tests"
+ >
+ Endo Dx
+ </button>
+ {!endoDxOpen && (
+ <span style={{ fontSize: "11px", color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif" }}>
+ Pulpal + periapical diagnosis from the tests
+ </span>
+ )}
+ </div>
+ {endoDxOpen && fields && setField && (
+ <div style={{ marginTop: "10px" }}>
+ <EndoDxForm
  fields={fields}
  setField={setField}
  findings={findings}
@@ -11366,6 +11413,114 @@ function buildPerioCOERationale(dx, inputs) {
  ];
 
  return { stageDrivers, gradeDrivers, ambiguity, judgmentCalls, cal, ratio };
+}
+
+// ── Endo Dx panel — the UI skin over computeEndoDx. Structured tests in
+// (persisted as fields.endoDx*), a verdict-first pulpal + periapical diagnosis
+// out, colored teal/gold/oxblood. "Send to note" writes the two-axis call into
+// the structured "pulpal diagnosis" findings field. Diagnosis only — no
+// treatment (decision support, not decision-maker). Mirrors PerioCOEDxForm. ──
+const ENDO_DX_FIELDS = [
+  { k: "Cold", label: "Cold / thermal", opts: [["", "— select —"], ["wnl", "Normal (resolves)"], ["exaggerated", "Exaggerated, non-lingering"], ["lingering", "Lingering"], ["none", "No response"]] },
+  { k: "EPT", label: "EPT (optional)", opts: [["", "—"], ["responds", "Responds"], ["none", "No response"]] },
+  { k: "Spont", label: "Spontaneous pain", opts: [["", "—"], ["no", "No"], ["yes", "Yes"]] },
+  { k: "History", label: "Pulp history", opts: [["", "None"], ["carious-exposure", "Carious exposure (asx)"], ["previously-treated", "Previously treated (RCT)"], ["previously-initiated", "Previously initiated"]] },
+  { k: "Perc", label: "Percussion", opts: [["", "—"], ["neg", "Negative"], ["pos", "Positive"]] },
+  { k: "Palp", label: "Palpation", opts: [["", "—"], ["neg", "Negative"], ["pos", "Positive"]] },
+  { k: "Radio", label: "Periapical radiograph", opts: [["", "—"], ["normal", "Normal"], ["widened-pdl", "Widened PDL"], ["radiolucency", "Apical radiolucency"], ["condensing", "Condensing (radiopaque)"]] },
+  { k: "Sinus", label: "Sinus tract", opts: [["", "—"], ["no", "No"], ["yes", "Yes"]] },
+  { k: "Swell", label: "Swelling", opts: [["", "—"], ["none", "None"], ["localized", "Localized"], ["diffuse", "Diffuse / cellulitis"]] },
+];
+
+function EndoDxForm({ fields, setField, findings, applyToFindings }) {
+  const g = (k) => fields["endoDx" + k] || "";
+  const dx = computeEndoDx({
+    cold: g("Cold"), ept: g("EPT"), spontaneousPain: g("Spont"),
+    pulpHistory: g("History"), percussion: g("Perc"), palpation: g("Palp"),
+    radiograph: g("Radio"), sinusTract: g("Sinus"), swelling: g("Swell"),
+  });
+  const sendOn = !!fields.endoDxSendToNote;
+
+  // Send to note — populate the structured "pulpal diagnosis" field with the
+  // two-axis call; re-syncs whenever the diagnosis changes while the box is on.
+  useEffect(() => {
+    if (sendOn && applyToFindings && !dx.incomplete) {
+      const text = [dx.pulpal, dx.periapical].filter(Boolean).join("; ");
+      if (text) applyToFindings({ "pulpal diagnosis": text });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sendOn, dx.pulpal, dx.periapical, dx.incomplete]);
+
+  const chip = (label, value, color) => (
+    <div style={{ flex: 1, minWidth: 0 }}>
+      <div style={{ fontSize: "9px", letterSpacing: "0.12em", textTransform: "uppercase",
+        color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif", marginBottom: "3px" }}>{label}</div>
+      <div style={{ fontFamily: "'Fraunces', serif", fontSize: "15px", fontWeight: 600,
+        color, lineHeight: 1.2 }}>{value || "—"}</div>
+    </div>
+  );
+
+  return (
+    <div style={{ padding: "16px 18px", background: "var(--paper)",
+      border: "1px solid var(--rule)", borderRadius: "2px" }}>
+      <div style={{ fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase",
+        color: "var(--accent)", fontWeight: 600, marginBottom: "14px",
+        fontFamily: "'Geist', sans-serif" }}>
+        AAE endodontic diagnosis
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "12px" }}>
+        {ENDO_DX_FIELDS.map(f => (
+          <Field key={f.k} label={f.label}>
+            <Select value={g(f.k)} onChange={v => setField("endoDx" + f.k, v)}>
+              {f.opts.map(([val, lbl]) => <option key={val} value={val}>{lbl}</option>)}
+            </Select>
+          </Field>
+        ))}
+      </div>
+
+      <div style={{ marginTop: "16px", paddingTop: "14px", borderTop: "1px solid var(--rule)" }}>
+        <div style={{ display: "flex", gap: "16px" }}>
+          {chip("Pulpal diagnosis", dx.pulpal, dx.pulpalColor)}
+          {chip("Periapical diagnosis", dx.periapical, dx.periapColor)}
+        </div>
+        {(dx.pulpalRationale || dx.periapicalRationale) && (
+          <div style={{ fontSize: "12px", color: "var(--ink-soft)", lineHeight: 1.5,
+            fontFamily: "'Geist', sans-serif", marginTop: "10px" }}>
+            {dx.pulpalRationale && <div style={{ marginBottom: "5px" }}>{dx.pulpalRationale}</div>}
+            {dx.periapicalRationale && <div>{dx.periapicalRationale}</div>}
+          </div>
+        )}
+        {dx.incomplete && (
+          <div style={{ fontSize: "12px", color: "var(--ink-soft)", fontStyle: "italic",
+            fontFamily: "'Geist', sans-serif", marginTop: "8px" }}>
+            {dx.narrative}
+          </div>
+        )}
+        {dx.flags && dx.flags.length > 0 && (
+          <div style={{ marginTop: "12px", display: "flex", flexDirection: "column", gap: "8px" }}>
+            {dx.flags.map((f, i) => (
+              <div key={i} style={{ fontSize: "12px", color: "var(--ink)",
+                background: "var(--paper-soft)", borderLeft: "3px solid var(--accent)",
+                borderRadius: "2px", padding: "8px 10px", lineHeight: 1.45,
+                fontFamily: "'Geist', sans-serif" }}>
+                ⚠ {f}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {applyToFindings && (
+        <label style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "14px",
+          fontSize: "12px", color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif", cursor: "pointer" }}>
+          <input type="checkbox" checked={sendOn}
+            onChange={e => setField("endoDxSendToNote", e.target.checked)} />
+          Send diagnosis to the note&apos;s pulpal-diagnosis line
+        </label>
+      )}
+    </div>
+  );
 }
 
 function PerioCOEDxForm({ fields, setField, findings, applyToFindings }) {
