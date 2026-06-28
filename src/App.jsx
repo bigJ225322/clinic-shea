@@ -3876,6 +3876,160 @@ const ANESTHETIC_OPTIONS = [
 // standard formula when gingival margin is at or apical to the CEJ).
 // Hyperplastic gum coronal to CEJ is uncommon outside post-orthodontic cases
 // and isn't handled here; if needed, the student can adjust CAL manually.
+// ─────────────────────────────────────────────────────────────────────────
+// Endodontic diagnosis engine — AAE standardized terminology, the two-axis
+// pulpal + periapical diagnosis. Mirrors computePerioCOEDx: structured
+// objective tests in, a verdict-first diagnosis out. NO treatment output —
+// this is decision SUPPORT, not a decision-maker. Every call names the
+// finding(s) that drove it, and coherence cross-checks flag combinations
+// that don't hang together clinically (the part a lookup table can't do).
+//
+//   Pulpal:     Normal Pulp · Reversible Pulpitis · Symptomatic Irreversible
+//               Pulpitis · Asymptomatic Irreversible Pulpitis · Pulp Necrosis
+//               · Previously Treated · Previously Initiated Therapy
+//   Periapical: Normal Apical Tissues · Symptomatic Apical Periodontitis ·
+//               Asymptomatic Apical Periodontitis · Acute Apical Abscess ·
+//               Chronic Apical Abscess · Condensing Osteitis
+// ─────────────────────────────────────────────────────────────────────────
+function computeEndoDx(inputs) {
+  const {
+    cold,            // "wnl" | "exaggerated" | "lingering" | "none" | ""
+    ept,             // "responds" | "none" | ""  (optional — corroborates vitality)
+    spontaneousPain, // "yes" | "no" | ""
+    pulpHistory,     // "none" | "previously-treated" | "previously-initiated" | "carious-exposure" | ""
+    percussion,      // "neg" | "pos" | ""
+    palpation,       // "neg" | "pos" | ""
+    radiograph,      // "normal" | "widened-pdl" | "radiolucency" | "condensing" | ""
+    sinusTract,      // "yes" | "no" | ""
+    swelling,        // "none" | "localized" | "diffuse" | ""
+  } = inputs || {};
+
+  const missing = [];
+
+  // ── PULPAL AXIS — vitality (cold, corroborated by EPT) + symptoms ──────
+  let pulpal = null, pulpalRationale = null, pulpalVital = null;
+  if (pulpHistory === "previously-treated") {
+    pulpal = "Previously Treated";
+    pulpalVital = false; // canal obturated — vitality tests don't apply
+    pulpalRationale = "Tooth has had completed root canal therapy; the canal space is obturated, so pulp vitality tests don't apply.";
+  } else if (pulpHistory === "previously-initiated") {
+    pulpal = "Previously Initiated Therapy";
+    pulpalVital = false;
+    pulpalRationale = "Pulp therapy was started (pulpotomy / pulpectomy) but not completed — the pulpal diagnosis stays 'previously initiated' until definitive treatment finishes.";
+  } else if (!cold && !ept) {
+    missing.push("a cold (or EPT) result");
+  } else {
+    const coldNone = cold === "none";
+    const symptomatic = spontaneousPain === "yes" || cold === "lingering";
+    if (coldNone && ept === "responds") {
+      pulpal = "Pulp Necrosis (uncertain — vitality signals conflict)";
+      pulpalVital = false;
+      pulpalRationale = "Cold gives no response but EPT responds — the signals conflict. Cold can be a false negative (calcified canal, a multi-rooted tooth with one still-vital canal, recent trauma). Re-test, or test an adjacent/contralateral control tooth, before calling it necrotic.";
+    } else if (coldNone) {
+      pulpal = "Pulp Necrosis";
+      pulpalVital = false;
+      pulpalRationale = `No response to cold${ept === "none" ? " and no response to EPT" : ""} — the pulp is non-vital.${ept !== "none" ? " (An EPT would corroborate; a single non-responsive tooth can be a false negative in a calcified or recently traumatized tooth.)" : ""}`;
+    } else if (pulpHistory === "carious-exposure" && !symptomatic) {
+      pulpal = "Asymptomatic Irreversible Pulpitis";
+      pulpalVital = true;
+      pulpalRationale = "Vital pulp with a carious exposure / deep caries to the pulp but no symptoms — the inflamed pulp cannot heal, yet is asymptomatic. Diagnosed by the exposure, not by pain.";
+    } else if (symptomatic) {
+      pulpal = "Symptomatic Irreversible Pulpitis";
+      pulpalVital = true;
+      const why = cold === "lingering" && spontaneousPain === "yes" ? "a lingering response to cold and spontaneous pain"
+        : cold === "lingering" ? "a lingering response to cold"
+        : "spontaneous (unprovoked) pain";
+      pulpalRationale = `Vital pulp with ${why} — the hallmark of irreversible pulpitis. The inflammation will not resolve.`;
+    } else if (cold === "exaggerated") {
+      pulpal = "Reversible Pulpitis";
+      pulpalVital = true;
+      pulpalRationale = "Sharp, exaggerated response to cold that subsides within a second or two of removing the stimulus, with no lingering and no spontaneous pain — reversible inflammation. Removing the irritant (caries, faulty restoration, exposed dentin) should settle it.";
+    } else if (cold === "wnl") {
+      pulpal = "Normal Pulp";
+      pulpalVital = true;
+      pulpalRationale = "Mild response to cold that resolves immediately, no lingering, no spontaneous pain — a normal, healthy pulp.";
+    } else {
+      missing.push("the cold quality (normal / exaggerated / lingering) to pin down the pulpal diagnosis");
+    }
+  }
+
+  // ── PERIAPICAL AXIS — apical tissue response ──────────────────────────
+  let periap = null, periapRationale = null;
+  const anyApical = percussion || palpation || radiograph || sinusTract || swelling;
+  const swellingPresent = swelling === "localized" || swelling === "diffuse";
+  const symptomaticApical = percussion === "pos" || palpation === "pos";
+  if (!anyApical) {
+    missing.push("at least one apical finding (percussion, palpation, periapical radiograph, sinus tract, or swelling)");
+  } else if (swellingPresent) {
+    periap = "Acute Apical Abscess";
+    periapRationale = `${swelling === "diffuse" ? "Diffuse" : "Localized"} swelling${percussion === "pos" ? " with tenderness to percussion" : ""} of rapid onset — acute apical abscess. ${swelling === "diffuse" ? "Diffuse swelling / cellulitis can spread along fascial spaces and produce systemic signs — treat urgently." : "Localized fluctuant swelling from a necrotic pulp."}`;
+  } else if (sinusTract === "yes") {
+    periap = "Chronic Apical Abscess";
+    periapRationale = "A sinus tract (often with intermittent drainage and little or no pain), typically over an apical radiolucency — chronic apical abscess. Trace the tract with gutta-percha to confirm the source tooth.";
+  } else if (radiograph === "condensing") {
+    periap = "Condensing Osteitis";
+    periapRationale = "A localized increase in apical bone density (radiopacity) responding to a low-grade, long-standing pulpal irritant — condensing osteitis. Most common at mandibular posterior teeth; usually asymptomatic.";
+  } else if (symptomaticApical) {
+    periap = "Symptomatic Apical Periodontitis";
+    const rg = radiograph === "radiolucency" ? "with an apical radiolucency" : radiograph === "widened-pdl" ? "with a widened apical PDL" : "no definite radiographic change yet";
+    const test = percussion === "pos" && palpation === "pos" ? "percussion and palpation" : percussion === "pos" ? "percussion" : "palpation";
+    periapRationale = `Painful to ${test} (${rg}) — inflammation of the apical periodontium. Symptomatic apical periodontitis.`;
+  } else if (radiograph === "radiolucency") {
+    periap = "Asymptomatic Apical Periodontitis";
+    periapRationale = "An apical radiolucency with no tenderness to percussion or palpation, no swelling, and no sinus tract — asymptomatic apical periodontitis (apical inflammation of pulpal origin, without symptoms).";
+  } else {
+    periap = "Normal Apical Tissues";
+    periapRationale = radiograph === "widened-pdl"
+      ? "No apical tenderness, swelling, or sinus tract. A widened PDL without symptoms is nonspecific / early — borderline-normal; correlate with the pulpal status."
+      : "No tenderness to percussion or palpation, normal periapical radiograph, no swelling or sinus tract — normal apical tissues.";
+  }
+
+  // ── COHERENCE CROSS-CHECKS (what a lookup table can't do) ──────────────
+  const flags = [];
+  const pulpHealthy = pulpal === "Normal Pulp" || pulpal === "Reversible Pulpitis";
+  const periapDisease = !!periap && periap !== "Normal Apical Tissues" && periap !== "Condensing Osteitis";
+  if (pulpHealthy && swellingPresent) {
+    flags.push("Swelling with a VITAL pulp is not an apical (endodontic) abscess — think periodontal abscess. Confirm pulp vitality and probe for a deep perio pocket before treating endodontically.");
+  } else if (pulpHealthy && periapDisease) {
+    flags.push("Apical periodontitis / abscess is of pulpal origin and implies an irreversible or necrotic pulp — it shouldn't follow from a normal or reversibly-inflamed pulp. Re-check the pulp test or the apical finding; the two axes are inconsistent.");
+  }
+  if (pulpal === "Symptomatic Irreversible Pulpitis" && (swellingPresent || sinusTract === "yes")) {
+    flags.push("Irreversible pulpitis is a VITAL diagnosis, but an abscess requires a necrotic pulp — they don't co-occur on the same tooth. Re-verify the cold test.");
+  }
+  if (radiograph === "condensing" && symptomaticApical) {
+    flags.push("Condensing osteitis is usually asymptomatic — tenderness to percussion/palpation alongside it is unusual; re-evaluate the apical status.");
+  }
+
+  const incomplete = missing.length > 0;
+
+  // ── VERDICT-FIRST NARRATIVE ───────────────────────────────────────────
+  let narrative;
+  if (incomplete && !pulpal && !periap) {
+    narrative = `Not enough yet to diagnose — add ${missing.join(" and ")}.`;
+  } else {
+    narrative = [pulpal, periap].filter(Boolean).join("  +  ");
+    if (incomplete) narrative += `  (still need ${missing.join(" and ")})`;
+  }
+
+  // Color language: healthy/vital = teal, reversible/treated/asymptomatic =
+  // gold (in-progress / watch), necrosis / irreversible / abscess = oxblood.
+  const pulpalColor = !pulpal ? "var(--rule)"
+    : pulpal === "Normal Pulp" ? "var(--teal)"
+    : pulpal === "Reversible Pulpitis" || pulpal.indexOf("Previously") === 0 ? "var(--gold)"
+    : "var(--accent)";
+  const periapColor = !periap ? "var(--rule)"
+    : periap === "Normal Apical Tissues" ? "var(--teal)"
+    : periap === "Asymptomatic Apical Periodontitis" || periap === "Condensing Osteitis" ? "var(--gold)"
+    : "var(--accent)";
+
+  return {
+    pulpal, periapical: periap,
+    pulpalRationale, periapicalRationale: periapRationale,
+    pulpalColor, periapColor,
+    flags, narrative, incomplete, missing,
+  };
+}
+
 function computePerioCOEDx(inputs) {
  const {
  maxIntPD, // mm, number — max interdental probing depth at worst site
@@ -32953,4 +33107,4 @@ export default function App() {
 // renderTemplate is pure — (template string, fields) -> note string — so it can
 // be unit-tested with no React/DOM. TEMPLATES maps procedure id -> template;
 // DEFAULT_FIELDS is the baseline field object the UI starts from.
-export { renderTemplate, TEMPLATES, DEFAULT_FIELDS, noteTripwire, cleanProseText, CHUNKS, computePerioCOEDx };
+export { renderTemplate, TEMPLATES, DEFAULT_FIELDS, noteTripwire, cleanProseText, CHUNKS, computePerioCOEDx, computeEndoDx };
