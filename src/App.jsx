@@ -21553,11 +21553,8 @@ const rgRange = (a) => `${a[0]}–${a[1]}`;
 
 function CrownReductionGuide({ compact = false, initialCrown = "pfm" }) {
   const [crown, setCrown] = useState(initialCrown);
-  const [tooth, setTooth] = useState(19);
   const [region, setRegion] = useState("post");
-  const [arch, setArch] = useState("mand");
   const isAnt = region === "ant";
-  const funcCusp = arch === "mand" ? "buccal" : "palatal";
   const fig = REDUCTION_FIGS[crown];
 
   const seg = (active) => ({
@@ -21579,17 +21576,9 @@ function CrownReductionGuide({ compact = false, initialCrown = "pfm" }) {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: 14 }}>
         <div style={{ fontWeight: 800, fontSize: compact ? "1rem" : "1.1rem", color: "var(--ink)" }}>Crown-prep reduction</div>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <label style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--muted)" }}>Tooth</label>
-          <select value={tooth} onChange={(e) => {
-            const n = Number(e.target.value);
-            setTooth(n);
-            const antSet = new Set([6, 7, 8, 9, 10, 11, 22, 23, 24, 25, 26, 27]);
-            setRegion(antSet.has(n) ? "ant" : "post");
-            setArch(n <= 16 ? "max" : "mand");
-          }} style={{ padding: "5px 9px", borderRadius: 7, border: "1px solid var(--rule)", background: "transparent", color: "var(--ink)", fontSize: "0.82rem" }}>
-            <optgroup label="Maxillary (1–16)">{Array.from({ length: 16 }, (_, i) => i + 1).map((n) => (<option key={n} value={n}>#{n}</option>))}</optgroup>
-            <optgroup label="Mandibular (17–32)">{Array.from({ length: 16 }, (_, i) => i + 17).map((n) => (<option key={n} value={n}>#{n}</option>))}</optgroup>
-          </select>
+          {[["ant", "Anterior"], ["post", "Posterior"]].map(([r, lbl]) => (
+            <button key={r} onClick={() => setRegion(r)} style={seg(r === region)}>{lbl}</button>
+          ))}
         </div>
       </div>
 
@@ -21600,7 +21589,7 @@ function CrownReductionGuide({ compact = false, initialCrown = "pfm" }) {
       </div>
 
       <div style={{ fontSize: "0.8rem", color: "var(--muted)", marginBottom: 8 }}>
-        <b style={{ color: "var(--ink)" }}>{fig.label}</b> ({fig.sub}) · {arch === "max" ? "maxillary" : "mandibular"} {isAnt ? "anterior" : "posterior"} (#{tooth})
+        <b style={{ color: "var(--ink)" }}>{fig.label}</b> ({fig.sub}) · {isAnt ? "anterior" : "posterior"} crown
       </div>
 
       {rows.map((r, i) => (
@@ -21620,7 +21609,7 @@ function CrownReductionGuide({ compact = false, initialCrown = "pfm" }) {
         <p style={{ margin: 0, color: "var(--muted)" }}>
           {isAnt
             ? "Anterior: two-plane labial reduction, reduce the lingual concavity + cingulum; finish line follows the gingival contour."
-            : `Posterior: functional cusp bevel on the ${funcCusp} cusp (${arch === "max" ? "maxillary = palatal" : "mandibular = buccal"} functional cusp).`}
+            : "Posterior: extra functional-cusp bevel — the buccal cusp in the mandible, the palatal cusp in the maxilla."}
         </p>
       </div>
     </div>
