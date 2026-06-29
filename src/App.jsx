@@ -7039,13 +7039,41 @@ function BPInput({ value, onChange }) {
 }
 
 
-function ICCNoteInputs({ rawTemplate, values, onChange }) {
+// Layout config for the OS bracket notes — same renderer as ICC, but grouped
+// so related fields share a row instead of each stacking on its own line.
+// (Fields with the same `group` id, when consecutive in the template, render
+// side by side.) Keyed by placeholder name; unlisted fields fall back to a
+// plain full-width text input.
+const OS_FIELD_CFG = {
+ "ID/HPI/CC": { label: "ID / HPI / CC" },
+ "PMH": { label: "PMH", wnl: true },
+ "medications": { label: "Medications", type: "meds", group: "hx" },
+ "allergies": { label: "Allergies", group: "hx" },
+ "pregnancy status": { label: "Pregnancy", group: "soc" },
+ "social history": { label: "Social Hx", group: "soc" },
+ "BP": { label: "BP", type: "bp", group: "vitals" },
+ "pulse": { label: "Pulse", group: "vitals" },
+ "intraoral exam": { label: "Intraoral exam", wnl: true, group: "exam" },
+ "radiographic findings": { label: "Radiographic findings", wnl: true, group: "exam" },
+ "assessment": { label: "Assessment" },
+ "tooth": { label: "Tooth", type: "tooth", group: "tx" },
+ "site": { label: "Site", type: "tooth", group: "tx" },
+ "carpules": { label: "Carpules", group: "tx" },
+ "post-op BP": { label: "Post-op BP", type: "bp", group: "postop" },
+ "post-op pulse": { label: "Post-op pulse", group: "postop" },
+ "prescriptions": { label: "Prescriptions" },
+ "provider names": { label: "Providers" },
+ "interval": { label: "Interval", group: "fu" },
+ "procedure": { label: "Procedure", group: "fu" },
+};
+
+function ICCNoteInputs({ rawTemplate, values, onChange, fieldCfg = ICC_FIELD_CFG }) {
  const placeholders = useMemo(() => parseLabPlaceholders(rawTemplate), [rawTemplate]);
  if (!placeholders.length) return null;
  const cap = s => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
- const labelFor = (key) => (ICC_FIELD_CFG[key] && ICC_FIELD_CFG[key].label) || cap(key.trim());
+ const labelFor = (key) => (fieldCfg[key] && fieldCfg[key].label) || cap(key.trim());
  // Group consecutive fields that share a `group` id onto one horizontal row.
- const specs = placeholders.map(p => ({ p, cfg: ICC_FIELD_CFG[p.key] || {} }));
+ const specs = placeholders.map(p => ({ p, cfg: fieldCfg[p.key] || {} }));
  const rows = [];
  for (let i = 0; i < specs.length; i++) {
  const g = specs[i].cfg.group;
@@ -12881,15 +12909,28 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  // ICC notes use the richer ICC-specific renderer (paired rows, checkbox,
  // who-is-present dropdown, BP auto-slash, priority list); everything else
  // keeps the generic lab-script placeholder picker.
- const PlaceholderInputs = (typeof procedureId === "string" && procedureId.startsWith("icc-"))
- ? ICCNoteInputs : LabPlaceholderInputs;
+ const procStr = typeof procedureId === "string" ? procedureId : "";
+ const onChange = (key, value) => {
+ setField("labPlaceholders", {...(fields.labPlaceholders || {}), [key]: value });
+ };
+ // ICC and OS bracket notes both use the richer grouped renderer (related
+ // fields share a row instead of stacking); OS supplies its own field
+ // config. Everything else keeps the generic stacked lab-script picker.
+ if (procStr.startsWith("icc-") || procStr.startsWith("os-")) {
  return (
- <PlaceholderInputs
+ <ICCNoteInputs
  rawTemplate={rawTemplate}
  values={fields.labPlaceholders || {}}
- onChange={(key, value) => {
- setField("labPlaceholders", {...(fields.labPlaceholders || {}), [key]: value });
- }}
+ onChange={onChange}
+ fieldCfg={procStr.startsWith("os-") ? OS_FIELD_CFG : ICC_FIELD_CFG}
+ />
+ );
+ }
+ return (
+ <LabPlaceholderInputs
+ rawTemplate={rawTemplate}
+ values={fields.labPlaceholders || {}}
+ onChange={onChange}
  />
  );
  })()}
