@@ -25882,7 +25882,7 @@ const PATHWAYS = [
  {
  label: "Core build-up (when needed)",
  count: 1,
- detail: "Only when the tooth is broken down or endo-treated. It does NOT have to be its own visit — do it on a separate day, or at the start of the prep appointment — but always before the prep, since the prep needs sound walls to cut. A post comes in only when an endo-treated tooth has too little coronal structure left to hold the core.",
+ detail: "Only when the tooth is broken down or endo-treated. It does not have to be its own visit — do it on a separate day, or at the start of the prep appointment — but always before the prep, since the prep needs sound walls to cut. A post comes in only when an endo-treated tooth has too little coronal structure left to hold the core.",
  },
  {
  label: "Crown prep + provisional + final impression",
