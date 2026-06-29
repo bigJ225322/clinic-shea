@@ -12315,18 +12315,25 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  // infiltration ↔ mandibular IAN + long buccal block, with the correct side
  // and needle gauge). A manual edit to injection[0] is preserved — we only
  // re-derive while injection[0] still equals what we last auto-applied.
- const autoInjRef = useRef(null);
  useEffect(() => {
  if (!needsAnesthetic ||!fields.tooth) return;
  const inj = fields.injections[0] || {};
- const pristine =!inj.techIAN &&!inj.techBuccalInfil &&
-!inj.techGreaterPalatine &&!inj.techMental &&!inj.techNasopalatine &&!inj.techMaxInfil;
- const stillAuto = autoInjRef.current &&
- JSON.stringify(inj) === JSON.stringify(autoInjRef.current);
- if (!pristine &&!stillAuto) return;
+ // The injection technique is a function of the tooth — maxillary → buccal
+ // infiltration, mandibular → IAN + long buccal — so re-derive it on EVERY
+ // tooth change. Bail only when the user has genuinely customized the
+ // injection (a second block/technique, or a non-default drug or carpule
+ // count) so those edits survive. A plain single-technique preset always
+ // follows the tooth. (The old guard compared against the last auto-applied
+ // object by value; any drift froze the technique so a maxillary→mandibular
+ // switch kept "buccal infiltration" and only swapped the tooth number.)
+ const techCount = [inj.techIAN, inj.techBuccalInfil, inj.techGreaterPalatine,
+ inj.techMental, inj.techNasopalatine, inj.techMaxInfil].filter(Boolean).length;
+ const customized = techCount > 1
+ || (inj.drug && inj.drug !== DEFAULT_INJECTION.drug)
+ || (inj.carpules && inj.carpules !== DEFAULT_INJECTION.carpules);
+ if (customized) return;
  const preset = injectionForTooth(fields.tooth, isClinicPeds);
  if (!preset) return;
- autoInjRef.current = preset;
  setFields(p => ({...p, injections: [preset,...p.injections.slice(1)] }));
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [fields.tooth]);
