@@ -2424,11 +2424,11 @@ const CATEGORIES = [
  ]},
  { id: "os", label: "Oral Surgery", groups: [
  { id: "os-procs", label: "Extractions & Follow-Up", procedures: [
- { id: "os-ext-soap", label: "Extraction — S / O / A / P" },
- { id: "os-ext-brief", label: "Extraction — brief op-note" },
- { id: "os-surg-soap", label: "Surgical Extraction — S / O / A / P" },
- { id: "os-root-tip", label: "Residual Root Tip" },
- { id: "os-fu", label: "Post-Op Follow-Up" },
+ { id: "os-ext-soap", label: "Extraction — S / O / A / P", pinnedCodes: ["D7140"] },
+ { id: "os-ext-brief", label: "Extraction — brief op-note", pinnedCodes: ["D7140"] },
+ { id: "os-surg-soap", label: "Surgical Extraction — S / O / A / P", pinnedCodes: ["D7210"] },
+ { id: "os-root-tip", label: "Residual Root Tip", pinnedCodes: ["D7250"] },
+ { id: "os-fu", label: "Post-Op Follow-Up", pinnedCodes: ["D0140"] },
  ]},
  ]},
  { id: "icc", label: "ICC", groups: [
