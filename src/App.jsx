@@ -14500,8 +14500,10 @@ const SWADE_CODES = new Set([
  // Implant
  "D6010U2","D6051","D6059","D6062","D6065","D6066","D6067",
  "D6104UG","D6190","D6199",
- // Oral Surgery
- "D7140","D7952UG","D7953UG",
+ // Oral Surgery — the extraction codes that match the OS notes (simple,
+ // surgical, residual root); D7952/D7953 grafts stay in the curated set but
+ // no longer fall under the OS code chip.
+ "D7140","D7210","D7250","D7952UG","D7953UG",
  // Orthodontics
  "D8080",
  // Adjunctive
@@ -14729,7 +14731,11 @@ const RVU_CATEGORIES = [
  // Endo: full D3xxx range.
  { id: "endo", label: "Endo", match: c => /^D3/.test(c) },
  // OS: full D7xxx range.
- { id: "os", label: "OS", match: c => /^D7/.test(c) },
+ // Only the extraction codes a predoc actually uses — the ones that match
+ // the OS note templates: D7140 simple, D7210 surgical, D7250 residual root.
+ // (Was /^D7/, which dumped all 29 oral-surgery codes — impacted teeth,
+ // tori, frenectomy, biopsy, zygomatic implant — none of them predoc work.)
+ { id: "os", label: "OS", match: c => ["D7140", "D7210", "D7250"].includes(c) },
  // Ref: exam + radiograph (D0xxx), ortho (D8xxx), adjunctive (D9xxx),
  // IPE / Other (I-prefix, R-prefix).
  { id: "ref", label: "Ref", match: c => /^D0/.test(c) || /^D8/.test(c) || /^D9/.test(c) || /^I/.test(c) || /^R/.test(c) },
