@@ -11154,6 +11154,7 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  </select>
  </div>
  </div>
+ {endoRecBlock(prefix, findings, setFindings, PULPAL, PERIAPICAL)}
  </div>
  );
  })}
@@ -11431,6 +11432,105 @@ const ENDO_DX_FIELDS = [
   { k: "Sinus", label: "Sinus tract", opts: [["", "—"], ["no", "No"], ["yes", "Yes"]] },
   { k: "Swell", label: "Swelling", opts: [["", "—"], ["none", "None"], ["localized", "Localized"], ["diffuse", "Diffuse / cellulitis"]] },
 ];
+
+// ── Urgent-care Dx recommendation ──────────────────────────────────────────
+// Map the free-text endo-test-row inputs (percussion "−/+/++/+++", cold test
+// "NR" / "2/2s" / "2/20s") into the engine and surface a suggested two-axis
+// diagnosis the student can apply. The endo tests are already entered for the
+// urgent-care visit, so this just reads them — no second set of inputs.
+function endoPP(sym) {
+  const s = (sym || "").trim();
+  return !s ? "" : s === "-" ? "neg" : "pos";
+}
+function endoCold(text) {
+  const s = (text || "").trim().toLowerCase();
+  if (!s) return "";
+  if (/^(nr|n\/r|none|no response|-|0)$/.test(s)) return "none";
+  if (s.includes("linger")) return "lingering";
+  // "seconds to response / seconds to resolution" — a long resolution lingers.
+  const m = s.match(/(\d+)\s*\/\s*(\d+)/);
+  if (m) return (parseInt(m[2], 10) - parseInt(m[1], 10)) >= 6 ? "lingering" : "wnl";
+  if (/^\d+\s*s?$/.test(s)) return "wnl";
+  return "";
+}
+function endoRecForTooth(toothRaw, findings) {
+  const t = (toothRaw || "").trim();
+  if (!t) return null;
+  const num = t.replace(/\D/g, "");
+  const count = Math.max(1, parseInt(findings["endo count"] || 1, 10));
+  let row = null;
+  for (let i = 1; i <= count; i++) {
+    if (((findings["endo" + i + " #"] || "").trim()) === t) { row = i; break; }
+  }
+  if (!row) { if (count === 1) row = 1; else return null; }
+  // Pull a radiographic sign from the urgent-care radiograph line only when it
+  // references this tooth (or there's a single tooth in play).
+  const rg = (findings["radiograph findings"] || "").toLowerCase();
+  const refsTooth = num && new RegExp("#?\\b" + num + "\\b").test(rg);
+  let radiograph = "";
+  if (refsTooth || count === 1) {
+    if (/radiolucen/.test(rg)) radiograph = "radiolucency";
+    else if (/widen/.test(rg)) radiograph = "widened-pdl";
+    else if (/condens|sclerot|radiopa/.test(rg)) radiograph = "condensing";
+  }
+  const sp = findings["spontaneous pain"];
+  return computeEndoDx({
+    cold: endoCold(findings["endo" + row + " cold"]),
+    percussion: endoPP(findings["endo" + row + " perc"]),
+    palpation: endoPP(findings["endo" + row + " palp"]),
+    spontaneousPain: sp === "Yes" ? "yes" : sp === "No" ? "no" : "",
+    radiograph, ept: "", pulpHistory: "", sinusTract: "", swelling: "",
+  });
+}
+// Engine labels are Title Case ("Symptomatic Irreversible Pulpitis"); the
+// urgent-care dropdowns are sentence case. Match case-insensitively, ignoring
+// any "(uncertain …)" qualifier the engine appends.
+function matchEndoOption(options, label) {
+  if (!label) return "";
+  const base = label.replace(/\s*\(.*\)\s*$/, "").trim().toLowerCase();
+  return options.find(o => o.toLowerCase() === base) || "";
+}
+// The suggestion card shown under each urgent-care diagnosis row.
+function endoRecBlock(prefix, findings, setFindings, PULPAL, PERIAPICAL) {
+  const rec = endoRecForTooth(findings[prefix + " tooth"], findings);
+  if (!rec || (!rec.pulpal && !rec.periapical)) return null;
+  const recPulpal = matchEndoOption(PULPAL, rec.pulpal);
+  const recPeriap = matchEndoOption(PERIAPICAL, rec.periapical);
+  const applied = (!recPulpal || findings[prefix + " pulpal"] === recPulpal)
+    && (!recPeriap || findings[prefix + " periapical"] === recPeriap);
+  return (
+    <div style={{ marginTop: "7px", padding: "8px 10px", background: "var(--paper-soft)",
+      borderLeft: "3px solid var(--gold)", borderRadius: "2px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+        <span style={{ fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase",
+          color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif" }}>Suggested</span>
+        <span style={{ fontFamily: "'Fraunces', serif", fontSize: "13px", color: "var(--ink)" }}>
+          {[rec.pulpal, rec.periapical].filter(Boolean).join(" · ")}
+        </span>
+        {(recPulpal || recPeriap) && (applied
+          ? <span style={{ marginLeft: "auto", fontSize: "10px", color: "var(--teal)",
+              fontFamily: "'Geist', sans-serif" }}>✓ applied</span>
+          : <button type="button"
+              onClick={() => setFindings({ ...findings,
+                ...(recPulpal ? { [prefix + " pulpal"]: recPulpal } : {}),
+                ...(recPeriap ? { [prefix + " periapical"]: recPeriap } : {}) })}
+              style={{ marginLeft: "auto", fontSize: "11px", color: "var(--accent)",
+                background: "none", border: "1px solid var(--rule)", borderRadius: "2px",
+                padding: "3px 9px", cursor: "pointer", fontFamily: "'Geist', sans-serif" }}>
+              Apply
+            </button>)}
+      </div>
+      <div style={{ fontSize: "11px", color: "var(--ink-soft)", lineHeight: 1.45,
+        fontFamily: "'Geist', sans-serif", marginTop: "5px" }}>
+        {[rec.pulpalRationale, rec.periapicalRationale].filter(Boolean).join(" ")}
+      </div>
+      {rec.flags && rec.flags.map((f, fi) => (
+        <div key={fi} style={{ fontSize: "11px", color: "var(--ink)", marginTop: "5px",
+          fontFamily: "'Geist', sans-serif", lineHeight: 1.4 }}>⚠ {f}</div>
+      ))}
+    </div>
+  );
+}
 
 // Turn the structured endo-test selections into a readable note line — the
 // justifying workup that has to accompany the diagnosis. Negatives are kept
@@ -33291,4 +33391,4 @@ export default function App() {
 // renderTemplate is pure — (template string, fields) -> note string — so it can
 // be unit-tested with no React/DOM. TEMPLATES maps procedure id -> template;
 // DEFAULT_FIELDS is the baseline field object the UI starts from.
-export { renderTemplate, TEMPLATES, DEFAULT_FIELDS, noteTripwire, cleanProseText, CHUNKS, computePerioCOEDx, computeEndoDx };
+export { renderTemplate, TEMPLATES, DEFAULT_FIELDS, noteTripwire, cleanProseText, CHUNKS, computePerioCOEDx, computeEndoDx, formatEndoTests, endoCold, endoPP, endoRecForTooth, matchEndoOption };

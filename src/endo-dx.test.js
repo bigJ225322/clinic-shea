@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { computeEndoDx } from "./App.jsx";
+import { computeEndoDx, endoCold, endoPP, endoRecForTooth, matchEndoOption } from "./App.jsx";
 
 // Endodontic diagnosis engine — verifies the two-axis (pulpal + periapical)
 // AAE diagnosis against standard textbook scenarios. The engine is decision
@@ -137,5 +137,56 @@ describe("Incomplete inputs", () => {
 
   it("Handles undefined inputs object without throwing", () => {
     expect(() => computeEndoDx(undefined)).not.toThrow();
+  });
+});
+
+describe("Urgent-care input mapping (free-text → engine)", () => {
+  it("Cold test parsing", () => {
+    expect(endoCold("NR")).toBe("none");
+    expect(endoCold("-")).toBe("none");
+    expect(endoCold("2/2s")).toBe("wnl");      // quick resolution
+    expect(endoCold("2/20s")).toBe("lingering"); // lingers ~18s
+    expect(endoCold("lingers")).toBe("lingering");
+    expect(endoCold("3")).toBe("wnl");
+    expect(endoCold("")).toBe("");
+  });
+
+  it("Percussion/palpation symbol mapping", () => {
+    expect(endoPP("-")).toBe("neg");
+    expect(endoPP("+")).toBe("pos");
+    expect(endoPP("+++")).toBe("pos");
+    expect(endoPP("")).toBe("");
+  });
+
+  it("matchEndoOption maps engine Title Case → sentence-case dropdown option", () => {
+    const PULPAL = ["", "Normal pulp", "Symptomatic irreversible pulpitis", "Pulp necrosis"];
+    expect(matchEndoOption(PULPAL, "Symptomatic Irreversible Pulpitis")).toBe("Symptomatic irreversible pulpitis");
+    expect(matchEndoOption(PULPAL, "Pulp Necrosis (uncertain — vitality signals conflict)")).toBe("Pulp necrosis");
+    expect(matchEndoOption(PULPAL, "")).toBe("");
+  });
+
+  it("endoRecForTooth — lingering cold + percussion + spontaneous pain → SIP + symptomatic AP", () => {
+    const f = {
+      "endo count": 1, "endo1 #": "#8", "endo1 cold": "2/20s", "endo1 perc": "++", "endo1 palp": "-",
+      "spontaneous pain": "Yes", "radiograph findings": "",
+    };
+    const rec = endoRecForTooth("#8", f);
+    expect(rec.pulpal).toBe("Symptomatic Irreversible Pulpitis");
+    expect(rec.periapical).toBe("Symptomatic Apical Periodontitis");
+  });
+
+  it("endoRecForTooth — necrosis + PARL on the named tooth → necrosis + asymptomatic AP", () => {
+    const f = {
+      "endo count": 1, "endo1 #": "#14", "endo1 cold": "NR", "endo1 perc": "-", "endo1 palp": "-",
+      "spontaneous pain": "No", "radiograph findings": "periapical radiolucency on #14",
+    };
+    const rec = endoRecForTooth("#14", f);
+    expect(rec.pulpal).toBe("Pulp Necrosis");
+    expect(rec.periapical).toBe("Asymptomatic Apical Periodontitis");
+  });
+
+  it("endoRecForTooth — no matching test row (multi-tooth) returns null", () => {
+    const f = { "endo count": 2, "endo1 #": "#3", "endo2 #": "#4", "endo1 cold": "NR" };
+    expect(endoRecForTooth("#19", f)).toBe(null);
   });
 });
