@@ -11432,24 +11432,53 @@ const ENDO_DX_FIELDS = [
   { k: "Swell", label: "Swelling", opts: [["", "—"], ["none", "None"], ["localized", "Localized"], ["diffuse", "Diffuse / cellulitis"]] },
 ];
 
+// Turn the structured endo-test selections into a readable note line — the
+// justifying workup that has to accompany the diagnosis. Negatives are kept
+// (percussion −, no spontaneous pain) because a recorded negative IS the
+// exam. Blank (unselected) fields are omitted.
+function formatEndoTests(t) {
+  const parts = [];
+  const COLD = { wnl: "cold WNL", exaggerated: "cold exaggerated (non-lingering)", lingering: "cold lingering", none: "cold no response" };
+  const RADIO = { normal: "PA WNL", "widened-pdl": "widened apical PDL", radiolucency: "periapical radiolucency", condensing: "condensing osteitis (radiopaque)" };
+  const SWELL = { none: "no swelling", localized: "localized swelling", diffuse: "diffuse swelling" };
+  const HIST = { "carious-exposure": "carious pulp exposure", "previously-treated": "previously treated (RCT)", "previously-initiated": "previously initiated therapy" };
+  if (t.cold) parts.push(COLD[t.cold]);
+  if (t.ept) parts.push(t.ept === "responds" ? "EPT responsive" : "EPT no response");
+  if (t.spontaneousPain) parts.push(t.spontaneousPain === "yes" ? "spontaneous pain present" : "no spontaneous pain");
+  if (t.percussion) parts.push("percussion " + (t.percussion === "pos" ? "+" : "−"));
+  if (t.palpation) parts.push("palpation " + (t.palpation === "pos" ? "+" : "−"));
+  if (t.radiograph) parts.push(RADIO[t.radiograph]);
+  if (t.sinusTract) parts.push(t.sinusTract === "yes" ? "sinus tract present" : "no sinus tract");
+  if (t.swelling) parts.push(SWELL[t.swelling]);
+  if (t.pulpHistory && HIST[t.pulpHistory]) parts.push(HIST[t.pulpHistory]);
+  return parts.join(", ");
+}
+
 function EndoDxForm({ fields, setField, findings, applyToFindings }) {
   const g = (k) => fields["endoDx" + k] || "";
-  const dx = computeEndoDx({
+  const tests = {
     cold: g("Cold"), ept: g("EPT"), spontaneousPain: g("Spont"),
     pulpHistory: g("History"), percussion: g("Perc"), palpation: g("Palp"),
     radiograph: g("Radio"), sinusTract: g("Sinus"), swelling: g("Swell"),
-  });
+  };
+  const dx = computeEndoDx(tests);
   const sendOn = !!fields.endoDxSendToNote;
 
-  // Send to note — populate the structured "pulpal diagnosis" field with the
-  // two-axis call; re-syncs whenever the diagnosis changes while the box is on.
+  // Send to note — write BOTH the justifying tests (→ "endo testing") and the
+  // two-axis diagnosis (→ "pulpal diagnosis"). You'd never record the
+  // diagnosis without the tests that justify it, so the panel populates both,
+  // re-syncing whenever inputs change while the box is on.
+  const testLine = formatEndoTests(tests);
+  const dxLine = !dx.incomplete ? [dx.pulpal, dx.periapical].filter(Boolean).join("; ") : "";
   useEffect(() => {
-    if (sendOn && applyToFindings && !dx.incomplete) {
-      const text = [dx.pulpal, dx.periapical].filter(Boolean).join("; ");
-      if (text) applyToFindings({ "pulpal diagnosis": text });
+    if (sendOn && applyToFindings) {
+      const updates = {};
+      if (testLine) updates["endo testing"] = testLine;
+      if (dxLine) updates["pulpal diagnosis"] = dxLine;
+      if (Object.keys(updates).length) applyToFindings(updates);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sendOn, dx.pulpal, dx.periapical, dx.incomplete]);
+  }, [sendOn, testLine, dxLine]);
 
   const chip = (label, value, color) => (
     <div style={{ flex: 1, minWidth: 0 }}>
@@ -11516,7 +11545,7 @@ function EndoDxForm({ fields, setField, findings, applyToFindings }) {
           fontSize: "12px", color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif", cursor: "pointer" }}>
           <input type="checkbox" checked={sendOn}
             onChange={e => setField("endoDxSendToNote", e.target.checked)} />
-          Send diagnosis to the note&apos;s pulpal-diagnosis line
+          Send tests + diagnosis to the note
         </label>
       )}
     </div>
