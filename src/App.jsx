@@ -13691,7 +13691,10 @@ function Browse({
  // ── Navigation dropdowns (category / group) ─────────────────────────
  const initial = useMemo(() => {
  const proc = findProcedure(selectedProcedureId);
- if (proc) return { categoryId: proc.categoryId, groupId: proc.groupId };
+ // Only adopt the parent's procedure if it's actually browsable here. OS /
+ // ICC notes aren't in the Steps browser, so selecting one in the Note tab
+ // must not drag this tab into a category that doesn't exist.
+ if (proc && BROWSE_CATEGORIES.some(c => c.id === proc.categoryId)) return { categoryId: proc.categoryId, groupId: proc.groupId };
  return { categoryId: BROWSE_CATEGORIES[0].id, groupId: BROWSE_CATEGORIES[0].groups[0].id };
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
@@ -13710,7 +13713,9 @@ function Browse({
  useEffect(() => {
  if (!selectedProcedureId || selectedProcedureId === slots[activeSlot]) return;
  const proc = findProcedure(selectedProcedureId);
- if (!proc) return;
+ // Ignore procedures that aren't part of the Steps browser (OS / ICC) —
+ // they have no steps here, so they must not hijack this tab.
+ if (!proc || !BROWSE_CATEGORIES.some(c => c.id === proc.categoryId)) return;
  setSlots(s => { const n = [...s]; n[activeSlot] = selectedProcedureId; return n; });
  setCategoryId(proc.categoryId);
  setGroupId(proc.groupId);
