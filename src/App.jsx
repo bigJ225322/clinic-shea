@@ -13723,8 +13723,13 @@ function Browse({
  jumpToId, onJumped,
 }) {
  // ── Session: ordered list of procedure IDs (null = empty slot) ──────
- const [slots, setSlots] = useState(() =>
- [selectedProcedureId || null]);
+ // Don't seed with a non-browsable procedure (OS / ICC) — the Steps tab
+ // has no content for those, so it would open on a blank slot.
+ const [slots, setSlots] = useState(() => {
+ const proc = findProcedure(selectedProcedureId);
+ const ok = proc && BROWSE_CATEGORIES.some(c => c.id === proc.categoryId);
+ return [ok ? selectedProcedureId : null];
+ });
  const [activeSlot, setActiveSlot] = useState(0);
 
  const activeProcId = slots[activeSlot]?? null;
@@ -14260,6 +14265,12 @@ function Browse({
 // a steps chunk as equipment and produce garbage items).
 function findChunkForProcedure(procedure, chunks, role, opts = {}) {
  if (!procedure) return null;
+ // Oral-surgery notes are stand-alone op-notes — no procedural-steps chunk
+ // and no code chunk. OS isn't in the category hard-filter below, so without
+ // this an OS procedure ("Extraction…") falls through and keyword-matches an
+ // unrelated chunk (the core-buildup steps), which then wrongly drove both
+ // the Steps article AND the note's suggested codes. Never resolve one.
+ if (procedure.categoryId === "os") return null;
  const noFallback = opts.noFallback === true;
  const text = `${procedure.groupLabel} ${procedure.label}`.toLowerCase();
  const keywords = text
