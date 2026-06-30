@@ -32779,6 +32779,12 @@ function ImplantBuilder() {
  const crestY = gingTop + tissuePx;                    // bone crest = implant platform
  const structY = crestY + boneHpx;
  const VBH = Math.round(structY + structBelow + 28);
+ // Maxillary teeth hang down: flip the whole assembly so the crown is at the
+ // bottom and the implant rises into the bone (sinus/nasal at the top). Shapes
+ // go in a flip group; each text gets a counter-flip so it stays upright.
+ const maxillary = (() => { const n = parseInt(f.site, 10); return n >= 1 && n <= 16; })();
+ const flipT = maxillary ? `matrix(1 0 0 -1 0 ${VBH})` : undefined;
+ const tflip = (ty) => (maxillary ? `matrix(1 0 0 -1 0 ${2 * ty})` : undefined);
  const apexY = crestY + lpx;
  const apexGap = hasImpl ? Math.max(0, bh - len) : null;
  const apexOK = apexGap == null || apexGap + 0.001 >= safety;
@@ -32870,6 +32876,7 @@ function ImplantBuilder() {
  <line x1="0" y1="0" x2="0" y2="6" stroke={GOLD} strokeWidth="1.2" opacity="0.6" />
  </pattern>
  </defs>
+ <g transform={flipT}>
 
  {/* air space below a sinus / nasal floor */}
  {isFloor && <rect x={boneL - 10} y={structY} width={bw + 20} height={VBH - structY - 4} fill={AIR} opacity="0.7" />}
@@ -32916,8 +32923,8 @@ function ImplantBuilder() {
  {tick(implR, apexY, bx + 4, apexY, col)}
  {tick(implR, structY, bx + 4, structY, col)}
  <line x1={bx} y1={apexY} x2={bx} y2={structY} stroke={col} strokeWidth="1" />
- <text x={bx + 6} y={mid - 3} fontFamily="'Geist', sans-serif" fontSize="10.5" fontWeight="600" fill={col}>{apexGap.toFixed(apexGap % 1 ? 1 : 0)} mm</text>
- <text x={bx + 6} y={mid + 9} fontFamily="'Geist', sans-serif" fontSize="9" fill="var(--ink-soft)">to {structShort}</text>
+ <text x={bx + 6} y={mid - 3} transform={tflip(mid - 3)} fontFamily="'Geist', sans-serif" fontSize="10.5" fontWeight="600" fill={col}>{apexGap.toFixed(apexGap % 1 ? 1 : 0)} mm</text>
+ <text x={bx + 6} y={mid + 9} transform={tflip(mid + 9)} fontFamily="'Geist', sans-serif" fontSize="9" fill="var(--ink-soft)">to {structShort}</text>
  </g>;
  })()}
 
@@ -32928,7 +32935,7 @@ function ImplantBuilder() {
  {tick(hx - 4, crestY, boneL, crestY, col)}
  {tick(hx - 4, structY, boneL, structY, col)}
  <line x1={hx} y1={crestY} x2={hx} y2={structY} stroke={col} strokeWidth="1" />
- <text x={hx - 5} y={(crestY + structY) / 2} fontFamily="'Geist', sans-serif" fontSize="10.5" fill="var(--ink)" textAnchor="middle" transform={`rotate(-90 ${hx - 5} ${(crestY + structY) / 2})`}>{bh} mm bone</text>
+ <text x={hx - 5} y={(crestY + structY) / 2} fontFamily="'Geist', sans-serif" fontSize="10.5" fill="var(--ink)" textAnchor="middle" transform={`${maxillary ? `matrix(1 0 0 -1 0 ${crestY + structY}) ` : ""}rotate(-90 ${hx - 5} ${(crestY + structY) / 2})`}>{bh} mm bone</text>
  </g>;
  })()}
 
@@ -32939,12 +32946,13 @@ function ImplantBuilder() {
  {tick(boneL, wy - 4, boneL, structY + (isNerve ? 2 * nerveR + 4 : 14), col)}
  {tick(boneR, wy - 4, boneR, structY + (isNerve ? 2 * nerveR + 4 : 14), col)}
  <line x1={boneL} y1={wy} x2={boneR} y2={wy} stroke={col} strokeWidth="1" />
- <text x={cx} y={wy - 4} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="10.5" fontWeight={breach ? 700 : 400} fill={breach ? RED : "var(--ink)"}>{rw} mm ridge{breach ? " — too narrow" : ""}</text>
+ <text x={cx} y={wy - 4} transform={tflip(wy - 4)} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="10.5" fontWeight={breach ? 700 : 400} fill={breach ? RED : "var(--ink)"}>{rw} mm ridge{breach ? " — too narrow" : ""}</text>
  </g>;
  })()}
 
  {/* fixture size caption */}
- {showFixture && <text x={cx} y={crownTop - 4} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize="11" fontWeight="600" fill={feasC}>⌀{dia} × {len} mm</text>}
+ {showFixture && <text x={cx} y={crownTop - 4} transform={tflip(crownTop - 4)} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize="11" fontWeight="600" fill={feasC}>⌀{dia} × {len} mm</text>}
+ </g>
  </svg>
  );
  })();
