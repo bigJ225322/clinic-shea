@@ -33138,7 +33138,7 @@ const TABS = [
  { id: "reqs", label: "Reqs", hint: "RVU progress & performance exams" },
  // RPD — design helper for removable partial dentures.
  { id: "helpers", label: "RPD", hint: "Design helper for removable partial dentures" },
- { id: "implant", label: "Implant", hint: "Single-tooth implant placement planner" },
+ { id: "implant", label: "IPP", hint: "Single-tooth implant placement planner" },
  { id: "napoleon", label: "Loupes", hint: "Look closely" },
 ];
 
