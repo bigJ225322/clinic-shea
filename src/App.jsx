@@ -2377,20 +2377,20 @@ const CATEGORIES = [
  ]},
  { id: "lab", label: "Lab Scripts", groups: [
  { id: "lab-fixed", label: "Fixed & Implant", procedures: [
- { id: "lab-pfm", label: "PFM Crown" },
+ { id: "lab-pfm", label: "PFM Crown", supplementalMaterials: ["Impression(s)", "Master cast", "Mounted on Denar 320", "Opposing cast"] },
  { id: "lab-implant-cast", label: "Implant — Working Cast" },
  { id: "lab-abutment", label: "Implant — Custom Abutment" },
  { id: "lab-implant-crown", label: "Implant — Crown" },
  { id: "lab-bridge-cast", label: "Bridge — Working Cast" },
- { id: "lab-bridge", label: "Bridge" },
- { id: "lab-porcelain", label: "Bridge — Add Porcelain to Framework" },
+ { id: "lab-bridge", label: "Bridge", supplementalMaterials: ["Pindexed master cast", "Opposing cast", "Mounted on Denar 320", "Cross-mounted provisional cast (if applicable)", "Custom incisal guide table (if applicable)"] },
+ { id: "lab-porcelain", label: "Bridge — Add Porcelain to Framework", supplementalMaterials: ["Metal framework (returned)", "Clinical photos (shade + contour)"] },
  { id: "lab-og", label: "Occlusal Guard" },
  ]},
  { id: "lab-removable", label: "Removable", procedures: [
- { id: "lab-ff", label: "Complete Dentures" },
+ { id: "lab-ff", label: "Complete Dentures", supplementalMaterials: ["Maxillary + mandibular trial dentures", "Master casts", "Articulator (dentures mounted)", "Remount table", "Written prescription"] },
  { id: "lab-ii-denture", label: "Interim Immediate Dentures" },
  { id: "lab-reline", label: "Lab Reline" },
- { id: "lab-rpd", label: "Partial Dentures (RPD)" },
+ { id: "lab-rpd", label: "Partial Dentures (RPD)", supplementalMaterials: ["Master cast", "Opposing cast", "Mounted on Denar 320", "Design cast"] },
  { id: "lab-survey-crown", label: "Survey Crown (for RPD abutment)" },
  { id: "lab-ii-rpd", label: "Interim Immediate Partial" },
  ]},
@@ -2519,6 +2519,7 @@ function getAllProcedures() {
  groupLabel: grp.label,
  breadcrumb: `${cat.label} → ${grp.label} → ${proc.label}`,
 ...(proc.pinnedCodes && { pinnedCodes: proc.pinnedCodes }),
+...(proc.supplementalMaterials && { supplementalMaterials: proc.supplementalMaterials }),
  });
  }
  }
@@ -13486,6 +13487,26 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  {(() => {
  const proc = findProcedure(procedureId);
  if (!proc) return null;
+ // Lab scripts: list the supplemental materials to send WITH the order
+ // (no CDT codes — a lab order isn't a procedure note). Lab scripts without
+ // a list fall through and render nothing.
+ if (proc.supplementalMaterials) {
+ return (
+ <>
+ <div style={{ fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase",
+ color: "var(--accent)", fontWeight: 600, fontFamily: "'Geist', sans-serif", marginBottom: "9px" }}>
+ Supplemental materials
+ </div>
+ {proc.supplementalMaterials.map((m, i) => (
+ <div key={i} style={{ display: "flex", alignItems: "baseline", gap: "10px",
+ fontSize: "13px", lineHeight: 1.5, color: "var(--ink)", fontFamily: "'Geist', sans-serif" }}>
+ <span style={{ color: "var(--accent)", fontSize: "8px", flexShrink: 0, position: "relative", top: "-2px" }}>●</span>
+ <span>{m}</span>
+ </div>
+ ))}
+ </>
+ );
+ }
  const stepsChunk = findChunkForProcedure(proc, CHUNKS, "steps");
  if (!stepsChunk && !proc.pinnedCodes) return null; // ICC procs have pinnedCodes but no steps chunk
  const ef = fields.examFindings || {};
