@@ -33009,11 +33009,16 @@ function ImplantBuilder() {
  <div style={secLbl}>Site &amp; bone</div>
  <div style={grid2}>
  <Field label="Tooth">
- <Select value={f.site} onChange={v => set("site", v)}>
- <option value="">—</option>
- <optgroup label="Maxillary">{Array.from({ length: 16 }, (_, i) => i + 1).map(n => <option key={n} value={n}>#{n}</option>)}</optgroup>
- <optgroup label="Mandibular">{Array.from({ length: 16 }, (_, i) => i + 17).map(n => <option key={n} value={n}>#{n}</option>)}</optgroup>
- </Select>
+ <TeethSelectorPanel
+ value={f.site ? "#" + f.site : ""}
+ placeholder="select tooth"
+ onChange={(v) => {
+ const nums = (v.match(/\d+/g) || []).map(Number).filter(n => n >= 1 && n <= 32);
+ const prev = parseInt(f.site, 10);
+ const picked = nums.find(n => n !== prev);
+ set("site", picked != null ? String(picked) : (nums.length ? String(nums[0]) : ""));
+ }}
+ />
  </Field>
  <Field label="MD (mm)"><TextInput value={f.mdSpace} onChange={num("mdSpace")} placeholder="8" /></Field>
  <Field label="Ridge W (mm)"><TextInput value={f.ridgeWidth} onChange={num("ridgeWidth")} placeholder="7" /></Field>
@@ -33444,6 +33449,9 @@ function NapoleonTab({ imgIdx }) {
 
 export default function App() {
  const [tab, setTab] = useState("note");
+ // IPP (implant planner) is a work-in-progress — hidden on the live production
+ // build, visible in local dev / preview, and unlockable on live with ?ipp.
+ const showIPP = import.meta.env.DEV || (typeof window !== "undefined" && new URLSearchParams(window.location.search).has("ipp"));
  // Maps homing: re-clicking the active Maps tab (or the circled-arrow cue
  // that hangs below it while a map is open) returns the Maps view to its
  // landing grid. The signal increments per request; mapOpen mirrors whether
@@ -33920,7 +33928,7 @@ export default function App() {
  borderBottom: "1px solid var(--rule)",
  display: "flex", flexWrap: "wrap",
  }}>
- {TABS.map((t) => (
+ {TABS.filter(t => t.id !== "implant" || showIPP).map((t) => (
  <button key={t.id}
  className={`tab-button ${tab === t.id? "active": ""}${t.id === "napoleon" ? " loupes-tab" : ""}`}
  aria-label={t.id === "napoleon" ? "Loupes" : undefined}
@@ -34003,7 +34011,7 @@ export default function App() {
  {tab === "pathways" && <Pathways homeSignal={mapsHomeSignal} onOpenChange={setMapOpen} />}
  {tab === "reqs" && <Reqs onShowSteps={handleShowSteps} />}
  {tab === "helpers" && <RPDHelper />}
- {tab === "implant" && <ImplantBuilder />}
+ {showIPP && tab === "implant" && <ImplantBuilder />}
  </main>
  )}
  </div>
