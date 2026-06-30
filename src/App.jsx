@@ -32652,6 +32652,26 @@ const TOOTH_DIMS = {
  25: { bl: 6, ht: 9 }, 26: { bl: 6.5, ht: 9.5 }, 27: { bl: 7.5, ht: 11 }, 28: { bl: 7.5, ht: 8.5 }, 29: { bl: 8, ht: 8 }, 30: { bl: 10.5, ht: 7.5 }, 31: { bl: 10, ht: 7 }, 32: { bl: 9.5, ht: 6.5 },
 };
 
+// The implant's full sequence, in order — what the component toggle steps
+// through. Each stage carries its purpose + key dimensions (drawn to scale).
+const IMPLANT_COMPONENTS = [
+ { key: "ridge", label: "Edentulous ridge", material: "—",
+ purpose: "The healed site before surgery — the bone ridge and gum where the tooth was. The osteotomy (pilot + sequential drills) is prepared here, then the fixture placed.",
+ dims: "What you assess: ridge width, bone height to the nerve / sinus, and keratinized tissue." },
+ { key: "cover", label: "Cover screw", material: "Titanium",
+ purpose: "The fixture itself is a threaded titanium screw. A cover screw caps it during first-stage (submerged) healing while it osseointegrates; the gum is sutured closed over it.",
+ dims: "Cover screw ~0.9 mm tall, seats flush on the 4 mm platform. Fixture ⌀ and length come from the plan." },
+ { key: "healing", label: "Healing abutment", material: "Titanium",
+ purpose: "Placed at second-stage uncovery (~3 months) to penetrate the gum and shape the peri-implant soft tissue before the impression.",
+ dims: "Emerges ~2 mm above the soft-tissue crest; diameter ≈ the platform / desired emergence." },
+ { key: "abutment", label: "Custom abutment", material: "Titanium (Atlantis, gold-shaded)",
+ purpose: "The definitive milled connection the crown seats on; its finish line and emergence profile shape the gingival contour.",
+ dims: "Finish line at the tissue margin; ~5–6 mm prep above it; screw-retained into the fixture and torqued." },
+ { key: "crown", label: "Crown", material: "All-ceramic (e.max) or PFM",
+ purpose: "The final cement-retained restoration, seated over the abutment with its margin at the finish line.",
+ dims: "Bucco-lingual width × cervico-occlusal height = the tooth's natural crown dimensions (Wheeler's)." },
+];
+
 // ── Implant placement builder — the UI skin over computeImplantPlan. Same
 // shape as the RPD helper: structured site/host inputs on the left, a live
 // verdict-first plan with per-line evidence on the right. Decision support. ──
@@ -32704,7 +32724,7 @@ function ImplantBuilder() {
 
  const crossSection = (() => {
  const PX = 12, VBW = 320, cx = 160; // 12 px per mm — EVERY element is drawn at this scale
- const BONE = "#e7d9bd", BONE_E = "#c9b893", GUM = "#c79c97", GUM_E = "#a87b76", ENAMEL = "#f4efe7", ENAMEL_E = "#d2c6ae";
+ const BONE = "#e7d9bd", BONE_E = "#c9b893", BONE_LT = "#f1ead6", GUM = "#c79c97", GUM_E = "#a87b76", ENAMEL = "#f4efe7", ENAMEL_E = "#d2c6ae";
  const TITAN = "#b9bdc4", TITAN_E = "#878d97", ABUT = "#cbbd93", ABUT_E = "#9c8a57"; // ABUT = gold-shaded titanium (Atlantis)
  const NERVE = "#edcf83", NERVE_E = "#caa43e", AIR = "#eef2f5", AIR_E = "#b7c3cc";
  const GREEN = "var(--teal)", RED = "var(--accent)", GOLD = "var(--gold)";
@@ -32767,13 +32787,15 @@ function ImplantBuilder() {
  // and how the gingiva drapes changes. No fixture (stage/refer) → ridge mucosa.
  const comp = hasImpl ? (f.component || "crown") : "cover";
  const isAnt = (() => { const n = parseInt(f.site, 10); return (n >= 6 && n <= 11) || (n >= 22 && n <= 27); })();
+ const showFixture = hasImpl && comp !== "ridge"; // "ridge" = pre-placement (no implant yet)
  const supra = (() => {
  const margY = gingTop, crH = crownPx;                  // tissue/crown margin; crown height (to scale)
  const collar = (w) => <ellipse cx={cx} cy={margY} rx={w / 2 + 1.5} ry="3" fill={GUM_E} />;
  const gingivaBand = <path d={`M ${boneL - 3},${crestY} Q ${boneL - 3},${margY} ${boneL + 5},${margY} L ${boneR - 5},${margY} Q ${boneR + 3},${margY} ${boneR + 3},${crestY} Z`} fill={GUM} />;
  const domeD = `M ${boneL - 3},${crestY} C ${boneL - 1},${margY - 2} ${cx - 14},${margY - 4} ${cx},${margY - 4} C ${cx + 14},${margY - 4} ${boneR + 1},${margY - 2} ${boneR + 3},${crestY} Z`;
 
- if (!hasImpl) return <path d={domeD} fill={GUM} stroke={GUM_E} strokeWidth="0.7" />;
+ // pre-placement (edentulous ridge) or no placeable fixture → closed ridge mucosa
+ if (comp === "ridge" || !hasImpl) return <path d={domeD} fill={GUM} stroke={GUM_E} strokeWidth="0.7" />;
 
  // 1 — cover screw (~0.9 mm), tissue closed over it (1st-stage, submerged)
  if (comp === "cover") {
@@ -32845,9 +32867,10 @@ function ImplantBuilder() {
  {/* sinus-lift graft pocket above the floor */}
  {showLift && <rect x={boneL + 2} y={Math.max(crestY + 4, structY - 3 * PX)} width={bw - 4} height={structY - Math.max(crestY + 4, structY - 3 * PX)} fill="url(#graft)" />}
 
- {/* fixture in bone */}
- {hasImpl ? (
+ {/* fixture in bone — pale-bone halo behind it shows the implant is lodged in bone */}
+ {showFixture ? (
  <g>
+ <path d={`M ${implL - 4},${crestY - 3} L ${implR + 4},${crestY - 3} L ${implR + 4},${apexY - 6} Q ${implR + 4},${apexY + 5} ${cx},${apexY + 5} Q ${implL - 4},${apexY + 5} ${implL - 4},${apexY - 6} Z`} fill={BONE_LT} />
  <rect x={implL - 2} y={crestY - 2} width={dpx + 4} height="4" rx="1.5" fill={feasC} />
  <path d={`M ${implL},${crestY} L ${implR},${crestY} L ${implR},${apexY - 7} Q ${implR},${apexY} ${cx},${apexY} Q ${implL},${apexY} ${implL},${apexY - 7} Z`} fill={feasC} fillOpacity="0.82" stroke={breach ? RED : feasC} strokeWidth={breach ? 2 : 1.2} />
  {Array.from({ length: Math.max(2, Math.floor(lpx / 11)) }, (_, i) => {
@@ -32855,7 +32878,7 @@ function ImplantBuilder() {
  return y < apexY - 8 ? <line key={i} x1={implL + 1.5} y1={y} x2={implR - 1.5} y2={y} stroke="var(--paper)" strokeWidth="1" opacity="0.45" /> : null;
  })}
  </g>
- ) : (
+ ) : comp === "ridge" ? null : (
  <path d={`M ${implL},${crestY} L ${implR},${crestY} L ${implR},${apexY - 7} Q ${implR},${apexY} ${cx},${apexY} Q ${implL},${apexY} ${implL},${apexY - 7} Z`} fill="none" stroke={feasC} strokeWidth="1.4" strokeDasharray="4 4" opacity="0.8" />
  )}
 
@@ -32870,7 +32893,7 @@ function ImplantBuilder() {
  {isFloor && <path d={`M ${boneL - 10},${structY} q ${bw / 4},5 ${bw / 2},0 t ${bw / 2},0 l 10,0`} fill="none" stroke={AIR_E} strokeWidth="1.5" />}
 
  {/* apex clearance bracket (right of fixture) */}
- {hasImpl && apexGap != null && (() => {
+ {showFixture && apexGap != null && (() => {
  const bx = implR + 13, mid = (apexY + structY) / 2, col = apexOK ? GREEN : RED;
  return <g>
  {tick(implR, apexY, bx + 4, apexY, col)}
@@ -32904,7 +32927,7 @@ function ImplantBuilder() {
  })()}
 
  {/* fixture size caption */}
- {hasImpl && <text x={cx} y={crownTop - 4} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize="11" fontWeight="600" fill={feasC}>⌀{dia} × {len} mm</text>}
+ {showFixture && <text x={cx} y={crownTop - 4} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize="11" fontWeight="600" fill={feasC}>⌀{dia} × {len} mm</text>}
  </svg>
  );
  })();
@@ -32983,22 +33006,37 @@ function ImplantBuilder() {
  {/* the visual, enlarged — with the restorative-component toggle */}
  <div style={{ ...card, padding: "18px", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "16px" }}>
  {crossSection}
- <div style={{ display: "flex", gap: "3px", marginTop: "16px", border: "1px solid var(--rule)", borderRadius: "8px", padding: "3px", width: "100%", maxWidth: "440px", opacity: restorable ? 1 : 0.4 }}>
- {[["cover", "Cover screw"], ["healing", "Healing abutment"], ["abutment", "Custom abutment"], ["crown", "Crown"]].map(([k, lbl]) => (
- <button key={k} disabled={!restorable} onClick={() => restorable && set("component", k)} style={{
- flex: 1, padding: "7px 4px", fontSize: "11px", fontFamily: "'Geist', sans-serif",
- fontWeight: f.component === k ? 700 : 500, letterSpacing: "0.02em",
- color: f.component === k ? "var(--paper)" : "var(--ink-soft)",
- background: f.component === k ? "var(--accent)" : "transparent",
+ <div style={{ display: "flex", gap: "3px", marginTop: "16px", border: "1px solid var(--rule)", borderRadius: "8px", padding: "3px", width: "100%", maxWidth: "560px", opacity: restorable ? 1 : 0.4 }}>
+ {IMPLANT_COMPONENTS.map(({ key, label }) => {
+ const on = (f.component || "crown") === key;
+ return (
+ <button key={key} disabled={!restorable} onClick={() => restorable && set("component", key)} style={{
+ flex: 1, padding: "7px 3px", fontSize: "10px", fontFamily: "'Geist', sans-serif", lineHeight: 1.15,
+ fontWeight: on ? 700 : 500, letterSpacing: "0.01em",
+ color: on ? "var(--paper)" : "var(--ink-soft)",
+ background: on ? "var(--accent)" : "transparent",
  border: "none", borderRadius: "5px", cursor: restorable ? "pointer" : "default", transition: "background 0.12s, color 0.12s",
- }}>{lbl}</button>
- ))}
+ }}>{label}</button>
+ );
+ })}
  </div>
+ {restorable ? (() => {
+ const info = IMPLANT_COMPONENTS.find(c => c.key === (f.component || "crown")) || IMPLANT_COMPONENTS[4];
+ return (
+ <div style={{ width: "100%", maxWidth: "560px", marginTop: "10px", padding: "11px 13px", border: "1px solid var(--rule)", borderRadius: "6px", fontFamily: "'Geist', sans-serif", textAlign: "left" }}>
+ <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "10px", marginBottom: "5px" }}>
+ <span style={{ fontSize: "12.5px", fontWeight: 700, color: "var(--ink)" }}>{info.label}</span>
+ {info.material !== "—" && <span style={{ fontSize: "9.5px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--ink-faint)", whiteSpace: "nowrap" }}>{info.material}</span>}
+ </div>
+ <div style={{ fontSize: "11.5px", color: "var(--ink-soft)", lineHeight: 1.5, marginBottom: "6px" }}>{info.purpose}</div>
+ <div style={{ fontSize: "11px", color: "var(--ink-faint)", lineHeight: 1.45 }}><span style={{ fontWeight: 600, color: "var(--ink-soft)" }}>Dimensions · </span>{info.dims}</div>
+ </div>
+ );
+ })() : (
  <div style={{ fontSize: "10px", color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginTop: "8px", letterSpacing: "0.03em", textAlign: "center", maxWidth: "440px" }}>
- {restorable
- ? "UIC sequence: cover screw → healing abutment → custom abutment → cement-retained crown"
- : "No fixture is placeable yet — augment or stage this site first, then the restorative views apply."}
+ No fixture is placeable yet — augment or stage this site first, then the restorative views apply.
  </div>
+ )}
  </div>
 
  {/* implant detail — fixture spec sheet (uses the drawn plan, so a medical hold still shows what the site would take) */}
