@@ -32641,6 +32641,17 @@ function PathwaySidebarTOC({ sections, activeIdx, collapsedSections, onToggle, o
 }
 
 
+// Crown dimensions per tooth (Wheeler's Dental Anatomy averages): bucco-lingual
+// crown width × cervico-occlusal crown height, in mm. The implant cross-section
+// is a bucco-lingual slice, so `bl` is the drawn width and `ht` the drawn height.
+// Used to draw the restoration to the same scale as the fixture/bone/tissue.
+const TOOTH_DIMS = {
+ 1: { bl: 10, ht: 6.5 }, 2: { bl: 11, ht: 7 }, 3: { bl: 11, ht: 7.5 }, 4: { bl: 9, ht: 8.5 }, 5: { bl: 9, ht: 8.5 }, 6: { bl: 8, ht: 10 }, 7: { bl: 6, ht: 9 }, 8: { bl: 7, ht: 10.5 },
+ 9: { bl: 7, ht: 10.5 }, 10: { bl: 6, ht: 9 }, 11: { bl: 8, ht: 10 }, 12: { bl: 9, ht: 8.5 }, 13: { bl: 9, ht: 8.5 }, 14: { bl: 11, ht: 7.5 }, 15: { bl: 11, ht: 7 }, 16: { bl: 10, ht: 6.5 },
+ 17: { bl: 9.5, ht: 6.5 }, 18: { bl: 10, ht: 7 }, 19: { bl: 10.5, ht: 7.5 }, 20: { bl: 8, ht: 8 }, 21: { bl: 7.5, ht: 8.5 }, 22: { bl: 7.5, ht: 11 }, 23: { bl: 6.5, ht: 9.5 }, 24: { bl: 6, ht: 9 },
+ 25: { bl: 6, ht: 9 }, 26: { bl: 6.5, ht: 9.5 }, 27: { bl: 7.5, ht: 11 }, 28: { bl: 7.5, ht: 8.5 }, 29: { bl: 8, ht: 8 }, 30: { bl: 10.5, ht: 7.5 }, 31: { bl: 10, ht: 7 }, 32: { bl: 9.5, ht: 6.5 },
+};
+
 // ── Implant placement builder — the UI skin over computeImplantPlan. Same
 // shape as the RPD helper: structured site/host inputs on the left, a live
 // verdict-first plan with per-line evidence on the right. Decision support. ──
@@ -32692,18 +32703,19 @@ function ImplantBuilder() {
  const drawable = rw > 0 && bh > 0 && !!plan.site;
 
  const crossSection = (() => {
- const PX = 12, VBW = 360, VBH = 330, cx = 170;
+ const PX = 12, VBW = 320, cx = 160; // 12 px per mm — EVERY element is drawn at this scale
  const BONE = "#e7d9bd", BONE_E = "#c9b893", GUM = "#c79c97", GUM_E = "#a87b76", ENAMEL = "#f4efe7", ENAMEL_E = "#d2c6ae";
  const TITAN = "#b9bdc4", TITAN_E = "#878d97", ABUT = "#cbbd93", ABUT_E = "#9c8a57"; // ABUT = gold-shaded titanium (Atlantis)
  const NERVE = "#edcf83", NERVE_E = "#caa43e", AIR = "#eef2f5", AIR_E = "#b7c3cc";
  const GREEN = "var(--teal)", RED = "var(--accent)", GOLD = "var(--gold)";
 
  if (!drawable) {
+ const PVH = 300;
  return (
- <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" style={{ maxWidth: "600px", display: "block" }} role="img">
- <rect x="1" y="1" width={VBW - 2} height={VBH - 2} rx="4" fill="none" stroke="var(--rule)" strokeDasharray="5 5" />
- <text x={cx} y={VBH / 2 - 6} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="13" fill="var(--ink-faint)">Enter a tooth, ridge width,</text>
- <text x={cx} y={VBH / 2 + 14} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="13" fill="var(--ink-faint)">and bone height to visualize.</text>
+ <svg viewBox={`0 0 ${VBW} ${PVH}`} width="100%" style={{ maxWidth: "440px", display: "block" }} role="img">
+ <rect x="1" y="1" width={VBW - 2} height={PVH - 2} rx="4" fill="none" stroke="var(--rule)" strokeDasharray="5 5" />
+ <text x={cx} y={PVH / 2 - 6} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="13" fill="var(--ink-faint)">Enter a tooth, ridge width,</text>
+ <text x={cx} y={PVH / 2 + 14} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="13" fill="var(--ink-faint)">and bone height to visualize.</text>
  </svg>
  );
  }
@@ -32723,25 +32735,30 @@ function ImplantBuilder() {
  const dDia = hasImpl ? dia : ghostDia, dLen = hasImpl ? len : ghostLen;
  const feasC = feas.color;
 
- const crownH = 46, gingH = 11;
+ const td = TOOTH_DIMS[parseInt(f.site, 10)] || { bl: 8, ht: 8.5 };
+ const tissueMm = 3;                                   // peri-implant mucosa [Berglundh & Lindhe 1996]
+ const crownPx = td.ht * PX, blPx = td.bl * PX, tissuePx = tissueMm * PX;
  const boneHpx = bh * PX;
- const topPad = Math.max(16, (VBH - (crownH + gingH + boneHpx) - 46) / 2);
- const crownTop = topPad, gingTop = crownTop + crownH, crestY = gingTop + gingH;
- const structY = crestY + boneHpx;
-
  const bw = rw * PX, boneL = cx - bw / 2, boneR = cx + bw / 2;
  const dpx = dDia * PX, lpx = dLen * PX, implL = cx - dpx / 2, implR = cx + dpx / 2;
+ const connW = Math.min(dpx, 4.5 * PX);                // platform / abutment connection (~4 mm)
+ const nerveR = Math.min(1.4 * PX, 17);
+ const structBelow = isNerve ? 2 * nerveR + 10 : 20;
+ const capH = 16, topPad = 14;
+ // Vertical stack, all to scale: caption | crown | 3 mm tissue | bone | structure
+ const crownTop = topPad + capH;
+ const gingTop = crownTop + crownPx;                   // tissue margin = crown margin
+ const crestY = gingTop + tissuePx;                    // bone crest = implant platform
+ const structY = crestY + boneHpx;
+ const VBH = Math.round(structY + structBelow + 28);
  const apexY = crestY + lpx;
  const apexGap = hasImpl ? Math.max(0, bh - len) : null;
  const apexOK = apexGap == null || apexGap + 0.001 >= safety;
- const breach = dpx > bw - 0.5; // fixture wider than the plates allow
- const crownW = Math.max(20, Math.min(bw * 0.9, dpx + 12));
+ const breach = dpx > bw - 0.5;                        // fixture wider than the plates allow
  const r = Math.min(7, bw / 2);
-
  const adj = (dplan.adjuncts || []).join(" ");
  const showGBR = /GBR|ridge split|ridge augmentation|graft/i.test(adj) && dplan.feasibility !== "place";
  const showLift = /sinus lift|sinus elevation|lateral-window/i.test(adj);
- const nerveR = Math.min(15, 1.3 * PX);
 
  const tick = (x1, y1, x2, y2, col) => <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={col} strokeWidth="1" />;
 
@@ -32751,65 +32768,63 @@ function ImplantBuilder() {
  const comp = hasImpl ? (f.component || "crown") : "cover";
  const isAnt = (() => { const n = parseInt(f.site, 10); return (n >= 6 && n <= 11) || (n >= 22 && n <= 27); })();
  const supra = (() => {
- const margY = gingTop, crH = margY - crownTop;          // tissue margin / finish-line level; crown height
- const connW = Math.max(dpx * 0.72, 11);                 // internal connection / platform width
+ const margY = gingTop, crH = crownPx;                  // tissue/crown margin; crown height (to scale)
  const collar = (w) => <ellipse cx={cx} cy={margY} rx={w / 2 + 1.5} ry="3" fill={GUM_E} />;
- const gingivaBand = <path d={`M ${boneL - 3},${crestY} Q ${boneL - 3},${margY} ${boneL + 4},${margY} L ${boneR - 4},${margY} Q ${boneR + 3},${margY} ${boneR + 3},${crestY} Z`} fill={GUM} />;
- const domeD = `M ${boneL - 3},${crestY} C ${boneL - 2},${margY - 9} ${cx - 13},${margY - 11} ${cx},${margY - 11} C ${cx + 13},${margY - 11} ${boneR + 2},${margY - 9} ${boneR + 3},${crestY} Z`;
+ const gingivaBand = <path d={`M ${boneL - 3},${crestY} Q ${boneL - 3},${margY} ${boneL + 5},${margY} L ${boneR - 5},${margY} Q ${boneR + 3},${margY} ${boneR + 3},${crestY} Z`} fill={GUM} />;
+ const domeD = `M ${boneL - 3},${crestY} C ${boneL - 1},${margY - 2} ${cx - 14},${margY - 4} ${cx},${margY - 4} C ${cx + 14},${margY - 4} ${boneR + 1},${margY - 2} ${boneR + 3},${crestY} Z`;
 
  if (!hasImpl) return <path d={domeD} fill={GUM} stroke={GUM_E} strokeWidth="0.7" />;
 
- // 1 — cover screw, tissue closed over it (1st-stage, submerged)
+ // 1 — cover screw (~0.9 mm), tissue closed over it (1st-stage, submerged)
  if (comp === "cover") {
  return <g>
- <rect x={cx - connW * 0.5} y={crestY - 5} width={connW} height="6" rx="1.5" fill={TITAN} stroke={TITAN_E} strokeWidth="0.8" />
- <path d={domeD} fill={GUM} fillOpacity="0.93" stroke={GUM_E} strokeWidth="0.7" />
- <line x1={cx} y1={margY - 10} x2={cx} y2={crestY - 4} stroke={GUM_E} strokeWidth="0.8" strokeDasharray="2 2" opacity="0.5" />
+ <rect x={cx - connW * 0.45} y={crestY - 0.9 * PX} width={connW * 0.9} height={0.9 * PX} rx="1.5" fill={TITAN} stroke={TITAN_E} strokeWidth="0.8" />
+ <path d={domeD} fill={GUM} fillOpacity="0.94" stroke={GUM_E} strokeWidth="0.7" />
+ <line x1={cx} y1={margY - 3} x2={cx} y2={crestY - 3} stroke={GUM_E} strokeWidth="0.8" strokeDasharray="2 2" opacity="0.5" />
  </g>;
  }
 
- // 2 — healing abutment, titanium, ~2 mm above the soft-tissue crest (2nd-stage)
+ // 2 — healing abutment, titanium, 2 mm above the soft-tissue crest (2nd-stage)
  if (comp === "healing") {
- const emW = connW + 3, topW = connW * 0.9, haTop = margY - 24;
+ const emW = connW + 4, topW = connW, haTop = margY - 2 * PX;
  return <g>
  {gingivaBand}
- <path d={`M ${cx - connW / 2},${crestY} Q ${cx - emW / 2},${margY} ${cx - emW / 2},${margY - 2} L ${cx - topW / 2},${haTop + 5} Q ${cx - topW / 2},${haTop} ${cx},${haTop} Q ${cx + topW / 2},${haTop} ${cx + topW / 2},${haTop + 5} L ${cx + emW / 2},${margY - 2} Q ${cx + emW / 2},${margY} ${cx + connW / 2},${crestY} Z`} fill={TITAN} stroke={TITAN_E} strokeWidth="1" />
+ <path d={`M ${cx - connW / 2},${crestY} Q ${cx - emW / 2},${margY} ${cx - emW / 2},${margY - 3} L ${cx - topW / 2},${haTop + 6} Q ${cx - topW / 2},${haTop} ${cx},${haTop} Q ${cx + topW / 2},${haTop} ${cx + topW / 2},${haTop + 6} L ${cx + emW / 2},${margY - 3} Q ${cx + emW / 2},${margY} ${cx + connW / 2},${crestY} Z`} fill={TITAN} stroke={TITAN_E} strokeWidth="1" />
  {collar(emW)}
- <line x1={cx - 3.5} y1={haTop + 3} x2={cx + 3.5} y2={haTop + 3} stroke={TITAN_E} strokeWidth="1.3" opacity="0.7" />
+ <line x1={cx - 4} y1={haTop + 4} x2={cx + 4} y2={haTop + 4} stroke={TITAN_E} strokeWidth="1.4" opacity="0.7" />
  </g>;
  }
 
- // 3 — custom abutment (Atlantis, gold-shaded Ti): emergence, finish line at tissue, tapered prep
+ // 3 — custom abutment (Atlantis, gold-shaded Ti): emergence, finish line at tissue, ~6 mm prep
  if (comp === "abutment") {
- const emW = connW + 3, prepW = isAnt ? connW * 0.58 : connW * 0.8, prepTop = crownTop + crH * 0.34;
+ const emW = connW + 4, prepW = isAnt ? connW * 0.55 : connW * 0.78, prepTop = margY - Math.min(crH * 0.78, 6 * PX);
  return <g>
  {gingivaBand}
- <path d={`M ${cx - connW / 2},${crestY} Q ${cx - emW / 2},${margY} ${cx - emW / 2},${margY - 1} L ${cx - prepW / 2},${prepTop + 3} Q ${cx},${prepTop - 2} ${cx + prepW / 2},${prepTop + 3} L ${cx + emW / 2},${margY - 1} Q ${cx + emW / 2},${margY} ${cx + connW / 2},${crestY} Z`} fill={ABUT} stroke={ABUT_E} strokeWidth="1" />
+ <path d={`M ${cx - connW / 2},${crestY} Q ${cx - emW / 2},${margY} ${cx - emW / 2},${margY - 1} L ${cx - prepW / 2},${prepTop + 4} Q ${cx},${prepTop - 2} ${cx + prepW / 2},${prepTop + 4} L ${cx + emW / 2},${margY - 1} Q ${cx + emW / 2},${margY} ${cx + connW / 2},${crestY} Z`} fill={ABUT} stroke={ABUT_E} strokeWidth="1" />
  <line x1={cx - emW / 2} y1={margY - 1} x2={cx + emW / 2} y2={margY - 1} stroke={ABUT_E} strokeWidth="1" opacity="0.7" />
  {collar(emW)}
  <line x1={cx} y1={prepTop} x2={cx} y2={crestY} stroke={ABUT_E} strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
  </g>;
  }
 
- // 4 — crown (cement-retained all-ceramic) with an emergence profile; abutment ghosted inside
- const marginW = connW + 4;
- const hocW = Math.min(isAnt ? marginW * 1.7 : marginW * 2.0, bw * 1.35);
- const hocY = margY - crH * 0.26, occW = isAnt ? hocW * 0.5 : hocW * 0.82;
- const ghost = `M ${cx - connW / 2},${crestY} L ${cx + connW / 2},${crestY} L ${cx + connW * 0.4},${crownTop + crH * 0.32} L ${cx - connW * 0.4},${crownTop + crH * 0.32} Z`;
+ // 4 — crown (cement-retained all-ceramic), drawn at the tooth's BL width × height
+ const cervW = blPx * 0.72, hocW = blPx, hocY = margY - crH * 0.32, occW = isAnt ? blPx * 0.42 : blPx * 0.62;
+ const prepTop = margY - Math.min(crH * 0.72, 6 * PX);
+ const ghost = `M ${cx - connW / 2},${crestY} Q ${cx - (connW + 4) / 2},${margY} ${cx - (connW + 2) / 2},${margY - 1} L ${cx - connW * 0.34},${prepTop + 3} Q ${cx},${prepTop - 1} ${cx + connW * 0.34},${prepTop + 3} L ${cx + (connW + 2) / 2},${margY - 1} Q ${cx + (connW + 4) / 2},${margY} ${cx + connW / 2},${crestY} Z`;
  const crownPath = isAnt
- ? `M ${cx - marginW / 2},${margY} C ${cx - hocW / 2},${margY - 1} ${cx - hocW / 2},${hocY} ${cx - hocW * 0.38},${crownTop + crH * 0.16} L ${cx - occW * 0.45},${crownTop + 1} L ${cx + occW * 0.45},${crownTop + 1} C ${cx + hocW / 2},${hocY} ${cx + hocW / 2},${margY - 1} ${cx + marginW / 2},${margY} Z`
- : `M ${cx - marginW / 2},${margY} C ${cx - hocW / 2},${margY - 1} ${cx - hocW / 2},${hocY} ${cx - hocW * 0.46},${crownTop + crH * 0.28} Q ${cx - occW * 0.5},${crownTop + crH * 0.06} ${cx - occW * 0.2},${crownTop + crH * 0.12} Q ${cx},${crownTop + crH * 0.22} ${cx + occW * 0.2},${crownTop + crH * 0.12} Q ${cx + occW * 0.5},${crownTop + crH * 0.06} ${cx + hocW * 0.46},${crownTop + crH * 0.28} C ${cx + hocW / 2},${hocY} ${cx + hocW / 2},${margY - 1} ${cx + marginW / 2},${margY} Z`;
+ ? `M ${cx - cervW / 2},${margY} C ${cx - hocW / 2},${margY - crH * 0.05} ${cx - hocW / 2},${hocY} ${cx - hocW * 0.4},${crownTop + crH * 0.16} L ${cx - occW * 0.45},${crownTop + 1} L ${cx + occW * 0.45},${crownTop + 1} C ${cx + hocW / 2},${hocY} ${cx + hocW / 2},${margY - crH * 0.05} ${cx + cervW / 2},${margY} Z`
+ : `M ${cx - cervW / 2},${margY} C ${cx - hocW / 2},${margY - crH * 0.05} ${cx - hocW / 2},${hocY} ${cx - hocW * 0.46},${crownTop + crH * 0.30} Q ${cx - occW * 0.5},${crownTop + crH * 0.05} ${cx - occW * 0.22},${crownTop + crH * 0.13} Q ${cx},${crownTop + crH * 0.26} ${cx + occW * 0.22},${crownTop + crH * 0.13} Q ${cx + occW * 0.5},${crownTop + crH * 0.05} ${cx + hocW * 0.46},${crownTop + crH * 0.30} C ${cx + hocW / 2},${hocY} ${cx + hocW / 2},${margY - crH * 0.05} ${cx + cervW / 2},${margY} Z`;
  return <g>
  {gingivaBand}
- <path d={ghost} fill="none" stroke={ABUT_E} strokeWidth="0.8" strokeDasharray="2 2" opacity="0.4" />
+ <path d={ghost} fill={ABUT} fillOpacity="0.25" stroke={ABUT_E} strokeWidth="0.7" strokeDasharray="2 2" opacity="0.55" />
  <path d={crownPath} fill={ENAMEL} stroke={ENAMEL_E} strokeWidth="1" />
- {!isAnt && <line x1={cx} y1={crownTop + crH * 0.12} x2={cx} y2={crownTop + crH * 0.26} stroke={ENAMEL_E} strokeWidth="0.9" opacity="0.5" />}
- {collar(marginW)}
+ {!isAnt && <line x1={cx} y1={crownTop + crH * 0.13} x2={cx} y2={crownTop + crH * 0.30} stroke={ENAMEL_E} strokeWidth="0.9" opacity="0.5" />}
+ {collar(cervW)}
  </g>;
  })();
 
  return (
- <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" style={{ maxWidth: "600px", display: "block" }} role="img" aria-label="Implant cross-section">
+ <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" style={{ maxWidth: "440px", display: "block" }} role="img" aria-label="Implant cross-section">
  <defs>
  <pattern id="graft" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
  <rect width="6" height="6" fill={GOLD} opacity="0.12" />

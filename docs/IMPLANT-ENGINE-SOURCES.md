@@ -98,7 +98,21 @@ abutment → crown) is the **UIC two-stage STI sequence**, drawn here:
 - **Crown:** **cement-retained, all-ceramic emax CAD (lithium disilicate)** or PFM noble; seats over the abutment, margin at the finish line; Teflon over the screw-access hole, permanent luting agent, excess cement removed [Yuan].
 - Impression: **implant-level, closed-tray** (transfer coping + implant replica), soft-tissue working cast in Type IV gypsum [Yuan].
 
-## 8. Still qualitative / not yet used
+## 8. Cross-section drawing scale — every element at 12 px/mm
+
+The Implant-builder cross-section is drawn to a single scale (12 px per mm) so
+the fixture, plates, soft tissue, and restorative component are all
+proportional. Dimensions:
+
+- **Fixture / plates / clearances:** from §1–2 (engine values + anatomic minimums).
+- **Soft tissue (peri-implant mucosa), crest → margin:** ~**3 mm** — Berglundh & Lindhe, *Dimension of the peri-implant mucosa. Biological width revisited*, J Clin Periodontol 1996 (cited in UIC Atlantis wk12).
+- **Platform / abutment connection:** **4.0 mm** [Yuan].
+- **Cover screw:** ~0.9 mm tall, flush on the platform.
+- **Healing abutment:** **2 mm above the soft-tissue crest** [Yuan].
+- **Custom abutment prep:** ~5–6 mm above the finish line (margin at tissue level).
+- **Crown — bucco-lingual width × cervico-occlusal height per tooth (Wheeler's Dental Anatomy averages, mm):** the cross-section is a BL slice, so BL is the drawn width. Stored in `TOOTH_DIMS` in App.jsx. E.g. max central #8/9 = 7 × 10.5 (tall, narrow); mand 1st molar #19/30 = 10.5 × 7.5 (short, wide); max 1st molar #3/14 = 11 × 7.5; canines #6/11/22/27 ≈ 8 × 10–11.
+
+## 9. Still qualitative / not yet used
 
 - **Apicocoronal platform depth** (≈3 mm below the planned gingival margin) — standard restorative convention; not a hard spec in these decks.
 - Bone quality **D1–D4** map is shown [Han L316-326] as a diagram (anterior mandible densest, posterior maxilla least) — usable qualitatively for a primary-stability caution.
