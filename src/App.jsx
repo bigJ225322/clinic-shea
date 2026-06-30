@@ -32650,6 +32650,7 @@ function ImplantBuilder() {
  keratinizedTissue: "", interocclusal: "",
  biotype: "", smoking: "none", diabetes: "none", antiresorptive: "none",
  skeletal: "adult", radiation: "none", bruxism: false,
+ component: "crown",
  });
  const set = (k, v) => setF(p => ({ ...p, [k]: v }));
  const num = (k) => (v) => set(k, v.replace(/[^\d.]/g, ""));
@@ -32692,7 +32693,8 @@ function ImplantBuilder() {
 
  const crossSection = (() => {
  const PX = 12, VBW = 360, VBH = 330, cx = 170;
- const BONE = "#e7d9bd", BONE_E = "#c9b893", GUM = "#c79c97", ENAMEL = "#f3eee4", ENAMEL_E = "#d6cab4";
+ const BONE = "#e7d9bd", BONE_E = "#c9b893", GUM = "#c79c97", GUM_E = "#a87b76", ENAMEL = "#f4efe7", ENAMEL_E = "#d2c6ae";
+ const TITAN = "#b9bdc4", TITAN_E = "#878d97", ABUT = "#e2d8c2", ABUT_E = "#bcac88";
  const NERVE = "#edcf83", NERVE_E = "#caa43e", AIR = "#eef2f5", AIR_E = "#b7c3cc";
  const GREEN = "var(--teal)", RED = "var(--accent)", GOLD = "var(--gold)";
 
@@ -32743,6 +32745,64 @@ function ImplantBuilder() {
 
  const tick = (x1, y1, x2, y2, col) => <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={col} strokeWidth="1" />;
 
+ // Supragingival assembly — the tissue + whichever restorative component the
+ // user toggled. The fixture in bone is constant; only what sits on the platform
+ // and how the gingiva drapes changes. No fixture (stage/refer) → ridge mucosa.
+ const comp = hasImpl ? (f.component || "crown") : "implant";
+ const isAnt = (() => { const n = parseInt(f.site, 10); return (n >= 6 && n <= 11) || (n >= 22 && n <= 27); })();
+ const supra = (() => {
+ const margY = gingTop, crH = margY - crownTop;
+ const platW = Math.max(dpx * 0.9, 12);
+ const crW = Math.max(22, Math.min(isAnt ? dpx * 1.3 : dpx * 1.5, bw * 1.2));
+ const collar = (w) => <ellipse cx={cx} cy={margY} rx={w / 2 + 1.5} ry="3" fill={GUM_E} />;
+ const gingivaBand = <path d={`M ${boneL - 3},${crestY} Q ${boneL - 3},${margY} ${boneL + 4},${margY} L ${boneR - 4},${margY} Q ${boneR + 3},${margY} ${boneR + 3},${crestY} Z`} fill={GUM} />;
+ const gingivaDome = <path d={`M ${boneL - 3},${crestY} C ${boneL - 2},${margY - 8} ${cx - 12},${margY - 10} ${cx},${margY - 10} C ${cx + 12},${margY - 10} ${boneR + 2},${margY - 8} ${boneR + 3},${crestY} Z`} fill={GUM} stroke={GUM_E} strokeWidth="0.7" />;
+
+ if (!hasImpl) return gingivaDome;
+
+ if (comp === "implant") {
+ return <g>
+ <rect x={cx - platW * 0.42} y={crestY - 5} width={platW * 0.84} height="6" rx="1.4" fill={TITAN} stroke={TITAN_E} strokeWidth="0.8" />
+ <path d={`M ${boneL - 3},${crestY} C ${boneL - 2},${margY - 8} ${cx - 12},${margY - 10} ${cx},${margY - 10} C ${cx + 12},${margY - 10} ${boneR + 2},${margY - 8} ${boneR + 3},${crestY} Z`} fill={GUM} fillOpacity="0.93" stroke={GUM_E} strokeWidth="0.7" />
+ <line x1={cx} y1={margY - 9} x2={cx} y2={crestY - 4} stroke={GUM_E} strokeWidth="0.8" strokeDasharray="2 2" opacity="0.55" />
+ </g>;
+ }
+
+ if (comp === "healing") {
+ const haW = platW * 0.92, haTop = margY - 8;
+ return <g>
+ {gingivaBand}
+ <path d={`M ${cx - haW / 2},${crestY} L ${cx + haW / 2},${crestY} L ${cx + haW / 2},${haTop + 5} Q ${cx + haW / 2},${haTop} ${cx},${haTop} Q ${cx - haW / 2},${haTop} ${cx - haW / 2},${haTop + 5} Z`} fill={TITAN} stroke={TITAN_E} strokeWidth="1" />
+ {collar(haW)}
+ <circle cx={cx} cy={haTop + 4} r="2" fill={TITAN_E} opacity="0.5" />
+ </g>;
+ }
+
+ if (comp === "abutment") {
+ const baseW = platW * 0.92, topW = isAnt ? 11 : 15, prepTop = crownTop + 7;
+ return <g>
+ {gingivaBand}
+ <path d={`M ${cx - baseW / 2},${crestY} L ${cx + baseW / 2},${crestY} L ${cx + topW / 2},${prepTop + 3} Q ${cx},${prepTop - 1} ${cx - topW / 2},${prepTop + 3} Z`} fill={ABUT} stroke={ABUT_E} strokeWidth="1" />
+ <line x1={cx - baseW / 2 + 1} y1={margY + 1} x2={cx + baseW / 2 - 1} y2={margY + 1} stroke={ABUT_E} strokeWidth="0.8" opacity="0.6" />
+ {collar(baseW)}
+ <line x1={cx} y1={prepTop + 2} x2={cx} y2={crestY} stroke={ABUT_E} strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
+ </g>;
+ }
+
+ // crown — anatomic restoration with the abutment ghosted inside
+ const baseW = platW * 0.9, topW = isAnt ? 11 : 15, prepTop = crownTop + 8;
+ const crownPath = isAnt
+ ? `M ${cx - crW / 2},${margY} C ${cx - crW / 2 - 1},${margY - crH * 0.4} ${cx - crW * 0.35},${crownTop + 2} ${cx - crW * 0.18},${crownTop + 1} L ${cx + crW * 0.18},${crownTop + 1} C ${cx + crW * 0.35},${crownTop + 2} ${cx + crW / 2 + 1},${margY - crH * 0.4} ${cx + crW / 2},${margY} Z`
+ : `M ${cx - crW / 2},${margY} C ${cx - crW / 2 - 2},${margY - crH * 0.35} ${cx - crW / 2},${crownTop + crH * 0.25} ${cx - crW * 0.38},${crownTop + 3} Q ${cx - crW * 0.18},${crownTop} ${cx},${crownTop + 1.5} Q ${cx + crW * 0.18},${crownTop} ${cx + crW * 0.38},${crownTop + 3} C ${cx + crW / 2},${crownTop + crH * 0.25} ${cx + crW / 2 + 2},${margY - crH * 0.35} ${cx + crW / 2},${margY} Z`;
+ return <g>
+ {gingivaBand}
+ <path d={`M ${cx - baseW / 2},${crestY} L ${cx + baseW / 2},${crestY} L ${cx + topW / 2},${prepTop} Q ${cx},${prepTop - 2} ${cx - topW / 2},${prepTop} Z`} fill="none" stroke={ABUT_E} strokeWidth="0.8" strokeDasharray="2 2" opacity="0.4" />
+ <path d={crownPath} fill={ENAMEL} stroke={ENAMEL_E} strokeWidth="1" />
+ {!isAnt && <line x1={cx} y1={crownTop + 3} x2={cx} y2={crownTop + 9} stroke={ENAMEL_E} strokeWidth="0.8" opacity="0.55" />}
+ {collar(crW)}
+ </g>;
+ })();
+
  return (
  <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" style={{ maxWidth: "600px", display: "block" }} role="img" aria-label="Implant cross-section">
  <defs>
@@ -32765,15 +32825,7 @@ function ImplantBuilder() {
  {/* sinus-lift graft pocket above the floor */}
  {showLift && <rect x={boneL + 2} y={Math.max(crestY + 4, structY - 3 * PX)} width={bw - 4} height={structY - Math.max(crestY + 4, structY - 3 * PX)} fill="url(#graft)" />}
 
- {/* gingiva */}
- <path d={`M ${boneL - 3},${crestY} Q ${boneL - 3},${gingTop} ${boneL + 4},${gingTop} L ${boneR - 4},${gingTop} Q ${boneR + 3},${gingTop} ${boneR + 3},${crestY} Z`} fill={GUM} />
-
- {/* crown */}
- <path d={`M ${cx - crownW / 2},${gingTop + 1} Q ${cx - crownW / 2},${crownTop} ${cx},${crownTop} Q ${cx + crownW / 2},${crownTop} ${cx + crownW / 2},${gingTop + 1} Z`} fill={ENAMEL} stroke={ENAMEL_E} strokeWidth="1" />
- {/* abutment */}
- <rect x={cx - 2.5} y={gingTop} width="5" height={crestY - gingTop + 2} fill={ENAMEL_E} opacity="0.7" />
-
- {/* fixture */}
+ {/* fixture in bone */}
  {hasImpl ? (
  <g>
  <rect x={implL - 2} y={crestY - 2} width={dpx + 4} height="4" rx="1.5" fill={feasC} />
@@ -32786,6 +32838,9 @@ function ImplantBuilder() {
  ) : (
  <path d={`M ${implL},${crestY} L ${implR},${crestY} L ${implR},${apexY - 7} Q ${implR},${apexY} ${cx},${apexY} Q ${implL},${apexY} ${implL},${apexY - 7} Z`} fill="none" stroke={feasC} strokeWidth="1.4" strokeDasharray="4 4" opacity="0.8" />
  )}
+
+ {/* supragingival assembly — tissue + selected component */}
+ {supra}
 
  {/* danger structure */}
  {isNerve && <>
@@ -32901,9 +32956,23 @@ function ImplantBuilder() {
  </div>
  <div style={{ fontFamily: "'Fraunces', serif", fontSize: "23px", fontWeight: 400, color: "var(--ink)", lineHeight: 1.26, marginBottom: "16px", letterSpacing: "-0.01em", maxWidth: "640px" }}>{plan.headline}</div>
 
- {/* the visual, enlarged */}
- <div style={{ ...card, padding: "18px", display: "flex", justifyContent: "center", marginBottom: "16px" }}>
+ {/* the visual, enlarged — with the restorative-component toggle */}
+ <div style={{ ...card, padding: "18px", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "16px" }}>
  {crossSection}
+ <div style={{ display: "flex", gap: "3px", marginTop: "16px", border: "1px solid var(--rule)", borderRadius: "8px", padding: "3px", width: "100%", maxWidth: "440px" }}>
+ {[["implant", "Implant"], ["healing", "Healing cap"], ["abutment", "Abutment"], ["crown", "Crown"]].map(([k, lbl]) => (
+ <button key={k} onClick={() => set("component", k)} style={{
+ flex: 1, padding: "7px 4px", fontSize: "11px", fontFamily: "'Geist', sans-serif",
+ fontWeight: f.component === k ? 700 : 500, letterSpacing: "0.02em",
+ color: f.component === k ? "var(--paper)" : "var(--ink-soft)",
+ background: f.component === k ? "var(--accent)" : "transparent",
+ border: "none", borderRadius: "5px", cursor: "pointer", transition: "background 0.12s, color 0.12s",
+ }}>{lbl}</button>
+ ))}
+ </div>
+ <div style={{ fontSize: "10px", color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginTop: "8px", letterSpacing: "0.03em" }}>
+ Restorative sequence: fixture → healing cap → abutment → crown
+ </div>
  </div>
 
  {/* implant detail — fixture spec sheet (uses the drawn plan, so a medical hold still shows what the site would take) */}
