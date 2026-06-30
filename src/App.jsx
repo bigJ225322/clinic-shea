@@ -32952,8 +32952,6 @@ function ImplantBuilder() {
  </g>;
  })()}
 
- {/* fixture size caption */}
- {showFixture && <text x={cx} y={crownTop - 4} transform={tflip(crownTop - 4)} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize="11" fontWeight="600" fill={feasC}>⌀{dia} × {len} mm</text>}
  </g>
  </svg>
  );
@@ -32996,12 +32994,6 @@ function ImplantBuilder() {
 
  return (
  <div className="fade-in" style={{ maxWidth: "1160px", margin: "0 auto", textAlign: "left" }}>
- <div style={{ marginBottom: "16px" }}>
- <h2 className="serif" style={{ fontSize: "26px", fontWeight: 400, color: "var(--ink)", margin: "0 0 4px", letterSpacing: "-0.01em" }}>Implant placement planner</h2>
- <p style={{ fontSize: "13px", color: "var(--ink-soft)", margin: 0, fontFamily: "'Geist', sans-serif", fontStyle: "italic" }}>
- Single-tooth. Decision support, not a surgical guide — the surgeon plans from the CBCT.
- </p>
- </div>
 
  <div style={{ display: "grid", gridTemplateColumns: "236px minmax(0,1fr)", gap: "18px", alignItems: "start" }}>
  {/* ── INPUTS (compact rail) ── */}
@@ -33055,15 +33047,15 @@ function ImplantBuilder() {
 
  {/* ── RIGHT: verdict header → big visual → implant detail ── */}
  <div>
- {/* verdict header (was orphaned in the margin) */}
- <div style={{ display: "flex", alignItems: "center", gap: "9px", marginBottom: "7px" }}>
- <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: feas.color, flexShrink: 0 }} />
- <span style={{ fontSize: "10.5px", letterSpacing: "0.16em", textTransform: "uppercase", color: feas.color, fontWeight: 700, fontFamily: "'Geist', sans-serif" }}>{feas.verb}</span>
- </div>
- <div style={{ fontFamily: "'Fraunces', serif", fontSize: "23px", fontWeight: 400, color: "var(--ink)", lineHeight: 1.26, marginBottom: "16px", letterSpacing: "-0.01em", maxWidth: "640px" }}>{plan.headline}</div>
+ {/* verdict reason — only for non-place verdicts (augment / stage / hold); the
+ tooth # and implant dimensions are stripped (dims live in the schematic corner). */}
+ {plan.feasibility !== "place" && plan.feasibility !== "incomplete" && (
+ <div style={{ fontFamily: "'Fraunces', serif", fontSize: "20px", fontWeight: 400, color: "var(--ink)", lineHeight: 1.3, marginBottom: "14px", letterSpacing: "-0.01em", maxWidth: "640px" }}>{(plan.headline || "").split(/ — #\d+/)[0]}</div>
+ )}
 
  {/* the visual, enlarged — with the restorative-component toggle */}
- <div style={{ ...card, padding: "18px", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "16px" }}>
+ <div style={{ ...card, padding: "18px", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "16px", position: "relative" }}>
+ {restorable && dplan.implant && <div style={{ position: "absolute", top: "12px", left: "14px", fontFamily: "'JetBrains Mono', monospace", fontSize: "13px", fontWeight: 600, color: feas.color, letterSpacing: "-0.01em" }}>⌀{dplan.implant.diameter} × {dplan.implant.length} mm</div>}
  {crossSection}
  <div style={{ fontSize: "9.5px", color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginTop: "8px", letterSpacing: "0.04em", fontStyle: "italic" }}>Tap any part of the diagram — bone, gum, fixture, nerve/sinus — for details.</div>
  <div style={{ display: "flex", gap: "3px", marginTop: "12px", border: "1px solid var(--rule)", borderRadius: "8px", padding: "3px", width: "100%", maxWidth: "560px", opacity: restorable ? 1 : 0.4 }}>
