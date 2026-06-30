@@ -32689,7 +32689,7 @@ function ImplantBuilder() {
  keratinizedTissue: "", interocclusal: "",
  biotype: "", smoking: "none", diabetes: "none", antiresorptive: "none",
  skeletal: "adult", radiation: "none", bruxism: false,
- component: "crown",
+ component: "crown", selected: "crown",
  });
  const set = (k, v) => setF(p => ({ ...p, [k]: v }));
  const num = (k) => (v) => set(k, v.replace(/[^\d.]/g, ""));
@@ -32785,6 +32785,8 @@ function ImplantBuilder() {
  const maxillary = (() => { const n = parseInt(f.site, 10); return n >= 1 && n <= 16; })();
  const flipT = maxillary ? `matrix(1 0 0 -1 0 ${VBH})` : undefined;
  const tflip = (ty) => (maxillary ? `matrix(1 0 0 -1 0 ${2 * ty})` : undefined);
+ // Click any part of the diagram → select it for the info card.
+ const pick = (k) => ({ style: { cursor: "pointer" }, onClick: (e) => { e.stopPropagation(); set("selected", k); } });
  const apexY = crestY + lpx;
  const apexGap = hasImpl ? Math.max(0, bh - len) : null;
  const apexOK = apexGap == null || apexGap + 0.001 >= safety;
@@ -32805,11 +32807,11 @@ function ImplantBuilder() {
  const supra = (() => {
  const margY = gingTop, crH = crownPx;                  // tissue/crown margin; crown height (to scale)
  const collar = (w) => <ellipse cx={cx} cy={margY} rx={w / 2 + 1.5} ry="3" fill={GUM_E} />;
- const gingivaBand = <path d={`M ${boneL - 3},${crestY} Q ${boneL - 3},${margY} ${boneL + 5},${margY} L ${boneR - 5},${margY} Q ${boneR + 3},${margY} ${boneR + 3},${crestY} Z`} fill={GUM} />;
+ const gingivaBand = <path {...pick("gingiva")} d={`M ${boneL - 3},${crestY} Q ${boneL - 3},${margY} ${boneL + 5},${margY} L ${boneR - 5},${margY} Q ${boneR + 3},${margY} ${boneR + 3},${crestY} Z`} fill={GUM} stroke={f.selected === "gingiva" ? "var(--accent)" : "none"} strokeWidth={f.selected === "gingiva" ? 2 : 0} />;
  const domeD = `M ${boneL - 3},${crestY} C ${boneL - 1},${margY - 2} ${cx - 14},${margY - 4} ${cx},${margY - 4} C ${cx + 14},${margY - 4} ${boneR + 1},${margY - 2} ${boneR + 3},${crestY} Z`;
 
  // pre-placement (edentulous ridge) or no placeable fixture → closed ridge mucosa
- if (comp === "ridge" || !hasImpl) return <path d={domeD} fill={GUM} stroke={GUM_E} strokeWidth="0.7" />;
+ if (comp === "ridge" || !hasImpl) return <path {...pick("gingiva")} d={domeD} fill={GUM} stroke={GUM_E} strokeWidth="0.7" />;
 
  // 1 — cover screw (~0.9 mm), tissue closed over it (1st-stage, submerged)
  if (comp === "cover") {
@@ -32879,13 +32881,13 @@ function ImplantBuilder() {
  <g transform={flipT}>
 
  {/* air space below a sinus / nasal floor */}
- {isFloor && <rect x={boneL - 10} y={structY} width={bw + 20} height={VBH - structY - 4} fill={AIR} opacity="0.7" />}
+ {isFloor && <rect {...pick("structure")} x={boneL - 10} y={structY} width={bw + 20} height={VBH - structY - 4} fill={AIR} opacity="0.7" />}
 
  {/* GBR graft widening the buccal plate (drawn before bone so bone overlaps cleanly) */}
  {showGBR && <path d={`M ${boneL},${crestY + r} Q ${boneL},${crestY} ${boneL + r},${crestY} L ${boneL + r},${structY} L ${boneL - 11},${structY} Q ${boneL - 13},${(crestY + structY) / 2} ${boneL},${crestY + r} Z`} fill="url(#graft)" stroke={GOLD} strokeWidth="1" strokeDasharray="3 3" />}
 
  {/* bone block, rounded crest */}
- <path d={`M ${boneL},${structY} L ${boneL},${crestY + r} Q ${boneL},${crestY} ${boneL + r},${crestY} L ${boneR - r},${crestY} Q ${boneR},${crestY} ${boneR},${crestY + r} L ${boneR},${structY} Z`} fill={BONE} stroke={BONE_E} strokeWidth="1.2" />
+ <path {...pick("bone")} d={`M ${boneL},${structY} L ${boneL},${crestY + r} Q ${boneL},${crestY} ${boneL + r},${crestY} L ${boneR - r},${crestY} Q ${boneR},${crestY} ${boneR},${crestY + r} L ${boneR},${structY} Z`} fill={BONE} stroke={f.selected === "bone" ? "var(--accent)" : BONE_E} strokeWidth={f.selected === "bone" ? 2.2 : 1.2} />
  <line x1={boneL + 1} y1={crestY + 4} x2={boneR - 1} y2={crestY + 4} stroke={BONE_E} strokeWidth="0.8" opacity="0.6" />
 
  {/* sinus-lift graft pocket above the floor */}
@@ -32893,7 +32895,7 @@ function ImplantBuilder() {
 
  {/* fixture in bone — pale-bone halo behind it shows the implant is lodged in bone */}
  {showFixture ? (
- <g>
+ <g {...pick("fixture")}>
  <path d={`M ${implL - 4},${crestY - 3} L ${implR + 4},${crestY - 3} L ${implR + 4},${apexY - 6} Q ${implR + 4},${apexY + 5} ${cx},${apexY + 5} Q ${implL - 4},${apexY + 5} ${implL - 4},${apexY - 6} Z`} fill={BONE_LT} />
  <rect x={implL - 2} y={crestY - 2} width={dpx + 4} height="4" rx="1.5" fill={feasC} />
  <path d={`M ${implL},${crestY} L ${implR},${crestY} L ${implR},${apexY - 7} Q ${implR},${apexY} ${cx},${apexY} Q ${implL},${apexY} ${implL},${apexY - 7} Z`} fill={feasC} fillOpacity="0.82" stroke={breach ? RED : feasC} strokeWidth={breach ? 2 : 1.2} />
@@ -32906,15 +32908,15 @@ function ImplantBuilder() {
  <path d={`M ${implL},${crestY} L ${implR},${crestY} L ${implR},${apexY - 7} Q ${implR},${apexY} ${cx},${apexY} Q ${implL},${apexY} ${implL},${apexY - 7} Z`} fill="none" stroke={feasC} strokeWidth="1.4" strokeDasharray="4 4" opacity="0.8" />
  )}
 
- {/* supragingival assembly — tissue + selected component */}
- {supra}
+ {/* supragingival assembly — tissue + selected component (clicking it selects that component) */}
+ <g {...pick(comp)}>{supra}</g>
 
  {/* danger structure */}
- {isNerve && <>
- <circle cx={cx} cy={structY + nerveR} r={nerveR} fill={NERVE} stroke={NERVE_E} strokeWidth="1.2" />
+ {isNerve && <g {...pick("structure")}>
+ <circle cx={cx} cy={structY + nerveR} r={nerveR} fill={NERVE} stroke={f.selected === "structure" ? "var(--accent)" : NERVE_E} strokeWidth={f.selected === "structure" ? 2.4 : 1.2} />
  <circle cx={cx} cy={structY + nerveR} r={nerveR * 0.45} fill={NERVE_E} opacity="0.5" />
- </>}
- {isFloor && <path d={`M ${boneL - 10},${structY} q ${bw / 4},5 ${bw / 2},0 t ${bw / 2},0 l 10,0`} fill="none" stroke={AIR_E} strokeWidth="1.5" />}
+ </g>}
+ {isFloor && <path {...pick("structure")} d={`M ${boneL - 10},${structY} q ${bw / 4},5 ${bw / 2},0 t ${bw / 2},0 l 10,0`} fill="none" stroke={f.selected === "structure" ? "var(--accent)" : AIR_E} strokeWidth={f.selected === "structure" ? 3 : 1.5} />}
 
  {/* apex clearance bracket (right of fixture) */}
  {showFixture && apexGap != null && (() => {
@@ -32964,6 +32966,33 @@ function ImplantBuilder() {
  // stage-refer / incomplete there's no fixture, so the toggle would be inert —
  // disable it and say why, rather than letting the views silently do nothing.
  const restorable = drawable && !!(dplan.implant && dplan.implant.diameter && dplan.implant.length);
+
+ // Info for any selectable element (component OR anatomy). Gingiva shows the
+ // keratinized width only when the user entered it (no empty field otherwise).
+ const elementInfo = (key) => {
+ const comp = IMPLANT_COMPONENTS.find(c => c.key === key);
+ if (comp) return comp;
+ const struct = (dplan.site && dplan.site.structure) || "";
+ const isSinus = /sinus/i.test(struct), isNasal = /nasal/i.test(struct);
+ const structName = isSinus ? "Maxillary sinus" : isNasal ? "Nasal floor" : /nerve|canal|alveolar/i.test(struct) ? "Inferior alveolar nerve" : "Inferior border of mandible";
+ const safety = (dplan.site && dplan.site.safety != null) ? dplan.site.safety : 2;
+ const kt = parseFloat(f.keratinizedTissue), bhv = parseFloat(f.boneHeight), lenv = dplan.implant && dplan.implant.length;
+ const map = {
+ bone: { label: "Alveolar bone", material: "—",
+ purpose: "The ridge the implant integrates with. Primary stability comes from engaging dense bone at placement; long-term retention is osseointegration — bone bonding directly to the fixture surface.",
+ dims: `Ridge width ${f.ridgeWidth || "—"} mm faciolingual · bone height ${f.boneHeight || "—"} mm to the ${structName.toLowerCase()}.` },
+ gingiva: { label: "Gingiva (peri-implant mucosa)", material: "—",
+ purpose: "Keratinized gingiva matters around implants: ≥ 2 mm of keratinized width is linked to less plaque, inflammation, recession and marginal bone loss, and makes home care more comfortable. Under 2 mm is a soft-tissue-graft indication.",
+ dims: (kt > 0 ? `Keratinized width entered: ${f.keratinizedTissue} mm${kt < 2 ? " — under 2 mm, consider a graft." : "."} ` : "") + "Peri-implant mucosa ≈ 3 mm tall (biologic width)." },
+ structure: { label: structName, material: "—",
+ purpose: `The structure the implant apex must stay clear of — keep ≥ ${safety} mm. ${isSinus ? "Closer risks sinus perforation; 7–10 mm of height is managed with an internal sinus lift." : isNasal ? "Closer risks perforating the nasal floor." : "Closer risks injuring the nerve — numbness / paresthesia of the lip and chin."}`,
+ dims: (lenv && bhv) ? `This plan leaves ${(bhv - lenv).toFixed(1)} mm of clearance (need ≥ ${safety} mm).` : `Minimum clearance ${safety} mm.` },
+ fixture: dplan.implant && dplan.implant.length ? { label: "Implant fixture", material: "Titanium (threaded screw)",
+ purpose: "The root-form titanium screw placed in bone. Restoratively driven — positioned where the final crown should be, not just where there is bone.",
+ dims: `⌀${dplan.implant.diameter} × ${dplan.implant.length} mm · ${dplan.implant.diameterClass}-diameter · 4 mm internal-connection platform.` } : { label: "Implant fixture", material: "—", purpose: "No fixture is placeable on the current site — augment or stage first.", dims: "—" },
+ };
+ return map[key] || comp || IMPLANT_COMPONENTS[4];
+ };
 
  return (
  <div className="fade-in" style={{ maxWidth: "1160px", margin: "0 auto", textAlign: "left" }}>
@@ -33031,11 +33060,12 @@ function ImplantBuilder() {
  {/* the visual, enlarged — with the restorative-component toggle */}
  <div style={{ ...card, padding: "18px", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "16px" }}>
  {crossSection}
- <div style={{ display: "flex", gap: "3px", marginTop: "16px", border: "1px solid var(--rule)", borderRadius: "8px", padding: "3px", width: "100%", maxWidth: "560px", opacity: restorable ? 1 : 0.4 }}>
+ <div style={{ fontSize: "9.5px", color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginTop: "8px", letterSpacing: "0.04em", fontStyle: "italic" }}>Tap any part of the diagram — bone, gum, fixture, nerve/sinus — for details.</div>
+ <div style={{ display: "flex", gap: "3px", marginTop: "12px", border: "1px solid var(--rule)", borderRadius: "8px", padding: "3px", width: "100%", maxWidth: "560px", opacity: restorable ? 1 : 0.4 }}>
  {IMPLANT_COMPONENTS.map(({ key, label }) => {
  const on = (f.component || "crown") === key;
  return (
- <button key={key} disabled={!restorable} onClick={() => restorable && set("component", key)} style={{
+ <button key={key} disabled={!restorable} onClick={() => restorable && setF(p => ({ ...p, component: key, selected: key }))} style={{
  flex: 1, padding: "7px 3px", fontSize: "10px", fontFamily: "'Geist', sans-serif", lineHeight: 1.15,
  fontWeight: on ? 700 : 500, letterSpacing: "0.01em",
  color: on ? "var(--paper)" : "var(--ink-soft)",
@@ -33045,8 +33075,15 @@ function ImplantBuilder() {
  );
  })}
  </div>
- {restorable ? (() => {
- const info = IMPLANT_COMPONENTS.find(c => c.key === (f.component || "crown")) || IMPLANT_COMPONENTS[4];
+ {drawable && (() => {
+ const sel = f.selected || f.component || "crown";
+ const isComp = IMPLANT_COMPONENTS.some(c => c.key === sel);
+ if (!restorable && isComp) return (
+ <div style={{ fontSize: "10px", color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginTop: "8px", letterSpacing: "0.03em", textAlign: "center", maxWidth: "440px" }}>
+ No fixture is placeable yet — augment or stage this site first. Tap the bone, gum, or danger structure for details.
+ </div>
+ );
+ const info = elementInfo(sel);
  return (
  <div style={{ width: "100%", maxWidth: "560px", marginTop: "10px", padding: "11px 13px", border: "1px solid var(--rule)", borderRadius: "6px", fontFamily: "'Geist', sans-serif", textAlign: "left" }}>
  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "10px", marginBottom: "5px" }}>
@@ -33057,11 +33094,7 @@ function ImplantBuilder() {
  <div style={{ fontSize: "11px", color: "var(--ink-faint)", lineHeight: 1.45 }}><span style={{ fontWeight: 600, color: "var(--ink-soft)" }}>Dimensions · </span>{info.dims}</div>
  </div>
  );
- })() : (
- <div style={{ fontSize: "10px", color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginTop: "8px", letterSpacing: "0.03em", textAlign: "center", maxWidth: "440px" }}>
- No fixture is placeable yet — augment or stage this site first, then the restorative views apply.
- </div>
- )}
+ })()}
  </div>
 
  {/* implant detail — fixture spec sheet (uses the drawn plan, so a medical hold still shows what the site would take) */}
