@@ -32689,7 +32689,7 @@ function ImplantBuilder() {
  keratinizedTissue: "", interocclusal: "",
  biotype: "", smoking: "none", diabetes: "none", antiresorptive: "none",
  skeletal: "adult", radiation: "none", bruxism: false,
- component: "crown", selected: "crown",
+ component: "crown", selected: "crown", view: "bl",
  });
  const set = (k, v) => setF(p => ({ ...p, [k]: v }));
  const num = (k) => (v) => set(k, v.replace(/[^\d.]/g, ""));
@@ -32882,6 +32882,53 @@ function ImplantBuilder() {
  {collar(cervW)}
  </g>;
  })();
+
+ // ── M-D (mesiodistal) view — the implant between its neighbours; shows the
+ // mesiodistal space and the ≥ 1.5 mm clearance to each adjacent root. ──
+ if (f.view === "md") {
+ const mdv = parseFloat(f.mdSpace) || 8;
+ const mdPx = mdv * PX, adjW = 7 * PX;
+ const rootBot = Math.min(structY - 3, crestY + 12 * PX);
+ const boneLm = 22, boneRm = VBW - 22;
+ const crMD = Math.min(mdPx * 0.94, 12 * PX);
+ const proxL = cx - mdPx / 2, proxR = cx + mdPx / 2;
+ const adjLx = proxL - adjW / 2, adjRx = proxR + adjW / 2;
+ const adjTooth = (xc, w) => (<g>
+ <path d={`M ${xc - w * 0.42},${crestY} L ${xc + w * 0.42},${crestY} L ${xc + w * 0.15},${rootBot} Q ${xc},${rootBot + 7} ${xc - w * 0.15},${rootBot} Z`} fill={ENAMEL} fillOpacity="0.5" stroke={ENAMEL_E} strokeWidth="0.8" />
+ <path d={`M ${xc - w / 2},${gingTop} Q ${xc - w / 2},${crownTop + 3} ${xc},${crownTop} Q ${xc + w / 2},${crownTop + 3} ${xc + w / 2},${gingTop} Z`} fill={ENAMEL} stroke={ENAMEL_E} strokeWidth="1" />
+ </g>);
+ const clrL = ((proxL) - implL) / PX, clrR = (implR - (proxR)) / PX; // not used directly; clearance below
+ const gap = Math.max(0, (mdv - dDia) / 2);
+ return (
+ <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" style={{ maxWidth: "440px", display: "block" }} role="img" aria-label="Implant cross-section">
+ <g transform={flipT}>
+ <path {...pick("bone")} d={`M ${boneLm},${structY} L ${boneLm},${crestY + 6} Q ${boneLm},${crestY} ${boneLm + 6},${crestY} L ${boneRm - 6},${crestY} Q ${boneRm},${crestY} ${boneRm},${crestY + 6} L ${boneRm},${structY} Z`} fill={BONE} stroke={f.selected === "bone" ? "var(--accent)" : BONE_E} strokeWidth={f.selected === "bone" ? 2.2 : 1.2} />
+ <path {...pick("gingiva")} d={`M ${boneLm},${crestY} Q ${boneLm},${gingTop} ${boneLm + 6},${gingTop} L ${boneRm - 6},${gingTop} Q ${boneRm},${gingTop} ${boneRm},${crestY} Z`} fill={GUM} stroke={f.selected === "gingiva" ? "var(--accent)" : GUM_E} strokeWidth={f.selected === "gingiva" ? 2 : 0.7} />
+ {adjTooth(adjLx, adjW)}
+ {adjTooth(adjRx, adjW)}
+ {showFixture && <g {...pick("fixture")}>
+ <path d={`M ${implL - 4},${crestY - 3} L ${implR + 4},${crestY - 3} L ${implR + 4},${apexY - 6} Q ${implR + 4},${apexY + 5} ${cx},${apexY + 5} Q ${implL - 4},${apexY + 5} ${implL - 4},${apexY - 6} Z`} fill={BONE_LT} />
+ <path d={`M ${implL},${crestY} L ${implR},${crestY} L ${implR},${apexY - 7} Q ${implR},${apexY} ${cx},${apexY} Q ${implL},${apexY} ${implL},${apexY - 7} Z`} fill={feasC} fillOpacity="0.82" stroke={feasC} strokeWidth="1.2" />
+ {Array.from({ length: Math.max(2, Math.floor(lpx / 11)) }, (_, i) => { const y = crestY + 9 + i * 11; return y < apexY - 8 ? <line key={i} x1={implL + 1.5} y1={y} x2={implR - 1.5} y2={y} stroke="var(--paper)" strokeWidth="1" opacity="0.45" /> : null; })}
+ </g>}
+ {showFixture && <g {...pick("crown")}>
+ <line x1={cx} y1={crownTop + crMD * 0.06} x2={cx} y2={crestY + lpx * 0.4} stroke={TITAN_E} strokeWidth="2.2" strokeLinecap="round" />
+ <path d={`M ${cx - crMD / 2},${gingTop} Q ${cx - crMD / 2},${crownTop + 2} ${cx},${crownTop} Q ${cx + crMD / 2},${crownTop + 2} ${cx + crMD / 2},${gingTop} Z`} fill={ENAMEL} fillOpacity="0.6" stroke={ENAMEL_E} strokeWidth="1.1" />
+ </g>}
+ {/* MD-space dimension between the adjacent proximal surfaces */}
+ {tick(proxL, gingTop - 8, proxL, gingTop - 2, "var(--ink-soft)")}
+ {tick(proxR, gingTop - 8, proxR, gingTop - 2, "var(--ink-soft)")}
+ <line x1={proxL} y1={gingTop - 8} x2={proxR} y2={gingTop - 8} stroke="var(--ink-soft)" strokeWidth="1" />
+ <text x={cx} y={gingTop - 12} transform={tflip(gingTop - 12)} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="10.5" fill="var(--ink)">{mdv} mm M-D</text>
+ {/* clearance to the distal adjacent root */}
+ {showFixture && <>
+ <line x1={implR} y1={crestY + lpx * 0.5} x2={proxR} y2={crestY + lpx * 0.5} stroke={gap + 0.01 >= 1.5 ? GREEN : RED} strokeWidth="1" />
+ <text x={(implR + proxR) / 2} y={crestY + lpx * 0.5 - 4} transform={tflip(crestY + lpx * 0.5 - 4)} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="9" fontWeight="600" fill={gap + 0.01 >= 1.5 ? GREEN : RED}>{gap.toFixed(1)} mm</text>
+ </>}
+ </g>
+ </svg>
+ );
+ }
 
  return (
  <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" style={{ maxWidth: "440px", display: "block" }} role="img" aria-label="Implant cross-section">
@@ -33083,6 +33130,11 @@ function ImplantBuilder() {
  {/* the visual, enlarged — with the restorative-component toggle */}
  <div style={{ ...card, padding: "18px", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "16px", position: "relative" }}>
  {restorable && dplan.implant && <div style={{ position: "absolute", top: "12px", left: "14px", fontFamily: "'JetBrains Mono', monospace", fontSize: "13px", fontWeight: 600, color: feas.color, letterSpacing: "-0.01em" }}>⌀{dplan.implant.diameter} × {dplan.implant.length} mm</div>}
+ <div style={{ position: "absolute", top: "10px", right: "12px", display: "flex", gap: "2px", border: "1px solid var(--rule)", borderRadius: "6px", padding: "2px" }}>
+ {[["bl", "B-L"], ["md", "M-D"]].map(([k, lbl]) => (
+ <button key={k} onClick={() => set("view", k)} title={k === "bl" ? "Bucco-lingual cross-section" : "Mesiodistal cross-section"} style={{ padding: "3px 9px", fontSize: "10px", fontFamily: "'Geist', sans-serif", fontWeight: f.view === k ? 700 : 500, letterSpacing: "0.04em", color: f.view === k ? "var(--paper)" : "var(--ink-soft)", background: f.view === k ? "var(--accent)" : "transparent", border: "none", borderRadius: "4px", cursor: "pointer", transition: "background 0.12s, color 0.12s" }}>{lbl}</button>
+ ))}
+ </div>
  {crossSection}
  <div style={{ fontSize: "9.5px", color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginTop: "8px", letterSpacing: "0.04em", fontStyle: "italic" }}>Tap any part of the diagram — bone, gum, fixture, nerve/sinus — for details.</div>
  <div style={{ display: "flex", gap: "3px", marginTop: "12px", border: "1px solid var(--rule)", borderRadius: "8px", padding: "3px", width: "100%", maxWidth: "560px", opacity: restorable ? 1 : 0.4 }}>
