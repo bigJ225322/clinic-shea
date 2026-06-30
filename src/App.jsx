@@ -25023,6 +25023,23 @@ const GUIDES = [
  },
  ],
  },
+ // Implants — single-tooth (two-stage, restorative). Shell only: the chapter
+ // content lives in guides-data.json (implant guide) and is merged in by the
+ // patcher above (it appends JSON chapters whose guide id matches an entry
+ // here). The Maps "Implant" pathway resolves its visit tiles to these
+ // chapters via CHAPTER_INDEX. Not surfaced in the (unmounted) Guides browser.
+ {
+ id: "implant",
+ label: "Implants",
+ parts: [
+ {
+ id: "implant-p1",
+ label: "Single-tooth implant (two-stage, restorative)",
+ tagline: "The predoctoral single-tooth implant, consultation through recall.",
+ chapters: [],
+ },
+ ],
+ },
 ];
 
 // ── Patch GUIDES with real content from the JSON-imported guides-data ────
@@ -25663,6 +25680,7 @@ const PATHWAY_DOMAINS = [
  { id: "crown", label: "Crown" },
  { id: "bridge", label: "Bridge" },
  { id: "digital", label: "Digital" },
+ { id: "implant", label: "Implant" },
 ];
 
 // Maps landing: true = pathway cards (title + what-it-is + visit/lab counts),
@@ -25684,6 +25702,9 @@ const PATHWAY_GROUPS = {
  ],
  digital: [
  { label: "Single-unit e.max crown", ids: ["digital-emax"] },
+ ],
+ implant: [
+ { label: "Single-tooth (two-stage, restorative)", ids: ["implant-sti"] },
  ],
 };
 
@@ -26180,6 +26201,71 @@ const PATHWAYS = [
  { guideId: "indirect", chapterId: "digc-provisional" },
  // Visit 3 — delivery
  { guideId: "indirect", chapterId: "digc-delivery" },
+ ],
+ },
+ {
+ id: "implant-sti",
+ domain: "implant",
+ category: "fixed",
+ phase: "phase3",
+ label: "Single-tooth implant",
+ branchEyebrow: "Related",
+ description: "A single missing tooth replaced with an implant — the longest case on the board, because bone has to integrate around the fixture before anything is restored. It runs in two big halves with a wait between them: a surgical half (consult, place the fixture, let it integrate, uncover it) and a restorative half (impression, custom abutment, crown, deliver), then lifelong maintenance. The site is screened on a diagnostic checklist first — enough mesiodistal space, ridge width, interocclusal room, and bone height to the nerve or sinus — and the case is co-signed by restorative and surgical faculty before an implant is even ordered. Surgery is two-stage: the fixture is placed and buried under a cover screw, integrates for about three months, then is uncovered and a healing abutment shapes the gum. Restoratively it is an implant-level closed-tray impression, a milled custom abutment, and a cement-retained all-ceramic crown torqued onto the fixture.",
+ keyDecisions: [
+ "Predoc scope is narrow: single units and short spans only — not maxillary central incisors, mandibular incisors, second or third molars, not more than two missing contiguous teeth, and no more than four implants total; anything outside that is referred.",
+ "The site must pass a diagnostic checklist before it is accepted: at least 7 mm mesiodistal space (between the adjacent roots), at least 7 mm ridge width, at least 7 mm interocclusal space, and the bone-height gate — minimum 10 mm in the maxillary posterior / mandibular anterior (7-10 mm needs an internal sinus lift) and minimum 12 mm above the inferior alveolar nerve in the mandibular posterior.",
+ "Nothing is ordered until the diagnostic checksheet carries three faculty signatures (restorative + surgical + prosthodontic); the implant itself is requested at least two weeks before surgery.",
+ "Surgery is two-stage: stage one places the fixture under a cover screw and buries it; stage two (about 3 months later) uncovers it and seats a healing abutment ~2 mm above the soft-tissue crest, then at least 3 weeks of soft-tissue healing before the impression.",
+ "The impression is implant-level, closed-tray: a transfer coping is hand-tightened onto the fixture (confirmed seated on a radiograph), captured in PVS, then swapped back for the healing abutment.",
+ "The abutment is a milled custom abutment (titanium, default emergence) and the crown is cement-retained all-ceramic e.max — both ordered off the mounted soft-tissue working cast.",
+ "At delivery the abutment is torqued to value and the crown is cemented with the abutment screw-access hole blocked by Teflon; every trace of excess cement is removed and confirmed on a radiograph.",
+ ],
+ phases: [
+ { label: "Restorative consultation", count: 1 },
+ { label: "Surgical consultation + guide", count: 1 },
+ { label: "Implant placement (stage one)", count: 1 },
+ { label: "Stage-two uncovery", count: 1 },
+ { label: "Final impression", count: 1 },
+ { label: "Custom abutment try-in", count: 1 },
+ { label: "Delivery", count: 1 },
+ { label: "Maintenance + recall", count: 1 },
+ ],
+ labSteps: [
+ {
+ after: 4,
+ title: "Soft-tissue working cast + custom abutment",
+ body: "Off the implant-level impression the lab builds a soft-tissue working cast and orders the milled custom abutment.",
+ detail: "1. Pour the opposing arch: a new alginate of the opposing teeth, poured in stone as soon as the patient is dismissed.\n\n2. Build the soft-tissue working cast: the impression (transfer coping seated on the implant replica) is vaselined and a soft-tissue moulage is placed around the gingival third of the replica, then the cast is poured in Type IV gypsum (Silky Rock), separated, and trimmed.\n\n3. Mount it: remove the impression coping and mount the working cast against the opposing cast — it must be cross-mountable with the diagnostic wax-up.\n\n4. Order the custom abutment off that cast (Atlantis web-order, with implant faculty): a titanium custom abutment, default emergence profile, planned for a cement-retained all-ceramic e.max crown. Supplements sent: the soft-tissue working cast, the opposing cast, and the diagnostic wax-up.",
+ source: "Single-tooth implant restorative sequence",
+ turnaround: "Before Visit 6 (try-in)",
+ },
+ {
+ after: 5,
+ title: "e.max crown",
+ body: "With the custom abutment verified intraorally, the lab fabricates the cement-retained crown.",
+ detail: "Order the crown off the working cast: an all-ceramic e.max CAD/CAM crown (lithium disilicate) for the site, in the approved shade — the lab crystallizes and returns it for delivery. Supplements sent with the order: the articulator (mounting), the soft-tissue working cast, the opposing cast, and the diagnostic wax-up.",
+ source: "Single-tooth implant restorative sequence",
+ turnaround: "Before Visit 7 (delivery)",
+ },
+ ],
+ branches: [],
+ sections: [
+ // Visit 1 — records + screening
+ { guideId: "implant", chapterId: "impl-consult" },
+ // Visit 2 — surgical consult + guide
+ { guideId: "implant", chapterId: "impl-surgical-consult" },
+ // Visit 3 — stage-one placement
+ { guideId: "implant", chapterId: "impl-placement" },
+ // Visit 4 — stage-two uncovery
+ { guideId: "implant", chapterId: "impl-uncovery" },
+ // Visit 5 — final impression
+ { guideId: "implant", chapterId: "impl-impression" },
+ // Visit 6 — custom abutment try-in
+ { guideId: "implant", chapterId: "impl-tryin" },
+ // Visit 7 — delivery
+ { guideId: "implant", chapterId: "impl-delivery" },
+ // Visit 8 — maintenance + recall
+ { guideId: "implant", chapterId: "impl-maintenance" },
  ],
  },
 ];

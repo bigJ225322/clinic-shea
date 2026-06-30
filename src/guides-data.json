@@ -14689,5 +14689,400 @@
         ]
       }
     ]
+  },
+  {
+    "id": "implant",
+    "label": "Implants",
+    "parts": [
+      {
+        "id": "implant-p1",
+        "label": "Single-tooth implant (two-stage, restorative)",
+        "tagline": "The predoctoral single-tooth implant, consultation through recall.",
+        "chapters": [
+          {
+            "id": "impl-consult",
+            "num": 1,
+            "title": "Restorative consultation",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "The first visit is records and screening. You bring the diagnostic films, mounted casts, and a completed checklist; the site is accepted only if it clears every gate on that checklist, and a faculty member signs off before anything is ordered."
+              },
+              {
+                "kind": "section",
+                "text": "What to bring"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "A current panoramic radiograph.",
+                  "A current periapical radiograph of the edentulous site.",
+                  "The completed implant diagnostic checklist.",
+                  "Mounted diagnostic casts with a wax-up of the planned tooth."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "The diagnostic checklist — single tooth"
+              },
+              {
+                "kind": "paragraph",
+                "text": "The checklist is where the case is accepted or refused. For a single tooth it asks for three clinical measurements and one radiographic one."
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "**Mesiodistal width ≥ 7 mm** — measured between the roots and between the proximal surfaces of the adjacent teeth.",
+                  "**Ridge width ≥ 7 mm.**",
+                  "**Interocclusal space ≥ 7 mm.**",
+                  "**Bone height ≥ 10 mm** in the maxillary posterior or mandibular anterior; **7–10 mm** in the maxillary posterior will need an internal sinus lift.",
+                  "**≥ 12 mm** of bone above the inferior alveolar nerve in the mandibular posterior."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Beyond predoctoral scope"
+              },
+              {
+                "kind": "paragraph",
+                "text": "Some sites are excluded at the predoctoral level and are referred to the advanced prosthodontic clinic for evaluation."
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "More than two contiguous teeth needing implant replacement.",
+                  "Maxillary central incisors, mandibular incisors, and second or third molars.",
+                  "More than four implants in total."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "After approval"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "If the site passes, a prosthodontic faculty member signs the checklist.",
+                  "If it does not, the patient is referred to the advanced prosthodontic clinic by an electronic referral.",
+                  "The treatment plan and its codes are entered, then a message goes to the predoctoral implant program requesting a surgical assignment.",
+                  "A surgical resident — oral and maxillofacial surgery, periodontics, or prosthodontics — and an implant manufacturer are assigned."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "impl-surgical-consult",
+            "num": 2,
+            "title": "Surgical consultation + guide",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "A separate surgical consultation confirms the plan from the surgeon's side. If a CBCT is needed it is ordered here, a surgical guide is fabricated, and the checklist collects its surgical signature."
+              },
+              {
+                "kind": "section",
+                "text": "At the consultation"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "The surgical consultation is scheduled with the assigned resident.",
+                  "A surgical faculty member signs the diagnostic checklist."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "If a CBCT is indicated"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "The student plans the CBCT code for the arch; the resident takes and interprets the scan and enters a treatment note."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Surgical / radiographic guide"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "A surgical / radiographic guide must be fabricated before surgery.",
+                  "A prosthodontic faculty member signs the checklist for the guide."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "impl-placement",
+            "num": 3,
+            "title": "Implant placement (stage one)",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "Stage one places the fixture and buries it under a cover screw. Before that day the implant has to be ordered — and the order cannot go in until all three signatures are on the checklist."
+              },
+              {
+                "kind": "section",
+                "text": "Ordering the implant"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "Verify the implant size with both the surgical and the restorative attending.",
+                  "All three signatures must be on the diagnostic checklist — you cannot receive an implant without them.",
+                  "Request the implant at least two weeks before surgery; stock is not guaranteed, and a last-minute order that is out of stock cancels the surgery.",
+                  "Every order includes the cover screw, picked up before surgery."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Implant systems + sizes"
+              },
+              {
+                "kind": "paragraph",
+                "text": "The program assigns one of three systems; you order a length and width from its stocked range."
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "**Astra Tech Osseospeed** — 3.5 / 4.0 / 4.5 / 5.0 mm wide, 11 or 13 mm long.",
+                  "**Astra Tech EV** — 3.6 / 4.2 / 4.8 / 5.4 mm wide, 11 or 13 mm long.",
+                  "**Straumann** — 3.3 / 4.1 / 4.8 mm wide, 10 or 12 mm long."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Surgery"
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "A midcrestal incision is made, with enough reflection to visualize the anatomy and any undercuts.",
+                  "Exposed bone should be at least 5 mm faciolingually at the crest and at least 1 mm on either side of the implant apically.",
+                  "The surgical guide directs the osteotomy, and the fixture is placed with its cover screw at this first stage.",
+                  "A radiograph is taken immediately after placement."
+                ]
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "Students are present for all surgical phases; the resident logs in and completes the codes, and surgical faculty approve."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "impl-uncovery",
+            "num": 4,
+            "title": "Stage-two uncovery",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "About three months after placement the fixture is uncovered and a healing abutment is seated to shape the gum. Then the tissue heals before the restorative impression."
+              },
+              {
+                "kind": "section",
+                "text": "Second-stage surgery"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "Second stage is three months after placement.",
+                  "The cover screw is removed and a healing abutment is placed.",
+                  "The healing abutment is set to an appropriate height — about 2 mm above the soft-tissue crest."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Then heal"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "At least three weeks of soft-tissue healing before the restorative appointment."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "impl-impression",
+            "num": 5,
+            "title": "Final impression",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "An implant-level, closed-tray impression. You swap the healing abutment for a transfer coping, confirm it is seated on a radiograph, capture it in PVS, then put the healing abutment back."
+              },
+              {
+                "kind": "section",
+                "text": "Setup"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "The fixture is a Dentsply / Astra internal-connection implant with a 4.0 mm platform.",
+                  "The impression is implant-level, closed-tray — using a transfer coping and an implant replica.",
+                  "Attach floss to the hand driver, soak the parts in chlorhexidine beforehand, and always use a throat pack."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Shade + tissue"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "Select the shade and get the patient's approval.",
+                  "Evaluate the health of the surrounding tissue; complete enameloplasty if needed."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Impression sequence"
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "Remove the healing abutment with the hand driver.",
+                  "Hand-tighten the transfer coping onto the implant.",
+                  "Take a periapical radiograph to verify the coping is fully seated.",
+                  "With retraction and moisture control, take the final impression — medium-body PVS around the gingival third of the coping, heavy body in the tray.",
+                  "Replace the transfer coping with the healing abutment using the hand driver.",
+                  "Attach the transfer coping to the implant replica and seat the assembly back into the impression.",
+                  "Take a new alginate of the opposing arch and pour it in stone as soon as the patient is dismissed."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "impl-tryin",
+            "num": 6,
+            "title": "Custom abutment try-in",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "When the custom abutment comes back, it is tried in: seated by hand, verified on a radiograph, and evaluated against the cast and the space before the crown is made."
+              },
+              {
+                "kind": "section",
+                "text": "Try-in"
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "Remove the healing abutment and place the custom abutment, tightened with the hand driver.",
+                  "Take a radiograph to verify the abutment is fully seated."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Evaluate"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "Interocclusal space.",
+                  "Finish-line level and width.",
+                  "Axial reduction, taper, and path of draw.",
+                  "Accuracy of the working cast.",
+                  "Shade and mounting are verified at this appointment."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "impl-delivery",
+            "num": 7,
+            "title": "Delivery",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "Check the crown on the cast, try the abutment and crown in, adjust contacts and occlusion, get the patient's approval, then torque the abutment and cement the crown — removing every trace of excess cement."
+              },
+              {
+                "kind": "section",
+                "text": "Check on the cast"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "Examine interproximal contacts, margins, occlusal contacts, and contours on the cast."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Try-in + adjust"
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "Remove the healing abutment; place and hand-tighten the custom abutment.",
+                  "Radiograph to verify the abutment is fully seated.",
+                  "Check and adjust in sequence: interproximal contacts → crown margins (intraoral + radiograph) → occlusal and excursive contacts → contours and shade."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Occlusion"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "Check occlusal contacts with Accufilm (40 µm) and ShimStock (8 µm): the 40 µm paper should mark on firm closure, while the 8 µm ShimStock should pass through under light closure."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Seat it"
+              },
+              {
+                "kind": "numbered",
+                "items": [
+                  "The patient must see and approve the final crown before it is delivered.",
+                  "Torque the abutment to value — stabilize the head of the torque wrench and pull the handle until it reaches the appropriate torque.",
+                  "Dry all components, then place Teflon over the abutment's screw-access hole.",
+                  "Apply a permanent luting agent and seat the crown fully.",
+                  "Remove all excess cement and verify with a radiograph.",
+                  "Re-check margins, interproximal contacts, and occlusal contacts."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "impl-maintenance",
+            "num": 8,
+            "title": "Maintenance + recall",
+            "blocks": [
+              {
+                "kind": "paragraph",
+                "text": "The implant is followed on a recall schedule — one, three, six months, then annually — each visit the same intraoral exam plus a periapical radiograph."
+              },
+              {
+                "kind": "section",
+                "text": "Each recall"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "Intraoral exam: soft tissue, occlusion, retention, stability.",
+                  "Periapical radiograph: marginal fit of the restoration, bone height, and any pathosis."
+                ]
+              },
+              {
+                "kind": "section",
+                "text": "Schedule"
+              },
+              {
+                "kind": "bullets",
+                "items": [
+                  "One month, then three months, then six months, then annually — the same exam each time."
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
