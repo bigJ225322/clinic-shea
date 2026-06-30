@@ -32652,6 +32652,14 @@ const TOOTH_DIMS = {
  25: { bl: 6, ht: 9 }, 26: { bl: 6.5, ht: 9.5 }, 27: { bl: 7.5, ht: 11 }, 28: { bl: 7.5, ht: 8.5 }, 29: { bl: 8, ht: 8 }, 30: { bl: 10.5, ht: 7.5 }, 31: { bl: 10, ht: 7 }, 32: { bl: 9.5, ht: 6.5 },
 };
 
+// Tooth class for the crown outline (bucco-lingual cross-section silhouette).
+const toothType = (n) => {
+ if ([7, 8, 9, 10, 23, 24, 25, 26].includes(n)) return "incisor";
+ if ([6, 11, 22, 27].includes(n)) return "canine";
+ if ([4, 5, 12, 13, 20, 21, 28, 29].includes(n)) return "premolar";
+ return "molar";
+};
+
 // The implant's full sequence, in order — what the component toggle steps
 // through. Each stage carries its purpose + key dimensions (drawn to scale).
 const IMPLANT_COMPONENTS = [
@@ -32830,17 +32838,26 @@ function ImplantBuilder() {
  }
 
  // 4 — crown (cement-retained all-ceramic), drawn at the tooth's BL width × height
- const cervW = blPx * 0.72, hocW = blPx, hocY = margY - crH * 0.32, occW = isAnt ? blPx * 0.42 : blPx * 0.62;
+ const ttype = toothType(parseInt(f.site, 10));
+ const cervW = blPx * 0.70, hocW = blPx, hocY = margY - crH * 0.30;
  const prepTop = margY - Math.min(crH * 0.72, 6 * PX);
  const ghost = `M ${cx - connW / 2},${crestY} Q ${cx - (connW + 4) / 2},${margY} ${cx - (connW + 2) / 2},${margY - 1} L ${cx - connW * 0.34},${prepTop + 3} Q ${cx},${prepTop - 1} ${cx + connW * 0.34},${prepTop + 3} L ${cx + (connW + 2) / 2},${margY - 1} Q ${cx + (connW + 4) / 2},${margY} ${cx + connW / 2},${crestY} Z`;
- const crownPath = isAnt
- ? `M ${cx - cervW / 2},${margY} C ${cx - hocW / 2},${margY - crH * 0.05} ${cx - hocW / 2},${hocY} ${cx - hocW * 0.4},${crownTop + crH * 0.16} L ${cx - occW * 0.45},${crownTop + 1} L ${cx + occW * 0.45},${crownTop + 1} C ${cx + hocW / 2},${hocY} ${cx + hocW / 2},${margY - crH * 0.05} ${cx + cervW / 2},${margY} Z`
- : `M ${cx - cervW / 2},${margY} C ${cx - hocW / 2},${margY - crH * 0.05} ${cx - hocW / 2},${hocY} ${cx - hocW * 0.46},${crownTop + crH * 0.30} Q ${cx - occW * 0.5},${crownTop + crH * 0.05} ${cx - occW * 0.22},${crownTop + crH * 0.13} Q ${cx},${crownTop + crH * 0.26} ${cx + occW * 0.22},${crownTop + crH * 0.13} Q ${cx + occW * 0.5},${crownTop + crH * 0.05} ${cx + hocW * 0.46},${crownTop + crH * 0.30} C ${cx + hocW / 2},${hocY} ${cx + hocW / 2},${margY - crH * 0.05} ${cx + cervW / 2},${margY} Z`;
+ const crownPaths = {
+ // incisor — wedge with a thin incisal edge + a lingual cingulum (right)
+ incisor: `M ${cx - cervW / 2},${margY} C ${cx - hocW / 2},${margY - crH * 0.04} ${cx - hocW / 2},${hocY} ${cx - blPx * 0.14},${crownTop + crH * 0.05} Q ${cx - blPx * 0.04},${crownTop} ${cx},${crownTop + crH * 0.005} Q ${cx + blPx * 0.05},${crownTop} ${cx + blPx * 0.16},${crownTop + crH * 0.06} C ${cx + hocW / 2},${hocY} ${cx + hocW * 0.58},${margY - crH * 0.20} ${cx + cervW * 0.66},${margY - crH * 0.04} Q ${cx + cervW * 0.74},${margY} ${cx + cervW / 2},${margY} Z`,
+ // canine — single pointed cusp (toward buccal) + prominent cingulum
+ canine: `M ${cx - cervW / 2},${margY} C ${cx - hocW / 2},${margY - crH * 0.06} ${cx - hocW / 2},${hocY} ${cx - blPx * 0.10},${crownTop + crH * 0.12} L ${cx - blPx * 0.02},${crownTop} L ${cx + blPx * 0.12},${crownTop + crH * 0.13} C ${cx + hocW / 2},${hocY} ${cx + hocW * 0.60},${margY - crH * 0.22} ${cx + cervW * 0.66},${margY - crH * 0.04} Q ${cx + cervW * 0.76},${margY} ${cx + cervW / 2},${margY} Z`,
+ // premolar — buccal + lingual cusp (buccal taller) with a central fossa
+ premolar: `M ${cx - cervW / 2},${margY} C ${cx - hocW / 2},${margY - crH * 0.08} ${cx - hocW / 2},${hocY} ${cx - blPx * 0.32},${crownTop + crH * 0.06} L ${cx - blPx * 0.16},${crownTop} Q ${cx},${crownTop + crH * 0.34} ${cx + blPx * 0.16},${crownTop + crH * 0.06} L ${cx + blPx * 0.30},${crownTop + crH * 0.14} C ${cx + hocW / 2},${hocY} ${cx + hocW / 2},${margY - crH * 0.08} ${cx + cervW / 2},${margY} Z`,
+ // molar — two broad rounded cusps with a central fossa
+ molar: `M ${cx - cervW / 2},${margY} C ${cx - hocW / 2},${margY - crH * 0.10} ${cx - hocW / 2},${hocY} ${cx - blPx * 0.36},${crownTop + crH * 0.14} Q ${cx - blPx * 0.22},${crownTop + crH * 0.01} ${cx - blPx * 0.12},${crownTop + crH * 0.05} Q ${cx},${crownTop + crH * 0.30} ${cx + blPx * 0.12},${crownTop + crH * 0.05} Q ${cx + blPx * 0.22},${crownTop + crH * 0.01} ${cx + blPx * 0.36},${crownTop + crH * 0.14} C ${cx + hocW / 2},${hocY} ${cx + hocW / 2},${margY - crH * 0.10} ${cx + cervW / 2},${margY} Z`,
+ };
+ const isPosterior = ttype === "premolar" || ttype === "molar";
  return <g>
  {gingivaBand}
  <path d={ghost} fill={ABUT} fillOpacity="0.25" stroke={ABUT_E} strokeWidth="0.7" strokeDasharray="2 2" opacity="0.55" />
- <path d={crownPath} fill={ENAMEL} stroke={ENAMEL_E} strokeWidth="1" />
- {!isAnt && <line x1={cx} y1={crownTop + crH * 0.13} x2={cx} y2={crownTop + crH * 0.30} stroke={ENAMEL_E} strokeWidth="0.9" opacity="0.5" />}
+ <path d={crownPaths[ttype]} fill={ENAMEL} stroke={ENAMEL_E} strokeWidth="1" />
+ {isPosterior && <line x1={cx} y1={crownTop + crH * 0.10} x2={cx} y2={crownTop + crH * 0.30} stroke={ENAMEL_E} strokeWidth="0.9" opacity="0.5" />}
  {collar(cervW)}
  </g>;
  })();
