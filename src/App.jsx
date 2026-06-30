@@ -32897,6 +32897,10 @@ function ImplantBuilder() {
  const card = { background: "var(--paper)", border: "1px solid var(--rule)", borderRadius: "3px", padding: "16px 16px" };
  const secLbl = { fontSize: "9.5px", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 600, fontFamily: "'Geist', sans-serif", marginBottom: "9px" };
  const grid2 = { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "9px" };
+ // Restorative components only mean something once a fixture is placeable. For
+ // stage-refer / incomplete there's no fixture, so the toggle would be inert —
+ // disable it and say why, rather than letting the views silently do nothing.
+ const restorable = drawable && !!(dplan.implant && dplan.implant.diameter && dplan.implant.length);
 
  return (
  <div className="fade-in" style={{ maxWidth: "1160px", margin: "0 auto", textAlign: "left" }}>
@@ -32964,24 +32968,26 @@ function ImplantBuilder() {
  {/* the visual, enlarged — with the restorative-component toggle */}
  <div style={{ ...card, padding: "18px", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "16px" }}>
  {crossSection}
- <div style={{ display: "flex", gap: "3px", marginTop: "16px", border: "1px solid var(--rule)", borderRadius: "8px", padding: "3px", width: "100%", maxWidth: "440px" }}>
+ <div style={{ display: "flex", gap: "3px", marginTop: "16px", border: "1px solid var(--rule)", borderRadius: "8px", padding: "3px", width: "100%", maxWidth: "440px", opacity: restorable ? 1 : 0.4 }}>
  {[["cover", "Cover screw"], ["healing", "Healing abutment"], ["abutment", "Custom abutment"], ["crown", "Crown"]].map(([k, lbl]) => (
- <button key={k} onClick={() => set("component", k)} style={{
+ <button key={k} disabled={!restorable} onClick={() => restorable && set("component", k)} style={{
  flex: 1, padding: "7px 4px", fontSize: "11px", fontFamily: "'Geist', sans-serif",
  fontWeight: f.component === k ? 700 : 500, letterSpacing: "0.02em",
  color: f.component === k ? "var(--paper)" : "var(--ink-soft)",
  background: f.component === k ? "var(--accent)" : "transparent",
- border: "none", borderRadius: "5px", cursor: "pointer", transition: "background 0.12s, color 0.12s",
+ border: "none", borderRadius: "5px", cursor: restorable ? "pointer" : "default", transition: "background 0.12s, color 0.12s",
  }}>{lbl}</button>
  ))}
  </div>
- <div style={{ fontSize: "10px", color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginTop: "8px", letterSpacing: "0.03em" }}>
- UIC sequence: cover screw → healing abutment → custom abutment → cement-retained crown
+ <div style={{ fontSize: "10px", color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginTop: "8px", letterSpacing: "0.03em", textAlign: "center", maxWidth: "440px" }}>
+ {restorable
+ ? "UIC sequence: cover screw → healing abutment → custom abutment → cement-retained crown"
+ : "No fixture is placeable yet — augment or stage this site first, then the restorative views apply."}
  </div>
  </div>
 
  {/* implant detail — fixture spec sheet (uses the drawn plan, so a medical hold still shows what the site would take) */}
- {drawable && dplan.implant ? (
+ {restorable ? (
  <div style={card}>
  {heldByMedical && (
  <div style={{ fontSize: "11px", color: "var(--accent)", fontStyle: "italic", lineHeight: 1.45, marginBottom: "12px", paddingBottom: "12px", borderBottom: "1px solid var(--rule)" }}>
