@@ -32694,7 +32694,7 @@ function ImplantBuilder() {
  const crossSection = (() => {
  const PX = 12, VBW = 360, VBH = 330, cx = 170;
  const BONE = "#e7d9bd", BONE_E = "#c9b893", GUM = "#c79c97", GUM_E = "#a87b76", ENAMEL = "#f4efe7", ENAMEL_E = "#d2c6ae";
- const TITAN = "#b9bdc4", TITAN_E = "#878d97", ABUT = "#e2d8c2", ABUT_E = "#bcac88";
+ const TITAN = "#b9bdc4", TITAN_E = "#878d97", ABUT = "#cbbd93", ABUT_E = "#9c8a57"; // ABUT = gold-shaded titanium (Atlantis)
  const NERVE = "#edcf83", NERVE_E = "#caa43e", AIR = "#eef2f5", AIR_E = "#b7c3cc";
  const GREEN = "var(--teal)", RED = "var(--accent)", GOLD = "var(--gold)";
 
@@ -32723,7 +32723,7 @@ function ImplantBuilder() {
  const dDia = hasImpl ? dia : ghostDia, dLen = hasImpl ? len : ghostLen;
  const feasC = feas.color;
 
- const crownH = 30, gingH = 11;
+ const crownH = 46, gingH = 11;
  const boneHpx = bh * PX;
  const topPad = Math.max(16, (VBH - (crownH + gingH + boneHpx) - 46) / 2);
  const crownTop = topPad, gingTop = crownTop + crownH, crestY = gingTop + gingH;
@@ -32748,58 +32748,63 @@ function ImplantBuilder() {
  // Supragingival assembly — the tissue + whichever restorative component the
  // user toggled. The fixture in bone is constant; only what sits on the platform
  // and how the gingiva drapes changes. No fixture (stage/refer) → ridge mucosa.
- const comp = hasImpl ? (f.component || "crown") : "implant";
+ const comp = hasImpl ? (f.component || "crown") : "cover";
  const isAnt = (() => { const n = parseInt(f.site, 10); return (n >= 6 && n <= 11) || (n >= 22 && n <= 27); })();
  const supra = (() => {
- const margY = gingTop, crH = margY - crownTop;
- const platW = Math.max(dpx * 0.9, 12);
- const crW = Math.max(22, Math.min(isAnt ? dpx * 1.3 : dpx * 1.5, bw * 1.2));
+ const margY = gingTop, crH = margY - crownTop;          // tissue margin / finish-line level; crown height
+ const connW = Math.max(dpx * 0.72, 11);                 // internal connection / platform width
  const collar = (w) => <ellipse cx={cx} cy={margY} rx={w / 2 + 1.5} ry="3" fill={GUM_E} />;
  const gingivaBand = <path d={`M ${boneL - 3},${crestY} Q ${boneL - 3},${margY} ${boneL + 4},${margY} L ${boneR - 4},${margY} Q ${boneR + 3},${margY} ${boneR + 3},${crestY} Z`} fill={GUM} />;
- const gingivaDome = <path d={`M ${boneL - 3},${crestY} C ${boneL - 2},${margY - 8} ${cx - 12},${margY - 10} ${cx},${margY - 10} C ${cx + 12},${margY - 10} ${boneR + 2},${margY - 8} ${boneR + 3},${crestY} Z`} fill={GUM} stroke={GUM_E} strokeWidth="0.7" />;
+ const domeD = `M ${boneL - 3},${crestY} C ${boneL - 2},${margY - 9} ${cx - 13},${margY - 11} ${cx},${margY - 11} C ${cx + 13},${margY - 11} ${boneR + 2},${margY - 9} ${boneR + 3},${crestY} Z`;
 
- if (!hasImpl) return gingivaDome;
+ if (!hasImpl) return <path d={domeD} fill={GUM} stroke={GUM_E} strokeWidth="0.7" />;
 
- if (comp === "implant") {
+ // 1 — cover screw, tissue closed over it (1st-stage, submerged)
+ if (comp === "cover") {
  return <g>
- <rect x={cx - platW * 0.42} y={crestY - 5} width={platW * 0.84} height="6" rx="1.4" fill={TITAN} stroke={TITAN_E} strokeWidth="0.8" />
- <path d={`M ${boneL - 3},${crestY} C ${boneL - 2},${margY - 8} ${cx - 12},${margY - 10} ${cx},${margY - 10} C ${cx + 12},${margY - 10} ${boneR + 2},${margY - 8} ${boneR + 3},${crestY} Z`} fill={GUM} fillOpacity="0.93" stroke={GUM_E} strokeWidth="0.7" />
- <line x1={cx} y1={margY - 9} x2={cx} y2={crestY - 4} stroke={GUM_E} strokeWidth="0.8" strokeDasharray="2 2" opacity="0.55" />
+ <rect x={cx - connW * 0.5} y={crestY - 5} width={connW} height="6" rx="1.5" fill={TITAN} stroke={TITAN_E} strokeWidth="0.8" />
+ <path d={domeD} fill={GUM} fillOpacity="0.93" stroke={GUM_E} strokeWidth="0.7" />
+ <line x1={cx} y1={margY - 10} x2={cx} y2={crestY - 4} stroke={GUM_E} strokeWidth="0.8" strokeDasharray="2 2" opacity="0.5" />
  </g>;
  }
 
+ // 2 — healing abutment, titanium, ~2 mm above the soft-tissue crest (2nd-stage)
  if (comp === "healing") {
- const haW = platW * 0.92, haTop = margY - 8;
+ const emW = connW + 3, topW = connW * 0.9, haTop = margY - 24;
  return <g>
  {gingivaBand}
- <path d={`M ${cx - haW / 2},${crestY} L ${cx + haW / 2},${crestY} L ${cx + haW / 2},${haTop + 5} Q ${cx + haW / 2},${haTop} ${cx},${haTop} Q ${cx - haW / 2},${haTop} ${cx - haW / 2},${haTop + 5} Z`} fill={TITAN} stroke={TITAN_E} strokeWidth="1" />
- {collar(haW)}
- <circle cx={cx} cy={haTop + 4} r="2" fill={TITAN_E} opacity="0.5" />
+ <path d={`M ${cx - connW / 2},${crestY} Q ${cx - emW / 2},${margY} ${cx - emW / 2},${margY - 2} L ${cx - topW / 2},${haTop + 5} Q ${cx - topW / 2},${haTop} ${cx},${haTop} Q ${cx + topW / 2},${haTop} ${cx + topW / 2},${haTop + 5} L ${cx + emW / 2},${margY - 2} Q ${cx + emW / 2},${margY} ${cx + connW / 2},${crestY} Z`} fill={TITAN} stroke={TITAN_E} strokeWidth="1" />
+ {collar(emW)}
+ <line x1={cx - 3.5} y1={haTop + 3} x2={cx + 3.5} y2={haTop + 3} stroke={TITAN_E} strokeWidth="1.3" opacity="0.7" />
  </g>;
  }
 
+ // 3 — custom abutment (Atlantis, gold-shaded Ti): emergence, finish line at tissue, tapered prep
  if (comp === "abutment") {
- const baseW = platW * 0.92, topW = isAnt ? 11 : 15, prepTop = crownTop + 7;
+ const emW = connW + 3, prepW = isAnt ? connW * 0.58 : connW * 0.8, prepTop = crownTop + crH * 0.34;
  return <g>
  {gingivaBand}
- <path d={`M ${cx - baseW / 2},${crestY} L ${cx + baseW / 2},${crestY} L ${cx + topW / 2},${prepTop + 3} Q ${cx},${prepTop - 1} ${cx - topW / 2},${prepTop + 3} Z`} fill={ABUT} stroke={ABUT_E} strokeWidth="1" />
- <line x1={cx - baseW / 2 + 1} y1={margY + 1} x2={cx + baseW / 2 - 1} y2={margY + 1} stroke={ABUT_E} strokeWidth="0.8" opacity="0.6" />
- {collar(baseW)}
- <line x1={cx} y1={prepTop + 2} x2={cx} y2={crestY} stroke={ABUT_E} strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
+ <path d={`M ${cx - connW / 2},${crestY} Q ${cx - emW / 2},${margY} ${cx - emW / 2},${margY - 1} L ${cx - prepW / 2},${prepTop + 3} Q ${cx},${prepTop - 2} ${cx + prepW / 2},${prepTop + 3} L ${cx + emW / 2},${margY - 1} Q ${cx + emW / 2},${margY} ${cx + connW / 2},${crestY} Z`} fill={ABUT} stroke={ABUT_E} strokeWidth="1" />
+ <line x1={cx - emW / 2} y1={margY - 1} x2={cx + emW / 2} y2={margY - 1} stroke={ABUT_E} strokeWidth="1" opacity="0.7" />
+ {collar(emW)}
+ <line x1={cx} y1={prepTop} x2={cx} y2={crestY} stroke={ABUT_E} strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
  </g>;
  }
 
- // crown — anatomic restoration with the abutment ghosted inside
- const baseW = platW * 0.9, topW = isAnt ? 11 : 15, prepTop = crownTop + 8;
+ // 4 — crown (cement-retained all-ceramic) with an emergence profile; abutment ghosted inside
+ const marginW = connW + 4;
+ const hocW = Math.min(isAnt ? marginW * 1.7 : marginW * 2.0, bw * 1.35);
+ const hocY = margY - crH * 0.26, occW = isAnt ? hocW * 0.5 : hocW * 0.82;
+ const ghost = `M ${cx - connW / 2},${crestY} L ${cx + connW / 2},${crestY} L ${cx + connW * 0.4},${crownTop + crH * 0.32} L ${cx - connW * 0.4},${crownTop + crH * 0.32} Z`;
  const crownPath = isAnt
- ? `M ${cx - crW / 2},${margY} C ${cx - crW / 2 - 1},${margY - crH * 0.4} ${cx - crW * 0.35},${crownTop + 2} ${cx - crW * 0.18},${crownTop + 1} L ${cx + crW * 0.18},${crownTop + 1} C ${cx + crW * 0.35},${crownTop + 2} ${cx + crW / 2 + 1},${margY - crH * 0.4} ${cx + crW / 2},${margY} Z`
- : `M ${cx - crW / 2},${margY} C ${cx - crW / 2 - 2},${margY - crH * 0.35} ${cx - crW / 2},${crownTop + crH * 0.25} ${cx - crW * 0.38},${crownTop + 3} Q ${cx - crW * 0.18},${crownTop} ${cx},${crownTop + 1.5} Q ${cx + crW * 0.18},${crownTop} ${cx + crW * 0.38},${crownTop + 3} C ${cx + crW / 2},${crownTop + crH * 0.25} ${cx + crW / 2 + 2},${margY - crH * 0.35} ${cx + crW / 2},${margY} Z`;
+ ? `M ${cx - marginW / 2},${margY} C ${cx - hocW / 2},${margY - 1} ${cx - hocW / 2},${hocY} ${cx - hocW * 0.38},${crownTop + crH * 0.16} L ${cx - occW * 0.45},${crownTop + 1} L ${cx + occW * 0.45},${crownTop + 1} C ${cx + hocW / 2},${hocY} ${cx + hocW / 2},${margY - 1} ${cx + marginW / 2},${margY} Z`
+ : `M ${cx - marginW / 2},${margY} C ${cx - hocW / 2},${margY - 1} ${cx - hocW / 2},${hocY} ${cx - hocW * 0.46},${crownTop + crH * 0.28} Q ${cx - occW * 0.5},${crownTop + crH * 0.06} ${cx - occW * 0.2},${crownTop + crH * 0.12} Q ${cx},${crownTop + crH * 0.22} ${cx + occW * 0.2},${crownTop + crH * 0.12} Q ${cx + occW * 0.5},${crownTop + crH * 0.06} ${cx + hocW * 0.46},${crownTop + crH * 0.28} C ${cx + hocW / 2},${hocY} ${cx + hocW / 2},${margY - 1} ${cx + marginW / 2},${margY} Z`;
  return <g>
  {gingivaBand}
- <path d={`M ${cx - baseW / 2},${crestY} L ${cx + baseW / 2},${crestY} L ${cx + topW / 2},${prepTop} Q ${cx},${prepTop - 2} ${cx - topW / 2},${prepTop} Z`} fill="none" stroke={ABUT_E} strokeWidth="0.8" strokeDasharray="2 2" opacity="0.4" />
+ <path d={ghost} fill="none" stroke={ABUT_E} strokeWidth="0.8" strokeDasharray="2 2" opacity="0.4" />
  <path d={crownPath} fill={ENAMEL} stroke={ENAMEL_E} strokeWidth="1" />
- {!isAnt && <line x1={cx} y1={crownTop + 3} x2={cx} y2={crownTop + 9} stroke={ENAMEL_E} strokeWidth="0.8" opacity="0.55" />}
- {collar(crW)}
+ {!isAnt && <line x1={cx} y1={crownTop + crH * 0.12} x2={cx} y2={crownTop + crH * 0.26} stroke={ENAMEL_E} strokeWidth="0.9" opacity="0.5" />}
+ {collar(marginW)}
  </g>;
  })();
 
@@ -32960,7 +32965,7 @@ function ImplantBuilder() {
  <div style={{ ...card, padding: "18px", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "16px" }}>
  {crossSection}
  <div style={{ display: "flex", gap: "3px", marginTop: "16px", border: "1px solid var(--rule)", borderRadius: "8px", padding: "3px", width: "100%", maxWidth: "440px" }}>
- {[["implant", "Implant"], ["healing", "Healing cap"], ["abutment", "Abutment"], ["crown", "Crown"]].map(([k, lbl]) => (
+ {[["cover", "Cover screw"], ["healing", "Healing abutment"], ["abutment", "Custom abutment"], ["crown", "Crown"]].map(([k, lbl]) => (
  <button key={k} onClick={() => set("component", k)} style={{
  flex: 1, padding: "7px 4px", fontSize: "11px", fontFamily: "'Geist', sans-serif",
  fontWeight: f.component === k ? 700 : 500, letterSpacing: "0.02em",
@@ -32971,7 +32976,7 @@ function ImplantBuilder() {
  ))}
  </div>
  <div style={{ fontSize: "10px", color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginTop: "8px", letterSpacing: "0.03em" }}>
- Restorative sequence: fixture → healing cap → abutment → crown
+ UIC sequence: cover screw → healing abutment → custom abutment → cement-retained crown
  </div>
  </div>
 

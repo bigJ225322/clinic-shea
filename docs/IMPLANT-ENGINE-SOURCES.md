@@ -10,6 +10,8 @@ attribution lives.
 - **[Han]** "Diagnosis and Treatment Planning II: Surgical Indications," Michael D. Han, DDS, OMFS (DAOB 302). The minimum-anatomic-distances table + host-factor stances.
 - **[TBL]** "Implant TBL Lecture" — the clinic case-acceptance checklist (the screening form).
 - **[Sukotjo]** "Diagnosis and Treatment Planning I: Restorative Indications," Cortino Sukotjo, DDS (DAOB 302). Contraindication list + prosthesis-option framework.
+- **[Yuan]** "Clinical Procedures for Single Tooth Implant Restorations," Judy Chia-Chun Yuan, DDS, MS, FACP (UIC Predoctoral STI, wk7). The restorative sequence, prosthetic components, and the implant-system sizes UIC stocks. **This is the authority for the Implant-builder component views.**
+- **[Straumann BL / Atlantis]** "Restorative Considerations III — Straumann STI BL" (Mohammad) + "Custom abutment" (Touloumi) + the Atlantis Abutment decks. Component materials (cover screw, healing abutment, custom abutment) + emergence-profile options.
 
 **Source NOT used — flagged AI slop:** "Implants Comprehensive Guide (UIC).pdf" sits in `MASTER REFERENCE CS/_EXCLUDED — suspected AI slop`. Not trusted; no number taken from it.
 
@@ -71,8 +73,32 @@ A site **passes as-is** only if all hold; otherwise the engine names the failing
 
 > "Implant should be placed where the final restoration should be placed, and NOT where there is bone." Restoratively-driven. If bone is inadequate → augment or choose a non-implant option, never reposition for convenience.
 
-## 6. Gaps to fill before/while coding
+## 6. Implant-system sizes — what UIC stocks [Yuan]
 
-- **Diameter classes** (narrow ~3.0–3.5 / standard ~4.0–4.3 / wide ~5+) and **length options** are implant-system specs, not stated in these decks — confirm from the Osseointegration deck or treat as standard system values, clearly flagged.
-- **Apicocoronal platform depth** (≈3 mm below the planned gingival margin) — not explicit here; confirm or mark as standard restorative convention.
+The predoc program assigns one of three systems; the engine's diameter/length
+sets are the union of their stocked sizes (so every number the UI prints is a
+real, orderable fixture — no invented values like the old 11.5 mm).
+
+| System | Diameters (mm) | Lengths (mm) |
+|---|---|---|
+| Straumann | 3.3, 4.1, 4.8 | 10, 12 |
+| Astra Tech Osseospeed | 3.5, 4.0, 4.5, 5.0 | (6), 8, 11, 13 |
+| Astra Tech EV | 3.6, 4.2, 4.8, 5.4 | 11, 13 |
+
+- Engine `DIA = {narrow 3.3, standard 4.1, wide 5.0}` and `LENGTHS = [6, 8, 10, 11, 13]` are all drawn from the above. Implant: Dentsply/Astra, **internal connection, 4.0 mm platform** [Yuan].
+
+## 7. Restorative phase & prosthetic components [Yuan; Straumann BL; Atlantis]
+
+The Implant-builder's component toggle (cover screw → healing abutment → custom
+abutment → crown) is the **UIC two-stage STI sequence**, drawn here:
+
+- **First stage (submerged):** implant placed with a **cover screw**; tissue closed over it. (Order form ships the cover screw with the implant.)
+- **Second stage (~3 months):** **healing abutment** placed, "appropriate heights — **2 mm above soft-tissue crest**"; ≥ 3 weeks soft-tissue healing before restorative [Yuan].
+- **Custom abutment:** **Atlantis**, ordered via the Atlantis weborder; **Titanium** (gold-shaded Ti or zirconia options); has a **finish line + emergence profile** (default "contour tissue"); screw-retained into the fixture, torqued [Yuan; Atlantis/Touloumi].
+- **Crown:** **cement-retained, all-ceramic emax CAD (lithium disilicate)** or PFM noble; seats over the abutment, margin at the finish line; Teflon over the screw-access hole, permanent luting agent, excess cement removed [Yuan].
+- Impression: **implant-level, closed-tray** (transfer coping + implant replica), soft-tissue working cast in Type IV gypsum [Yuan].
+
+## 8. Still qualitative / not yet used
+
+- **Apicocoronal platform depth** (≈3 mm below the planned gingival margin) — standard restorative convention; not a hard spec in these decks.
 - Bone quality **D1–D4** map is shown [Han L316-326] as a diagram (anterior mandible densest, posterior maxilla least) — usable qualitatively for a primary-stability caution.

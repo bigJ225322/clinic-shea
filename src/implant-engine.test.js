@@ -12,7 +12,7 @@ describe("Feasibility — place as-is", () => {
     const r = computeImplantPlan({ site: 19, mdSpace: 10, ridgeWidth: 7, boneHeight: 14, keratinizedTissue: 4 });
     expect(r.feasibility).toBe("place");
     expect(r.implant.diameterClass).toBe("wide"); // molar, ridge 7 → 5.5 cap ≥ 5.0
-    expect(r.implant.length).toBe(11.5);           // 14 − 2 (IAN) = 12 usable
+    expect(r.implant.length).toBe(11);             // 14 − 2 (IAN) = 12 usable → 11 (longest stocked ≤ 12)
     expect(r.adjuncts).toEqual([]);
   });
 

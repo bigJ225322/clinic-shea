@@ -39,7 +39,9 @@ const SCREEN = {
 // Diameter classes — standard implant-system values (NOT clinic-tabulated).
 const DIA = { narrow: 3.3, standard: 4.1, wide: 5.0 };
 // Stock lengths — standard system values.
-const LENGTHS = [6, 8, 10, 11.5, 13];
+// UIC-stocked lengths (Astra Osseospeed 6/8/11/13, Straumann 10/12) — no system
+// stocks 11.5. Diameters likewise: Straumann 3.3/4.1, Astra Osseospeed 5.0.
+const LENGTHS = [6, 8, 10, 11, 13];
 
 const MAX_ANT = new Set([6, 7, 8, 9, 10, 11]);
 const MAND_ANT = new Set([22, 23, 24, 25, 26, 27]);
