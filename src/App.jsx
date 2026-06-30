@@ -7046,28 +7046,28 @@ function BPInput({ value, onChange }) {
 // plain full-width text input.
 const OS_FIELD_CFG = {
  "ID/HPI/CC": { label: "ID / HPI / CC" },
- "PMH": { label: "PMH", wnl: true },
+ "PMH": { label: "Medical History" },
  "medications": { label: "Medications", type: "meds", group: "hx" },
  "allergies": { label: "Allergies", group: "hx" },
  "pregnancy status": { label: "Pregnancy", group: "soc" },
- "social history": { label: "Social Hx", group: "soc" },
+ "social history": { label: "Social History", group: "soc" },
  "BP": { label: "BP", type: "bp", group: "vitals" },
  "pulse": { label: "Pulse", group: "vitals" },
- "intraoral exam": { label: "Intraoral exam", wnl: true, group: "exam" },
- "radiographic findings": { label: "Radiographic findings", wnl: true, group: "exam" },
+ "intraoral exam": { label: "Intraoral Exam", group: "exam" },
+ "radiographic findings": { label: "Radiographic Findings", group: "exam" },
  "assessment": { label: "Assessment" },
  "tooth": { label: "Tooth", type: "tooth", group: "tx" },
  "site": { label: "Site", type: "tooth", group: "tx" },
  "carpules": { label: "Carpules", group: "tx" },
- "post-op BP": { label: "Post-op BP", type: "bp", group: "postop" },
- "post-op pulse": { label: "Post-op pulse", group: "postop" },
+ "post-op BP": { label: "Post-Op BP", type: "bp", group: "postop" },
+ "post-op pulse": { label: "Post-Op Pulse", group: "postop" },
  "prescriptions": { label: "Prescriptions" },
  "provider names": { label: "Providers" },
  "interval": { label: "Interval", group: "fu" },
  "procedure": { label: "Procedure", group: "fu" },
 };
 
-function ICCNoteInputs({ rawTemplate, values, onChange, fieldCfg = ICC_FIELD_CFG }) {
+function ICCNoteInputs({ rawTemplate, values, onChange, fieldCfg = ICC_FIELD_CFG, centerLabels = false }) {
  const placeholders = useMemo(() => parseLabPlaceholders(rawTemplate), [rawTemplate]);
  if (!placeholders.length) return null;
  const cap = s => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
@@ -7080,7 +7080,7 @@ function ICCNoteInputs({ rawTemplate, values, onChange, fieldCfg = ICC_FIELD_CFG
  if (g) { const grp = [specs[i]]; while (i + 1 < specs.length && specs[i + 1].cfg.group === g) grp.push(specs[++i]); rows.push(grp); }
  else rows.push([specs[i]]);
  }
- const labelStyle = { fontSize: "10px", color: "var(--ink-faint)", letterSpacing: "0.04em", fontFamily: "'Geist', sans-serif" };
+ const labelStyle = { fontSize: "10px", color: "var(--ink-faint)", letterSpacing: "0.04em", fontFamily: "'Geist', sans-serif", ...(centerLabels ? { textAlign: "center" } : {}) };
  const renderInput = (p, cfg) => {
  const v = values[p.key] || "";
  const set = (val) => onChange(p.key, val);
@@ -12930,6 +12930,7 @@ function NoteBuilder({ selectedProcedureId, onSelectProcedure,
  values={fields.labPlaceholders || {}}
  onChange={onChange}
  fieldCfg={procStr.startsWith("os-") ? OS_FIELD_CFG : ICC_FIELD_CFG}
+ centerLabels={procStr.startsWith("os-")}
  />
  );
  }
