@@ -3752,6 +3752,12 @@ const DEFAULT_FIELDS = {
  // "Updated odontogram with …" sentence. Applies to POE (1091) and
  // Peds (5985); other templates don't mention bitewings.
  tookBitewings: true,
+ // tookPano: peds (5985) only — "Took pano?" sits alongside "Took bitewings?"
+ // in the Findings header and is mutually exclusive with it (a pano can't be
+ // taken the same day as bitewings). When set, the radiograph phrase becomes
+ // "Took a panoramic radiograph & updated odontogram…"; with both off the
+ // phrase is stripped like tookBitewings=false. Default off.
+ tookPano: false,
  // perioProbed: default true — perio maintenance (1425) ships with the perio
  // chart block. We only chart every other maintenance visit, so unchecking
  // "Probed" hides the Perio Chart form section + strips the chart block from
@@ -4321,15 +4327,23 @@ function renderTemplate(raw, f) {
  t = sub(t, /[ \t]*Updated perio EPR & perio chart:[\s\S]*?gingiva[ \t]*\n\n/, "", "perioChart-strip");
  }
 
- // -------- 0c. tookBitewings = false strips the bitewings phrase. --------
+ // -------- 0c. radiograph phrase: bitewings (default) / pano / none. --------
  // POE: "Took 4 bitewings; updated odontogram with radiographic & clinical hard tissue findings:"
  // Peds: "Took 4 bitewings & updated odontogram with radiographic & intraoral hard tissue findings:"
+ // tookPano (peds only) swaps the bitewings phrase for a panoramic one,
+ // keeping the radiographic findings (a pano IS a radiograph). It's mutually
+ // exclusive with tookBitewings, so when set, tookBitewings is already false —
+ // handle pano first and skip the strip branch below.
+ if (f.tookPano) {
+ t = t.replace(/Took 4 bitewings/g, "Took a panoramic radiograph");
+ }
+ // tookBitewings = false (and no pano) strips the bitewings phrase entirely.
  // Unchecking does three things:
  // 1. Drops "Took 4 bitewings; " / " & " prefix.
  // 2. Capitalizes the following "updated" → "Updated".
  // 3. Drops "radiographic & " (no bitewings → no radiographs → only
  // clinical/intraoral findings remain in the sentence).
- if (f.tookBitewings === false) {
+ else if (f.tookBitewings === false) {
  // Drop the "Took 4 bitewings; " / " & " prefix and capitalize the
  // first letter of "updated" that follows.
  t = t.replace(
@@ -9048,8 +9062,14 @@ const EXAM_FINDINGS_CONFIG = {
  },
  {
  title: "Findings",
- // "Took bitewings?" right-aligned in header; default checked.
- headerCheckbox: { field: "tookBitewings", label: "Took bitewings?" },
+ // "Took bitewings?" / "Took pano?" right-aligned in header, mutually
+ // exclusive (a pano isn't taken the same day as bitewings). Bitewings
+ // default on; both off strips the radiograph phrase.
+ headerCheckboxes: [
+ { field: "tookBitewings", label: "Took bitewings?" },
+ { field: "tookPano", label: "Took pano?" },
+ ],
+ headerCheckboxesMutex: true,
  rows: [
  [{ label: "dentition", type: "select", displayLabel: "Dentition",
  defaultValue: "mixed dentition",
@@ -11298,11 +11318,18 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  }
  return (
  <div key={i} style={{ marginTop: i === 0? "4px": "16px" }}>
- {section.headerCheckbox? (
- // Section header with a right-aligned checkbox (e.g. "No
- // treatments planned" on Treatment Plan, "Took bitewings?" on
- // Findings). 3-column grid keeps the SubsectionLabel optically
- // centered while the checkbox parks at the right edge.
+ {(section.headerCheckbox || section.headerCheckboxes)? (() => {
+ // Section header with right-aligned checkbox(es) (e.g. "No
+ // treatments planned" on Treatment Plan, "Took bitewings?" / "Took
+ // pano?" on peds Findings). 3-column grid keeps the SubsectionLabel
+ // optically centered while the checkbox(es) park at the right edge.
+ // headerCheckboxes (plural) renders several in a row; with
+ // headerCheckboxesMutex they behave as a radio group (checking one
+ // clears the others) — used for the radiograph pair, since a pano and
+ // bitewings aren't taken the same day.
+ const hcList = section.headerCheckboxes || [section.headerCheckbox];
+ const mutex = !!section.headerCheckboxesMutex;
+ return (
  <div style={{
  display: "grid", gridTemplateColumns: "1fr auto 1fr",
  alignItems: "center", marginBottom: "10px",
@@ -11314,22 +11341,30 @@ function ExamFindings({ procedureId, findings, setFindings, poeOnly, onPoeToggle
  fontFamily: "'Geist', sans-serif",
  textAlign: "center",
  }}>{section.title}</div>
- <label style={{
- justifySelf: "end",
+ <div style={{ justifySelf: "end", display: "flex", alignItems: "center", gap: "12px" }}>
+ {hcList.map((hc, hi) => (
+ <label key={hi} style={{
  display: "flex", alignItems: "center", gap: "5px",
  fontSize: "10px", color: "var(--ink-soft)",
  cursor: "pointer", fontFamily: "'Geist', sans-serif",
  whiteSpace: "nowrap", letterSpacing: "0.02em",
  }}>
  <input type="checkbox"
- checked={!!fields[section.headerCheckbox.field]}
- onChange={e => setField(section.headerCheckbox.field, e.target.checked)}
+ checked={!!fields[hc.field]}
+ onChange={e => {
+ const v = e.target.checked;
+ setField(hc.field, v);
+ if (mutex && v) hcList.forEach(o => { if (o.field !== hc.field) setField(o.field, false); });
+ }}
  style={{ width: "13px", height: "13px",
  accentColor: "var(--teal)", cursor: "pointer", margin: 0 }} />
- <span>{section.headerCheckbox.label}</span>
+ <span>{hc.label}</span>
  </label>
+ ))}
  </div>
-): (
+ </div>
+ );
+ })(): (
  <SubsectionLabel>{section.title}</SubsectionLabel>
 )}
  {(!section.headerCheckbox?.hideWhenUnchecked || fields[section.headerCheckbox.field]) && fieldEls}
