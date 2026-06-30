@@ -56,6 +56,26 @@ exact trap the RPD build fell into (it cost hours):
    `Patch GUIDES with real content`) merges each JSON chapter's `blocks` into the
    matching chapter **shell** by `id`, deleting the stub flag.
 
+**Two more traps that cost hours on the implant Map build (2026-06-30):**
+
+- **`sections` is what renders the schematic — not `phases`.** The visit tiles +
+  popups are built from `resolvedSections` (`selectedPathway.sections.map(...)`),
+  and the whole Sequence/schematic block is gated on `resolvedSections.length > 0`.
+  A pathway with rich `phases`/`labSteps` but `sections: []` builds clean, shows a
+  card in the Maps grid, **and opens to a totally empty page (no JS error)** — the
+  symptom looks like "the card won't open." Every visit needs a `sections` entry
+  (`{ guideId, chapterId }`); the `phases[].count` values must sum to
+  `sections.length` (each phase slices that many sections).
+
+- **A brand-new guide needs a shell in the `GUIDES` const too, or its chapters are
+  silently dropped.** The patcher's "append JSON chapters not in GUIDES" loop does
+  `const guideEntry = GUIDES.find(g => g.id === jsonGuide.id); if (!guideEntry) return;`
+  — so a guide id that exists **only** in `guides-data.json` is never indexed into
+  `CHAPTER_INDEX`, and the pathway's section refs resolve to nothing. Add an empty
+  shell `{ id: "<guide>", label: "…", parts: [{ id, label, tagline, chapters: [] }] }`
+  to the `GUIDES` const (it's never browsed — no live "Guides" tab — so an empty
+  shell is harmless) and the patcher will append the JSON chapters under it.
+
 **The thing that wasted hours on RPD:** chapter *shells* in `App.jsx` are written
 as `{ id: "cd-ch1", num: 1, title: "…", stub: true }`. A `stub: true` shell with no
 JSON blocks renders **"Coming soon. Live source: the deep-dive PDF."** — that string
