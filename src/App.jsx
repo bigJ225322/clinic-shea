@@ -32654,13 +32654,22 @@ function ImplantBuilder() {
  const set = (k, v) => setF(p => ({ ...p, [k]: v }));
  const num = (k) => (v) => set(k, v.replace(/[^\d.]/g, ""));
 
- const plan = computeImplantPlan({
+ const inputs = {
  site: f.site, mdSpace: f.mdSpace, ridgeWidth: f.ridgeWidth, boneHeight: f.boneHeight,
  keratinizedTissue: f.keratinizedTissue, interocclusal: f.interocclusal,
  biotype: f.biotype, smoking: f.smoking, diabetes: f.diabetes,
  antiresorptive: f.antiresorptive, growthComplete: f.skeletal !== "growing",
  radiation: f.radiation, bruxism: f.bruxism,
- });
+ };
+ const plan = computeImplantPlan(inputs);
+ const heldByMedical = plan.feasibility === "medical-hold";
+ // A medical hold overrides anatomy, so the engine returns no fixture. The site
+ // itself may still take one — re-derive it with the host blocker neutralized so
+ // we can DRAW and detail what would go there, while the header keeps the hold
+ // unmistakable. Other verdicts draw their own plan directly.
+ const dplan = heldByMedical
+ ? computeImplantPlan({ ...inputs, antiresorptive: "none", growthComplete: true })
+ : plan;
 
  const FEAS = {
  place: { verb: "Place as-is", color: "var(--teal)" },
@@ -32670,7 +32679,7 @@ function ImplantBuilder() {
  incomplete: { verb: "Awaiting inputs", color: "var(--ink-faint)" },
  };
  const feas = FEAS[plan.feasibility] || FEAS.incomplete;
- const principle = (plan.flags || []).find(x => /^Restoratively-driven/.test(x));
+ const principle = (dplan.flags || []).find(x => /^Restoratively-driven/.test(x));
  const cautions = (plan.flags || []).filter(x => !/^Restoratively-driven/.test(x));
 
  // ── Parametric bucco-lingual cross-section. Crown up, fixture down into the
@@ -32689,7 +32698,7 @@ function ImplantBuilder() {
 
  if (!drawable) {
  return (
- <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" style={{ maxWidth: "460px", display: "block" }} role="img">
+ <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" style={{ maxWidth: "600px", display: "block" }} role="img">
  <rect x="1" y="1" width={VBW - 2} height={VBH - 2} rx="4" fill="none" stroke="var(--rule)" strokeDasharray="5 5" />
  <text x={cx} y={VBH / 2 - 6} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="13" fill="var(--ink-faint)">Enter a tooth, ridge width,</text>
  <text x={cx} y={VBH / 2 + 14} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="13" fill="var(--ink-faint)">and bone height to draw the site.</text>
@@ -32697,16 +32706,16 @@ function ImplantBuilder() {
  );
  }
 
- const struct = plan.site.structure || "";
+ const struct = dplan.site.structure || "";
  const isSinus = /sinus/i.test(struct);
  const isNasal = /nasal/i.test(struct);
  const isNerve = /nerve|canal|alveolar/i.test(struct) && !isSinus && !isNasal;
  const isFloor = isSinus || isNasal;
  const structShort = isSinus ? "sinus" : isNasal ? "nasal floor" : isNerve ? "IAN" : "inf. border";
- const safety = plan.site.safety != null ? plan.site.safety : (isNerve ? 2 : 1);
+ const safety = dplan.site.safety != null ? dplan.site.safety : (isNerve ? 2 : 1);
 
- const dia = plan.implant && plan.implant.diameter ? plan.implant.diameter : 0;
- const len = plan.implant && plan.implant.length ? plan.implant.length : 0;
+ const dia = dplan.implant && dplan.implant.diameter ? dplan.implant.diameter : 0;
+ const len = dplan.implant && dplan.implant.length ? dplan.implant.length : 0;
  const hasImpl = dia > 0 && len > 0;
  const ghostDia = 4.1, ghostLen = Math.max(6, Math.min(10, bh - safety));
  const dDia = hasImpl ? dia : ghostDia, dLen = hasImpl ? len : ghostLen;
@@ -32727,15 +32736,15 @@ function ImplantBuilder() {
  const crownW = Math.max(20, Math.min(bw * 0.9, dpx + 12));
  const r = Math.min(7, bw / 2);
 
- const adj = (plan.adjuncts || []).join(" ");
- const showGBR = /GBR|ridge split|ridge augmentation|graft/i.test(adj) && plan.feasibility !== "place";
+ const adj = (dplan.adjuncts || []).join(" ");
+ const showGBR = /GBR|ridge split|ridge augmentation|graft/i.test(adj) && dplan.feasibility !== "place";
  const showLift = /sinus lift|sinus elevation|lateral-window/i.test(adj);
  const nerveR = Math.min(15, 1.3 * PX);
 
  const tick = (x1, y1, x2, y2, col) => <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={col} strokeWidth="1" />;
 
  return (
- <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" style={{ maxWidth: "460px", display: "block" }} role="img" aria-label="Implant cross-section">
+ <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" style={{ maxWidth: "600px", display: "block" }} role="img" aria-label="Implant cross-section">
  <defs>
  <pattern id="graft" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
  <rect width="6" height="6" fill={GOLD} opacity="0.12" />
@@ -32830,7 +32839,7 @@ function ImplantBuilder() {
  const grid2 = { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "9px" };
 
  return (
- <div className="fade-in" style={{ maxWidth: "1080px", margin: "0 auto", textAlign: "left" }}>
+ <div className="fade-in" style={{ maxWidth: "1160px", margin: "0 auto", textAlign: "left" }}>
  <div style={{ marginBottom: "16px" }}>
  <h2 className="serif" style={{ fontSize: "26px", fontWeight: 400, color: "var(--ink)", margin: "0 0 4px", letterSpacing: "-0.01em" }}>Implant placement planner</h2>
  <p style={{ fontSize: "13px", color: "var(--ink-soft)", margin: 0, fontFamily: "'Geist', sans-serif", fontStyle: "italic" }}>
@@ -32838,7 +32847,7 @@ function ImplantBuilder() {
  </p>
  </div>
 
- <div style={{ display: "grid", gridTemplateColumns: "248px minmax(0,1fr) 200px", gap: "16px", alignItems: "start" }}>
+ <div style={{ display: "grid", gridTemplateColumns: "236px minmax(0,1fr)", gap: "18px", alignItems: "start" }}>
  {/* ── INPUTS (compact rail) ── */}
  <div style={card}>
  <div style={secLbl}>Site &amp; bone</div>
@@ -32883,41 +32892,51 @@ function ImplantBuilder() {
  </label>
  </div>
 
- {/* ── THE VISUAL (centerpiece) ── */}
- <div style={{ ...card, padding: "14px 14px 8px", display: "flex", flexDirection: "column", alignItems: "center", minHeight: "360px" }}>
- <div style={{ display: "flex", alignItems: "center", gap: "8px", alignSelf: "flex-start", marginBottom: "2px" }}>
- <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: feas.color, flexShrink: 0 }} />
- <span style={{ fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: feas.color, fontWeight: 700, fontFamily: "'Geist', sans-serif" }}>{feas.verb}</span>
+ {/* ── RIGHT: verdict header → big visual → implant detail ── */}
+ <div>
+ {/* verdict header (was orphaned in the margin) */}
+ <div style={{ display: "flex", alignItems: "center", gap: "9px", marginBottom: "7px" }}>
+ <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: feas.color, flexShrink: 0 }} />
+ <span style={{ fontSize: "10.5px", letterSpacing: "0.16em", textTransform: "uppercase", color: feas.color, fontWeight: 700, fontFamily: "'Geist', sans-serif" }}>{feas.verb}</span>
  </div>
+ <div style={{ fontFamily: "'Fraunces', serif", fontSize: "23px", fontWeight: 400, color: "var(--ink)", lineHeight: 1.26, marginBottom: "16px", letterSpacing: "-0.01em", maxWidth: "640px" }}>{plan.headline}</div>
+
+ {/* the visual, enlarged */}
+ <div style={{ ...card, padding: "18px", display: "flex", justifyContent: "center", marginBottom: "16px" }}>
  {crossSection}
  </div>
 
- {/* ── EVIDENCE (margin) ── */}
- <div style={{ fontFamily: "'Geist', sans-serif", paddingTop: "2px" }}>
- <div style={{ fontFamily: "'Fraunces', serif", fontSize: "15px", color: "var(--ink)", lineHeight: 1.32, marginBottom: "12px" }}>{plan.headline}</div>
-
- {plan.hardStops && plan.hardStops.length > 1 && plan.hardStops.slice(1).map((h, i) => (
- <div key={i} style={{ fontSize: "11.5px", color: "var(--ink-soft)", lineHeight: 1.45, marginBottom: "8px" }}>{h}</div>
- ))}
-
- {plan.implant && plan.implant.rationale && (
- <div style={{ fontSize: "11.5px", color: "var(--ink-soft)", lineHeight: 1.5, marginBottom: "12px" }}>{plan.implant.rationale}</div>
+ {/* implant detail — fixture spec sheet (uses the drawn plan, so a medical hold still shows what the site would take) */}
+ {drawable && dplan.implant ? (
+ <div style={card}>
+ {heldByMedical && (
+ <div style={{ fontSize: "11px", color: "var(--accent)", fontStyle: "italic", lineHeight: 1.45, marginBottom: "12px", paddingBottom: "12px", borderBottom: "1px solid var(--rule)" }}>
+ The anatomy supports the fixture below — but placement is on medical hold (see above). Shown for planning once the hold resolves.
+ </div>
+ )}
+ <div style={{ display: "flex", alignItems: "baseline", gap: "12px", flexWrap: "wrap", marginBottom: "9px" }}>
+ <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "20px", fontWeight: 600, color: feas.color, letterSpacing: "-0.01em" }}>⌀{dplan.implant.diameter} × {dplan.implant.length} mm</span>
+ <span style={{ fontSize: "10.5px", color: "var(--ink-soft)", textTransform: "uppercase", letterSpacing: "0.12em", fontFamily: "'Geist', sans-serif" }}>{dplan.implant.diameterClass}-diameter fixture</span>
+ </div>
+ {dplan.implant.rationale && (
+ <div style={{ fontSize: "12px", color: "var(--ink-soft)", lineHeight: 1.5, marginBottom: "15px", fontFamily: "'Geist', sans-serif" }}>{dplan.implant.rationale}</div>
  )}
 
- {plan.position && (
- <div style={{ marginBottom: "12px" }}>
- {["mesiodistal", "buccolingual", "apicocoronal", "angulation"].map(k => (
- <div key={k} style={{ fontSize: "11px", color: "var(--ink-faint)", lineHeight: 1.5, display: "flex", gap: "6px", marginBottom: "2px" }}>
- <span style={{ color: "var(--accent)", flexShrink: 0 }}>·</span><span>{plan.position[k]}</span>
+ {dplan.position && (
+ <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(155px,1fr))", gap: "13px", marginBottom: ((dplan.adjuncts && dplan.adjuncts.length) || cautions.length || principle) ? "15px" : 0 }}>
+ {[["Mesiodistal", "mesiodistal"], ["Bucco-lingual", "buccolingual"], ["Depth", "apicocoronal"], ["Angulation", "angulation"]].map(([lbl, k]) => (
+ <div key={k}>
+ <div style={{ fontSize: "9px", letterSpacing: "0.13em", textTransform: "uppercase", color: "var(--ink-faint)", fontWeight: 600, fontFamily: "'Geist', sans-serif", marginBottom: "3px" }}>{lbl}</div>
+ <div style={{ fontSize: "11.5px", color: "var(--ink)", lineHeight: 1.42, fontFamily: "'Geist', sans-serif" }}>{dplan.position[k]}</div>
  </div>
  ))}
  </div>
  )}
 
- {plan.adjuncts && plan.adjuncts.length > 0 && (
- <div style={{ marginBottom: "12px" }}>
- {plan.adjuncts.map((a, i) => (
- <div key={i} style={{ fontSize: "11.5px", color: "var(--ink)", lineHeight: 1.45, marginBottom: "4px", display: "flex", gap: "6px" }}>
+ {dplan.adjuncts && dplan.adjuncts.length > 0 && (
+ <div style={{ marginBottom: (cautions.length || principle) ? "13px" : 0 }}>
+ {dplan.adjuncts.map((a, i) => (
+ <div key={i} style={{ fontSize: "12px", color: "var(--ink)", lineHeight: 1.45, marginBottom: "5px", display: "flex", gap: "7px", fontFamily: "'Geist', sans-serif" }}>
  <span style={{ color: "var(--gold)", fontWeight: 700, flexShrink: 0 }}>+</span><span>{a}</span>
  </div>
  ))}
@@ -32925,16 +32944,39 @@ function ImplantBuilder() {
  )}
 
  {cautions.length > 0 && (
- <div style={{ display: "flex", flexDirection: "column", gap: "5px", marginBottom: principle ? "12px" : 0 }}>
+ <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: principle ? "13px" : 0 }}>
  {cautions.map((c, i) => (
- <div key={i} style={{ fontSize: "11px", color: "var(--ink-soft)", borderLeft: "2px solid var(--accent)", paddingLeft: "8px", lineHeight: 1.4 }}>{c}</div>
+ <div key={i} style={{ fontSize: "11.5px", color: "var(--ink-soft)", borderLeft: "2px solid var(--accent)", paddingLeft: "9px", lineHeight: 1.42, fontFamily: "'Geist', sans-serif" }}>{c}</div>
  ))}
  </div>
  )}
 
  {principle && (
- <div style={{ fontSize: "10.5px", color: "var(--ink-faint)", fontStyle: "italic", lineHeight: 1.5, paddingTop: "10px", borderTop: "1px solid var(--rule)" }}>{principle}</div>
+ <div style={{ fontSize: "11px", color: "var(--ink-faint)", fontStyle: "italic", lineHeight: 1.5, paddingTop: "12px", borderTop: "1px solid var(--rule)", fontFamily: "'Geist', sans-serif" }}>{principle}</div>
  )}
+ </div>
+ ) : drawable ? (
+ <div style={card}>
+ {plan.hardStops && plan.hardStops.length > 1 && plan.hardStops.slice(1).map((h, i) => (
+ <div key={i} style={{ fontSize: "12px", color: "var(--ink-soft)", lineHeight: 1.45, marginBottom: "8px", fontFamily: "'Geist', sans-serif" }}>{h}</div>
+ ))}
+ {plan.adjuncts && plan.adjuncts.length > 0 && plan.adjuncts.map((a, i) => (
+ <div key={i} style={{ fontSize: "12px", color: "var(--ink)", lineHeight: 1.45, marginBottom: "5px", display: "flex", gap: "7px", fontFamily: "'Geist', sans-serif" }}>
+ <span style={{ color: "var(--gold)", fontWeight: 700, flexShrink: 0 }}>+</span><span>{a}</span>
+ </div>
+ ))}
+ {cautions.length > 0 && (
+ <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "10px" }}>
+ {cautions.map((c, i) => (
+ <div key={i} style={{ fontSize: "11.5px", color: "var(--ink-soft)", borderLeft: "2px solid var(--accent)", paddingLeft: "9px", lineHeight: 1.42, fontFamily: "'Geist', sans-serif" }}>{c}</div>
+ ))}
+ </div>
+ )}
+ {principle && (
+ <div style={{ fontSize: "11px", color: "var(--ink-faint)", fontStyle: "italic", lineHeight: 1.5, paddingTop: "12px", borderTop: "1px solid var(--rule)", marginTop: "10px", fontFamily: "'Geist', sans-serif" }}>{principle}</div>
+ )}
+ </div>
+ ) : null}
  </div>
  </div>
  </div>
