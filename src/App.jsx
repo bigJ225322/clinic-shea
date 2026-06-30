@@ -32734,7 +32734,7 @@ function ImplantBuilder() {
  const PX = 12, VBW = 320, cx = 160; // 12 px per mm — EVERY element is drawn at this scale
  const BONE = "#e7d9bd", BONE_E = "#c9b893", BONE_LT = "#f1ead6", GUM = "#c79c97", GUM_E = "#a87b76", ENAMEL = "#f4efe7", ENAMEL_E = "#d2c6ae";
  const TITAN = "#b9bdc4", TITAN_E = "#878d97", ABUT = "#cbbd93", ABUT_E = "#9c8a57"; // ABUT = gold-shaded titanium (Atlantis)
- const NERVE = "#edcf83", NERVE_E = "#caa43e", AIR = "#eef2f5", AIR_E = "#b7c3cc";
+ const NERVE = "#edcf83", NERVE_E = "#caa43e", AIR = "#d2e3ee", AIR_E = "#8fb0c4"; // AIR = maxillary sinus / nasal cavity (light blue), AIR_E = Schneiderian membrane / cortical floor
  const GREEN = "var(--teal)", RED = "var(--accent)", GOLD = "var(--gold)";
 
  if (!drawable) {
@@ -32764,7 +32764,7 @@ function ImplantBuilder() {
  const feasC = feas.color;
 
  const td = TOOTH_DIMS[parseInt(f.site, 10)] || { bl: 8, ht: 8.5 };
- const tissueMm = 3;                                   // peri-implant mucosa [Berglundh & Lindhe 1996]
+ const tissueMm = f.biotype === "thick" ? 4 : f.biotype === "thin" ? 2.5 : 3; // peri-implant mucosa (~3 mm, Berglundh & Lindhe 1996); thicker in a thick biotype
  const crownPx = td.ht * PX, blPx = td.bl * PX, tissuePx = tissueMm * PX;
  const boneHpx = bh * PX;
  const bw = rw * PX, boneL = cx - bw / 2, boneR = cx + bw / 2;
@@ -32772,9 +32772,15 @@ function ImplantBuilder() {
  const connW = Math.min(dpx, 4.5 * PX);                // platform / abutment connection (~4 mm)
  const nerveR = Math.min(1.4 * PX, 17);
  const structBelow = isNerve ? 2 * nerveR + 10 : 20;
- const capH = 16, topPad = 14;
- // Vertical stack, all to scale: caption | crown | 3 mm tissue | bone | structure
- const crownTop = topPad + capH;
+ const topPad = 14;
+ // Opposing (antagonist) tooth — drawn at the interocclusal distance above the
+ // crown's occlusal surface when that distance is entered, to scale.
+ const interocc = parseFloat(f.interocclusal);
+ const hasOpp = interocc > 0;
+ const oppGap = hasOpp ? interocc * PX : 0;        // interocclusal clearance
+ const oppH = hasOpp ? 6.5 * PX : 0;               // opposing crown height
+ // Vertical stack, all to scale: [opposing tooth + gap] | crown | tissue | bone | structure
+ const crownTop = topPad + (hasOpp ? oppH + oppGap + 12 : 14);
  const gingTop = crownTop + crownPx;                   // tissue margin = crown margin
  const crestY = gingTop + tissuePx;                    // bone crest = implant platform
  const structY = crestY + boneHpx;
@@ -32807,7 +32813,9 @@ function ImplantBuilder() {
  const supra = (() => {
  const margY = gingTop, crH = crownPx;                  // tissue/crown margin; crown height (to scale)
  const collar = (w) => <ellipse cx={cx} cy={margY} rx={w / 2 + 1.5} ry="3" fill={GUM_E} />;
- const gingivaBand = <path {...pick("gingiva")} d={`M ${boneL - 3},${crestY} Q ${boneL - 3},${margY} ${boneL + 5},${margY} L ${boneR - 5},${margY} Q ${boneR + 3},${margY} ${boneR + 3},${crestY} Z`} fill={GUM} stroke={f.selected === "gingiva" ? "var(--accent)" : "none"} strokeWidth={f.selected === "gingiva" ? 2 : 0} />;
+ // Gingiva collar — bulges faciolingually by biotype (thick = fuller, thin = flatter).
+ const gBulge = f.biotype === "thick" ? 7 : f.biotype === "thin" ? 1.5 : 4;
+ const gingivaBand = <path {...pick("gingiva")} d={`M ${boneL - 2},${crestY} C ${boneL - gBulge},${crestY - tissuePx * 0.35} ${boneL - gBulge},${margY + 3} ${boneL + 4},${margY} L ${boneR - 4},${margY} C ${boneR + gBulge},${margY + 3} ${boneR + gBulge},${crestY - tissuePx * 0.35} ${boneR + 2},${crestY} Z`} fill={GUM} stroke={f.selected === "gingiva" ? "var(--accent)" : GUM_E} strokeWidth={f.selected === "gingiva" ? 2 : 0.7} />;
  const domeD = `M ${boneL - 3},${crestY} C ${boneL - 1},${margY - 2} ${cx - 14},${margY - 4} ${cx},${margY - 4} C ${cx + 14},${margY - 4} ${boneR + 1},${margY - 2} ${boneR + 3},${crestY} Z`;
 
  // pre-placement (edentulous ridge) or no placeable fixture → closed ridge mucosa
@@ -32849,7 +32857,9 @@ function ImplantBuilder() {
  const ttype = toothType(parseInt(f.site, 10));
  const cervW = blPx * 0.70, hocW = blPx, hocY = margY - crH * 0.30;
  const prepTop = margY - Math.min(crH * 0.72, 6 * PX);
- const ghost = `M ${cx - connW / 2},${crestY} Q ${cx - (connW + 4) / 2},${margY} ${cx - (connW + 2) / 2},${margY - 1} L ${cx - connW * 0.34},${prepTop + 3} Q ${cx},${prepTop - 1} ${cx + connW * 0.34},${prepTop + 3} L ${cx + (connW + 2) / 2},${margY - 1} Q ${cx + (connW + 4) / 2},${margY} ${cx + connW / 2},${crestY} Z`;
+ const prepW = isAnt ? connW * 0.55 : connW * 0.78;
+ // The custom abutment as seen INSIDE the crown (emergence → finish line → ~6 mm prep).
+ const abutInside = `M ${cx - connW / 2},${crestY} Q ${cx - (connW + 3) / 2},${margY} ${cx - (connW + 3) / 2},${margY - 1} L ${cx - prepW / 2},${prepTop + 4} Q ${cx},${prepTop - 2} ${cx + prepW / 2},${prepTop + 4} L ${cx + (connW + 3) / 2},${margY - 1} Q ${cx + (connW + 3) / 2},${margY} ${cx + connW / 2},${crestY} Z`;
  const crownPaths = {
  // incisor — wedge with a thin incisal edge + a lingual cingulum (right)
  incisor: `M ${cx - cervW / 2},${margY} C ${cx - hocW / 2},${margY - crH * 0.04} ${cx - hocW / 2},${hocY} ${cx - blPx * 0.14},${crownTop + crH * 0.05} Q ${cx - blPx * 0.04},${crownTop} ${cx},${crownTop + crH * 0.005} Q ${cx + blPx * 0.05},${crownTop} ${cx + blPx * 0.16},${crownTop + crH * 0.06} C ${cx + hocW / 2},${hocY} ${cx + hocW * 0.58},${margY - crH * 0.20} ${cx + cervW * 0.66},${margY - crH * 0.04} Q ${cx + cervW * 0.74},${margY} ${cx + cervW / 2},${margY} Z`,
@@ -32863,8 +32873,11 @@ function ImplantBuilder() {
  const isPosterior = ttype === "premolar" || ttype === "molar";
  return <g>
  {gingivaBand}
- <path d={ghost} fill={ABUT} fillOpacity="0.25" stroke={ABUT_E} strokeWidth="0.7" strokeDasharray="2 2" opacity="0.55" />
- <path d={crownPaths[ttype]} fill={ENAMEL} stroke={ENAMEL_E} strokeWidth="1" />
+ {/* cutaway — the abutment + its screw shown inside the translucent crown */}
+ <path d={abutInside} fill={ABUT} stroke={ABUT_E} strokeWidth="0.9" />
+ <line x1={cx} y1={prepTop + 2} x2={cx} y2={crestY + lpx * 0.45} stroke={TITAN_E} strokeWidth="2.4" strokeLinecap="round" />
+ <circle cx={cx} cy={prepTop + 2.5} r="2.4" fill={TITAN_E} />
+ <path d={crownPaths[ttype]} fill={ENAMEL} fillOpacity="0.58" stroke={ENAMEL_E} strokeWidth="1.1" />
  {isPosterior && <line x1={cx} y1={crownTop + crH * 0.10} x2={cx} y2={crownTop + crH * 0.30} stroke={ENAMEL_E} strokeWidth="0.9" opacity="0.5" />}
  {collar(cervW)}
  </g>;
@@ -32880,8 +32893,8 @@ function ImplantBuilder() {
  </defs>
  <g transform={flipT}>
 
- {/* air space below a sinus / nasal floor */}
- {isFloor && <rect {...pick("structure")} x={boneL - 10} y={structY} width={bw + 20} height={VBH - structY - 4} fill={AIR} opacity="0.7" />}
+ {/* sinus / nasal cavity — the air space beyond the cortical floor */}
+ {isFloor && <rect {...pick("structure")} x={boneL - 16} y={structY} width={bw + 32} height={VBH - structY - 2} rx="6" fill={AIR} opacity="0.92" />}
 
  {/* GBR graft widening the buccal plate (drawn before bone so bone overlaps cleanly) */}
  {showGBR && <path d={`M ${boneL},${crestY + r} Q ${boneL},${crestY} ${boneL + r},${crestY} L ${boneL + r},${structY} L ${boneL - 11},${structY} Q ${boneL - 13},${(crestY + structY) / 2} ${boneL},${crestY + r} Z`} fill="url(#graft)" stroke={GOLD} strokeWidth="1" strokeDasharray="3 3" />}
@@ -32911,12 +32924,26 @@ function ImplantBuilder() {
  {/* supragingival assembly — tissue + selected component (clicking it selects that component) */}
  <g {...pick(comp)}>{supra}</g>
 
+ {/* opposing (antagonist) tooth at the interocclusal distance, when entered */}
+ {hasOpp && showFixture && (() => {
+ const occY = crownTop - oppGap, topY = occY - oppH, w = Math.min(blPx, 10 * PX);
+ const opp = `M ${cx - w / 2},${topY} C ${cx - w / 2},${topY + oppH * 0.5} ${cx - w * 0.36},${occY - 2} ${cx - w * 0.20},${occY} Q ${cx},${occY - oppH * 0.20} ${cx + w * 0.20},${occY} C ${cx + w * 0.36},${occY - 2} ${cx + w / 2},${topY + oppH * 0.5} ${cx + w / 2},${topY} Z`;
+ const dx = cx + Math.max(blPx, w) / 2 + 9;
+ return <g>
+ <path d={opp} fill={ENAMEL} stroke={ENAMEL_E} strokeWidth="1" />
+ {tick(dx - 4, crownTop, dx + 4, crownTop, "var(--gold)")}
+ {tick(dx - 4, occY, dx + 4, occY, "var(--gold)")}
+ <line x1={dx} y1={crownTop} x2={dx} y2={occY} stroke="var(--gold)" strokeWidth="1" />
+ <text x={dx + 6} y={(crownTop + occY) / 2 + 3} transform={tflip((crownTop + occY) / 2 + 3)} fontFamily="'Geist', sans-serif" fontSize="9.5" fontWeight="600" fill="var(--gold)">{interocc} mm</text>
+ </g>;
+ })()}
+
  {/* danger structure */}
  {isNerve && <g {...pick("structure")}>
  <circle cx={cx} cy={structY + nerveR} r={nerveR} fill={NERVE} stroke={f.selected === "structure" ? "var(--accent)" : NERVE_E} strokeWidth={f.selected === "structure" ? 2.4 : 1.2} />
  <circle cx={cx} cy={structY + nerveR} r={nerveR * 0.45} fill={NERVE_E} opacity="0.5" />
  </g>}
- {isFloor && <path {...pick("structure")} d={`M ${boneL - 10},${structY} q ${bw / 4},5 ${bw / 2},0 t ${bw / 2},0 l 10,0`} fill="none" stroke={f.selected === "structure" ? "var(--accent)" : AIR_E} strokeWidth={f.selected === "structure" ? 3 : 1.5} />}
+ {isFloor && <path {...pick("structure")} d={`M ${boneL - 14},${structY} q ${bw / 4},6 ${bw / 2},0 t ${bw / 2},0 l 14,0`} fill="none" stroke={f.selected === "structure" ? "var(--accent)" : AIR_E} strokeWidth={f.selected === "structure" ? 3.5 : 2.4} />}
 
  {/* apex clearance bracket (right of fixture) */}
  {showFixture && apexGap != null && (() => {
