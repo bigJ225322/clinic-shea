@@ -32673,89 +32673,241 @@ function ImplantBuilder() {
  const principle = (plan.flags || []).find(x => /^Restoratively-driven/.test(x));
  const cautions = (plan.flags || []).filter(x => !/^Restoratively-driven/.test(x));
 
- const card = { background: "var(--paper)", border: "1px solid var(--rule)", borderRadius: "3px", padding: "20px 22px" };
- const secLbl = { fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 600, fontFamily: "'Geist', sans-serif", marginBottom: "12px" };
- const outLbl = { fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif", marginBottom: "4px" };
- const grid3 = { display: "grid", gridTemplateColumns: "repeat(3, minmax(0,1fr))", gap: "12px" };
+ // ── Parametric bucco-lingual cross-section. Crown up, fixture down into the
+ // ridge, danger structure (IAN / sinus / nasal floor) at the apex. Everything
+ // drawn to scale from the actual mm, colored by the verdict. This IS the tool;
+ // the words live in the margin. ──
+ const rw = parseFloat(f.ridgeWidth);
+ const bh = parseFloat(f.boneHeight);
+ const drawable = rw > 0 && bh > 0 && !!plan.site;
+
+ const crossSection = (() => {
+ const PX = 12, VBW = 360, VBH = 330, cx = 170;
+ const BONE = "#e7d9bd", BONE_E = "#c9b893", GUM = "#c79c97", ENAMEL = "#f3eee4", ENAMEL_E = "#d6cab4";
+ const NERVE = "#edcf83", NERVE_E = "#caa43e", AIR = "#eef2f5", AIR_E = "#b7c3cc";
+ const GREEN = "var(--teal)", RED = "var(--accent)", GOLD = "var(--gold)";
+
+ if (!drawable) {
+ return (
+ <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" style={{ maxWidth: "460px", display: "block" }} role="img">
+ <rect x="1" y="1" width={VBW - 2} height={VBH - 2} rx="4" fill="none" stroke="var(--rule)" strokeDasharray="5 5" />
+ <text x={cx} y={VBH / 2 - 6} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="13" fill="var(--ink-faint)">Enter a tooth, ridge width,</text>
+ <text x={cx} y={VBH / 2 + 14} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="13" fill="var(--ink-faint)">and bone height to draw the site.</text>
+ </svg>
+ );
+ }
+
+ const struct = plan.site.structure || "";
+ const isSinus = /sinus/i.test(struct);
+ const isNasal = /nasal/i.test(struct);
+ const isNerve = /nerve|canal|alveolar/i.test(struct) && !isSinus && !isNasal;
+ const isFloor = isSinus || isNasal;
+ const structShort = isSinus ? "sinus" : isNasal ? "nasal floor" : isNerve ? "IAN" : "inf. border";
+ const safety = plan.site.safety != null ? plan.site.safety : (isNerve ? 2 : 1);
+
+ const dia = plan.implant && plan.implant.diameter ? plan.implant.diameter : 0;
+ const len = plan.implant && plan.implant.length ? plan.implant.length : 0;
+ const hasImpl = dia > 0 && len > 0;
+ const ghostDia = 4.1, ghostLen = Math.max(6, Math.min(10, bh - safety));
+ const dDia = hasImpl ? dia : ghostDia, dLen = hasImpl ? len : ghostLen;
+ const feasC = feas.color;
+
+ const crownH = 30, gingH = 11;
+ const boneHpx = bh * PX;
+ const topPad = Math.max(16, (VBH - (crownH + gingH + boneHpx) - 46) / 2);
+ const crownTop = topPad, gingTop = crownTop + crownH, crestY = gingTop + gingH;
+ const structY = crestY + boneHpx;
+
+ const bw = rw * PX, boneL = cx - bw / 2, boneR = cx + bw / 2;
+ const dpx = dDia * PX, lpx = dLen * PX, implL = cx - dpx / 2, implR = cx + dpx / 2;
+ const apexY = crestY + lpx;
+ const apexGap = hasImpl ? Math.max(0, bh - len) : null;
+ const apexOK = apexGap == null || apexGap + 0.001 >= safety;
+ const breach = dpx > bw - 0.5; // fixture wider than the plates allow
+ const crownW = Math.max(20, Math.min(bw * 0.9, dpx + 12));
+ const r = Math.min(7, bw / 2);
+
+ const adj = (plan.adjuncts || []).join(" ");
+ const showGBR = /GBR|ridge split|ridge augmentation|graft/i.test(adj) && plan.feasibility !== "place";
+ const showLift = /sinus lift|sinus elevation|lateral-window/i.test(adj);
+ const nerveR = Math.min(15, 1.3 * PX);
+
+ const tick = (x1, y1, x2, y2, col) => <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={col} strokeWidth="1" />;
 
  return (
- <div className="fade-in" style={{ maxWidth: "1000px", margin: "0 auto", textAlign: "left" }}>
- <div style={{ marginBottom: "20px" }}>
+ <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" style={{ maxWidth: "460px", display: "block" }} role="img" aria-label="Implant cross-section">
+ <defs>
+ <pattern id="graft" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+ <rect width="6" height="6" fill={GOLD} opacity="0.12" />
+ <line x1="0" y1="0" x2="0" y2="6" stroke={GOLD} strokeWidth="1.2" opacity="0.6" />
+ </pattern>
+ </defs>
+
+ {/* air space below a sinus / nasal floor */}
+ {isFloor && <rect x={boneL - 10} y={structY} width={bw + 20} height={VBH - structY - 4} fill={AIR} opacity="0.7" />}
+
+ {/* GBR graft widening the buccal plate (drawn before bone so bone overlaps cleanly) */}
+ {showGBR && <path d={`M ${boneL},${crestY + r} Q ${boneL},${crestY} ${boneL + r},${crestY} L ${boneL + r},${structY} L ${boneL - 11},${structY} Q ${boneL - 13},${(crestY + structY) / 2} ${boneL},${crestY + r} Z`} fill="url(#graft)" stroke={GOLD} strokeWidth="1" strokeDasharray="3 3" />}
+
+ {/* bone block, rounded crest */}
+ <path d={`M ${boneL},${structY} L ${boneL},${crestY + r} Q ${boneL},${crestY} ${boneL + r},${crestY} L ${boneR - r},${crestY} Q ${boneR},${crestY} ${boneR},${crestY + r} L ${boneR},${structY} Z`} fill={BONE} stroke={BONE_E} strokeWidth="1.2" />
+ <line x1={boneL + 1} y1={crestY + 4} x2={boneR - 1} y2={crestY + 4} stroke={BONE_E} strokeWidth="0.8" opacity="0.6" />
+
+ {/* sinus-lift graft pocket above the floor */}
+ {showLift && <rect x={boneL + 2} y={Math.max(crestY + 4, structY - 3 * PX)} width={bw - 4} height={structY - Math.max(crestY + 4, structY - 3 * PX)} fill="url(#graft)" />}
+
+ {/* gingiva */}
+ <path d={`M ${boneL - 3},${crestY} Q ${boneL - 3},${gingTop} ${boneL + 4},${gingTop} L ${boneR - 4},${gingTop} Q ${boneR + 3},${gingTop} ${boneR + 3},${crestY} Z`} fill={GUM} />
+
+ {/* crown */}
+ <path d={`M ${cx - crownW / 2},${gingTop + 1} Q ${cx - crownW / 2},${crownTop} ${cx},${crownTop} Q ${cx + crownW / 2},${crownTop} ${cx + crownW / 2},${gingTop + 1} Z`} fill={ENAMEL} stroke={ENAMEL_E} strokeWidth="1" />
+ {/* abutment */}
+ <rect x={cx - 2.5} y={gingTop} width="5" height={crestY - gingTop + 2} fill={ENAMEL_E} opacity="0.7" />
+
+ {/* fixture */}
+ {hasImpl ? (
+ <g>
+ <rect x={implL - 2} y={crestY - 2} width={dpx + 4} height="4" rx="1.5" fill={feasC} />
+ <path d={`M ${implL},${crestY} L ${implR},${crestY} L ${implR},${apexY - 7} Q ${implR},${apexY} ${cx},${apexY} Q ${implL},${apexY} ${implL},${apexY - 7} Z`} fill={feasC} fillOpacity="0.82" stroke={breach ? RED : feasC} strokeWidth={breach ? 2 : 1.2} />
+ {Array.from({ length: Math.max(2, Math.floor(lpx / 11)) }, (_, i) => {
+ const y = crestY + 9 + i * 11;
+ return y < apexY - 8 ? <line key={i} x1={implL + 1.5} y1={y} x2={implR - 1.5} y2={y} stroke="var(--paper)" strokeWidth="1" opacity="0.45" /> : null;
+ })}
+ </g>
+ ) : (
+ <path d={`M ${implL},${crestY} L ${implR},${crestY} L ${implR},${apexY - 7} Q ${implR},${apexY} ${cx},${apexY} Q ${implL},${apexY} ${implL},${apexY - 7} Z`} fill="none" stroke={feasC} strokeWidth="1.4" strokeDasharray="4 4" opacity="0.8" />
+ )}
+
+ {/* danger structure */}
+ {isNerve && <>
+ <circle cx={cx} cy={structY + nerveR} r={nerveR} fill={NERVE} stroke={NERVE_E} strokeWidth="1.2" />
+ <circle cx={cx} cy={structY + nerveR} r={nerveR * 0.45} fill={NERVE_E} opacity="0.5" />
+ </>}
+ {isFloor && <path d={`M ${boneL - 10},${structY} q ${bw / 4},5 ${bw / 2},0 t ${bw / 2},0 l 10,0`} fill="none" stroke={AIR_E} strokeWidth="1.5" />}
+
+ {/* apex clearance bracket (right of fixture) */}
+ {hasImpl && apexGap != null && (() => {
+ const bx = implR + 13, mid = (apexY + structY) / 2, col = apexOK ? GREEN : RED;
+ return <g>
+ {tick(implR, apexY, bx + 4, apexY, col)}
+ {tick(implR, structY, bx + 4, structY, col)}
+ <line x1={bx} y1={apexY} x2={bx} y2={structY} stroke={col} strokeWidth="1" />
+ <text x={bx + 6} y={mid - 3} fontFamily="'Geist', sans-serif" fontSize="10.5" fontWeight="600" fill={col}>{apexGap.toFixed(apexGap % 1 ? 1 : 0)} mm</text>
+ <text x={bx + 6} y={mid + 9} fontFamily="'Geist', sans-serif" fontSize="9" fill="var(--ink-soft)">to {structShort}</text>
+ </g>;
+ })()}
+
+ {/* bone-height dimension (left) */}
+ {(() => {
+ const hx = boneL - 14, col = "var(--ink-soft)";
+ return <g>
+ {tick(hx - 4, crestY, boneL, crestY, col)}
+ {tick(hx - 4, structY, boneL, structY, col)}
+ <line x1={hx} y1={crestY} x2={hx} y2={structY} stroke={col} strokeWidth="1" />
+ <text x={hx - 5} y={(crestY + structY) / 2} fontFamily="'Geist', sans-serif" fontSize="10.5" fill="var(--ink)" textAnchor="middle" transform={`rotate(-90 ${hx - 5} ${(crestY + structY) / 2})`}>{bh} mm bone</text>
+ </g>;
+ })()}
+
+ {/* ridge-width dimension (bottom) */}
+ {(() => {
+ const wy = VBH - 14, col = breach ? RED : "var(--ink-soft)";
+ return <g>
+ {tick(boneL, wy - 4, boneL, structY + (isNerve ? 2 * nerveR + 4 : 14), col)}
+ {tick(boneR, wy - 4, boneR, structY + (isNerve ? 2 * nerveR + 4 : 14), col)}
+ <line x1={boneL} y1={wy} x2={boneR} y2={wy} stroke={col} strokeWidth="1" />
+ <text x={cx} y={wy - 4} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="10.5" fontWeight={breach ? 700 : 400} fill={breach ? RED : "var(--ink)"}>{rw} mm ridge{breach ? " — too narrow" : ""}</text>
+ </g>;
+ })()}
+
+ {/* fixture size caption */}
+ {hasImpl && <text x={cx} y={crownTop - 4} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize="11" fontWeight="600" fill={feasC}>⌀{dia} × {len} mm</text>}
+ </svg>
+ );
+ })();
+
+ const card = { background: "var(--paper)", border: "1px solid var(--rule)", borderRadius: "3px", padding: "16px 16px" };
+ const secLbl = { fontSize: "9.5px", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 600, fontFamily: "'Geist', sans-serif", marginBottom: "9px" };
+ const grid2 = { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "9px" };
+
+ return (
+ <div className="fade-in" style={{ maxWidth: "1080px", margin: "0 auto", textAlign: "left" }}>
+ <div style={{ marginBottom: "16px" }}>
  <h2 className="serif" style={{ fontSize: "26px", fontWeight: 400, color: "var(--ink)", margin: "0 0 4px", letterSpacing: "-0.01em" }}>Implant placement planner</h2>
  <p style={{ fontSize: "13px", color: "var(--ink-soft)", margin: 0, fontFamily: "'Geist', sans-serif", fontStyle: "italic" }}>
  Single-tooth. Decision support, not a surgical guide — the surgeon plans from the CBCT.
  </p>
  </div>
 
- <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: "18px", alignItems: "start" }}>
- {/* ── INPUTS ── */}
+ <div style={{ display: "grid", gridTemplateColumns: "248px minmax(0,1fr) 200px", gap: "16px", alignItems: "start" }}>
+ {/* ── INPUTS (compact rail) ── */}
  <div style={card}>
  <div style={secLbl}>Site &amp; bone</div>
- <div style={grid3}>
+ <div style={grid2}>
  <Field label="Tooth">
  <Select value={f.site} onChange={v => set("site", v)}>
  <option value="">—</option>
- <optgroup label="Maxillary (1–16)">{Array.from({ length: 16 }, (_, i) => i + 1).map(n => <option key={n} value={n}>#{n}</option>)}</optgroup>
- <optgroup label="Mandibular (17–32)">{Array.from({ length: 16 }, (_, i) => i + 17).map(n => <option key={n} value={n}>#{n}</option>)}</optgroup>
+ <optgroup label="Maxillary">{Array.from({ length: 16 }, (_, i) => i + 1).map(n => <option key={n} value={n}>#{n}</option>)}</optgroup>
+ <optgroup label="Mandibular">{Array.from({ length: 16 }, (_, i) => i + 17).map(n => <option key={n} value={n}>#{n}</option>)}</optgroup>
  </Select>
  </Field>
- <Field label="MD space (mm)"><TextInput value={f.mdSpace} onChange={num("mdSpace")} placeholder="e.g. 8" /></Field>
- <Field label="Ridge width (mm)"><TextInput value={f.ridgeWidth} onChange={num("ridgeWidth")} placeholder="e.g. 7" /></Field>
- <Field label="Bone height (mm)"><TextInput value={f.boneHeight} onChange={num("boneHeight")} placeholder="e.g. 12" /></Field>
- <Field label="Keratinized (mm)"><TextInput value={f.keratinizedTissue} onChange={num("keratinizedTissue")} placeholder="optional" /></Field>
- <Field label="Interoccl. (mm)"><TextInput value={f.interocclusal} onChange={num("interocclusal")} placeholder="optional" /></Field>
+ <Field label="MD (mm)"><TextInput value={f.mdSpace} onChange={num("mdSpace")} placeholder="8" /></Field>
+ <Field label="Ridge W (mm)"><TextInput value={f.ridgeWidth} onChange={num("ridgeWidth")} placeholder="7" /></Field>
+ <Field label="Bone H (mm)"><TextInput value={f.boneHeight} onChange={num("boneHeight")} placeholder="12" /></Field>
+ <Field label="Keratin. (mm)"><TextInput value={f.keratinizedTissue} onChange={num("keratinizedTissue")} placeholder="opt." /></Field>
+ <Field label="Interoccl."><TextInput value={f.interocclusal} onChange={num("interocclusal")} placeholder="opt." /></Field>
  </div>
 
- <div style={{ ...secLbl, marginTop: "18px" }}>Soft tissue &amp; host factors</div>
- <div style={grid3}>
+ <div style={{ ...secLbl, marginTop: "15px" }}>Host factors</div>
+ <div style={grid2}>
  <Field label="Biotype">
  <Select value={f.biotype} onChange={v => set("biotype", v)}><option value="">—</option><option value="thick">Thick</option><option value="thin">Thin</option></Select>
  </Field>
  <Field label="Smoking">
- <Select value={f.smoking} onChange={v => set("smoking", v)}><option value="none">None</option><option value="light">Light</option><option value="heavy">Heavy (&gt;10/d)</option></Select>
+ <Select value={f.smoking} onChange={v => set("smoking", v)}><option value="none">None</option><option value="light">Light</option><option value="heavy">Heavy</option></Select>
  </Field>
  <Field label="Diabetes">
- <Select value={f.diabetes} onChange={v => set("diabetes", v)}><option value="none">None</option><option value="controlled">Controlled</option><option value="uncontrolled">Uncontrolled</option></Select>
+ <Select value={f.diabetes} onChange={v => set("diabetes", v)}><option value="none">None</option><option value="controlled">Controlled</option><option value="uncontrolled">Uncontr.</option></Select>
  </Field>
- <Field label="Antiresorptive">
- <Select value={f.antiresorptive} onChange={v => set("antiresorptive", v)}><option value="none">None</option><option value="oral">Oral bisphos.</option><option value="iv">IV / denosumab</option></Select>
+ <Field label="Antiresorpt.">
+ <Select value={f.antiresorptive} onChange={v => set("antiresorptive", v)}><option value="none">None</option><option value="oral">Oral</option><option value="iv">IV / denos.</option></Select>
  </Field>
  <Field label="Skeletal">
- <Select value={f.skeletal} onChange={v => set("skeletal", v)}><option value="adult">Adult</option><option value="growing">Still growing</option></Select>
+ <Select value={f.skeletal} onChange={v => set("skeletal", v)}><option value="adult">Adult</option><option value="growing">Growing</option></Select>
  </Field>
  <Field label="Radiation">
- <Select value={f.radiation} onChange={v => set("radiation", v)}><option value="none">None</option><option value="low">Low</option><option value="high">High (&gt;60 Gy)</option></Select>
+ <Select value={f.radiation} onChange={v => set("radiation", v)}><option value="none">None</option><option value="low">Low</option><option value="high">High</option></Select>
  </Field>
  </div>
- <label style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "14px", fontSize: "13px", color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif", cursor: "pointer" }}>
- <input type="checkbox" checked={f.bruxism} onChange={e => set("bruxism", e.target.checked)} style={{ width: "15px", height: "15px", accentColor: "var(--accent)", cursor: "pointer" }} /> Parafunction / bruxism
+ <label style={{ display: "flex", alignItems: "center", gap: "7px", marginTop: "12px", fontSize: "12px", color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif", cursor: "pointer" }}>
+ <input type="checkbox" checked={f.bruxism} onChange={e => set("bruxism", e.target.checked)} style={{ width: "14px", height: "14px", accentColor: "var(--accent)", cursor: "pointer" }} /> Parafunction / bruxism
  </label>
  </div>
 
- {/* ── PLAN ── */}
- <div style={card}>
- <div style={{ display: "flex", alignItems: "center", gap: "9px", marginBottom: "7px" }}>
- <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: feas.color, flexShrink: 0 }} />
+ {/* ── THE VISUAL (centerpiece) ── */}
+ <div style={{ ...card, padding: "14px 14px 8px", display: "flex", flexDirection: "column", alignItems: "center", minHeight: "360px" }}>
+ <div style={{ display: "flex", alignItems: "center", gap: "8px", alignSelf: "flex-start", marginBottom: "2px" }}>
+ <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: feas.color, flexShrink: 0 }} />
  <span style={{ fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: feas.color, fontWeight: 700, fontFamily: "'Geist', sans-serif" }}>{feas.verb}</span>
  </div>
- <div style={{ fontFamily: "'Fraunces', serif", fontSize: "18px", color: "var(--ink)", lineHeight: 1.3, marginBottom: "16px" }}>{plan.headline}</div>
+ {crossSection}
+ </div>
+
+ {/* ── EVIDENCE (margin) ── */}
+ <div style={{ fontFamily: "'Geist', sans-serif", paddingTop: "2px" }}>
+ <div style={{ fontFamily: "'Fraunces', serif", fontSize: "15px", color: "var(--ink)", lineHeight: 1.32, marginBottom: "12px" }}>{plan.headline}</div>
 
  {plan.hardStops && plan.hardStops.length > 1 && plan.hardStops.slice(1).map((h, i) => (
- <div key={i} style={{ fontSize: "12.5px", color: "var(--ink)", lineHeight: 1.5, fontFamily: "'Geist', sans-serif", marginBottom: "8px" }}>{h}</div>
+ <div key={i} style={{ fontSize: "11.5px", color: "var(--ink-soft)", lineHeight: 1.45, marginBottom: "8px" }}>{h}</div>
  ))}
 
- {plan.implant && (plan.implant.diameter || plan.implant.length) && (
- <div style={{ marginBottom: "14px" }}>
- <div style={outLbl}>Implant</div>
- <div style={{ fontSize: "12.5px", color: "var(--ink)", lineHeight: 1.55, fontFamily: "'Geist', sans-serif" }}>{plan.implant.rationale}</div>
- </div>
+ {plan.implant && plan.implant.rationale && (
+ <div style={{ fontSize: "11.5px", color: "var(--ink-soft)", lineHeight: 1.5, marginBottom: "12px" }}>{plan.implant.rationale}</div>
  )}
 
  {plan.position && (
- <div style={{ marginBottom: "14px" }}>
- <div style={outLbl}>Position</div>
+ <div style={{ marginBottom: "12px" }}>
  {["mesiodistal", "buccolingual", "apicocoronal", "angulation"].map(k => (
- <div key={k} style={{ fontSize: "12px", color: "var(--ink-soft)", lineHeight: 1.55, fontFamily: "'Geist', sans-serif", display: "flex", gap: "7px" }}>
+ <div key={k} style={{ fontSize: "11px", color: "var(--ink-faint)", lineHeight: 1.5, display: "flex", gap: "6px", marginBottom: "2px" }}>
  <span style={{ color: "var(--accent)", flexShrink: 0 }}>·</span><span>{plan.position[k]}</span>
  </div>
  ))}
@@ -32763,10 +32915,9 @@ function ImplantBuilder() {
  )}
 
  {plan.adjuncts && plan.adjuncts.length > 0 && (
- <div style={{ marginBottom: "14px" }}>
- <div style={{ ...outLbl, color: "var(--gold)" }}>Adjuncts</div>
+ <div style={{ marginBottom: "12px" }}>
  {plan.adjuncts.map((a, i) => (
- <div key={i} style={{ fontSize: "12.5px", color: "var(--ink)", lineHeight: 1.55, fontFamily: "'Geist', sans-serif", marginBottom: "5px", display: "flex", gap: "7px" }}>
+ <div key={i} style={{ fontSize: "11.5px", color: "var(--ink)", lineHeight: 1.45, marginBottom: "4px", display: "flex", gap: "6px" }}>
  <span style={{ color: "var(--gold)", fontWeight: 700, flexShrink: 0 }}>+</span><span>{a}</span>
  </div>
  ))}
@@ -32774,15 +32925,15 @@ function ImplantBuilder() {
  )}
 
  {cautions.length > 0 && (
- <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: principle ? "14px" : 0 }}>
+ <div style={{ display: "flex", flexDirection: "column", gap: "5px", marginBottom: principle ? "12px" : 0 }}>
  {cautions.map((c, i) => (
- <div key={i} style={{ fontSize: "12px", color: "var(--ink)", background: "var(--paper-soft)", borderLeft: "3px solid var(--accent)", borderRadius: "2px", padding: "7px 10px", lineHeight: 1.45, fontFamily: "'Geist', sans-serif" }}>{c}</div>
+ <div key={i} style={{ fontSize: "11px", color: "var(--ink-soft)", borderLeft: "2px solid var(--accent)", paddingLeft: "8px", lineHeight: 1.4 }}>{c}</div>
  ))}
  </div>
  )}
 
  {principle && (
- <div style={{ fontSize: "11.5px", color: "var(--ink-faint)", fontStyle: "italic", lineHeight: 1.5, fontFamily: "'Geist', sans-serif", paddingTop: "12px", borderTop: "1px solid var(--rule)" }}>{principle}</div>
+ <div style={{ fontSize: "10.5px", color: "var(--ink-faint)", fontStyle: "italic", lineHeight: 1.5, paddingTop: "10px", borderTop: "1px solid var(--rule)" }}>{principle}</div>
  )}
  </div>
  </div>
