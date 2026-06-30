@@ -13755,6 +13755,7 @@ function Browse({
  selectedProcedureId, onSelectProcedure,
  onGenerateNote,
  jumpToId, onJumped,
+ onOpenPE,
 }) {
  // ── Session: ordered list of procedure IDs (null = empty slot) ──────
  // Don't seed with a non-browsable procedure (OS / ICC) — the Steps tab
@@ -14193,15 +14194,18 @@ function Browse({
 )}
  </h2>
  {PROCEDURES_WITH_PE[currentProcedure.id] && (
- <span title={"Performance Exam · " + PROCEDURES_WITH_PE[currentProcedure.id].join(", ")}
+ <button
+ onClick={() => onOpenPE && onOpenPE(PROCEDURES_WITH_PE[currentProcedure.id][0])}
+ title={"Performance Exam · " + PROCEDURES_WITH_PE[currentProcedure.id].join(", ") + " — open rubric in Reqs"}
+ className="tactile"
  style={{
  fontSize: "10px", fontWeight: 600, letterSpacing: "0.1em",
  textTransform: "uppercase", fontFamily: "'Geist', sans-serif",
  color: "var(--accent)", background: "rgba(122, 30, 30, 0.08)",
  border: "1px solid rgba(122, 30, 30, 0.28)",
  padding: "3px 9px", borderRadius: "100px", lineHeight: 1.4,
- whiteSpace: "nowrap", marginLeft: "auto",
- }}>PE</span>
+ whiteSpace: "nowrap", marginLeft: "auto", cursor: "pointer",
+ }}>PE ↗</button>
 )}
  </div>
  <div className="hairline" style={{ margin: "0 0 22px" }} />
@@ -16894,7 +16898,7 @@ function PETimeline({ pes, selectedId, onSelect, groupBy = "semester", onGroupBy
  const restBg = isSelected ? "var(--accent)" : isPast ? "rgba(122,30,30,0.07)" : "var(--paper)";
  const hoverBg = isSelected ? "var(--accent)" : isPast ? "rgba(122,30,30,0.14)" : "rgba(122,30,30,0.05)";
  return (
- <button key={pe.id} onClick={() => onSelect(pe.id)} title={pe.name}
+ <button key={pe.id} data-pe-id={pe.id} onClick={() => onSelect(pe.id)} title={pe.name}
  onMouseEnter={(e) => { e.currentTarget.style.background = hoverBg; }}
  onMouseLeave={(e) => { e.currentTarget.style.background = restBg; }}
  style={{
@@ -16932,7 +16936,7 @@ function PETimeline({ pes, selectedId, onSelect, groupBy = "semester", onGroupBy
  const restBg = isSelected ? "var(--accent)" : "var(--paper)";
  const hoverBg = isSelected ? "var(--accent)" : "rgba(122,30,30,0.05)";
  return (
- <button key={pe.id} onClick={() => onSelect(pe.id)} title={pe.name}
+ <button key={pe.id} data-pe-id={pe.id} onClick={() => onSelect(pe.id)} title={pe.name}
  onMouseEnter={(e) => { e.currentTarget.style.background = hoverBg; }}
  onMouseLeave={(e) => { e.currentTarget.style.background = restBg; }}
  style={{
@@ -16979,7 +16983,7 @@ function PETimeline({ pes, selectedId, onSelect, groupBy = "semester", onGroupBy
  const restBg = isSelected ? "var(--accent)" : isPast ? "rgba(122,30,30,0.07)" : "var(--paper)";
  const hoverBg = isSelected ? "var(--accent)" : isPast ? "rgba(122,30,30,0.14)" : "rgba(122,30,30,0.05)";
  return (
- <button key={pe.id} onClick={() => onSelect(pe.id)} title={pe.name}
+ <button key={pe.id} data-pe-id={pe.id} onClick={() => onSelect(pe.id)} title={pe.name}
  onMouseEnter={(e) => { e.currentTarget.style.background = hoverBg; }}
  onMouseLeave={(e) => { e.currentTarget.style.background = restBg; }}
  style={{
@@ -17229,8 +17233,20 @@ function PEDetail({ pe, onShowSteps }) {
 );
 }
 
-function PEs({ onShowSteps }) {
+function PEs({ onShowSteps, jumpToId, onJumped }) {
  const [selectedId, setSelectedId] = useState(null);
+
+ // Steps → "PE" badge brings us here with a PE code to open + scroll into view.
+ useEffect(() => {
+ if (!jumpToId) return;
+ setSelectedId(jumpToId);
+ const id = jumpToId;
+ requestAnimationFrame(() => {
+ const el = document.querySelector(`[data-pe-id="${id}"]`);
+ if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+ });
+ onJumped && onJumped();
+ }, [jumpToId]); // eslint-disable-line react-hooks/exhaustive-deps
  // Default to Semester grouping per the owner — semester is the lens students
  // actually plan around (which PEs are due this term vs next), and
  // grouping by Type buries the date-relevant grouping under category.
@@ -17271,8 +17287,9 @@ function PEs({ onShowSteps }) {
 // still require of me" — so they share one nav slot instead of two. The two
 // views render their existing components (<RVUs />, <PEs />) unchanged; only
 // the switcher is new. Defaults to Codes (the broader day-to-day lookup).
-function Reqs({ onShowSteps }) {
+function Reqs({ onShowSteps, jumpToPE, onJumpedPE }) {
  const [view, setView] = useState("codes"); // "codes" | "pes"
+ useEffect(() => { if (jumpToPE) setView("pes"); }, [jumpToPE]); // Steps → PE badge opens the PEs view
  const OPTS = [{ id: "codes", label: "Codes" }, { id: "pes", label: "PEs" }];
  return (
  <div>
@@ -17296,7 +17313,7 @@ function Reqs({ onShowSteps }) {
  }}>{opt.label}</button>
  ))}
  </div>
- {view === "codes" ? <RVUs /> : <PEs onShowSteps={onShowSteps} />}
+ {view === "codes" ? <RVUs /> : <PEs onShowSteps={onShowSteps} jumpToId={jumpToPE} onJumped={onJumpedPE} />}
  </div>
 );
 }
@@ -33544,6 +33561,7 @@ export default function App() {
  const [noteText, setNoteText] = useState("");
  const [noteUserEdited, setNoteUserEdited] = useState(false);
  const [pendingBrowseChunkId, setPendingBrowseChunkId] = useState("");
+ const [pendingPE, setPendingPE] = useState(""); // Steps "PE" badge → Reqs PE rubric
 
  // Browse → "Generate note for this" button.
  const handleGenerateNote = (procedureId) => {
@@ -33554,6 +33572,13 @@ export default function App() {
  const handleShowSteps = (procedureId) => {
  setSelectedProcedureId(procedureId);
  setTab("browse");
+ };
+
+ // Steps → "PE" badge: jump to that PE's rubric in the Reqs tab.
+ const handleOpenPE = (peCode) => {
+ if (!peCode) return;
+ setPendingPE(peCode);
+ setTab("reqs");
  };
 
  // Set the document title once on mount so the browser tab reads correctly.
@@ -34076,11 +34101,12 @@ export default function App() {
  onSelectProcedure={setSelectedProcedureId}
  onGenerateNote={handleGenerateNote}
  jumpToId={pendingBrowseChunkId}
- onJumped={() => setPendingBrowseChunkId("")} />
+ onJumped={() => setPendingBrowseChunkId("")}
+ onOpenPE={handleOpenPE} />
 )}
  {tab === "guides" && <Guides />}
  {tab === "pathways" && <Pathways homeSignal={mapsHomeSignal} onOpenChange={setMapOpen} />}
- {tab === "reqs" && <Reqs onShowSteps={handleShowSteps} />}
+ {tab === "reqs" && <Reqs onShowSteps={handleShowSteps} jumpToPE={pendingPE} onJumpedPE={() => setPendingPE("")} />}
  {tab === "helpers" && <RPDHelper />}
  {showIPP && tab === "implant" && <ImplantBuilder />}
  </main>
