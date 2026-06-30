@@ -14110,7 +14110,7 @@ function Browse({
  fontFamily: "'Geist', sans-serif", lineHeight: 1,
  pointerEvents: "none", whiteSpace: "nowrap",
  }}>
- Steps from <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em> verbatim
+ Steps from <em className="serif" style={{ fontStyle: "italic" }}>(swade)</em>
  </div>
  {/* Session label — left-side counterpart to "Steps by (swade)".
  Shows "Procedure A + Procedure B" when 2+ slots are in the
@@ -32703,7 +32703,7 @@ function ImplantBuilder() {
  <svg viewBox={`0 0 ${VBW} ${VBH}`} width="100%" style={{ maxWidth: "600px", display: "block" }} role="img">
  <rect x="1" y="1" width={VBW - 2} height={VBH - 2} rx="4" fill="none" stroke="var(--rule)" strokeDasharray="5 5" />
  <text x={cx} y={VBH / 2 - 6} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="13" fill="var(--ink-faint)">Enter a tooth, ridge width,</text>
- <text x={cx} y={VBH / 2 + 14} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="13" fill="var(--ink-faint)">and bone height to draw the site.</text>
+ <text x={cx} y={VBH / 2 + 14} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="13" fill="var(--ink-faint)">and bone height to visualize.</text>
  </svg>
  );
  }
