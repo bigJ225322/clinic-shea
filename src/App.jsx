@@ -32874,7 +32874,14 @@ function ImplantBuilder() {
  const dpx = dDia * PX, lpx = dLen * PX, implL = cx - dpx / 2, implR = cx + dpx / 2;
  const connW = Math.min(dpx, 4.5 * PX);                // platform / abutment connection (~4 mm)
  const nerveR = Math.min(1.4 * PX, 17);
- const structBelow = isNerve ? 2 * nerveR + 10 : 20;
+ // Maxillary teeth (1–16) flip vertically so the crown hangs down and the
+ // implant rises into the bone. For a maxillary FLOOR site (sinus / nasal) the
+ // air space sits right on the apical bone edge, exactly where the ridge-width
+ // dimension lives — so reserve a clear apical band there for the dimension to
+ // sit in (see the sinus rect + ridge dimension below).
+ const maxillary = parseInt(f.site, 10) >= 1 && parseInt(f.site, 10) <= 16;
+ const maxFloor = maxillary && isFloor;
+ const structBelow = isNerve ? 2 * nerveR + 10 : (maxFloor ? 38 : 20);
  const topPad = 14;
  // Opposing (antagonist) tooth — drawn at the interocclusal distance above the
  // crown's occlusal surface when that distance is entered, to scale.
@@ -32891,7 +32898,7 @@ function ImplantBuilder() {
  // Maxillary teeth hang down: flip the whole assembly so the crown is at the
  // bottom and the implant rises into the bone (sinus/nasal at the top). Shapes
  // go in a flip group; each text gets a counter-flip so it stays upright.
- const maxillary = (() => { const n = parseInt(f.site, 10); return n >= 1 && n <= 16; })();
+ // (maxillary / maxFloor computed above so structBelow could reserve a band.)
  const flipT = maxillary ? `matrix(1 0 0 -1 0 ${VBH})` : undefined;
  const tflip = (ty) => (maxillary ? `matrix(1 0 0 -1 0 ${2 * ty})` : undefined);
  // Click any part of the diagram → select it for the info card.
@@ -33023,11 +33030,20 @@ function ImplantBuilder() {
  {tick(proxR, gingTop - 8, proxR, gingTop - 2, "var(--ink-soft)")}
  <line x1={proxL} y1={gingTop - 8} x2={proxR} y2={gingTop - 8} stroke="var(--ink-soft)" strokeWidth="1" />
  <text x={cx} y={gingTop - 12} transform={tflip(gingTop - 12)} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="10.5" fill="var(--ink)">{mdv} mm M-D</text>
- {/* clearance to the distal adjacent root */}
- {showFixture && <>
- <line x1={implR} y1={crestY + lpx * 0.5} x2={proxR} y2={crestY + lpx * 0.5} stroke={gap + 0.01 >= 1.5 ? GREEN : RED} strokeWidth="1" />
- <text x={(implR + proxR) / 2} y={crestY + lpx * 0.5 - 4} transform={tflip(crestY + lpx * 0.5 - 4)} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="9" fontWeight="600" fill={gap + 0.01 >= 1.5 ? GREEN : RED}>{gap.toFixed(1)} mm</text>
- </>}
+ {/* clearance to EACH adjacent root — symmetric gap bands beside the
+ fixture, with the value in clear apical bone below (the ~1.5 mm gap is
+ too narrow to hold the label without crowding the fixture). */}
+ {showFixture && (() => {
+ const cy = crestY + lpx * 0.5, col = gap + 0.01 >= 1.5 ? GREEN : RED;
+ const labY = Math.min(apexY + (structY - apexY) / 2 + 3, structY - 5);
+ return <g>
+ <rect x={proxL} y={cy - 2.5} width={Math.max(0, implL - proxL)} height="5" fill={col} opacity="0.2" />
+ <rect x={implR} y={cy - 2.5} width={Math.max(0, proxR - implR)} height="5" fill={col} opacity="0.2" />
+ <line x1={proxL} y1={cy} x2={implL} y2={cy} stroke={col} strokeWidth="1" />
+ <line x1={implR} y1={cy} x2={proxR} y2={cy} stroke={col} strokeWidth="1" />
+ <text x={cx} y={labY} transform={tflip(labY)} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="9.5" fontWeight="600" fill={col}>{gap.toFixed(1)} mm to each root</text>
+ </g>;
+ })()}
  </g>
  </svg>
  );
@@ -33044,7 +33060,7 @@ function ImplantBuilder() {
  <g transform={flipT}>
 
  {/* sinus / nasal cavity — the air space beyond the cortical floor */}
- {isFloor && <rect {...pick("structure")} x={boneL - 16} y={structY} width={bw + 32} height={VBH - structY - 2} rx="6" fill={AIR} opacity="0.92" />}
+ {isFloor && <rect {...pick("structure")} x={boneL - 16} y={structY} width={bw + 32} height={VBH - structY - (maxFloor ? 26 : 2)} rx="6" fill={AIR} opacity="0.92" />}
 
  {/* GBR graft widening the buccal plate (drawn before bone so bone overlaps cleanly) */}
  {showGBR && <path d={`M ${boneL},${crestY + r} Q ${boneL},${crestY} ${boneL + r},${crestY} L ${boneL + r},${structY} L ${boneL - 11},${structY} Q ${boneL - 13},${(crestY + structY) / 2} ${boneL},${crestY + r} Z`} fill="url(#graft)" stroke={GOLD} strokeWidth="1" strokeDasharray="3 3" />}
@@ -33118,12 +33134,17 @@ function ImplantBuilder() {
  </g>;
  })()}
 
- {/* ridge-width dimension (bottom) */}
+ {/* ridge-width dimension (bottom). For a maxillary floor site the apical
+ end is the sinus, so the long witness lines would cross the air space —
+ there we draw short ticks instead and let the dimension sit in the
+ reserved apical band (horizontal boneL→boneR alignment carries the
+ correspondence to the bone). */}
  {(() => {
  const wy = VBH - 14, col = breach ? RED : "var(--ink-soft)";
+ const witnessTo = maxFloor ? wy + 4 : structY + (isNerve ? 2 * nerveR + 4 : 14);
  return <g>
- {tick(boneL, wy - 4, boneL, structY + (isNerve ? 2 * nerveR + 4 : 14), col)}
- {tick(boneR, wy - 4, boneR, structY + (isNerve ? 2 * nerveR + 4 : 14), col)}
+ {tick(boneL, wy - 4, boneL, witnessTo, col)}
+ {tick(boneR, wy - 4, boneR, witnessTo, col)}
  <line x1={boneL} y1={wy} x2={boneR} y2={wy} stroke={col} strokeWidth="1" />
  <text x={cx} y={wy - 4} transform={tflip(wy - 4)} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="10.5" fontWeight={breach ? 700 : 400} fill={breach ? RED : "var(--ink)"}>{rw} mm ridge{breach ? " — too narrow" : ""}</text>
  </g>;
