@@ -8,6 +8,11 @@ import { createPortal } from "react-dom";
 // Refresh by re-running the extract script and overwriting this file.
 import GUIDES_DATA from "./guides-data.json";
 
+// Implant placement engine — pure module (src/implant-engine.js), grounded in
+// the verified source ledger (docs/IMPLANT-ENGINE-SOURCES.md). The Implant
+// builder tab consumes computeImplantPlan via this import.
+import { computeImplantPlan } from "./implant-engine.js";
+
 // RPD engine — extracted to its own module (src/rpd-engine.js) for separation
 // from the UI. Engine is pure JS with no React dependencies; UI consumes its
 // public API via this import. Tests import directly from the engine module.
@@ -32636,6 +32641,155 @@ function PathwaySidebarTOC({ sections, activeIdx, collapsedSections, onToggle, o
 }
 
 
+// ── Implant placement builder — the UI skin over computeImplantPlan. Same
+// shape as the RPD helper: structured site/host inputs on the left, a live
+// verdict-first plan with per-line evidence on the right. Decision support. ──
+function ImplantBuilder() {
+ const [f, setF] = useState({
+ site: "", mdSpace: "", ridgeWidth: "", boneHeight: "",
+ keratinizedTissue: "", interocclusal: "",
+ biotype: "", smoking: "none", diabetes: "none", antiresorptive: "none",
+ skeletal: "adult", radiation: "none", bruxism: false,
+ });
+ const set = (k, v) => setF(p => ({ ...p, [k]: v }));
+ const num = (k) => (v) => set(k, v.replace(/[^\d.]/g, ""));
+
+ const plan = computeImplantPlan({
+ site: f.site, mdSpace: f.mdSpace, ridgeWidth: f.ridgeWidth, boneHeight: f.boneHeight,
+ keratinizedTissue: f.keratinizedTissue, interocclusal: f.interocclusal,
+ biotype: f.biotype, smoking: f.smoking, diabetes: f.diabetes,
+ antiresorptive: f.antiresorptive, growthComplete: f.skeletal !== "growing",
+ radiation: f.radiation, bruxism: f.bruxism,
+ });
+
+ const FEAS = {
+ place: { verb: "Place as-is", color: "var(--teal)" },
+ augment: { verb: "Augment", color: "var(--gold)" },
+ "stage-refer": { verb: "Stage / refer", color: "var(--accent)" },
+ "medical-hold": { verb: "Medical hold", color: "var(--accent)" },
+ incomplete: { verb: "Awaiting inputs", color: "var(--ink-faint)" },
+ };
+ const feas = FEAS[plan.feasibility] || FEAS.incomplete;
+ const principle = (plan.flags || []).find(x => /^Restoratively-driven/.test(x));
+ const cautions = (plan.flags || []).filter(x => !/^Restoratively-driven/.test(x));
+
+ const card = { background: "var(--paper)", border: "1px solid var(--rule)", borderRadius: "3px", padding: "20px 22px" };
+ const secLbl = { fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 600, fontFamily: "'Geist', sans-serif", marginBottom: "12px" };
+ const outLbl = { fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif", marginBottom: "4px" };
+ const grid3 = { display: "grid", gridTemplateColumns: "repeat(3, minmax(0,1fr))", gap: "12px" };
+
+ return (
+ <div className="fade-in" style={{ maxWidth: "1000px", margin: "0 auto", textAlign: "left" }}>
+ <div style={{ marginBottom: "20px" }}>
+ <h2 className="serif" style={{ fontSize: "26px", fontWeight: 400, color: "var(--ink)", margin: "0 0 4px", letterSpacing: "-0.01em" }}>Implant placement planner</h2>
+ <p style={{ fontSize: "13px", color: "var(--ink-soft)", margin: 0, fontFamily: "'Geist', sans-serif", fontStyle: "italic" }}>
+ Single-tooth. Decision support, not a surgical guide — the surgeon plans from the CBCT.
+ </p>
+ </div>
+
+ <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: "18px", alignItems: "start" }}>
+ {/* ── INPUTS ── */}
+ <div style={card}>
+ <div style={secLbl}>Site &amp; bone</div>
+ <div style={grid3}>
+ <Field label="Tooth">
+ <Select value={f.site} onChange={v => set("site", v)}>
+ <option value="">—</option>
+ <optgroup label="Maxillary (1–16)">{Array.from({ length: 16 }, (_, i) => i + 1).map(n => <option key={n} value={n}>#{n}</option>)}</optgroup>
+ <optgroup label="Mandibular (17–32)">{Array.from({ length: 16 }, (_, i) => i + 17).map(n => <option key={n} value={n}>#{n}</option>)}</optgroup>
+ </Select>
+ </Field>
+ <Field label="MD space (mm)"><TextInput value={f.mdSpace} onChange={num("mdSpace")} placeholder="e.g. 8" /></Field>
+ <Field label="Ridge width (mm)"><TextInput value={f.ridgeWidth} onChange={num("ridgeWidth")} placeholder="e.g. 7" /></Field>
+ <Field label="Bone height (mm)"><TextInput value={f.boneHeight} onChange={num("boneHeight")} placeholder="e.g. 12" /></Field>
+ <Field label="Keratinized (mm)"><TextInput value={f.keratinizedTissue} onChange={num("keratinizedTissue")} placeholder="optional" /></Field>
+ <Field label="Interoccl. (mm)"><TextInput value={f.interocclusal} onChange={num("interocclusal")} placeholder="optional" /></Field>
+ </div>
+
+ <div style={{ ...secLbl, marginTop: "18px" }}>Soft tissue &amp; host factors</div>
+ <div style={grid3}>
+ <Field label="Biotype">
+ <Select value={f.biotype} onChange={v => set("biotype", v)}><option value="">—</option><option value="thick">Thick</option><option value="thin">Thin</option></Select>
+ </Field>
+ <Field label="Smoking">
+ <Select value={f.smoking} onChange={v => set("smoking", v)}><option value="none">None</option><option value="light">Light</option><option value="heavy">Heavy (&gt;10/d)</option></Select>
+ </Field>
+ <Field label="Diabetes">
+ <Select value={f.diabetes} onChange={v => set("diabetes", v)}><option value="none">None</option><option value="controlled">Controlled</option><option value="uncontrolled">Uncontrolled</option></Select>
+ </Field>
+ <Field label="Antiresorptive">
+ <Select value={f.antiresorptive} onChange={v => set("antiresorptive", v)}><option value="none">None</option><option value="oral">Oral bisphos.</option><option value="iv">IV / denosumab</option></Select>
+ </Field>
+ <Field label="Skeletal">
+ <Select value={f.skeletal} onChange={v => set("skeletal", v)}><option value="adult">Adult</option><option value="growing">Still growing</option></Select>
+ </Field>
+ <Field label="Radiation">
+ <Select value={f.radiation} onChange={v => set("radiation", v)}><option value="none">None</option><option value="low">Low</option><option value="high">High (&gt;60 Gy)</option></Select>
+ </Field>
+ </div>
+ <label style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "14px", fontSize: "13px", color: "var(--ink-soft)", fontFamily: "'Geist', sans-serif", cursor: "pointer" }}>
+ <input type="checkbox" checked={f.bruxism} onChange={e => set("bruxism", e.target.checked)} style={{ width: "15px", height: "15px", accentColor: "var(--accent)", cursor: "pointer" }} /> Parafunction / bruxism
+ </label>
+ </div>
+
+ {/* ── PLAN ── */}
+ <div style={card}>
+ <div style={{ display: "flex", alignItems: "center", gap: "9px", marginBottom: "7px" }}>
+ <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: feas.color, flexShrink: 0 }} />
+ <span style={{ fontSize: "10px", letterSpacing: "0.14em", textTransform: "uppercase", color: feas.color, fontWeight: 700, fontFamily: "'Geist', sans-serif" }}>{feas.verb}</span>
+ </div>
+ <div style={{ fontFamily: "'Fraunces', serif", fontSize: "18px", color: "var(--ink)", lineHeight: 1.3, marginBottom: "16px" }}>{plan.headline}</div>
+
+ {plan.hardStops && plan.hardStops.length > 1 && plan.hardStops.slice(1).map((h, i) => (
+ <div key={i} style={{ fontSize: "12.5px", color: "var(--ink)", lineHeight: 1.5, fontFamily: "'Geist', sans-serif", marginBottom: "8px" }}>{h}</div>
+ ))}
+
+ {plan.implant && (plan.implant.diameter || plan.implant.length) && (
+ <div style={{ marginBottom: "14px" }}>
+ <div style={outLbl}>Implant</div>
+ <div style={{ fontSize: "12.5px", color: "var(--ink)", lineHeight: 1.55, fontFamily: "'Geist', sans-serif" }}>{plan.implant.rationale}</div>
+ </div>
+ )}
+
+ {plan.position && (
+ <div style={{ marginBottom: "14px" }}>
+ <div style={outLbl}>Position</div>
+ {["mesiodistal", "buccolingual", "apicocoronal", "angulation"].map(k => (
+ <div key={k} style={{ fontSize: "12px", color: "var(--ink-soft)", lineHeight: 1.55, fontFamily: "'Geist', sans-serif", display: "flex", gap: "7px" }}>
+ <span style={{ color: "var(--accent)", flexShrink: 0 }}>·</span><span>{plan.position[k]}</span>
+ </div>
+ ))}
+ </div>
+ )}
+
+ {plan.adjuncts && plan.adjuncts.length > 0 && (
+ <div style={{ marginBottom: "14px" }}>
+ <div style={{ ...outLbl, color: "var(--gold)" }}>Adjuncts</div>
+ {plan.adjuncts.map((a, i) => (
+ <div key={i} style={{ fontSize: "12.5px", color: "var(--ink)", lineHeight: 1.55, fontFamily: "'Geist', sans-serif", marginBottom: "5px", display: "flex", gap: "7px" }}>
+ <span style={{ color: "var(--gold)", fontWeight: 700, flexShrink: 0 }}>+</span><span>{a}</span>
+ </div>
+ ))}
+ </div>
+ )}
+
+ {cautions.length > 0 && (
+ <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: principle ? "14px" : 0 }}>
+ {cautions.map((c, i) => (
+ <div key={i} style={{ fontSize: "12px", color: "var(--ink)", background: "var(--paper-soft)", borderLeft: "3px solid var(--accent)", borderRadius: "2px", padding: "7px 10px", lineHeight: 1.45, fontFamily: "'Geist', sans-serif" }}>{c}</div>
+ ))}
+ </div>
+ )}
+
+ {principle && (
+ <div style={{ fontSize: "11.5px", color: "var(--ink-faint)", fontStyle: "italic", lineHeight: 1.5, fontFamily: "'Geist', sans-serif", paddingTop: "12px", borderTop: "1px solid var(--rule)" }}>{principle}</div>
+ )}
+ </div>
+ </div>
+ </div>
+ );
+}
+
 const TABS = [
  { id: "note", label: "Note", hint: "Generate chart notes" },
  { id: "browse", label: "Steps", hint: "Read the guide" },
@@ -32658,6 +32812,7 @@ const TABS = [
  { id: "reqs", label: "Reqs", hint: "RVU progress & performance exams" },
  // RPD — design helper for removable partial dentures.
  { id: "helpers", label: "RPD", hint: "Design helper for removable partial dentures" },
+ { id: "implant", label: "Implant", hint: "Single-tooth implant placement planner" },
  { id: "napoleon", label: "Loupes", hint: "Look closely" },
 ];
 
@@ -33464,6 +33619,7 @@ export default function App() {
  {tab === "pathways" && <Pathways homeSignal={mapsHomeSignal} onOpenChange={setMapOpen} />}
  {tab === "reqs" && <Reqs onShowSteps={handleShowSteps} />}
  {tab === "helpers" && <RPDHelper />}
+ {tab === "implant" && <ImplantBuilder />}
  </main>
  )}
  </div>
