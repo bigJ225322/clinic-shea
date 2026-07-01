@@ -32433,11 +32433,16 @@ const POPUP_CARD_STYLE = {
  maxWidth: "780px", width: "100%", padding: "26px 30px",
  position: "relative", transformStyle: "preserve-3d", willChange: "transform, opacity",
 };
+// The tile pose a nav card flies to/from: translate to the tile's centre and
+// scale down to its size. Deliberately 2D (no rotateX/rotateY) — the edge-on
+// 3D flip read as choppy when two cards ran it at once, and a clean
+// translate+scale rides entirely on the compositor, so the collapse-into-tile /
+// rise-from-tile motion stays smooth.
 function popupFlipPose(fromRect, tileRect) {
  const fcx = fromRect.left + fromRect.width / 2, fcy = fromRect.top + fromRect.height / 2;
  const tcx = tileRect.left + tileRect.width / 2, tcy = tileRect.top + tileRect.height / 2;
  const scale = Math.max(0.12, Math.min(tileRect.width / fromRect.width, tileRect.height / fromRect.height));
- return `translate(${tcx - fcx}px, ${tcy - fcy}px) scale(${scale}) rotateX(10deg) rotateY(-80deg)`;
+ return `translate(${tcx - fcx}px, ${tcy - fcy}px) scale(${scale})`;
 }
 // Masthead (color-coded kicker + title) + body. Module-level so both the live
 // card and the outgoing ghost render identical content.
@@ -32470,13 +32475,13 @@ function PopupGhostCard({ content, tileRect }) {
  const rect = el.getBoundingClientRect();
  el.style.transformOrigin = "center center";
  void el.offsetWidth;
- el.style.transition = "transform 430ms cubic-bezier(0.4, 0, 0.6, 0.38), opacity 300ms ease-in 150ms";
+ el.style.transition = "transform 400ms cubic-bezier(0.5, 0, 0.75, 0.4), opacity 280ms ease-in 120ms";
  el.style.transform = popupFlipPose(rect, tileRect);
  el.style.opacity = "0";
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
  return (
- <div style={{ position: "fixed", top: "60px", left: 0, right: 0, display: "flex", justifyContent: "center", padding: "0 20px", pointerEvents: "none" }}>
+ <div style={{ position: "fixed", top: "60px", left: 0, right: 0, display: "flex", justifyContent: "center", padding: "0 20px", pointerEvents: "none", zIndex: 1 }}>
  <div ref={ref} aria-hidden="true" style={{ ...POPUP_CARD_STYLE }}>{renderPopupInner(content)}</div>
  </div>
  );
@@ -32520,6 +32525,7 @@ function PopupNavArrow({ angle, onClick, kind }) {
 
 function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, sourceRect, contentKey, onNavPrev, onNavNext, prevAngle, nextAngle }) {
  const cardRef = useRef(null);
+ const scrimRef = useRef(null);
  const cur = { eyebrow, title, tone, children };
  // Adjacent-tile navigation with OVERLAPPING flights: on a contentKey change
  // (a nav, the modal instance stays mounted), the card you're reading collapses
@@ -32543,17 +32549,30 @@ function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, s
  const id = ++ghostSeqRef.current;
  setGhost({ content: oldContent, tileRect: oldTile, id });
  setTimeout(() => { if (ghostSeqRef.current === id) setGhost(null); }, 560);
- // 2) the incoming card rises from the destination tile, delayed so the
- // collapse leads and the two overlap in the middle.
+ // 2) dip the scrim so the whole schematic shows through for a beat between
+ // the two flights — the point of a nav is to glance the map, not just swap
+ // cards. Restored as the incoming card settles.
+ const scrim = scrimRef.current;
+ if (scrim) {
+ scrim.style.transition = "opacity 240ms ease-out";
+ scrim.style.opacity = "0.16";
+ setTimeout(() => {
+ if (ghostSeqRef.current !== id ||!scrimRef.current) return;
+ scrimRef.current.style.transition = "opacity 320ms ease-in";
+ scrimRef.current.style.opacity = "1";
+ }, 330);
+ }
+ // 3) the incoming card rises from the destination tile, delayed so the
+ // collapse + map-glance lead and the whole thing reads as one fluid arc.
  const card = cardRef.current;
  if (card && sourceRect) {
  const rect = card.getBoundingClientRect();
  card.style.transition = "none";
  card.style.transform = popupFlipPose(rect, sourceRect);
- card.style.opacity = "0.25";
+ card.style.opacity = "0";
  void card.offsetWidth;
- card.style.transition = "transform 500ms cubic-bezier(0.16, 0.84, 0.3, 1.02) 150ms, opacity 300ms ease-out 150ms";
- card.style.transform = "translate(0px,0px) scale(1) rotateX(0deg) rotateY(0deg)";
+ card.style.transition = "transform 460ms cubic-bezier(0.16, 0.84, 0.3, 1.02) 250ms, opacity 280ms ease-out 250ms";
+ card.style.transform = "translate(0px,0px) scale(1)";
  card.style.opacity = "1";
  }
  // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -32661,7 +32680,6 @@ function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, s
  fontFamily: "'Geist', 'Helvetica Neue', Arial, sans-serif",
  color: "var(--ink)",
  position: "fixed", inset: 0,
- background: "rgba(26, 22, 18, 0.55)",
  zIndex: 1000,
  display: "flex", alignItems: "flex-start", justifyContent: "center",
  padding: "60px 20px 40px",
@@ -32674,6 +32692,11 @@ function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, s
  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
  @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
  `}</style>
+ {/* Dark scrim as its own fixed layer (kept viewport-sized by the portal's
+ perspective, so it doesn't scroll with tall content) — a nav dips its
+ opacity to reveal the whole schematic for a beat, independent of the
+ cards riding on top. */}
+ <div ref={scrimRef} aria-hidden="true" style={{ position: "fixed", inset: 0, background: "rgba(26, 22, 18, 0.55)", zIndex: 0 }} />
  {/* Outgoing card, painted behind the live one, collapsing into its tile. */}
  {ghost && <PopupGhostCard key={ghost.id} content={ghost.content} tileRect={ghost.tileRect} />}
  <div
@@ -32682,7 +32705,7 @@ function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, s
  aria-modal="true"
  aria-label={title}
  onClick={(e) => e.stopPropagation()}
- style={{ ...POPUP_CARD_STYLE, zIndex: 1 }}
+ style={{ ...POPUP_CARD_STYLE, zIndex: 2 }}
  >
  <button
  type="button"
@@ -33093,6 +33116,25 @@ function ImplantBuilder() {
  style: { cursor: "pointer", filter: f.selected === k ? "drop-shadow(0 0 0.6px var(--accent)) drop-shadow(0 0 2.6px var(--accent))" : "none" },
  onClick: (e) => { e.stopPropagation(); set("selected", k); },
  });
+ // A recognizable abutment screw (not just a stick): a slotted head that
+ // seats in the access channel, a smooth shank down the long axis, and angled
+ // thread crests on the apical half where it engages the fixture's internal
+ // threads. yTop = head top; yBot = threaded tip inside the fixture. Flips
+ // with the maxillary assembly (no counter-flip — it has no text).
+ const screwGlyph = (yTop, yBot) => {
+ const on = f.selected === "screw", col = on ? "var(--accent)" : TITAN_E;
+ const shaftW = 2.8, headW = 6.6, headH = 3;
+ const shaftTop = yTop + headH - 0.5;
+ const threadStart = shaftTop + (yBot - shaftTop) * 0.48;
+ const threads = [];
+ for (let y = threadStart; y <= yBot - 0.5; y += 2.9) threads.push(<line key={y} x1={cx - shaftW / 2 - 2} y1={y - 0.9} x2={cx + shaftW / 2 + 2} y2={y + 0.9} stroke={col} strokeWidth="1" strokeLinecap="round" />);
+ return <g {...pick("screw")}>
+ <line x1={cx} y1={shaftTop} x2={cx} y2={yBot} stroke={col} strokeWidth={shaftW} strokeLinecap="round" />
+ {threads}
+ <rect x={cx - headW / 2} y={yTop} width={headW} height={headH} rx="1.2" fill={col} />
+ <line x1={cx - headW / 2 + 1.2} y1={yTop + headH / 2} x2={cx + headW / 2 - 1.2} y2={yTop + headH / 2} stroke="var(--card, #fff)" strokeWidth="0.85" opacity="0.5" />
+ </g>;
+ };
  const apexY = crestY + lpx;
  const apexGap = hasImpl ? Math.max(0, bh - len) : null;
  const apexOK = apexGap == null || apexGap + 0.001 >= safety;
@@ -33190,10 +33232,7 @@ function ImplantBuilder() {
  Each is independently selectable (its portion below the crown is the hit
  target); the abutment screw runs the long axis into the fixture. */}
  <path {...pick("abutment")} d={abutInside} fill={ABUT} stroke={ABUT_E} strokeWidth="0.9" />
- <g {...pick("screw")}>
- <line x1={cx} y1={prepTop + 2} x2={cx} y2={crestY + lpx * 0.45} stroke={f.selected === "screw" ? "var(--accent)" : TITAN_E} strokeWidth="2.4" strokeLinecap="round" />
- <circle cx={cx} cy={prepTop + 2.5} r="2.4" fill={f.selected === "screw" ? "var(--accent)" : TITAN_E} />
- </g>
+ {screwGlyph(prepTop + 1, crestY + lpx * 0.45)}
  <path {...pick("crown")} d={crownPaths[ttype]} fill={ENAMEL} fillOpacity="0.58" stroke={ENAMEL_E} strokeWidth="1.1" />
  {isPosterior && <line x1={cx} y1={crownTop + crH * 0.10} x2={cx} y2={crownTop + crH * 0.30} stroke={ENAMEL_E} strokeWidth="0.9" opacity="0.5" />}
  {collar(cervW)}
@@ -33254,9 +33293,7 @@ function ImplantBuilder() {
  </g>;
  })()}
  {/* abutment screw — down the long axis, shown once the abutment/crown is on */}
- {showFixture && (comp === "crown" || comp === "abutment") && <g {...pick("screw")}>
- <line x1={cx} y1={comp === "crown" ? crownTop + crMD * 0.06 : gingTop - 3} x2={cx} y2={crestY + lpx * 0.4} stroke={f.selected === "screw" ? "var(--accent)" : TITAN_E} strokeWidth="2.2" strokeLinecap="round" />
- </g>}
+ {showFixture && (comp === "crown" || comp === "abutment") && screwGlyph(comp === "crown" ? crownTop + crMD * 0.06 : gingTop - 3, crestY + lpx * 0.4)}
  {/* MD-space dimension between the adjacent proximal surfaces */}
  {tick(proxL, gingTop - 8, proxL, gingTop - 2, "var(--ink-soft)")}
  {tick(proxR, gingTop - 8, proxR, gingTop - 2, "var(--ink-soft)")}
@@ -33368,25 +33405,28 @@ function ImplantBuilder() {
  </g>;
  })()}
 
- {/* ridge-width dimension (bottom). For a maxillary floor site the apical
- end is the sinus, so the long witness lines would cross the air space —
- there we draw short ticks instead and let the dimension sit in the
- reserved apical band (horizontal boneL→boneR alignment carries the
- correspondence to the bone). */}
+ {/* ridge-width dimension — a proper width bracket at the foot of the apical
+ band (clear of the fixture apex / nerve / sinus above): a horizontal
+ dimension line spanning the ridge's boneL→boneR, capped by short end-serifs
+ that cross the line, with the label seated IN a break so it reads as one
+ connected bracket. When the label is wider than the ridge itself (narrow /
+ breached sites) it can't sit inline without spilling past the serifs, so the
+ line stays solid and the label drops just beneath it. */}
  {(() => {
  const wy = VBH - 14, col = breach ? RED : "var(--ink-soft)";
- const witnessTo = maxFloor ? wy + 4 : structY + (isNerve ? 2 * nerveR + 4 : 14);
  const label = `${rw} mm ridge${breach ? " — too narrow" : ""}`;
- // Break the dimension line so the label sits IN the gap, vertically centered
- // on the line — no overlap, and flip-agnostic (the label centers on the line
- // whichever way the assembly is flipped). The gap is capped at the bar width.
- const halfTxt = Math.min(bw / 2 - 2, label.length * 2.9 + 4);
+ const labelHalf = label.length * 2.75;
+ const inline = labelHalf < bw / 2 - 6;   // fits between the serifs?
+ const gap = labelHalf + 4;
+ const ly = inline ? wy : wy + 10;
  return <g>
- {tick(boneL, wy - 4, boneL, witnessTo, col)}
- {tick(boneR, wy - 4, boneR, witnessTo, col)}
- <line x1={boneL} y1={wy} x2={cx - halfTxt} y2={wy} stroke={col} strokeWidth="1" />
- <line x1={cx + halfTxt} y1={wy} x2={boneR} y2={wy} stroke={col} strokeWidth="1" />
- <text x={cx} y={wy} transform={tflip(wy)} textAnchor="middle" dominantBaseline="central" fontFamily="'Geist', sans-serif" fontSize="10.5" fontWeight={breach ? 700 : 400} fill={breach ? RED : "var(--ink)"}>{label}</text>
+ {tick(boneL, wy - 5, boneL, wy + 5, col)}
+ {tick(boneR, wy - 5, boneR, wy + 5, col)}
+ {inline ? <>
+ <line x1={boneL} y1={wy} x2={cx - gap} y2={wy} stroke={col} strokeWidth="1" />
+ <line x1={cx + gap} y1={wy} x2={boneR} y2={wy} stroke={col} strokeWidth="1" />
+ </> : <line x1={boneL} y1={wy} x2={boneR} y2={wy} stroke={col} strokeWidth="1" />}
+ <text x={cx} y={ly} transform={tflip(ly)} textAnchor="middle" dominantBaseline="central" fontFamily="'Geist', sans-serif" fontSize="10.5" fontWeight={breach ? 700 : 400} fill={breach ? RED : "var(--ink)"}>{label}</text>
  </g>;
  })()}
 
