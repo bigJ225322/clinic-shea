@@ -33159,7 +33159,11 @@ function ImplantBuilder() {
  // over the fixture's dark bore), plus the platform seam line where the
  // component meets the fixture — together they read as "screwed into" rather
  // than "resting on top", and give a distinct sub-gingival element per stage.
- const connStem = (fill, edge) => <path d={socketPath} fill={fill} stroke={edge} strokeWidth="0.6" />;
+ // The sub-gingival stem is part of its component (the abutment's apical
+ // extension, the healing abutment's neck, the cover screw's body) — so it
+ // carries that component's pick(), or a click on the visible gold/titanium
+ // stem falls through to whatever sits on top (the crown) and mis-selects.
+ const connStem = (fill, edge, key) => <path {...(key ? pick(key) : {})} d={socketPath} fill={fill} stroke={edge} strokeWidth="0.6" />;
  const platformSeam = <line x1={cx - connW / 2} y1={crestY} x2={cx + connW / 2} y2={crestY} stroke="rgba(26,22,18,0.4)" strokeWidth="0.8" />;
  // Gingiva collar — bulges faciolingually by biotype (thick = fuller, thin = flatter).
  const gBulge = f.biotype === "thick" ? 7 : f.biotype === "thin" ? 1.5 : 4;
@@ -33172,7 +33176,7 @@ function ImplantBuilder() {
  // 1 — cover screw (~0.9 mm), tissue closed over it (1st-stage, submerged)
  if (comp === "cover") {
  return <g>
- {connStem(TITAN, TITAN_E)}
+ {connStem(TITAN, TITAN_E, "cover")}
  <rect x={cx - connW * 0.45} y={crestY - 0.9 * PX} width={connW * 0.9} height={0.9 * PX} rx="1.5" fill={TITAN} stroke={TITAN_E} strokeWidth="0.8" />
  {platformSeam}
  <path d={domeD} fill={GUM} fillOpacity="0.94" stroke={GUM_E} strokeWidth="0.7" />
@@ -33185,7 +33189,7 @@ function ImplantBuilder() {
  const emW = connW + 4, topW = connW, haTop = margY - 2 * PX;
  return <g>
  {gingivaBand}
- {connStem(TITAN, TITAN_E)}
+ {connStem(TITAN, TITAN_E, "healing")}
  <path d={`M ${cx - connW / 2},${crestY} Q ${cx - emW / 2},${margY} ${cx - emW / 2},${margY - 3} L ${cx - topW / 2},${haTop + 6} Q ${cx - topW / 2},${haTop} ${cx},${haTop} Q ${cx + topW / 2},${haTop} ${cx + topW / 2},${haTop + 6} L ${cx + emW / 2},${margY - 3} Q ${cx + emW / 2},${margY} ${cx + connW / 2},${crestY} Z`} fill={TITAN} stroke={TITAN_E} strokeWidth="1" />
  {platformSeam}
  {collar(emW)}
@@ -33198,7 +33202,7 @@ function ImplantBuilder() {
  const emW = connW + 4, prepW = isAnt ? connW * 0.55 : connW * 0.78, prepTop = margY - Math.min(crH * 0.78, 6 * PX);
  return <g>
  {gingivaBand}
- {connStem(ABUT, ABUT_E)}
+ {connStem(ABUT, ABUT_E, "abutment")}
  <path d={`M ${cx - connW / 2},${crestY} Q ${cx - emW / 2},${margY} ${cx - emW / 2},${margY - 1} L ${cx - prepW / 2},${prepTop + 4} Q ${cx},${prepTop - 2} ${cx + prepW / 2},${prepTop + 4} L ${cx + emW / 2},${margY - 1} Q ${cx + emW / 2},${margY} ${cx + connW / 2},${crestY} Z`} fill={ABUT} stroke={ABUT_E} strokeWidth="1" />
  {platformSeam}
  <line x1={cx - emW / 2} y1={margY - 1} x2={cx + emW / 2} y2={margY - 1} stroke={ABUT_E} strokeWidth="1" opacity="0.7" />
@@ -33227,7 +33231,7 @@ function ImplantBuilder() {
  const isPosterior = ttype === "premolar" || ttype === "molar";
  return <g>
  {gingivaBand}
- {connStem(ABUT, ABUT_E)}
+ {connStem(ABUT, ABUT_E, "abutment")}
  {/* cutaway — the abutment + its screw shown inside the translucent crown.
  Each is independently selectable (its portion below the crown is the hit
  target); the abutment screw runs the long axis into the fixture. */}
