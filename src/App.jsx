@@ -32830,7 +32830,9 @@ function ImplantBuilder() {
  component: "crown", selected: "crown", view: "bl",
  });
  const set = (k, v) => setF(p => ({ ...p, [k]: v }));
- const num = (k) => (v) => set(k, v.replace(/[^\d.]/g, ""));
+ // Measurement inputs are whole-millimeter dropdowns (a planning estimator,
+ // not a surgical CAD — the engine still reads the picked value as a float).
+ const mmRange = (lo, hi) => Array.from({ length: hi - lo + 1 }, (_, i) => lo + i);
 
  const inputs = {
  site: f.site, mdSpace: f.mdSpace, ridgeWidth: f.ridgeWidth, boneHeight: f.boneHeight,
@@ -33245,11 +33247,11 @@ function ImplantBuilder() {
  }}
  />
  </Field>
- <Field label="MD (mm)"><TextInput value={f.mdSpace} onChange={num("mdSpace")} placeholder="8" /></Field>
- <Field label="Ridge W (mm)"><TextInput value={f.ridgeWidth} onChange={num("ridgeWidth")} placeholder="7" /></Field>
- <Field label="Bone H (mm)"><TextInput value={f.boneHeight} onChange={num("boneHeight")} placeholder="12" /></Field>
- <Field label="Keratin. (mm)"><TextInput value={f.keratinizedTissue} onChange={num("keratinizedTissue")} placeholder="opt." /></Field>
- <Field label="Interoccl."><TextInput value={f.interocclusal} onChange={num("interocclusal")} placeholder="opt." /></Field>
+ <Field label="MD (mm)"><Select value={f.mdSpace} onChange={v => set("mdSpace", v)}><option value="">—</option>{mmRange(4, 14).map(n => <option key={n} value={n}>{n}</option>)}</Select></Field>
+ <Field label="Ridge W (mm)"><Select value={f.ridgeWidth} onChange={v => set("ridgeWidth", v)}><option value="">—</option>{mmRange(3, 11).map(n => <option key={n} value={n}>{n}</option>)}</Select></Field>
+ <Field label="Bone H (mm)"><Select value={f.boneHeight} onChange={v => set("boneHeight", v)}><option value="">—</option>{mmRange(5, 18).map(n => <option key={n} value={n}>{n}</option>)}</Select></Field>
+ <Field label="Keratin. (mm)"><Select value={f.keratinizedTissue} onChange={v => set("keratinizedTissue", v)}><option value="">opt.</option>{mmRange(0, 7).map(n => <option key={n} value={n}>{n}</option>)}</Select></Field>
+ <Field label="Interoccl."><Select value={f.interocclusal} onChange={v => set("interocclusal", v)}><option value="">opt.</option>{mmRange(3, 12).map(n => <option key={n} value={n}>{n}</option>)}</Select></Field>
  </div>
 
  <div style={{ ...secLbl, marginTop: "15px" }}>Host factors</div>
