@@ -33331,11 +33331,17 @@ function ImplantBuilder() {
  {(() => {
  const wy = VBH - 14, col = breach ? RED : "var(--ink-soft)";
  const witnessTo = maxFloor ? wy + 4 : structY + (isNerve ? 2 * nerveR + 4 : 14);
+ const label = `${rw} mm ridge${breach ? " — too narrow" : ""}`;
+ // Break the dimension line so the label sits IN the gap, vertically centered
+ // on the line — no overlap, and flip-agnostic (the label centers on the line
+ // whichever way the assembly is flipped). The gap is capped at the bar width.
+ const halfTxt = Math.min(bw / 2 - 2, label.length * 2.9 + 4);
  return <g>
  {tick(boneL, wy - 4, boneL, witnessTo, col)}
  {tick(boneR, wy - 4, boneR, witnessTo, col)}
- <line x1={boneL} y1={wy} x2={boneR} y2={wy} stroke={col} strokeWidth="1" />
- <text x={cx} y={wy - 4} transform={tflip(wy - 4)} textAnchor="middle" fontFamily="'Geist', sans-serif" fontSize="10.5" fontWeight={breach ? 700 : 400} fill={breach ? RED : "var(--ink)"}>{rw} mm ridge{breach ? " — too narrow" : ""}</text>
+ <line x1={boneL} y1={wy} x2={cx - halfTxt} y2={wy} stroke={col} strokeWidth="1" />
+ <line x1={cx + halfTxt} y1={wy} x2={boneR} y2={wy} stroke={col} strokeWidth="1" />
+ <text x={cx} y={wy} transform={tflip(wy)} textAnchor="middle" dominantBaseline="central" fontFamily="'Geist', sans-serif" fontSize="10.5" fontWeight={breach ? 700 : 400} fill={breach ? RED : "var(--ink)"}>{label}</text>
  </g>;
  })()}
 
