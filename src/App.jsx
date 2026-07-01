@@ -32669,22 +32669,17 @@ function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, s
  // viewport and darkens the entire background.
  return createPortal((
  <div
- onClick={onClose}
  style={{
- // Portaling to document.body escapes .app-root, where the theme
- // CSS variables (ROOT_TOKENS) and the base Geist font are scoped —
- // so re-apply them here, or the modal renders with no --rule
- // dividers, default backgrounds, and a serif (Times New Roman)
- // fallback font. The scrim's own literal color is unaffected.
+ // Portaling to document.body escapes .app-root, where the theme CSS
+ // variables (ROOT_TOKENS) and the base Geist font are scoped — re-apply
+ // them here. This outer wrapper only positions + fades: it has NO
+ // transform/perspective, so its fixed children pin to the viewport (the
+ // scrim must, to keep covering content scrolled underneath it).
  ...ROOT_TOKENS,
  fontFamily: "'Geist', 'Helvetica Neue', Arial, sans-serif",
  color: "var(--ink)",
  position: "fixed", inset: 0,
  zIndex: 1000,
- display: "flex", alignItems: "flex-start", justifyContent: "center",
- padding: "60px 20px 40px",
- overflowY: "auto",
- perspective: "1400px",
  animation: closing ? "fade-out 260ms ease 170ms forwards" : "fade-in 220ms ease",
  }}
  >
@@ -32692,11 +32687,27 @@ function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, s
  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
  @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
  `}</style>
- {/* Dark scrim as its own fixed layer (kept viewport-sized by the portal's
- perspective, so it doesn't scroll with tall content) — a nav dips its
- opacity to reveal the whole schematic for a beat, independent of the
- cards riding on top. */}
- <div ref={scrimRef} aria-hidden="true" style={{ position: "fixed", inset: 0, background: "rgba(26, 22, 18, 0.55)", zIndex: 0 }} />
+ {/* Dark scrim — a true viewport-fixed sibling of the scroll layer (NOT
+ inside it), so it keeps covering the whole viewport even after the card
+ content is scrolled. A nav dips its opacity to reveal the schematic. */}
+ <div ref={scrimRef} aria-hidden="true" onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(26, 22, 18, 0.55)" }} />
+ {/* Source-tile marker — a subtle dashed outline over the spot on the map
+ this card lifted off from (body scroll is locked while open, so the tile
+ holds its place behind the scrim). Glides to the new tile on a nav. */}
+ {sourceRect && <div aria-hidden="true" style={{ position: "fixed", top: sourceRect.top, left: sourceRect.left, width: sourceRect.width, height: sourceRect.height, border: "1.5px dashed rgba(242, 236, 226, 0.6)", borderRadius: "9px", pointerEvents: "none", transition: "top 340ms cubic-bezier(0.16,0.84,0.3,1.02), left 340ms cubic-bezier(0.16,0.84,0.3,1.02), width 340ms ease, height 340ms ease" }} />}
+ {/* Scroll + perspective layer for the card(s): transparent (the scrim shows
+ through) and independently scrollable, so tall content scrolls without
+ moving the scrim. The 3D open/close flip needs the perspective here. */}
+ <div
+ onClick={onClose}
+ style={{
+ position: "fixed", inset: 0,
+ display: "flex", alignItems: "flex-start", justifyContent: "center",
+ padding: "60px 20px 40px",
+ overflowY: "auto",
+ perspective: "1400px",
+ }}
+ >
  {/* Outgoing card, painted behind the live one, collapsing into its tile. */}
  {ghost && <PopupGhostCard key={ghost.id} content={ghost.content} tileRect={ghost.tileRect} />}
  <div
@@ -32739,6 +32750,7 @@ function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, s
  {onNavPrev && prevAngle != null && <PopupNavArrow angle={prevAngle} onClick={onNavPrev} kind="prev" />}
  {onNavNext && nextAngle != null && <PopupNavArrow angle={nextAngle} onClick={onNavNext} kind="next" />}
  {renderPopupInner(cur)}
+ </div>
  </div>
  </div>
  ), document.body);
