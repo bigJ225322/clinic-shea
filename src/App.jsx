@@ -33079,8 +33079,13 @@ function ImplantBuilder() {
  // (maxillary / maxFloor computed above so structBelow could reserve a band.)
  const flipT = maxillary ? `matrix(1 0 0 -1 0 ${VBH})` : undefined;
  const tflip = (ty) => (maxillary ? `matrix(1 0 0 -1 0 ${2 * ty})` : undefined);
- // Click any part of the diagram → select it for the info card.
- const pick = (k) => ({ style: { cursor: "pointer" }, onClick: (e) => { e.stopPropagation(); set("selected", k); } });
+ // Click any part of the diagram → select it for the info card. The selected
+ // element gets a soft accent glow (drop-shadow outline) — uniform highlight
+ // for every pick()-ed shape, whatever its own fill/stroke, in both views.
+ const pick = (k) => ({
+ style: { cursor: "pointer", filter: f.selected === k ? "drop-shadow(0 0 0.6px var(--accent)) drop-shadow(0 0 2.6px var(--accent))" : "none" },
+ onClick: (e) => { e.stopPropagation(); set("selected", k); },
+ });
  const apexY = crestY + lpx;
  const apexGap = hasImpl ? Math.max(0, bh - len) : null;
  const apexOK = apexGap == null || apexGap + 0.001 >= safety;
@@ -33161,11 +33166,15 @@ function ImplantBuilder() {
  const isPosterior = ttype === "premolar" || ttype === "molar";
  return <g>
  {gingivaBand}
- {/* cutaway — the abutment + its screw shown inside the translucent crown */}
- <path d={abutInside} fill={ABUT} stroke={ABUT_E} strokeWidth="0.9" />
- <line x1={cx} y1={prepTop + 2} x2={cx} y2={crestY + lpx * 0.45} stroke={TITAN_E} strokeWidth="2.4" strokeLinecap="round" />
- <circle cx={cx} cy={prepTop + 2.5} r="2.4" fill={TITAN_E} />
- <path d={crownPaths[ttype]} fill={ENAMEL} fillOpacity="0.58" stroke={ENAMEL_E} strokeWidth="1.1" />
+ {/* cutaway — the abutment + its screw shown inside the translucent crown.
+ Each is independently selectable (its portion below the crown is the hit
+ target); the abutment screw runs the long axis into the fixture. */}
+ <path {...pick("abutment")} d={abutInside} fill={ABUT} stroke={ABUT_E} strokeWidth="0.9" />
+ <g {...pick("screw")}>
+ <line x1={cx} y1={prepTop + 2} x2={cx} y2={crestY + lpx * 0.45} stroke={f.selected === "screw" ? "var(--accent)" : TITAN_E} strokeWidth="2.4" strokeLinecap="round" />
+ <circle cx={cx} cy={prepTop + 2.5} r="2.4" fill={f.selected === "screw" ? "var(--accent)" : TITAN_E} />
+ </g>
+ <path {...pick("crown")} d={crownPaths[ttype]} fill={ENAMEL} fillOpacity="0.58" stroke={ENAMEL_E} strokeWidth="1.1" />
  {isPosterior && <line x1={cx} y1={crownTop + crH * 0.10} x2={cx} y2={crownTop + crH * 0.30} stroke={ENAMEL_E} strokeWidth="0.9" opacity="0.5" />}
  {collar(cervW)}
  </g>;
@@ -33200,8 +33209,10 @@ function ImplantBuilder() {
  {Array.from({ length: Math.max(2, Math.floor(lpx / 11)) }, (_, i) => { const y = crestY + 9 + i * 11; return y < apexY - 8 ? <line key={i} x1={implL + 1.5} y1={y} x2={implR - 1.5} y2={y} stroke="var(--paper)" strokeWidth="1" opacity="0.45" /> : null; })}
  </g>}
  {showFixture && <g {...pick("crown")}>
- <line x1={cx} y1={crownTop + crMD * 0.06} x2={cx} y2={crestY + lpx * 0.4} stroke={TITAN_E} strokeWidth="2.2" strokeLinecap="round" />
  <path d={`M ${cx - crMD / 2},${gingTop} Q ${cx - crMD / 2},${crownTop + 2} ${cx},${crownTop} Q ${cx + crMD / 2},${crownTop + 2} ${cx + crMD / 2},${gingTop} Z`} fill={ENAMEL} fillOpacity="0.6" stroke={ENAMEL_E} strokeWidth="1.1" />
+ </g>}
+ {showFixture && <g {...pick("screw")}>
+ <line x1={cx} y1={crownTop + crMD * 0.06} x2={cx} y2={crestY + lpx * 0.4} stroke={f.selected === "screw" ? "var(--accent)" : TITAN_E} strokeWidth="2.2" strokeLinecap="round" />
  </g>}
  {/* MD-space dimension between the adjacent proximal surfaces */}
  {tick(proxL, gingTop - 8, proxL, gingTop - 2, "var(--ink-soft)")}
@@ -33241,14 +33252,14 @@ function ImplantBuilder() {
  {isFloor && <rect {...pick("structure")} x={boneL - 16} y={structY} width={bw + 32} height={VBH - structY - (maxFloor ? 26 : 2)} rx="6" fill={AIR} opacity="0.92" />}
 
  {/* GBR graft widening the buccal plate (drawn before bone so bone overlaps cleanly) */}
- {showGBR && <path d={`M ${boneL},${crestY + r} Q ${boneL},${crestY} ${boneL + r},${crestY} L ${boneL + r},${structY} L ${boneL - 11},${structY} Q ${boneL - 13},${(crestY + structY) / 2} ${boneL},${crestY + r} Z`} fill="url(#graft)" stroke={GOLD} strokeWidth="1" strokeDasharray="3 3" />}
+ {showGBR && <path {...pick("graft")} d={`M ${boneL},${crestY + r} Q ${boneL},${crestY} ${boneL + r},${crestY} L ${boneL + r},${structY} L ${boneL - 11},${structY} Q ${boneL - 13},${(crestY + structY) / 2} ${boneL},${crestY + r} Z`} fill="url(#graft)" stroke={GOLD} strokeWidth="1" strokeDasharray="3 3" />}
 
  {/* bone block, rounded crest */}
  <path {...pick("bone")} d={`M ${boneL},${structY} L ${boneL},${crestY + r} Q ${boneL},${crestY} ${boneL + r},${crestY} L ${boneR - r},${crestY} Q ${boneR},${crestY} ${boneR},${crestY + r} L ${boneR},${structY} Z`} fill={BONE} stroke={f.selected === "bone" ? "var(--accent)" : BONE_E} strokeWidth={f.selected === "bone" ? 2.2 : 1.2} />
  <line x1={boneL + 1} y1={crestY + 4} x2={boneR - 1} y2={crestY + 4} stroke={BONE_E} strokeWidth="0.8" opacity="0.6" />
 
  {/* sinus-lift graft pocket above the floor */}
- {showLift && <rect x={boneL + 2} y={Math.max(crestY + 4, structY - 3 * PX)} width={bw - 4} height={structY - Math.max(crestY + 4, structY - 3 * PX)} fill="url(#graft)" />}
+ {showLift && <rect {...pick("graft")} x={boneL + 2} y={Math.max(crestY + 4, structY - 3 * PX)} width={bw - 4} height={structY - Math.max(crestY + 4, structY - 3 * PX)} fill="url(#graft)" />}
 
  {/* fixture in bone — pale-bone halo behind it shows the implant is lodged in bone */}
  {showFixture ? (
@@ -33274,7 +33285,7 @@ function ImplantBuilder() {
  const opp = `M ${cx - w / 2},${topY} C ${cx - w / 2},${topY + oppH * 0.5} ${cx - w * 0.36},${occY - 2} ${cx - w * 0.20},${occY} Q ${cx},${occY - oppH * 0.20} ${cx + w * 0.20},${occY} C ${cx + w * 0.36},${occY - 2} ${cx + w / 2},${topY + oppH * 0.5} ${cx + w / 2},${topY} Z`;
  const dx = cx + Math.max(blPx, w) / 2 + 9;
  return <g>
- <path d={opp} fill={ENAMEL} stroke={ENAMEL_E} strokeWidth="1" />
+ <path {...pick("opposing")} d={opp} fill={ENAMEL} stroke={ENAMEL_E} strokeWidth="1" />
  {tick(dx - 4, crownTop, dx + 4, crownTop, "var(--gold)")}
  {tick(dx - 4, occY, dx + 4, occY, "var(--gold)")}
  <line x1={dx} y1={crownTop} x2={dx} y2={occY} stroke="var(--gold)" strokeWidth="1" />
@@ -33359,11 +33370,22 @@ function ImplantBuilder() {
  purpose: "Keratinized gingiva matters around implants: ≥ 2 mm of keratinized width is the classic minimum linked to less plaque, inflammation, recession and marginal bone loss, and it makes home care more comfortable. The clinic screening form asks for ≥ 4 mm; below that a soft-tissue graft is indicated.",
  dims: (kt > 0 ? `Keratinized width entered: ${f.keratinizedTissue} mm${kt < 4 ? " — under the 4 mm the screen asks for; consider a graft." : "."} ` : "") + "Peri-implant mucosa ≈ 3 mm tall (biologic width)." },
  structure: { label: structName, material: "—",
- purpose: `The structure the implant apex must stay clear of — keep ≥ ${safety} mm. ${isSinus ? "Closer risks sinus perforation; 7–10 mm of height is managed with an internal sinus lift." : isNasal ? "Closer risks perforating the nasal floor." : "Closer risks injuring the nerve — numbness / paresthesia of the lip and chin."}`,
+ purpose: (isSinus || isNasal)
+ ? `The blue is the air-filled space beyond the bone — ${isSinus ? "the maxillary sinus" : "the nasal cavity"}; the wavy line is its cortical floor. The implant apex must stay clear of that floor — keep ≥ ${safety} mm. ${isSinus ? "Closer risks sinus perforation; 7–10 mm of height is managed with an internal sinus lift." : "Closer risks perforating the nasal floor."}`
+ : `The structure the implant apex must stay clear of — keep ≥ ${safety} mm. Closer risks injuring the nerve — numbness / paresthesia of the lip and chin.`,
  dims: (lenv && bhv) ? `This plan leaves ${(bhv - lenv).toFixed(1)} mm of clearance (need ≥ ${safety} mm).` : `Minimum clearance ${safety} mm.` },
  fixture: dplan.implant && dplan.implant.length ? { label: "Implant fixture", material: "Titanium (threaded screw)",
  purpose: "The root-form titanium screw placed in bone. Restoratively driven — positioned where the final crown should be, not just where there is bone.",
  dims: `⌀${dplan.implant.diameter} × ${dplan.implant.length} mm · ${dplan.implant.diameterClass}-diameter · 4 mm internal-connection platform.` } : { label: "Implant fixture", material: "—", purpose: "No fixture is placeable on the current site — augment or stage first.", dims: "—" },
+ screw: { label: "Abutment screw", material: "Titanium",
+ purpose: "The screw that torques the custom abutment down into the fixture's internal connection. The crown itself is cement-retained, not screwed — so at delivery the abutment is torqued to value, the screw-access hole is packed with Teflon, and the crown is cemented over it, leaving the abutment retrievable.",
+ dims: "Runs the long axis of the implant, from the abutment down into the 4 mm platform." },
+ graft: { label: "Bone graft (augmentation)", material: "Particulate + membrane",
+ purpose: "The gold hatching is grafted bone widening the deficient ridge (GBR) or lifting the sinus floor, so a fixture of the planned diameter/length fits with the required plate + apex clearances. Restoratively driven: build the site to the crown, don't shrink the plan to the bone.",
+ dims: `Adjuncts: ${(dplan.adjuncts || []).join("; ") || "—"}.` },
+ opposing: { label: "Opposing tooth", material: "—",
+ purpose: "The antagonist, drawn at the interocclusal distance you entered. It sets the room available for the abutment + crown — under about 7 mm and there isn't height for both, so it gates the restoration as much as the ridge does.",
+ dims: f.interocclusal ? `Interocclusal space entered: ${f.interocclusal} mm (screen asks for ≥ 7 mm).` : "Enter an interocclusal distance to place it to scale." },
  };
  return map[key] || comp || IMPLANT_COMPONENTS[4];
  };
@@ -33438,7 +33460,7 @@ function ImplantBuilder() {
  ))}
  </div>
  {crossSection}
- <div style={{ fontSize: "9.5px", color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginTop: "8px", letterSpacing: "0.04em", fontStyle: "italic" }}>Tap any part of the diagram — bone, gum, fixture, nerve/sinus — for details.</div>
+ <div style={{ fontSize: "9.5px", color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginTop: "8px", letterSpacing: "0.04em", fontStyle: "italic" }}>Tap anything in the diagram for details.</div>
  <div style={{ display: "flex", gap: "3px", marginTop: "12px", border: "1px solid var(--rule)", borderRadius: "8px", padding: "3px", width: "100%", maxWidth: "560px", opacity: restorable ? 1 : 0.4 }}>
  {IMPLANT_COMPONENTS.map(({ key, label }) => {
  const on = (f.component || "crown") === key;
