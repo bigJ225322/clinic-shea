@@ -33072,6 +33072,13 @@ function ImplantBuilder() {
  const gingTop = crownTop + crownPx;                   // tissue margin = crown margin
  const crestY = gingTop + tissuePx;                    // bone crest = implant platform
  const structY = crestY + boneHpx;
+ // Internal connection: a tapered socket bored into the coronal end of the
+ // fixture that every component screws DOWN into (cover screw, healing abutment,
+ // custom abutment) — so the parts read as seated inside the fixture, not
+ // resting on top, and the sub-gingival part visibly changes per stage.
+ // (Declared here, after crestY, since the socket is anchored at the platform.)
+ const socketW = Math.min(connW * 0.52, dpx * 0.6), socketD = Math.min(3.4 * PX, lpx * 0.34);
+ const socketPath = `M ${cx - socketW / 2},${crestY} L ${cx + socketW / 2},${crestY} L ${cx + socketW * 0.4},${crestY + socketD} L ${cx - socketW * 0.4},${crestY + socketD} Z`;
  const VBH = Math.round(structY + structBelow + 28);
  // Maxillary teeth hang down: flip the whole assembly so the crown is at the
  // bottom and the implant rises into the bone (sinus/nasal at the top). Shapes
@@ -33106,6 +33113,12 @@ function ImplantBuilder() {
  const supra = (() => {
  const margY = gingTop, crH = crownPx;                  // tissue/crown margin; crown height (to scale)
  const collar = (w) => <ellipse cx={cx} cy={margY} rx={w / 2 + 1.5} ry="3" fill={GUM_E} />;
+ // The metal plug that fills the fixture's internal-connection socket (drawn
+ // over the fixture's dark bore), plus the platform seam line where the
+ // component meets the fixture — together they read as "screwed into" rather
+ // than "resting on top", and give a distinct sub-gingival element per stage.
+ const connStem = (fill, edge) => <path d={socketPath} fill={fill} stroke={edge} strokeWidth="0.6" />;
+ const platformSeam = <line x1={cx - connW / 2} y1={crestY} x2={cx + connW / 2} y2={crestY} stroke="rgba(26,22,18,0.4)" strokeWidth="0.8" />;
  // Gingiva collar — bulges faciolingually by biotype (thick = fuller, thin = flatter).
  const gBulge = f.biotype === "thick" ? 7 : f.biotype === "thin" ? 1.5 : 4;
  const gingivaBand = <path {...pick("gingiva")} d={`M ${boneL - 2},${crestY} C ${boneL - gBulge},${crestY - tissuePx * 0.35} ${boneL - gBulge},${margY + 3} ${boneL + 4},${margY} L ${boneR - 4},${margY} C ${boneR + gBulge},${margY + 3} ${boneR + gBulge},${crestY - tissuePx * 0.35} ${boneR + 2},${crestY} Z`} fill={GUM} stroke={f.selected === "gingiva" ? "var(--accent)" : GUM_E} strokeWidth={f.selected === "gingiva" ? 2 : 0.7} />;
@@ -33117,7 +33130,9 @@ function ImplantBuilder() {
  // 1 — cover screw (~0.9 mm), tissue closed over it (1st-stage, submerged)
  if (comp === "cover") {
  return <g>
+ {connStem(TITAN, TITAN_E)}
  <rect x={cx - connW * 0.45} y={crestY - 0.9 * PX} width={connW * 0.9} height={0.9 * PX} rx="1.5" fill={TITAN} stroke={TITAN_E} strokeWidth="0.8" />
+ {platformSeam}
  <path d={domeD} fill={GUM} fillOpacity="0.94" stroke={GUM_E} strokeWidth="0.7" />
  <line x1={cx} y1={margY - 3} x2={cx} y2={crestY - 3} stroke={GUM_E} strokeWidth="0.8" strokeDasharray="2 2" opacity="0.5" />
  </g>;
@@ -33128,7 +33143,9 @@ function ImplantBuilder() {
  const emW = connW + 4, topW = connW, haTop = margY - 2 * PX;
  return <g>
  {gingivaBand}
+ {connStem(TITAN, TITAN_E)}
  <path d={`M ${cx - connW / 2},${crestY} Q ${cx - emW / 2},${margY} ${cx - emW / 2},${margY - 3} L ${cx - topW / 2},${haTop + 6} Q ${cx - topW / 2},${haTop} ${cx},${haTop} Q ${cx + topW / 2},${haTop} ${cx + topW / 2},${haTop + 6} L ${cx + emW / 2},${margY - 3} Q ${cx + emW / 2},${margY} ${cx + connW / 2},${crestY} Z`} fill={TITAN} stroke={TITAN_E} strokeWidth="1" />
+ {platformSeam}
  {collar(emW)}
  <line x1={cx - 4} y1={haTop + 4} x2={cx + 4} y2={haTop + 4} stroke={TITAN_E} strokeWidth="1.4" opacity="0.7" />
  </g>;
@@ -33139,7 +33156,9 @@ function ImplantBuilder() {
  const emW = connW + 4, prepW = isAnt ? connW * 0.55 : connW * 0.78, prepTop = margY - Math.min(crH * 0.78, 6 * PX);
  return <g>
  {gingivaBand}
+ {connStem(ABUT, ABUT_E)}
  <path d={`M ${cx - connW / 2},${crestY} Q ${cx - emW / 2},${margY} ${cx - emW / 2},${margY - 1} L ${cx - prepW / 2},${prepTop + 4} Q ${cx},${prepTop - 2} ${cx + prepW / 2},${prepTop + 4} L ${cx + emW / 2},${margY - 1} Q ${cx + emW / 2},${margY} ${cx + connW / 2},${crestY} Z`} fill={ABUT} stroke={ABUT_E} strokeWidth="1" />
+ {platformSeam}
  <line x1={cx - emW / 2} y1={margY - 1} x2={cx + emW / 2} y2={margY - 1} stroke={ABUT_E} strokeWidth="1" opacity="0.7" />
  {collar(emW)}
  <line x1={cx} y1={prepTop} x2={cx} y2={crestY} stroke={ABUT_E} strokeWidth="1" strokeDasharray="2 2" opacity="0.4" />
@@ -33166,6 +33185,7 @@ function ImplantBuilder() {
  const isPosterior = ttype === "premolar" || ttype === "molar";
  return <g>
  {gingivaBand}
+ {connStem(ABUT, ABUT_E)}
  {/* cutaway — the abutment + its screw shown inside the translucent crown.
  Each is independently selectable (its portion below the crown is the hit
  target); the abutment screw runs the long axis into the fixture. */}
@@ -33294,6 +33314,8 @@ function ImplantBuilder() {
  const y = crestY + 9 + i * 11;
  return y < apexY - 8 ? <line key={i} x1={implL + 1.5} y1={y} x2={implR - 1.5} y2={y} stroke="var(--paper)" strokeWidth="1" opacity="0.45" /> : null;
  })}
+ {/* internal-connection bore — the dark socket the component screws into */}
+ <path d={socketPath} fill="rgba(26,22,18,0.26)" stroke="rgba(26,22,18,0.34)" strokeWidth="0.6" />
  </g>
  ) : comp === "ridge" ? null : (
  <path d={`M ${implL},${crestY} L ${implR},${crestY} L ${implR},${apexY - 7} Q ${implR},${apexY} ${cx},${apexY} Q ${implL},${apexY} ${implL},${apexY - 7} Z`} fill="none" stroke={feasC} strokeWidth="1.4" strokeDasharray="4 4" opacity="0.8" />
@@ -33489,7 +33511,7 @@ function ImplantBuilder() {
  ))}
  </div>
  {crossSection}
- <div style={{ fontSize: "9.5px", color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginTop: "8px", letterSpacing: "0.04em", fontStyle: "italic" }}>Tap anything in the diagram for details.</div>
+ <div style={{ fontSize: "9.5px", color: "var(--ink-faint)", fontFamily: "'Geist', sans-serif", marginTop: "8px", letterSpacing: "0.04em", fontStyle: "italic" }}>Click any element to inspect details.</div>
  <div style={{ display: "flex", gap: "3px", marginTop: "12px", border: "1px solid var(--rule)", borderRadius: "8px", padding: "3px", width: "100%", maxWidth: "560px", opacity: restorable ? 1 : 0.4 }}>
  {IMPLANT_COMPONENTS.map(({ key, label }) => {
  const on = (f.component || "crown") === key;
