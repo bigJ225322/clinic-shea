@@ -33208,11 +33208,34 @@ function ImplantBuilder() {
  <path d={`M ${implL},${crestY} L ${implR},${crestY} L ${implR},${apexY - 7} Q ${implR},${apexY} ${cx},${apexY} Q ${implL},${apexY} ${implL},${apexY - 7} Z`} fill={feasC} fillOpacity="0.82" stroke={feasC} strokeWidth="1.2" />
  {Array.from({ length: Math.max(2, Math.floor(lpx / 11)) }, (_, i) => { const y = crestY + 9 + i * 11; return y < apexY - 8 ? <line key={i} x1={implL + 1.5} y1={y} x2={implR - 1.5} y2={y} stroke="var(--paper)" strokeWidth="1" opacity="0.45" /> : null; })}
  </g>}
- {showFixture && <g {...pick("crown")}>
+ {/* Supragingival component — mirrors the B-L toggle so the M-D view is never
+ stuck on "crown": cover screw (submerged), healing abutment, custom abutment,
+ or crown all emerge up between the neighbours. */}
+ {showFixture && (() => {
+ const emW = Math.min(connW + 6, crMD), collarMD = <ellipse cx={cx} cy={gingTop} rx={emW / 2 + 1.5} ry="2.5" fill={GUM_E} />;
+ if (comp === "cover") return <g {...pick("cover")}>
+ <rect x={cx - connW * 0.45} y={crestY - 0.9 * PX} width={connW * 0.9} height={0.9 * PX} rx="1.5" fill={TITAN} stroke={TITAN_E} strokeWidth="0.8" />
+ </g>;
+ if (comp === "healing") { const topW = connW, haTop = gingTop - 2 * PX;
+ return <g {...pick("healing")}>
+ <path d={`M ${cx - connW / 2},${crestY} L ${cx - emW / 2},${gingTop} L ${cx - topW / 2},${haTop + 4} Q ${cx - topW / 2},${haTop} ${cx},${haTop} Q ${cx + topW / 2},${haTop} ${cx + topW / 2},${haTop + 4} L ${cx + emW / 2},${gingTop} L ${cx + connW / 2},${crestY} Z`} fill={TITAN} stroke={TITAN_E} strokeWidth="1" />
+ {collarMD}
+ </g>;
+ }
+ if (comp === "abutment") { const prepTop = gingTop - Math.min((gingTop - crownTop) * 0.82, 6 * PX), prepW = connW * 0.66;
+ return <g {...pick("abutment")}>
+ <path d={`M ${cx - connW / 2},${crestY} L ${cx - emW / 2},${gingTop} L ${cx - prepW / 2},${prepTop + 4} Q ${cx},${prepTop - 1} ${cx + prepW / 2},${prepTop + 4} L ${cx + emW / 2},${gingTop} L ${cx + connW / 2},${crestY} Z`} fill={ABUT} stroke={ABUT_E} strokeWidth="1" />
+ {collarMD}
+ </g>;
+ }
+ return <g {...pick("crown")}>
  <path d={`M ${cx - crMD / 2},${gingTop} Q ${cx - crMD / 2},${crownTop + 2} ${cx},${crownTop} Q ${cx + crMD / 2},${crownTop + 2} ${cx + crMD / 2},${gingTop} Z`} fill={ENAMEL} fillOpacity="0.6" stroke={ENAMEL_E} strokeWidth="1.1" />
- </g>}
- {showFixture && <g {...pick("screw")}>
- <line x1={cx} y1={crownTop + crMD * 0.06} x2={cx} y2={crestY + lpx * 0.4} stroke={f.selected === "screw" ? "var(--accent)" : TITAN_E} strokeWidth="2.2" strokeLinecap="round" />
+ {collarMD}
+ </g>;
+ })()}
+ {/* abutment screw — down the long axis, shown once the abutment/crown is on */}
+ {showFixture && (comp === "crown" || comp === "abutment") && <g {...pick("screw")}>
+ <line x1={cx} y1={comp === "crown" ? crownTop + crMD * 0.06 : gingTop - 3} x2={cx} y2={crestY + lpx * 0.4} stroke={f.selected === "screw" ? "var(--accent)" : TITAN_E} strokeWidth="2.2" strokeLinecap="round" />
  </g>}
  {/* MD-space dimension between the adjacent proximal surfaces */}
  {tick(proxL, gingTop - 8, proxL, gingTop - 2, "var(--ink-soft)")}
