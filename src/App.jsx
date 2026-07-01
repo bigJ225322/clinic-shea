@@ -30899,6 +30899,19 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  setPopupSourceRect(null);
  }, POPUP_EXIT_MS);
  };
+ // Move to an adjacent tile's popup WITHOUT closing first. Re-point the source
+ // rect at the destination tile (so a later close still flips back to the tile
+ // you're actually on), then swap the target — PathwayPopupModal cross-fades
+ // the old content down and the new content up via its contentKey shuffle.
+ const navigatePopup = (target, destKey) => {
+ const el = destKey && schematicTileRefs.current.get(destKey);
+ if (el) {
+ const r = el.getBoundingClientRect();
+ setPopupSourceRect({ left: r.left, top: r.top, width: r.width, height: r.height });
+ }
+ setPathwayPopupClosing(false);
+ setPathwayPopup(target);
+ };
  // Close popup when the pathway changes (stale state would survive).
  useEffect(() => {
  setPathwayPopup(null);
@@ -32224,6 +32237,35 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  {pathwayPopup && (() => {
  const labSteps = selectedPathway.labSteps || [];
  const phases = selectedPathway.phases || [];
+ // ---- adjacent-tile navigation (visit ↔ lab, the chronological flow) ----
+ // Rebuild the same V0,(L0?),V1,(L1?)… sequence the schematic lays out, find
+ // where the open popup sits, and hand the modal prev/next jump handlers plus
+ // the true on-map ANGLE to each neighbour (from the measured tile positions),
+ // so the arrow can sit on the edge facing the tile it travels to.
+ const navSeq = [];
+ for (let i = 0; i < phases.length; i++) {
+ navSeq.push({ key: `v-${i}`, param: { kind: "visit", phaseIndex: i } });
+ const li = labSteps.findIndex(ls => ls.after === i);
+ if (li !== -1) navSeq.push({ key: `l-${li}`, param: { kind: "lab", index: li } });
+ }
+ const curKey = pathwayPopup.kind === "visit" ? `v-${pathwayPopup.phaseIndex}`
+ : pathwayPopup.kind === "lab" ? `l-${pathwayPopup.index}` : null;
+ const curIdx = curKey ? navSeq.findIndex(s => s.key === curKey) : -1;
+ const angleTo = (toKey) => {
+ const a = schematicPositions && schematicPositions[curKey];
+ const b = schematicPositions && schematicPositions[toKey];
+ if (!a || !b) return null;
+ return Math.atan2((b.y + b.height / 2) - (a.y + a.height / 2), (b.x + b.width / 2) - (a.x + a.width / 2)) * 180 / Math.PI;
+ };
+ const prevSeq = curIdx > 0 ? navSeq[curIdx - 1] : null;
+ const nextSeq = (curIdx >= 0 && curIdx < navSeq.length - 1) ? navSeq[curIdx + 1] : null;
+ const nav = {
+ contentKey: `${pathwayPopup.kind}-${pathwayPopup.phaseIndex != null ? pathwayPopup.phaseIndex : pathwayPopup.index}`,
+ onNavPrev: prevSeq ? () => navigatePopup(prevSeq.param, prevSeq.key) : null,
+ onNavNext: nextSeq ? () => navigatePopup(nextSeq.param, nextSeq.key) : null,
+ prevAngle: prevSeq ? angleTo(prevSeq.key) : null,
+ nextAngle: nextSeq ? angleTo(nextSeq.key) : null,
+ };
  if (pathwayPopup.kind === "visit") {
  const pi = pathwayPopup.phaseIndex;
  const phase = phases[pi];
@@ -32233,7 +32275,7 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  for (let i = 0; i < pi; i++) startIdx += phases[i].count;
  const phaseSections = resolvedSections.slice(startIdx, startIdx + phase.count);
  return (
- <PathwayPopupModal title={phase.label} eyebrow={`Visit ${pi + 1}`} tone="visit" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
+ <PathwayPopupModal title={phase.label} eyebrow={`Visit ${pi + 1}`} tone="visit" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect} {...nav}>
  {/* Phase-specific widget (e.g. tooth mould selector on the wax-rim
  visit). Rendered above chapter content because it's a chair-side
  reference tool the student actually uses during the visit. */}
@@ -32302,7 +32344,7 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  if (!s || s.unresolved) return null;
  const title = s.ref?.label || s.chapter.title;
  return (
- <PathwayPopupModal title={title} closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
+ <PathwayPopupModal title={title} closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect} {...nav}>
  <GuideChapter chapter={s.chapter} hideHeader />
  </PathwayPopupModal>
  );
@@ -32314,7 +32356,7 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  const found = CHAPTER_INDEX.get(branch.chapterId);
  if (!found) return null;
  return (
- <PathwayPopupModal title={branch.label} eyebrow={selectedPathway.branchEyebrow || "Maintenance"} tone="branch" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
+ <PathwayPopupModal title={branch.label} eyebrow={selectedPathway.branchEyebrow || "Maintenance"} tone="branch" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect} {...nav}>
  <GuideChapter chapter={found.chapter} hideHeader />
  </PathwayPopupModal>
  );
@@ -32323,7 +32365,7 @@ function Pathways({ homeSignal = 0, onOpenChange }) {
  const ls = labSteps[pathwayPopup.index];
  if (!ls) return null;
  return (
- <PathwayPopupModal title={ls.title} eyebrow={`Lab ${pathwayPopup.index + 1}`} tone="lab" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect}>
+ <PathwayPopupModal title={ls.title} eyebrow={`Lab ${pathwayPopup.index + 1}`} tone="lab" closing={pathwayPopupClosing} onClose={closePathwayPopup} sourceRect={popupSourceRect} {...nav}>
  {/* Lab worksheet visual: red-outlined white paper. Lab content
  reads as "the script the lab tech follows" — distinct from
  clinical-visit content. The oxblood border + plain white
@@ -32382,9 +32424,82 @@ const BADGE_TONES = {
  visit: { color: "var(--ink)", bg: "rgba(26, 22, 18, 0.05)", border: "1px solid rgba(26, 22, 18, 0.12)" },
  branch: { color: "var(--ink-soft)", bg: "transparent", border: "1px dashed var(--ink-faint)" },
 };
-function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, sourceRect }) {
+// A round nudge-button that parks on the card edge FACING the tile it travels
+// to (angle in degrees, 0 = right / 90 = down / 180 = left, matching the
+// schematic's screen-space geometry) and points its arrow that exact way.
+function PopupNavArrow({ angle, onClick, kind }) {
+ const [hover, setHover] = useState(false);
+ const a = ((angle % 360) + 360) % 360;
+ let pos;
+ if (a < 22.5 || a >= 337.5) pos = { right: "-19px", top: "50%", transform: "translateY(-50%)" };
+ else if (a < 67.5) pos = { right: "-15px", bottom: "-15px" };
+ else if (a < 112.5) pos = { bottom: "-19px", left: "50%", transform: "translateX(-50%)" };
+ else if (a < 157.5) pos = { left: "-15px", bottom: "-15px" };
+ else if (a < 202.5) pos = { left: "-19px", top: "50%", transform: "translateY(-50%)" };
+ else if (a < 247.5) pos = { left: "-15px", top: "-15px" };
+ else if (a < 292.5) pos = { top: "-19px", left: "50%", transform: "translateX(-50%)" };
+ else pos = { right: "-15px", top: "-15px" };
+ return (
+ <button type="button" onClick={onClick} aria-label={kind === "next" ? "Next step" : "Previous step"}
+ onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+ style={{
+ position: "absolute", ...pos, zIndex: 6,
+ width: "38px", height: "38px", borderRadius: "50%",
+ background: "var(--card, white)",
+ border: "1px solid var(--rule)",
+ boxShadow: hover ? "0 7px 20px rgba(26,22,18,0.20)" : "0 3px 11px rgba(26,22,18,0.12)",
+ color: hover ? "var(--accent)" : "var(--ink-soft)",
+ cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+ opacity: hover ? 1 : 0.88,
+ transition: "box-shadow 160ms ease, color 160ms ease, opacity 160ms ease",
+ }}>
+ <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+ style={{ transform: `rotate(${angle}deg)` }}>
+ <path d="M5 12h13M12 6l6 6-6 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+ </svg>
+ </button>
+ );
+}
+
+function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, sourceRect, contentKey, onNavPrev, onNavNext, prevAngle, nextAngle }) {
  const cardRef = useRef(null);
- const badge = BADGE_TONES[tone] || BADGE_TONES.lab;
+ // Content shuffle: when the popup navigates to an adjacent tile (contentKey
+ // changes while the modal stays mounted), the outgoing content sinks down +
+ // fades while the incoming content rises up + fades in, overlapping — the
+ // "one you're reading goes back down, the next pops up" motion. The frame
+ // itself (scrim + card) is untouched, so there's no re-flip from the tile.
+ const cur = { eyebrow, title, tone, children };
+ const prevContentRef = useRef(cur);
+ const keyRef = useRef(contentKey);
+ const seqRef = useRef(0);
+ const [leaving, setLeaving] = useState(null);
+ useEffect(() => {
+ if (contentKey === keyRef.current) { prevContentRef.current = cur; return; }
+ setLeaving(prevContentRef.current);        // old content, captured before overwrite
+ keyRef.current = contentKey;
+ prevContentRef.current = cur;
+ const id = ++seqRef.current;
+ const t = setTimeout(() => { if (seqRef.current === id) setLeaving(null); }, 400);
+ return () => clearTimeout(t);
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ }, [contentKey]);
+ const renderInner = (c) => {
+ const b = BADGE_TONES[c.tone] || BADGE_TONES.lab;
+ return (<>
+ <div style={{ margin: "0 0 20px", paddingBottom: "15px", borderBottom: "1px solid var(--rule-soft, var(--rule))" }}>
+ {c.eyebrow && (
+ <span style={{
+ display: "inline-block", fontSize: "0.6rem", textTransform: "uppercase",
+ letterSpacing: "0.13em", fontWeight: 600, fontFamily: "'Geist', sans-serif",
+ color: b.color, background: b.bg, border: b.border,
+ borderRadius: "100px", padding: "3px 11px", marginBottom: "11px",
+ }}>{c.eyebrow}</span>
+ )}
+ <h2 className="serif" style={{ fontSize: "1.28rem", fontWeight: 400, color: "var(--ink)", margin: 0, paddingRight: "30px", lineHeight: 1.3 }}>{c.title}</h2>
+ </div>
+ <div>{c.children}</div>
+ </>);
+ };
  // Lock body scroll while open so the page behind doesn't move when the
  // user scrolls inside the modal.
  useEffect(() => {
@@ -32500,6 +32615,8 @@ function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, s
  <style>{`
  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
  @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+ @keyframes pwShuffleIn { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+ @keyframes pwShuffleOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(28px); } }
  `}</style>
  <div
  ref={cardRef}
@@ -32545,36 +32662,25 @@ function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, s
  e.currentTarget.style.background = "transparent";
  }}
  >×</button>
- {/* Masthead: a color-coded kicker badge (echoing the Visit/Lab tile the
- card opened from) sits above the title, which reads as the descriptive
- deck. A hairline rule separates the header from the body below. */}
- <div style={{
- margin: "0 0 20px",
- paddingBottom: "15px",
- borderBottom: "1px solid var(--rule-soft, var(--rule))",
- }}>
- {eyebrow && (
- <span style={{
- display: "inline-block",
- fontSize: "0.6rem", textTransform: "uppercase",
- letterSpacing: "0.13em", fontWeight: 600,
- fontFamily: "'Geist', sans-serif",
- color: badge.color,
- background: badge.bg,
- border: badge.border,
- borderRadius: "100px",
- padding: "3px 11px",
- marginBottom: "11px",
- }}>{eyebrow}</span>
+ {/* Directional jump buttons — park on the card edge facing the tile they
+ travel to and point that exact way (see PopupNavArrow). Only shown when
+ the open popup is a visit/lab with a measured neighbour. */}
+ {onNavPrev && prevAngle != null && <PopupNavArrow angle={prevAngle} onClick={onNavPrev} kind="prev" />}
+ {onNavNext && nextAngle != null && <PopupNavArrow angle={nextAngle} onClick={onNavNext} kind="next" />}
+ {/* Masthead + body shuffle: the incoming content (current props) rises up
+ while the outgoing (captured) content sinks down, overlapping. The frame
+ stays put. A color-coded kicker badge echoes the Visit/Lab tile. */}
+ <div style={{ position: "relative" }}>
+ {leaving && (
+ <div key="leaving" aria-hidden="true" style={{
+ position: "absolute", top: 0, left: 0, right: 0, pointerEvents: "none",
+ animation: "pwShuffleOut 400ms cubic-bezier(0.4, 0, 0.5, 1) forwards",
+ }}>{renderInner(leaving)}</div>
  )}
- <h2 className="serif" style={{
- fontSize: "1.28rem", fontWeight: 400, color: "var(--ink)",
- margin: 0,
- paddingRight: "30px",
- lineHeight: 1.3,
- }}>{title}</h2>
+ <div key={contentKey || "content"} style={{
+ animation: leaving ? "pwShuffleIn 400ms cubic-bezier(0.16, 0.84, 0.3, 1) both" : "none",
+ }}>{renderInner(cur)}</div>
  </div>
- <div>{children}</div>
  </div>
  </div>
  ), document.body);
