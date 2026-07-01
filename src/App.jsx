@@ -32424,6 +32424,63 @@ const BADGE_TONES = {
  visit: { color: "var(--ink)", bg: "rgba(26, 22, 18, 0.05)", border: "1px solid rgba(26, 22, 18, 0.12)" },
  branch: { color: "var(--ink-soft)", bg: "transparent", border: "1px dashed var(--ink-faint)" },
 };
+// Shared card chrome + the FLIP pose that maps the centered card onto a
+// schematic tile's rect (translate to the tile, scale down, pivot edge-on) —
+// the same math the open/close flights and the navigation ghost all use.
+const POPUP_CARD_STYLE = {
+ background: "var(--card, white)", borderRadius: "4px",
+ boxShadow: "0 20px 60px rgba(0, 0, 0, 0.35)",
+ maxWidth: "780px", width: "100%", padding: "26px 30px",
+ position: "relative", transformStyle: "preserve-3d", willChange: "transform, opacity",
+};
+function popupFlipPose(fromRect, tileRect) {
+ const fcx = fromRect.left + fromRect.width / 2, fcy = fromRect.top + fromRect.height / 2;
+ const tcx = tileRect.left + tileRect.width / 2, tcy = tileRect.top + tileRect.height / 2;
+ const scale = Math.max(0.12, Math.min(tileRect.width / fromRect.width, tileRect.height / fromRect.height));
+ return `translate(${tcx - fcx}px, ${tcy - fcy}px) scale(${scale}) rotateX(10deg) rotateY(-80deg)`;
+}
+// Masthead (color-coded kicker + title) + body. Module-level so both the live
+// card and the outgoing ghost render identical content.
+function renderPopupInner(c) {
+ const b = BADGE_TONES[c.tone] || BADGE_TONES.lab;
+ return (<>
+ <div style={{ margin: "0 0 20px", paddingBottom: "15px", borderBottom: "1px solid var(--rule-soft, var(--rule))" }}>
+ {c.eyebrow && (
+ <span style={{
+ display: "inline-block", fontSize: "0.6rem", textTransform: "uppercase",
+ letterSpacing: "0.13em", fontWeight: 600, fontFamily: "'Geist', sans-serif",
+ color: b.color, background: b.bg, border: b.border,
+ borderRadius: "100px", padding: "3px 11px", marginBottom: "11px",
+ }}>{c.eyebrow}</span>
+ )}
+ <h2 className="serif" style={{ fontSize: "1.28rem", fontWeight: 400, color: "var(--ink)", margin: 0, paddingRight: "30px", lineHeight: 1.3 }}>{c.title}</h2>
+ </div>
+ <div>{c.children}</div>
+ </>);
+}
+// The outgoing card during a navigation: a snapshot of the popup you were
+// reading, rendered at the centered position, that collapses back down into its
+// own schematic tile (the normal close flight). It overlaps the incoming card's
+// rise — see PathwayPopupModal's nav effect.
+function PopupGhostCard({ content, tileRect }) {
+ const ref = useRef(null);
+ useLayoutEffect(() => {
+ const el = ref.current; if (!el) return;
+ if (!tileRect) { el.style.transition = "opacity 300ms ease"; el.style.opacity = "0"; return; }
+ const rect = el.getBoundingClientRect();
+ el.style.transformOrigin = "center center";
+ void el.offsetWidth;
+ el.style.transition = "transform 430ms cubic-bezier(0.4, 0, 0.6, 0.38), opacity 300ms ease-in 150ms";
+ el.style.transform = popupFlipPose(rect, tileRect);
+ el.style.opacity = "0";
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ }, []);
+ return (
+ <div style={{ position: "fixed", top: "60px", left: 0, right: 0, display: "flex", justifyContent: "center", padding: "0 20px", pointerEvents: "none" }}>
+ <div ref={ref} aria-hidden="true" style={{ ...POPUP_CARD_STYLE }}>{renderPopupInner(content)}</div>
+ </div>
+ );
+}
 // A round nudge-button that parks on the card edge FACING the tile it travels
 // to (angle in degrees, 0 = right / 90 = down / 180 = left, matching the
 // schematic's screen-space geometry) and points its arrow that exact way.
@@ -32463,43 +32520,44 @@ function PopupNavArrow({ angle, onClick, kind }) {
 
 function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, sourceRect, contentKey, onNavPrev, onNavNext, prevAngle, nextAngle }) {
  const cardRef = useRef(null);
- // Content shuffle: when the popup navigates to an adjacent tile (contentKey
- // changes while the modal stays mounted), the outgoing content sinks down +
- // fades while the incoming content rises up + fades in, overlapping — the
- // "one you're reading goes back down, the next pops up" motion. The frame
- // itself (scrim + card) is untouched, so there's no re-flip from the tile.
  const cur = { eyebrow, title, tone, children };
+ // Adjacent-tile navigation with OVERLAPPING flights: on a contentKey change
+ // (a nav, the modal instance stays mounted), the card you're reading collapses
+ // back down into its own tile — the normal close flight, run as a ghost
+ // snapshot — while the incoming card re-plays the open flight up out of the
+ // destination tile, staggered so the two overlap and read as one fluid motion.
  const prevContentRef = useRef(cur);
- const keyRef = useRef(contentKey);
- const seqRef = useRef(0);
- const [leaving, setLeaving] = useState(null);
- useEffect(() => {
- if (contentKey === keyRef.current) { prevContentRef.current = cur; return; }
- setLeaving(prevContentRef.current);        // old content, captured before overwrite
- keyRef.current = contentKey;
+ const prevSourceRef = useRef(sourceRect);
+ const navKeyRef = useRef(contentKey);
+ const firstRef = useRef(true);
+ const ghostSeqRef = useRef(0);
+ const [ghost, setGhost] = useState(null);
+ useLayoutEffect(() => {
+ if (firstRef.current) { firstRef.current = false; navKeyRef.current = contentKey; prevContentRef.current = cur; prevSourceRef.current = sourceRect; return; }
+ if (contentKey === navKeyRef.current) { prevContentRef.current = cur; prevSourceRef.current = sourceRect; return; }
+ const oldContent = prevContentRef.current, oldTile = prevSourceRef.current;
+ navKeyRef.current = contentKey;
  prevContentRef.current = cur;
- const id = ++seqRef.current;
- const t = setTimeout(() => { if (seqRef.current === id) setLeaving(null); }, 400);
- return () => clearTimeout(t);
+ prevSourceRef.current = sourceRect;
+ // 1) the outgoing card collapses into its old tile (ghost close flight)
+ const id = ++ghostSeqRef.current;
+ setGhost({ content: oldContent, tileRect: oldTile, id });
+ setTimeout(() => { if (ghostSeqRef.current === id) setGhost(null); }, 560);
+ // 2) the incoming card rises from the destination tile, delayed so the
+ // collapse leads and the two overlap in the middle.
+ const card = cardRef.current;
+ if (card && sourceRect) {
+ const rect = card.getBoundingClientRect();
+ card.style.transition = "none";
+ card.style.transform = popupFlipPose(rect, sourceRect);
+ card.style.opacity = "0.25";
+ void card.offsetWidth;
+ card.style.transition = "transform 500ms cubic-bezier(0.16, 0.84, 0.3, 1.02) 150ms, opacity 300ms ease-out 150ms";
+ card.style.transform = "translate(0px,0px) scale(1) rotateX(0deg) rotateY(0deg)";
+ card.style.opacity = "1";
+ }
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [contentKey]);
- const renderInner = (c) => {
- const b = BADGE_TONES[c.tone] || BADGE_TONES.lab;
- return (<>
- <div style={{ margin: "0 0 20px", paddingBottom: "15px", borderBottom: "1px solid var(--rule-soft, var(--rule))" }}>
- {c.eyebrow && (
- <span style={{
- display: "inline-block", fontSize: "0.6rem", textTransform: "uppercase",
- letterSpacing: "0.13em", fontWeight: 600, fontFamily: "'Geist', sans-serif",
- color: b.color, background: b.bg, border: b.border,
- borderRadius: "100px", padding: "3px 11px", marginBottom: "11px",
- }}>{c.eyebrow}</span>
- )}
- <h2 className="serif" style={{ fontSize: "1.28rem", fontWeight: 400, color: "var(--ink)", margin: 0, paddingRight: "30px", lineHeight: 1.3 }}>{c.title}</h2>
- </div>
- <div>{c.children}</div>
- </>);
- };
  // Lock body scroll while open so the page behind doesn't move when the
  // user scrolls inside the modal.
  useEffect(() => {
@@ -32615,26 +32673,16 @@ function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, s
  <style>{`
  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
  @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
- @keyframes pwShuffleIn { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
- @keyframes pwShuffleOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(28px); } }
  `}</style>
+ {/* Outgoing card, painted behind the live one, collapsing into its tile. */}
+ {ghost && <PopupGhostCard key={ghost.id} content={ghost.content} tileRect={ghost.tileRect} />}
  <div
  ref={cardRef}
  role="dialog"
  aria-modal="true"
  aria-label={title}
  onClick={(e) => e.stopPropagation()}
- style={{
- background: "var(--card, white)",
- borderRadius: "4px",
- boxShadow: "0 20px 60px rgba(0, 0, 0, 0.35)",
- maxWidth: "780px",
- width: "100%",
- padding: "26px 30px",
- position: "relative",
- transformStyle: "preserve-3d",
- willChange: "transform, opacity",
- }}
+ style={{ ...POPUP_CARD_STYLE, zIndex: 1 }}
  >
  <button
  type="button"
@@ -32667,20 +32715,7 @@ function PathwayPopupModal({ title, eyebrow, tone, children, onClose, closing, s
  the open popup is a visit/lab with a measured neighbour. */}
  {onNavPrev && prevAngle != null && <PopupNavArrow angle={prevAngle} onClick={onNavPrev} kind="prev" />}
  {onNavNext && nextAngle != null && <PopupNavArrow angle={nextAngle} onClick={onNavNext} kind="next" />}
- {/* Masthead + body shuffle: the incoming content (current props) rises up
- while the outgoing (captured) content sinks down, overlapping. The frame
- stays put. A color-coded kicker badge echoes the Visit/Lab tile. */}
- <div style={{ position: "relative" }}>
- {leaving && (
- <div key="leaving" aria-hidden="true" style={{
- position: "absolute", top: 0, left: 0, right: 0, pointerEvents: "none",
- animation: "pwShuffleOut 400ms cubic-bezier(0.4, 0, 0.5, 1) forwards",
- }}>{renderInner(leaving)}</div>
- )}
- <div key={contentKey || "content"} style={{
- animation: leaving ? "pwShuffleIn 400ms cubic-bezier(0.16, 0.84, 0.3, 1) both" : "none",
- }}>{renderInner(cur)}</div>
- </div>
+ {renderPopupInner(cur)}
  </div>
  </div>
  ), document.body);
